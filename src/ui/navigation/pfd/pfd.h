@@ -28,10 +28,11 @@ class PFD : public Element {
 
 			// Right
 			const uint16_t rightWidth = 60;
+			auto rightX = renderSize.getWidth() - rightWidth;
 
 			screen.renderRectangle(
 				Bounds(
-					renderSize.getWidth() - rightWidth,
+					rightX,
 					0,
 					rightWidth,
 					renderSize.getHeight()
@@ -45,7 +46,7 @@ class PFD : public Element {
 			float altitudeSnappedInteger = floor(altitudeSnapped);
 			float altitudeSnappedFractional = altitudeSnapped - altitudeSnappedInteger;
 
-			int32_t altitudeY = centerY - (uint16_t) floor((1.0f - altitudeSnappedFractional) * altitudeStepPixels);
+			int32_t altitudeY = centerY - (uint16_t) ((1.0f - altitudeSnappedFractional) * altitudeStepPixels);
 			int32_t altitudeYFullLines = ceil((float) altitudeY / (float) altitudeStepPixels);
 			altitudeY = altitudeY - altitudeYFullLines * altitudeStepPixels;
 
@@ -63,7 +64,7 @@ class PFD : public Element {
 
 					// Line
 					screen.renderHorizontalLine(
-						Point(renderSize.getWidth() - rightWidth, altitudeY),
+						Point(rightX, altitudeY),
 						lineWidth,
 						&Theme::fg1
 					);
@@ -73,7 +74,7 @@ class PFD : public Element {
 					textSize = screen.measureText(text);
 
 					screen.renderText(
-						Point(renderSize.getWidth() - rightWidth + lineWidth + 5, altitudeY - textSize.getHeight() / 2),
+						Point(rightX + lineWidth + 5, altitudeY - textSize.getHeight() / 2),
 						&Theme::fg1,
 						text
 					);
@@ -81,7 +82,7 @@ class PFD : public Element {
 				else {
 					// Line
 					screen.renderHorizontalLine(
-						Point(renderSize.getWidth() - rightWidth, altitudeY),
+						Point(rightX, altitudeY),
 						10,
 						&Theme::fg1
 					);
@@ -95,8 +96,22 @@ class PFD : public Element {
 			text = String(altitude);
 			textSize = screen.measureText(text);
 
+			const uint8_t altitudePadding = 10;
+
+			altitudeY = centerY - textSize.getHeight() / 2 - altitudePadding;
+
+			screen.renderRectangle(
+				Bounds(
+					rightX,
+					altitudeY,
+					rightWidth,
+					textSize.getHeight() + altitudePadding * 2
+				),
+				&Theme::bg3
+			);
+
 			screen.renderText(
-				Point(renderSize.getWidth() - rightWidth, centerY - textSize.getHeight() / 2),
+				Point(rightX + altitudePadding, altitudeY + altitudePadding),
 				&Theme::fg1,
 				text
 			);
