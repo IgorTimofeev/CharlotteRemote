@@ -16,17 +16,17 @@ namespace yoba {
 			}
 
 		public:
-			void onRender(Screen &display) override {
+			void onRender(Screen &screen) override {
 				auto& bounds = getBounds();
 
-				display.setFont(getFont());
+				screen.setFont(getFont());
 
 				auto& text = getText();
-				auto textSize = display.measureText(text);
+				auto textSize = screen.measureText(text);
 
-				display.renderRectangle(bounds, getBackground());
+				screen.renderRectangle(bounds, getBackground());
 
-				display.renderText(
+				screen.renderText(
 					Point(
 						bounds.getX() + bounds.getWidth() / 2 - textSize.getWidth() / 2,
 						bounds.getY() + bounds.getHeight() / 2 - textSize.getHeight() / 2

@@ -32,12 +32,12 @@ namespace yoba {
 
 			virtual ~Element() = default;
 
-			Size measure(Screen& display, const Size& availableSize);
+			Size measure(Screen& screen, const Size& availableSize);
 
 			void arrange(const Bounds& bounds);
 
 			virtual void tick();
-			virtual void render(Screen &display);
+			virtual void render(Screen &screen);
 			virtual void handleEvent(Event& event);
 
 			virtual void invalidateRender();
@@ -86,7 +86,7 @@ namespace yoba {
 
 			const Bounds& getBounds();
 		protected:
-			virtual Size onMeasure(Screen& display, const Size& availableSize);
+			virtual Size onMeasure(Screen& screen, const Size& availableSize);
 			virtual void onArrange(const Bounds& bounds);
 			virtual void onRender(Screen& display);
 			virtual void onEvent(Event& event);

@@ -13,9 +13,9 @@
 using namespace yoba;
 
 namespace ui {
-	class Tab : public SelectorItem {
+	class SideBarItem : public SelectorItem {
 		public:
-			explicit Tab(const String& text) {
+			explicit SideBarItem(const String& text) {
 				// Selection
 				_selectionBackground.setFillColor(&Theme::fg1);
 				addChild(&_selectionBackground);

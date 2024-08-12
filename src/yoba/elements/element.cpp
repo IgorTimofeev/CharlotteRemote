@@ -38,8 +38,8 @@ namespace yoba {
 			newSize = 0;
 	}
 
-	Size Element::measure(Screen &display, const Size &availableSize) {
-		auto desiredSize = onMeasure(display, availableSize);
+	Size Element::measure(Screen &screen, const Size &availableSize) {
+		auto desiredSize = onMeasure(screen, availableSize);
 
 		auto size = getSize();
 		auto margin = getMargin();
@@ -208,7 +208,7 @@ namespace yoba {
 
 	}
 
-	Size Element::onMeasure(Screen &display, const Size &availableSize) {
+	Size Element::onMeasure(Screen &screen, const Size &availableSize) {
 		return {
 			0,
 			0,
@@ -340,14 +340,14 @@ namespace yoba {
 
 	}
 
-	void Element::render(Screen &display) {
+	void Element::render(Screen &screen) {
 		if (!isVisible())
 			return;
 
-		onRender(display);
+		onRender(screen);
 	}
 
-	void Element::onRender(Screen &display) {
+	void Element::onRender(Screen &screen) {
 
 	}
 }

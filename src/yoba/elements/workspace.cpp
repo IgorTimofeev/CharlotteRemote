@@ -8,12 +8,12 @@ namespace yoba {
 		setWorkspace(this);
 	}
 
-	void Workspace::onRender(Screen &display) {
+	void Workspace::onRender(Screen &screen) {
 		if (_isRendered)
 			return;
 
-		Layout::onRender(display);
-		display.flush();
+		Layout::onRender(screen);
+		screen.flush();
 
 		_isRendered = true;
 	}
@@ -27,11 +27,11 @@ namespace yoba {
 		_isArranged = true;
 	}
 
-	void Workspace::measure(Screen &display) {
+	void Workspace::measure(Screen &screen) {
 		if (_isMeasured)
 			return;
 
-		Layout::measure(display, getSize());
+		Layout::measure(screen, getSize());
 
 		_isMeasured = true;
 	}

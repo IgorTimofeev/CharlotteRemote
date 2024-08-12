@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "screen.h"
 #include "yoba/elements/workspace.h"
-#include "yoba/hardware/touch/ft6336u/FT6336U.h"
+#include "yoba/hardware/touch/FT6336U.h"
 
 namespace yoba {
 	Screen::Screen(
@@ -374,5 +374,15 @@ namespace yoba {
 				callOnTouchUp();
 			}
 		}
+	}
+
+	void Screen::renderLine(const Point &from, const Point &to, const Color *color) {
+		_tft.drawLine(
+			from.getX(),
+			from.getY(),
+			to.getX(),
+			to.getX(),
+			color->to16Bit()
+		);
 	}
 }

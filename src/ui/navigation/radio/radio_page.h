@@ -12,9 +12,9 @@
 using namespace yoba;
 
 namespace ui {
-	class MainPage : public Page {
+	class RadioPage : public Page {
 		public:
-			MainPage() {
+			RadioPage() {
 				setAlignment(Alignment::center);
 
 				backgroundSlider.setCornerRadius(5);

@@ -12,11 +12,11 @@ namespace yoba {
 	class SevenSegment : public BackgroundAware, public ForegroundAware {
 		public:
 			SevenSegment() {
-				setBackground(Color::main9);
-				setForeground(Color::main1);
+				setBackground(&HighColor::black);
+				setForeground(&HighColor::white);
 			}
 
-			Size onMeasure(Screen &display, const Size &availableSize) override {
+			Size onMeasure(Screen &screen, const Size &availableSize) override {
 				return {
 					(uint16_t) (((getDigitWidth() + getSpacing()) * getDigitCount()) - getSpacing()),
 					getDigitHeight()

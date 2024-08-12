@@ -10,9 +10,9 @@ namespace yoba {
 		}
 	}
 
-	void Layout::onRender(Screen &display) {
+	void Layout::onRender(Screen &screen) {
 		for (const auto& child : *this) {
-			child->render(display);
+			child->render(screen);
 		}
 	}
 
@@ -96,7 +96,7 @@ namespace yoba {
 		removeChild(child);
 	}
 
-	Size Layout::onMeasure(Screen &display, const Size &availableSize) {
+	Size Layout::onMeasure(Screen &screen, const Size &availableSize) {
 		auto result = Size();
 
 		Size childSize;
@@ -105,7 +105,7 @@ namespace yoba {
 			if (!child->isVisible())
 				continue;
 
-			childSize = child->measure(display, availableSize);
+			childSize = child->measure(screen, availableSize);
 
 			if (childSize.getWidth() > result.getWidth())
 				result.setWidth(childSize.getWidth());

@@ -8,9 +8,9 @@
 #include "point.h"
 #include "bounds.h"
 #include "color.h"
-#include "touch_point.h"
+#include "yoba/hardware/touch/touch_point.h"
 #include "elements/workspace.h"
-#include "yoba/hardware/touch/ft6336u/FT6336U.h"
+#include "yoba/hardware/touch/FT6336U.h"
 
 namespace yoba {
 	class Screen {
@@ -45,6 +45,9 @@ namespace yoba {
 			virtual void renderHorizontalLine(const Point& position, uint16_t size, const Color* color);
 			virtual void renderVerticalLine(const Point& position, uint16_t size, const Color* color);
 			virtual void renderImage(const Bounds& bounds, const uint16_t* data);
+
+			virtual void renderLine(const Point& from, const Point& to, const Color* color);
+
 			virtual void flush();
 
 			// -------------------------------- Touch --------------------------------

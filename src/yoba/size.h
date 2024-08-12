@@ -8,7 +8,7 @@
 namespace yoba {
 	struct Size {
 		public:
-			static const uint16_t calculated = std::numeric_limits<uint16_t>::max();
+			static const uint16_t calculated = 0xFFFF;
 
 			Size() = default;
 			Size(const Size& size) = default;

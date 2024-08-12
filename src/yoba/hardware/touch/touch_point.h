@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include "point.h"
+#include "yoba/point.h"
 
 namespace yoba {
 	class TouchPoint {

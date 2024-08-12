@@ -1,33 +1,28 @@
 #pragma once
 
 #include "Arduino.h"
+
 #include "yoba/elements/layout.h"
 #include "yoba/elements/selector.h"
 #include "yoba/elements/selector_item.h"
 #include "yoba/elements/image.h"
 #include "yoba/animation.h"
-
-#include "tab.h"
-
-#include "ui/rc_application.h"
-
 #include "yoba/elements/button.h"
-#include "ui/navigation/main/main_page.h"
+#include "yoba/elements/rectangle.h"
+
 #include "ui/navigation/engine/engine_page.h"
 #include "ui/theme.h"
+#include "ui/navigation/radio/radio_page.h"
+#include "side_bar_item.h"
+#include "ui/navigation/battery/battery_page.h"
+#include "ui/navigation/pfd/pfd_page.h"
 
 using namespace yoba;
 
 namespace ui {
-	class TabBar : public Selector {
+	class SideBar : public Selector {
 		public:
-			Tab mainTab = Tab("NAV");
-			MainPage mainPage = MainPage();
-
-			Tab engineTab = Tab("ENG");
-			EnginePage enginePage = EnginePage();
-
-			TabBar() {
+			SideBar() {
 				addChild(&_background);
 
 				// Menu
@@ -46,9 +41,10 @@ namespace ui {
 				addChild(&_pageLayout);
 
 				// Initialization
-				addTabAndView(&mainTab, &mainPage);
-				addTabAndView(&engineTab, &enginePage);
-
+				addPage("PFD", &_pfdPage);
+				addPage("ENG", &_enginePage);
+				addPage("BAT", &_batteryPage);
+				addPage("RAD", &_radioPage);
 				setSelectedIndex(0);
 			}
 
@@ -59,9 +55,7 @@ namespace ui {
 				if (getSelectedIndex() < 0)
 					return;
 
-				auto& _page = _pages[getSelectedIndex()];
-
-				_pageLayout.addChild(_page);
+				_pageLayout.addChild(_pages[getSelectedIndex()]);
 			}
 
 		private:
@@ -74,9 +68,16 @@ namespace ui {
 
 			std::vector<Page*> _pages {};
 
-			void addTabAndView(SelectorItem* tab, Page* view) {
-				_pages.push_back(view);
-				addItem(tab);
+			// ----------------------------- Pages -----------------------------
+
+			PFDPage _pfdPage = PFDPage();
+			EnginePage _enginePage = EnginePage();
+			BatteryPage _batteryPage = BatteryPage();
+			RadioPage _radioPage = RadioPage();
+
+			void addPage(const String& name, Page* page) {
+				_pages.push_back(page);
+				addItem(new SideBarItem(name));
 			}
 	};
 }
