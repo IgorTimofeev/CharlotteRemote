@@ -37,6 +37,10 @@ namespace yoba {
 			void setDefaultFont(const uint8_t* value);
 			void setFont(const uint8_t *value);
 
+			const Bounds &getViewport();
+			void setViewport(const Bounds& bounds);
+			void resetViewport();
+
 			virtual Size measureText(const String &text);
 
 			virtual void renderText(const Point &position, const Color* color, const String &text);
@@ -47,7 +51,6 @@ namespace yoba {
 			virtual void renderVerticalLine(const Point& position, uint16_t size, const Color* color);
 			virtual void renderImage(const Bounds& bounds, const uint16_t* data);
 			virtual void renderTriangle(const Point& p1, const Point& p2, const Point& p3, const Color* color);
-
 			virtual void renderLine(const Point& from, const Point& to, const Color* color);
 
 			virtual void flush();
@@ -132,5 +135,6 @@ namespace yoba {
 			void callOnPinchDrag();
 			void callOnPinchUp();
 			void readTouch();
+
 	};
 }

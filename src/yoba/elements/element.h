@@ -76,6 +76,9 @@ namespace yoba {
 			void setAlignment(Alignment horizontal, Alignment vertical);
 			void setAlignment(Alignment uniformValue);
 
+			bool getClipToBounds() const;
+			void setClipToBounds(bool value);
+
 			const Margin& getMargin();
 			void setMargin(const Margin& value);
 
@@ -85,6 +88,7 @@ namespace yoba {
 			const Size& getDesiredSize();
 
 			const Bounds& getBounds();
+
 		protected:
 			virtual Size onMeasure(Screen& screen, const Size& availableSize);
 			virtual void onArrange(const Bounds& bounds);
@@ -94,6 +98,8 @@ namespace yoba {
 		private:
 			bool _isVisible = true;
 			bool _isEnabled = true;
+			bool _clipToBounds = false;
+
 			Size _size = Size(Size::calculated, Size::calculated);
 			Alignment _horizontalAlignment = Alignment::stretch;
 			Alignment _verticalAlignment = Alignment::stretch;

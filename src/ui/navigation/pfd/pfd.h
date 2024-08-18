@@ -10,7 +10,9 @@ using namespace ui;
 
 class PFD : public Element {
 	public:
-		PFD() = default;
+		PFD() {
+			setClipToBounds(true);
+		}
 
 		const uint16_t rightWidth = 40;
 		const uint16_t leftWidth = 40;
@@ -275,20 +277,16 @@ class PFD : public Element {
 			);
 
 			// Pressure
-			y = bounds.getHeight() - pressureHeight;
+			auto pressureBg = &Theme::bg3;
+			auto pressureFg = &Theme::ocean;
 
-			screen.renderRectangle(
-				Bounds(
-					x,
-					y,
-					rightWidth,
-					pressureHeight
-				),
-				&Theme::ocean
-			);
+			y = bounds.getHeight() - pressureHeight;
 
 			if (app.isPressureSTD()) {
 				snprintf(buffer, 4, "STD");
+
+				pressureBg = &Theme::yellow;
+				pressureFg = &Theme::bg1;
 			}
 			if (app.isPressureHPA()) {
 				snprintf(buffer, 5, "%d", (uint16_t) app.getPressure());
@@ -297,6 +295,18 @@ class PFD : public Element {
 				snprintf(buffer, 7, "%.2fin", app.getPressure());
 			}
 
+			// Rect
+			screen.renderRectangle(
+				Bounds(
+					x,
+					y,
+					rightWidth,
+					pressureHeight
+				),
+				pressureBg
+			);
+
+			// Text
 			text = String(buffer);
 			textSize = screen.measureText(text);
 
@@ -305,7 +315,7 @@ class PFD : public Element {
 					x + rightWidth / 2 - textSize.getWidth() / 2,
 					y + pressureHeight / 2 - textSize.getHeight() / 2
 				),
-				&Theme::bg1,
+				pressureFg,
 				text
 			);
 		}
@@ -320,9 +330,10 @@ class PFD : public Element {
 
 			const uint16_t horizonWidth = bounds.getWidth() - leftWidth - rightWidth;
 
+
 		}
 
-		void render(Screen &screen) override {
+		void onRender(Screen &screen) override {
 			renderSpeed(screen);
 			renderAltitude(screen);
 			renderHorizon(screen);

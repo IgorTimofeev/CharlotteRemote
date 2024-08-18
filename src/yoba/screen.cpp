@@ -393,4 +393,21 @@ namespace yoba {
 	TFT_eSprite& Screen::getBuffer() {
 		return _buffer;
 	}
+
+	const Bounds& Screen::getViewport() {
+		return Bounds(
+			_buffer.getViewportX(),
+			_buffer.getViewportY(),
+			_buffer.getViewportWidth(),
+			_buffer.getViewportHeight()
+		);
+	}
+
+	void Screen::setViewport(const Bounds &bounds) {
+		_buffer.setViewport(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+	}
+
+	void Screen::resetViewport() {
+		_buffer.resetViewport();
+	}
 }

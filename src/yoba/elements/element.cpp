@@ -1,6 +1,7 @@
 #include "element.h"
 #include "workspace.h"
 #include "yoba/animation.h"
+#include "yoba/screen.h"
 
 namespace yoba {
 	bool Element::isVisible() const {
@@ -344,10 +345,25 @@ namespace yoba {
 		if (!isVisible())
 			return;
 
+		if (_clipToBounds) {
+			screen.setViewport(getBounds());
+		}
+		else {
+			screen.resetViewport();
+		}
+
 		onRender(screen);
 	}
 
 	void Element::onRender(Screen &screen) {
 
+	}
+
+	bool Element::getClipToBounds() const {
+		return _clipToBounds;
+	}
+
+	void Element::setClipToBounds(bool value) {
+		_clipToBounds = value;
 	}
 }
