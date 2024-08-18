@@ -160,7 +160,7 @@ class PFD : public Element {
 
 			const Color* color = &Theme::fg4;
 
-			while (y < altitudeHeight) {
+			do {
 				isBig = lineValue % altitudeStepUnitsBig == 0;
 
 				if (isBig) {
@@ -191,6 +191,39 @@ class PFD : public Element {
 				lineValue -= altitudeStepUnits;
 				y += altitudeStepPixels;
 			}
+			while (y < altitudeHeight && lineValue >= 0);
+
+			// Ground
+			if (y < altitudeHeight && lineValue < 0) {
+				const int8_t groundSpacing = 5;
+				auto groundPoint1 = Point(x, y + groundSpacing);
+				auto groundPoint2 = Point(x + groundSpacing, y);
+
+				do {
+					screen.renderLine(
+						groundPoint1,
+						groundPoint2,
+						&Theme::yellow
+					);
+
+					// 1
+					if (groundPoint1.getY() < bounds.getY2()) {
+						groundPoint1.setY(groundPoint1.getY() + groundSpacing);
+					}
+					else {
+						groundPoint1.setX(groundPoint1.getX() + groundSpacing);
+					}
+
+					// 2
+					if (groundPoint2.getX() < bounds.getX2()) {
+						groundPoint2.setX(groundPoint2.getX() + groundSpacing);
+					}
+					else {
+						groundPoint2.setY(groundPoint2.getY() + groundSpacing);
+					}
+				}
+				while (groundPoint1.getX() < bounds.getX2() - groundSpacing);
+			}
 
 			// Current altitude
 			char buffer[8];
@@ -201,12 +234,31 @@ class PFD : public Element {
 			altitudeHeight = 20;
 			y = centerY - altitudeHeight / 2;
 
+			const uint8_t triangleWidth = 8;
+
+			// Triangle
+			screen.renderTriangle(
+				Point(
+					x,
+					centerY
+				),
+				Point(
+					x + triangleWidth - 1,
+					y
+				),
+				Point(
+					x + triangleWidth - 1,
+					y + altitudeHeight - 1
+				),
+				&Theme::bg3
+			);
+
 			// Rect
 			screen.renderRectangle(
 				Bounds(
-					x,
+					x + triangleWidth,
 					y,
-					rightWidth,
+					rightWidth - triangleWidth,
 					altitudeHeight
 				),
 				&Theme::bg3
@@ -215,7 +267,7 @@ class PFD : public Element {
 			// Text
 			screen.renderText(
 				Point(
-					x,
+					x + triangleWidth,
 					y + altitudeHeight / 2 - textSize.getHeight() / 2
 				),
 				&Theme::fg1,

@@ -17,4 +17,5 @@ namespace ui {
 	const PaletteColor Theme::green = PaletteColor(11);
 	const PaletteColor Theme::yellow = PaletteColor(12);
 	const PaletteColor Theme::ocean = PaletteColor(13);
+	const PaletteColor Theme::ground = PaletteColor(14);
 }

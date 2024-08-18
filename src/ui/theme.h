@@ -23,6 +23,7 @@ namespace ui {
 			static const PaletteColor green;
 			static const PaletteColor yellow;
 			static const PaletteColor ocean;
+			static const PaletteColor ground;
 
 	};
 }

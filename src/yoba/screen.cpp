@@ -360,17 +360,19 @@ namespace yoba {
 	}
 
 	void Screen::renderLine(const Point &from, const Point &to, const Color *color) {
-		_tft.drawLine(
+		_buffer.drawLine(
 			from.getX(),
 			from.getY(),
+
 			to.getX(),
-			to.getX(),
+			to.getY(),
+
 			color->to16Bit()
 		);
 	}
 
 	void Screen::renderTriangle(const Point &p1, const Point &p2, const Point &p3, const Color *color) {
-		_tft.fillTriangle(
+		_buffer.fillTriangle(
 			p1.getX(),
 			p1.getY(),
 
