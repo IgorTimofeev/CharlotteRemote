@@ -24,12 +24,40 @@ namespace ui {
 		// Screen
 		getScreen().setDefaultFont(resources::fonts::unscii8);
 
+		// Background
+		_palette[0]  = getScreen().getBuffer().color24to16(0x000000);
+		_palette[1]  = getScreen().getBuffer().color24to16(0x111111);
+		_palette[2]  = getScreen().getBuffer().color24to16(0x222222);
+		_palette[3]  = getScreen().getBuffer().color24to16(0x333333);
+		_palette[4]  = getScreen().getBuffer().color24to16(0x444444);
+
+		// Foreground
+		_palette[5]  = getScreen().getBuffer().color24to16(0xFFFFFF);
+		_palette[6]  = getScreen().getBuffer().color24to16(0xDDDDDD);
+		_palette[7]  = getScreen().getBuffer().color24to16(0xBBBBBB);
+		_palette[8]  = getScreen().getBuffer().color24to16(0x999999);
+		_palette[9]  = getScreen().getBuffer().color24to16(0x777777);
+
+		// Purple
+		_palette[10] = getScreen().getBuffer().color24to16(0xec04ee);
+		// Green
+		_palette[11] = getScreen().getBuffer().color24to16(0x008100);
+		// Yellow
+		_palette[12] = getScreen().getBuffer().color24to16(0xffff00);
+		// Ocean
+		_palette[13] = getScreen().getBuffer().color24to16(0x00ffff);
+
+		_palette[14] = getScreen().getBuffer().color24to16(0xEEEEEE);
+		_palette[15] = getScreen().getBuffer().color24to16(0xFFFFFF);
+
+		getScreen().setPalette(_palette);
+
 		// Workspace
 		getWorkspace().addChild(new SideBar());
-//		getWorkspace().addChild(new Rectangle(Color::water));
 
-//		// Piano
-//		_piano.begin();
+		// Gavno
+		_pitchHall.begin();
+		_rollHall.begin();
 	}
 
 	uint32_t deadline = 0;
@@ -38,7 +66,9 @@ namespace ui {
 		Application::onTick();
 
 		if (millis() > deadline) {
-			setAltitude(getAltitude() + 0.1f);
+			setSpeed(_rollHall.readSmoothFloat() * 10.0f);
+			setAltitude(_pitchHall.readSmoothFloat() * 10.0f);
+
 			getWorkspace().invalidate();
 
 			deadline = millis() + 50;
@@ -97,5 +127,13 @@ namespace ui {
 
 	void RCApplication::setSpeed(float speed) {
 		_speed = speed;
+	}
+
+	float RCApplication::getBaro() const {
+		return _baro;
+	}
+
+	void RCApplication::setBaro(float baro) {
+		_baro = baro;
 	}
 }

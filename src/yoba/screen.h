@@ -32,6 +32,7 @@ namespace yoba {
 			// -------------------------------- Rendering --------------------------------
 
 			virtual void clear();
+			virtual void setPalette(uint16_t* palette);
 
 			void setDefaultFont(const uint8_t* value);
 			void setFont(const uint8_t *value);
@@ -45,6 +46,7 @@ namespace yoba {
 			virtual void renderHorizontalLine(const Point& position, uint16_t size, const Color* color);
 			virtual void renderVerticalLine(const Point& position, uint16_t size, const Color* color);
 			virtual void renderImage(const Bounds& bounds, const uint16_t* data);
+			virtual void renderTriangle(const Point& p1, const Point& p2, const Point& p3, const Color* color);
 
 			virtual void renderLine(const Point& from, const Point& to, const Color* color);
 
@@ -78,6 +80,8 @@ namespace yoba {
 			void addOnPinchUp(const std::function<void(const Point&, const Point&)>& callback) {
 				_onPinchUp.add(callback);
 			}
+
+			TFT_eSprite& getBuffer();
 
 		protected:
 			virtual void onTouchDown(const Point& point);

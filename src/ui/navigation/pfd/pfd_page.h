@@ -16,7 +16,7 @@ namespace ui {
 	class PFDPage : public Page {
 		public:
 			PFDPage() {
-				_pfd.setSize(Size(320, 240));
+				_pfd.setAlignment(Alignment::stretch);
 				addChild(&_pfd);
 			}
 

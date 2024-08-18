@@ -26,18 +26,19 @@ namespace ui {
 				addChild(&_background);
 
 				// Menu
-				const uint16_t menuSize = 40;
-				_menu.setSize(Size(menuSize, Size::calculated));
-				_menu.setHorizontalAlignment(Alignment::start);
+				const uint16_t menuSize = 20;
+				_menu.setSize(Size(Size::calculated, menuSize));
+				_menu.setVerticalAlignment(Alignment::end);
 				_menu.addChild(&_menuBackground);
 
+				_menuItemsLayout.setOrientation(Orientation::horizontal);
 				_menu.addChild(&_menuItemsLayout);
 				setItemsLayout(&_menuItemsLayout);
 
 				addChild(&_menu);
 
 				// Page
-				_pageLayout.setMargin(Margin(menuSize, 0, 0, 0));
+				_pageLayout.setMargin(Margin(0, 0, 0, menuSize));
 				addChild(&_pageLayout);
 
 				// Initialization

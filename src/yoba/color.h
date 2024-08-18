@@ -63,15 +63,12 @@ namespace yoba {
 			void interpolateTo(TrueColor& second, float position);
 
 			uint8_t getR() const;
-
 			void setR(uint8_t r);
 
 			uint8_t getG() const;
-
 			void setG(uint8_t g);
 
 			uint8_t getB() const;
-
 			void setB(uint8_t b);
 
 		private:

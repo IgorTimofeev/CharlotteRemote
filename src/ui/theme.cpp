@@ -7,8 +7,14 @@ namespace ui {
 	const PaletteColor Theme::bg4 = PaletteColor(3);
 	const PaletteColor Theme::bg5 = PaletteColor(4);
 
-	const PaletteColor Theme::fg1 = PaletteColor(15);
-	const PaletteColor Theme::fg2 = PaletteColor(14);
-	const PaletteColor Theme::fg3 = PaletteColor(13);
-	const PaletteColor Theme::fg4 = PaletteColor(12);
+	const PaletteColor Theme::fg1 = PaletteColor(5);
+	const PaletteColor Theme::fg2 = PaletteColor(6);
+	const PaletteColor Theme::fg3 = PaletteColor(7);
+	const PaletteColor Theme::fg4 = PaletteColor(8);
+	const PaletteColor Theme::fg5 = PaletteColor(9);
+
+	const PaletteColor Theme::purple = PaletteColor(10);
+	const PaletteColor Theme::green = PaletteColor(11);
+	const PaletteColor Theme::yellow = PaletteColor(12);
+	const PaletteColor Theme::ocean = PaletteColor(13);
 }

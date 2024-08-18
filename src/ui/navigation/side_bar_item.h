@@ -21,7 +21,7 @@ namespace ui {
 				addChild(&_selectionBackground);
 
 				// Text
-				_text.setMargin(Margin(0, 8, 0, 8));
+				_text.setMargin(Margin(8, 0, 8, 0));
 				_text.setHorizontalAlignment(Alignment::center);
 				_text.setVerticalAlignment(Alignment::center);
 				_text.setText(text);

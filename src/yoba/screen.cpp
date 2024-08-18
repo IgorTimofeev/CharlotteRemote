@@ -25,6 +25,7 @@ namespace yoba {
 
 	}
 
+
 	uint16_t _palette[16];
 
 	void Screen::begin() {
@@ -36,26 +37,8 @@ namespace yoba {
 //		_buffer.setColorDepth(8);
 //		_buffer.createSprite((int16_t) _resolution.getWidth(), (int16_t) _resolution.getHeight());
 
-		_palette[0]  = _buffer.color24to16(0x000000);
-		_palette[1]  = _buffer.color24to16(0x111111);
-		_palette[2]  = _buffer.color24to16(0x222222);
-		_palette[3]  = _buffer.color24to16(0x333333);
-		_palette[4]  = _buffer.color24to16(0x444444);
-		_palette[5]  = _buffer.color24to16(0x555555);
-		_palette[6]  = _buffer.color24to16(0x666666);
-		_palette[7]  = _buffer.color24to16(0x777777);
-		_palette[8]  = _buffer.color24to16(0x888888);
-		_palette[9]  = _buffer.color24to16(0x999999);
-		_palette[10] = _buffer.color24to16(0xAAAAAA);
-		_palette[11] = _buffer.color24to16(0xBBBBBB);
-		_palette[12] = _buffer.color24to16(0xCCCCCC);
-		_palette[13] = _buffer.color24to16(0xDDDDDD);
-		_palette[14] = _buffer.color24to16(0xEEEEEE);
-		_palette[15] = _buffer.color24to16(0xFFFFFF);
-
 		_buffer.setColorDepth(4);
 		_buffer.createSprite((int16_t) _resolution.getWidth(), (int16_t) _resolution.getHeight());
-		_buffer.createPalette(_palette);
 
 //		// Led
 //		dac_output_enable(DAC_CHANNEL_1);
@@ -384,5 +367,28 @@ namespace yoba {
 			to.getX(),
 			color->to16Bit()
 		);
+	}
+
+	void Screen::renderTriangle(const Point &p1, const Point &p2, const Point &p3, const Color *color) {
+		_tft.fillTriangle(
+			p1.getX(),
+			p1.getY(),
+
+			p2.getX(),
+			p2.getY(),
+
+			p3.getX(),
+			p3.getY(),
+
+			color->to16Bit()
+		);
+	}
+
+	void Screen::setPalette(uint16_t* palette) {
+		_buffer.createPalette(palette);
+	}
+
+	TFT_eSprite& Screen::getBuffer() {
+		return _buffer;
 	}
 }

@@ -6,6 +6,9 @@ using namespace yoba;
 
 namespace ui {
 	class Page : public Layout {
+		public:
+			Page() {
 
+			}
 	};
 }
