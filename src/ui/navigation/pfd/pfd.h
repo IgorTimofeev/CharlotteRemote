@@ -12,7 +12,9 @@ class PFD : public Element {
 	public:
 		PFD() = default;
 
-		const uint16_t sideWidth = 40;
+		const uint16_t rightWidth = 40;
+		const uint16_t leftWidth = 40;
+
 		const uint16_t lineSizeBig = 8;
 		const uint16_t lineSizeSmall = 5;
 
@@ -31,7 +33,7 @@ class PFD : public Element {
 				Bounds(
 					x,
 					0,
-					sideWidth,
+					leftWidth,
 					bounds.getHeight()
 				),
 				&Theme::bg2
@@ -59,7 +61,7 @@ class PFD : public Element {
 				if (isBig) {
 					// Line
 					screen.renderHorizontalLine(
-						Point(sideWidth - lineSizeBig, y),
+						Point(leftWidth - lineSizeBig, y),
 						lineSizeBig,
 						&Theme::fg1
 					);
@@ -69,7 +71,7 @@ class PFD : public Element {
 					textSize = screen.measureText(text);
 
 					screen.renderText(
-						Point(sideWidth - lineSizeBig - 5 - textSize.getWidth(), y - textSize.getHeight() / 2),
+						Point(leftWidth - lineSizeBig - 5 - textSize.getWidth(), y - textSize.getHeight() / 2),
 						&Theme::fg1,
 						text
 					);
@@ -77,7 +79,7 @@ class PFD : public Element {
 				else {
 					// Line
 					screen.renderHorizontalLine(
-						Point(sideWidth - lineSizeSmall, y),
+						Point(leftWidth - lineSizeSmall, y),
 						lineSizeSmall,
 						&Theme::fg1
 					);
@@ -102,7 +104,7 @@ class PFD : public Element {
 				Bounds(
 					x,
 					y,
-					sideWidth,
+					leftWidth,
 					textSize.getHeight() + altitudePadding.getHeight() * 2
 				),
 				&Theme::bg3
@@ -119,23 +121,23 @@ class PFD : public Element {
 			const uint8_t altitudeStepUnits = 1;
 			const uint8_t altitudeStepUnitsBig = 5;
 			const uint8_t altitudeStepPixels = 10;
-			const uint8_t baroHeight = 16;
+			const uint8_t pressureHeight = 16;
 
 			auto& app = RCApplication::getInstance();
 			auto& bounds = getBounds();
 
-			uint16_t altitudeHeight = bounds.getHeight() - baroHeight;
+			uint16_t altitudeHeight = bounds.getHeight() - pressureHeight;
 
 			auto centerY = (int16_t) (altitudeHeight / 2);
 
 			// Right
-			auto x = bounds.getWidth() - sideWidth;
+			auto x = bounds.getWidth() - rightWidth;
 
 			screen.renderRectangle(
 				Bounds(
 					x,
 					0,
-					sideWidth,
+					rightWidth,
 					altitudeHeight
 				),
 				&Theme::bg2
@@ -204,7 +206,7 @@ class PFD : public Element {
 				Bounds(
 					x,
 					y,
-					sideWidth,
+					rightWidth,
 					altitudeHeight
 				),
 				&Theme::bg3
@@ -220,34 +222,57 @@ class PFD : public Element {
 				text
 			);
 
-			// Baro
-			auto baro = app.getBaro();
-
-			y = bounds.getHeight() - baroHeight;
+			// Pressure
+			y = bounds.getHeight() - pressureHeight;
 
 			screen.renderRectangle(
 				Bounds(
 					x,
 					y,
-					sideWidth,
-					baroHeight
+					rightWidth,
+					pressureHeight
 				),
 				&Theme::ocean
 			);
 
-			snprintf(buffer, 7, "%.2f", baro);
+			if (app.isPressureSTD()) {
+				snprintf(buffer, 4, "STD");
+			}
+			if (app.isPressureHPA()) {
+				snprintf(buffer, 5, "%d", (uint16_t) app.getPressure());
+			}
+			else {
+				snprintf(buffer, 7, "%.2fin", app.getPressure());
+			}
+
 			text = String(buffer);
 			textSize = screen.measureText(text);
 
 			screen.renderText(
-				Point(x, y + baroHeight / 2 -  textSize.getHeight() / 2),
+				Point(
+					x + rightWidth / 2 - textSize.getWidth() / 2,
+					y + pressureHeight / 2 - textSize.getHeight() / 2
+				),
 				&Theme::bg1,
 				text
 			);
 		}
 
+		void renderHorizon(Screen &screen) {
+			auto& bounds = getBounds();
+
+			auto& app = RCApplication::getInstance();
+			auto pitch = app.getPitch();
+			auto roll = app.getRoll();
+			auto yaw = app.getYaw();
+
+			const uint16_t horizonWidth = bounds.getWidth() - leftWidth - rightWidth;
+
+		}
+
 		void render(Screen &screen) override {
 			renderSpeed(screen);
 			renderAltitude(screen);
+			renderHorizon(screen);
 		}
 };

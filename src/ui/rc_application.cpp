@@ -22,7 +22,7 @@ namespace ui {
 		Application::begin();
 
 		// Screen
-		getScreen().setDefaultFont(resources::fonts::unscii8);
+		getScreen().setDefaultFont(resources::fonts::pixy10);
 
 		// Background
 		_palette[0]  = getScreen().getBuffer().color24to16(0x000000);
@@ -93,32 +93,32 @@ namespace ui {
 		return _pitch;
 	}
 
-	void RCApplication::setPitch(float pitch) {
-		_pitch = pitch;
+	void RCApplication::setPitch(float value) {
+		_pitch = value;
 	}
 
 	float RCApplication::getRoll() const {
 		return _roll;
 	}
 
-	void RCApplication::setRoll(float roll) {
-		_roll = roll;
+	void RCApplication::setRoll(float value) {
+		_roll = value;
 	}
 
 	float RCApplication::getYaw() const {
 		return _yaw;
 	}
 
-	void RCApplication::setYaw(float yaw) {
-		_yaw = yaw;
+	void RCApplication::setYaw(float value) {
+		_yaw = value;
 	}
 
 	float RCApplication::getAltitude() const {
 		return _altitude;
 	}
 
-	void RCApplication::setAltitude(float altitude) {
-		_altitude = altitude;
+	void RCApplication::setAltitude(float value) {
+		_altitude = value;
 	}
 
 	float RCApplication::getSpeed() const {
@@ -129,11 +129,27 @@ namespace ui {
 		_speed = speed;
 	}
 
-	float RCApplication::getBaro() const {
-		return _baro;
+	float RCApplication::getPressure() const {
+		return _pressure;
 	}
 
-	void RCApplication::setBaro(float baro) {
-		_baro = baro;
+	void RCApplication::setPressure(float value) {
+		_pressure = value;
+	}
+
+	bool RCApplication::isPressureHPA() const {
+		return _pressureHPA;
+	}
+
+	void RCApplication::setPressureHPA(bool value) {
+		_pressureHPA = value;
+	}
+
+	bool RCApplication::isPressureSTD() const {
+		return _pressureSTD;
+	}
+
+	void RCApplication::setPressureSTD(bool value) {
+		_pressureSTD = value;
 	}
 }

@@ -17,22 +17,28 @@ namespace ui {
 			void begin() override;
 
 			float getPitch() const;
-			void setPitch(float pitch);
+			void setPitch(float value);
 
 			float getRoll() const;
-			void setRoll(float roll);
+			void setRoll(float value);
 
 			float getYaw() const;
-			void setYaw(float yaw);
+			void setYaw(float value);
 
 			float getAltitude() const;
-			void setAltitude(float altitude);
+			void setAltitude(float value);
 
 			float getSpeed() const;
 			void setSpeed(float speed);
 
-			float getBaro() const;
-			void setBaro(float baro);
+			float getPressure() const;
+			void setPressure(float value);
+
+			bool isPressureHPA() const;
+			void setPressureHPA(bool value);
+
+			bool isPressureSTD() const;
+			void setPressureSTD(bool value);
 
 		private:
 			uint16_t _palette[16];
@@ -42,7 +48,9 @@ namespace ui {
 			float _yaw = 0;
 			float _altitude = 237;
 			float _speed = 30;
-			float _baro = 29.92;
+			float _pressure = 1022;
+			bool _pressureHPA = true;
+			bool _pressureSTD = false;
 
 			Potentiometer _pitchHall = Potentiometer(4, 1400, 2860, 20);
 			Potentiometer _rollHall = Potentiometer(27, 1290, 3030, 20);
