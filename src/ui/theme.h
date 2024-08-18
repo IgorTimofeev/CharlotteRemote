@@ -24,6 +24,6 @@ namespace ui {
 			static const PaletteColor yellow;
 			static const PaletteColor ocean;
 			static const PaletteColor ground;
-
+			static const PaletteColor sky;
 	};
 }

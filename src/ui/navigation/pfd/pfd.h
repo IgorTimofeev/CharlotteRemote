@@ -8,25 +8,19 @@
 using namespace yoba;
 using namespace ui;
 
-class PFD : public Element {
+class PFDLeft : public Element {
 	public:
-		PFD() {
+		PFDLeft() {
 			setClipToBounds(true);
 		}
 
-		const uint16_t rightWidth = 40;
-		const uint16_t leftWidth = 40;
-
-		const uint16_t lineSizeBig = 8;
-		const uint16_t lineSizeSmall = 5;
-
-		void renderSpeed(Screen &screen) {
+		void onRender(Screen &screen) override {
 			const uint8_t stepUnits = 1;
 			const uint8_t stepUnitsBig = 10;
 			const uint8_t stepPixels = 10;
 
-			auto& app = RCApplication::getInstance();
 			auto& bounds = getBounds();
+			auto& app = RCApplication::getInstance();
 
 			auto centerY = (int16_t) (bounds.getHeight() / 2);
 			auto x = 0;
@@ -35,7 +29,7 @@ class PFD : public Element {
 				Bounds(
 					x,
 					0,
-					leftWidth,
+					bounds.getWidth(),
 					bounds.getHeight()
 				),
 				&Theme::bg2
@@ -63,7 +57,7 @@ class PFD : public Element {
 				if (isBig) {
 					// Line
 					screen.renderHorizontalLine(
-						Point(leftWidth - lineSizeBig, y),
+						Point(bounds.getWidth() - lineSizeBig, y),
 						lineSizeBig,
 						&Theme::fg1
 					);
@@ -73,7 +67,7 @@ class PFD : public Element {
 					textSize = screen.measureText(text);
 
 					screen.renderText(
-						Point(leftWidth - lineSizeBig - 5 - textSize.getWidth(), y - textSize.getHeight() / 2),
+						Point(bounds.getWidth() - lineSizeBig - 5 - textSize.getWidth(), y - textSize.getHeight() / 2),
 						&Theme::fg1,
 						text
 					);
@@ -81,7 +75,7 @@ class PFD : public Element {
 				else {
 					// Line
 					screen.renderHorizontalLine(
-						Point(leftWidth - lineSizeSmall, y),
+						Point(bounds.getWidth() - lineSizeSmall, y),
 						lineSizeSmall,
 						&Theme::fg1
 					);
@@ -106,7 +100,7 @@ class PFD : public Element {
 				Bounds(
 					x,
 					y,
-					leftWidth,
+					bounds.getWidth(),
 					textSize.getHeight() + altitudePadding.getHeight() * 2
 				),
 				&Theme::bg3
@@ -119,7 +113,19 @@ class PFD : public Element {
 			);
 		}
 
-		void renderAltitude(Screen &screen) {
+	private:
+		const uint16_t lineSizeBig = 8;
+		const uint16_t lineSizeSmall = 5;
+};
+
+
+class PFDRight : public Element {
+	public:
+		PFDRight() {
+			setClipToBounds(true);
+		}
+
+		void onRender(Screen &screen) override {
 			const uint8_t altitudeStepUnits = 1;
 			const uint8_t altitudeStepUnitsBig = 5;
 			const uint8_t altitudeStepPixels = 10;
@@ -133,13 +139,13 @@ class PFD : public Element {
 			auto centerY = (int16_t) (altitudeHeight / 2);
 
 			// Right
-			auto x = bounds.getWidth() - rightWidth;
+			auto x = bounds.getWidth() - bounds.getWidth();
 
 			screen.renderRectangle(
 				Bounds(
 					x,
 					0,
-					rightWidth,
+					bounds.getWidth(),
 					altitudeHeight
 				),
 				&Theme::bg2
@@ -260,7 +266,7 @@ class PFD : public Element {
 				Bounds(
 					x + triangleWidth,
 					y,
-					rightWidth - triangleWidth,
+					bounds.getWidth() - triangleWidth,
 					altitudeHeight
 				),
 				&Theme::bg3
@@ -300,7 +306,7 @@ class PFD : public Element {
 				Bounds(
 					x,
 					y,
-					rightWidth,
+					bounds.getWidth(),
 					pressureHeight
 				),
 				pressureBg
@@ -312,7 +318,7 @@ class PFD : public Element {
 
 			screen.renderText(
 				Point(
-					x + rightWidth / 2 - textSize.getWidth() / 2,
+					x + bounds.getWidth() / 2 - textSize.getWidth() / 2,
 					y + pressureHeight / 2 - textSize.getHeight() / 2
 				),
 				pressureFg,
@@ -320,22 +326,47 @@ class PFD : public Element {
 			);
 		}
 
-		void renderHorizon(Screen &screen) {
+	private:
+		const uint16_t lineSizeBig = 8;
+		const uint16_t lineSizeSmall = 5;
+};
+
+class PFDHorizon : public Element {
+	public:
+		PFDHorizon() {
+			setClipToBounds(true);
+		}
+
+		void onRender(Screen &screen) override {
 			auto& bounds = getBounds();
+			int32_t centerY = bounds.getHeight() / 2;
 
 			auto& app = RCApplication::getInstance();
 			auto pitch = app.getPitch();
 			auto roll = app.getRoll();
 			auto yaw = app.getYaw();
 
-			const uint16_t horizonWidth = bounds.getWidth() - leftWidth - rightWidth;
+			auto pitchPixels = (int32_t) (pitch * (float) centerY);
+			auto rollPixels = (int32_t) (roll * (float) centerY);
 
+			int32_t yLeft = centerY - pitchPixels - rollPixels;
+			int32_t yRight = centerY - pitchPixels + rollPixels;
 
-		}
+			screen.renderRectangle(
+				bounds,
+				&Theme::sky
+			);
 
-		void onRender(Screen &screen) override {
-			renderSpeed(screen);
-			renderAltitude(screen);
-			renderHorizon(screen);
+			screen.renderLine(
+				Point(
+					bounds.getX(),
+					yLeft
+				),
+				Point(
+					bounds.getX2(),
+					yRight
+				),
+				&Theme::fg1
+			);
 		}
 };

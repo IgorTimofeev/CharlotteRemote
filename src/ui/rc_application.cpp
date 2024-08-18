@@ -47,9 +47,9 @@ namespace ui {
 		// Ocean
 		_palette[13] = getScreen().getBuffer().color24to16(0x00ffff);
 		// Ground
-		_palette[14] = getScreen().getBuffer().color24to16(0xffff00);
-		//
-		_palette[15] = getScreen().getBuffer().color24to16(0xFFFFFF);
+		_palette[14] = getScreen().getBuffer().color24to16(0xab6d2a);
+		// Sky
+		_palette[15] = getScreen().getBuffer().color24to16(0x006ffc);
 
 		getScreen().setPalette(_palette);
 
@@ -69,6 +69,9 @@ namespace ui {
 		if (millis() > deadline) {
 			setSpeed(_rollHall.readSmoothFloat() * 10.0f);
 			setAltitude(_pitchHall.readSmoothFloat() * 10.0f);
+
+			setRoll(-(_rollHall.readSmoothFloat() * 2 - 1.0f));
+			setPitch(-(_pitchHall.readSmoothFloat() * 2 - 1.0f));
 
 			getWorkspace().invalidate();
 

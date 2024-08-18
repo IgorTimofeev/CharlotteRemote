@@ -16,11 +16,25 @@ namespace ui {
 	class PFDPage : public Page {
 		public:
 			PFDPage() {
-				_pfd.setAlignment(Alignment::stretch);
-				addChild(&_pfd);
+				// Horizon
+				const auto& horizonMargin = Margin(34, 0, 34, 0);
+				_horizon.setMargin(horizonMargin);
+				addChild(&_horizon);
+
+				// Left
+				_left.setHorizontalAlignment(Alignment::start);
+				_left.setSize(Size(horizonMargin.getLeft(), Size::calculated));
+				addChild(&_left);
+
+				// Right
+				_right.setHorizontalAlignment(Alignment::end);
+				_right.setSize(Size(horizonMargin.getRight(), Size::calculated));
+				addChild(&_right);
 			}
 
 		private:
-			PFD _pfd = PFD();
+			PFDLeft _left = PFDLeft();
+			PFDHorizon _horizon = PFDHorizon();
+			PFDRight _right = PFDRight();
 	};
 }
