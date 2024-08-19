@@ -334,7 +334,7 @@ class PFDRight : public Element {
 class PFDHorizon : public Element {
 	public:
 		PFDHorizon() {
-			setClipToBounds(true);
+//			setClipToBounds(true);
 		}
 
 		void onRender(Screen &screen) override {

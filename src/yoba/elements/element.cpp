@@ -92,14 +92,16 @@ namespace yoba {
 		switch (alignment) {
 			case start:
 				if (size == Size::calculated) {
-					newSize = desiredSize - marginStart - marginEnd;
-
-					if (newSize < 0)
-						newSize = 0;
+					newSize = desiredSize;
 				}
 				else {
 					newSize = size;
 				}
+
+				newSize = newSize - marginStart - marginEnd;
+
+				if (newSize < 0)
+					newSize = 0;
 
 				newPosition = position + marginStart;
 
@@ -107,14 +109,16 @@ namespace yoba {
 
 			case center:
 				if (size == Size::calculated) {
-					newSize = desiredSize - marginStart - marginEnd;
-
-					if (newSize < 0)
-						newSize = 0;
+					newSize = desiredSize;
 				}
 				else {
 					newSize = size;
 				}
+
+				newSize = newSize - marginStart - marginEnd;
+
+				if (newSize < 0)
+					newSize = 0;
 
 				newPosition = position + marginStart - marginEnd + limit / 2 - newSize / 2;
 
@@ -122,15 +126,16 @@ namespace yoba {
 
 			case end:
 				if (size == Size::calculated) {
-					newSize = desiredSize - marginStart - marginEnd;
-
-					if (newSize < 0)
-						newSize = 0;
-
+					newSize = desiredSize;
 				}
 				else {
 					newSize = size;
 				}
+
+				newSize = newSize - marginStart - marginEnd;
+
+				if (newSize < 0)
+					newSize = 0;
 
 				newPosition = position + limit - marginEnd - newSize;
 
@@ -138,14 +143,16 @@ namespace yoba {
 
 			case stretch:
 				if (size == Size::calculated) {
-					newSize = limit - marginStart - marginEnd;
-
-					if (newSize < 0)
-						newSize = 0;
+					newSize = limit;
 				}
 				else {
 					newSize = size;
 				}
+
+				newSize = newSize - marginStart - marginEnd;
+
+				if (newSize < 0)
+					newSize = 0;
 
 				newPosition = position + marginStart;
 
