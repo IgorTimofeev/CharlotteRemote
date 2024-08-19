@@ -11,8 +11,8 @@ namespace ui {
 	const PaletteColor Theme::fg2 = PaletteColor(6);
 	const PaletteColor Theme::fg3 = PaletteColor(7);
 	const PaletteColor Theme::fg4 = PaletteColor(8);
-	const PaletteColor Theme::fg5 = PaletteColor(9);
 
+	const PaletteColor Theme::red = PaletteColor(9);
 	const PaletteColor Theme::purple = PaletteColor(10);
 	const PaletteColor Theme::green = PaletteColor(11);
 	const PaletteColor Theme::yellow = PaletteColor(12);

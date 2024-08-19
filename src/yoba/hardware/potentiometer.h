@@ -32,7 +32,7 @@ namespace yoba {
 				auto value = readClamped();
 
 				if (abs(value - _oldValue) < _minDelta)
-					return value;
+					return _oldValue;
 
 				const auto newValueFactor = 0.5f;
 

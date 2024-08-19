@@ -17,8 +17,8 @@ namespace ui {
 			static const PaletteColor fg2;
 			static const PaletteColor fg3;
 			static const PaletteColor fg4;
-			static const PaletteColor fg5;
 
+			static const PaletteColor red;
 			static const PaletteColor purple;
 			static const PaletteColor green;
 			static const PaletteColor yellow;

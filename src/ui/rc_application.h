@@ -41,7 +41,7 @@ namespace ui {
 			void setPressureSTD(bool value);
 
 		private:
-			uint16_t _palette[16];
+			uint16_t _palette[16] {};
 
 			float _pitch = 0;
 			float _roll = 0;
@@ -52,7 +52,7 @@ namespace ui {
 			bool _pressureHPA = true;
 			bool _pressureSTD = false;
 
-			Potentiometer _pitchHall = Potentiometer(4, 1400, 2860, 20);
-			Potentiometer _rollHall = Potentiometer(27, 1290, 3030, 20);
+			Potentiometer _pitchHall = Potentiometer(4, 1400, 2800, 20);
+			Potentiometer _rollHall = Potentiometer(27, 1290, 2970, 20);
 	};
 }

@@ -14,44 +14,121 @@ class PFDLeft : public Element {
 			setClipToBounds(true);
 		}
 
-		void onRender(Screen &screen) override {
-			const uint8_t stepUnits = 1;
-			const uint8_t stepUnitsBig = 10;
-			const uint8_t stepPixels = 10;
-
-			auto& bounds = getBounds();
-			auto& app = RCApplication::getInstance();
-
-			auto centerY = (int16_t) (bounds.getHeight() / 2);
-			auto x = 0;
+		void renderBar(Screen& screen, float& speed, uint16_t& centerY, int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) {
+			int32_t fromY = centerY + (int32_t) ceil(speed * (float) unitPixels) - fromSpeed * unitPixels;
+			int32_t toY = fromY - toSpeed * unitPixels;
 
 			screen.renderRectangle(
 				Bounds(
 					x,
-					0,
-					bounds.getWidth(),
-					bounds.getHeight()
+					toY,
+					width,
+					fromY - toY
 				),
+				color
+			);
+		}
+
+		void onRender(Screen& screen) override {
+			auto& bounds = getBounds();
+			auto& app = RCApplication::getInstance();
+
+			const uint8_t stepUnits = 1;
+			const uint8_t stepUnitsBig = 5;
+
+			auto centerY = (uint16_t) (bounds.getHeight() / 2);
+
+			screen.renderRectangle(
+				bounds,
 				&Theme::bg2
 			);
 
 			float speed = app.getSpeed();
 
+			// Bars
+			renderBar(
+				screen,
+				speed,
+				centerY,
+				bounds.getX2() - barWidth,
+				barWidth,
+				stallSpeedMin,
+				stallSpeedMax,
+				&Theme::red
+			);
+
+			renderBar(
+				screen,
+				speed,
+				centerY,
+				bounds.getX2() - barWidth,
+				barWidth,
+				landingSpeedMin,
+				landingSpeedMax,
+				&Theme::fg1
+			);
+
+			renderBar(
+				screen,
+				speed,
+				centerY,
+				bounds.getX2() - barWidth,
+				barWidth / 2,
+				takeOffSpeedMin,
+				takeOffSpeedMax,
+				&Theme::fg1
+			);
+
+			renderBar(
+				screen,
+				speed,
+				centerY,
+				bounds.getX2() - barWidth / 2,
+				barWidth / 2,
+				takeOffSpeedMin,
+				takeOffSpeedMax,
+				&Theme::green
+			);
+
+			renderBar(
+				screen,
+				speed,
+				centerY,
+				bounds.getX2() - barWidth,
+				barWidth,
+				cruiseSpeedMin,
+				cruiseSpeedMax,
+				&Theme::green
+			);
+
+			renderBar(
+				screen,
+				speed,
+				centerY,
+				bounds.getX2() - barWidth,
+				barWidth,
+				overSpeedMin,
+				overSpeedMax,
+				&Theme::yellow
+			);
+
+			// Lines
 			float snapped = speed / (float) stepUnits;
 			float snappedInteger = floor(snapped);
 			float snappedFractional = snapped - snappedInteger;
 
-			int32_t y = centerY - (uint16_t) ((1.0f - snappedFractional) * (float) stepPixels);
-			int32_t altitudeYFullLines = ceil((float) y / (float) stepPixels);
-			y = y - altitudeYFullLines * stepPixels;
+			int32_t y = centerY - (uint16_t) ((1.0f - snappedFractional) * (float) unitPixels);
+			int32_t altitudeYFullLines = ceil((float) y / (float) unitPixels);
+			y = y - altitudeYFullLines * unitPixels;
 
-			int32_t altitudeLineValue = (int32_t) snappedInteger * stepUnits + altitudeYFullLines * stepUnits;
+			int32_t altitudeLineValue = (int32_t) (snappedInteger + 1) * stepUnits + altitudeYFullLines * stepUnits;
 
 			String text;
 			Size textSize;
 			bool isBig;
+			const Color* lineColor = &Theme::fg4;
 
-			while (y < bounds.getHeight()) {
+			do {
 				isBig = altitudeLineValue % stepUnitsBig == 0;
 
 				if (isBig) {
@@ -59,7 +136,7 @@ class PFDLeft : public Element {
 					screen.renderHorizontalLine(
 						Point(bounds.getWidth() - lineSizeBig, y),
 						lineSizeBig,
-						&Theme::fg1
+						lineColor
 					);
 
 					//Text
@@ -68,7 +145,7 @@ class PFDLeft : public Element {
 
 					screen.renderText(
 						Point(bounds.getWidth() - lineSizeBig - 5 - textSize.getWidth(), y - textSize.getHeight() / 2),
-						&Theme::fg1,
+						lineColor,
 						text
 					);
 				}
@@ -77,45 +154,87 @@ class PFDLeft : public Element {
 					screen.renderHorizontalLine(
 						Point(bounds.getWidth() - lineSizeSmall, y),
 						lineSizeSmall,
-						&Theme::fg1
+						lineColor
 					);
 				}
 
 				altitudeLineValue -= stepUnits;
-				y += stepPixels;
+				y += unitPixels;
 			}
+			while (y < bounds.getHeight() && altitudeLineValue >= 0);
 
 			// Current altitude
-			char number[5];
-			sprintf(number, "%.1f", speed);
-
-			text = String(number);
+			char chars[5];
+			sprintf(chars, "%.1f", speed);
+			text = String(chars);
 			textSize = screen.measureText(text);
 
-			const Size altitudePadding = Size(5, 5);
+			uint16_t currentHeight = 20;
+			const uint8_t triangleWidth = 8;
 
-			y = centerY - textSize.getHeight() / 2 - altitudePadding.getHeight();
+			y = centerY - currentHeight / 2;
 
-			screen.renderRectangle(
-				Bounds(
-					x,
-					y,
-					bounds.getWidth(),
-					textSize.getHeight() + altitudePadding.getHeight() * 2
+			// Triangle
+			screen.renderTriangle(
+				Point(
+					bounds.getX2(),
+					centerY
+				),
+				Point(
+					bounds.getX2() - triangleWidth,
+					y
+				),
+				Point(
+					bounds.getX2() - triangleWidth,
+					y + currentHeight - 1
 				),
 				&Theme::bg3
 			);
 
+			// Rect
+			screen.renderRectangle(
+				Bounds(
+					bounds.getX(),
+					y,
+					bounds.getWidth() - triangleWidth,
+					currentHeight
+				),
+				&Theme::bg3
+			);
+
+			// Text
 			screen.renderText(
-				Point(x + altitudePadding.getWidth(), y + altitudePadding.getHeight()),
+				Point(
+					bounds.getX2() - textSize.getWidth() - 5,
+					y + currentHeight / 2 - textSize.getHeight() / 2
+				),
 				&Theme::fg1,
 				text
 			);
 		}
 
 	private:
+		const uint8_t unitPixels = 10;
+
 		const uint16_t lineSizeBig = 8;
 		const uint16_t lineSizeSmall = 5;
+
+		const uint16_t barWidth = 4;
+
+		const uint16_t stallSpeedMin = 0;
+		const uint16_t stallSpeedMax = 5;
+
+		const uint16_t landingSpeedMin = 5;
+		const uint16_t landingSpeedMax = 8;
+
+		const uint16_t takeOffSpeedMin = 8;
+		const uint16_t takeOffSpeedMax = 12;
+
+		const uint16_t cruiseSpeedMin = 12;
+		const uint16_t cruiseSpeedMax = 30;
+
+		const uint16_t overSpeedMin = 30;
+		const uint16_t overSpeedMax = 100;
 };
 
 class PFDRight : public Element {
@@ -165,7 +284,7 @@ class PFDRight : public Element {
 			Size textSize;
 			bool isBig;
 
-			const Color* color = &Theme::fg4;
+			const Color* lineColor = &Theme::fg4;
 
 			do {
 				isBig = lineValue % altitudeStepUnitsBig == 0;
@@ -174,7 +293,7 @@ class PFDRight : public Element {
 					screen.renderHorizontalLine(
 						Point(x, y),
 						lineSizeBig,
-						color
+						lineColor
 					);
 
 					//Text
@@ -183,7 +302,7 @@ class PFDRight : public Element {
 
 					screen.renderText(
 						Point(x + lineSizeBig + 5, y - textSize.getHeight() / 2),
-						color,
+						lineColor,
 						text
 					);
 				}
@@ -191,7 +310,7 @@ class PFDRight : public Element {
 					screen.renderHorizontalLine(
 						Point(x, y),
 						lineSizeSmall,
-						color
+						lineColor
 					);
 				}
 

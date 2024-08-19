@@ -36,8 +36,9 @@ namespace ui {
 		_palette[6]  = getScreen().getBuffer().color24to16(0xDDDDDD);
 		_palette[7]  = getScreen().getBuffer().color24to16(0xBBBBBB);
 		_palette[8]  = getScreen().getBuffer().color24to16(0x999999);
-		_palette[9]  = getScreen().getBuffer().color24to16(0x777777);
 
+		// Red
+		_palette[9]  = getScreen().getBuffer().color24to16(0xff0000);
 		// Purple
 		_palette[10] = getScreen().getBuffer().color24to16(0xec04ee);
 		// Green
@@ -47,9 +48,9 @@ namespace ui {
 		// Ocean
 		_palette[13] = getScreen().getBuffer().color24to16(0x00ffff);
 		// Ground
-		_palette[14] = getScreen().getBuffer().color24to16(0xab6d2a);
+		_palette[14] = getScreen().getBuffer().color24to16(0x97b838);
 		// Sky
-		_palette[15] = getScreen().getBuffer().color24to16(0x006ffc);
+		_palette[15] = getScreen().getBuffer().color24to16(0x317fcb);
 
 		getScreen().setPalette(_palette);
 
@@ -67,8 +68,8 @@ namespace ui {
 		Application::onTick();
 
 		if (millis() > deadline) {
-			setSpeed(_rollHall.readSmoothFloat() * 10.0f);
-			setAltitude(_pitchHall.readSmoothFloat() * 10.0f);
+			setSpeed(_rollHall.readSmoothFloat() * 40.0f);
+			setAltitude(_pitchHall.readSmoothFloat() * 20.0f);
 
 			setRoll(_rollHall.readSmoothFloat() * 2 - 1.0f);
 			setPitch(_pitchHall.readSmoothFloat() * 2 - 1.0f);
