@@ -16,9 +16,11 @@ namespace ui {
 	class PFDPage : public Page {
 		public:
 			PFDPage() {
+				setMargin(Margin(20, 0, 0, 0));
+
 				// Horizon
-				const auto& horizonMargin = Margin(34, 0, 34, 0);
-				_horizon.setMargin(horizonMargin);
+				const auto horizonMargin = Margin(34, 0, 34, 0);
+				_horizon.setMargin(Margin(34, 0, 34, 0));
 				addChild(&_horizon);
 
 				// Left

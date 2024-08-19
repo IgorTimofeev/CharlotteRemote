@@ -357,6 +357,26 @@ class PFDHorizon : public Element {
 				&Theme::sky
 			);
 
+			screen.renderRectangle(
+				Bounds(
+					bounds.getX(),
+					bounds.getY(),
+					2,
+					bounds.getHeight()
+				),
+				&Theme::fg1
+			);
+
+			screen.renderRectangle(
+				Bounds(
+					bounds.getX2() - 2,
+					bounds.getY(),
+					2,
+					bounds.getHeight()
+				),
+				&Theme::fg1
+			);
+
 			screen.renderLine(
 				Point(
 					bounds.getX(),

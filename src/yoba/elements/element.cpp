@@ -42,8 +42,8 @@ namespace yoba {
 	Size Element::measure(Screen &screen, const Size &availableSize) {
 		auto desiredSize = onMeasure(screen, availableSize);
 
-		auto size = getSize();
-		auto margin = getMargin();
+		auto& size = getSize();
+		auto& margin = getMargin();
 
 		int32_t newSize = 0;
 
@@ -76,9 +76,19 @@ namespace yoba {
 		return desiredSize;
 	}
 
-	void Element::calculateArrangeShit(const Alignment &alignment, const int32_t &position, const uint16_t &size,
-									   const uint16_t &desiredSize, const int32_t &marginStart, const int32_t &marginEnd,
-									   const uint16_t &limit, int32_t &newPosition, int32_t &newSize) {
+	void Element::calculateArrangeShit(
+		const Alignment &alignment,
+		const int32_t &position,
+		const uint16_t &size,
+
+		const uint16_t &desiredSize,
+		const int32_t &marginStart,
+		const int32_t &marginEnd,
+
+		const uint16_t &limit,
+		int32_t &newPosition,
+		int32_t &newSize
+	) {
 		switch (alignment) {
 			case start:
 				if (size == Size::calculated) {
@@ -143,11 +153,10 @@ namespace yoba {
 		}
 	}
 
-
 	void Element::arrange(const Bounds &bounds) {
-		auto margin = getMargin();
-		auto desiredSize = getDesiredSize();
-		auto size = getSize();
+		auto& margin = getMargin();
+		auto& desiredSize = getDesiredSize();
+		auto& size = getSize();
 
 		Bounds newBounds;
 		int32_t newPosition = 0;
@@ -194,6 +203,7 @@ namespace yoba {
 		newBounds.setHeight(newSize);
 
 		setBounds(newBounds);
+
 		onArrange(newBounds);
 	}
 
