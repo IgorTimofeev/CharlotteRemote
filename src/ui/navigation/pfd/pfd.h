@@ -596,7 +596,7 @@ class PFDHorizon : public Element {
 			const uint8_t birdWidth = 38;
 			const uint8_t birdThickness = 2;
 			const uint8_t birdHeight = 8;
-			const uint8_t birdCenterOffset = 26;
+			const uint8_t birdCenterOffset = 20;
 
 			// Left
 			screen.renderRectangle(
