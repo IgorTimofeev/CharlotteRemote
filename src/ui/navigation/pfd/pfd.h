@@ -462,15 +462,19 @@ class PFDHorizon : public Element {
 				bounds.getY() + bounds.getHeight() / 2
 			);
 
-
 			auto& app = RCApplication::getInstance();
 			auto pitch = app.getPitch();
 			auto roll = app.getRoll();
 			auto yaw = app.getYaw();
 
-			const auto halfPIPixels = (int32_t) (sqrt(bounds.getWidth() * bounds.getWidth() + bounds.getHeight() * bounds.getHeight()));
-			const auto& radiusRollRotated = Point(halfPIPixels, 0).rotate(roll);
-			const auto& radiusPitchRotated = Point(halfPIPixels, 0).rotate(pitch);
+			const auto horizontalScale = 2.5f;
+			const auto verticalScale = 1.5f;
+
+			const auto horizontalPixels = (int32_t) ((float) bounds.getWidth() * horizontalScale);
+			const auto verticalPixels = (int32_t) ((float) bounds.getHeight() * verticalScale);
+
+			const auto& radiusRollRotated = Point(horizontalPixels, 0).rotate(roll);
+			const auto& radiusPitchRotated = Point(verticalPixels, 0).rotate(pitch);
 
 			screen.renderRectangle(
 				bounds,
@@ -507,6 +511,8 @@ class PFDHorizon : public Element {
 			);
 
 			// Rectangle
+
+			// Bottom
 			if (groundMaxY < bounds.getY2()) {
 				screen.renderRectangle(
 					Bounds(
@@ -514,6 +520,30 @@ class PFDHorizon : public Element {
 						groundMaxY,
 						bounds.getWidth(),
 						bounds.getHeight() - groundMaxY
+					),
+					&Theme::ground
+				);
+			}
+			// Left
+			else if (left.getY() < bounds.getY() && left.getX() > bounds.getX()) {
+				screen.renderRectangle(
+					Bounds(
+						bounds.getX(),
+						bounds.getY(),
+						left.getX() - bounds.getX(),
+						bounds.getHeight()
+					),
+					&Theme::ground
+				);
+			}
+			// Right
+			else if (right.getY() < bounds.getY() && right.getX() < bounds.getX2()) {
+				screen.renderRectangle(
+					Bounds(
+						right.getX(),
+						bounds.getY(),
+						bounds.getX2() - right.getX(),
+						bounds.getHeight()
 					),
 					&Theme::ground
 				);
@@ -526,13 +556,10 @@ class PFDHorizon : public Element {
 			uint8_t lineAngleStepDeg = 5;
 			float lineAngleStepRad = radians(lineAngleStepDeg);
 			float linesInTotal = floor(((float) HALF_PI) / lineAngleStepRad);
-			float linePixelStep = (float) halfPIPixels / linesInTotal;
+			float linePixelStep = (float) verticalPixels / linesInTotal;
 
 			auto pizdaX = (float) (right.getX() - left.getX());
 			auto pizdaY = (float) (right.getY() - left.getY());
-
-			auto pizdaCenterX = (float) left.getX() + pizdaX / 2;
-			auto pizdaCenterY = (float) left.getY() + pizdaY / 2;
 
 			auto pizdaDistance = sqrt(pizdaX * pizdaX + pizdaY * pizdaY);
 
@@ -541,6 +568,9 @@ class PFDHorizon : public Element {
 
 			auto pizdaPerpX = -pizdaYNorm;
 			auto pizdaPerpY = pizdaXNorm;
+
+			auto pizdaCenterX = (float) left.getX() + pizdaX / 2;
+			auto pizdaCenterY = (float) left.getY() + pizdaY / 2;
 
 			String text;
 			Size textSize;
