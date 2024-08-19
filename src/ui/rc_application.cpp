@@ -71,8 +71,8 @@ namespace ui {
 			setSpeed(_rollHall.readSmoothFloat() * 40.0f);
 			setAltitude(_pitchHall.readSmoothFloat() * 20.0f);
 
-			setRoll((_rollHall.readSmoothFloat() * 2.0f - 1.0f) * 1.57f);
-			setPitch((_pitchHall.readSmoothFloat() * 2.0f - 1.0f) * 1.57f);
+			setRoll((_rollHall.readSmoothFloat() * 2.0f - 1.0f) * (float) HALF_PI);
+			setPitch((_pitchHall.readSmoothFloat() * 2.0f - 1.0f) * (float) HALF_PI);
 
 			getWorkspace().invalidate();
 

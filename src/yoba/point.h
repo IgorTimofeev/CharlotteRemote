@@ -39,6 +39,17 @@ namespace yoba {
 				};
 			}
 
+			float getDistance() const {
+				return sqrt((float) _x * (float) _x + (float) _y * (float) _y);
+			}
+
+			Point perpendicular() const {
+				return {
+					-_y,
+					_x,
+				};
+			}
+
 			bool operator==(const Point &right) const {
 				return _x == right._x && _y == right._y;
 			}
