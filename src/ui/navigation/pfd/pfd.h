@@ -118,7 +118,6 @@ class PFDLeft : public Element {
 		const uint16_t lineSizeSmall = 5;
 };
 
-
 class PFDRight : public Element {
 	public:
 		PFDRight() {
@@ -139,7 +138,7 @@ class PFDRight : public Element {
 			auto centerY = (int16_t) (altitudeHeight / 2);
 
 			// Right
-			auto x = bounds.getWidth() - bounds.getWidth();
+			auto x = bounds.getX();
 
 			screen.renderRectangle(
 				Bounds(
@@ -334,7 +333,7 @@ class PFDRight : public Element {
 class PFDHorizon : public Element {
 	public:
 		PFDHorizon() {
-//			setClipToBounds(true);
+			setClipToBounds(true);
 		}
 
 		void onRender(Screen &screen) override {
@@ -357,26 +356,62 @@ class PFDHorizon : public Element {
 				&Theme::sky
 			);
 
-			screen.renderRectangle(
-				Bounds(
+//			screen.renderRectangle(
+//				Bounds(
+//					bounds.getX(),
+//					bounds.getY(),
+//					2,
+//					bounds.getHeight()
+//				),
+//				&Theme::fg1
+//			);
+//
+//			screen.renderRectangle(
+//				Bounds(
+//					bounds.getX2() - 2,
+//					bounds.getY(),
+//					2,
+//					bounds.getHeight()
+//				),
+//				&Theme::fg1
+//			);
+
+			// Ground
+			const auto& groundMinPoint =
+				yLeft < yRight
+				? Point(bounds.getX(), yLeft)
+				: Point(bounds.getX2(), yRight);
+
+			auto groundMaxY = max(yLeft, yRight);
+
+			// Triangle
+			screen.renderTriangle(
+				groundMinPoint,
+				Point(
 					bounds.getX(),
-					bounds.getY(),
-					2,
-					bounds.getHeight()
+					groundMaxY
 				),
-				&Theme::fg1
+				Point(
+					bounds.getX2(),
+					groundMaxY
+				),
+				&Theme::ground
 			);
 
-			screen.renderRectangle(
-				Bounds(
-					bounds.getX2() - 2,
-					bounds.getY(),
-					2,
-					bounds.getHeight()
-				),
-				&Theme::fg1
-			);
+			// Rectangle
+			if (groundMaxY < bounds.getY2()) {
+				screen.renderRectangle(
+					Bounds(
+						bounds.getX(),
+						groundMaxY,
+						bounds.getWidth(),
+						bounds.getHeight() - groundMaxY
+					),
+					&Theme::ground
+				);
+			}
 
+			// Lines
 			screen.renderLine(
 				Point(
 					bounds.getX(),

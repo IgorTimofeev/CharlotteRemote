@@ -404,7 +404,7 @@ namespace yoba {
 	}
 
 	void Screen::setViewport(const Bounds &bounds) {
-		_buffer.setViewport(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+		_buffer.setViewport(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), false);
 	}
 
 	void Screen::resetViewport() {
