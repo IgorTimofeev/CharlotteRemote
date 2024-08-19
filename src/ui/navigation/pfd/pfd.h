@@ -14,9 +14,9 @@ class PFDLeft : public Element {
 			setClipToBounds(true);
 		}
 
-		void renderBar(Screen& screen, float& speed, uint16_t& centerY, int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) {
-			int32_t fromY = centerY + (int32_t) ceil(speed * (float) unitPixels) - fromSpeed * unitPixels;
-			int32_t toY = fromY - toSpeed * unitPixels;
+		void renderBar(Screen& screen, float& speed, uint16_t& centerY, int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) const {
+			int32_t fromY = centerY + (int32_t) ceil(speed / (float) stepUnits * (float) unitPixels - ((float) fromSpeed / (float) stepUnits) * (float)unitPixels);
+			int32_t toY = fromY - (int32_t) (((float) toSpeed / (float) stepUnits) * (float) unitPixels);
 
 			screen.renderRectangle(
 				Bounds(
@@ -32,9 +32,6 @@ class PFDLeft : public Element {
 		void onRender(Screen& screen) override {
 			auto& bounds = getBounds();
 			auto& app = RCApplication::getInstance();
-
-			const uint8_t stepUnits = 1;
-			const uint8_t stepUnitsBig = 5;
 
 			auto centerY = (uint16_t) (bounds.getHeight() / 2);
 
@@ -121,7 +118,7 @@ class PFDLeft : public Element {
 			int32_t altitudeYFullLines = ceil((float) y / (float) unitPixels);
 			y = y - altitudeYFullLines * unitPixels;
 
-			int32_t altitudeLineValue = (int32_t) (snappedInteger + 1) * stepUnits + altitudeYFullLines * stepUnits;
+			int32_t lineValue = (int32_t) (snappedInteger + 1) * stepUnits + altitudeYFullLines * stepUnits;
 
 			String text;
 			Size textSize;
@@ -129,7 +126,7 @@ class PFDLeft : public Element {
 			const Color* lineColor = &Theme::fg4;
 
 			do {
-				isBig = altitudeLineValue % stepUnitsBig == 0;
+				isBig = lineValue % stepUnitsBig == 0;
 
 				if (isBig) {
 					// Line
@@ -140,7 +137,7 @@ class PFDLeft : public Element {
 					);
 
 					//Text
-					text = String(altitudeLineValue);
+					text = String(lineValue);
 					textSize = screen.measureText(text);
 
 					screen.renderText(
@@ -158,10 +155,10 @@ class PFDLeft : public Element {
 					);
 				}
 
-				altitudeLineValue -= stepUnits;
+				lineValue -= stepUnits;
 				y += unitPixels;
 			}
-			while (y < bounds.getHeight() && altitudeLineValue >= 0);
+			while (y < bounds.getHeight() && lineValue >= 0);
 
 			// Current altitude
 			char chars[5];
@@ -215,6 +212,8 @@ class PFDLeft : public Element {
 
 	private:
 		const uint8_t unitPixels = 10;
+		const uint8_t stepUnits = 1;
+		const uint8_t stepUnitsBig = 5;
 
 		const uint16_t lineSizeBig = 8;
 		const uint16_t lineSizeSmall = 5;
@@ -457,61 +456,52 @@ class PFDHorizon : public Element {
 
 		void onRender(Screen &screen) override {
 			auto& bounds = getBounds();
-			int32_t centerY = bounds.getHeight() / 2;
+
+			const auto& center = Point(
+				bounds.getX() + bounds.getWidth() / 2,
+				bounds.getY() + bounds.getHeight() / 2
+			);
+
 
 			auto& app = RCApplication::getInstance();
 			auto pitch = app.getPitch();
 			auto roll = app.getRoll();
 			auto yaw = app.getYaw();
 
-			auto pitchPixels = (int32_t) (pitch * (float) centerY);
-			auto rollPixels = (int32_t) (roll * (float) centerY);
-
-			int32_t yLeft = centerY - pitchPixels - rollPixels;
-			int32_t yRight = centerY - pitchPixels + rollPixels;
+//			const auto radius = (int32_t) (sqrt(pow((float) bounds.getWidth(), 2.0f) + pow((float) bounds.getHeight(), 2.0f)));
+			const auto radius = max(bounds.getWidth(), bounds.getHeight());
+			const auto& radiusRollRotated = Point(radius, 0).rotate(roll);
+			const auto& radiusPitchRotated = Point(radius, 0).rotate(pitch);
 
 			screen.renderRectangle(
 				bounds,
 				&Theme::sky
 			);
 
-//			screen.renderRectangle(
-//				Bounds(
-//					bounds.getX(),
-//					bounds.getY(),
-//					2,
-//					bounds.getHeight()
-//				),
-//				&Theme::fg1
-//			);
-//
-//			screen.renderRectangle(
-//				Bounds(
-//					bounds.getX2() - 2,
-//					bounds.getY(),
-//					2,
-//					bounds.getHeight()
-//				),
-//				&Theme::fg1
-//			);
-
 			// Ground
-			const auto& groundMinPoint =
-				yLeft < yRight
-				? Point(bounds.getX(), yLeft)
-				: Point(bounds.getX2(), yRight);
+			auto left = Point(
+				center.getX() - radiusRollRotated.getX(),
+				center.getY() - radiusPitchRotated.getY() - radiusRollRotated.getY()
+			);
 
-			auto groundMaxY = max(yLeft, yRight);
+			auto right = Point(
+				center.getX() + radiusRollRotated.getX(),
+				center.getY() - radiusPitchRotated.getY() + radiusRollRotated.getY()
+			);
+
+			auto groundMaxY = max(left.getY(), right.getY());
 
 			// Triangle
 			screen.renderTriangle(
-				groundMinPoint,
+				left.getY() < right.getY()
+					? left
+					: right,
 				Point(
-					bounds.getX(),
+					left.getX(),
 					groundMaxY
 				),
 				Point(
-					bounds.getX2(),
+					right.getX(),
 					groundMaxY
 				),
 				&Theme::ground
@@ -531,16 +521,31 @@ class PFDHorizon : public Element {
 			}
 
 			// Lines
-			screen.renderLine(
-				Point(
-					bounds.getX(),
-					yLeft
-				),
-				Point(
-					bounds.getX2(),
-					yRight
-				),
-				&Theme::fg1
-			);
+			uint16_t lineSmall = 30;
+			uint16_t lineMiddle = 50;
+			uint16_t lineBig = 40;
+			uint16_t lineSpacing = 10;
+			uint16_t lineY = lineSpacing * 10;
+
+			for (int16_t i = -15; i <= 15; i += 5) {
+				uint16_t lineSize = i == 0 ? lineMiddle : (i % 5 == 0 ? lineBig : lineSmall);
+
+				auto lineSmallRotated = Point(lineSize, lineY).rotate(roll);
+
+				screen.renderLine(
+					Point(
+						center.getX() - lineSmallRotated.getX(),
+						center.getY() - radiusPitchRotated.getY() + lineSmallRotated.getY()
+					),
+					Point(
+						center.getX() + lineSmallRotated.getX(),
+						center.getY() - radiusPitchRotated.getY() + lineSmallRotated.getY()
+					),
+					&Theme::fg1
+				);
+
+				lineY += lineSpacing;
+			}
+
 		}
 };

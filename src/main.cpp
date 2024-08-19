@@ -17,7 +17,7 @@ void setup() {
 void loop() {
 	application.tick();
 
-//	delay(1);
+	delay(1);
 }
 
 //#include <Arduino.h>
