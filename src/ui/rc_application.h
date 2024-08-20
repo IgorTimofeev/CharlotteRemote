@@ -52,7 +52,7 @@ namespace ui {
 			bool _pressureHPA = true;
 			bool _pressureSTD = false;
 
-			Potentiometer _pitchHall = Potentiometer(4, 1400, 2800, 20);
-			Potentiometer _rollHall = Potentiometer(27, 1290, 2970, 20);
+			Potentiometer _pitchHall;
+			Potentiometer _rollHall;
 	};
 }

@@ -6,15 +6,19 @@
 using namespace yoba;
 
 namespace ui {
-	RCApplication::RCApplication() : Application(
-		Size(TFT_HEIGHT, TFT_WIDTH),
-		25,
+	RCApplication::RCApplication() :
+		Application(
+			Size(TFT_HEIGHT, TFT_WIDTH),
+			15,
 
-		21,
-		22,
-		12,
-		14
-	) {
+			21,
+			22,
+			26,
+			27
+		),
+		_pitchHall(Potentiometer(39, 1400, 2800, 20)),
+		_rollHall(Potentiometer(36, 1290, 2970, 20))
+	{
 
 	}
 
