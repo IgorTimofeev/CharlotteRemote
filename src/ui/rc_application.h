@@ -2,6 +2,7 @@
 
 #include "yoba/application.h"
 #include "yoba/hardware/potentiometer.h"
+#include "transceiver/transceiver.h"
 
 using namespace yoba;
 
@@ -54,5 +55,7 @@ namespace ui {
 
 			Potentiometer _pitchHall;
 			Potentiometer _rollHall;
+
+			Transceiver _transceiver;
 	};
 }

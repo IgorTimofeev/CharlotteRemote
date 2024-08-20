@@ -394,13 +394,13 @@ namespace yoba {
 		return _buffer;
 	}
 
-	const Bounds& Screen::getViewport() {
-		return Bounds(
+	Bounds Screen::getViewport() {
+		return {
 			_buffer.getViewportX(),
 			_buffer.getViewportY(),
 			_buffer.getViewportWidth(),
 			_buffer.getViewportHeight()
-		);
+		};
 	}
 
 	void Screen::setViewport(const Bounds &bounds) {

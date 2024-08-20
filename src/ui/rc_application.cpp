@@ -61,17 +61,20 @@ namespace ui {
 		// Workspace
 		getWorkspace().addChild(new SideBar());
 
-		// Gavno
+		// Joysticks
 		_pitchHall.begin();
 		_rollHall.begin();
+
+		// Transceiver
+		_transceiver.begin();
 	}
 
-	uint32_t deadline = 0;
+	uint32_t _testDeadline = 0;
 
 	void RCApplication::onTick() {
 		Application::onTick();
 
-		if (millis() > deadline) {
+		if (millis() > _testDeadline) {
 			setSpeed(_rollHall.readSmoothFloat() * 40.0f);
 			setAltitude(_pitchHall.readSmoothFloat() * 20.0f);
 
@@ -80,8 +83,10 @@ namespace ui {
 
 			getWorkspace().invalidate();
 
-			deadline = millis() + 50;
+			_testDeadline = millis() + 50;
 		}
+
+		_transceiver.tick();
 	}
 
 	void RCApplication::onRender() {

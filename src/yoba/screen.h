@@ -37,7 +37,7 @@ namespace yoba {
 			void setDefaultFont(const uint8_t* value);
 			void setFont(const uint8_t *value);
 
-			const Bounds &getViewport();
+			Bounds getViewport();
 			void setViewport(const Bounds& bounds);
 			void resetViewport();
 
