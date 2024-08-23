@@ -70,7 +70,7 @@ class Transceiver {
 		uint32_t _sendDeadline = 0;
 
 		SX126x _lora = SX126x(
-			5,
+			4,
 			33,
 			32
 		);
