@@ -130,8 +130,6 @@ class Transceiver {
 					Serial.print("altitude: ");
 					Serial.println(packet->altitude);
 				}
-			} else {
-				Serial.print("Not received");
 			}
 		}
 };
