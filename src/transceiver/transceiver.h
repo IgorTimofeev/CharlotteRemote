@@ -2,127 +2,130 @@
 #pragma once
 
 #include "Arduino.h"
-#include <Ra01S.h>
+#include <RadioLib.h>
+
+
+struct GovnoPacket {
+	uint32_t signature;
+
+	float pitch;
+	float roll;
+	float yaw;
+
+	float temperature;
+	float pressure;
+
+	float qnh;
+	float altitude;
+};
 
 class Transceiver {
 	public:
 		Transceiver() = default;
 
 		void begin() {
-			//lora.DebugPrint(true);
+			Serial.println("[SX1262] Initializing");
 
-			auto beginResult = _lora.begin(
-				915000000,  //frequency in Hz
-				22 //tx power in dBm
-			);
-
-			if (beginResult != ERR_NONE) {
-				while(1) {
-					delay(1);
-				}
-			}
-
-			_lora.LoRaConfig(
-				// Spreading factor
-				// SF5..SF12
+			auto state = _radio.begin(
+				434.0,
+				125.0,
+				9,
 				7,
-
-				// Bandwidth
-				// 2: 31.25Khz
-				// 3: 62.5Khz
-				// 4: 125Khz
-				// 5: 250KHZ
-				// 6: 500Khz
-				4,
-
-				// Coding rate
-				// 1: 4/5,
-				// 2: 4/6,
-				// 3: 4/7,
-				// 4: 4/8
-				1,
-
-				// Preamble length, same for Tx and Rx
+				RADIOLIB_SX126X_SYNC_WORD_PRIVATE,
+				10,
 				8,
-
-				// 0: Variable length packet
-				// 1..255: Fixed length packet
-				0,
-
-				// crcOn
-				true,
-				// invertIrq
-				false
+				0
 			);
+
+			if (state == RADIOLIB_ERR_NONE) {
+
+			}
+			else {
+				Serial.print("[SX1262] Failure, code: ");
+				Serial.println(state);
+
+				while (true)
+					delay(100);
+			}
 		}
 
-
-
 		void tick() {
-			if (millis() < _sendDeadline)
+			if (millis() < _deadline)
 				return;
 
-			_send();
 			_receive();
+
+			_deadline = millis() + 1000;
 		}
 
 	private:
-		uint32_t _sendDeadline = 0;
-
-		SX126x _lora = SX126x(
+		SX1262 _radio = new Module(
 			4,
+			RADIOLIB_NC,
 			33,
 			32
 		);
 
-		void _send() {
-			char buffer[255];
-			sprintf(buffer, "Hello World %lu", millis());
-			uint8_t len = strlen(buffer);
-
-			// Wait for transmission to complete
-			_lora.Send((uint8_t*) buffer, len, SX126x_TXMODE_ASYNC);
-
-			_sendDeadline = millis() + 1000;
-		}
-
+		uint32_t _deadline = 0;
 
 		void _receive() {
 			uint8_t buffer[255];
-			uint8_t rxLen = _lora.Receive(buffer, 255);
+			auto state = _radio.receive(buffer, 255);
 
-			if (rxLen == 0)
-				return;
+			if (state == RADIOLIB_ERR_NONE) {
+				// packet was successfully received
+				Serial.println("KAKOITA PAKET");
 
-			Serial.print("Received rxLen:");
-			Serial.println(rxLen);
+				// print the RSSI (Received Signal Strength Indicator)
+				// of the last received packet
+				Serial.print("[SX1262] RSSI: ");
+				Serial.print(_radio.getRSSI());
+				Serial.println(" dBm");
 
-			for(int i=0;i< rxLen;i++) {
-				Serial.print(buffer[i], HEX);
-				Serial.print(" ");
-			}
+				// print the SNR (Signal-to-Noise Ratio)
+				// of the last received packet
+				Serial.print("[SX1262] SNR: ");
+				Serial.print(_radio.getSNR());
+				Serial.println(" dB");
 
-			Serial.println();
+				// print frequency error
+				Serial.print("[SX1262] Frequency error: ");
+				Serial.print(_radio.getSNR());
+				Serial.println(" Hz");
 
-			for(int i=0; i< rxLen; i++) {
-				if (buffer[i] > 0x19 && buffer[i] < 0x7F) {
-					char myChar = (char) buffer[i];
-					Serial.print(myChar);
+				auto* packet = (GovnoPacket*) &buffer;
+
+				// "plane" -> ASCII -> 0x506C416E
+				if (packet->signature == 0x506C416E) {
+					Serial.println("NORMALI PAKET");
+
+					Serial.print("pitch: ");
+					Serial.println(packet->pitch);
+					Serial.print("roll: ");
+					Serial.println(packet->roll);
+					Serial.print("yaw: ");
+					Serial.println(packet->yaw);
+					Serial.print("temperature: ");
+					Serial.println(packet->temperature);
+					Serial.print("pressure: ");
+					Serial.println(packet->pressure);
+					Serial.print("qnh: ");
+					Serial.println(packet->qnh);
+					Serial.print("altitude: ");
+					Serial.println(packet->altitude);
 				}
-				else {
-					Serial.print("?");
-				}
+			} else if (state == RADIOLIB_ERR_RX_TIMEOUT) {
+				// timeout occurred while waiting for a packet
+				Serial.println(F("timeout!"));
+
+			} else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
+				// packet was received, but is malformed
+				Serial.println(F("CRC error!"));
+
+			} else {
+				// some other error occurred
+				Serial.print(F("failed, code "));
+				Serial.println(state);
 			}
-
-			Serial.println();
-
-			int8_t rssi, snr;
-			_lora.GetPacketStatus(&rssi, &snr);
-			Serial.print("rssi: ");
-			Serial.print(rssi, DEC);
-			Serial.println(" dBm");
-			Serial.print("snr: ");
-			Serial.print(snr, DEC);
-			Serial.println(" dB");
 		}
 };
