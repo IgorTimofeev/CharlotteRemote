@@ -14,8 +14,8 @@ namespace pizdanc {
 					class Transceiver {
 						public:
 							static const uint8_t chipSelect = 32;
-							static const uint8_t reset = 33;
-							static const uint8_t busy = 25;
+							static const uint8_t reset = 25;
+							static const uint8_t busy = 33;
 					};
 			};
 
