@@ -6,7 +6,7 @@
 
 using namespace yoba;
 
-namespace ui {
+namespace pizdanc {
 	class Titler : public StackLayout {
 		public:
 			Titler() {

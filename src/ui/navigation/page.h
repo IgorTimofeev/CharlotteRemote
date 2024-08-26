@@ -4,7 +4,7 @@
 
 using namespace yoba;
 
-namespace ui {
+namespace pizdanc {
 	class Page : public Layout {
 		public:
 			Page() {

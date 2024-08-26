@@ -2,11 +2,11 @@
 
 #include "yoba/application.h"
 #include "yoba/hardware/potentiometer.h"
-#include "transceiver/transceiver.h"
+#include "transceiver.h"
 
 using namespace yoba;
 
-namespace ui {
+namespace pizdanc {
 	class RCApplication : public Application {
 		public:
 			RCApplication();

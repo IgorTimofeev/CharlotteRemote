@@ -5,7 +5,7 @@
 
 using namespace yoba;
 
-namespace ui {
+namespace pizdanc {
 	RCApplication::RCApplication() :
 		Application(
 			Size(TFT_HEIGHT, TFT_WIDTH),
@@ -86,7 +86,7 @@ namespace ui {
 			_testDeadline = millis() + 50;
 		}
 
-		_transceiver.tick();
+		_transceiver.tick(*this);
 	}
 
 	void RCApplication::onRender() {

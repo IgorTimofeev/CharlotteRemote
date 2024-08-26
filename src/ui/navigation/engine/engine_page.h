@@ -11,7 +11,7 @@
 
 using namespace yoba;
 
-namespace ui {
+namespace pizdanc {
 	class EnginePage : public Page {
 		public:
 			EnginePage() {

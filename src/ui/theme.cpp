@@ -1,6 +1,6 @@
 #include "theme.h"
 
-namespace ui {
+namespace pizdanc {
 	const PaletteColor Theme::bg1 = PaletteColor(0);
 	const PaletteColor Theme::bg2 = PaletteColor(1);
 	const PaletteColor Theme::bg3 = PaletteColor(2);

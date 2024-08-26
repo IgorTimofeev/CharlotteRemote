@@ -8,11 +8,13 @@
 #include "ui/navigation/page.h"
 #include "ui/elements/titler.h"
 #include "ui/elements/rows.h"
-#include "pfd.h"
+#include "pfd_left.h"
+#include "pfd_horizon.h"
+#include "pfd_right.h"
 
 using namespace yoba;
 
-namespace ui {
+namespace pizdanc {
 	class PFDPage : public Page {
 		public:
 			PFDPage() {

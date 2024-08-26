@@ -19,7 +19,7 @@
 
 using namespace yoba;
 
-namespace ui {
+namespace pizdanc {
 	class SideBar : public Selector {
 		public:
 			SideBar() {

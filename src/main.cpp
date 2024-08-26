@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "ui/rc_application.h"
 
-using namespace ui;
+using namespace pizdanc;
 
 RCApplication& application = RCApplication::getInstance();
 

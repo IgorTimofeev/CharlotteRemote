@@ -4,7 +4,7 @@
 
 using namespace yoba;
 
-namespace ui {
+namespace pizdanc {
 	class Theme {
 		public:
 			static const PaletteColor bg1;

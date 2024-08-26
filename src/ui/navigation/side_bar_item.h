@@ -12,7 +12,7 @@
 
 using namespace yoba;
 
-namespace ui {
+namespace pizdanc {
 	class SideBarItem : public SelectorItem {
 		public:
 			explicit SideBarItem(const String& text) {
