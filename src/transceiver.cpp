@@ -156,6 +156,13 @@ namespace pizdanc {
 				{
 					auto ahrsPacket = (AircraftAHRSPacket*) bufferPtr;
 
+					ahrsPacket->print();
+
+					application.getRemoteData().setThrottle(ahrsPacket->throttle);
+					application.getRemoteData().setAilerons(ahrsPacket->ailerons);
+					application.getRemoteData().setRudder(ahrsPacket->rudder);
+					application.getRemoteData().setFlaps(ahrsPacket->flaps);
+
 					application.getRemoteData().setPitch(ahrsPacket->pitch);
 					application.getRemoteData().setRoll(ahrsPacket->roll);
 					application.getRemoteData().setYaw(ahrsPacket->yaw);
@@ -170,8 +177,6 @@ namespace pizdanc {
 					application.getRemoteData().setSpeed(ahrsPacket->speed);
 
 					application.getRemoteData().setStrobeLights(ahrsPacket->strobeLights);
-
-					ahrsPacket->print();
 				}
 
 				break;
