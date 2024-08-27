@@ -16,38 +16,11 @@ namespace pizdanc {
 
 	}
 
+
+
 	void RCApplication::begin() {
 		// Screen
-
-		// Background
-		_palette[0]  = getScreen().getBuffer().color24to16(0x000000);
-		_palette[1]  = getScreen().getBuffer().color24to16(0x111111);
-		_palette[2]  = getScreen().getBuffer().color24to16(0x222222);
-		_palette[3]  = getScreen().getBuffer().color24to16(0x333333);
-		_palette[4]  = getScreen().getBuffer().color24to16(0x444444);
-
-		// Foreground
-		_palette[5]  = getScreen().getBuffer().color24to16(0xFFFFFF);
-		_palette[6]  = getScreen().getBuffer().color24to16(0xDDDDDD);
-		_palette[7]  = getScreen().getBuffer().color24to16(0xBBBBBB);
-		_palette[8]  = getScreen().getBuffer().color24to16(0x999999);
-
-		// Red
-		_palette[9]  = getScreen().getBuffer().color24to16(0xff0000);
-		// Purple
-		_palette[10] = getScreen().getBuffer().color24to16(0xec04ee);
-		// Green
-		_palette[11] = getScreen().getBuffer().color24to16(0x008100);
-		// Yellow
-		_palette[12] = getScreen().getBuffer().color24to16(0xffd200);
-		// Ocean
-		_palette[13] = getScreen().getBuffer().color24to16(0x00ffff);
-		// Ground
-		_palette[14] = getScreen().getBuffer().color24to16(0x97b838);
-		// Sky
-		_palette[15] = getScreen().getBuffer().color24to16(0x317fcb);
-
-		Application::begin(4, _palette);
+		Application::begin(4, settings::screen::palette);
 
 		getScreen().setDefaultFont(resources::fonts::pixy10);
 

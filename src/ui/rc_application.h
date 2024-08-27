@@ -42,8 +42,6 @@ namespace pizdanc {
 			void setPressureSTD(bool value);
 
 		private:
-			uint16_t _palette[16] {};
-
 			float _pitch = 0;
 			float _roll = 0;
 			float _yaw = 0;

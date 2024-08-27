@@ -20,17 +20,10 @@ namespace yoba {
 
 	}
 
-
-	uint16_t _palette[16];
-
-	void Screen::begin(uint8_t colorDepth, uint16_t *palette) {
+	void Screen::begin(uint8_t colorDepth, const uint16_t *palette) {
 		// TFT
 		_tft.init();
 		_tft.setRotation(1);
-
-//		_buffer.setAttribute(PSRAM_ENABLE, true);
-//		_buffer.setColorDepth(8);
-//		_buffer.createSprite((int16_t) _resolution.getWidth(), (int16_t) _resolution.getHeight());
 
 		_buffer.setColorDepth((int8_t) colorDepth);
 		_buffer.createSprite((int16_t) _resolution.getWidth(), (int16_t) _resolution.getHeight());

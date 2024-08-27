@@ -48,7 +48,7 @@ namespace yoba {
 		});
 	}
 
-	void Application::begin(uint8_t colorDepth, uint16_t *palette) {
+	void Application::begin(uint8_t colorDepth, const uint16_t* palette) {
 		_screen.begin(colorDepth, palette);
 	}
 

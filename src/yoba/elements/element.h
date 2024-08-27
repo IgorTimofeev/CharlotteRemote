@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef YOBA_ELEMENT_H
+#define YOBA_ELEMENT_H
+#endif
+
 #include <cstdint>
 #include <limits>
 

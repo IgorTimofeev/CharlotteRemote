@@ -105,9 +105,11 @@ namespace yoba {
 	}
 
 	uint16_t TrueColor::to16Bit() const {
-		uint16_t r = (_r >> 8) & 0xF800;
-		uint16_t g = (_g >> 5) & 0x07E0;
-		uint16_t b = (_b >> 3) & 0x001F;
+		uint32_t color888 = to24Bit();
+
+		uint16_t r = (color888 >> 8) & 0xF800;
+		uint16_t g = (color888 >> 5) & 0x07E0;
+		uint16_t b = (color888 >> 3) & 0x001F;
 
 		return (r | g | b);
 	}

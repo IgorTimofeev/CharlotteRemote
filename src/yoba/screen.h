@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef YOBA_SCREEN_H
+#define YOBA_SCREEN_H
+#endif
+
 #include <cstdint>
 #include "Arduino.h"
 #include "TFT_eSPI.h"
@@ -22,7 +26,7 @@ namespace yoba {
 			);
 
 			const Size &getResolution() const;
-			virtual void begin(uint8_t colorDepth, uint16_t *palette);
+			virtual void begin(uint8_t colorDepth, const uint16_t *palette);
 			virtual void tick();
 
 			// -------------------------------- Rendering --------------------------------

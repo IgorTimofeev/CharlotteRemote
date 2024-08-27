@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef YOBA_APPLICATION_H
+#define YOBA_APPLICATION_H
+#endif
+
 #include <cstdint>
 #include "screen.h"
 
@@ -11,7 +15,7 @@ namespace yoba {
 				const uint8_t &touchIntPin
 			);
 
-			virtual void begin(uint8_t colorDepth, uint16_t *palette);
+			virtual void begin(uint8_t colorDepth, const uint16_t *palette);
 			virtual void tick();
 
 			virtual void onTick();
