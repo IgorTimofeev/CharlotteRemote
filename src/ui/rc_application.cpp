@@ -9,15 +9,11 @@ namespace pizdanc {
 	RCApplication::RCApplication() :
 		Application(
 			Size(TFT_HEIGHT, TFT_WIDTH),
-			15,
-
 			21,
 			22,
-			26,
-			27
-		),
-		_pitchHall(Potentiometer(39, 1400, 2800, 20)),
-		_rollHall(Potentiometer(36, 1290, 2970, 20))
+			32,
+			26
+		)
 	{
 
 	}
@@ -61,9 +57,9 @@ namespace pizdanc {
 		// Workspace
 		getWorkspace().addChild(new SideBar());
 
-		// Joysticks
-		_pitchHall.begin();
-		_rollHall.begin();
+//		// Joysticks
+//		_pitchHall.begin();
+//		_rollHall.begin();
 
 		// Transceiver
 		_transceiver.begin();
@@ -75,11 +71,11 @@ namespace pizdanc {
 		Application::onTick();
 
 		if (millis() > _testDeadline) {
-			setSpeed(_rollHall.readSmoothFloat() * 40.0f);
-			setAltitude(_pitchHall.readSmoothFloat() * 20.0f);
-
-			setRoll((_rollHall.readSmoothFloat() * 2.0f - 1.0f) * (float) HALF_PI);
-			setPitch((_pitchHall.readSmoothFloat() * 2.0f - 1.0f) * (float) HALF_PI);
+//			setSpeed(_rollHall.readSmoothFloat() * 40.0f);
+//			setAltitude(_pitchHall.readSmoothFloat() * 20.0f);
+//
+//			setRoll((_rollHall.readSmoothFloat() * 2.0f - 1.0f) * (float) HALF_PI);
+//			setPitch((_pitchHall.readSmoothFloat() * 2.0f - 1.0f) * (float) HALF_PI);
 
 			getWorkspace().invalidate();
 

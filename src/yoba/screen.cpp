@@ -6,7 +6,6 @@
 namespace yoba {
 	Screen::Screen(
 		const Size &resolution,
-		const uint8_t &tftLedPin,
 		const uint8_t &touchSdaPin,
 		const uint8_t &touchSclPin,
 		const uint8_t &touchRstPin,
@@ -14,7 +13,6 @@ namespace yoba {
 	) :
 		_resolution(resolution),
 		_touchIntPin(touchIntPin),
-		_tftLedPin(tftLedPin),
 		_touchPanel(FT6336U(
 			(int8_t) touchSdaPin,
 			(int8_t) touchSclPin,
@@ -40,10 +38,6 @@ namespace yoba {
 		_buffer.setColorDepth(4);
 		_buffer.createSprite((int16_t) _resolution.getWidth(), (int16_t) _resolution.getHeight());
 
-//		// Led
-//		dac_output_enable(DAC_CHANNEL_1);
-//		dac_output_voltage(DAC_CHANNEL_1, 5);
-
 		// Touch
 		_touchPanel.begin();
 
@@ -53,10 +47,6 @@ namespace yoba {
 
 	void Screen::tick() {
 		readTouch();
-	}
-
-	void Screen::setBrightness(const uint8_t& value) const {
-//		 dacWrite(_tftLedPin, value);
 	}
 
 	const Size &Screen::getResolution() const {

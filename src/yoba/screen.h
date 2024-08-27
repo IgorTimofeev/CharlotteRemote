@@ -17,7 +17,6 @@ namespace yoba {
 		public:
 			Screen(
 				const Size &resolution,
-				const uint8_t &tftLedPin,
 				const uint8_t &touchSdaPin,
 				const uint8_t &touchSclPin,
 				const uint8_t &touchRstPin,
@@ -98,7 +97,6 @@ namespace yoba {
 			static volatile bool _touchInterrupted;
 
 			const Size _resolution;
-			const uint8_t _tftLedPin;
 			const uint8_t _touchIntPin;
 
 			TFT_eSPI _tft = TFT_eSPI();

@@ -52,10 +52,10 @@ namespace pizdanc {
 			float _pressure = 1022;
 			bool _pressureHPA = true;
 			bool _pressureSTD = false;
-
-			Potentiometer _pitchHall;
-			Potentiometer _rollHall;
-
-			Transceiver _transceiver;
+//
+//			Potentiometer _pitchHall;
+//			Potentiometer _rollHall;
+//
+			Transceiver _transceiver = Transceiver();
 	};
 }

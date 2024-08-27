@@ -7,10 +7,10 @@ RCApplication& application = RCApplication::getInstance();
 
 void setup() {
 	Serial.begin(115200);
-	SPI.begin();
+//	SPI.begin();
 
-	pinMode(2, OUTPUT);
-	digitalWrite(2, 0);
+//	pinMode(2, OUTPUT);
+//	digitalWrite(2, 0);
 
 	application.begin();
 }
