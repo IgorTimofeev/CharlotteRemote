@@ -14,7 +14,8 @@ namespace pizdanc {
 
 		if (state == ERR_NONE) {
 
-		} else {
+		}
+		else {
 			Serial.print("[SX1262] Failure, code: ");
 			Serial.println(state);
 
@@ -53,16 +54,16 @@ namespace pizdanc {
 		if (millis() < _deadline)
 			return;
 
-		send(
-			PacketType::ControllerCommand,
-			ControllerCommandPacket{
-				.throttle = 1,
-				.ailerons = 2,
-				.rudder = 3,
-
-				.strobeLights = true
-			}
-		);
+//		send(
+//			PacketType::ControllerCommand,
+//			ControllerCommandPacket{
+//				.throttle = 1,
+//				.ailerons = 2,
+//				.rudder = 3,
+//
+//				.strobeLights = true
+//			}
+//		);
 
 		receive(application);
 
@@ -82,7 +83,7 @@ namespace pizdanc {
 
 		auto header = settings::transceiver::packetHeader;
 		uint8_t headerLength = sizeof(header);
-		uint8_t totalLength = wrapperLength + headerLength;
+		uint8_t totalLength = encryptedWrapperLength + headerLength;
 
 		// Copying header
 		mempcpy(&_AESBuffer, &header, headerLength);
@@ -98,12 +99,12 @@ namespace pizdanc {
 			(uint8_t *) &_AESBuffer + headerLength
 		);
 
-		Serial.println("[SX1262] Sending packet");
+		Serial.printf("[SX1262] Sending packet of %d bytes\n", totalLength);
 
 		if (_sx1262.Send((uint8_t *) &_AESBuffer, totalLength, SX126x_TXMODE_SYNC)) {
 
-		} else {
-			// some other error occurred
+		}
+		else {
 			Serial.print("[SX1262] Sending failed");
 		}
 	}
@@ -111,40 +112,59 @@ namespace pizdanc {
 	void Transceiver::receive(RCApplication &application) {
 		uint8_t receivedLength = _sx1262.Receive(_sx1262Buffer, sizeof(_sx1262Buffer));
 
-		if (receivedLength <= 0)
+		if (receivedLength == 0)
 			return;
 
-		Serial.println("[Transceiver] Got packet");
+		Serial.printf("[Transceiver] Got packet of %d bytes\n", receivedLength);
 
-		auto sx1262BufferPtr = (uint8_t *) &_sx1262Buffer;
-		auto header = ((uint32_t *) sx1262BufferPtr)[0];
+		Serial.print("Bytes: ");
+
+		for (uint8_t i = 0; i < receivedLength; i++) {
+			Serial.printf("%d ", _sx1262Buffer[i]);
+		}
+
+		Serial.println();
+
+		uint8_t headerLength = sizeof(settings::transceiver::packetHeader);
+		auto header = ((uint32_t*) &_sx1262Buffer)[0];
 
 		// Checking header
 		if (header != settings::transceiver::packetHeader) {
-			Serial.printf("[Transceiver] Unsupported header: %02X", header);
+			Serial.printf("[Transceiver] Unsupported header: %02X\n", header);
 			return;
 		}
-
-		uint8_t headerLength = sizeof(settings::transceiver::packetHeader);
-		sx1262BufferPtr += headerLength;
 
 		Serial.println("[Transceiver] Decrypting packet");
 
 		uint8_t encryptedLength = receivedLength - headerLength;
-		encryptedLength = encryptedLength + 16 - (encryptedLength % 16);
 
 		// Decrypting
 		memcpy(_AESIVCopy, _AESIV, sizeof(_AESIV));
-		esp_aes_crypt_cbc(
-			&_AESContext,
-			ESP_AES_DECRYPT,
-			encryptedLength,
-			_AESIVCopy,
-			sx1262BufferPtr,
-			_AESBuffer
-		);
 
-		parsePacket(application, (uint8_t*) &_AESBuffer);
+		if (
+			esp_aes_crypt_cbc(
+				&_AESContext,
+				ESP_AES_DECRYPT,
+				encryptedLength,
+				_AESIVCopy,
+				(uint8_t*) &_sx1262Buffer + headerLength,
+				_AESBuffer
+			) != 0
+		) {
+			Serial.printf("Decrypting failed: %d\n", encryptedLength);
+
+			return;
+		}
+
+		Serial.print("Bytes: ");
+
+		for (uint8_t i = 0; i < encryptedLength; i++) {
+			Serial.printf("%d ", _AESBuffer[i]);
+		}
+
+		Serial.println();
+
+		parsePacket(application, _AESBuffer);
 	}
 
 	void Transceiver::parsePacket(RCApplication &application, uint8_t *bufferPtr) {
@@ -182,7 +202,7 @@ namespace pizdanc {
 				break;
 
 			default:
-				Serial.println("[Transceiver] Unknown packet type");
+				Serial.printf("[Transceiver] Unknown packet type: %d\n", packetType);
 
 				break;
 		}
