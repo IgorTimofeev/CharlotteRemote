@@ -67,14 +67,14 @@ namespace pizdanc {
 
 		receive(application);
 
-		_deadline = millis() + 1000;
+		_deadline = millis() + 33;
 	}
 
 	template<typename T>
 	void Transceiver::send(PacketType packetType, const T &packet) {
 		//			static_assert(sizeof(AHRSInPacket) <= 256, "Cyka paket balsoi");
 
-		Serial.println("[Transceiver] Encrypting packet");
+//		Serial.println("[Transceiver] Encrypting packet");
 
 		auto wrapper = PacketTypeWrapper<T>(packetType, packet);
 
@@ -89,9 +89,14 @@ namespace pizdanc {
 		mempcpy(&_AESBuffer, &header, headerLength);
 
 		// Encrypting body
+		auto aes = esp_aes_context();
+		esp_aes_init(&aes);
+		esp_aes_setkey(&aes, _AESKey, sizeof(_AESKey) * 8);
+
 		memcpy(_AESIVCopy, _AESIV, sizeof(_AESIV));
+
 		esp_aes_crypt_cbc(
-			&_AESContext,
+			&aes,
 			ESP_AES_ENCRYPT,
 			encryptedWrapperLength,
 			_AESIVCopy,
@@ -99,9 +104,11 @@ namespace pizdanc {
 			(uint8_t *) &_AESBuffer + headerLength
 		);
 
-		Serial.printf("[SX1262] Sending packet of %d bytes\n", totalLength);
+		esp_aes_free(&aes);
 
-		if (_sx1262.Send((uint8_t *) &_AESBuffer, totalLength, SX126x_TXMODE_SYNC)) {
+//		Serial.printf("[SX1262] Sending packet with type %d of %d bytes\n", packetType, totalLength);
+
+		if (_sx1262.Send(_AESBuffer, totalLength, SX126x_TXMODE_SYNC)) {
 
 		}
 		else {
@@ -115,56 +122,43 @@ namespace pizdanc {
 		if (receivedLength == 0)
 			return;
 
-		Serial.printf("[Transceiver] Got packet of %d bytes\n", receivedLength);
-
-		Serial.print("Bytes: ");
-
-		for (uint8_t i = 0; i < receivedLength; i++) {
-			Serial.printf("%d ", _sx1262Buffer[i]);
-		}
-
-		Serial.println();
-
-		uint8_t headerLength = sizeof(settings::transceiver::packetHeader);
-		auto header = ((uint32_t*) &_sx1262Buffer)[0];
+//		Serial.printf("[Transceiver] Got packet of %d bytes\n", receivedLength);
 
 		// Checking header
+		auto header = ((uint32_t*) &_sx1262Buffer)[0];
+		uint8_t headerLength = sizeof(settings::transceiver::packetHeader);
+
 		if (header != settings::transceiver::packetHeader) {
 			Serial.printf("[Transceiver] Unsupported header: %02X\n", header);
 			return;
 		}
 
-		Serial.println("[Transceiver] Decrypting packet");
-
 		uint8_t encryptedLength = receivedLength - headerLength;
 
 		// Decrypting
+		auto aes = esp_aes_context();
+		esp_aes_init(&aes);
+		esp_aes_setkey(&aes, _AESKey, sizeof(_AESKey) * 8);
+
 		memcpy(_AESIVCopy, _AESIV, sizeof(_AESIV));
 
-		if (
-			esp_aes_crypt_cbc(
-				&_AESContext,
-				ESP_AES_DECRYPT,
-				encryptedLength,
-				_AESIVCopy,
-				(uint8_t*) &_sx1262Buffer + headerLength,
-				_AESBuffer
-			) != 0
-		) {
+		auto decryptState = esp_aes_crypt_cbc(
+			&aes,
+			ESP_AES_DECRYPT,
+			encryptedLength,
+			_AESIVCopy,
+			(uint8_t*) &_sx1262Buffer + headerLength,
+			_AESBuffer
+		);
+
+		esp_aes_free(&aes);
+
+		if (decryptState == 0) {
+			parsePacket(application, _AESBuffer);
+		}
+		else {
 			Serial.printf("Decrypting failed: %d\n", encryptedLength);
-
-			return;
 		}
-
-		Serial.print("Bytes: ");
-
-		for (uint8_t i = 0; i < encryptedLength; i++) {
-			Serial.printf("%d ", _AESBuffer[i]);
-		}
-
-		Serial.println();
-
-		parsePacket(application, _AESBuffer);
 	}
 
 	void Transceiver::parsePacket(RCApplication &application, uint8_t *bufferPtr) {
@@ -176,7 +170,7 @@ namespace pizdanc {
 				{
 					auto ahrsPacket = (AircraftAHRSPacket*) bufferPtr;
 
-					ahrsPacket->print();
+//					ahrsPacket->print();
 
 					application.getRemoteData().setThrottle(ahrsPacket->throttle);
 					application.getRemoteData().setAilerons(ahrsPacket->ailerons);
