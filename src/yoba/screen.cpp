@@ -1,3 +1,4 @@
+#include <cstdint>
 #include "Arduino.h"
 #include "screen.h"
 #include "yoba/elements/workspace.h"
@@ -22,7 +23,7 @@ namespace yoba {
 
 	uint16_t _palette[16];
 
-	void Screen::begin() {
+	void Screen::begin(uint8_t colorDepth, uint16_t *palette) {
 		// TFT
 		_tft.init();
 		_tft.setRotation(1);
@@ -31,14 +32,18 @@ namespace yoba {
 //		_buffer.setColorDepth(8);
 //		_buffer.createSprite((int16_t) _resolution.getWidth(), (int16_t) _resolution.getHeight());
 
-		_buffer.setColorDepth(4);
+		_buffer.setColorDepth((int8_t) colorDepth);
 		_buffer.createSprite((int16_t) _resolution.getWidth(), (int16_t) _resolution.getHeight());
 
-		// Touch
-		_touchPanel.begin();
+		if (palette) {
+			_buffer.createPalette(palette);
+		}
 
+		// Touch
 		pinMode(_touchIntPin, INPUT_PULLUP);
 		attachInterrupt(digitalPinToInterrupt(_touchIntPin), Screen::onTouchInterrupted, CHANGE);
+
+		_touchPanel.begin();
 	}
 
 	void Screen::tick() {
@@ -370,10 +375,6 @@ namespace yoba {
 
 			color->to16Bit()
 		);
-	}
-
-	void Screen::setPalette(uint16_t* palette) {
-		_buffer.createPalette(palette);
 	}
 
 	TFT_eSprite& Screen::getBuffer() {

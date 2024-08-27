@@ -4,17 +4,16 @@
 
 namespace yoba {
 	Application::Application(
-		const Size &resolution,
 		const uint8_t &touchRstPin,
 		const uint8_t &touchIntPin
 	) :
 		_screen(
-			resolution,
+			Size(TFT_HEIGHT, TFT_WIDTH),
 			touchRstPin,
 			touchIntPin
 		)
 	{
-		_workspace.setSize(resolution);
+		_workspace.setSize(_screen.getResolution());
 
 		// Touch
 		_screen.addOnTouchDown([this](const Point& point) {
@@ -49,8 +48,8 @@ namespace yoba {
 		});
 	}
 
-	void Application::begin() {
-		_screen.begin();
+	void Application::begin(uint8_t colorDepth, uint16_t *palette) {
+		_screen.begin(colorDepth, palette);
 	}
 
 	void Application::tick() {

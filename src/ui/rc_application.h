@@ -15,7 +15,7 @@ namespace pizdanc {
 
 			void onTick() override;
 			void onRender() override;
-			void begin() override;
+			void begin();
 
 			float getPitch() const;
 			void setPitch(float value);

@@ -7,12 +7,11 @@ namespace yoba {
 	class Application {
 		public:
 			Application(
-				const Size &resolution,
 				const uint8_t &touchRstPin,
 				const uint8_t &touchIntPin
 			);
 
-			virtual void begin();
+			virtual void begin(uint8_t colorDepth, uint16_t *palette);
 			virtual void tick();
 
 			virtual void onTick();

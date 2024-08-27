@@ -22,14 +22,12 @@ namespace yoba {
 			);
 
 			const Size &getResolution() const;
-			void setBrightness(const uint8_t &value) const;
-			virtual void begin();
+			virtual void begin(uint8_t colorDepth, uint16_t *palette);
 			virtual void tick();
 
 			// -------------------------------- Rendering --------------------------------
 
 			virtual void clear();
-			virtual void setPalette(uint16_t* palette);
 
 			void setDefaultFont(const uint8_t* value);
 			void setFont(const uint8_t *value);

@@ -9,7 +9,6 @@ using namespace yoba;
 namespace pizdanc {
 	RCApplication::RCApplication() :
 		Application(
-			Size(TFT_HEIGHT, TFT_WIDTH),
 			settings::pinout::screen::touch::reset,
 			settings::pinout::screen::touch::interrupt
 		)
@@ -18,10 +17,7 @@ namespace pizdanc {
 	}
 
 	void RCApplication::begin() {
-		Application::begin();
-
 		// Screen
-		getScreen().setDefaultFont(resources::fonts::pixy10);
 
 		// Background
 		_palette[0]  = getScreen().getBuffer().color24to16(0x000000);
@@ -51,7 +47,9 @@ namespace pizdanc {
 		// Sky
 		_palette[15] = getScreen().getBuffer().color24to16(0x317fcb);
 
-		getScreen().setPalette(_palette);
+		Application::begin(4, _palette);
+
+		getScreen().setDefaultFont(resources::fonts::pixy10);
 
 		// Workspace
 		getWorkspace().addChild(new SideBar());
