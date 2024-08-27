@@ -31,7 +31,7 @@ void PFDLeft::onRender(Screen &screen) {
 		&Theme::bg2
 	);
 
-	float speed = app.getSpeed();
+	float speed = app.getRemoteData().getSpeed();
 
 	// Bars
 	renderBar(

@@ -31,7 +31,7 @@ void PFDRight::onRender(Screen &screen) {
 		&Theme::bg2
 	);
 
-	float altitude = app.getAltitude();
+	float altitude = app.getRemoteData().getAltitude();
 	float snapped = altitude / (float) altitudeStepUnits;
 	float snappedInteger = floor(snapped);
 	float snappedFractional = snapped - snappedInteger;
@@ -168,17 +168,18 @@ void PFDRight::onRender(Screen &screen) {
 
 	y = bounds.getHeight() - pressureHeight;
 
-	if (app.isPressureSTD()) {
-		snprintf(buffer, 4, "STD");
+	switch (app.getLocalData().getAltimeterMode()) {
+		case QNH:
+			snprintf(buffer, 5, "%d", (uint16_t) app.getLocalData().getAltimeterPressure());
 
-		pressureBg = &Theme::yellow;
-		pressureFg = &Theme::bg1;
-	}
-	if (app.isPressureHPA()) {
-		snprintf(buffer, 5, "%d", (uint16_t) app.getPressure());
-	}
-	else {
-		snprintf(buffer, 7, "%.2fin", app.getPressure());
+			break;
+
+		case QNE:
+			snprintf(buffer, 4, "STD");
+			pressureBg = &Theme::yellow;
+			pressureFg = &Theme::bg1;
+
+			break;
 	}
 
 	// Rect

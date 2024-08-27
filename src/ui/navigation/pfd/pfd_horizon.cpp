@@ -14,9 +14,9 @@ void PFDHorizon::onRender(Screen &screen) {
 	);
 
 	auto& app = RCApplication::getInstance();
-	auto pitch = app.getPitch();
-	auto roll = app.getRoll();
-	auto yaw = app.getYaw();
+	auto pitch = app.getRemoteData().getPitch();
+	auto roll = app.getRemoteData().getRoll();
+	auto yaw = app.getRemoteData().getYaw();
 
 	const auto horizontalScale = 2.5f;
 	const auto verticalScale = 1.5f;
