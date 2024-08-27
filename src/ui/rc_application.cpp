@@ -16,8 +16,6 @@ namespace pizdanc {
 
 	}
 
-
-
 	void RCApplication::begin() {
 		// Screen
 		Application::begin(4, settings::screen::palette);
@@ -67,69 +65,126 @@ namespace pizdanc {
 		return instance;
 	}
 
+
 	// ------------------------- Data -------------------------
 
-	float RCApplication::getPitch() const {
-		return _pitch;
+	LocalData &RCApplication::getLocalData() {
+		return _localData;
 	}
 
-	void RCApplication::setPitch(float value) {
-		_pitch = value;
+	RemoteData &RCApplication::getRemoteData() {
+		return _remoteData;
 	}
 
-	float RCApplication::getRoll() const {
-		return _roll;
+	float RemoteData::getTemperature() const {
+		return _temperature;
 	}
 
-	void RCApplication::setRoll(float value) {
-		_roll = value;
+	void RemoteData::setTemperature(float temperature) {
+		_temperature = temperature;
 	}
 
-	float RCApplication::getYaw() const {
-		return _yaw;
-	}
-
-	void RCApplication::setYaw(float value) {
-		_yaw = value;
-	}
-
-	float RCApplication::getAltitude() const {
-		return _altitude;
-	}
-
-	void RCApplication::setAltitude(float value) {
-		_altitude = value;
-	}
-
-	float RCApplication::getSpeed() const {
-		return _speed;
-	}
-
-	void RCApplication::setSpeed(float speed) {
-		_speed = speed;
-	}
-
-	float RCApplication::getPressure() const {
+	float RemoteData::getPressure() const {
 		return _pressure;
 	}
 
-	void RCApplication::setPressure(float value) {
-		_pressure = value;
+	void RemoteData::setPressure(float pressure) {
+		_pressure = pressure;
 	}
 
-	bool RCApplication::isPressureHPA() const {
-		return _pressureHPA;
+	float RemoteData::getAltitude() const {
+		return _altitude;
 	}
 
-	void RCApplication::setPressureHPA(bool value) {
-		_pressureHPA = value;
+	void RemoteData::setAltitude(float altitude) {
+		_altitude = altitude;
 	}
 
-	bool RCApplication::isPressureSTD() const {
-		return _pressureSTD;
+	float RemoteData::getPitch() const {
+		return _pitch;
 	}
 
-	void RCApplication::setPressureSTD(bool value) {
-		_pressureSTD = value;
+	void RemoteData::setPitch(float pitch) {
+		_pitch = pitch;
+	}
+
+	float RemoteData::getRoll() const {
+		return _roll;
+	}
+
+	void RemoteData::setRoll(float roll) {
+		_roll = roll;
+	}
+
+	float RemoteData::getYaw() const {
+		return _yaw;
+	}
+
+	void RemoteData::setYaw(float yaw) {
+		_yaw = yaw;
+	}
+
+	float RemoteData::getSpeed() const {
+		return _speed;
+	}
+
+	void RemoteData::setSpeed(float speed) {
+		_speed = speed;
+	}
+
+	uint8_t MutualData::getThrottle() const {
+		return _throttle;
+	}
+
+	void MutualData::setThrottle(uint8_t throttle) {
+		_throttle = throttle;
+	}
+
+	uint8_t MutualData::getAilerons() const {
+		return _ailerons;
+	}
+
+	void MutualData::setAilerons(uint8_t ailerons) {
+		_ailerons = ailerons;
+	}
+
+	uint8_t MutualData::getRudder() const {
+		return _rudder;
+	}
+
+	void MutualData::setRudder(uint8_t rudder) {
+		_rudder = rudder;
+	}
+
+	uint8_t MutualData::getFlaps() const {
+		return _flaps;
+	}
+
+	void MutualData::setFlaps(uint8_t flaps) {
+		_flaps = flaps;
+	}
+
+	AltimeterMode MutualData::getAltimeterMode() const {
+		return _altimeterMode;
+	}
+
+	void MutualData::setAltimeterMode(AltimeterMode altimeterMode) {
+		_altimeterMode = altimeterMode;
+	}
+
+	float MutualData::getAltimeterPressure() const {
+		return _altimeterPressure;
+	}
+
+	void MutualData::setAltimeterPressure(float altimeterPressure) {
+		_altimeterPressure = altimeterPressure;
+	}
+
+	bool MutualData::getStrobeLights() const {
+		return _strobeLights;
+	}
+
+	void MutualData::setStrobeLights(bool strobeLights) {
+		_strobeLights = strobeLights;
 	}
 }

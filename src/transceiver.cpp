@@ -64,6 +64,8 @@ namespace pizdanc {
 			}
 		);
 
+		receive(application);
+
 		_deadline = millis() + 1000;
 	}
 
@@ -106,7 +108,7 @@ namespace pizdanc {
 		}
 	}
 
-	void Transceiver::receive() {
+	void Transceiver::receive(RCApplication &application) {
 		uint8_t receivedLength = _sx1262.Receive(_sx1262Buffer, sizeof(_sx1262Buffer));
 
 		if (receivedLength <= 0)
@@ -142,19 +144,35 @@ namespace pizdanc {
 			_AESBuffer
 		);
 
-		parsePacket((uint8_t *) &_AESBuffer);
+		parsePacket(application, (uint8_t*) &_AESBuffer);
 	}
 
-	void Transceiver::parsePacket(uint8_t *bufferPtr) {
+	void Transceiver::parsePacket(RCApplication &application, uint8_t *bufferPtr) {
 		auto packetType = (PacketType) *bufferPtr;
 		bufferPtr += sizeof(PacketType);
 
 		switch (packetType) {
-			case AircraftAHRS: {
-				auto ahrsPacket = (AircraftAHRSPacket *) bufferPtr;
+			case AircraftAHRS:
+				{
+					auto ahrsPacket = (AircraftAHRSPacket*) bufferPtr;
 
-				ahrsPacket->print();
-			}
+					application.getRemoteData().setPitch(ahrsPacket->pitch);
+					application.getRemoteData().setRoll(ahrsPacket->roll);
+					application.getRemoteData().setYaw(ahrsPacket->yaw);
+
+					application.getRemoteData().setTemperature(ahrsPacket->temperature);
+					application.getRemoteData().setPressure(ahrsPacket->pressure);
+
+					application.getRemoteData().setAltimeterMode(ahrsPacket->altimeterMode);
+					application.getRemoteData().setAltimeterPressure(ahrsPacket->altimeterPressure);
+
+					application.getRemoteData().setAltitude(ahrsPacket->altitude);
+					application.getRemoteData().setSpeed(ahrsPacket->speed);
+
+					application.getRemoteData().setStrobeLights(ahrsPacket->strobeLights);
+
+					ahrsPacket->print();
+				}
 
 				break;
 

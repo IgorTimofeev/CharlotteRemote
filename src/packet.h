@@ -13,6 +13,11 @@ namespace pizdanc {
 		ControllerCommand = 2
 	};
 
+	enum AltimeterMode : uint8_t  {
+		QNH,
+		QNE
+	};
+
 	#pragma pack(push, 1)
 	template<typename T>
 	struct PacketTypeWrapper {
@@ -33,7 +38,7 @@ namespace pizdanc {
 		uint8_t throttle;
 		uint8_t ailerons;
 		uint8_t rudder;
-		bool strobeLights;
+		uint8_t flaps;
 
 		float pitch;
 		float roll;
@@ -42,33 +47,21 @@ namespace pizdanc {
 		float temperature;
 		float pressure;
 
+		AltimeterMode altimeterMode;
+		float altimeterPressure;
+
+		float altitude;
+		float speed;
+
+		bool strobeLights;
+
 		void print() const {
-			Serial.print("[AHRSPacket] throttle: ");
-			Serial.println(throttle);
-
-			Serial.print("[AHRSPacket] ailerons: ");
-			Serial.println(ailerons);
-
-			Serial.print("[AHRSPacket] rudder: ");
-			Serial.println(rudder);
-
-			Serial.print("[AHRSPacket] strobeLights: ");
-			Serial.println(strobeLights);
-
-			Serial.print("[AHRSPacket] pitch: ");
-			Serial.println(pitch);
-
-			Serial.print("[AHRSPacket] roll: ");
-			Serial.println(roll);
-
-			Serial.print("[AHRSPacket] yaw: ");
-			Serial.println(yaw);
-
-			Serial.print("[AHRSPacket] temperature: ");
-			Serial.println(temperature);
-
-			Serial.print("[AHRSPacket] pressure: ");
-			Serial.println(pressure);
+			Serial.printf("[AHRSPacket] Throttle, ailerons, rudder, flaps: %d, %d, %d, %d\n", throttle, ailerons, rudder, flaps);
+			Serial.printf("[AHRSPacket] Pitch, roll, yaw: %f, %f, %f\n", pitch, roll, yaw);
+			Serial.printf("[AHRSPacket] Temperature, pressure: %f, %f\n", temperature, pressure);
+			Serial.printf("[AHRSPacket] Altimeter mode, pressure: %d, %f\n", altimeterMode, altimeterPressure);
+			Serial.printf("[AHRSPacket] Altitude, speed: %f, %f\n", altitude, speed);
+			Serial.printf("[AHRSPacket] Strobe lights: %d\n", strobeLights);
 		}
 	};
 	#pragma pack(pop)
@@ -78,21 +71,12 @@ namespace pizdanc {
 		uint8_t throttle;
 		uint8_t ailerons;
 		uint8_t rudder;
+		uint8_t flaps;
+
+		AltimeterMode altimeterMode;
+		float altimeterPressure;
+
 		boolean strobeLights;
-
-		void print() const {
-			Serial.print("throttle: ");
-			Serial.println(throttle);
-
-			Serial.print("ailerons: ");
-			Serial.println(ailerons);
-
-			Serial.print("rudder: ");
-			Serial.println(rudder);
-
-			Serial.print("strobeLights: ");
-			Serial.println(strobeLights);
-		}
 	};
 	#pragma pack(pop)
 }
