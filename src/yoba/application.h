@@ -8,8 +8,6 @@ namespace yoba {
 		public:
 			Application(
 				const Size &resolution,
-				const uint8_t &touchSdaPin,
-				const uint8_t &touchSclPin,
 				const uint8_t &touchRstPin,
 				const uint8_t &touchIntPin
 			);

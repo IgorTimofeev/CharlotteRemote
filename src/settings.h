@@ -7,21 +7,24 @@
 #include "cstdint"
 
 namespace pizdanc {
-	class Settings {
-		public:
-			class Pinout {
-				public:
-					class Transceiver {
-						public:
-							static const uint8_t chipSelect = 4;
-							static const uint8_t reset = 33;
-							static const uint8_t busy = 25;
-					};
-			};
+	namespace settings {
+		namespace pinout {
+			namespace transceiver {
+				constexpr uint8_t chipSelect = 4;
+				constexpr uint8_t reset = 33;
+				constexpr uint8_t busy = 25;
+			}
 
-			class Transceiver {
-				public:
-					static const uint32_t packetHeader = 0x506C416E;
-			};
-	};
+			namespace screen {
+				namespace touch {
+					constexpr uint8_t reset = 32;
+					constexpr uint8_t interrupt = 26;
+				}
+			}
+		}
+
+		namespace transceiver {
+			constexpr uint32_t packetHeader = 0x506C416E;
+		}
+	}
 }

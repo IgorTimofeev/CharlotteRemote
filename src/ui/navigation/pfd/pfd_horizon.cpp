@@ -224,7 +224,7 @@ void PFDHorizon::onRender(Screen &screen) {
 	// Dot
 	screen.renderRectangle(
 		Bounds(
-			center.getX() + birdThickness / 2,
+			center.getX() + birdThickness / 2 - birdThickness / 2,
 			center.getY() - birdThickness / 2,
 			birdThickness,
 			birdThickness

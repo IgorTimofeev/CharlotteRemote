@@ -6,16 +6,12 @@
 namespace yoba {
 	Screen::Screen(
 		const Size &resolution,
-		const uint8_t &touchSdaPin,
-		const uint8_t &touchSclPin,
 		const uint8_t &touchRstPin,
 		const uint8_t &touchIntPin
 	) :
 		_resolution(resolution),
 		_touchIntPin(touchIntPin),
 		_touchPanel(FT6336U(
-			(int8_t) touchSdaPin,
-			(int8_t) touchSclPin,
 			touchRstPin,
 			touchIntPin
 		))

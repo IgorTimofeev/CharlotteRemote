@@ -78,7 +78,7 @@ namespace pizdanc {
 		uint8_t wrapperLength = sizeof(wrapper);
 		uint8_t encryptedWrapperLength = wrapperLength + 16 - (wrapperLength % 16);
 
-		auto header = Settings::Transceiver::packetHeader;
+		auto header = settings::transceiver::packetHeader;
 		uint8_t headerLength = sizeof(header);
 		uint8_t totalLength = wrapperLength + headerLength;
 
@@ -118,12 +118,12 @@ namespace pizdanc {
 		auto header = ((uint32_t *) sx1262BufferPtr)[0];
 
 		// Checking header
-		if (header != Settings::Transceiver::packetHeader) {
+		if (header != settings::transceiver::packetHeader) {
 			Serial.printf("[Transceiver] Unsupported header: %02X", header);
 			return;
 		}
 
-		uint8_t headerLength = sizeof(Settings::Transceiver::packetHeader);
+		uint8_t headerLength = sizeof(settings::transceiver::packetHeader);
 		sx1262BufferPtr += headerLength;
 
 		Serial.println("[Transceiver] Decrypting packet");

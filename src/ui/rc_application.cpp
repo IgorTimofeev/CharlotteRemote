@@ -2,6 +2,7 @@
 #include "rc_application.h"
 #include "resources/fonts.h"
 #include "ui/navigation/side_bar.h"
+#include "settings.h"
 
 using namespace yoba;
 
@@ -9,10 +10,8 @@ namespace pizdanc {
 	RCApplication::RCApplication() :
 		Application(
 			Size(TFT_HEIGHT, TFT_WIDTH),
-			21,
-			22,
-			32,
-			26
+			settings::pinout::screen::touch::reset,
+			settings::pinout::screen::touch::interrupt
 		)
 	{
 

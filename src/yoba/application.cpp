@@ -5,15 +5,11 @@
 namespace yoba {
 	Application::Application(
 		const Size &resolution,
-		const uint8_t &touchSdaPin,
-		const uint8_t &touchSclPin,
 		const uint8_t &touchRstPin,
 		const uint8_t &touchIntPin
 	) :
 		_screen(
 			resolution,
-			touchSdaPin,
-			touchSclPin,
 			touchRstPin,
 			touchIntPin
 		)

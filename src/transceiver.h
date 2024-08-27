@@ -19,9 +19,9 @@ namespace pizdanc {
 
 		private:
 			SX126x _sx1262 = SX126x(
-				Settings::Pinout::Transceiver::chipSelect,
-				Settings::Pinout::Transceiver::reset,
-				Settings::Pinout::Transceiver::busy
+				settings::pinout::transceiver::chipSelect,
+				settings::pinout::transceiver::reset,
+				settings::pinout::transceiver::busy
 			);
 
 			uint8_t _sx1262Buffer[255] {};
