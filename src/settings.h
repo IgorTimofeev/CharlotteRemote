@@ -36,7 +36,7 @@ namespace pizdanc {
 		}
 
 		namespace transceiver {
-			const uint32_t tickInterval = 0;
+			const uint32_t tickInterval = 1000 / 60;
 
 			const uint32_t packetHeader = 0x506C416E;
 			const float frequency = 915;
