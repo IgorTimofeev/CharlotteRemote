@@ -93,12 +93,11 @@ namespace pizdanc {
 			static RCApplication& getInstance();
 
 			void tick() override;
-			void onRender() override;
 			void begin();
 
 			LocalData& getLocalData();
 			RemoteData& getRemoteData();
-			OnboardLED& getOnboardLed();
+			OnboardLED& getOnboardLED();
 			Transceiver& getTransceiver();
 
 		private:

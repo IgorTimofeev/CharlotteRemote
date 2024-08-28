@@ -57,14 +57,14 @@ namespace yoba {
 		if (millis() > _tickDeadline) {
 			onTick();
 
-			_tickDeadline = millis() + 1000 / _tps;
+			_tickDeadline = millis() + _tickInterval;
 		}
 
 		// Render
 		if (millis() > _renderDeadline) {
 			onRender();
 
-			_renderDeadline = millis() + 1000 / _fps;
+			_renderDeadline = millis() + _renderInterval;
 		}
 	}
 
@@ -77,5 +77,21 @@ namespace yoba {
 		_workspace.measure(_screen);
 		_workspace.arrange();
 		_workspace.render(_screen);
+	}
+
+	uint32_t Application::getTickInterval() const {
+		return _tickInterval;
+	}
+
+	void Application::setTickInterval(uint32_t tickInterval) {
+		_tickInterval = tickInterval;
+	}
+
+	uint32_t Application::getRenderInterval() const {
+		return _renderInterval;
+	}
+
+	void Application::setRenderInterval(uint32_t renderInterval) {
+		_renderInterval = renderInterval;
 	}
 }

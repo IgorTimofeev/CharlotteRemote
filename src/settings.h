@@ -32,7 +32,8 @@ namespace pizdanc {
 		}
 
 		namespace application {
-			const uint32_t tickBudget = 1000 / 60;
+			const uint32_t tickInterval = 1000 / 60;
+			const uint32_t renderInterval = 1000 / 60;
 		}
 
 		namespace transceiver {

@@ -11,7 +11,6 @@ namespace pizdanc {
 	class RCApplication;
 
 	enum TransceiverMode : uint8_t {
-		Idle,
 		Transmit,
 		StartReceive,
 		Receive
@@ -39,7 +38,7 @@ namespace pizdanc {
 
 			uint8_t _sx1262Buffer[256] {};
 
-			TransceiverMode _mode = TransceiverMode::Idle;
+			TransceiverMode _mode = TransceiverMode::StartReceive;
 			static volatile bool _canOperate;
 			ICACHE_RAM_ATTR static void onDio1Action();
 			uint32_t _tickDeadline = 0;

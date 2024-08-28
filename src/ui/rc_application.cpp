@@ -13,7 +13,8 @@ namespace pizdanc {
 			settings::pinout::screen::touch::interrupt
 		)
 	{
-
+		setTickInterval(settings::application::tickInterval);
+		setRenderInterval(settings::application::renderInterval);
 	}
 
 	void RCApplication::begin() {
@@ -47,17 +48,11 @@ namespace pizdanc {
 		_transceiver.tick(*this);
 		_onboardLED.tick();
 
-//		uint32_t tickCost = millis() - startTime;
-
+//		uint32_t duration = millis() - startTime;
+//
 //		// Svit slip u stenki.........
-//		if (tickCost < settings::application::tickBudget)
-//			delay(settings::application::tickBudget - tickCost);
-	}
-
-	void RCApplication::onRender() {
-//		_piano.renderStrip();
-
-		Application::onRender();
+//		if (duration < settings::application::tickInterval)
+//			delay(settings::application::tickInterval - duration);
 	}
 
 	RCApplication& RCApplication::getInstance() {
@@ -65,7 +60,6 @@ namespace pizdanc {
 
 		return instance;
 	}
-
 
 	// ------------------------- Data -------------------------
 
@@ -77,7 +71,7 @@ namespace pizdanc {
 		return _remoteData;
 	}
 
-	OnboardLED &RCApplication::getOnboardLed() {
+	OnboardLED &RCApplication::getOnboardLED() {
 		return _onboardLED;
 	}
 

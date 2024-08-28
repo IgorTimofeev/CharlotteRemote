@@ -33,38 +33,34 @@ namespace pizdanc {
 
 		_sx1262.setDio1Action(onDio1Action);
 
-		_mode = TransceiverMode::Receive;
+		_mode = TransceiverMode::StartReceive;
 	}
 
 	void Transceiver::tick(RCApplication &application) {
 		if (!_canOperate || millis() < _deadline)
 			return;
 
-//		send(
-//			PacketType::ControllerCommand,
-//			ControllerCommandPacket{
-//				.throttle = 1,
-//				.ailerons = 2,
-//				.rudder = 3,
-//
-//				.strobeLights = true
-//			}
-//		);
-
 		switch (_mode) {
-			case Idle:
-
-				break;
 			case Transmit:
+				//		send(
+				//			PacketType::ControllerCommand,
+				//			ControllerCommandPacket{
+				//				.throttle = 1,
+				//				.ailerons = 2,
+				//				.rudder = 3,
+				//
+				//				.strobeLights = true
+				//			}
+				//		);
 
 				break;
 
 			case StartReceive:
 				startReceive();
+				break;
 
 			case Receive:
 				receive(application);
-
 				break;
 		}
 
@@ -118,79 +114,83 @@ namespace pizdanc {
 	}
 
 	void Transceiver::startReceive() {
+		_mode = TransceiverMode::Receive;
 		_canOperate = false;
 
 		auto state = _sx1262.startReceive();
 
-		if (state == RADIOLIB_ERR_NONE) {
-			_mode = TransceiverMode::Receive;
-		}
-		else {
-			Serial.printf("[Transceiver] startReceive() failed with code: %d\n", state);
+		if (state != RADIOLIB_ERR_NONE) {
+			Serial.printf("[Transceiver] startReceive() failed with code %d\n", state);
 		}
 	}
 
 	void Transceiver::receive(RCApplication &application) {
-		auto packetLength = _sx1262.getPacketLength();
+		_mode = TransceiverMode::StartReceive;
 
-		if (packetLength > 0) {
-			auto state = _sx1262.readData(_sx1262Buffer, packetLength);
+		// Putting transceiver to standby mode while reading
+		auto state = _sx1262.standby();
 
-			if (state == RADIOLIB_ERR_NONE) {
-				// Checking header
-				auto header = ((uint32_t*) &_sx1262Buffer)[0];
-				uint8_t headerLength = sizeof(settings::transceiver::packetHeader);
+		if (state == RADIOLIB_ERR_NONE) {
+			// Checking if we have packet
+			auto packetLength = _sx1262.getPacketLength();
 
-				if (header == settings::transceiver::packetHeader) {
-					uint8_t encryptedLength = packetLength - headerLength;
+			if (packetLength > 0) {
+				// Reading data
+				state = _sx1262.readData(_sx1262Buffer, packetLength);
 
-					// Decrypting
-					auto aes = esp_aes_context();
-					esp_aes_init(&aes);
-					esp_aes_setkey(&aes, _AESKey, sizeof(_AESKey) * 8);
+				if (state == RADIOLIB_ERR_NONE) {
+					// Checking header
+					auto header = ((uint32_t *) &_sx1262Buffer)[0];
+					uint8_t headerLength = sizeof(settings::transceiver::packetHeader);
 
-					memcpy(_AESIVCopy, _AESIV, sizeof(_AESIV));
+					if (header == settings::transceiver::packetHeader) {
+						uint8_t encryptedLength = packetLength - headerLength;
 
-					auto decryptState = esp_aes_crypt_cbc(
-						&aes,
-						ESP_AES_DECRYPT,
-						encryptedLength,
-						_AESIVCopy,
-						(uint8_t*) &_sx1262Buffer + headerLength,
-						_AESBuffer
-					);
+						// Decrypting
+						auto aes = esp_aes_context();
+						esp_aes_init(&aes);
+						esp_aes_setkey(&aes, _AESKey, sizeof(_AESKey) * 8);
 
-					esp_aes_free(&aes);
+						memcpy(_AESIVCopy, _AESIV, sizeof(_AESIV));
 
-					if (decryptState == 0) {
-						_rssi = _sx1262.getRSSI();
-						_snr = _sx1262.getSNR();
+						auto decryptState = esp_aes_crypt_cbc(
+							&aes,
+							ESP_AES_DECRYPT,
+							encryptedLength,
+							_AESIVCopy,
+							(uint8_t *) &_sx1262Buffer + headerLength,
+							_AESBuffer
+						);
 
-						parsePacket(application, _AESBuffer);
+						esp_aes_free(&aes);
+
+						if (decryptState == 0) {
+							_rssi = _sx1262.getRSSI();
+							_snr = _sx1262.getSNR();
+
+							parsePacket(application, _AESBuffer);
+						}
+						else {
+							Serial.printf("[Transceiver] Decrypting failed: %d\n", encryptedLength);
+						}
+					} else {
+						Serial.printf("[Transceiver] Unsupported header: %02X\n", header);
 					}
-					else {
-						Serial.printf("Decrypting failed: %d\n", encryptedLength);
-					}
+
+					application.getOnboardLED().blink();
+				} else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
+					Serial.println("[Transceiver] readData() failed, CRC error");
 				}
 				else {
-					Serial.printf("[Transceiver] Unsupported header: %02X\n", header);
+					Serial.printf("[Transceiver] readData() failed with code %d\n", state);
 				}
-
-				application.getOnboardLed().blink();
-			}
-			else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
-				Serial.println("[Transceiver] Receive failed, CRC error");
-			}
-			else {
-				Serial.print("[Transceiver] Receive failed, code ");
-				Serial.println(state);
+			} else {
+				Serial.println("[Transceiver] Got zero packet length");
 			}
 		}
 		else {
-			Serial.printf("[Transceiver] Got zero packet length");
+			Serial.printf("[Transceiver] standby() failed with code %d\n", state);
 		}
-
-		_mode = TransceiverMode::StartReceive;
 	}
 
 	void Transceiver::parsePacket(RCApplication &application, uint8_t *bufferPtr) {
