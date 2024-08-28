@@ -231,4 +231,21 @@ void PFDHorizon::onRender(Screen &screen) {
 		),
 		&Theme::bg1
 	);
+
+	// Radio
+	char buffer[255];
+
+	sprintf(buffer, "RSSI: %.2f dBm", app.getTransceiver().getRssi());
+	screen.renderText(
+		Point(bounds.getX() + 10, bounds.getY() + 10),
+		&Theme::fg1,
+		String(buffer)
+	);
+
+	sprintf(buffer, "SNR: %.2f dB", app.getTransceiver().getSnr());
+	screen.renderText(
+		Point(bounds.getX() + 10, bounds.getY() + 20),
+		&Theme::fg1,
+		String(buffer)
+	);
 }

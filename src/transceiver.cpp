@@ -133,14 +133,10 @@ namespace pizdanc {
 	void Transceiver::receive(RCApplication &application) {
 		auto packetLength = _sx1262.getPacketLength();
 
-		Serial.printf("[Transceiver] Got packet of %d bytes\n", packetLength);
-
 		if (packetLength > 0) {
 			auto state = _sx1262.readData(_sx1262Buffer, packetLength);
 
 			if (state == RADIOLIB_ERR_NONE) {
-				Serial.printf("[Transceiver] Got packet of %d bytes\n", packetLength);
-
 				// Checking header
 				auto header = ((uint32_t*) &_sx1262Buffer)[0];
 				uint8_t headerLength = sizeof(settings::transceiver::packetHeader);
@@ -167,6 +163,9 @@ namespace pizdanc {
 					esp_aes_free(&aes);
 
 					if (decryptState == 0) {
+						_rssi = _sx1262.getRSSI();
+						_snr = _sx1262.getSNR();
+
 						parsePacket(application, _AESBuffer);
 					}
 					else {
@@ -186,6 +185,9 @@ namespace pizdanc {
 				Serial.print("[Transceiver] Receive failed, code ");
 				Serial.println(state);
 			}
+		}
+		else {
+			Serial.printf("[Transceiver] Got zero packet length");
 		}
 
 		_mode = TransceiverMode::StartReceive;
@@ -232,5 +234,13 @@ namespace pizdanc {
 
 				break;
 		}
+	}
+
+	float Transceiver::getRssi() const {
+		return _rssi;
+	}
+
+	float Transceiver::getSnr() const {
+		return _snr;
 	}
 }

@@ -99,6 +99,7 @@ namespace pizdanc {
 			LocalData& getLocalData();
 			RemoteData& getRemoteData();
 			OnboardLED& getOnboardLed();
+			Transceiver& getTransceiver();
 
 		private:
 			LocalData _localData = LocalData();

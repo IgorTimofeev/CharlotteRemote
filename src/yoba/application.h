@@ -49,8 +49,8 @@ namespace yoba {
 			Workspace _workspace;
 			Screen _screen;
 
-			uint16_t _tps = 60;
-			uint16_t _fps = 60;
+			uint16_t _tps = 30;
+			uint16_t _fps = 30;
 
 			uint32_t _tickDeadline = 0;
 			uint32_t _renderDeadline = 0;

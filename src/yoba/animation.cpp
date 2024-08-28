@@ -13,7 +13,7 @@ namespace yoba {
 	}
 
 	void Animation::start() {
-		_start = micros();
+		_start = millis();
 	}
 
 	void Animation::stop() {
@@ -21,7 +21,7 @@ namespace yoba {
 	}
 
 	bool Animation::tick() {
-		double position = (double) (micros() - _start) / (double) _duration;
+		double position = (double) (millis() - _start) / (double) _duration;
 
 		if (position > 1)
 			position = 1;

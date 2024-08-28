@@ -34,7 +34,7 @@ namespace pizdanc {
 	}
 
 	void RCApplication::tick() {
-		uint32_t startTime = millis();
+//		uint32_t startTime = millis();
 
 		Application::tick();
 
@@ -47,11 +47,11 @@ namespace pizdanc {
 		_transceiver.tick(*this);
 		_onboardLED.tick();
 
-		uint32_t tickCost = millis() - startTime;
+//		uint32_t tickCost = millis() - startTime;
 
-		// Svit slip u stenki.........
-		if (tickCost < settings::application::tickBudget)
-			delay(settings::application::tickBudget - tickCost);
+//		// Svit slip u stenki.........
+//		if (tickCost < settings::application::tickBudget)
+//			delay(settings::application::tickBudget - tickCost);
 	}
 
 	void RCApplication::onRender() {
@@ -79,6 +79,10 @@ namespace pizdanc {
 
 	OnboardLED &RCApplication::getOnboardLed() {
 		return _onboardLED;
+	}
+
+	Transceiver& RCApplication::getTransceiver() {
+		return _transceiver;
 	}
 
 	float RemoteData::getTemperature() const {

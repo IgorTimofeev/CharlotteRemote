@@ -24,6 +24,11 @@ namespace pizdanc {
 			void begin();
 			void tick(RCApplication& application);
 
+
+			float getRssi() const;
+
+			float getSnr() const;
+
 		private:
 			SX1262 _sx1262 = new Module(
 				settings::pinout::transceiver::chipSelect,
@@ -45,9 +50,9 @@ namespace pizdanc {
 			uint8_t _AESBuffer[sizeof(_sx1262Buffer)] {};
 
 			// Received Signal Strength Indicator
-			int8_t _rssi = 0;
+			float _rssi = 0;
 			// Signal-to-Noise Ratio
-			int8_t _snr = 0;
+			float _snr = 0;
 
 			uint32_t _deadline = 0;
 

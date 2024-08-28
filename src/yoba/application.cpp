@@ -54,17 +54,17 @@ namespace yoba {
 
 	void Application::tick() {
 		// Tick
-		if (micros() > _tickDeadline) {
+		if (millis() > _tickDeadline) {
 			onTick();
 
-			_tickDeadline = micros() + 1000000 / _tps;
+			_tickDeadline = millis() + 1000 / _tps;
 		}
 
 		// Render
-		if (micros() > _renderDeadline) {
+		if (millis() > _renderDeadline) {
 			onRender();
 
-			_renderDeadline = micros() + 1000000 / _fps;
+			_renderDeadline = millis() + 1000 / _fps;
 		}
 	}
 
