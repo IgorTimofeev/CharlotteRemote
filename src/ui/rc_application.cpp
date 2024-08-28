@@ -29,28 +29,29 @@ namespace pizdanc {
 //		_pitchHall.begin();
 //		_rollHall.begin();
 
-		// Transceiver
 		_transceiver.begin();
+		_onboardLED.begin();
 	}
 
-	uint32_t _testDeadline = 0;
+	void RCApplication::tick() {
+		uint32_t startTime = millis();
 
-	void RCApplication::onTick() {
-		Application::onTick();
+		Application::tick();
 
-		if (millis() > _testDeadline) {
 //			setSpeed(_rollHall.readSmoothFloat() * 40.0f);
 //			setAltitude(_pitchHall.readSmoothFloat() * 20.0f);
 //
 //			setRoll((_rollHall.readSmoothFloat() * 2.0f - 1.0f) * (float) HALF_PI);
 //			setPitch((_pitchHall.readSmoothFloat() * 2.0f - 1.0f) * (float) HALF_PI);
 
-			getWorkspace().invalidate();
-
-			_testDeadline = millis() + 50;
-		}
-
 		_transceiver.tick(*this);
+		_onboardLED.tick();
+
+		uint32_t tickCost = millis() - startTime;
+
+		// Svit slip u stenki.........
+		if (tickCost < settings::application::tickBudget)
+			delay(settings::application::tickBudget - tickCost);
 	}
 
 	void RCApplication::onRender() {
@@ -74,6 +75,10 @@ namespace pizdanc {
 
 	RemoteData &RCApplication::getRemoteData() {
 		return _remoteData;
+	}
+
+	OnboardLED &RCApplication::getOnboardLed() {
+		return _onboardLED;
 	}
 
 	float RemoteData::getTemperature() const {

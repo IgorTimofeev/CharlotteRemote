@@ -3,6 +3,7 @@
 #include "yoba/application.h"
 #include "yoba/hardware/potentiometer.h"
 #include "transceiver.h"
+#include "onboard_led.h"
 
 using namespace yoba;
 
@@ -91,16 +92,18 @@ namespace pizdanc {
 
 			static RCApplication& getInstance();
 
-			void onTick() override;
+			void tick() override;
 			void onRender() override;
 			void begin();
 
-			LocalData &getLocalData();
-			RemoteData &getRemoteData();
+			LocalData& getLocalData();
+			RemoteData& getRemoteData();
+			OnboardLED& getOnboardLed();
 
 		private:
 			LocalData _localData = LocalData();
 			RemoteData _remoteData = RemoteData();
+			OnboardLED _onboardLED = OnboardLED();
 //
 //			Potentiometer _pitchHall;
 //			Potentiometer _rollHall;
