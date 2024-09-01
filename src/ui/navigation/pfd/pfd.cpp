@@ -203,14 +203,11 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 
 	// Current speed
 	char chars[5];
-	sprintf(chars, "%.1f", speed);
+	sprintf(chars, "%.0f", speed);
 	text = String(chars);
 	textSize = screen.measureText(text);
 
-	uint16_t currentHeight = 20;
-	const uint8_t triangleWidth = 8;
-
-	y = centerY - currentHeight / 2;
+	y = centerY - currentValueHeight / 2;
 
 	// Triangle
 	screen.renderTriangle(
@@ -219,12 +216,12 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 			centerY
 		),
 		Point(
-			bounds.getX2() - triangleWidth,
+			bounds.getX2() - currentValueTriangleWidth,
 			y
 		),
 		Point(
-			bounds.getX2() - triangleWidth,
-			y + currentHeight - 1
+			bounds.getX2() - currentValueTriangleWidth,
+			y + currentValueHeight - 1
 		),
 		&Theme::bg3
 	);
@@ -234,8 +231,8 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 		Bounds(
 			bounds.getX(),
 			y,
-			bounds.getWidth() - triangleWidth,
-			currentHeight
+			bounds.getWidth() - currentValueTriangleWidth,
+			currentValueHeight
 		),
 		&Theme::bg3
 	);
@@ -243,8 +240,8 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 	// Text
 	screen.renderText(
 		Point(
-			bounds.getX2() - textSize.getWidth() - 5,
-			y + currentHeight / 2 - textSize.getHeight() / 2
+			bounds.getX2() - textSize.getWidth() - currentValueTriangleWidth,
+			y + currentValueHeight / 2 - textSize.getHeight() / 2
 		),
 		&Theme::fg1,
 		text
@@ -604,19 +601,16 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 		bounds.getX() + lineSizeSmall,
 		centerY,
 		altitudeUnitPixels,
-		app.getLocalData().getSpeedTrend()
+		app.getLocalData().getAltitudeTrend()
 	);
 
 	// Current altitude
 	char buffer[8];
-	sprintf(buffer, "%.1f", altitude);
+	sprintf(buffer, "%.0f", altitude);
 	text = String(buffer);
 	textSize = screen.measureText(text);
 
-	altitudeHeight = 20;
-	y = centerY - altitudeHeight / 2;
-
-	const uint8_t triangleWidth = 8;
+	y = centerY - currentValueHeight / 2;
 
 	// Triangle
 	screen.renderTriangle(
@@ -625,12 +619,12 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 			centerY
 		),
 		Point(
-			x + triangleWidth - 1,
+			x + currentValueTriangleWidth - 1,
 			y
 		),
 		Point(
-			x + triangleWidth - 1,
-			y + altitudeHeight - 1
+			x + currentValueTriangleWidth - 1,
+			y + currentValueHeight - 1
 		),
 		&Theme::bg3
 	);
@@ -638,10 +632,10 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 	// Rect
 	screen.renderRectangle(
 		Bounds(
-			x + triangleWidth,
+			x + currentValueTriangleWidth,
 			y,
-			bounds.getWidth() - triangleWidth,
-			altitudeHeight
+			bounds.getWidth() - currentValueTriangleWidth,
+			currentValueHeight
 		),
 		&Theme::bg3
 	);
@@ -649,8 +643,8 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 	// Text
 	screen.renderText(
 		Point(
-			x + triangleWidth,
-			y + altitudeHeight / 2 - textSize.getHeight() / 2
+			x + currentValueTriangleWidth,
+			y + currentValueHeight / 2 - textSize.getHeight() / 2
 		),
 		&Theme::fg1,
 		text

@@ -65,7 +65,7 @@ namespace pizdanc {
 				// Red
 				TrueColor(0xff0000).to16Bit(),
 				// Purple
-				TrueColor(0xec04ee).to16Bit(),
+				TrueColor(0xff00ff).to16Bit(),
 				// Green
 				TrueColor(0x008100).to16Bit(),
 				// Yellow

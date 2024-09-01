@@ -30,6 +30,9 @@ class PFD : public Element {
 		const uint16_t lineSizeBig = 8;
 		const uint16_t lineSizeSmall = 5;
 
+		const uint16_t currentValueHeight = 20;
+		const uint8_t currentValueTriangleWidth = 8;
+
 		const uint8_t speedUnitPixels = 8;
 		const uint8_t speedStepUnits = 1;
 		const uint8_t speedStepUnitsBig = 5;
@@ -37,15 +40,15 @@ class PFD : public Element {
 		const uint16_t speedBarWidth = 4;
 
 		const uint16_t speedStallMin = 0;
-		const uint16_t speedStallMax = 5;
+		const uint16_t speedStallMax = 10;
 
-		const uint16_t speedLandingMin = 5;
-		const uint16_t speedLandingMax = 8;
+		const uint16_t speedLandingMin = 10;
+		const uint16_t speedLandingMax = 15;
 
-		const uint16_t speedTakeOffMin = 8;
-		const uint16_t speedTakeOffMax = 12;
+		const uint16_t speedTakeOffMin = 15;
+		const uint16_t speedTakeOffMax = 30;
 
-		const uint16_t speedCruiseMin = 12;
+		const uint16_t speedCruiseMin = 30;
 		const uint16_t speedCruiseMax = 80;
 
 		const uint16_t speedOverMin = 80;

@@ -43,14 +43,14 @@ namespace pizdanc {
 			auto tickDeltaTime = (float) (millis() - _tickTime);
 
 			auto oldSpeed = _remoteData.getSpeed();
-			auto oldAltitude = _remoteData.getSpeed();
+			auto oldAltitude = _remoteData.getAltitude();
 
 			_testSpeed = _testSpeed + 1.0f * tickDeltaTime / 1000.0f;
 
 			if (_testSpeed > 1000)
 				_testSpeed = 0;
 
-			_testAltitude = _testAltitude + 1.0f * tickDeltaTime / 1000.0f;
+			_testAltitude = _testAltitude + 2.0f * tickDeltaTime / 1000.0f;
 
 			if (_testAltitude > 1000)
 				_testAltitude = 0;

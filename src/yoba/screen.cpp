@@ -92,8 +92,7 @@ namespace yoba {
 
 	void Screen::renderText(const Point &position, const Color* color, const String &text) {
 		_buffer.setTextColor(color->to16Bit());
-		_buffer.setCursor((int16_t) position.getX(), (int16_t) position.getY());
-		_buffer.print(text);
+		_buffer.drawString(text, position.getX(), position.getY());
 	}
 
 	void Screen::renderRectangle(const Bounds &bounds, uint16_t radius, const Color* color) {
