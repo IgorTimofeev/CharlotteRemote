@@ -5,7 +5,7 @@ PFDLeft::PFDLeft() {
 	setClipToBounds(true);
 }
 
-void PFDLeft::renderBar(Screen &screen, float &speed, uint16_t &centerY, int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color *color) const {
+void PFDLeft::renderSpeedBar(Screen &screen, float &speed, uint16_t &centerY, int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color *color) const {
 	int32_t fromY = centerY + (int32_t) ceil(speed / (float) stepUnits * (float) unitPixels - ((float) fromSpeed / (float) stepUnits) * (float)unitPixels);
 	int32_t toY = fromY - (int32_t) (((float) toSpeed / (float) stepUnits) * (float) unitPixels);
 
@@ -34,67 +34,67 @@ void PFDLeft::onRender(Screen &screen) {
 	float speed = app.getRemoteData().getSpeed();
 
 	// Bars
-	renderBar(
+	renderSpeedBar(
 		screen,
 		speed,
 		centerY,
-		bounds.getX2() - barWidth,
-		barWidth,
+		bounds.getX2() - speedBarWidth,
+		speedBarWidth,
 		stallSpeedMin,
 		stallSpeedMax,
 		&Theme::red
 	);
 
-	renderBar(
+	renderSpeedBar(
 		screen,
 		speed,
 		centerY,
-		bounds.getX2() - barWidth,
-		barWidth,
+		bounds.getX2() - speedBarWidth,
+		speedBarWidth,
 		landingSpeedMin,
 		landingSpeedMax,
 		&Theme::fg1
 	);
 
-	renderBar(
+	renderSpeedBar(
 		screen,
 		speed,
 		centerY,
-		bounds.getX2() - barWidth,
-		barWidth / 2,
+		bounds.getX2() - speedBarWidth,
+		speedBarWidth / 2,
 		takeOffSpeedMin,
 		takeOffSpeedMax,
 		&Theme::fg1
 	);
 
-	renderBar(
+	renderSpeedBar(
 		screen,
 		speed,
 		centerY,
-		bounds.getX2() - barWidth / 2,
-		barWidth / 2,
+		bounds.getX2() - speedBarWidth / 2,
+		speedBarWidth / 2,
 		takeOffSpeedMin,
 		takeOffSpeedMax,
 		&Theme::green
 	);
 
-	renderBar(
+	renderSpeedBar(
 		screen,
 		speed,
 		centerY,
-		bounds.getX2() - barWidth,
-		barWidth,
+		bounds.getX2() - speedBarWidth,
+		speedBarWidth,
 		cruiseSpeedMin,
 		cruiseSpeedMax,
 		&Theme::green
 	);
 
-	renderBar(
+	renderSpeedBar(
 		screen,
 		speed,
 		centerY,
-		bounds.getX2() - barWidth,
-		barWidth,
+		bounds.getX2() - speedBarWidth,
+		speedBarWidth,
 		overSpeedMin,
 		overSpeedMax,
 		&Theme::yellow

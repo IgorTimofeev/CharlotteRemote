@@ -14,7 +14,6 @@ namespace pizdanc {
 		)
 	{
 		setTickInterval(settings::application::tickInterval);
-		setRenderInterval(settings::application::renderInterval);
 	}
 
 	void RCApplication::begin() {

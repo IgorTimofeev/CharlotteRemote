@@ -12,11 +12,14 @@ class PFDLeft : public Element {
 	public:
 		PFDLeft();
 
-		void renderBar(Screen& screen, float& speed, uint16_t& centerY, int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) const;
+		void renderSpeedBar(Screen& screen, float& speed, uint16_t& centerY, int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) const;
 
 		void onRender(Screen& screen) override;
 
 	private:
+		const uint8_t leftWidth = 34;
+		const uint8_t rightWidth = 34;
+
 		const uint8_t unitPixels = 10;
 		const uint8_t stepUnits = 1;
 		const uint8_t stepUnitsBig = 5;
@@ -24,7 +27,7 @@ class PFDLeft : public Element {
 		const uint16_t lineSizeBig = 8;
 		const uint16_t lineSizeSmall = 5;
 
-		const uint16_t barWidth = 4;
+		const uint16_t speedBarWidth = 4;
 
 		const uint16_t stallSpeedMin = 0;
 		const uint16_t stallSpeedMax = 5;
