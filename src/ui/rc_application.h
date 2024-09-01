@@ -112,6 +112,8 @@ namespace pizdanc {
 
 			float _testSpeed = 0;
 			float _testAltitude = 0;
+			float _testPitch = 0;
+			float _testRoll = 0;
 
 			LocalData _localData = LocalData();
 			RemoteData _remoteData = RemoteData();

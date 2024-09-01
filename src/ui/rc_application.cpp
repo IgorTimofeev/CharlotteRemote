@@ -55,8 +55,14 @@ namespace pizdanc {
 			if (_testAltitude > 1000)
 				_testAltitude = 0;
 
+			_testRoll = _testRoll + (float) radians(5) * tickDeltaTime / 1000.0f;
+
+			if (degrees(_testRoll) > 45)
+				_testRoll = 0;
+
 			getRemoteData().setSpeed(_testSpeed);
 			getRemoteData().setAltitude(_testAltitude);
+			getRemoteData().setRoll(_testRoll);
 
 			auto newSpeed = _remoteData.getSpeed();
 			auto newAltitude = _remoteData.getAltitude();

@@ -495,9 +495,6 @@ void PFD::horizonRender(Screen &screen, const Bounds& bounds) {
 }
 
 void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
-	const uint8_t altitudeStepUnits = 1;
-	const uint8_t altitudeStepUnitsBig = 5;
-	const uint8_t altitudeUnitPixels = 10;
 	const uint8_t pressureHeight = 16;
 
 	auto& app = RCApplication::getInstance();
@@ -707,17 +704,17 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 void PFD::onRender(Screen &screen) {
 	auto& bounds = getBounds();
 
-	speedRender(screen, Bounds(
-		bounds.getX(),
-		bounds.getY(),
-		sidePanelWidth,
-		bounds.getHeight()
-	));
-
 	horizonRender(screen, Bounds(
 		bounds.getX() + sidePanelWidth,
 		bounds.getY(),
 		bounds.getWidth() - sidePanelWidth - sidePanelWidth,
+		bounds.getHeight()
+	));
+
+	speedRender(screen, Bounds(
+		bounds.getX(),
+		bounds.getY(),
+		sidePanelWidth,
 		bounds.getHeight()
 	));
 

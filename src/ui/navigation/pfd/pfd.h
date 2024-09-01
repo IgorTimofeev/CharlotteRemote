@@ -46,11 +46,15 @@ class PFD : public Element {
 		const uint16_t speedTakeOffMax = 12;
 
 		const uint16_t speedCruiseMin = 12;
-		const uint16_t speedCruiseMax = 30;
+		const uint16_t speedCruiseMax = 80;
 
 		const uint16_t speedOverMin = 80;
 		const uint16_t speedOverMax = 100;
 
 		const uint16_t speedStressMin = 100;
 		const uint16_t speedStressMax = 0xFFFF;
+
+		const uint8_t altitudeStepUnits = 1;
+		const uint8_t altitudeStepUnitsBig = 5;
+		const uint8_t altitudeUnitPixels = 8;
 };
