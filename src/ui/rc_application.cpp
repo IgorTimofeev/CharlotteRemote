@@ -45,12 +45,12 @@ namespace pizdanc {
 			auto oldSpeed = _remoteData.getSpeed();
 			auto oldAltitude = _remoteData.getAltitude();
 
-			_testSpeed = _testSpeed + 1.0f * tickDeltaTime / 1000.0f;
+			_testSpeed = _testSpeed + (float) random(0, 30) / 10.0f * tickDeltaTime / 1000.0f;
 
 			if (_testSpeed > 1000)
 				_testSpeed = 0;
 
-			_testAltitude = _testAltitude + 2.0f * tickDeltaTime / 1000.0f;
+			_testAltitude = _testAltitude + (float) random(0, 100) / 10.0f * tickDeltaTime / 1000.0f;
 
 			if (_testAltitude > 1000)
 				_testAltitude = 0;
@@ -66,10 +66,14 @@ namespace pizdanc {
 
 			auto newSpeed = _remoteData.getSpeed();
 			auto newAltitude = _remoteData.getAltitude();
-			auto trendValueFactor = _trendValueDeltaTime / tickDeltaTime;
 
-			getLocalData().setSpeedTrend((newSpeed - oldSpeed) * trendValueFactor);
-			getLocalData().setAltitudeTrend((newAltitude - oldAltitude) * trendValueFactor);
+			auto deltaSpeed = newSpeed - oldSpeed;
+			auto deltaAltitude = newAltitude - oldAltitude;
+
+			auto trendValueFactor = _trendValueDeltaTime / tickDeltaTime;
+			getLocalData().setSpeedTrend(deltaSpeed * trendValueFactor);
+			getLocalData().setAltitudeTrend(deltaAltitude * trendValueFactor);
+			getLocalData().setVerticalSpeed(deltaAltitude * 60000.0f / tickDeltaTime);
 
 			getWorkspace().invalidate();
 
@@ -229,5 +233,13 @@ namespace pizdanc {
 
 	void LocalData::setAltitudeTrend(float altitudeTrend) {
 		_altitudeTrend = altitudeTrend;
+	}
+
+	float LocalData::getVerticalSpeed() const {
+		return _verticalSpeed;
+	}
+
+	void LocalData::setVerticalSpeed(float verticalSpeed) {
+		_verticalSpeed = verticalSpeed;
 	}
 }

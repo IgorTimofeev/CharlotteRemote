@@ -155,7 +155,7 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 	String text;
 	Size textSize;
 	bool isBig;
-	const Color* lineColor = &Theme::fg4;
+	const Color* lineColor = &Theme::fg3;
 
 	do {
 		isBig = lineValue % speedStepUnitsBig == 0;
@@ -195,7 +195,7 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 	// Trend
 	renderTrendArrow(
 		screen,
-		bounds.getX2() - lineSizeSmall,
+		bounds.getX2() - lineSizeBig,
 		centerY,
 		speedUnitPixels,
 		app.getLocalData().getSpeedTrend()
@@ -499,8 +499,6 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 	uint16_t altitudeHeight = bounds.getHeight() - pressureHeight;
 
 	auto centerY = (int16_t) (altitudeHeight / 2);
-
-	// Right
 	auto x = bounds.getX();
 
 	screen.renderRectangle(
@@ -528,7 +526,7 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 	Size textSize;
 	bool isBig;
 
-	const Color* lineColor = &Theme::fg4;
+	const Color* lineColor = &Theme::fg3;
 
 	do {
 		isBig = lineValue % altitudeStepUnitsBig == 0;
@@ -598,7 +596,7 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 	// Trend
 	renderTrendArrow(
 		screen,
-		bounds.getX() + lineSizeSmall,
+		bounds.getX() + lineSizeBig,
 		centerY,
 		altitudeUnitPixels,
 		app.getLocalData().getAltitudeTrend()
@@ -695,27 +693,109 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 	);
 }
 
+void PFD::verticalSpeedRender(Screen &screen, const Bounds &bounds) {
+	auto& app = RCApplication::getInstance();
+	auto centerY = bounds.getY() + bounds.getHeight() / 2;
+
+	// Background
+	screen.renderRectangle(
+		bounds,
+		&Theme::bg3
+	);
+
+	// Lines
+	const Color* lineColor = &Theme::fg4;
+
+	int32_t y;
+	int32_t lineValue = 0;
+
+	Size textSize;
+	String text;
+	bool isBig;
+
+	auto renderLine = [&]() {
+		isBig = lineValue % verticalSpeedStepUnitsBig == 0;
+
+		if (isBig) {
+			screen.renderHorizontalLine(
+				Point(
+					bounds.getX(),
+					y
+				),
+				lineSizeBig,
+				lineColor
+			);
+
+			text = String(lineValue / 1000);
+			textSize = screen.measureText(text);
+
+			screen.renderText(
+				Point(
+					bounds.getX() + lineSizeBig + 5,
+					y - textSize.getHeight() / 2
+				),
+				lineColor,
+				text
+			);
+		}
+		else {
+			screen.renderHorizontalLine(
+				Point(
+					bounds.getX(),
+					y
+				),
+				lineSizeSmall,
+				lineColor
+			);
+		}
+
+		lineValue += verticalSpeedStepUnits;
+	};
+
+	for (y = centerY; y >= bounds.getY(); y -= verticalSpeedUnitPixels)
+		renderLine();
+
+	lineValue = verticalSpeedStepUnits;
+
+	for (y = centerY + verticalSpeedUnitPixels; y < bounds.getY2(); y += verticalSpeedUnitPixels)
+		renderLine();
+
+	// Current value
+	screen.renderLine(
+		Point(bounds.getX(), centerY - (int32_t) (app.getLocalData().getVerticalSpeed() / 100.0f * (float) verticalSpeedUnitPixels)),
+		Point(bounds.getX2(), centerY - (int32_t) (app.getLocalData().getVerticalSpeed() / 100.0f * (float) verticalSpeedRightUnitPixels)),
+		&Theme::green
+	);
+}
+
 void PFD::onRender(Screen &screen) {
 	auto& bounds = getBounds();
 
 	horizonRender(screen, Bounds(
-		bounds.getX() + sidePanelWidth,
+		bounds.getX() + speedWidth,
 		bounds.getY(),
-		bounds.getWidth() - sidePanelWidth - sidePanelWidth,
+		bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,
 		bounds.getHeight()
 	));
 
 	speedRender(screen, Bounds(
 		bounds.getX(),
 		bounds.getY(),
-		sidePanelWidth,
+		speedWidth,
 		bounds.getHeight()
 	));
 
 	altitudeRender(screen, Bounds(
-		bounds.getX2() - sidePanelWidth,
+		bounds.getX2() - altitudeWidth - verticalSpeedWidth,
 		bounds.getY(),
-		sidePanelWidth,
+		altitudeWidth,
+		bounds.getHeight()
+	));
+
+	verticalSpeedRender(screen, Bounds(
+		bounds.getX2() - verticalSpeedWidth,
+		bounds.getY(),
+		verticalSpeedWidth,
 		bounds.getHeight()
 	));
 }

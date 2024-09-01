@@ -4,6 +4,7 @@
 #include "yoba/hardware/potentiometer.h"
 #include "transceiver.h"
 #include "onboard_led.h"
+#include "../pid.h"
 
 using namespace yoba;
 
@@ -51,9 +52,14 @@ namespace pizdanc {
 			float getAltitudeTrend() const;
 			void setAltitudeTrend(float altitudeTrend);
 
+			float getVerticalSpeed() const;
+			void setVerticalSpeed(float verticalSpeed);
+
 		private:
 			float _speedTrend = 0;
 			float _altitudeTrend = 0;
+
+			float _verticalSpeed = 0;
 	};
 
 	class RemoteData : public MutualData {
@@ -118,6 +124,8 @@ namespace pizdanc {
 			LocalData _localData = LocalData();
 			RemoteData _remoteData = RemoteData();
 			OnboardLED _onboardLED = OnboardLED();
+
+
 //
 //			Potentiometer _pitchHall;
 //			Potentiometer _rollHall;

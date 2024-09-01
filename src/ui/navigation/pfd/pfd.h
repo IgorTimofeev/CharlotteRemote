@@ -22,17 +22,19 @@ class PFD : public Element {
 
 		void altitudeRender(Screen& screen, const Bounds& bounds);
 
+		void verticalSpeedRender(Screen& screen, const Bounds& bounds);
+
 		void onRender(Screen& screen) override;
 
 	private:
-		const uint8_t sidePanelWidth = 34;
-
-		const uint16_t lineSizeBig = 8;
-		const uint16_t lineSizeSmall = 5;
+		const uint16_t lineSizeBig = 5;
+		const uint16_t lineSizeSmall = 2;
 
 		const uint16_t currentValueHeight = 20;
 		const uint8_t currentValueTriangleWidth = 8;
 
+		// Speed
+		const uint8_t speedWidth = 32;
 		const uint8_t speedUnitPixels = 8;
 		const uint8_t speedStepUnits = 1;
 		const uint8_t speedStepUnitsBig = 5;
@@ -57,7 +59,16 @@ class PFD : public Element {
 		const uint16_t speedStressMin = 100;
 		const uint16_t speedStressMax = 0xFFFF;
 
+		// Altitude
+		const uint8_t altitudeWidth = 32;
 		const uint8_t altitudeStepUnits = 1;
 		const uint8_t altitudeStepUnitsBig = 5;
 		const uint8_t altitudeUnitPixels = 8;
+
+		// Vertical speed
+		const uint8_t verticalSpeedWidth = 18;
+		const uint16_t verticalSpeedStepUnits = 250;
+		const uint16_t verticalSpeedStepUnitsBig = 1000;
+		const uint16_t verticalSpeedUnitPixels = 12;
+		const uint16_t verticalSpeedRightUnitPixels = 5;
 };

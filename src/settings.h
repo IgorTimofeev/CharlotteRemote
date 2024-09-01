@@ -59,8 +59,8 @@ namespace pizdanc {
 				// Foreground
 				TrueColor(0xFFFFFF).to16Bit(),
 				TrueColor(0xDDDDDD).to16Bit(),
-				TrueColor(0xBBBBBB).to16Bit(),
 				TrueColor(0x999999).to16Bit(),
+				TrueColor(0x777777).to16Bit(),
 
 				// Red
 				TrueColor(0xff0000).to16Bit(),

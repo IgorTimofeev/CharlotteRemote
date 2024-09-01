@@ -201,28 +201,29 @@ namespace pizdanc {
 			case AircraftAHRS:
 				{
 					auto ahrsPacket = (AircraftAHRSPacket*) bufferPtr;
+					auto& remoteData = application.getRemoteData();
 
 //					ahrsPacket->print();
 
-					application.getRemoteData().setThrottle(ahrsPacket->throttle);
-					application.getRemoteData().setAilerons(ahrsPacket->ailerons);
-					application.getRemoteData().setRudder(ahrsPacket->rudder);
-					application.getRemoteData().setFlaps(ahrsPacket->flaps);
+					remoteData.setThrottle(ahrsPacket->throttle);
+					remoteData.setAilerons(ahrsPacket->ailerons);
+					remoteData.setRudder(ahrsPacket->rudder);
+					remoteData.setFlaps(ahrsPacket->flaps);
 
-					application.getRemoteData().setPitch(ahrsPacket->pitch);
-					application.getRemoteData().setRoll(ahrsPacket->roll);
-					application.getRemoteData().setYaw(ahrsPacket->yaw);
+					remoteData.setPitch(ahrsPacket->pitch);
+					remoteData.setRoll(ahrsPacket->roll);
+					remoteData.setYaw(ahrsPacket->yaw);
 
-					application.getRemoteData().setTemperature(ahrsPacket->temperature);
-					application.getRemoteData().setPressure(ahrsPacket->pressure);
+					remoteData.setTemperature(ahrsPacket->temperature);
+					remoteData.setPressure(ahrsPacket->pressure);
 
-					application.getRemoteData().setAltimeterMode(ahrsPacket->altimeterMode);
-					application.getRemoteData().setAltimeterPressure(ahrsPacket->altimeterPressure);
+					remoteData.setAltimeterMode(ahrsPacket->altimeterMode);
+					remoteData.setAltimeterPressure(ahrsPacket->altimeterPressure);
 
-					application.getRemoteData().setAltitude(ahrsPacket->altitude);
-					application.getRemoteData().setSpeed(ahrsPacket->speed);
+					remoteData.setAltitude(ahrsPacket->altitude);
+					remoteData.setSpeed(ahrsPacket->speed);
 
-					application.getRemoteData().setStrobeLights(ahrsPacket->strobeLights);
+					remoteData.setStrobeLights(ahrsPacket->strobeLights);
 
 					application.getWorkspace().invalidate();
 				}
