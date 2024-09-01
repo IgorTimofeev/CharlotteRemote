@@ -12,8 +12,6 @@ class PFD : public Element {
 	public:
 		PFD();
 
-		void speedRenderBar(Screen& screen, float& speed, uint16_t& centerY, int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) const;
-
 		void renderTrendArrow(Screen &screen, int32_t x, int32_t y, uint16_t unitPixels, float value);
 
 		void speedRender(Screen& screen, const Bounds& bounds);
@@ -31,7 +29,7 @@ class PFD : public Element {
 		const uint16_t lineSizeSmall = 2;
 
 		const uint16_t currentValueHeight = 20;
-		const uint8_t currentValueTriangleWidth = 8;
+		const uint8_t currentValueTriangleSize = 8;
 
 		// Speed
 		const uint8_t speedWidth = 32;
@@ -39,36 +37,27 @@ class PFD : public Element {
 		const uint8_t speedStepUnits = 1;
 		const uint8_t speedStepUnitsBig = 5;
 
-		const uint16_t speedBarWidth = 4;
+		const uint16_t speedBarSize = 3;
 
-		const uint16_t speedStallMin = 0;
-		const uint16_t speedStallMax = 10;
+		const uint16_t speedFlapsMin = 5;
+		const uint16_t speedFlapsMax = 30;
 
-		const uint16_t speedLandingMin = 10;
-		const uint16_t speedLandingMax = 15;
+		const uint16_t speedTurbulentMin = 10;
+		const uint16_t speedTurbulentMax = 80;
 
-		const uint16_t speedTakeOffMin = 15;
-		const uint16_t speedTakeOffMax = 30;
-
-		const uint16_t speedCruiseMin = 30;
-		const uint16_t speedCruiseMax = 80;
-
-		const uint16_t speedOverMin = 80;
-		const uint16_t speedOverMax = 100;
-
-		const uint16_t speedStressMin = 100;
-		const uint16_t speedStressMax = 0xFFFF;
+		const uint16_t speedSmoothMax = 100;
 
 		// Altitude
 		const uint8_t altitudeWidth = 32;
 		const uint8_t altitudeStepUnits = 1;
 		const uint8_t altitudeStepUnitsBig = 5;
 		const uint8_t altitudeUnitPixels = 8;
+		const uint8_t pressureHeight = 16;
 
 		// Vertical speed
 		const uint8_t verticalSpeedWidth = 18;
 		const uint16_t verticalSpeedStepUnits = 250;
 		const uint16_t verticalSpeedStepUnitsBig = 1000;
-		const uint16_t verticalSpeedUnitPixels = 12;
+		const uint16_t verticalSpeedUnitPixels = 13;
 		const uint16_t verticalSpeedRightUnitPixels = 5;
 };

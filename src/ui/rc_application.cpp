@@ -47,7 +47,7 @@ namespace pizdanc {
 
 			_testSpeed = _testSpeed + (float) random(0, 30) / 10.0f * tickDeltaTime / 1000.0f;
 
-			if (_testSpeed > 1000)
+			if (_testSpeed > 150)
 				_testSpeed = 0;
 
 			_testAltitude = _testAltitude + (float) random(0, 100) / 10.0f * tickDeltaTime / 1000.0f;

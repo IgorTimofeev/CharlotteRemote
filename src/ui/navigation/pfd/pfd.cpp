@@ -36,21 +36,6 @@ void PFD::renderTrendArrow(Screen &screen, int32_t x, int32_t y, uint16_t unitPi
 	);
 }
 
-void PFD::speedRenderBar(Screen &screen, float &speed, uint16_t &centerY, int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color *color) const {
-	int32_t fromY = centerY + (int32_t) ceil(speed / (float) speedStepUnits * (float) speedUnitPixels - ((float) fromSpeed / (float) speedStepUnits) * (float)speedUnitPixels);
-	int32_t toY = fromY - (int32_t) (((float) (toSpeed - fromSpeed) / (float) speedStepUnits) * (float) speedUnitPixels);
-
-	screen.renderRectangle(
-		Bounds(
-			x,
-			toY,
-			width,
-			fromY - toY
-		),
-		color
-	);
-}
-
 void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 	auto& app = RCApplication::getInstance();
 
@@ -64,80 +49,74 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 	float speed = app.getRemoteData().getSpeed();
 
 	// Bars
-	speedRenderBar(
-		screen,
-		speed,
-		centerY,
-		bounds.getX2() - speedBarWidth,
-		speedBarWidth,
-		speedStallMin,
-		speedStallMax,
+	const auto renderBar = [&](int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) {
+		int32_t fromY = centerY + (int32_t) ceil(speed * (float) speedUnitPixels - (float) fromSpeed * (float) speedUnitPixels);
+		int32_t height = (toSpeed - fromSpeed) * speedUnitPixels;
+
+		screen.renderRectangle(
+			Bounds(
+				x,
+				fromY - height,
+				width,
+				height
+			),
+			color
+		);
+	};
+
+	renderBar(
+		bounds.getX2() - speedBarSize,
+		speedBarSize,
+		0,
+		speedFlapsMin,
 		&Theme::red
 	);
 
-	speedRenderBar(
-		screen,
-		speed,
-		centerY,
-		bounds.getX2() - speedBarWidth,
-		speedBarWidth,
-		speedLandingMin,
-		speedLandingMax,
+	renderBar(
+		bounds.getX2() - speedBarSize,
+		speedBarSize,
+		speedFlapsMin,
+		speedTurbulentMin,
 		&Theme::fg1
 	);
 
-	speedRenderBar(
-		screen,
-		speed,
-		centerY,
-		bounds.getX2() - speedBarWidth,
-		speedBarWidth / 2,
-		speedTakeOffMin,
-		speedTakeOffMax,
+	renderBar(
+		bounds.getX2() - speedBarSize,
+		speedBarSize / 2,
+		speedTurbulentMin,
+		speedFlapsMax,
 		&Theme::fg1
 	);
 
-	speedRenderBar(
-		screen,
-		speed,
-		centerY,
-		bounds.getX2() - speedBarWidth / 2,
-		speedBarWidth / 2,
-		speedTakeOffMin,
-		speedTakeOffMax,
+	renderBar(
+		bounds.getX2() - speedBarSize / 2,
+		speedBarSize / 2,
+		speedTurbulentMin,
+		speedFlapsMax,
 		&Theme::green
 	);
 
-	speedRenderBar(
-		screen,
-		speed,
-		centerY,
-		bounds.getX2() - speedBarWidth,
-		speedBarWidth,
-		speedCruiseMin,
-		speedCruiseMax,
+	renderBar(
+		bounds.getX2() - speedBarSize,
+		speedBarSize,
+		speedFlapsMax,
+		speedTurbulentMax,
 		&Theme::green
 	);
 
-	speedRenderBar(
-		screen,
-		speed,
-		centerY,
-		bounds.getX2() - speedBarWidth,
-		speedBarWidth,
-		speedOverMin,
-		speedOverMax,
+	renderBar(
+		bounds.getX2() - speedBarSize,
+		speedBarSize,
+		speedTurbulentMax,
+		speedSmoothMax,
 		&Theme::yellow
 	);
 
-	speedRenderBar(
-		screen,
-		speed,
-		centerY,
-		bounds.getX2() - speedBarWidth,
-		speedBarWidth,
-		speedStressMin,
-		speedStressMax,
+	renderBar(
+		bounds.getX2() - speedBarSize,
+		speedBarSize,
+		speedSmoothMax,
+		speedSmoothMax * 2,
 		&Theme::red
 	);
 
@@ -163,7 +142,7 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 		if (isBig) {
 			// Line
 			screen.renderHorizontalLine(
-				Point(bounds.getWidth() - lineSizeBig, y),
+				Point(bounds.getWidth() - speedBarSize - lineSizeBig, y),
 				lineSizeBig,
 				lineColor
 			);
@@ -173,7 +152,7 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 			textSize = screen.measureText(text);
 
 			screen.renderText(
-				Point(bounds.getWidth() - lineSizeBig - 5 - textSize.getWidth(), y - textSize.getHeight() / 2),
+				Point(bounds.getWidth() - speedBarSize - lineSizeBig - 5 - textSize.getWidth(), y - textSize.getHeight() / 2),
 				lineColor,
 				text
 			);
@@ -181,7 +160,7 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 		else {
 			// Line
 			screen.renderHorizontalLine(
-				Point(bounds.getWidth() - lineSizeSmall, y),
+				Point(bounds.getWidth() - speedBarSize - lineSizeSmall, y),
 				lineSizeSmall,
 				lineColor
 			);
@@ -195,7 +174,7 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 	// Trend
 	renderTrendArrow(
 		screen,
-		bounds.getX2() - lineSizeBig,
+		bounds.getX2() - speedBarSize - lineSizeBig,
 		centerY,
 		speedUnitPixels,
 		app.getLocalData().getSpeedTrend()
@@ -216,11 +195,11 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 			centerY
 		),
 		Point(
-			bounds.getX2() - currentValueTriangleWidth,
+			bounds.getX2() - currentValueTriangleSize,
 			y
 		),
 		Point(
-			bounds.getX2() - currentValueTriangleWidth,
+			bounds.getX2() - currentValueTriangleSize,
 			y + currentValueHeight - 1
 		),
 		&Theme::bg3
@@ -231,7 +210,7 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 		Bounds(
 			bounds.getX(),
 			y,
-			bounds.getWidth() - currentValueTriangleWidth,
+			bounds.getWidth() - currentValueTriangleSize,
 			currentValueHeight
 		),
 		&Theme::bg3
@@ -240,7 +219,7 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 	// Text
 	screen.renderText(
 		Point(
-			bounds.getX2() - textSize.getWidth() - currentValueTriangleWidth,
+			bounds.getX2() - textSize.getWidth() - currentValueTriangleSize,
 			y + currentValueHeight / 2 - textSize.getHeight() / 2
 		),
 		&Theme::fg1,
@@ -492,8 +471,6 @@ void PFD::horizonRender(Screen &screen, const Bounds& bounds) {
 }
 
 void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
-	const uint8_t pressureHeight = 16;
-
 	auto& app = RCApplication::getInstance();
 
 	uint16_t altitudeHeight = bounds.getHeight() - pressureHeight;
@@ -617,11 +594,11 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 			centerY
 		),
 		Point(
-			x + currentValueTriangleWidth - 1,
+			x + currentValueTriangleSize - 1,
 			y
 		),
 		Point(
-			x + currentValueTriangleWidth - 1,
+			x + currentValueTriangleSize - 1,
 			y + currentValueHeight - 1
 		),
 		&Theme::bg3
@@ -630,9 +607,9 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 	// Rect
 	screen.renderRectangle(
 		Bounds(
-			x + currentValueTriangleWidth,
+			x + currentValueTriangleSize,
 			y,
-			bounds.getWidth() - currentValueTriangleWidth,
+			bounds.getWidth() - currentValueTriangleSize,
 			currentValueHeight
 		),
 		&Theme::bg3
@@ -641,7 +618,7 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 	// Text
 	screen.renderText(
 		Point(
-			x + currentValueTriangleWidth,
+			x + currentValueTriangleSize,
 			y + currentValueHeight / 2 - textSize.getHeight() / 2
 		),
 		&Theme::fg1,
