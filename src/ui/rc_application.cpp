@@ -13,6 +13,8 @@ namespace pizdanc {
 			settings::pinout::screen::touch::interrupt
 		)
 	{
+		_tickTime = millis();
+
 		setTickInterval(settings::application::tickInterval);
 	}
 
@@ -34,24 +36,41 @@ namespace pizdanc {
 	}
 
 	void RCApplication::tick() {
-//		uint32_t startTime = millis();
-
-		Application::tick();
-
-//			setSpeed(_rollHall.readSmoothFloat() * 40.0f);
-//			setAltitude(_pitchHall.readSmoothFloat() * 20.0f);
-//
-//			setRoll((_rollHall.readSmoothFloat() * 2.0f - 1.0f) * (float) HALF_PI);
-//			setPitch((_pitchHall.readSmoothFloat() * 2.0f - 1.0f) * (float) HALF_PI);
-
 		_transceiver.tick(*this);
 		_onboardLED.tick();
 
-//		uint32_t duration = millis() - startTime;
-//
-//		// Svit slip u stenki.........
-//		if (duration < settings::application::tickInterval)
-//			delay(settings::application::tickInterval - duration);
+		if (millis() > _tickTime + settings::application::tickInterval) {
+			auto tickDeltaTime = (float) (millis() - _tickTime);
+
+			auto oldSpeed = _remoteData.getSpeed();
+			auto oldAltitude = _remoteData.getSpeed();
+
+			_testSpeed = _testSpeed + 1.0f * tickDeltaTime / 1000.0f;
+
+			if (_testSpeed > 1000)
+				_testSpeed = 0;
+
+			_testAltitude = _testAltitude + 1.0f * tickDeltaTime / 1000.0f;
+
+			if (_testAltitude > 1000)
+				_testAltitude = 0;
+
+			getRemoteData().setSpeed(_testSpeed);
+			getRemoteData().setAltitude(_testAltitude);
+
+			auto newSpeed = _remoteData.getSpeed();
+			auto newAltitude = _remoteData.getAltitude();
+			auto trendValueFactor = _trendValueDeltaTime / tickDeltaTime;
+
+			getLocalData().setSpeedTrend((newSpeed - oldSpeed) * trendValueFactor);
+			getLocalData().setAltitudeTrend((newAltitude - oldAltitude) * trendValueFactor);
+
+			getWorkspace().invalidate();
+
+			_tickTime = millis();
+		}
+
+		Application::tick();
 	}
 
 	RCApplication& RCApplication::getInstance() {
@@ -188,5 +207,21 @@ namespace pizdanc {
 
 	void MutualData::setStrobeLights(bool strobeLights) {
 		_strobeLights = strobeLights;
+	}
+
+	float LocalData::getSpeedTrend() const {
+		return _speedTrend;
+	}
+
+	void LocalData::setSpeedTrend(float speedTrend) {
+		_speedTrend = speedTrend;
+	}
+
+	float LocalData::getAltitudeTrend() const {
+		return _altitudeTrend;
+	}
+
+	void LocalData::setAltitudeTrend(float altitudeTrend) {
+		_altitudeTrend = altitudeTrend;
 	}
 }

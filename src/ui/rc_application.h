@@ -45,10 +45,15 @@ namespace pizdanc {
 
 	class LocalData : public MutualData {
 		public:
+			float getSpeedTrend() const;
+			void setSpeedTrend(float speedTrend);
 
+			float getAltitudeTrend() const;
+			void setAltitudeTrend(float altitudeTrend);
 
 		private:
-
+			float _speedTrend = 0;
+			float _altitudeTrend = 0;
 	};
 
 	class RemoteData : public MutualData {
@@ -101,6 +106,13 @@ namespace pizdanc {
 			Transceiver& getTransceiver();
 
 		private:
+			// Shows where spd/alt should target in 10 sec
+			const float _trendValueDeltaTime = 10 * 1000;
+			uint32_t _tickTime = 0;
+
+			float _testSpeed = 0;
+			float _testAltitude = 0;
+
 			LocalData _localData = LocalData();
 			RemoteData _remoteData = RemoteData();
 			OnboardLED _onboardLED = OnboardLED();
