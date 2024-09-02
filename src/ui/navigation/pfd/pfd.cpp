@@ -33,7 +33,7 @@ void PFD::renderCurrentValue(Screen &screen, const Bounds &bounds, int32_t cente
 	// Rect
 	screen.renderRectangle(
 		Bounds(
-			left ? bounds.getX2() - currentValueTriangleSize : bounds.getX() + currentValueTriangleSize,
+			left ? bounds.getX() : bounds.getX() + currentValueTriangleSize,
 			y,
 			bounds.getWidth() - currentValueTriangleSize,
 			currentValueHeight
@@ -46,7 +46,7 @@ void PFD::renderCurrentValue(Screen &screen, const Bounds &bounds, int32_t cente
 
 	screen.renderText(
 		Point(
-			left ? bounds.getX2() - currentValueTriangleSize - textOffset :  bounds.getX() + currentValueTriangleSize + textOffset,
+			left ? bounds.getX2() - currentValueTriangleSize - textOffset - textSize.getWidth() :  bounds.getX() + currentValueTriangleSize + textOffset,
 			y + currentValueHeight / 2 - textSize.getHeight() / 2
 		),
 		&Theme::fg1,
@@ -630,10 +630,10 @@ void PFD::renderAltitude(Screen &screen, const Bounds& bounds) {
 		lineValue -= altitudeStepUnits;
 		y += altitudeUnitPixels;
 	}
-	while (y < bounds.getHeight() && lineValue >= 0);
+	while (y < bounds.getY2() && lineValue >= 0);
 
 	// Ground
-	if (y < bounds.getHeight() && lineValue < 0) {
+	if (y < bounds.getY2() && lineValue < 0) {
 		const int8_t groundSpacing = 5;
 		auto groundPoint1 = Point(x, y + groundSpacing);
 		auto groundPoint2 = Point(x + groundSpacing, y);
@@ -709,64 +709,64 @@ void PFD::renderVerticalSpeed(Screen &screen, const Bounds &bounds) {
 	// Lines
 	const Color* lineColor = &Theme::fg4;
 
-	int32_t y;
+	int32_t y = centerY;
 	int32_t lineValue = 0;
 
 	Size textSize;
 	String text;
 	bool isBig;
 
-	auto renderLine = [&]() {
-		isBig = lineValue % verticalSpeedStepUnitsBig == 0;
+	auto renderLines = [&](int32_t yAdder) {
+		for (; lineValue <= verticalSpeedStepUnitsLimit; lineValue += verticalSpeedStepUnits) {
+			isBig = lineValue % verticalSpeedStepUnitsBig == 0;
 
-		if (isBig) {
-			screen.renderHorizontalLine(
-				Point(
-					bounds.getX(),
-					y
-				),
-				lineSizeBig,
-				lineColor
-			);
+			if (isBig) {
+				screen.renderHorizontalLine(
+					Point(
+						bounds.getX(),
+						y
+					),
+					lineSizeBig,
+					lineColor
+				);
 
-			text = String(lineValue / 1000);
-			textSize = screen.measureText(text);
+				text = String(lineValue / 100);
+				textSize = screen.measureText(text);
 
-			screen.renderText(
-				Point(
-					bounds.getX() + lineSizeBig + 4,
-					y - textSize.getHeight() / 2
-				),
-				lineColor,
-				text
-			);
+				screen.renderText(
+					Point(
+						bounds.getX() + lineSizeBig + 4,
+						y - textSize.getHeight() / 2
+					),
+					lineColor,
+					text
+				);
+			}
+			else {
+				screen.renderHorizontalLine(
+					Point(
+						bounds.getX(),
+						y
+					),
+					lineSizeSmall,
+					lineColor
+				);
+			}
+
+			y += yAdder;
 		}
-		else {
-			screen.renderHorizontalLine(
-				Point(
-					bounds.getX(),
-					y
-				),
-				lineSizeSmall,
-				lineColor
-			);
-		}
-
-		lineValue += verticalSpeedStepUnits;
 	};
 
-	for (y = centerY; y >= bounds.getY(); y -= verticalSpeedStepPixels)
-		renderLine();
+	renderLines(-verticalSpeedStepPixels);
 
+	y = centerY + verticalSpeedStepPixels;
 	lineValue = verticalSpeedStepUnits;
-
-	for (y = centerY + verticalSpeedStepPixels; y < bounds.getY2(); y += verticalSpeedStepPixels)
-		renderLine();
+	renderLines(verticalSpeedStepPixels);
 
 	// Current value
 	screen.renderLine(
-		Point(bounds.getX(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * 10.0f * (float) verticalSpeedStepPixels / (float) verticalSpeedStepUnits)),
-		Point(bounds.getX2(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * 10.0f * (float) verticalSpeedStepPixelsRight / (float) verticalSpeedStepUnits)),
+		Point(bounds.getX(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * (float) verticalSpeedStepPixels / (float) verticalSpeedStepUnits)),
+		Point(bounds.getX2(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * (float) verticalSpeedStepPixelsRight / (float) verticalSpeedStepUnits)),
 		&Theme::green
 	);
 }
@@ -797,7 +797,7 @@ void PFD::renderPressure(Screen &screen, const Bounds &bounds) {
 	auto bg = &Theme::bg3;
 	auto fg = &Theme::blue;
 
-	char buffer[8];
+	char buffer[9];
 
 	switch (app.getLocalData().getAltimeterMode()) {
 		case QNH:

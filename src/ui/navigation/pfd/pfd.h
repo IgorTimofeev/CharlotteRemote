@@ -84,10 +84,11 @@ class PFD : public Element {
 
 		// Vertical speed
 		const uint8_t verticalSpeedWidth = 16;
-		const uint16_t verticalSpeedStepUnits = 250;
-		const uint16_t verticalSpeedStepUnitsBig = 1000;
-		const uint16_t verticalSpeedStepPixels = 13;
-		const uint16_t verticalSpeedStepPixelsRight = 3;
+		const uint16_t verticalSpeedStepUnits = 25;
+		const uint16_t verticalSpeedStepUnitsLimit = 200;
+		const uint16_t verticalSpeedStepUnitsBig = 100;
+		const uint16_t verticalSpeedStepPixels = 11;
+		const uint16_t verticalSpeedStepPixelsRight = 2;
 
 		// Autopilot indicator
 		const uint8_t autopilotIndicatorWidth = 5;

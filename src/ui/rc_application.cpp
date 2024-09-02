@@ -49,13 +49,13 @@ namespace pizdanc {
 			// Speed
 			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) random(1, 20) / 10.0f * testDeltaTime / testDelay);
 
-			if (_speedInterpolator.getTargetValue() > 20)
+			if (_speedInterpolator.getTargetValue() > 40)
 				_speedInterpolator.setTargetValue(0);
 
 			// Altitude
 			_altitudeInterpolator.setTargetValue(_altitudeInterpolator.getTargetValue() + (float) random(1, 30) / 10.0f * testDeltaTime / testDelay);
 
-			if (_altitudeInterpolator.getTargetValue() > 30)
+			if (_altitudeInterpolator.getTargetValue() > 40)
 				_altitudeInterpolator.setTargetValue(0);
 
 			// Roll
@@ -66,7 +66,7 @@ namespace pizdanc {
 
 			// A/P
 			getLocalData().setAutopilotAltitude(20);
-			getLocalData().setAutopilotSpeed(8);
+			getLocalData().setAutopilotSpeed(30);
 
 			_testTickTime = millis();
 
