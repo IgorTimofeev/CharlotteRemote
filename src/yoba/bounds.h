@@ -80,6 +80,14 @@ namespace yoba {
 				return _y + _height;
 			}
 
+			int32_t getXCenter() const {
+				return _x + _width / 2;
+			}
+
+			int32_t getYCenter() const {
+				return _y + _height / 2;
+			}
+
 			bool intersectsWith(Point& point) const {
 				return
 					point.getX() >= _x
