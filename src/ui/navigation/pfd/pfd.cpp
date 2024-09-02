@@ -735,20 +735,22 @@ void PFD::verticalSpeedRender(Screen &screen, const Bounds &bounds) {
 		lineValue += verticalSpeedStepUnits;
 	};
 
-	for (y = centerY; y >= bounds.getY(); y -= verticalSpeedUnitPixels)
+	for (y = centerY; y >= bounds.getY(); y -= verticalSpeedStepPixels)
 		renderLine();
 
 	lineValue = verticalSpeedStepUnits;
 
-	for (y = centerY + verticalSpeedUnitPixels; y < bounds.getY2(); y += verticalSpeedUnitPixels)
+	for (y = centerY + verticalSpeedStepPixels; y < bounds.getY2(); y += verticalSpeedStepPixels)
 		renderLine();
 
 	// Current value
 	screen.renderLine(
-		Point(bounds.getX(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() / 100.0f * (float) verticalSpeedUnitPixels)),
-		Point(bounds.getX2(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() / 100.0f * (float) verticalSpeedRightUnitPixels)),
+		Point(bounds.getX(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * 10.0f / (float) verticalSpeedStepUnits * (float) verticalSpeedStepPixels)),
+		Point(bounds.getX2(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * 10.0f / (float) verticalSpeedStepUnits * (float) verticalSpeedStepPixelsRight)),
 		&Theme::green
 	);
+
+	screen.renderText(Point(0, 0), &Theme::fg1, String(app.getVerticalSpeedInterpolator().getValue()));
 }
 
 void PFD::onRender(Screen &screen) {

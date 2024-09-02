@@ -46,12 +46,14 @@ namespace pizdanc {
 		float testDelay = 1000;
 
 		if (testDeltaTime > testDelay) {
-			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) random(20, 20) / 10.0f);
+			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) random(20, 20) / 10.0f * testDeltaTime / testDelay);
 
 			if (_speedInterpolator.getTargetValue() > 10)
 				_speedInterpolator.setTargetValue(0);
 
-			_altitudeInterpolator.setTargetValue(_altitudeInterpolator.getTargetValue() + (float) random(0, 30) / 10.0f);
+			_altitudeInterpolator.setTargetValue(_altitudeInterpolator.getTargetValue() + (float) random(0, 30) / 10.0f * testDeltaTime / testDelay);
+
+			_altitudeInterpolator.setTargetValue(_altitudeInterpolator.getTargetValue() + 1 * testDeltaTime / testDelay);
 
 			if (_altitudeInterpolator.getTargetValue() > 500)
 				_altitudeInterpolator.setTargetValue(0);
