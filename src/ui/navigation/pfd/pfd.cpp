@@ -745,12 +745,10 @@ void PFD::verticalSpeedRender(Screen &screen, const Bounds &bounds) {
 
 	// Current value
 	screen.renderLine(
-		Point(bounds.getX(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * 10.0f / (float) verticalSpeedStepUnits * (float) verticalSpeedStepPixels)),
-		Point(bounds.getX2(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * 10.0f / (float) verticalSpeedStepUnits * (float) verticalSpeedStepPixelsRight)),
+		Point(bounds.getX(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * 10.0f * (float) verticalSpeedStepPixels / (float) verticalSpeedStepUnits)),
+		Point(bounds.getX2(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * 10.0f * (float) verticalSpeedStepPixelsRight / (float) verticalSpeedStepUnits)),
 		&Theme::green
 	);
-
-	screen.renderText(Point(0, 0), &Theme::fg1, String(app.getVerticalSpeedInterpolator().getValue()));
 }
 
 void PFD::onRender(Screen &screen) {

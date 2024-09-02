@@ -59,5 +59,5 @@ class PFD : public Element {
 		const uint16_t verticalSpeedStepUnits = 250;
 		const uint16_t verticalSpeedStepUnitsBig = 1000;
 		const uint16_t verticalSpeedStepPixels = 13;
-		const uint16_t verticalSpeedStepPixelsRight = 5;
+		const uint16_t verticalSpeedStepPixelsRight = 3;
 };
