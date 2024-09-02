@@ -46,7 +46,7 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 		&Theme::bg2
 	);
 
-	float speed = app.getRemoteData().getSpeed();
+	float speed = app.getSpeedPid().getValue();
 
 	// Bars
 	const auto renderBar = [&](int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) {
@@ -177,7 +177,7 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 		bounds.getX2() - speedBarSize - lineSizeBig,
 		centerY,
 		speedUnitPixels,
-		app.getLocalData().getSpeedTrend()
+		app.getSpeedTrendPid().getValue()
 	);
 
 	// Current speed
@@ -234,9 +234,9 @@ void PFD::horizonRender(Screen &screen, const Bounds& bounds) {
 	);
 
 	auto& app = RCApplication::getInstance();
-	auto pitch = app.getRemoteData().getPitch();
-	auto roll = app.getRemoteData().getRoll();
-	auto yaw = app.getRemoteData().getYaw();
+	auto pitch = app.getPitchPid().getValue();
+	auto roll = app.getRollPid().getValue();
+	auto yaw = app.getYawPid().getValue();
 
 	const auto horizontalScale = 2.5f;
 	const auto verticalScale = 1.5f;
@@ -488,7 +488,7 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 		&Theme::bg2
 	);
 
-	float altitude = app.getRemoteData().getAltitude();
+	float altitude = app.getAltitudePid().getValue();
 	float snapped = altitude / (float) altitudeStepUnits;
 	float snappedInteger = floor(snapped);
 	float snappedFractional = snapped - snappedInteger;
@@ -576,7 +576,7 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 		bounds.getX() + lineSizeBig,
 		centerY,
 		altitudeUnitPixels,
-		app.getLocalData().getAltitudeTrend()
+		app.getAltitudeTrendPid().getValue()
 	);
 
 	// Current altitude
@@ -739,8 +739,8 @@ void PFD::verticalSpeedRender(Screen &screen, const Bounds &bounds) {
 
 	// Current value
 	screen.renderLine(
-		Point(bounds.getX(), centerY - (int32_t) (app.getLocalData().getVerticalSpeed() / 100.0f * (float) verticalSpeedUnitPixels)),
-		Point(bounds.getX2(), centerY - (int32_t) (app.getLocalData().getVerticalSpeed() / 100.0f * (float) verticalSpeedRightUnitPixels)),
+		Point(bounds.getX(), centerY - (int32_t) (app.getVerticalSpeedPid().getValue() / 100.0f * (float) verticalSpeedUnitPixels)),
+		Point(bounds.getX2(), centerY - (int32_t) (app.getVerticalSpeedPid().getValue() / 100.0f * (float) verticalSpeedRightUnitPixels)),
 		&Theme::green
 	);
 }

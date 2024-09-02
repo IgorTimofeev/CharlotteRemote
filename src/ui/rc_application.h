@@ -45,21 +45,7 @@ namespace pizdanc {
 	};
 
 	class LocalData : public MutualData {
-		public:
-			float getSpeedTrend() const;
-			void setSpeedTrend(float speedTrend);
 
-			float getAltitudeTrend() const;
-			void setAltitudeTrend(float altitudeTrend);
-
-			float getVerticalSpeed() const;
-			void setVerticalSpeed(float verticalSpeed);
-
-		private:
-			float _speedTrend = 0;
-			float _altitudeTrend = 0;
-
-			float _verticalSpeed = 0;
 	};
 
 	class RemoteData : public MutualData {
@@ -111,22 +97,43 @@ namespace pizdanc {
 			OnboardLED& getOnboardLED();
 			Transceiver& getTransceiver();
 
+			PID &getSpeedPid();
+			PID &getAltitudePid();
+			PID &getPitchPid();
+			PID &getRollPid();
+			PID &getYawPid();
+			PID &getSpeedTrendPid();
+			PID &getAltitudeTrendPid();
+			PID &getVerticalSpeedPid();
+
 		private:
 			// Shows where spd/alt should target in 10 sec
 			const float _trendValueDeltaTime = 10 * 1000;
 			uint32_t _tickTime = 0;
 
-			float _testSpeed = 0;
-			float _testAltitude = 0;
-			float _testPitch = 0;
-			float _testRoll = 0;
+			uint32_t _testTickTime = 0;
 
 			LocalData _localData = LocalData();
 			RemoteData _remoteData = RemoteData();
 			OnboardLED _onboardLED = OnboardLED();
 
+			const float p = 0.8;
+			const float i = 0.000;
+			const float d = 0.03;
 
-//
+			PID _speedPID = PID(p, i, d);
+			PID _speedTrendPID = PID(p, i, d);
+
+			PID _altitudePID = PID(p, i, d);
+			PID _altitudeTrendPID = PID(p, i, d);
+
+			PID _verticalSpeedPID = PID(p, i, d);
+
+			PID _pitchPID = PID(p, i, d);
+			PID _rollPID = PID(p, i, d);
+			PID _yawPID = PID(p, i, d);
+
+			//
 //			Potentiometer _pitchHall;
 //			Potentiometer _rollHall;
 //

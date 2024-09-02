@@ -36,44 +36,57 @@ namespace pizdanc {
 	}
 
 	void RCApplication::tick() {
+		auto oldSpeed = _speedPID.getTargetValue();
+		auto oldAltitude = _altitudePID.getTargetValue();
+
 		_transceiver.tick(*this);
 		_onboardLED.tick();
 
-		if (millis() > _tickTime + settings::application::tickInterval) {
-			auto tickDeltaTime = (float) (millis() - _tickTime);
+		auto testDeltaTime = (float) (millis() - _testTickTime);
+		float testDelay = 1000;
 
-			auto oldSpeed = _remoteData.getSpeed();
-			auto oldAltitude = _remoteData.getAltitude();
+		if (testDeltaTime > testDelay) {
+			_speedPID.setTargetValue(_speedPID.getTargetValue() + (float) random(0, 30) / 10.0f);
 
-			_testSpeed = _testSpeed + (float) random(0, 30) / 10.0f * tickDeltaTime / 1000.0f;
+			if (_speedPID.getTargetValue() > 100)
+				_speedPID.setTargetValue(0);
 
-			if (_testSpeed > 150)
-				_testSpeed = 0;
+			_altitudePID.setTargetValue(_altitudePID.getTargetValue() + (float) random(0, 30) / 10.0f);
 
-			_testAltitude = _testAltitude + (float) random(0, 100) / 10.0f * tickDeltaTime / 1000.0f;
+			if (_altitudePID.getTargetValue() > 500)
+				_altitudePID.setTargetValue(0);
 
-			if (_testAltitude > 1000)
-				_testAltitude = 0;
+			_rollPID.setTargetValue(_rollPID.getTargetValue() + (float) radians(3));
 
-			_testRoll = _testRoll + (float) radians(5) * tickDeltaTime / 1000.0f;
+			if (_rollPID.getTargetValue() > 1000)
+				_rollPID.setTargetValue(0);
 
-			if (degrees(_testRoll) > 45)
-				_testRoll = 0;
+			_testTickTime = millis();
 
-			getRemoteData().setSpeed(_testSpeed);
-			getRemoteData().setAltitude(_testAltitude);
-			getRemoteData().setRoll(_testRoll);
-
-			auto newSpeed = _remoteData.getSpeed();
-			auto newAltitude = _remoteData.getAltitude();
+			auto newSpeed = _speedPID.getTargetValue();
+			auto newAltitude = _altitudePID.getTargetValue();
 
 			auto deltaSpeed = newSpeed - oldSpeed;
 			auto deltaAltitude = newAltitude - oldAltitude;
 
-			auto trendValueFactor = _trendValueDeltaTime / tickDeltaTime;
-			getLocalData().setSpeedTrend(deltaSpeed * trendValueFactor);
-			getLocalData().setAltitudeTrend(deltaAltitude * trendValueFactor);
-			getLocalData().setVerticalSpeed(deltaAltitude * 60000.0f / tickDeltaTime);
+			auto trendValueFactor = _trendValueDeltaTime / testDeltaTime;
+
+			_speedTrendPID.setTargetValue(deltaSpeed * trendValueFactor);
+			_altitudeTrendPID.setTargetValue(deltaAltitude * trendValueFactor);
+			_verticalSpeedPID.setTargetValue(deltaAltitude * 60000.0f / testDeltaTime);
+		}
+
+		auto deltaTime = (float) (millis() - _tickTime);
+
+		if (deltaTime > settings::application::tickInterval) {
+			_speedPID.tick(deltaTime);
+			_altitudePID.tick(deltaTime);
+			_pitchPID.tick(deltaTime);
+			_rollPID.tick(deltaTime);
+			_yawPID.tick(deltaTime);
+			_speedTrendPID.tick(deltaTime);
+			_altitudeTrendPID.tick(deltaTime);
+			_verticalSpeedPID.tick(deltaTime);
 
 			getWorkspace().invalidate();
 
@@ -105,6 +118,38 @@ namespace pizdanc {
 
 	Transceiver& RCApplication::getTransceiver() {
 		return _transceiver;
+	}
+
+	PID &RCApplication::getSpeedPid() {
+		return _speedPID;
+	}
+
+	PID &RCApplication::getAltitudePid() {
+		return _altitudePID;
+	}
+
+	PID &RCApplication::getPitchPid() {
+		return _pitchPID;
+	}
+
+	PID &RCApplication::getRollPid() {
+		return _rollPID;
+	}
+
+	PID &RCApplication::getYawPid() {
+		return _yawPID;
+	}
+
+	PID &RCApplication::getSpeedTrendPid() {
+		return _speedTrendPID;
+	}
+
+	PID &RCApplication::getAltitudeTrendPid() {
+		return _altitudeTrendPID;
+	}
+
+	PID &RCApplication::getVerticalSpeedPid() {
+		return _verticalSpeedPID;
 	}
 
 	float RemoteData::getTemperature() const {
@@ -217,29 +262,5 @@ namespace pizdanc {
 
 	void MutualData::setStrobeLights(bool strobeLights) {
 		_strobeLights = strobeLights;
-	}
-
-	float LocalData::getSpeedTrend() const {
-		return _speedTrend;
-	}
-
-	void LocalData::setSpeedTrend(float speedTrend) {
-		_speedTrend = speedTrend;
-	}
-
-	float LocalData::getAltitudeTrend() const {
-		return _altitudeTrend;
-	}
-
-	void LocalData::setAltitudeTrend(float altitudeTrend) {
-		_altitudeTrend = altitudeTrend;
-	}
-
-	float LocalData::getVerticalSpeed() const {
-		return _verticalSpeed;
-	}
-
-	void LocalData::setVerticalSpeed(float verticalSpeed) {
-		_verticalSpeed = verticalSpeed;
 	}
 }
