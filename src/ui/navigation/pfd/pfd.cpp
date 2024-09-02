@@ -5,10 +5,14 @@ PFD::PFD() {
 	setClipToBounds(true);
 }
 
-void PFD::renderTrendArrow(Screen &screen, int32_t x, int32_t y, uint16_t unitPixels, float value) {
+void PFD::renderTrendArrow(Screen &screen, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value) {
+	auto length = (int32_t) ((float) unitPixels * value / (float) unitStep);
+
+	if (abs(length) < 10)
+		return;
+
 	const uint8_t arrowSize = 3;
 
-	auto length = (int32_t) ((float) unitPixels * value);
 	auto yArrow = y - length - arrowSize;
 	auto yMin = min(y, yArrow);
 	auto yMax = max(y, yArrow);
@@ -46,7 +50,7 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 		&Theme::bg2
 	);
 
-	float speed = app.getSpeedPid().getValue();
+	float speed = app.getSpeedInterpolator().getValue();
 
 	// Bars
 	const auto renderBar = [&](int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) {
@@ -176,8 +180,9 @@ void PFD::speedRender(Screen &screen, const Bounds& bounds) {
 		screen,
 		bounds.getX2() - speedBarSize - lineSizeBig,
 		centerY,
+		1,
 		speedUnitPixels,
-		app.getSpeedTrendPid().getValue()
+		app.getSpeedTrendInterpolator().getValue()
 	);
 
 	// Current speed
@@ -234,9 +239,9 @@ void PFD::horizonRender(Screen &screen, const Bounds& bounds) {
 	);
 
 	auto& app = RCApplication::getInstance();
-	auto pitch = app.getPitchPid().getValue();
-	auto roll = app.getRollPid().getValue();
-	auto yaw = app.getYawPid().getValue();
+	const auto pitch = app.getPitchInterpolator().getValue();
+	const auto roll = app.getRollInterpolator().getValue();
+	const auto yaw = app.getYawInterpolator().getValue();
 
 	const auto horizontalScale = 2.5f;
 	const auto verticalScale = 1.5f;
@@ -488,7 +493,7 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 		&Theme::bg2
 	);
 
-	float altitude = app.getAltitudePid().getValue();
+	float altitude = app.getAltitudeInterpolator().getValue();
 	float snapped = altitude / (float) altitudeStepUnits;
 	float snappedInteger = floor(snapped);
 	float snappedFractional = snapped - snappedInteger;
@@ -575,8 +580,9 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 		screen,
 		bounds.getX() + lineSizeBig,
 		centerY,
+		altitudeStepUnits,
 		altitudeUnitPixels,
-		app.getAltitudeTrendPid().getValue()
+		app.getAltitudeTrendInterpolator().getValue()
 	);
 
 	// Current altitude
@@ -739,8 +745,8 @@ void PFD::verticalSpeedRender(Screen &screen, const Bounds &bounds) {
 
 	// Current value
 	screen.renderLine(
-		Point(bounds.getX(), centerY - (int32_t) (app.getVerticalSpeedPid().getValue() / 100.0f * (float) verticalSpeedUnitPixels)),
-		Point(bounds.getX2(), centerY - (int32_t) (app.getVerticalSpeedPid().getValue() / 100.0f * (float) verticalSpeedRightUnitPixels)),
+		Point(bounds.getX(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() / 100.0f * (float) verticalSpeedUnitPixels)),
+		Point(bounds.getX2(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() / 100.0f * (float) verticalSpeedRightUnitPixels)),
 		&Theme::green
 	);
 }

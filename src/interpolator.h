@@ -4,13 +4,13 @@
 
 class Interpolator {
 	public:
-		void tick(float deltaTime, float interval) {
+		void tick(float factor) {
 			if (isnan(_value)) {
 				_value = _targetValue;
 				return;
 			}
 
-			_value = _value + (_targetValue - _value) * deltaTime / 1000.0f;
+			_value = _value + (_targetValue - _value) * factor;
 		}
 
 		float getValue() const {

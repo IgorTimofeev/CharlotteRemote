@@ -12,7 +12,7 @@ class PFD : public Element {
 	public:
 		PFD();
 
-		void renderTrendArrow(Screen &screen, int32_t x, int32_t y, uint16_t unitPixels, float value);
+		void renderTrendArrow(Screen &screen, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value);
 
 		void speedRender(Screen& screen, const Bounds& bounds);
 
@@ -49,8 +49,8 @@ class PFD : public Element {
 
 		// Altitude
 		const uint8_t altitudeWidth = 32;
-		const uint8_t altitudeStepUnits = 1;
-		const uint8_t altitudeStepUnitsBig = 5;
+		const uint8_t altitudeStepUnits = 2;
+		const uint8_t altitudeStepUnitsBig = 10;
 		const uint8_t altitudeUnitPixels = 8;
 		const uint8_t pressureHeight = 16;
 

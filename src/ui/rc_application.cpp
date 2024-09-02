@@ -36,8 +36,8 @@ namespace pizdanc {
 	}
 
 	void RCApplication::tick() {
-		auto oldSpeed = _speedPID.getTargetValue();
-		auto oldAltitude = _altitudePID.getTargetValue();
+		auto oldSpeed = _speedInterpolator.getTargetValue();
+		auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
 		_transceiver.tick(*this);
 		_onboardLED.tick();
@@ -46,47 +46,52 @@ namespace pizdanc {
 		float testDelay = 1000;
 
 		if (testDeltaTime > testDelay) {
-			_speedPID.setTargetValue(_speedPID.getTargetValue() + (float) random(0, 30) / 10.0f);
+			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) random(20, 20) / 10.0f);
 
-			if (_speedPID.getTargetValue() > 100)
-				_speedPID.setTargetValue(0);
+			if (_speedInterpolator.getTargetValue() > 10)
+				_speedInterpolator.setTargetValue(0);
 
-			_altitudePID.setTargetValue(_altitudePID.getTargetValue() + (float) random(0, 30) / 10.0f);
+			_altitudeInterpolator.setTargetValue(_altitudeInterpolator.getTargetValue() + (float) random(0, 30) / 10.0f);
 
-			if (_altitudePID.getTargetValue() > 500)
-				_altitudePID.setTargetValue(0);
+			if (_altitudeInterpolator.getTargetValue() > 500)
+				_altitudeInterpolator.setTargetValue(0);
 
-			_rollPID.setTargetValue(_rollPID.getTargetValue() + (float) radians(3));
+			_rollInterpolator.setTargetValue(_rollInterpolator.getTargetValue() + (float) radians(3));
 
-			if (_rollPID.getTargetValue() > 1000)
-				_rollPID.setTargetValue(0);
+			if (_rollInterpolator.getTargetValue() > 1000)
+				_rollInterpolator.setTargetValue(0);
 
 			_testTickTime = millis();
 
-			auto newSpeed = _speedPID.getTargetValue();
-			auto newAltitude = _altitudePID.getTargetValue();
+			auto newSpeed = _speedInterpolator.getTargetValue();
+			auto newAltitude = _altitudeInterpolator.getTargetValue();
 
 			auto deltaSpeed = newSpeed - oldSpeed;
 			auto deltaAltitude = newAltitude - oldAltitude;
 
 			auto trendValueFactor = _trendValueDeltaTime / testDeltaTime;
 
-			_speedTrendPID.setTargetValue(deltaSpeed * trendValueFactor);
-			_altitudeTrendPID.setTargetValue(deltaAltitude * trendValueFactor);
-			_verticalSpeedPID.setTargetValue(deltaAltitude * 60000.0f / testDeltaTime);
+			_speedTrendInterpolator.setTargetValue(deltaSpeed * trendValueFactor);
+			_altitudeTrendInterpolator.setTargetValue(deltaAltitude * trendValueFactor);
+			_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60000.0f / testDeltaTime);
 		}
 
 		auto deltaTime = (float) (millis() - _tickTime);
 
 		if (deltaTime > settings::application::tickInterval) {
-			_speedPID.tick(deltaTime);
-			_altitudePID.tick(deltaTime);
-			_pitchPID.tick(deltaTime);
-			_rollPID.tick(deltaTime);
-			_yawPID.tick(deltaTime);
-			_speedTrendPID.tick(deltaTime);
-			_altitudeTrendPID.tick(deltaTime);
-			_verticalSpeedPID.tick(deltaTime);
+			const float interpolationFactor = deltaTime / testDelay;
+
+			_speedInterpolator.tick(interpolationFactor);
+			_speedTrendInterpolator.tick(interpolationFactor);
+
+			_altitudeInterpolator.tick(interpolationFactor);
+			_altitudeTrendInterpolator.tick(interpolationFactor);
+
+			_verticalSpeedInterpolator.tick(interpolationFactor);
+
+			_pitchInterpolator.tick(interpolationFactor);
+			_rollInterpolator.tick(interpolationFactor);
+			_yawInterpolator.tick(interpolationFactor);
 
 			getWorkspace().invalidate();
 
@@ -120,36 +125,36 @@ namespace pizdanc {
 		return _transceiver;
 	}
 
-	PID &RCApplication::getSpeedPid() {
-		return _speedPID;
+	Interpolator &RCApplication::getSpeedInterpolator() {
+		return _speedInterpolator;
 	}
 
-	PID &RCApplication::getAltitudePid() {
-		return _altitudePID;
+	Interpolator &RCApplication::getAltitudeInterpolator() {
+		return _altitudeInterpolator;
 	}
 
-	PID &RCApplication::getPitchPid() {
-		return _pitchPID;
+	Interpolator &RCApplication::getPitchInterpolator() {
+		return _pitchInterpolator;
 	}
 
-	PID &RCApplication::getRollPid() {
-		return _rollPID;
+	Interpolator &RCApplication::getRollInterpolator() {
+		return _rollInterpolator;
 	}
 
-	PID &RCApplication::getYawPid() {
-		return _yawPID;
+	Interpolator &RCApplication::getYawInterpolator() {
+		return _yawInterpolator;
 	}
 
-	PID &RCApplication::getSpeedTrendPid() {
-		return _speedTrendPID;
+	Interpolator &RCApplication::getSpeedTrendInterpolator() {
+		return _speedTrendInterpolator;
 	}
 
-	PID &RCApplication::getAltitudeTrendPid() {
-		return _altitudeTrendPID;
+	Interpolator &RCApplication::getAltitudeTrendInterpolator() {
+		return _altitudeTrendInterpolator;
 	}
 
-	PID &RCApplication::getVerticalSpeedPid() {
-		return _verticalSpeedPID;
+	Interpolator &RCApplication::getVerticalSpeedInterpolator() {
+		return _verticalSpeedInterpolator;
 	}
 
 	float RemoteData::getTemperature() const {

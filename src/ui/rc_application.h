@@ -4,7 +4,7 @@
 #include "yoba/hardware/potentiometer.h"
 #include "transceiver.h"
 #include "onboard_led.h"
-#include "../pid.h"
+#include "../interpolator.h"
 
 using namespace yoba;
 
@@ -97,14 +97,14 @@ namespace pizdanc {
 			OnboardLED& getOnboardLED();
 			Transceiver& getTransceiver();
 
-			PID &getSpeedPid();
-			PID &getAltitudePid();
-			PID &getPitchPid();
-			PID &getRollPid();
-			PID &getYawPid();
-			PID &getSpeedTrendPid();
-			PID &getAltitudeTrendPid();
-			PID &getVerticalSpeedPid();
+			Interpolator &getSpeedInterpolator();
+			Interpolator &getAltitudeInterpolator();
+			Interpolator &getPitchInterpolator();
+			Interpolator &getRollInterpolator();
+			Interpolator &getYawInterpolator();
+			Interpolator &getSpeedTrendInterpolator();
+			Interpolator &getAltitudeTrendInterpolator();
+			Interpolator &getVerticalSpeedInterpolator();
 
 		private:
 			// Shows where spd/alt should target in 10 sec
@@ -117,21 +117,17 @@ namespace pizdanc {
 			RemoteData _remoteData = RemoteData();
 			OnboardLED _onboardLED = OnboardLED();
 
-			const float p = 0.8;
-			const float i = 0.000;
-			const float d = 0.03;
+			Interpolator _speedInterpolator = Interpolator();
+			Interpolator _speedTrendInterpolator = Interpolator();
 
-			PID _speedPID = PID(p, i, d);
-			PID _speedTrendPID = PID(p, i, d);
+			Interpolator _altitudeInterpolator = Interpolator();
+			Interpolator _altitudeTrendInterpolator = Interpolator();
 
-			PID _altitudePID = PID(p, i, d);
-			PID _altitudeTrendPID = PID(p, i, d);
+			Interpolator _verticalSpeedInterpolator = Interpolator();
 
-			PID _verticalSpeedPID = PID(p, i, d);
-
-			PID _pitchPID = PID(p, i, d);
-			PID _rollPID = PID(p, i, d);
-			PID _yawPID = PID(p, i, d);
+			Interpolator _pitchInterpolator = Interpolator();
+			Interpolator _rollInterpolator = Interpolator();
+			Interpolator _yawInterpolator = Interpolator();
 
 			//
 //			Potentiometer _pitchHall;
