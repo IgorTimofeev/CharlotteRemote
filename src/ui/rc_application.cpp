@@ -270,4 +270,20 @@ namespace pizdanc {
 	void MutualData::setStrobeLights(bool strobeLights) {
 		_strobeLights = strobeLights;
 	}
+
+	float MutualData::getAutopilotSpeed() const {
+		return _autopilotSpeed;
+	}
+
+	void MutualData::setAutopilotSpeed(float autopilotSpeed) {
+		_autopilotSpeed = autopilotSpeed;
+	}
+
+	float MutualData::getAutopilotAltitude() const {
+		return _autopilotAltitude;
+	}
+
+	void MutualData::setAutopilotAltitude(float autopilotAltitude) {
+		_autopilotAltitude = autopilotAltitude;
+	}
 }

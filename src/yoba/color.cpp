@@ -2,9 +2,6 @@
 #include "number.h"
 
 namespace yoba {
-	const TrueColor TrueColor::black = TrueColor(0x00, 0x00, 0x00);
-	const TrueColor TrueColor::white = TrueColor(0xFF, 0xFF, 0xFF);
-
 	const HighColor HighColor::black = HighColor(0x0000);
 	const HighColor HighColor::white = HighColor(0xFFFF);
 

@@ -32,6 +32,12 @@ namespace pizdanc {
 			bool getStrobeLights() const;
 			void setStrobeLights(bool strobeLights);
 
+			float getAutopilotSpeed() const;
+			void setAutopilotSpeed(float autopilotSpeed);
+
+			float getAutopilotAltitude() const;
+			void setAutopilotAltitude(float autopilotAltitude);
+
 		private:
 			uint8_t _throttle = 0;
 			uint8_t _ailerons = 0;
@@ -42,6 +48,9 @@ namespace pizdanc {
 			float _altimeterPressure = 1013;
 
 			bool _strobeLights = false;
+
+			float _autopilotSpeed = 0;
+			float _autopilotAltitude = 0;
 	};
 
 	class LocalData : public MutualData {
@@ -70,6 +79,8 @@ namespace pizdanc {
 
 			float getSpeed() const;
 			void setSpeed(float speed);
+
+
 
 		private:
 			float _pitch = 0;
