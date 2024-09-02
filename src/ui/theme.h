@@ -22,7 +22,7 @@ namespace pizdanc {
 			static const PaletteColor purple;
 			static const PaletteColor green;
 			static const PaletteColor yellow;
-			static const PaletteColor ocean;
+			static const PaletteColor blue;
 			static const PaletteColor ground;
 			static const PaletteColor sky;
 	};

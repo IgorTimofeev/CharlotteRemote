@@ -633,7 +633,7 @@ void PFD::altitudeRender(Screen &screen, const Bounds& bounds) {
 
 	// Pressure
 	auto pressureBg = &Theme::bg3;
-	auto pressureFg = &Theme::ocean;
+	auto pressureFg = &Theme::blue;
 
 	y = bounds.getHeight() - pressureHeight;
 

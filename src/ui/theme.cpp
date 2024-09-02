@@ -16,7 +16,7 @@ namespace pizdanc {
 	const PaletteColor Theme::purple = PaletteColor(10);
 	const PaletteColor Theme::green = PaletteColor(11);
 	const PaletteColor Theme::yellow = PaletteColor(12);
-	const PaletteColor Theme::ocean = PaletteColor(13);
+	const PaletteColor Theme::blue = PaletteColor(13);
 	const PaletteColor Theme::ground = PaletteColor(14);
 	const PaletteColor Theme::sky = PaletteColor(15);
 }
