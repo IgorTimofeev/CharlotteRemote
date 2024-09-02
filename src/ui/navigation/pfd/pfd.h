@@ -30,22 +30,7 @@ class PFD : public Element {
 
 		void renderPressure(Screen& screen, const Bounds& bounds);
 
-		void renderAutopilotSpeed(Screen &screen, const Bounds &bounds) {
-			auto& app = RCApplication::getInstance();
-
-			auto bg = &Theme::bg3;
-			auto fg = &Theme::blue;
-			char buffer[8];
-
-			if (app.getLocalData().getAutopilotSpeed() > 0) {
-				sprintf(buffer, "%.0f", app.getLocalData().getAutopilotSpeed());
-			}
-			else {
-				sprintf(buffer, "----");
-			}
-
-			renderMiniPanel(screen, bounds, bg, fg, buffer);
-		}
+		void renderAutopilotSpeed(Screen &screen, const Bounds &bounds);
 
 		void renderAutopilotAltitude(Screen &screen, const Bounds &bounds);
 

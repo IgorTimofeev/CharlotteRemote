@@ -61,12 +61,12 @@ namespace pizdanc {
 			// Roll
 			_rollInterpolator.setTargetValue(_rollInterpolator.getTargetValue() + (float) radians(3));
 
-			if (_rollInterpolator.getTargetValue() > 1000)
+			if (degrees(_rollInterpolator.getTargetValue()) > 40)
 				_rollInterpolator.setTargetValue(0);
 
 			// A/P
 			getLocalData().setAutopilotAltitude(20);
-			getLocalData().setAutopilotSpeed(30);
+			getLocalData().setAutopilotSpeed(35);
 
 			_testTickTime = millis();
 

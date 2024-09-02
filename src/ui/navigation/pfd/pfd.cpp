@@ -791,12 +791,28 @@ void PFD::renderMiniPanel(Screen &screen, const Bounds &bounds, const Color* bg,
 	);
 }
 
+void PFD::renderAutopilotSpeed(Screen &screen, const Bounds &bounds) {
+	auto& app = RCApplication::getInstance();
+
+	auto bg = &Theme::bg3;
+	auto fg = &Theme::blue;
+	char buffer[8];
+
+	if (app.getLocalData().getAutopilotSpeed() > 0) {
+		sprintf(buffer, "%.0f", app.getLocalData().getAutopilotSpeed());
+	}
+	else {
+		sprintf(buffer, "----");
+	}
+
+	renderMiniPanel(screen, bounds, bg, fg, buffer);
+}
+
 void PFD::renderPressure(Screen &screen, const Bounds &bounds) {
 	auto& app = RCApplication::getInstance();
 
 	auto bg = &Theme::bg3;
 	auto fg = &Theme::blue;
-
 	char buffer[9];
 
 	switch (app.getLocalData().getAltimeterMode()) {
