@@ -102,13 +102,7 @@ namespace yoba {
 	}
 
 	uint16_t TrueColor::to16Bit() const {
-		uint32_t color888 = to24Bit();
-
-		uint16_t r = (color888 >> 8) & 0xF800;
-		uint16_t g = (color888 >> 5) & 0x07E0;
-		uint16_t b = (color888 >> 3) & 0x001F;
-
-		return (r | g | b);
+		return ((_r & 0xF8) << 8) | ((_g & 0xFC) << 3) | (_b >> 3);
 	}
 
 	uint8_t TrueColor::interpolateChannel(uint8_t first, uint8_t second, float position) {
