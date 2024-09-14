@@ -36,7 +36,7 @@ namespace pizdanc {
 			}
 
 		private:
-			Rectangle _selectionBackground = Rectangle(&HighColor::black);
+			Rectangle _selectionBackground = Rectangle(&Color16::black);
 
 			StackLayout _row = StackLayout();
 

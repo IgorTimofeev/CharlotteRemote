@@ -2,10 +2,14 @@
 #include "number.h"
 
 namespace yoba {
-	const HighColor HighColor::black = HighColor(0x0000);
-	const HighColor HighColor::white = HighColor(0xFFFF);
+	const Color16 Color16::black = Color16(0x0000);
+	const Color16 Color16::white = Color16(0xFFFF);
 
-	TrueColor::TrueColor(uint8_t r, uint8_t g, uint8_t b) :
+	ColorHSB::ColorHSB(float h, float s, float b) : _h(h), _s(s), _b(b) {
+
+	}
+
+	Color24::Color24(uint8_t r, uint8_t g, uint8_t b) :
 		_r(r),
 		_g(g),
 		_b(b)
@@ -13,13 +17,13 @@ namespace yoba {
 
 	}
 
-	TrueColor::TrueColor(const TrueColor &source) {
+	Color24::Color24(const Color24 &source) {
 		_r = source._r;
 		_g = source._g;
 		_b = source._b;
 	}
 
-	TrueColor::TrueColor(const HsbColor &hsb) {
+	Color24::Color24(const ColorHSB &hsb) {
 		auto hueSector = hsb._h * 6.0f;
 		auto hueSectorIntegerPart = (uint8_t) hueSector;
 		auto hueSectorFractionalPart = hueSector - (float) hueSectorIntegerPart;
@@ -69,93 +73,93 @@ namespace yoba {
 		}
 	}
 
-	TrueColor::TrueColor() {
+	Color24::Color24() {
 		_r = 0;
 		_g = 0;
 		_b = 0;
 	}
 
-	TrueColor::TrueColor(uint32_t value) {
+	Color24::Color24(uint32_t value) {
 		_r = value >> 16 & 0xFF;
 		_g = value >> 8 & 0xFF;
 		_b = value & 0xFF;
 	}
 
-	void TrueColor::add(const TrueColor &color) {
+	void Color24::add(const Color24 &color) {
 		add(color._r, color._g, color._b);
 	}
 
-	void TrueColor::add(uint8_t r, uint8_t g, uint8_t b) {
+	void Color24::add(uint8_t r, uint8_t g, uint8_t b) {
 		_r = (uint8_t) Number::clampInt32(_r + r, 0, 255);
 		_g = (uint8_t) Number::clampInt32(_g + g, 0, 255);
 		_b = (uint8_t) Number::clampInt32(_b + b, 0, 255);
 	}
 
-	void TrueColor::multiply(float factor) {
+	void Color24::multiply(float factor) {
 		_r = (uint8_t) Number::clampFloat((float) _r * factor, 0.0f, 255.0f);
 		_g = (uint8_t) Number::clampFloat((float) _g * factor, 0.0f, 255.0f);
 		_b = (uint8_t) Number::clampFloat((float) _b * factor, 0.0f, 255.0f);
 	}
 
-	uint32_t TrueColor::to24Bit() const {
+	uint32_t Color24::to24Bit() const {
 		return _r << 16 | _g << 8 | _b;
 	}
 
-	uint16_t TrueColor::to16Bit() const {
+	uint16_t Color24::to16Bit() const {
 		return ((_r & 0xF8) << 8) | ((_g & 0xFC) << 3) | (_b >> 3);
 	}
 
-	uint8_t TrueColor::interpolateChannel(uint8_t first, uint8_t second, float position) {
+	uint8_t Color24::interpolateChannel(uint8_t first, uint8_t second, float position) {
 		return (uint8_t) ((float) first + (float) (second - first) * position);
 	}
 
-	void TrueColor::interpolateTo(TrueColor &second, float position) {
+	void Color24::interpolateTo(Color24 &second, float position) {
 		_r = interpolateChannel(_r, second._r, position);
 		_g = interpolateChannel(_g, second._g, position);
 		_b = interpolateChannel(_b, second._b, position);
 	}
 
-	uint8_t TrueColor::getR() const {
+	uint8_t Color24::getR() const {
 		return _r;
 	}
 
-	void TrueColor::setR(uint8_t r) {
+	void Color24::setR(uint8_t r) {
 		_r = r;
 	}
 
-	uint8_t TrueColor::getG() const {
+	uint8_t Color24::getG() const {
 		return _g;
 	}
 
-	void TrueColor::setG(uint8_t g) {
+	void Color24::setG(uint8_t g) {
 		_g = g;
 	}
 
-	uint8_t TrueColor::getB() const {
+	uint8_t Color24::getB() const {
 		return _b;
 	}
 
-	void TrueColor::setB(uint8_t b) {
+	void Color24::setB(uint8_t b) {
 		_b = b;
 	}
 
 	// ------------------------------------------------------------------------------------
 
-	HighColor::HighColor(uint16_t value) : _value(value) {
+	Color16::Color16(uint16_t value) : _value(value) {
 
 	}
 
-	uint16_t HighColor::to16Bit() const {
+	uint16_t Color16::to16Bit() const {
 		return _value;
 	}
 
 	// ------------------------------------------------------------------------------------
 
-	PaletteColor::PaletteColor(uint8_t index) : _index(index) {
+	ColorPalette::ColorPalette(uint8_t index) : _index(index) {
 
 	}
 
-	uint16_t PaletteColor::to16Bit() const {
+	uint16_t ColorPalette::to16Bit() const {
 		return _index;
 	}
 }

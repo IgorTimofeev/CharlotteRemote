@@ -7,23 +7,23 @@ using namespace yoba;
 namespace pizdanc {
 	class Theme {
 		public:
-			static const PaletteColor bg1;
-			static const PaletteColor bg2;
-			static const PaletteColor bg3;
-			static const PaletteColor bg4;
-			static const PaletteColor bg5;
+			static const ColorPalette bg1;
+			static const ColorPalette bg2;
+			static const ColorPalette bg3;
+			static const ColorPalette bg4;
+			static const ColorPalette bg5;
 
-			static const PaletteColor fg1;
-			static const PaletteColor fg2;
-			static const PaletteColor fg3;
-			static const PaletteColor fg4;
+			static const ColorPalette fg1;
+			static const ColorPalette fg2;
+			static const ColorPalette fg3;
+			static const ColorPalette fg4;
 
-			static const PaletteColor red;
-			static const PaletteColor purple;
-			static const PaletteColor green;
-			static const PaletteColor yellow;
-			static const PaletteColor blue;
-			static const PaletteColor ground;
-			static const PaletteColor sky;
+			static const ColorPalette red;
+			static const ColorPalette purple;
+			static const ColorPalette green;
+			static const ColorPalette yellow;
+			static const ColorPalette blue;
+			static const ColorPalette ground;
+			static const ColorPalette sky;
 	};
 }

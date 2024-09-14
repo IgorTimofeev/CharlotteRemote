@@ -16,6 +16,6 @@ namespace yoba {
 			}
 
 		private:
-			const Color* _fillColor = &HighColor::white;
+			const Color* _fillColor = &Color16::white;
 	};
 }

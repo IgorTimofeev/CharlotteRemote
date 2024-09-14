@@ -9,23 +9,21 @@ namespace yoba {
 			virtual uint16_t to16Bit() const = 0;
 	};
 
-	class HsbColor {
+	class ColorHSB {
 		public:
 			float _h = 0;
 			float _s = 0;
 			float _b = 0;
 
-			HsbColor(float h, float s, float b) : _h(h), _s(s), _b(b) {
-
-			}
+			ColorHSB(float h, float s, float b);
 	};
 
-	class HighColor  : public Color {
+	class Color16  : public Color {
 		public:
-			static const HighColor black;
-			static const HighColor white;
+			static const Color16 black;
+			static const Color16 white;
 
-			explicit HighColor(uint16_t value);
+			explicit Color16(uint16_t value);
 
 			uint16_t to16Bit() const override;
 
@@ -33,26 +31,26 @@ namespace yoba {
 			uint16_t _value;
 	};
 
-	class TrueColor  : public Color {
+	class Color24  : public Color {
 		public:
-			static const TrueColor black;
-			static const TrueColor white;
+			static const Color24 black;
+			static const Color24 white;
 
-			TrueColor(uint8_t r, uint8_t g, uint8_t b);
+			Color24(uint8_t r, uint8_t g, uint8_t b);
 
-			TrueColor(TrueColor const &source);
+			Color24(Color24 const &source);
 
-			TrueColor(HsbColor const &source);
+			Color24(ColorHSB const &source);
 
-			TrueColor();
+			Color24();
 
-			explicit TrueColor(uint32_t value);
+			explicit Color24(uint32_t value);
 
 			void multiply(float factor);
 
 			void add(uint8_t r, uint8_t g, uint8_t b);
 
-			void add(const TrueColor& color);
+			void add(const Color24& color);
 
 			uint32_t to24Bit() const;
 
@@ -60,7 +58,7 @@ namespace yoba {
 
 			static uint8_t interpolateChannel(uint8_t first, uint8_t second, float position);
 
-			void interpolateTo(TrueColor& second, float position);
+			void interpolateTo(Color24& second, float position);
 
 			uint8_t getR() const;
 			void setR(uint8_t r);
@@ -77,9 +75,9 @@ namespace yoba {
 			uint8_t _b = 0;
 	};
 
-	class PaletteColor : public Color {
+	class ColorPalette : public Color {
 		public:
-			explicit PaletteColor(uint8_t index);
+			explicit ColorPalette(uint8_t index);
 
 			uint16_t to16Bit() const override;
 

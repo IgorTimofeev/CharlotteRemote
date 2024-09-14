@@ -15,6 +15,6 @@ namespace yoba {
 			}
 
 		private:
-			const Color* _background = &HighColor::black;
+			const Color* _background = &Color16::black;
 	};
 }

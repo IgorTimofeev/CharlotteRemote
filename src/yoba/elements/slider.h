@@ -12,8 +12,8 @@ namespace yoba {
 	class Slider : public BackgroundAware, public ForegroundAware {
 		public:
 			Slider() {
-				setBackground(&HighColor::black);
-				setForeground(&HighColor::white);
+				setBackground(&Color16::black);
+				setForeground(&Color16::white);
 			}
 
 			void onEvent(Event &event) override {
