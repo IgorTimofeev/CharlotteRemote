@@ -50,21 +50,21 @@ namespace pizdanc {
 		screenBuffer.setPaletteColor(15, Rgb888Color(0x317fcb));
 
 		// Workspace
-		addChild(new SideBar());
+		addChild(&_sideBar);
 
 //		// Joysticks
 //		_pitchHall.begin();
 //		_rollHall.begin();
 
 //		_transceiver.begin();
-//		_onboardLED.begin();
+		_onboardLED.begin();
 	}
 
 	void RCApplication::tick() {
 		auto oldSpeed = _speedInterpolator.getTargetValue();
 		auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
-		_transceiver.tick(*this);
+//		_transceiver.tick(*this);
 		_onboardLED.tick();
 
 		auto testDeltaTime = (float) (millis() - _testTickTime);

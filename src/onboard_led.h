@@ -1,9 +1,5 @@
 #pragma once
 
-#ifndef PLANE_ONBOARD_LED_H
-#define PLANE_ONBOARD_LED_H
-#endif
-
 #include "Arduino.h"
 #include "settings.h"
 

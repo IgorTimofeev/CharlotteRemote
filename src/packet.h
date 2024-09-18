@@ -1,9 +1,5 @@
 #pragma once
 
-#ifndef PLANE_PACKETCONTAINER_H
-#define PLANE_PACKETCONTAINER_H
-#endif
-
 #include "cstdint"
 
 namespace pizdanc {
