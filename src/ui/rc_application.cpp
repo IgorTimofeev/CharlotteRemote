@@ -1,7 +1,7 @@
 #include <cstdint>
 #include "rc_application.h"
-#include "ui/navigation/side_bar.h"
 #include "settings.h"
+#include "ui/navigation/side_bar.h"
 
 using namespace yoba;
 
@@ -14,6 +14,8 @@ namespace pizdanc {
 	}
 
 	void RCApplication::begin() {
+		Application::begin();
+
 		// Font
 		setDefaultFont(&Theme::font);
 
@@ -54,8 +56,8 @@ namespace pizdanc {
 //		_pitchHall.begin();
 //		_rollHall.begin();
 
-		_transceiver.begin();
-		_onboardLED.begin();
+//		_transceiver.begin();
+//		_onboardLED.begin();
 	}
 
 	void RCApplication::tick() {

@@ -13,6 +13,7 @@
 #include "../../lib/YOBA/src/ui/application.h"
 #include "../../lib/YOBA/src/ui/debug/touchCanvas.h"
 #include "../../lib/YOBA/src/ui/debug/testView.h"
+//#include "ui/navigation/side_bar.h"
 
 using namespace yoba;
 
@@ -106,8 +107,8 @@ namespace pizdanc {
 
 			static RCApplication& getInstance();
 
+			void begin() override;
 			void tick() override;
-			void begin();
 
 			LocalData& getLocalData();
 			RemoteData& getRemoteData();
@@ -165,5 +166,7 @@ namespace pizdanc {
 				settings::pinout::screen::touch::reset,
 				settings::pinout::screen::touch::interrupt
 			);
+
+//			SideBar _sideBar = SideBar();
 	};
 }
