@@ -1,10 +1,19 @@
 #pragma once
 
-#include "yoba/application.h"
-#include "yoba/hardware/potentiometer.h"
 #include "transceiver.h"
 #include "onboard_led.h"
 #include "../interpolator.h"
+#include "../../lib/YOBA/src/ui/application.h"
+#include "../../lib/YOBA/src/hardware/screen/drivers/ILI9341Driver.h"
+#include "../../lib/YOBA/src/hardware/screen/buffers/bits8PaletteBuffer.h"
+#include "../../lib/YOBA/src/hardware/touch/drivers/FT6336UDriver.h"
+#include "../../lib/YOBA/src/color.h"
+#include "../../lib/YOBA/src/ui/shapes/rectangle.h"
+#include "../../lib/YOBA/src/ui/text.h"
+#include "../../lib/YOBA/src/ui/application.h"
+#include "../../lib/YOBA/src/ui/debug/touchCanvas.h"
+#include "../../lib/YOBA/src/ui/debug/testView.h"
+#include "../../lib/YOBA/src/fonts/Unscii8ThinFont.h"
 
 using namespace yoba;
 
@@ -80,8 +89,6 @@ namespace pizdanc {
 			float getSpeed() const;
 			void setSpeed(float speed);
 
-
-
 		private:
 			float _pitch = 0;
 			float _roll = 0;
@@ -145,5 +152,21 @@ namespace pizdanc {
 //			Potentiometer _rollHall;
 //
 			Transceiver _transceiver = Transceiver();
+
+			ILI9341Driver screenDriver = ILI9341Driver(
+				5,
+				16,
+				17,
+				ScreenOrientation::Landscape90
+			);
+
+			Bits8PaletteBuffer screenBuffer = Bits8PaletteBuffer(&screenDriver);
+
+			FT6336UDriver touchDriver = FT6336UDriver(
+				settings::pinout::screen::touch::reset,
+				settings::pinout::screen::touch::interrupt
+			);
+
+			Unscii8ThinFont font = Unscii8ThinFont();
 	};
 }

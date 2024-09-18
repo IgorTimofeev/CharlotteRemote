@@ -7,25 +7,49 @@
 using namespace yoba;
 
 namespace pizdanc {
-	RCApplication::RCApplication() :
-		Application(
-			settings::pinout::screen::touch::reset,
-			settings::pinout::screen::touch::interrupt
-		)
-	{
+	RCApplication::RCApplication() : Application(
+		&screenBuffer,
+		&touchDriver
+	) {
 		_tickTime = millis();
-
-		setTickInterval(settings::application::tickInterval);
 	}
 
 	void RCApplication::begin() {
-		// Screen
-		Application::begin(4, settings::screen::palette);
+		// Font
+		setDefaultFont(&font);
 
-		getScreen().setDefaultFont(resources::fonts::pixy10);
+		// Palette
+
+		// Background
+		screenBuffer.setPaletteColor(0, Rgb888Color(0x000000));
+		screenBuffer.setPaletteColor(1, Rgb888Color(0x111111));
+		screenBuffer.setPaletteColor(2, Rgb888Color(0x222222));
+		screenBuffer.setPaletteColor(3, Rgb888Color(0x333333));
+		screenBuffer.setPaletteColor(4, Rgb888Color(0x444444));
+
+		// Foreground
+		screenBuffer.setPaletteColor(5, Rgb888Color(0xFFFFFF));
+		screenBuffer.setPaletteColor(6, Rgb888Color(0xDDDDDD));
+		screenBuffer.setPaletteColor(7, Rgb888Color(0x999999));
+		screenBuffer.setPaletteColor(8, Rgb888Color(0x777777));
+
+		// Red
+		screenBuffer.setPaletteColor(9, Rgb888Color(0xff0000));
+		// Purple
+		screenBuffer.setPaletteColor(10, Rgb888Color(0xff00ff));
+		// Green
+		screenBuffer.setPaletteColor(11, Rgb888Color(0x008100));
+		// Yellow
+		screenBuffer.setPaletteColor(12, Rgb888Color(0xffd200));
+		// Ocean
+		screenBuffer.setPaletteColor(13, Rgb888Color(0x00ffff));
+		// Ground
+		screenBuffer.setPaletteColor(14, Rgb888Color(0x97b838));
+		// Sky
+		screenBuffer.setPaletteColor(15, Rgb888Color(0x317fcb));
 
 		// Workspace
-		getWorkspace().addChild(new SideBar());
+		addChild(new SideBar());
 
 //		// Joysticks
 //		_pitchHall.begin();
@@ -100,7 +124,7 @@ namespace pizdanc {
 			_rollInterpolator.tick(interpolationFactor);
 			_yawInterpolator.tick(interpolationFactor);
 
-			getWorkspace().invalidate();
+			invalidate();
 
 			_tickTime = millis();
 		}

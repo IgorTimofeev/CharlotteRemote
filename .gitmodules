@@ -1,0 +1,6 @@
+[submodule "src/YOBA"]
+	path = src/YOBA
+	url = https://github.com/IgorTimofeev/YOBA.git
+[submodule "lib/YOBA"]
+	path = lib/YOBA
+	url = https://github.com/IgorTimofeev/YOBA.git
