@@ -6,10 +6,9 @@ namespace pizdanc {
 		setClipToBounds(true);
 	}
 
-	void PFD::renderCurrentValue(ScreenBuffer *screenBuffer, const Bounds &bounds, int32_t centerY, float currentValue, bool left) {
-		char buffer[8];
-		sprintf(buffer, "%.0f", currentValue);
-		auto text = String(buffer);
+	void PFD::renderCurrentValue(ScreenBuffer *screenBuffer, const Bounds &bounds, int32_t centerY, float currentValue, bool left) const {
+		char text[8];
+		sprintf(text, "%.0f", currentValue);
 		auto textSize = Theme::font.getSize(text);
 
 		auto y = centerY - currentValueHeight / 2;
@@ -56,11 +55,11 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderAutopilotValue(ScreenBuffer *screenBuffer, const Bounds &bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) {
+	void PFD::renderAutopilotValue(ScreenBuffer *screenBuffer, const Bounds &bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) const {
 		if (autopilotValue <= 0)
 			return;
 
-		auto x = left ? bounds.getX2() - autopilotIndicatorWidth : bounds.getX();
+		auto x = left ? bounds.getX2() + 1 - autopilotIndicatorWidth : bounds.getX();
 		auto y = centerY + (int32_t) ((currentValue - autopilotValue) * (float) unitPixels / (float) unitStep) - autopilotIndicatorHeightHalf;
 
 		// Upper
@@ -166,7 +165,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) {
+	void PFD::renderSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) const {
 		auto &app = RCApplication::getInstance();
 
 		auto centerY = bounds.getYCenter();
@@ -179,6 +178,8 @@ namespace pizdanc {
 		float speed = app.getSpeedInterpolator().getValue();
 
 		// Bars
+		const auto barX = bounds.getX2() + 1 - speedBarSize;
+
 		const auto renderBar = [&](int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color *color) {
 			int32_t fromY = centerY + (int32_t) ceil(speed * (float) speedStepPixels - (float) fromSpeed * (float) speedStepPixels);
 			int32_t height = (toSpeed - fromSpeed) * speedStepPixels;
@@ -195,7 +196,7 @@ namespace pizdanc {
 		};
 
 		renderBar(
-			bounds.getX2() - speedBarSize,
+			barX,
 			speedBarSize,
 			0,
 			speedFlapsMin,
@@ -203,7 +204,7 @@ namespace pizdanc {
 		);
 
 		renderBar(
-			bounds.getX2() - speedBarSize,
+			barX,
 			speedBarSize,
 			speedFlapsMin,
 			speedTurbulentMin,
@@ -211,7 +212,7 @@ namespace pizdanc {
 		);
 
 		renderBar(
-			bounds.getX2() - speedBarSize,
+			barX,
 			speedBarSize / 2,
 			speedTurbulentMin,
 			speedFlapsMax,
@@ -219,7 +220,7 @@ namespace pizdanc {
 		);
 
 		renderBar(
-			bounds.getX2() - speedBarSize / 2,
+			barX + speedBarSize / 2,
 			speedBarSize / 2,
 			speedTurbulentMin,
 			speedFlapsMax,
@@ -227,7 +228,7 @@ namespace pizdanc {
 		);
 
 		renderBar(
-			bounds.getX2() - speedBarSize,
+			barX,
 			speedBarSize,
 			speedFlapsMax,
 			speedTurbulentMax,
@@ -235,7 +236,7 @@ namespace pizdanc {
 		);
 
 		renderBar(
-			bounds.getX2() - speedBarSize,
+			barX,
 			speedBarSize,
 			speedTurbulentMax,
 			speedSmoothMax,
@@ -243,7 +244,7 @@ namespace pizdanc {
 		);
 
 		renderBar(
-			bounds.getX2() - speedBarSize,
+			barX,
 			speedBarSize,
 			speedSmoothMax,
 			speedSmoothMax * 2,
@@ -261,7 +262,7 @@ namespace pizdanc {
 
 		int32_t lineValue = (int32_t) (snappedInteger + 1) * speedStepUnits + altitudeYFullLines * speedStepUnits;
 
-		String text;
+		char text[12];
 		Size textSize;
 		bool isBig;
 		const Color *lineColor = &Theme::fg3;
@@ -278,7 +279,7 @@ namespace pizdanc {
 				);
 
 				//Text
-				text = String(lineValue);
+				sprintf(text, "%d", lineValue);
 				textSize = Theme::font.getSize(text);
 
 				screenBuffer->renderString(
@@ -400,7 +401,7 @@ namespace pizdanc {
 				&Theme::ground
 			);
 		}
-			// Left
+		// Left
 		else if (left.getY() < bounds.getY() && left.getX() > bounds.getX()) {
 			screenBuffer->renderFilledRectangle(
 				Bounds(
@@ -412,7 +413,7 @@ namespace pizdanc {
 				&Theme::ground
 			);
 		}
-			// Right
+		// Right
 		else if (right.getY() < bounds.getY() && right.getX() < bounds.getX2()) {
 			screenBuffer->renderFilledRectangle(
 				Bounds(
@@ -448,7 +449,7 @@ namespace pizdanc {
 		auto pizdaCenterX = (float) left.getX() + pizdaX / 2;
 		auto pizdaCenterY = (float) left.getY() + pizdaY / 2;
 
-		String text;
+		char text[10];
 		Size textSize;
 
 		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += lineAngleStepDeg) {
@@ -475,7 +476,7 @@ namespace pizdanc {
 			);
 
 			if (lineAngleDeg != 0 && lineAngleDeg % 10 == 0) {
-				text = String(-lineAngleDeg);
+				sprintf(text, "%d", -lineAngleDeg);
 				textSize = Theme::font.getSize(text);
 
 				screenBuffer->renderString(
@@ -567,7 +568,7 @@ namespace pizdanc {
 			Point(bounds.getX() + 10, bounds.getY() + 10),
 			&Theme::font,
 			&Theme::fg1,
-			String(buffer)
+			buffer
 		);
 
 		sprintf(buffer, "SNR: %.2f dB", app.getTransceiver().getSnr());
@@ -575,11 +576,11 @@ namespace pizdanc {
 			Point(bounds.getX() + 10, bounds.getY() + 20),
 			&Theme::font,
 			&Theme::fg1,
-			String(buffer)
+			buffer
 		);
 	}
 
-	void PFD::renderAltitude(ScreenBuffer *screenBuffer, const Bounds &bounds) {
+	void PFD::renderAltitude(ScreenBuffer *screenBuffer, const Bounds &bounds) const {
 		auto &app = RCApplication::getInstance();
 
 		auto centerY = bounds.getYCenter();
@@ -598,7 +599,7 @@ namespace pizdanc {
 
 		int32_t lineValue = (int32_t) (snappedInteger + 1) * altitudeStepUnits + yFullLines * altitudeStepUnits;
 
-		String text;
+		char text[10];
 		Size textSize;
 		bool isBig;
 
@@ -615,7 +616,7 @@ namespace pizdanc {
 				);
 
 				//Text
-				text = String(lineValue);
+				sprintf(text, "%d", lineValue);
 				textSize = Theme::font.getSize(text);
 
 				screenBuffer->renderString(
@@ -652,14 +653,16 @@ namespace pizdanc {
 				// 1
 				if (groundPoint1.getY() < bounds.getY2()) {
 					groundPoint1.setY(groundPoint1.getY() + groundSpacing);
-				} else {
+				}
+				else {
 					groundPoint1.setX(groundPoint1.getX() + groundSpacing);
 				}
 
 				// 2
 				if (groundPoint2.getX() < bounds.getX2()) {
 					groundPoint2.setX(groundPoint2.getX() + groundSpacing);
-				} else {
+				}
+				else {
 					groundPoint2.setY(groundPoint2.getY() + groundSpacing);
 				}
 			} while (groundPoint1.getX() < bounds.getX2() - groundSpacing);
@@ -697,7 +700,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderVerticalSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) {
+	void PFD::renderVerticalSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) const {
 		auto &app = RCApplication::getInstance();
 		auto centerY = bounds.getYCenter();
 
@@ -714,7 +717,7 @@ namespace pizdanc {
 		int32_t lineValue = 0;
 
 		Size textSize;
-		String text;
+		char text[10];
 		bool isBig;
 
 		auto renderLines = [&](int32_t yAdder) {
@@ -731,7 +734,7 @@ namespace pizdanc {
 						lineColor
 					);
 
-					text = String(lineValue / 100);
+					sprintf(text, "%d", lineValue);
 					textSize = Theme::font.getSize(text);
 
 					screenBuffer->renderString(
@@ -772,15 +775,14 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderMiniPanel(ScreenBuffer *screenBuffer, const Bounds &bounds, const Color *bg, const Color *fg, char *buffer) {
+	void PFD::renderMiniPanel(ScreenBuffer *screenBuffer, const Bounds &bounds, const Color *bg, const Color *fg, char* buffer) const {
 		auto &app = RCApplication::getInstance();
 
 		// Background
 		screenBuffer->renderFilledRectangle(bounds, bg);
 
 		// Text
-		auto text = String(buffer);
-		auto textSize = Theme::font.getSize(text);
+		auto textSize = Theme::font.getSize(buffer);
 
 		screenBuffer->renderString(
 			Point(
@@ -789,11 +791,11 @@ namespace pizdanc {
 			),
 			&Theme::font,
 			fg,
-			text
+			buffer
 		);
 	}
 
-	void PFD::renderAutopilotSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) {
+	void PFD::renderAutopilotSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) const {
 		auto &app = RCApplication::getInstance();
 
 		auto bg = &Theme::bg3;
@@ -809,7 +811,7 @@ namespace pizdanc {
 		renderMiniPanel(screenBuffer, bounds, bg, fg, buffer);
 	}
 
-	void PFD::renderPressure(ScreenBuffer *screenBuffer, const Bounds &bounds) {
+	void PFD::renderPressure(ScreenBuffer *screenBuffer, const Bounds &bounds) const {
 		auto &app = RCApplication::getInstance();
 
 		auto bg = &Theme::bg3;
@@ -833,7 +835,7 @@ namespace pizdanc {
 		renderMiniPanel(screenBuffer, bounds, bg, fg, buffer);
 	}
 
-	void PFD::renderAutopilotAltitude(ScreenBuffer *screenBuffer, const Bounds &bounds) {
+	void PFD::renderAutopilotAltitude(ScreenBuffer *screenBuffer, const Bounds &bounds) const {
 		auto &app = RCApplication::getInstance();
 
 		auto bg = &Theme::bg3;
@@ -874,28 +876,28 @@ namespace pizdanc {
 		));
 
 		renderAltitude(screenBuffer, Bounds(
-			bounds.getX2() - altitudeWidth - verticalSpeedWidth,
+			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
 			bounds.getY() + miniHeight,
 			altitudeWidth,
 			bounds.getHeight() - miniHeight * 2
 		));
 
 		renderAutopilotAltitude(screenBuffer, Bounds(
-			bounds.getX2() - altitudeWidth - verticalSpeedWidth,
+			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
 			bounds.getY(),
 			altitudeWidth,
 			miniHeight
 		));
 
 		renderPressure(screenBuffer, Bounds(
-			bounds.getX2() - altitudeWidth - verticalSpeedWidth,
-			bounds.getY2() - miniHeight,
+			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
+			bounds.getY2() + 1 - miniHeight,
 			altitudeWidth,
 			miniHeight
 		));
 
 		renderVerticalSpeed(screenBuffer, Bounds(
-			bounds.getX2() - verticalSpeedWidth,
+			bounds.getX2() + 1 - verticalSpeedWidth,
 			bounds.getY(),
 			verticalSpeedWidth,
 			bounds.getHeight()

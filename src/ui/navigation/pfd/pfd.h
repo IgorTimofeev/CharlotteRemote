@@ -11,27 +11,27 @@ namespace pizdanc {
 		public:
 			PFD();
 
-			void renderAutopilotValue(ScreenBuffer *screenBuffer, const Bounds &bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left);
+			void renderAutopilotValue(ScreenBuffer *screenBuffer, const Bounds &bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) const;
 
-			void renderCurrentValue(ScreenBuffer *screenBuffer, const Bounds &bounds, int32_t centerY, float currentValue, bool left);
+			void renderCurrentValue(ScreenBuffer *screenBuffer, const Bounds &bounds, int32_t centerY, float currentValue, bool left) const;
 
 			static void renderTrendArrow(ScreenBuffer *screenBuffer, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value);
 
-			void renderSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds);
+			void renderSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
 
 			void renderHorizon(ScreenBuffer *screenBuffer, const Bounds &bounds);
 
-			void renderAltitude(ScreenBuffer *screenBuffer, const Bounds &bounds);
+			void renderAltitude(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
 
-			void renderVerticalSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds);
+			void renderVerticalSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
 
-			void renderMiniPanel(ScreenBuffer *screenBuffer, const Bounds &bounds, const Color *bg, const Color *fg, char *buffer);
+			void renderMiniPanel(ScreenBuffer *screenBuffer, const Bounds &bounds, const Color *bg, const Color *fg, char *buffer) const;
 
-			void renderPressure(ScreenBuffer *screenBuffer, const Bounds &bounds);
+			void renderPressure(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
 
-			void renderAutopilotSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds);
+			void renderAutopilotSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
 
-			void renderAutopilotAltitude(ScreenBuffer *screenBuffer, const Bounds &bounds);
+			void renderAutopilotAltitude(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
 
 			void onRender(ScreenBuffer *screenBuffer) override;
 
@@ -50,7 +50,7 @@ namespace pizdanc {
 			const uint8_t speedStepUnits = 1;
 			const uint8_t speedStepUnitsBig = 5;
 
-			const uint16_t speedBarSize = 3;
+			const uint16_t speedBarSize = 4;
 
 			const uint16_t speedFlapsMin = 5;
 			const uint16_t speedFlapsMax = 30;
