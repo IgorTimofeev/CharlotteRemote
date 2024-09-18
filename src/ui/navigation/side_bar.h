@@ -2,13 +2,13 @@
 
 #include "Arduino.h"
 
-#include "yoba/elements/layout.h"
-#include "yoba/elements/selector.h"
-#include "yoba/elements/selector_item.h"
-#include "yoba/elements/image.h"
-#include "yoba/animation.h"
-#include "yoba/elements/button.h"
-#include "yoba/elements/rectangle.h"
+#include "../../../lib/YOBA/src/ui/layout.h"
+#include "../../../lib/YOBA/src/ui/selector.h"
+#include "../../../lib/YOBA/src/ui/selectorItem.h"
+#include "../../../lib/YOBA/src/animation.h"
+#include "../../../lib/YOBA/src/ui/button.h"
+#include "../../../lib/YOBA/src/ui/shapes/rectangle.h"
+#include "../../../lib/YOBA/src/ui/stackLayout.h"
 
 #include "ui/navigation/engine/engine_page.h"
 #include "ui/theme.h"
@@ -28,10 +28,10 @@ namespace pizdanc {
 				// Menu
 				const uint16_t menuSize = 20;
 				_menu.setSize(Size(Size::calculated, menuSize));
-				_menu.setVerticalAlignment(Alignment::end);
+				_menu.setVerticalAlignment(Alignment::End);
 				_menu.addChild(&_menuBackground);
 
-				_menuItemsLayout.setOrientation(Orientation::horizontal);
+				_menuItemsLayout.setOrientation(Orientation::Horizontal);
 				_menu.addChild(&_menuItemsLayout);
 				setItemsLayout(&_menuItemsLayout);
 

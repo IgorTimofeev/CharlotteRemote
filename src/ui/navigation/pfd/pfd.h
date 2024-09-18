@@ -10,29 +10,29 @@ class PFD : public Element {
 	public:
 		PFD();
 
-		void renderAutopilotValue(Screen &screen, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left);
+		void renderAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left);
 
-		void renderCurrentValue(Screen& screen, const Bounds& bounds, int32_t centerY, float currentValue, bool left);
+		void renderCurrentValue(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, float currentValue, bool left);
 
-		void renderTrendArrow(Screen &screen, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value);
+		void renderTrendArrow(ScreenBuffer* screenBuffer, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value);
 
-		void renderSpeed(Screen& screen, const Bounds& bounds);
+		void renderSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds);
 
-		void renderHorizon(Screen& screen, const Bounds& bounds);
+		void renderHorizon(ScreenBuffer* screenBuffer, const Bounds& bounds);
 
-		void renderAltitude(Screen& screen, const Bounds& bounds);
+		void renderAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds);
 
-		void renderVerticalSpeed(Screen& screen, const Bounds& bounds);
+		void renderVerticalSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds);
 
-		void renderMiniPanel(Screen &screen, const Bounds &bounds, const Color* bg, const Color* fg, char* buffer);
+		void renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds &bounds, const Color* bg, const Color* fg, char* buffer);
 
-		void renderPressure(Screen& screen, const Bounds& bounds);
+		void renderPressure(ScreenBuffer* screenBuffer, const Bounds& bounds);
 
-		void renderAutopilotSpeed(Screen &screen, const Bounds &bounds);
+		void renderAutopilotSpeed(ScreenBuffer* screenBuffer, const Bounds &bounds);
 
-		void renderAutopilotAltitude(Screen &screen, const Bounds &bounds);
+		void renderAutopilotAltitude(ScreenBuffer* screenBuffer, const Bounds &bounds);
 
-		void onRender(Screen& screen) override;
+		void onRender(ScreenBuffer* screenBuffer) override;
 
 	private:
 		const uint16_t lineSizeBig = 5;

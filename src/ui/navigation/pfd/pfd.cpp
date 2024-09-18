@@ -5,16 +5,16 @@ PFD::PFD() {
 	setClipToBounds(true);
 }
 
-void PFD::renderCurrentValue(Screen &screen, const Bounds &bounds, int32_t centerY, float currentValue, bool left) {
+void PFD::renderCurrentValue(ScreenBuffer* screenBuffer, const Bounds &bounds, int32_t centerY, float currentValue, bool left) {
 	char buffer[8];
 	sprintf(buffer, "%.0f", currentValue);
 	auto text = String(buffer);
-	auto textSize = screen.measureText(text);
+	auto textSize = Theme::font.getSize(text);
 
 	auto y = centerY - currentValueHeight / 2;
 
 	// Triangle
-	screen.renderTriangle(
+	screenBuffer->renderTriangle(
 		Point(
 			left ? bounds.getX2() - currentValueTriangleSize - 1 : bounds.getX() + currentValueTriangleSize - 1,
 			y
@@ -31,7 +31,7 @@ void PFD::renderCurrentValue(Screen &screen, const Bounds &bounds, int32_t cente
 	);
 
 	// Rect
-	screen.renderRectangle(
+	screenBuffer->renderFilledRectangle(
 		Bounds(
 			left ? bounds.getX() : bounds.getX() + currentValueTriangleSize,
 			y,
@@ -44,17 +44,18 @@ void PFD::renderCurrentValue(Screen &screen, const Bounds &bounds, int32_t cente
 	// Text
 	const uint8_t textOffset = 2;
 
-	screen.renderText(
+	screenBuffer->renderString(
 		Point(
 			left ? bounds.getX2() - currentValueTriangleSize - textOffset - textSize.getWidth() :  bounds.getX() + currentValueTriangleSize + textOffset,
 			y + currentValueHeight / 2 - textSize.getHeight() / 2
 		),
+		&Theme::font,
 		&Theme::fg1,
 		text
 	);
 }
 
-void PFD::renderAutopilotValue(Screen &screen, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) {
+void PFD::renderAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) {
 	if (autopilotValue <= 0)
 		return;
 
@@ -62,7 +63,7 @@ void PFD::renderAutopilotValue(Screen &screen, const Bounds& bounds, int32_t cen
 	auto y = centerY + (int32_t) ((currentValue - autopilotValue) * (float) unitPixels / (float) unitStep) - autopilotIndicatorHeightHalf;
 
 	// Upper
-	screen.renderRectangle(
+	screenBuffer->renderFilledRectangle(
 		Bounds(
 			x,
 			y,
@@ -73,7 +74,7 @@ void PFD::renderAutopilotValue(Screen &screen, const Bounds& bounds, int32_t cen
 	);
 
 	// Lower
-	screen.renderRectangle(
+	screenBuffer->renderFilledRectangle(
 		Bounds(
 			x,
 			y + autopilotIndicatorHeight - autopilotIndicatorTriangleMargin,
@@ -84,7 +85,7 @@ void PFD::renderAutopilotValue(Screen &screen, const Bounds& bounds, int32_t cen
 	);
 
 	// Rect
-	screen.renderRectangle(
+	screenBuffer->renderFilledRectangle(
 		Bounds(
 			left ? x + autopilotIndicatorTriangleWidth : x,
 			y + autopilotIndicatorTriangleMargin,
@@ -95,7 +96,7 @@ void PFD::renderAutopilotValue(Screen &screen, const Bounds& bounds, int32_t cen
 	);
 
 	// Upper triangle
-	screen.renderTriangle(
+	screenBuffer->renderTriangle(
 		Point(
 			left ? x : x + autopilotIndicatorRectangleWidth,
 			y + autopilotIndicatorTriangleMargin
@@ -112,7 +113,7 @@ void PFD::renderAutopilotValue(Screen &screen, const Bounds& bounds, int32_t cen
 	);
 
 	// Lower triangle
-	screen.renderTriangle(
+	screenBuffer->renderTriangle(
 		Point(
 			left ? x + autopilotIndicatorTriangleWidth - 1 : x + autopilotIndicatorRectangleWidth,
 			y + autopilotIndicatorHeightHalf
@@ -129,7 +130,7 @@ void PFD::renderAutopilotValue(Screen &screen, const Bounds& bounds, int32_t cen
 	);
 }
 
-void PFD::renderTrendArrow(Screen &screen, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value) {
+void PFD::renderTrendArrow(ScreenBuffer* screenBuffer, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value) {
 	auto length = (int32_t) ((float) unitPixels * value / (float) unitStep);
 
 	if (abs(length) < 10)
@@ -141,13 +142,13 @@ void PFD::renderTrendArrow(Screen &screen, int32_t x, int32_t y, uint8_t unitSte
 	auto yMin = min(y, yArrow);
 	auto yMax = max(y, yArrow);
 
-	screen.renderVerticalLine(
+	screenBuffer->renderVerticalLine(
 		Point(x, yMin),
 		yMax - yMin,
 		&Theme::purple
 	);
 
-	screen.renderTriangle(
+	screenBuffer->renderTriangle(
 		Point(
 			x - arrowSize,
 			yArrow
@@ -164,12 +165,12 @@ void PFD::renderTrendArrow(Screen &screen, int32_t x, int32_t y, uint8_t unitSte
 	);
 }
 
-void PFD::renderSpeed(Screen &screen, const Bounds& bounds) {
+void PFD::renderSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) {
 	auto& app = RCApplication::getInstance();
 
 	auto centerY = bounds.getYCenter();
 
-	screen.renderRectangle(
+	screenBuffer->renderFilledRectangle(
 		bounds,
 		&Theme::bg2
 	);
@@ -181,7 +182,7 @@ void PFD::renderSpeed(Screen &screen, const Bounds& bounds) {
 		int32_t fromY = centerY + (int32_t) ceil(speed * (float) speedStepPixels - (float) fromSpeed * (float) speedStepPixels);
 		int32_t height = (toSpeed - fromSpeed) * speedStepPixels;
 
-		screen.renderRectangle(
+		screenBuffer->renderFilledRectangle(
 			Bounds(
 				x,
 				fromY - height,
@@ -269,7 +270,7 @@ void PFD::renderSpeed(Screen &screen, const Bounds& bounds) {
 
 		if (isBig) {
 			// Line
-			screen.renderHorizontalLine(
+			screenBuffer->renderHorizontalLine(
 				Point(bounds.getWidth() - speedBarSize - lineSizeBig, y),
 				lineSizeBig,
 				lineColor
@@ -277,17 +278,18 @@ void PFD::renderSpeed(Screen &screen, const Bounds& bounds) {
 
 			//Text
 			text = String(lineValue);
-			textSize = screen.measureText(text);
+			textSize = Theme::font.getSize(text);
 
-			screen.renderText(
+			screenBuffer->renderString(
 				Point(bounds.getWidth() - speedBarSize - lineSizeBig - 5 - textSize.getWidth(), y - textSize.getHeight() / 2),
+				&Theme::font,
 				lineColor,
 				text
 			);
 		}
 		else {
 			// Line
-			screen.renderHorizontalLine(
+			screenBuffer->renderHorizontalLine(
 				Point(bounds.getWidth() - speedBarSize - lineSizeSmall, y),
 				lineSizeSmall,
 				lineColor
@@ -301,7 +303,7 @@ void PFD::renderSpeed(Screen &screen, const Bounds& bounds) {
 
 	// Trend
 	renderTrendArrow(
-		screen,
+		screenBuffer,
 		bounds.getX2() - speedBarSize - lineSizeBig,
 		centerY,
 		speedStepUnits,
@@ -311,7 +313,7 @@ void PFD::renderSpeed(Screen &screen, const Bounds& bounds) {
 
 	// Autopilot
 	renderAutopilotValue(
-		screen,
+		screenBuffer,
 		bounds,
 		centerY,
 		speedStepUnits,
@@ -323,7 +325,7 @@ void PFD::renderSpeed(Screen &screen, const Bounds& bounds) {
 
 	// Current speed
 	renderCurrentValue(
-		screen,
+		screenBuffer,
 		bounds,
 		centerY,
 		speed,
@@ -331,7 +333,7 @@ void PFD::renderSpeed(Screen &screen, const Bounds& bounds) {
 	);
 }
 
-void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
+void PFD::renderHorizon(ScreenBuffer* screenBuffer, const Bounds& bounds) {
 	const auto& center = Point(
 		bounds.getX() + bounds.getWidth() / 2,
 		bounds.getY() + bounds.getHeight() / 2
@@ -351,7 +353,7 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 	const auto& radiusRollRotated = Point(horizontalPixels, 0).rotate(roll);
 	const auto& radiusPitchRotated = Point(verticalPixels, 0).rotate(pitch);
 
-	screen.renderRectangle(
+	screenBuffer->renderFilledRectangle(
 		bounds,
 		&Theme::sky
 	);
@@ -370,7 +372,7 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 	auto groundMaxY = max(left.getY(), right.getY());
 
 	// Triangle
-	screen.renderTriangle(
+	screenBuffer->renderTriangle(
 		left.getY() < right.getY()
 		? left
 		: right,
@@ -389,7 +391,7 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 
 	// Bottom
 	if (groundMaxY < bounds.getY2()) {
-		screen.renderRectangle(
+		screenBuffer->renderFilledRectangle(
 			Bounds(
 				bounds.getX(),
 				groundMaxY,
@@ -401,7 +403,7 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 	}
 	// Left
 	else if (left.getY() < bounds.getY() && left.getX() > bounds.getX()) {
-		screen.renderRectangle(
+		screenBuffer->renderFilledRectangle(
 			Bounds(
 				bounds.getX(),
 				bounds.getY(),
@@ -413,7 +415,7 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 	}
 		// Right
 	else if (right.getY() < bounds.getY() && right.getX() < bounds.getX2()) {
-		screen.renderRectangle(
+		screenBuffer->renderFilledRectangle(
 			Bounds(
 				right.getX(),
 				bounds.getY(),
@@ -467,7 +469,7 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 			(int32_t) (govnoY + pizdaYNorm * lineSize)
 		);
 
-		screen.renderLine(
+		screenBuffer->renderLine(
 			lineLeft,
 			lineRight,
 			&Theme::fg1
@@ -475,22 +477,24 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 
 		if (lineAngleDeg != 0 && lineAngleDeg % 10 == 0) {
 			text = String(-lineAngleDeg);
-			textSize = screen.measureText(text);
+			textSize = Theme::font.getSize(text);
 
-			screen.renderText(
+			screenBuffer->renderString(
 				Point(
 					lineLeft.getX() - textSize.getWidth() - 8,
 					lineLeft.getY() - textSize.getHeight() / 2
 				),
+				&Theme::font,
 				&Theme::fg1,
 				text
 			);
 
-			screen.renderText(
+			screenBuffer->renderString(
 				Point(
 					lineRight.getX() + 8,
 					lineRight.getY() - textSize.getHeight() / 2
 				),
+				&Theme::font,
 				&Theme::fg1,
 				text
 			);
@@ -504,7 +508,7 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 	const uint8_t birdCenterOffset = 20;
 
 	// Left
-	screen.renderRectangle(
+	screenBuffer->renderFilledRectangle(
 		Bounds(
 			center.getX() - birdCenterOffset - birdThickness,
 			center.getY() - birdThickness / 2,
@@ -514,7 +518,7 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 		&Theme::bg1
 	);
 
-	screen.renderRectangle(
+	screenBuffer->renderFilledRectangle(
 		Bounds(
 			center.getX() - birdCenterOffset - birdThickness - birdWidth,
 			center.getY() - birdThickness / 2,
@@ -525,7 +529,7 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 	);
 
 	// Right
-	screen.renderRectangle(
+	screenBuffer->renderFilledRectangle(
 		Bounds(
 			center.getX() + birdCenterOffset,
 			center.getY() - birdThickness / 2,
@@ -535,7 +539,7 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 		&Theme::bg1
 	);
 
-	screen.renderRectangle(
+	screenBuffer->renderFilledRectangle(
 		Bounds(
 			center.getX() + birdCenterOffset + birdThickness,
 			center.getY() - birdThickness / 2,
@@ -546,7 +550,7 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 	);
 
 	// Dot
-	screen.renderRectangle(
+	screenBuffer->renderFilledRectangle(
 		Bounds(
 			center.getX() + birdThickness / 2 - birdThickness / 2,
 			center.getY() - birdThickness / 2,
@@ -560,27 +564,29 @@ void PFD::renderHorizon(Screen &screen, const Bounds& bounds) {
 	char buffer[255];
 
 	sprintf(buffer, "RSSI: %.2f dBm", app.getTransceiver().getRssi());
-	screen.renderText(
+	screenBuffer->renderString(
 		Point(bounds.getX() + 10, bounds.getY() + 10),
+		&Theme::font,
 		&Theme::fg1,
 		String(buffer)
 	);
 
 	sprintf(buffer, "SNR: %.2f dB", app.getTransceiver().getSnr());
-	screen.renderText(
+	screenBuffer->renderString(
 		Point(bounds.getX() + 10, bounds.getY() + 20),
+		&Theme::font,
 		&Theme::fg1,
 		String(buffer)
 	);
 }
 
-void PFD::renderAltitude(Screen &screen, const Bounds& bounds) {
+void PFD::renderAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) {
 	auto& app = RCApplication::getInstance();
 
 	auto centerY = bounds.getYCenter();
 	auto x = bounds.getX();
 
-	screen.renderRectangle(bounds, &Theme::bg2);
+	screenBuffer->renderFilledRectangle(bounds, &Theme::bg2);
 
 	float altitude = app.getAltitudeInterpolator().getValue();
 	float snapped = altitude / (float) altitudeStepUnits;
@@ -603,7 +609,7 @@ void PFD::renderAltitude(Screen &screen, const Bounds& bounds) {
 		isBig = lineValue % altitudeStepUnitsBig == 0;
 
 		if (isBig) {
-			screen.renderHorizontalLine(
+			screenBuffer->renderHorizontalLine(
 				Point(x, y),
 				lineSizeBig,
 				lineColor
@@ -611,16 +617,17 @@ void PFD::renderAltitude(Screen &screen, const Bounds& bounds) {
 
 			//Text
 			text = String(lineValue);
-			textSize = screen.measureText(text);
+			textSize = Theme::font.getSize(text);
 
-			screen.renderText(
+			screenBuffer->renderString(
 				Point(x + lineSizeBig + 5, y - textSize.getHeight() / 2),
+				&Theme::font,
 				lineColor,
 				text
 			);
 		}
 		else {
-			screen.renderHorizontalLine(
+			screenBuffer->renderHorizontalLine(
 				Point(x, y),
 				lineSizeSmall,
 				lineColor
@@ -639,7 +646,7 @@ void PFD::renderAltitude(Screen &screen, const Bounds& bounds) {
 		auto groundPoint2 = Point(x + groundSpacing, y);
 
 		do {
-			screen.renderLine(
+			screenBuffer->renderLine(
 				groundPoint1,
 				groundPoint2,
 				&Theme::yellow
@@ -666,7 +673,7 @@ void PFD::renderAltitude(Screen &screen, const Bounds& bounds) {
 
 	// Trend
 	renderTrendArrow(
-		screen,
+		screenBuffer,
 		bounds.getX() + lineSizeBig,
 		centerY,
 		altitudeStepUnits,
@@ -676,7 +683,7 @@ void PFD::renderAltitude(Screen &screen, const Bounds& bounds) {
 
 	// Autopilot
 	renderAutopilotValue(
-		screen,
+		screenBuffer,
 		bounds,
 		centerY,
 		altitudeStepUnits,
@@ -688,7 +695,7 @@ void PFD::renderAltitude(Screen &screen, const Bounds& bounds) {
 
 	// Current speed
 	renderCurrentValue(
-		screen,
+		screenBuffer,
 		bounds,
 		centerY,
 		altitude,
@@ -696,12 +703,12 @@ void PFD::renderAltitude(Screen &screen, const Bounds& bounds) {
 	);
 }
 
-void PFD::renderVerticalSpeed(Screen &screen, const Bounds &bounds) {
+void PFD::renderVerticalSpeed(ScreenBuffer* screenBuffer, const Bounds &bounds) {
 	auto& app = RCApplication::getInstance();
 	auto centerY = bounds.getYCenter();
 
 	// Background
-	screen.renderRectangle(
+	screenBuffer->renderFilledRectangle(
 		bounds,
 		&Theme::bg3
 	);
@@ -721,7 +728,7 @@ void PFD::renderVerticalSpeed(Screen &screen, const Bounds &bounds) {
 			isBig = lineValue % verticalSpeedStepUnitsBig == 0;
 
 			if (isBig) {
-				screen.renderHorizontalLine(
+				screenBuffer->renderHorizontalLine(
 					Point(
 						bounds.getX(),
 						y
@@ -731,19 +738,20 @@ void PFD::renderVerticalSpeed(Screen &screen, const Bounds &bounds) {
 				);
 
 				text = String(lineValue / 100);
-				textSize = screen.measureText(text);
+				textSize = Theme::font.getSize(text);
 
-				screen.renderText(
+				screenBuffer->renderString(
 					Point(
 						bounds.getX() + lineSizeBig + 4,
 						y - textSize.getHeight() / 2
 					),
+					&Theme::font,
 					lineColor,
 					text
 				);
 			}
 			else {
-				screen.renderHorizontalLine(
+				screenBuffer->renderHorizontalLine(
 					Point(
 						bounds.getX(),
 						y
@@ -764,34 +772,35 @@ void PFD::renderVerticalSpeed(Screen &screen, const Bounds &bounds) {
 	renderLines(verticalSpeedStepPixels);
 
 	// Current value
-	screen.renderLine(
+	screenBuffer->renderLine(
 		Point(bounds.getX(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * (float) verticalSpeedStepPixels / (float) verticalSpeedStepUnits)),
 		Point(bounds.getX2(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * (float) verticalSpeedStepPixelsRight / (float) verticalSpeedStepUnits)),
 		&Theme::green
 	);
 }
 
-void PFD::renderMiniPanel(Screen &screen, const Bounds &bounds, const Color* bg, const Color* fg, char* buffer) {
+void PFD::renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds &bounds, const Color* bg, const Color* fg, char* buffer) {
 	auto& app = RCApplication::getInstance();
 
 	// Background
-	screen.renderRectangle(bounds, bg);
+	screenBuffer->renderFilledRectangle(bounds, bg);
 
 	// Text
 	auto text = String(buffer);
-	auto textSize = screen.measureText(text);
+	auto textSize = Theme::font.getSize(text);
 
-	screen.renderText(
+	screenBuffer->renderString(
 		Point(
 			bounds.getX() + bounds.getWidth() / 2 - textSize.getWidth() / 2,
 			bounds.getY() + miniHeight / 2 - textSize.getHeight() / 2
 		),
+		&Theme::font,
 		fg,
 		text
 	);
 }
 
-void PFD::renderAutopilotSpeed(Screen &screen, const Bounds &bounds) {
+void PFD::renderAutopilotSpeed(ScreenBuffer* screenBuffer, const Bounds &bounds) {
 	auto& app = RCApplication::getInstance();
 
 	auto bg = &Theme::bg3;
@@ -805,10 +814,10 @@ void PFD::renderAutopilotSpeed(Screen &screen, const Bounds &bounds) {
 		sprintf(buffer, "----");
 	}
 
-	renderMiniPanel(screen, bounds, bg, fg, buffer);
+	renderMiniPanel(screenBuffer, bounds, bg, fg, buffer);
 }
 
-void PFD::renderPressure(Screen &screen, const Bounds &bounds) {
+void PFD::renderPressure(ScreenBuffer* screenBuffer, const Bounds &bounds) {
 	auto& app = RCApplication::getInstance();
 
 	auto bg = &Theme::bg3;
@@ -829,10 +838,10 @@ void PFD::renderPressure(Screen &screen, const Bounds &bounds) {
 			break;
 	}
 
-	renderMiniPanel(screen, bounds, bg, fg, buffer);
+	renderMiniPanel(screenBuffer, bounds, bg, fg, buffer);
 }
 
-void PFD::renderAutopilotAltitude(Screen &screen, const Bounds &bounds) {
+void PFD::renderAutopilotAltitude(ScreenBuffer* screenBuffer, const Bounds &bounds) {
 	auto& app = RCApplication::getInstance();
 
 	auto bg = &Theme::bg3;
@@ -846,55 +855,55 @@ void PFD::renderAutopilotAltitude(Screen &screen, const Bounds &bounds) {
 		sprintf(buffer, "----");
 	}
 
-	renderMiniPanel(screen, bounds, bg, fg, buffer);
+	renderMiniPanel(screenBuffer, bounds, bg, fg, buffer);
 }
 
-void PFD::onRender(Screen &screen) {
+void PFD::onRender(ScreenBuffer* screenBuffer) {
 	auto& bounds = getBounds();
 
-	renderHorizon(screen, Bounds(
+	renderHorizon(screenBuffer, Bounds(
 		bounds.getX() + speedWidth,
 		bounds.getY(),
 		bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,
 		bounds.getHeight()
 	));
 
-	renderSpeed(screen, Bounds(
+	renderSpeed(screenBuffer, Bounds(
 		bounds.getX(),
 		bounds.getY() + miniHeight,
 		speedWidth,
 		bounds.getHeight() - miniHeight
 	));
 
-	renderAutopilotSpeed(screen, Bounds(
+	renderAutopilotSpeed(screenBuffer, Bounds(
 		bounds.getX(),
 		bounds.getY(),
 		speedWidth,
 		miniHeight
 	));
 
-	renderAltitude(screen, Bounds(
+	renderAltitude(screenBuffer, Bounds(
 		bounds.getX2() - altitudeWidth - verticalSpeedWidth,
 		bounds.getY() + miniHeight,
 		altitudeWidth,
 		bounds.getHeight() - miniHeight * 2
 	));
 
-	renderAutopilotAltitude(screen, Bounds(
+	renderAutopilotAltitude(screenBuffer, Bounds(
 		bounds.getX2() - altitudeWidth - verticalSpeedWidth,
 		bounds.getY(),
 		altitudeWidth,
 		miniHeight
 	));
 
-	renderPressure(screen, Bounds(
+	renderPressure(screenBuffer, Bounds(
 		bounds.getX2() - altitudeWidth - verticalSpeedWidth,
 		bounds.getY2() - miniHeight,
 		altitudeWidth,
 		miniHeight
 	));
 
-	renderVerticalSpeed(screen, Bounds(
+	renderVerticalSpeed(screenBuffer, Bounds(
 		bounds.getX2() - verticalSpeedWidth,
 		bounds.getY(),
 		verticalSpeedWidth,

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "yoba/elements/stack_layout.h"
-#include "yoba/elements/element.h"
-#include "yoba/elements/text.h"
+#include "../../../lib/YOBA/src/ui/text.h"
+#include "../../../lib/YOBA/src/ui/stackLayout.h"
 
 using namespace yoba;
 

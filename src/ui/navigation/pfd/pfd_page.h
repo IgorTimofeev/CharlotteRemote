@@ -2,8 +2,8 @@
 
 #include "Arduino.h"
 
-#include "yoba/elements/slider.h"
-#include "yoba/elements/text.h"
+#include "../../../../lib/YOBA/src/ui/text.h"
+#include "../../../../lib/YOBA/src/ui/slider.h"
 
 #include "ui/navigation/page.h"
 #include "ui/elements/titler.h"

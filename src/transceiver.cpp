@@ -225,7 +225,7 @@ namespace pizdanc {
 
 					remoteData.setStrobeLights(ahrsPacket->strobeLights);
 
-					application.getWorkspace().invalidate();
+					application.invalidate();
 				}
 
 				break;

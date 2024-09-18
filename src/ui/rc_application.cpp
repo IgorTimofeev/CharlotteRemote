@@ -1,6 +1,5 @@
 #include <cstdint>
 #include "rc_application.h"
-#include "resources/fonts.h"
 #include "ui/navigation/side_bar.h"
 #include "settings.h"
 
@@ -16,7 +15,7 @@ namespace pizdanc {
 
 	void RCApplication::begin() {
 		// Font
-		setDefaultFont(&font);
+		setDefaultFont(&Theme::font);
 
 		// Palette
 

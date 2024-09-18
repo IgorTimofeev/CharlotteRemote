@@ -13,7 +13,6 @@
 #include "../../lib/YOBA/src/ui/application.h"
 #include "../../lib/YOBA/src/ui/debug/touchCanvas.h"
 #include "../../lib/YOBA/src/ui/debug/testView.h"
-#include "../../lib/YOBA/src/fonts/Unscii8ThinFont.h"
 
 using namespace yoba;
 
@@ -166,7 +165,5 @@ namespace pizdanc {
 				settings::pinout::screen::touch::reset,
 				settings::pinout::screen::touch::interrupt
 			);
-
-			Unscii8ThinFont font = Unscii8ThinFont();
 	};
 }

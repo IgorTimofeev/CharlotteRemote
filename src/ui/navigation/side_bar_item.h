@@ -1,13 +1,11 @@
 #pragma once
 
 #include "Arduino.h"
-#include "yoba/color.h"
-#include "yoba/image_source.h"
-#include "yoba/elements/selector_item.h"
-#include "yoba/elements/rectangle.h"
-#include "yoba/elements/image.h"
-#include "yoba/elements/text.h"
-#include "yoba/elements/stack_layout.h"
+#include "../../../lib/YOBA/src/color.h"
+#include "../../../lib/YOBA/src/ui/selectorItem.h"
+#include "../../../lib/YOBA/src/ui/shapes/rectangle.h"
+#include "../../../lib/YOBA/src/ui/text.h"
+#include "../../../lib/YOBA/src/ui/stackLayout.h"
 #include "ui/theme.h"
 
 using namespace yoba;
@@ -17,13 +15,13 @@ namespace pizdanc {
 		public:
 			explicit SideBarItem(const String& text) {
 				// Selection
-				_selectionBackground.setFillColor(&Theme::fg1);
+				_selectionBackground.setBackground(&Theme::fg1);
 				addChild(&_selectionBackground);
 
 				// Text
 				_text.setMargin(Margin(8, 0, 8, 0));
-				_text.setHorizontalAlignment(Alignment::center);
-				_text.setVerticalAlignment(Alignment::center);
+				_text.setHorizontalAlignment(Alignment::Center);
+				_text.setVerticalAlignment(Alignment::Center);
 				_text.setText(text);
 				addChild(&_text);
 
@@ -36,7 +34,7 @@ namespace pizdanc {
 			}
 
 		private:
-			Rectangle _selectionBackground = Rectangle(&Color16::black);
+			Rectangle _selectionBackground = Rectangle(&Theme::bg1);
 
 			StackLayout _row = StackLayout();
 
