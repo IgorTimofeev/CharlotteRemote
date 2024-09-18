@@ -17,7 +17,9 @@ namespace pizdanc {
 			RadioPage() {
 				setAlignment(Alignment::Center);
 
-				backgroundSlider.setCornerRadius(5);
+				backgroundSlider.setBackground(&Theme::bg3);
+				backgroundSlider.setForeground(&Theme::yellow);
+				backgroundSlider.setCornerRadius(8);
 				backgroundSlider.setValue(0);
 				backgroundSlider.setSize(Size(150, 40));
 
