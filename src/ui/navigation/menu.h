@@ -10,12 +10,14 @@
 #include "../../../lib/YOBA/src/ui/shapes/rectangle.h"
 #include "../../../lib/YOBA/src/ui/stackLayout.h"
 
-#include "ui/navigation/engine/enginePage.h"
-#include "ui/theme.h"
-#include "ui/navigation/radio/radioPage.h"
 #include "menuItem.h"
-#include "ui/navigation/battery/batteryPage.h"
-#include "ui/navigation/pfd/pfdPage.h"
+
+#include "engine/enginePage.h"
+#include "debug/debugPage.h"
+#include "battery/batteryPage.h"
+#include "pfd/pfdPage.h"
+#include "autopilot/autopilotPage.h"
+#include "radio/radioPage.h"
 
 using namespace yoba;
 
@@ -44,8 +46,10 @@ namespace pizdanc {
 				// Initialization
 				addPage(L"PFD", &_pfdPage);
 				addPage(L"ENG", &_enginePage);
+				addPage(L"A/P", &_autopilotPage);
+				addPage(L"COM", &_radioPage);
 				addPage(L"BAT", &_batteryPage);
-				addPage(L"RAD", &_radioPage);
+				addPage(L"DBG", &_debugPage);
 				setSelectedIndex(0);
 			}
 
@@ -73,8 +77,10 @@ namespace pizdanc {
 
 			PFDPage _pfdPage = PFDPage();
 			EnginePage _enginePage = EnginePage();
+			AutopilotPage _autopilotPage = AutopilotPage();
 			BatteryPage _batteryPage = BatteryPage();
 			RadioPage _radioPage = RadioPage();
+			DebugPage _debugPage = DebugPage();
 
 			void addPage(const wchar_t* name, Page* page) {
 				_pages.push_back(page);

@@ -24,6 +24,10 @@ namespace pizdanc {
 				addChild(element);
 			}
 
+			void setText(const wchar_t* text) {
+				_titleText.setText(text);
+			}
+
 		private:
 			Text _titleText = Text();
 	};
