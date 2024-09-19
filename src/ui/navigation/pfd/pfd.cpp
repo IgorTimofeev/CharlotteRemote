@@ -224,7 +224,7 @@ namespace pizdanc {
 			speedBarSize / 2,
 			speedTurbulentMin,
 			speedFlapsMax,
-			&Theme::green
+			&Theme::greenSpeed
 		);
 
 		renderBar(
@@ -232,7 +232,7 @@ namespace pizdanc {
 			speedBarSize,
 			speedFlapsMax,
 			speedTurbulentMax,
-			&Theme::green
+			&Theme::greenSpeed
 		);
 
 		renderBar(
@@ -711,7 +711,7 @@ namespace pizdanc {
 		);
 
 		// Lines
-		const Color *lineColor = &Theme::fg4;
+		auto lineColor = &Theme::fg4;
 
 		int32_t y = centerY;
 		int32_t lineValue = 0;
@@ -746,7 +746,8 @@ namespace pizdanc {
 						lineColor,
 						text
 					);
-				} else {
+				}
+				else {
 					screenBuffer->renderHorizontalLine(
 						Point(
 							bounds.getX(),

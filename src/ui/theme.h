@@ -1,9 +1,7 @@
 #pragma once
 
 #include "../../lib/YOBA/src/color.h"
-#include "../../lib/YOBA/src/fonts/font.h"
-#include "../../lib/YOBA/src/fonts/Unscii8ThinFont.h"
-#include "../../lib/YOBA/src/fonts/PIXY10Font.h"
+#include "../../lib/YOBA/src/resources/fonts/PIXY10Font.h"
 
 using namespace yoba;
 
@@ -24,6 +22,7 @@ namespace pizdanc {
 			static const Bit8PaletteColor red;
 			static const Bit8PaletteColor purple;
 			static const Bit8PaletteColor green;
+			static const Bit8PaletteColor greenSpeed;
 			static const Bit8PaletteColor yellow;
 			static const Bit8PaletteColor blue;
 			static const Bit8PaletteColor ground;

@@ -15,10 +15,11 @@ namespace pizdanc {
 	const Bit8PaletteColor Theme::red = Bit8PaletteColor(9);
 	const Bit8PaletteColor Theme::purple = Bit8PaletteColor(10);
 	const Bit8PaletteColor Theme::green = Bit8PaletteColor(11);
-	const Bit8PaletteColor Theme::yellow = Bit8PaletteColor(12);
-	const Bit8PaletteColor Theme::blue = Bit8PaletteColor(13);
-	const Bit8PaletteColor Theme::ground = Bit8PaletteColor(14);
-	const Bit8PaletteColor Theme::sky = Bit8PaletteColor(15);
+	const Bit8PaletteColor Theme::greenSpeed = Bit8PaletteColor(12);
+	const Bit8PaletteColor Theme::yellow = Bit8PaletteColor(13);
+	const Bit8PaletteColor Theme::blue = Bit8PaletteColor(14);
+	const Bit8PaletteColor Theme::ground = Bit8PaletteColor(15);
+	const Bit8PaletteColor Theme::sky = Bit8PaletteColor(16);
 
 	const PIXY10Font Theme::font = PIXY10Font();
 }
