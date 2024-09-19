@@ -2,6 +2,8 @@
 
 #include "../../lib/YOBA/src/color.h"
 #include "../../lib/YOBA/src/resources/fonts/PIXY10Font.h"
+#include "../../lib/YOBA/src/ui/button.h"
+#include "../../lib/YOBA/src/ui/slider.h"
 
 using namespace yoba;
 
@@ -29,5 +31,11 @@ namespace pizdanc {
 			static const Bit8PaletteColor sky;
 
 			static const PIXY10Font font;
+
+			static const uint16_t elementHeight = 32;
+			static const uint16_t cornerRadius = 5;
+
+			static void apply(Button& button);
+			static void apply(Slider& slider);
 	};
 }

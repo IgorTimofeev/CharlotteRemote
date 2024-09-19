@@ -11,9 +11,9 @@
 using namespace yoba;
 
 namespace pizdanc {
-	class SideBarItem : public SelectorItem {
+	class MenuItem : public SelectorItem {
 		public:
-			explicit SideBarItem(const wchar_t* text) {
+			explicit MenuItem(const wchar_t* text) {
 				// Selection
 				_selectionBackground.setBackground(&Theme::fg1);
 				addChild(&_selectionBackground);
@@ -25,19 +25,23 @@ namespace pizdanc {
 				_text.setText(text);
 				addChild(&_text);
 
-				setSelected(false);
+				updateVisualsFromSelection();
 			}
 
-			void setSelected(const bool &value) override {
-				_selectionBackground.setVisible(value);
-				_text.setForeground(value ? &Theme::bg1 : &Theme::fg1);
+			void setSelected(bool value) override {
+				SelectorItem::setSelected(value);
+
+				updateVisualsFromSelection();
 			}
 
 		private:
 			Rectangle _selectionBackground = Rectangle(&Theme::bg1);
-
 			StackLayout _row = StackLayout();
-
 			Text _text = Text();
+
+			void updateVisualsFromSelection() {
+				_selectionBackground.setVisible(isSelected());
+				_text.setForeground(isSelected() ? &Theme::bg1 : &Theme::fg1);
+			}
 	};
 }

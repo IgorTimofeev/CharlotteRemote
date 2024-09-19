@@ -10,12 +10,12 @@
 #include "../../../lib/YOBA/src/ui/shapes/rectangle.h"
 #include "../../../lib/YOBA/src/ui/stackLayout.h"
 
-#include "ui/navigation/engine/engine_page.h"
+#include "ui/navigation/engine/enginePage.h"
 #include "ui/theme.h"
-#include "ui/navigation/radio/radio_page.h"
-#include "side_bar_item.h"
-#include "ui/navigation/battery/battery_page.h"
-#include "ui/navigation/pfd/pfd_page.h"
+#include "ui/navigation/radio/radioPage.h"
+#include "menuItem.h"
+#include "ui/navigation/battery/batteryPage.h"
+#include "ui/navigation/pfd/pfdPage.h"
 
 using namespace yoba;
 
@@ -78,7 +78,7 @@ namespace pizdanc {
 
 			void addPage(const wchar_t* name, Page* page) {
 				_pages.push_back(page);
-				addItem(new SideBarItem(name));
+				addItem(new MenuItem(name));
 			}
 	};
 }

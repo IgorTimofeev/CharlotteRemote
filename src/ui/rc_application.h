@@ -13,7 +13,7 @@
 #include "../../lib/YOBA/src/ui/application.h"
 #include "../../lib/YOBA/src/ui/debug/touchCanvas.h"
 #include "../../lib/YOBA/src/ui/debug/testView.h"
-#include "ui/navigation/side_bar.h"
+#include "ui/navigation/menu.h"
 
 using namespace yoba;
 

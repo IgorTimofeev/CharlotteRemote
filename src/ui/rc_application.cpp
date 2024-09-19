@@ -1,7 +1,7 @@
 #include <cstdint>
 #include "rc_application.h"
 #include "settings.h"
-#include "ui/navigation/side_bar.h"
+#include "ui/navigation/menu.h"
 
 using namespace yoba;
 

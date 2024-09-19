@@ -12,12 +12,16 @@ namespace pizdanc {
 			Titler() {
 				setSpacing(5);
 
-				_titleText.setForeground(&Theme::fg1);
+				_titleText.setForeground(&Theme::fg3);
 				addChild(&_titleText);
 			}
 
 			explicit Titler(const wchar_t* title) : Titler() {
 				_titleText.setText(title);
+			}
+
+			Titler(const wchar_t* title, Element* element) : Titler(title) {
+				addChild(element);
 			}
 
 		private:

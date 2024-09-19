@@ -22,4 +22,23 @@ namespace pizdanc {
 	const Bit8PaletteColor Theme::sky = Bit8PaletteColor(16);
 
 	const PIXY10Font Theme::font = PIXY10Font();
+
+	void Theme::apply(Button &button) {
+		button.setHeight(elementHeight);
+		button.setCornerRadius(cornerRadius);
+
+		button.setBackground(&Theme::yellow);
+		button.setPressedBackground(&Theme::purple);
+
+		button.setForeground(&Theme::fg1);
+		button.setPressedForeground(&Theme::fg1);
+	}
+
+	void Theme::apply(Slider &slider) {
+		slider.setHeight(elementHeight);
+		slider.setCornerRadius(cornerRadius);
+
+		slider.setBackground(&Theme::bg3);
+		slider.setForeground(&Theme::yellow);
+	}
 }
