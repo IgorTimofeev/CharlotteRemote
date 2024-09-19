@@ -20,5 +20,5 @@ namespace pizdanc {
 	const Bit8PaletteColor Theme::ground = Bit8PaletteColor(14);
 	const Bit8PaletteColor Theme::sky = Bit8PaletteColor(15);
 
-	const Unscii8ThinFont Theme::font = Unscii8ThinFont();
+	const PIXY10Font Theme::font = PIXY10Font();
 }

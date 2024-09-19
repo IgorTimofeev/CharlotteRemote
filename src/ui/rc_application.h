@@ -1,7 +1,7 @@
 #pragma once
 
-#include "transceiver.h"
-#include "onboard_led.h"
+#include "hardware/transceiver/transceiver.h"
+#include "hardware/onboard_led.h"
 #include "../interpolator.h"
 #include "../../lib/YOBA/src/ui/application.h"
 #include "../../lib/YOBA/src/hardware/screen/drivers/ILI9341Driver.h"
@@ -125,15 +125,38 @@ namespace pizdanc {
 			Interpolator &getVerticalSpeedInterpolator();
 
 		private:
-			// Shows where spd/alt should target in 10 sec
-			const float _trendValueDeltaTime = 10 * 1000;
-			uint32_t _tickTime = 0;
+			// -------------------------------- Hardware --------------------------------
 
-			uint32_t _testTickTime = 0;
+			Transceiver _transceiver = Transceiver();
 
-			LocalData _localData = LocalData();
-			RemoteData _remoteData = RemoteData();
+			ILI9341Driver _screenDriver = ILI9341Driver(
+				settings::pinout::screen::chipSelect,
+				settings::pinout::screen::dataCommand,
+				settings::pinout::screen::reset,
+				ScreenOrientation::Landscape90
+			);
+
+			Bits8PaletteBuffer _screenBuffer = Bits8PaletteBuffer(&_screenDriver);
+
+			FT6336UDriver _touchDriver = FT6336UDriver(
+				settings::pinout::screen::touch::reset,
+				settings::pinout::screen::touch::interrupt
+			);
+
 			OnboardLED _onboardLED = OnboardLED();
+
+			//
+//			Potentiometer _pitchHall;
+//			Potentiometer _rollHall;
+
+			// -------------------------------- UI --------------------------------
+
+			SideBar _sideBar = SideBar();
+
+			// -------------------------------- Timings --------------------------------
+
+			uint32_t _tickTime = 0;
+			uint32_t _testTickTime = 0;
 
 			Interpolator _speedInterpolator = Interpolator();
 			Interpolator _speedTrendInterpolator = Interpolator();
@@ -147,26 +170,9 @@ namespace pizdanc {
 			Interpolator _rollInterpolator = Interpolator();
 			Interpolator _yawInterpolator = Interpolator();
 
-			//
-//			Potentiometer _pitchHall;
-//			Potentiometer _rollHall;
-//
-			Transceiver _transceiver = Transceiver();
+			// -------------------------------- Other shit --------------------------------
 
-			ILI9341Driver screenDriver = ILI9341Driver(
-				5,
-				16,
-				17,
-				ScreenOrientation::Landscape90
-			);
-
-			Bits8PaletteBuffer screenBuffer = Bits8PaletteBuffer(&screenDriver);
-
-			FT6336UDriver touchDriver = FT6336UDriver(
-				settings::pinout::screen::touch::reset,
-				settings::pinout::screen::touch::interrupt
-			);
-
-			SideBar _sideBar = SideBar();
+			LocalData _localData = LocalData();
+			RemoteData _remoteData = RemoteData();
 	};
 }

@@ -7,8 +7,8 @@ using namespace yoba;
 
 namespace pizdanc {
 	RCApplication::RCApplication() : Application(
-		&screenBuffer,
-		&touchDriver
+		&_screenBuffer,
+		&_touchDriver
 	) {
 		_tickTime = millis();
 	}
@@ -20,34 +20,41 @@ namespace pizdanc {
 		setDefaultFont(&Theme::font);
 
 		// Palette
+		{
+			uint8_t index = 0;
 
-		// Background
-		screenBuffer.setPaletteColor(0, Rgb888Color(0x000000));
-		screenBuffer.setPaletteColor(1, Rgb888Color(0x111111));
-		screenBuffer.setPaletteColor(2, Rgb888Color(0x222222));
-		screenBuffer.setPaletteColor(3, Rgb888Color(0x333333));
-		screenBuffer.setPaletteColor(4, Rgb888Color(0x444444));
+			auto add = [&](uint8_t r, uint8_t g, uint8_t b) {
+				_screenBuffer.setPaletteColor(index++, Rgb888Color(r, g, b));
+			};
 
-		// Foreground
-		screenBuffer.setPaletteColor(5, Rgb888Color(0xFFFFFF));
-		screenBuffer.setPaletteColor(6, Rgb888Color(0xDDDDDD));
-		screenBuffer.setPaletteColor(7, Rgb888Color(0x999999));
-		screenBuffer.setPaletteColor(8, Rgb888Color(0x777777));
+			// Background
+			add(0x00, 0x00, 0x00);
+			add(0x11, 0x11, 0x11);
+			add(0x22, 0x22, 0x22);
+			add(0x33, 0x33, 0x33);
+			add(0x44, 0x44, 0x44);
 
-		// Red
-		screenBuffer.setPaletteColor(9, Rgb888Color(0xff0000));
-		// Purple
-		screenBuffer.setPaletteColor(10, Rgb888Color(0xff00ff));
-		// Green
-		screenBuffer.setPaletteColor(11, Rgb888Color(0x008100));
-		// Yellow
-		screenBuffer.setPaletteColor(12, Rgb888Color(0xffd200));
-		// Ocean
-		screenBuffer.setPaletteColor(13, Rgb888Color(0x00ffff));
-		// Ground
-		screenBuffer.setPaletteColor(14, Rgb888Color(0x97b838));
-		// Sky
-		screenBuffer.setPaletteColor(15, Rgb888Color(0x317fcb));
+			// Foreground
+			add(0xFF, 0xFF, 0xFF);
+			add(0xDD, 0xDD, 0xDD);
+			add(0x99, 0x99, 0x99);
+			add(0x77, 0x77, 0x77);
+
+			// Red
+			add(0xff, 0x00, 0x00);
+			// Purple
+			add(0xff, 0x00, 0xff);
+			// Green
+			add(0x00, 0x81, 0x00);
+			// Yellow
+			add(0xff, 0xd2, 0x00);
+			// Ocean
+			add(0x00, 0xff, 0xff);
+			// Ground
+			add(0x97, 0xb8, 0x38);
+			// Sky
+			add(0x31, 0x7f, 0xcb);
+		}
 
 		// Workspace
 		addChild(&_sideBar);
@@ -61,13 +68,13 @@ namespace pizdanc {
 	}
 
 	void RCApplication::tick() {
-		auto oldSpeed = _speedInterpolator.getTargetValue();
-		auto oldAltitude = _altitudeInterpolator.getTargetValue();
+		const auto oldSpeed = _speedInterpolator.getTargetValue();
+		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
 //		_transceiver.tick(*this);
 		_onboardLED.tick();
 
-		auto testDeltaTime = (float) (millis() - _testTickTime);
+		const auto testDeltaTime = (float) (millis() - _testTickTime);
 		float testDelay = 1000;
 
 		if (testDeltaTime > testDelay) {
@@ -95,13 +102,15 @@ namespace pizdanc {
 
 			_testTickTime = millis();
 
-			auto newSpeed = _speedInterpolator.getTargetValue();
-			auto newAltitude = _altitudeInterpolator.getTargetValue();
+			const auto newSpeed = _speedInterpolator.getTargetValue();
+			const auto newAltitude = _altitudeInterpolator.getTargetValue();
 
-			auto deltaSpeed = newSpeed - oldSpeed;
-			auto deltaAltitude = newAltitude - oldAltitude;
+			const auto deltaSpeed = newSpeed - oldSpeed;
+			const auto deltaAltitude = newAltitude - oldAltitude;
 
-			auto trendValueFactor = _trendValueDeltaTime / testDeltaTime;
+			// Shows where spd/alt should target in 10 sec
+			const float trendValueDeltaTime = 10 * 1000;
+			const auto trendValueFactor = trendValueDeltaTime / testDeltaTime;
 
 			_speedTrendInterpolator.setTargetValue(deltaSpeed * trendValueFactor);
 			_altitudeTrendInterpolator.setTargetValue(deltaAltitude * trendValueFactor);

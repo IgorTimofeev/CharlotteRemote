@@ -21,6 +21,10 @@ namespace pizdanc {
 					const uint8_t reset = 32;
 					const uint8_t interrupt = 26;
 				}
+
+				const uint8_t chipSelect = 5;
+				const uint8_t dataCommand = 16;
+				const uint8_t reset = 17;
 			}
 		}
 

@@ -3,6 +3,7 @@
 #include "../../lib/YOBA/src/color.h"
 #include "../../lib/YOBA/src/fonts/font.h"
 #include "../../lib/YOBA/src/fonts/Unscii8ThinFont.h"
+#include "../../lib/YOBA/src/fonts/PIXY10Font.h"
 
 using namespace yoba;
 
@@ -28,6 +29,6 @@ namespace pizdanc {
 			static const Bit8PaletteColor ground;
 			static const Bit8PaletteColor sky;
 
-			static const Unscii8ThinFont font;
+			static const PIXY10Font font;
 	};
 }

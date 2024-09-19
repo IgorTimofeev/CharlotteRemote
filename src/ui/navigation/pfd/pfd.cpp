@@ -734,7 +734,7 @@ namespace pizdanc {
 						lineColor
 					);
 
-					sprintf(text, "%d", lineValue);
+					sprintf(text, "%d", lineValue / 100);
 					textSize = Theme::font.getSize(text);
 
 					screenBuffer->renderString(
