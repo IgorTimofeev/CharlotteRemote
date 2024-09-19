@@ -7,8 +7,8 @@ namespace pizdanc {
 	}
 
 	void PFD::renderCurrentValue(ScreenBuffer *screenBuffer, const Bounds &bounds, int32_t centerY, float currentValue, bool left) const {
-		char text[8];
-		sprintf(text, "%.0f", currentValue);
+		wchar_t text[8];
+		swprintf(text, 8, L"%.0f", currentValue);
 		auto textSize = Theme::font.getSize(text);
 
 		auto y = centerY - currentValueHeight / 2;
@@ -262,7 +262,7 @@ namespace pizdanc {
 
 		int32_t lineValue = (int32_t) (snappedInteger + 1) * speedStepUnits + altitudeYFullLines * speedStepUnits;
 
-		char text[12];
+		wchar_t text[12];
 		Size textSize;
 		bool isBig;
 		const Color *lineColor = &Theme::fg3;
@@ -279,7 +279,7 @@ namespace pizdanc {
 				);
 
 				//Text
-				sprintf(text, "%d", lineValue);
+				swprintf(text, 12, L"%d", lineValue);
 				textSize = Theme::font.getSize(text);
 
 				screenBuffer->renderString(
@@ -449,7 +449,7 @@ namespace pizdanc {
 		auto pizdaCenterX = (float) left.getX() + pizdaX / 2;
 		auto pizdaCenterY = (float) left.getY() + pizdaY / 2;
 
-		char text[10];
+		wchar_t text[10];
 		Size textSize;
 
 		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += lineAngleStepDeg) {
@@ -476,7 +476,7 @@ namespace pizdanc {
 			);
 
 			if (lineAngleDeg != 0 && lineAngleDeg % 10 == 0) {
-				sprintf(text, "%d", -lineAngleDeg);
+				swprintf(text, 10, L"%d", -lineAngleDeg);
 				textSize = Theme::font.getSize(text);
 
 				screenBuffer->renderString(
@@ -561,9 +561,9 @@ namespace pizdanc {
 		);
 
 		// Radio
-		char buffer[255];
+		wchar_t buffer[255];
 
-		sprintf(buffer, "RSSI: %.2f dBm", app.getTransceiver().getRssi());
+		swprintf(buffer, 255, L"RSSI: %.2f dBm", app.getTransceiver().getRssi());
 		screenBuffer->renderString(
 			Point(bounds.getX() + 10, bounds.getY() + 10),
 			&Theme::font,
@@ -571,7 +571,7 @@ namespace pizdanc {
 			buffer
 		);
 
-		sprintf(buffer, "SNR: %.2f dB", app.getTransceiver().getSnr());
+		swprintf(buffer, 255, L"SNR: %.2f dB", app.getTransceiver().getSnr());
 		screenBuffer->renderString(
 			Point(bounds.getX() + 10, bounds.getY() + 20),
 			&Theme::font,
@@ -599,7 +599,7 @@ namespace pizdanc {
 
 		int32_t lineValue = (int32_t) (snappedInteger + 1) * altitudeStepUnits + yFullLines * altitudeStepUnits;
 
-		char text[10];
+		wchar_t text[10];
 		Size textSize;
 		bool isBig;
 
@@ -616,7 +616,7 @@ namespace pizdanc {
 				);
 
 				//Text
-				sprintf(text, "%d", lineValue);
+				swprintf(text, 10, L"%d", lineValue);
 				textSize = Theme::font.getSize(text);
 
 				screenBuffer->renderString(
@@ -717,7 +717,7 @@ namespace pizdanc {
 		int32_t lineValue = 0;
 
 		Size textSize;
-		char text[10];
+		wchar_t text[10];
 		bool isBig;
 
 		auto renderLines = [&](int32_t yAdder) {
@@ -734,7 +734,7 @@ namespace pizdanc {
 						lineColor
 					);
 
-					sprintf(text, "%d", lineValue / 100);
+					swprintf(text, 10, L"%d", lineValue / 100);
 					textSize = Theme::font.getSize(text);
 
 					screenBuffer->renderString(
@@ -775,7 +775,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderMiniPanel(ScreenBuffer *screenBuffer, const Bounds &bounds, const Color *bg, const Color *fg, char* buffer) const {
+	void PFD::renderMiniPanel(ScreenBuffer *screenBuffer, const Bounds &bounds, const Color *bg, const Color *fg, wchar_t* buffer) const {
 		auto &app = RCApplication::getInstance();
 
 		// Background
@@ -800,12 +800,12 @@ namespace pizdanc {
 
 		auto bg = &Theme::bg3;
 		auto fg = &Theme::blue;
-		char buffer[8];
+		wchar_t buffer[8];
 
 		if (app.getLocalData().getAutopilotSpeed() > 0) {
-			sprintf(buffer, "%.0f", app.getLocalData().getAutopilotSpeed());
+			swprintf(buffer, 8, L"%.0f", app.getLocalData().getAutopilotSpeed());
 		} else {
-			sprintf(buffer, "----");
+			swprintf(buffer, 8, L"----");
 		}
 
 		renderMiniPanel(screenBuffer, bounds, bg, fg, buffer);
@@ -816,16 +816,16 @@ namespace pizdanc {
 
 		auto bg = &Theme::bg3;
 		auto fg = &Theme::blue;
-		char buffer[9];
+		wchar_t buffer[9];
 
 		switch (app.getLocalData().getAltimeterMode()) {
 			case QNH:
-				sprintf(buffer, "%d", (uint16_t) app.getLocalData().getAltimeterPressure());
+				swprintf(buffer, 9, L"%d", (uint16_t) app.getLocalData().getAltimeterPressure());
 
 				break;
 
 			case QNE:
-				sprintf(buffer, "STD");
+				swprintf(buffer, 9, L"STD");
 				bg = &Theme::yellow;
 				fg = &Theme::bg1;
 
@@ -840,12 +840,12 @@ namespace pizdanc {
 
 		auto bg = &Theme::bg3;
 		auto fg = &Theme::blue;
-		char buffer[8];
+		wchar_t buffer[8];
 
 		if (app.getLocalData().getAutopilotAltitude() > 0) {
-			sprintf(buffer, "%.0f", app.getLocalData().getAutopilotAltitude());
+			swprintf(buffer, 8, L"%.0f", app.getLocalData().getAutopilotAltitude());
 		} else {
-			sprintf(buffer, "----");
+			swprintf(buffer, 8, L"----");
 		}
 
 		renderMiniPanel(screenBuffer, bounds, bg, fg, buffer);

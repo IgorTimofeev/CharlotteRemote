@@ -42,10 +42,10 @@ namespace pizdanc {
 				addChild(&_pageLayout);
 
 				// Initialization
-				addPage("PFD", &_pfdPage);
-				addPage("ENG", &_enginePage);
-				addPage("BAT", &_batteryPage);
-				addPage("RAD", &_radioPage);
+				addPage(L"PFD", &_pfdPage);
+				addPage(L"ENG", &_enginePage);
+				addPage(L"BAT", &_batteryPage);
+				addPage(L"RAD", &_radioPage);
 				setSelectedIndex(0);
 			}
 
@@ -76,7 +76,7 @@ namespace pizdanc {
 			BatteryPage _batteryPage = BatteryPage();
 			RadioPage _radioPage = RadioPage();
 
-			void addPage(const String& name, Page* page) {
+			void addPage(const wchar_t* name, Page* page) {
 				_pages.push_back(page);
 				addItem(new SideBarItem(name));
 			}

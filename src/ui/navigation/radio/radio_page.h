@@ -36,7 +36,7 @@ namespace pizdanc {
 
 			Rows rows = Rows();
 
-			Titler backgroundTitler = Titler("Background");
+			Titler backgroundTitler = Titler(L"Background");
 			Slider backgroundSlider = Slider();
 	};
 }

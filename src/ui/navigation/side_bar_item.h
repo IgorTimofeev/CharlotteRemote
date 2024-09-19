@@ -13,7 +13,7 @@ using namespace yoba;
 namespace pizdanc {
 	class SideBarItem : public SelectorItem {
 		public:
-			explicit SideBarItem(const String& text) {
+			explicit SideBarItem(const wchar_t* text) {
 				// Selection
 				_selectionBackground.setBackground(&Theme::fg1);
 				addChild(&_selectionBackground);

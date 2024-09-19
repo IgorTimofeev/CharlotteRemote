@@ -63,7 +63,7 @@ namespace pizdanc {
 //		_pitchHall.begin();
 //		_rollHall.begin();
 
-//		_transceiver.begin();
+		_transceiver.begin();
 		_onboardLED.begin();
 	}
 
@@ -71,7 +71,7 @@ namespace pizdanc {
 		const auto oldSpeed = _speedInterpolator.getTargetValue();
 		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
-//		_transceiver.tick(*this);
+		_transceiver.tick(*this);
 		_onboardLED.tick();
 
 		const auto testDeltaTime = (float) (millis() - _testTickTime);

@@ -25,7 +25,7 @@ namespace pizdanc {
 
 			void renderVerticalSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
 
-			void renderMiniPanel(ScreenBuffer *screenBuffer, const Bounds &bounds, const Color *bg, const Color *fg, char *buffer) const;
+			void renderMiniPanel(ScreenBuffer *screenBuffer, const Bounds &bounds, const Color *bg, const Color *fg, wchar_t *buffer) const;
 
 			void renderPressure(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
 
