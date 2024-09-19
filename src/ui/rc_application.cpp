@@ -99,9 +99,6 @@ namespace pizdanc {
 				_rollInterpolator.setTargetValue(0);
 
 			// A/P
-			getLocalData().setAutopilotAltitude(20);
-			getLocalData().setAutopilotSpeed(35);
-
 			_testTickTime = millis();
 
 			const auto newSpeed = _speedInterpolator.getTargetValue();

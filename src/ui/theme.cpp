@@ -27,10 +27,10 @@ namespace pizdanc {
 		button.setHeight(elementHeight);
 		button.setCornerRadius(cornerRadius);
 
-		button.setBackground(&Theme::yellow);
+		button.setBackgroundColor(&Theme::yellow);
 		button.setPressedBackground(&Theme::purple);
 
-		button.setForeground(&Theme::fg1);
+		button.setForegroundColor(&Theme::fg1);
 		button.setPressedForeground(&Theme::fg1);
 	}
 
@@ -38,7 +38,7 @@ namespace pizdanc {
 		slider.setHeight(elementHeight);
 		slider.setCornerRadius(cornerRadius);
 
-		slider.setBackground(&Theme::bg3);
-		slider.setForeground(&Theme::yellow);
+		slider.setBackgroundColor(&Theme::bg3);
+		slider.setForegroundColor(&Theme::yellow);
 	}
 }

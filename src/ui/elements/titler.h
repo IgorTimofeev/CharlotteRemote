@@ -12,7 +12,7 @@ namespace pizdanc {
 			Titler() {
 				setSpacing(5);
 
-				_titleText.setForeground(&Theme::fg3);
+				_titleText.setForegroundColor(&Theme::fg3);
 				addChild(&_titleText);
 			}
 

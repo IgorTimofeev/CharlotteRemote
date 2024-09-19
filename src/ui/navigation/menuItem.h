@@ -15,7 +15,7 @@ namespace pizdanc {
 		public:
 			explicit MenuItem(const wchar_t* text) {
 				// Selection
-				_selectionBackground.setBackground(&Theme::fg1);
+				_selectionBackground.setBackgroundColor(&Theme::fg1);
 				addChild(&_selectionBackground);
 
 				// Text
@@ -41,7 +41,7 @@ namespace pizdanc {
 
 			void updateVisualsFromSelection() {
 				_selectionBackground.setVisible(isSelected());
-				_text.setForeground(isSelected() ? &Theme::bg1 : &Theme::fg1);
+				_text.setForegroundColor(isSelected() ? &Theme::bg1 : &Theme::fg1);
 			}
 	};
 }

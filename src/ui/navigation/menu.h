@@ -22,46 +22,12 @@
 using namespace yoba;
 
 namespace pizdanc {
-	class SideBar : public Selector {
+	class Menu : public Selector {
 		public:
-			SideBar() {
-				addChild(&_background);
-
-				// Menu
-				const uint16_t menuSize = 20;
-				_menu.setSize(Size(Size::Calculated, menuSize));
-				_menu.setVerticalAlignment(Alignment::End);
-				_menu.addChild(&_menuBackground);
-
-				_menuItemsLayout.setOrientation(Orientation::Horizontal);
-				_menu.addChild(&_menuItemsLayout);
-				setItemsLayout(&_menuItemsLayout);
-
-				addChild(&_menu);
-
-				// Page
-				_pageLayout.setMargin(Margin(0, 0, 0, menuSize));
-				addChild(&_pageLayout);
-
-				// Initialization
-				addPage(L"PFD", &_pfdPage);
-				addPage(L"ENG", &_enginePage);
-				addPage(L"A/P", &_autopilotPage);
-				addPage(L"COM", &_radioPage);
-				addPage(L"BAT", &_batteryPage);
-				addPage(L"DBG", &_debugPage);
-				setSelectedIndex(0);
-			}
+			Menu();
 
 		protected:
-			void onSelectionChanged() override {
-				_pageLayout.removeChildren();
-
-				if (getSelectedIndex() < 0)
-					return;
-
-				_pageLayout.addChild(_pages[getSelectedIndex()]);
-			}
+			void onSelectionChanged() override;
 
 		private:
 			Rectangle _background = Rectangle(&Theme::bg1);
@@ -82,9 +48,6 @@ namespace pizdanc {
 			RadioPage _radioPage = RadioPage();
 			DebugPage _debugPage = DebugPage();
 
-			void addPage(const wchar_t* name, Page* page) {
-				_pages.push_back(page);
-				addItem(new MenuItem(name));
-			}
+			void addPage(const wchar_t* name, Page* page);
 	};
 }
