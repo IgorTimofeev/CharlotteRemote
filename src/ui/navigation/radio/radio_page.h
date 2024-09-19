@@ -17,26 +17,48 @@ namespace pizdanc {
 			RadioPage() {
 				setAlignment(Alignment::Center);
 
-				backgroundSlider.setBackground(&Theme::bg3);
-				backgroundSlider.setForeground(&Theme::yellow);
-				backgroundSlider.setCornerRadius(8);
-				backgroundSlider.setValue(0);
-				backgroundSlider.setSize(Size(150, 40));
+				// Slider
+				slider.setSize(Size(150, 40));
+				slider.setBackground(&Theme::bg3);
+				slider.setForeground(&Theme::yellow);
+				slider.setCornerRadius(5);
+				slider.setValue(0);
 
-				backgroundSlider.addOnValueChanged([this]() {
+				slider.addOnValueChanged([this]() {
 
 				});
 
-				backgroundTitler.addChild(&backgroundSlider);
+				sliderTitle.addChild(&slider);
+				rows.addChild(&sliderTitle);
 
-				rows.addChild(&backgroundTitler);
+				// Button
+				button.setSize(Size(150, 40));
+				button.setCornerRadius(5);
+
+				button.setBackground(&Theme::yellow);
+				button.setPressedBackground(&Theme::green);
+
+				button.setForeground(&Theme::fg1);
+				button.setPressedForeground(&Theme::fg4);
+
+				button.setText(L"Penis button");
+
+				button.addOnClick([&](TouchEvent& event) {
+					Serial.printf("Click on %d x %d\n", event.getPosition().getX(), event.getPosition().getY());
+				});
+
+				buttonTitle.addChild(&button);
+				rows.addChild(&buttonTitle);
 
 				addChild(&rows);
 			}
 
 			Rows rows = Rows();
 
-			Titler backgroundTitler = Titler(L"Background");
-			Slider backgroundSlider = Slider();
+			Titler sliderTitle = Titler(L"Background");
+			Slider slider = Slider();
+
+			Titler buttonTitle = Titler(L"Press me");
+			Button button = Button();
 	};
 }

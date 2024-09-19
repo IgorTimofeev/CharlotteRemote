@@ -44,7 +44,7 @@ namespace pizdanc {
 		// Text
 		const uint8_t textOffset = 2;
 
-		screenBuffer->renderString(
+		screenBuffer->renderText(
 			Point(
 				left ? bounds.getX2() - currentValueTriangleSize - textOffset - textSize.getWidth() : bounds.getX() + currentValueTriangleSize + textOffset,
 				y + currentValueHeight / 2 - textSize.getHeight() / 2
@@ -282,7 +282,7 @@ namespace pizdanc {
 				swprintf(text, 12, L"%d", lineValue);
 				textSize = Theme::font.getSize(text);
 
-				screenBuffer->renderString(
+				screenBuffer->renderText(
 					Point(bounds.getWidth() - speedBarSize - lineSizeBig - 5 - textSize.getWidth(), y - textSize.getHeight() / 2),
 					&Theme::font,
 					lineColor,
@@ -479,7 +479,7 @@ namespace pizdanc {
 				swprintf(text, 10, L"%d", -lineAngleDeg);
 				textSize = Theme::font.getSize(text);
 
-				screenBuffer->renderString(
+				screenBuffer->renderText(
 					Point(
 						lineLeft.getX() - textSize.getWidth() - 8,
 						lineLeft.getY() - textSize.getHeight() / 2
@@ -489,7 +489,7 @@ namespace pizdanc {
 					text
 				);
 
-				screenBuffer->renderString(
+				screenBuffer->renderText(
 					Point(
 						lineRight.getX() + 8,
 						lineRight.getY() - textSize.getHeight() / 2
@@ -564,7 +564,7 @@ namespace pizdanc {
 		wchar_t buffer[255];
 
 		swprintf(buffer, 255, L"RSSI: %.2f dBm", app.getTransceiver().getRssi());
-		screenBuffer->renderString(
+		screenBuffer->renderText(
 			Point(bounds.getX() + 10, bounds.getY() + 10),
 			&Theme::font,
 			&Theme::fg1,
@@ -572,7 +572,7 @@ namespace pizdanc {
 		);
 
 		swprintf(buffer, 255, L"SNR: %.2f dB", app.getTransceiver().getSnr());
-		screenBuffer->renderString(
+		screenBuffer->renderText(
 			Point(bounds.getX() + 10, bounds.getY() + 20),
 			&Theme::font,
 			&Theme::fg1,
@@ -619,7 +619,7 @@ namespace pizdanc {
 				swprintf(text, 10, L"%d", lineValue);
 				textSize = Theme::font.getSize(text);
 
-				screenBuffer->renderString(
+				screenBuffer->renderText(
 					Point(x + lineSizeBig + 5, y - textSize.getHeight() / 2),
 					&Theme::font,
 					lineColor,
@@ -737,7 +737,7 @@ namespace pizdanc {
 					swprintf(text, 10, L"%d", lineValue / 100);
 					textSize = Theme::font.getSize(text);
 
-					screenBuffer->renderString(
+					screenBuffer->renderText(
 						Point(
 							bounds.getX() + lineSizeBig + 4,
 							y - textSize.getHeight() / 2
@@ -785,7 +785,7 @@ namespace pizdanc {
 		// Text
 		auto textSize = Theme::font.getSize(buffer);
 
-		screenBuffer->renderString(
+		screenBuffer->renderText(
 			Point(
 				bounds.getX() + bounds.getWidth() / 2 - textSize.getWidth() / 2,
 				bounds.getY() + miniHeight / 2 - textSize.getHeight() / 2
