@@ -10,16 +10,21 @@ namespace pizdanc {
 		spd.rotaryKnob.addOnRotate([&](float delta) {
 			const auto inc = 1;
 
+			auto oldValue = spd.sevenSegment.getValue();
+
+			if (oldValue == SevenSegment::dashes)
+				oldValue = 0;
+
 			auto newValue =
 				delta > 0
-				? spd.sevenSegment.getValue() + inc
+				? oldValue + inc
 				: (
-					spd.sevenSegment.getValue() >= inc
-					? spd.sevenSegment.getValue() - inc
+					oldValue >= inc
+					? oldValue - inc
 					: 0
 
 				);
-			spd.sevenSegment.setValue(newValue);
+			spd.sevenSegment.setValue(newValue == 0 ? SevenSegment::dashes : newValue);
 
 			auto &app = RCApplication::getInstance();
 

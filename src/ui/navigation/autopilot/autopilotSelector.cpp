@@ -7,7 +7,7 @@ namespace pizdanc {
 		addChild(&background);
 
 		rows.setMargin(Margin(10));
-		rows.setSpacing(20);
+		rows.setSpacing(15);
 
 		// Seven segment
 		setIndicatorStyle(sevenSegment);
@@ -32,6 +32,7 @@ namespace pizdanc {
 		indicator.setDigitCount(4);
 		indicator.setSegmentThickness(2);
 		indicator.setSegmentLength(10);
+		indicator.setValue(SevenSegment::dashes);
 	}
 
 	void AutopilotSelector::setRotaryStyle(RotaryKnob &rotaryKnob) {
