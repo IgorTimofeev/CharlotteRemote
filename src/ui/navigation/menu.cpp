@@ -2,10 +2,7 @@
 #include "../rc_application.h"
 
 namespace pizdanc {
-	Menu::Menu(RCApplication* application) :
-		_application(application),
-		_autopilotPage(application)
-	{
+	void Menu::begin() {
 		addChild(&_background);
 
 		// Menu
@@ -26,8 +23,9 @@ namespace pizdanc {
 
 		// Initialization
 		addPage(L"PFD", &_pfdPage);
-		addPage(L"ENG", &_enginePage);
 		addPage(L"A/P", &_autopilotPage);
+		addPage(L"CTL", &_controlsPage);
+		addPage(L"ENG", &_enginePage);
 		addPage(L"COM", &_radioPage);
 		addPage(L"BAT", &_batteryPage);
 		addPage(L"DBG", &_debugPage);
@@ -44,11 +42,8 @@ namespace pizdanc {
 	}
 
 	void Menu::addPage(const wchar_t *name, Page *page) {
+		page->begin();
 		_pages.push_back(page);
 		addItem(new MenuItem(name));
-	}
-
-	RCApplication *Menu::getApplication() const {
-		return _application;
 	}
 }

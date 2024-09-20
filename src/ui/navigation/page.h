@@ -7,7 +7,7 @@ using namespace yoba;
 namespace pizdanc {
 	class Page : public Layout {
 		public:
-			Page() {
+			virtual void begin() {
 
 			}
 	};

@@ -18,24 +18,19 @@
 #include "pfd/pfdPage.h"
 #include "autopilot/autopilotPage.h"
 #include "radio/radioPage.h"
+#include "controls/controlsPage.h"
 
 using namespace yoba;
 
 namespace pizdanc {
-	class RCApplication;
-
 	class Menu : public Selector {
 		public:
-			explicit Menu(RCApplication* application);
-
-			RCApplication* getApplication() const;
+			virtual void begin();
 
 		protected:
 			void onSelectionChanged() override;
 
 		private:
-			RCApplication* _application;
-
 			Rectangle _background = Rectangle(&Theme::bg1);
 			Layout _pageLayout = Layout();
 
@@ -48,8 +43,9 @@ namespace pizdanc {
 			// ----------------------------- Pages -----------------------------
 
 			PFDPage _pfdPage = PFDPage();
+			AutopilotPage _autopilotPage = AutopilotPage();
+			ControlsPage _controlsPage = ControlsPage();
 			EnginePage _enginePage = EnginePage();
-			AutopilotPage _autopilotPage;
 			BatteryPage _batteryPage = BatteryPage();
 			RadioPage _radioPage = RadioPage();
 			DebugPage _debugPage = DebugPage();

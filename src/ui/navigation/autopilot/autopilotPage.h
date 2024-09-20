@@ -19,15 +19,17 @@ namespace pizdanc {
 
 	class AutopilotPage : public Page {
 		public:
-			explicit AutopilotPage(RCApplication* application);
-
 			StackLayout columns = StackLayout();
 
-		private:
-			RCApplication* _application;
+			void begin() override;
 
+		private:
 			AutopilotSelector spd = AutopilotSelector(L"Speed");
 			AutopilotSelector alt = AutopilotSelector(L"Alt");
-			AutopilotSelector baro = AutopilotSelector(L"Baro");
+			AutopilotSelector pressure = AutopilotSelector(L"Baro");
+
+			static void addIndicatorCallback(AutopilotSelector& selector, float defaultValue, std::function<void(float)> callback) ;
+
+			static void onPizda(float value);
 	};
 }

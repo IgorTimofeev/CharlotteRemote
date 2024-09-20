@@ -60,7 +60,8 @@ namespace pizdanc {
 			add(0x31, 0x7f, 0xcb);
 		}
 
-		// Workspace
+		// UI
+		_menu.begin();
 		addChild(&_menu);
 
 //		// Joysticks
