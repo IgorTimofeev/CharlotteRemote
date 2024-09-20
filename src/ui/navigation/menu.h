@@ -22,14 +22,20 @@
 using namespace yoba;
 
 namespace pizdanc {
+	class RCApplication;
+
 	class Menu : public Selector {
 		public:
-			Menu();
+			explicit Menu(RCApplication* application);
+
+			RCApplication* getApplication() const;
 
 		protected:
 			void onSelectionChanged() override;
 
 		private:
+			RCApplication* _application;
+
 			Rectangle _background = Rectangle(&Theme::bg1);
 			Layout _pageLayout = Layout();
 
@@ -43,7 +49,7 @@ namespace pizdanc {
 
 			PFDPage _pfdPage = PFDPage();
 			EnginePage _enginePage = EnginePage();
-			AutopilotPage _autopilotPage = AutopilotPage();
+			AutopilotPage _autopilotPage;
 			BatteryPage _batteryPage = BatteryPage();
 			RadioPage _radioPage = RadioPage();
 			DebugPage _debugPage = DebugPage();

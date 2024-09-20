@@ -15,13 +15,17 @@
 using namespace yoba;
 
 namespace pizdanc {
+	class RCApplication;
+
 	class AutopilotPage : public Page {
 		public:
-			AutopilotPage();
+			explicit AutopilotPage(RCApplication* application);
 
 			StackLayout columns = StackLayout();
 
 		private:
+			RCApplication* _application;
+
 			AutopilotSelector spd = AutopilotSelector(L"Speed");
 			AutopilotSelector alt = AutopilotSelector(L"Alt");
 			AutopilotSelector baro = AutopilotSelector(L"Baro");

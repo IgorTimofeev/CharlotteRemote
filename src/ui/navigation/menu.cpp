@@ -1,7 +1,11 @@
 #include "menu.h"
+#include "../rc_application.h"
 
 namespace pizdanc {
-	Menu::Menu() {
+	Menu::Menu(RCApplication* application) :
+		_application(application),
+		_autopilotPage(application)
+	{
 		addChild(&_background);
 
 		// Menu
@@ -42,5 +46,9 @@ namespace pizdanc {
 	void Menu::addPage(const wchar_t *name, Page *page) {
 		_pages.push_back(page);
 		addItem(new MenuItem(name));
+	}
+
+	RCApplication *Menu::getApplication() const {
+		return _application;
 	}
 }

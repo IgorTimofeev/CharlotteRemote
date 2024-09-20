@@ -13,7 +13,7 @@
 #include "../../lib/YOBA/src/ui/application.h"
 #include "../../lib/YOBA/src/ui/debug/touchCanvas.h"
 #include "../../lib/YOBA/src/ui/debug/testView.h"
-#include "ui/navigation/menu.h"
+#include "../ui/navigation/menu.h"
 
 using namespace yoba;
 
@@ -151,7 +151,7 @@ namespace pizdanc {
 
 			// -------------------------------- UI --------------------------------
 
-			Menu _sideBar = Menu();
+			Menu _menu = Menu(this);
 
 			// -------------------------------- Timings --------------------------------
 

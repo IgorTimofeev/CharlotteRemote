@@ -16,8 +16,6 @@ namespace pizdanc {
 		public:
 			RadioPage() {
 
-
-
 				addChild(&rows);
 			}
 

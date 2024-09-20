@@ -6,10 +6,12 @@
 using namespace yoba;
 
 namespace pizdanc {
-	RCApplication::RCApplication() : Application(
-		&_screenBuffer,
-		&_touchDriver
-	) {
+	RCApplication::RCApplication() :
+		Application(
+			&_screenBuffer,
+			&_touchDriver
+		)
+	{
 		_tickTime = millis();
 	}
 
@@ -59,7 +61,7 @@ namespace pizdanc {
 		}
 
 		// Workspace
-		addChild(&_sideBar);
+		addChild(&_menu);
 
 //		// Joysticks
 //		_pitchHall.begin();

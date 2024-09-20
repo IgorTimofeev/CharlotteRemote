@@ -2,10 +2,12 @@
 #include "../../rc_application.h"
 
 namespace pizdanc {
-	AutopilotPage::AutopilotPage() {
+	AutopilotPage::AutopilotPage(RCApplication* application) : _application(application) {
 		columns.setAlignment(Alignment::Center);
 		columns.setOrientation(Orientation::Horizontal);
 		columns.setSpacing(20);
+
+		spd.sevenSegment.setValue(application->getLocalData().getAutopilotSpeed() == 0 ? SevenSegment::dashes : (uint32_t) application->getLocalData().getAutopilotSpeed());
 
 		spd.rotaryKnob.addOnRotate([&](float delta) {
 			const auto inc = 1;
@@ -24,6 +26,7 @@ namespace pizdanc {
 					: 0
 
 				);
+
 			spd.sevenSegment.setValue(newValue == 0 ? SevenSegment::dashes : newValue);
 
 			auto &app = RCApplication::getInstance();
