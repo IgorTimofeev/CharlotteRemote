@@ -24,11 +24,10 @@ namespace pizdanc {
 		sevenSegment.setForegroundColor(&Theme::fg1);
 		sevenSegment.setSegmentThickness(2);
 		sevenSegment.setSegmentLength(10);
-		sevenSegment.setValue(SevenSegment::dashes);
 		rows.addChild(&sevenSegment);
 
 		// Rotary knob
-		rotaryKnob.setMargin(Margin(0, 0, 0, marginValue));
+		rotaryKnob.setMargin(Margin(marginValue));
 		rotaryKnob.setHorizontalAlignment(Alignment::Center);
 		rotaryKnob.setBackgroundColor(&Theme::bg3);
 		rotaryKnob.setCenterColor(&Theme::bg5);

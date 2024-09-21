@@ -25,7 +25,7 @@ namespace pizdanc {
 
 		private:
 			AutopilotSelector spd = AutopilotSelector(3, L"Speed", L"A/T");
-			AutopilotSelector hdg = AutopilotSelector(3, L"Heading", L"HDG");
+			AutopilotSelector hdg = AutopilotSelector(3, L"Heading", L"HOLD");
 			AutopilotSelector alt = AutopilotSelector(4, L"Altitude", L"FLC");
 
 			static void addIndicatorCallback(AutopilotSelector& selector, float defaultValue, uint8_t incrementBy, const std::function<void(float)>& callback);

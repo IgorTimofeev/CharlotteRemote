@@ -24,6 +24,7 @@ namespace pizdanc {
 			SevenSegment sevenSegment = SevenSegment();
 			RotaryKnob rotaryKnob = RotaryKnob();
 			Button button = Button();
+
 		private:
 	};
 }
