@@ -10,48 +10,43 @@ namespace pizdanc {
 		columns.setSpacing(20);
 
 		columns.addChild(&spd);
+		columns.addChild(&hdg);
 		columns.addChild(&alt);
-		columns.addChild(&pressure);
 
 		addChild(&columns);
 
 		// Speed
-		addIndicatorCallback(spd, app.getLocalData().getAutopilotSpeed(), [&](float value) {
+		addIndicatorCallback(spd, app.getLocalData().getAutopilotSpeed(), 1, [&](float value) {
 			app.getLocalData().setAutopilotSpeed(value);
 		});
 
-		// Altitude
-		addIndicatorCallback(alt, app.getLocalData().getAutopilotAltitude(), [&](float value) {
-			app.getLocalData().setAutopilotAltitude(value);
+		// Heading
+		addIndicatorCallback(hdg, app.getLocalData().getAutopilotHeading(), 1, [&](float value) {
+			app.getLocalData().setAutopilotHeading(value);
 		});
 
-		// Pressure
-		addIndicatorCallback(pressure, app.getLocalData().getAltimeterPressure(), [&](float value) {
-			app.getLocalData().setAltimeterPressure(value);
+		// Altitude
+		addIndicatorCallback(alt, app.getLocalData().getAutopilotAltitude(), 10, [&](float value) {
+			app.getLocalData().setAutopilotAltitude(value);
 		});
 	}
 
-	void AutopilotPage::addIndicatorCallback(AutopilotSelector& selector, float defaultValue, const std::function<void(float)>& callback) {
+	void AutopilotPage::addIndicatorCallback(AutopilotSelector& selector, float defaultValue, uint8_t incrementBy, const std::function<void(float)>& callback) {
 		selector.sevenSegment.setValue(defaultValue == 0 ? SevenSegment::dashes : (uint32_t) defaultValue);
 
-		selector.rotaryKnob.addOnRotate([&selector, callback](float delta) {
-			const auto inc = 1;
-
+		selector.rotaryKnob.addOnRotate([&selector, incrementBy, callback](float delta) {
 			auto oldValue = selector.sevenSegment.getValue();
-
-			if (oldValue == SevenSegment::dashes)
-				oldValue = 0;
 
 			auto newValue =
 				delta > 0
-				? oldValue + inc
+				? oldValue + incrementBy
 				: (
-					oldValue >= inc
-					? oldValue - inc
+					oldValue >= incrementBy
+					? oldValue - incrementBy
 					: 0
 				);
 
-			selector.sevenSegment.setValue(newValue == 0 ? SevenSegment::dashes : newValue);
+			selector.sevenSegment.setValue(newValue);
 
 			Serial.printf("Delta: %f, new angle: %f\n", delta, degrees(selector.rotaryKnob.getAngle()));
 

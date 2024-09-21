@@ -47,6 +47,9 @@ namespace pizdanc {
 			float getAutopilotAltitude() const;
 			void setAutopilotAltitude(float autopilotAltitude);
 
+			float getAutopilotHeading() const;
+			void setAutopilotHeading(float autopilotHeading);
+
 		private:
 			uint8_t _throttle = 0;
 			uint8_t _ailerons = 0;
@@ -59,6 +62,7 @@ namespace pizdanc {
 			bool _strobeLights = false;
 
 			float _autopilotSpeed = 0;
+			float _autopilotHeading = 0;
 			float _autopilotAltitude = 0;
 	};
 
@@ -130,8 +134,7 @@ namespace pizdanc {
 			Transceiver _transceiver = Transceiver();
 
 			ILI9341Driver _screenDriver = ILI9341Driver(
-				ScreenOrientation::Landscape90,
-
+				ScreenOrientation::Landscape270,
 				settings::pinout::screen::chipSelect,
 				settings::pinout::screen::dataCommand,
 				settings::pinout::screen::reset

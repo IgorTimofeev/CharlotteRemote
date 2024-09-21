@@ -327,4 +327,12 @@ namespace pizdanc {
 	void MutualData::setAutopilotAltitude(float autopilotAltitude) {
 		_autopilotAltitude = autopilotAltitude;
 	}
+
+	float MutualData::getAutopilotHeading() const {
+		return _autopilotHeading;
+	}
+
+	void MutualData::setAutopilotHeading(float autopilotHeading) {
+		_autopilotHeading = autopilotHeading;
+	}
 }

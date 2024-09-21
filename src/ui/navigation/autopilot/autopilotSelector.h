@@ -6,6 +6,7 @@
 #include "../../../../lib/YOBA/src/ui/sevenSegment.h"
 #include "../../../../lib/YOBA/src/ui/rotaryKnob.h"
 #include "../../../../lib/YOBA/src/ui/shapes/rectangle.h"
+#include "../../../../lib/YOBA/src/ui/button.h"
 
 #include "../../elements/titler.h"
 #include "../../elements/rows.h"
@@ -15,17 +16,14 @@ using namespace yoba;
 namespace pizdanc {
 	class AutopilotSelector : public Layout {
 		public:
-			explicit AutopilotSelector(const wchar_t* titleText);
+			explicit AutopilotSelector(uint8_t digitCount, const wchar_t* titleText, const wchar_t *buttonText);
 
 			Rectangle background = Rectangle();
 			StackLayout rows = StackLayout();
-			RotaryKnob rotaryKnob = RotaryKnob();
+			Text title = Text();
 			SevenSegment sevenSegment = SevenSegment();
-			Titler title = Titler();
-
+			RotaryKnob rotaryKnob = RotaryKnob();
+			Button button = Button();
 		private:
-			static void setIndicatorStyle(SevenSegment& indicator);
-
-			static void setRotaryStyle(RotaryKnob& rotaryKnob);
 	};
 }

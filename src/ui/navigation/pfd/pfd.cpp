@@ -845,7 +845,8 @@ namespace pizdanc {
 
 		if (app.getLocalData().getAutopilotAltitude() > 0) {
 			swprintf(buffer, 8, L"%.0f", app.getLocalData().getAutopilotAltitude());
-		} else {
+		}
+		else {
 			swprintf(buffer, 8, L"----");
 		}
 

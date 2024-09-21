@@ -24,10 +24,10 @@ namespace pizdanc {
 			void begin() override;
 
 		private:
-			AutopilotSelector spd = AutopilotSelector(L"Speed");
-			AutopilotSelector alt = AutopilotSelector(L"Alt");
-			AutopilotSelector pressure = AutopilotSelector(L"Baro");;
+			AutopilotSelector spd = AutopilotSelector(3, L"Speed", L"A/T");
+			AutopilotSelector hdg = AutopilotSelector(3, L"Heading", L"HDG");
+			AutopilotSelector alt = AutopilotSelector(4, L"Altitude", L"FLC");
 
-			static void addIndicatorCallback(AutopilotSelector& selector, float defaultValue, const std::function<void(float)>& callback);
+			static void addIndicatorCallback(AutopilotSelector& selector, float defaultValue, uint8_t incrementBy, const std::function<void(float)>& callback);
 	};
 }
