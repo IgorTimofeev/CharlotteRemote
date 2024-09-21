@@ -130,10 +130,11 @@ namespace pizdanc {
 			Transceiver _transceiver = Transceiver();
 
 			ILI9341Driver _screenDriver = ILI9341Driver(
+				ScreenOrientation::Landscape90,
+
 				settings::pinout::screen::chipSelect,
 				settings::pinout::screen::dataCommand,
-				settings::pinout::screen::reset,
-				ScreenOrientation::Landscape90
+				settings::pinout::screen::reset
 			);
 
 			Bits8PaletteBuffer _screenBuffer = Bits8PaletteBuffer(&_screenDriver);

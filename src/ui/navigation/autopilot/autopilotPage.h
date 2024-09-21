@@ -26,10 +26,8 @@ namespace pizdanc {
 		private:
 			AutopilotSelector spd = AutopilotSelector(L"Speed");
 			AutopilotSelector alt = AutopilotSelector(L"Alt");
-			AutopilotSelector pressure = AutopilotSelector(L"Baro");
+			AutopilotSelector pressure = AutopilotSelector(L"Baro");;
 
-			static void addIndicatorCallback(AutopilotSelector& selector, float defaultValue, std::function<void(float)> callback) ;
-
-			static void onPizda(float value);
+			static void addIndicatorCallback(AutopilotSelector& selector, float defaultValue, const std::function<void(float)>& callback);
 	};
 }
