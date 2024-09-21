@@ -5,7 +5,7 @@
 #include "../../../../lib/YOBA/src/ui/text.h"
 #include "../../../../lib/YOBA/src/ui/slider.h"
 #include "../../../../lib/YOBA/src/ui/sevenSegment.h"
-#include "../../../../lib/YOBA/src/ui/rotaryKnob.h"
+#include "../../../../lib/YOBA/src/ui/knob.h"
 
 #include "../page.h"
 #include "../../elements/titler.h"

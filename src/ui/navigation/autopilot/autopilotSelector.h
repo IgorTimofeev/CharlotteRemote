@@ -4,7 +4,7 @@
 
 #include "../../../../lib/YOBA/src/ui/text.h"
 #include "../../../../lib/YOBA/src/ui/sevenSegment.h"
-#include "../../../../lib/YOBA/src/ui/rotaryKnob.h"
+#include "../../../../lib/YOBA/src/ui/knob.h"
 #include "../../../../lib/YOBA/src/ui/shapes/rectangle.h"
 #include "../../../../lib/YOBA/src/ui/button.h"
 
@@ -22,7 +22,7 @@ namespace pizdanc {
 			StackLayout rows = StackLayout();
 			Text title = Text();
 			SevenSegment seven = SevenSegment();
-			RotaryKnob knob = RotaryKnob();
+			Knob knob = Knob();
 			Button button = Button();
 
 		private:
