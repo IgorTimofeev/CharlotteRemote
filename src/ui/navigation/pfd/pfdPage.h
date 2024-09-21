@@ -16,7 +16,7 @@ namespace pizdanc {
 	class PFDPage : public Page {
 		public:
 			PFDPage() {
-				addChild(&_pfd);
+				*this += &_pfd;
 			}
 
 		private:

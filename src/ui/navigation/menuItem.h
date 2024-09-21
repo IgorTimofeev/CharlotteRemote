@@ -16,14 +16,14 @@ namespace pizdanc {
 			explicit MenuItem(const wchar_t* text) {
 				// Selection
 				_selectionBackground.setBackgroundColor(&Theme::fg1);
-				addChild(&_selectionBackground);
+				*this += &_selectionBackground;
 
 				// Text
 				_text.setMargin(Margin(8, 0, 8, 0));
 				_text.setHorizontalAlignment(Alignment::Center);
 				_text.setVerticalAlignment(Alignment::Center);
 				_text.setText(text);
-				addChild(&_text);
+				*this += &_text;
 
 				updateVisualsFromSelection();
 			}

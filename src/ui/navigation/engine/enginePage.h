@@ -12,15 +12,10 @@
 using namespace yoba;
 
 namespace pizdanc {
-	class EnginePage : public Page {
+	class EnginePage : public RowsPage {
 		public:
 			EnginePage() {
-				setAlignment(Alignment::Center);
 
-
-				addChild(&rows);
 			}
-
-			Rows rows = Rows();
 	};
 }

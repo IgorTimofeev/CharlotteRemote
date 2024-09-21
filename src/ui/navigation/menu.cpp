@@ -3,23 +3,23 @@
 
 namespace pizdanc {
 	void Menu::begin() {
-		addChild(&_background);
+		*this += &_background;
 
 		// Menu
 		const uint16_t menuSize = 20;
 		_menu.setSize(Size(Size::Calculated, menuSize));
 		_menu.setVerticalAlignment(Alignment::End);
-		_menu.addChild(&_menuBackground);
+		_menu += &_menuBackground;
 
 		_menuItemsLayout.setOrientation(Orientation::Horizontal);
-		_menu.addChild(&_menuItemsLayout);
+		_menu += &_menuItemsLayout;
 		setItemsLayout(&_menuItemsLayout);
 
-		addChild(&_menu);
+		*this += &_menu;
 
 		// Page
 		_pageLayout.setMargin(Margin(0, 0, 0, menuSize));
-		addChild(&_pageLayout);
+		*this += &_pageLayout;
 
 		// Initialization
 		addPage(L"PFD", &_pfdPage);
@@ -38,7 +38,7 @@ namespace pizdanc {
 		if (getSelectedIndex() < 0)
 			return;
 
-		_pageLayout.addChild(_pages[getSelectedIndex()]);
+		_pageLayout += _pages[getSelectedIndex()];
 	}
 
 	void Menu::addPage(const wchar_t *name, Page *page) {

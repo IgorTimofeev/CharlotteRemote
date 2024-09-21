@@ -7,21 +7,14 @@
 
 #include "ui/navigation/page.h"
 #include "ui/elements/titler.h"
-#include "ui/elements/rows.h"
 
 using namespace yoba;
 
 namespace pizdanc {
-	class ControlsPage : public Page {
+	class ControlsPage : public RowsPage {
 		public:
 			ControlsPage() {
-				setAlignment(Alignment::Center);
 
-
-				addChild(&rows);
 			}
-
-			Rows rows = Rows();
-
 	};
 }

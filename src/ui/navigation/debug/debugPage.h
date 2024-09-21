@@ -12,7 +12,7 @@
 using namespace yoba;
 
 namespace pizdanc {
-	class DebugPage : public Page {
+	class DebugPage : public RowsPage {
 		public:
 			DebugPage() {
 				rows.setWidth(140);
@@ -21,23 +21,19 @@ namespace pizdanc {
 				// Slider
 				Theme::apply(slider);
 				slider.setValue(0);
-				rows.addChild(&sliderTitle);
+				rows += &sliderTitle;
 
 				// Button 1
 				Theme::apply(button1);
 				button1.setText(L"Click");
-				rows.addChild(&button1Title);
+				rows += &button1Title;
 
 				// Button 2
 				Theme::apply(button2);
 				button2.setToggle(true);
 				button2.setText(L"Click");
-				rows.addChild(&button2Title);
-
-				addChild(&rows);
+				rows += &button2Title;
 			}
-
-			Rows rows = Rows();
 
 			Slider slider = Slider();
 			Titler sliderTitle = Titler(L"Slider", &slider);

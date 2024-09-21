@@ -62,7 +62,7 @@ namespace pizdanc {
 
 		// UI
 		_menu.begin();
-		addChild(&_menu);
+		*this += &_menu;
 
 //		// Joysticks
 //		_pitchHall.begin();

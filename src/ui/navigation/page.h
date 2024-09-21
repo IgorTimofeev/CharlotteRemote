@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../lib/YOBA/src/ui/layout.h"
+#include "../elements/rows.h"
 
 using namespace yoba;
 
@@ -10,5 +11,14 @@ namespace pizdanc {
 			virtual void begin() {
 
 			}
+	};
+
+	class RowsPage : public Page {
+		public:
+			RowsPage() {
+				*this += &rows;
+			}
+
+			Rows rows = Rows();
 	};
 }

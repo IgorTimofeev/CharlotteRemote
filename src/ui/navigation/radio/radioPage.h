@@ -12,13 +12,10 @@
 using namespace yoba;
 
 namespace pizdanc {
-	class RadioPage : public Page {
+	class RadioPage : public RowsPage {
 		public:
 			RadioPage() {
-
-				addChild(&rows);
+				
 			}
-
-			Rows rows = Rows();
 	};
 }

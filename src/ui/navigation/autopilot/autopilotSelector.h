@@ -21,8 +21,8 @@ namespace pizdanc {
 			Rectangle background = Rectangle();
 			StackLayout rows = StackLayout();
 			Text title = Text();
-			SevenSegment sevenSegment = SevenSegment();
-			RotaryKnob rotaryKnob = RotaryKnob();
+			SevenSegment seven = SevenSegment();
+			RotaryKnob knob = RotaryKnob();
 			Button button = Button();
 
 		private:

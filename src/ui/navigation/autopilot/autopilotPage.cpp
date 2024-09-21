@@ -9,48 +9,40 @@ namespace pizdanc {
 		columns.setOrientation(Orientation::Horizontal);
 		columns.setSpacing(20);
 
-		columns.addChild(&spd);
-		columns.addChild(&hdg);
-		columns.addChild(&alt);
+		columns += &spd;
+		columns += &hdg;
+		columns += &alt;
 
-		addChild(&columns);
+		*this += &columns;
 
 		// Speed
-		addIndicatorCallback(spd, app.getLocalData().getAutopilotSpeed(), 1, [&](float value) {
-			app.getLocalData().setAutopilotSpeed(value);
+		spd.seven.setValue((uint32_t) app.getLocalData().getAutopilotSpeed());
+
+		spd.knob.addOnRotate([&](float delta) {
+			auto newValue = constrain(app.getLocalData().getAutopilotSpeed() + delta, 0.0f, 999.0f);
+			app.getLocalData().setAutopilotSpeed(newValue);
+			spd.seven.setValue((uint32_t) newValue);
 		});
 
 		// Heading
-		addIndicatorCallback(hdg, app.getLocalData().getAutopilotHeading(), 1, [&](float value) {
-			app.getLocalData().setAutopilotHeading(value);
+		hdg.seven.setValue((uint32_t) app.getLocalData().getAutopilotHeading());
+
+		hdg.knob.addOnRotate([&](float delta) {
+			auto newValue = app.getLocalData().getAutopilotSpeed() + delta;
+
+			if (newValue < 0)
+				newValue += 360;
+			else if (newValue >= 360)
+				newValue -= 360;
+
+			app.getLocalData().setAutopilotHeading(newValue);
 		});
 
 		// Altitude
-		addIndicatorCallback(alt, app.getLocalData().getAutopilotAltitude(), 10, [&](float value) {
-			app.getLocalData().setAutopilotAltitude(value);
-		});
-	}
+		alt.seven.setValue((uint32_t) app.getLocalData().getAutopilotAltitude());
 
-	void AutopilotPage::addIndicatorCallback(AutopilotSelector& selector, float defaultValue, uint8_t incrementBy, const std::function<void(float)>& callback) {
-		selector.sevenSegment.setValue(defaultValue == 0 ? SevenSegment::dashes : (uint32_t) defaultValue);
-
-		selector.rotaryKnob.addOnRotate([&selector, incrementBy, callback](float delta) {
-			auto oldValue = selector.sevenSegment.getValue();
-
-			auto newValue =
-				delta > 0
-				? oldValue + incrementBy
-				: (
-					oldValue >= incrementBy
-					? oldValue - incrementBy
-					: 0
-				);
-
-			selector.sevenSegment.setValue(newValue);
-
-			Serial.printf("Delta: %f, new angle: %f\n", delta, degrees(selector.rotaryKnob.getAngle()));
-
-			callback((float) newValue);
+		alt.knob.addOnRotate([&](float delta) {
+			app.getLocalData().setAutopilotAltitude(constrain(app.getLocalData().getAutopilotAltitude() + delta, 0.0f, 9999.0f));
 		});
 	}
 }

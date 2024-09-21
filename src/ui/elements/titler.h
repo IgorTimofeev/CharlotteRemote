@@ -13,7 +13,7 @@ namespace pizdanc {
 				setSpacing(5);
 
 				_titleText.setForegroundColor(&Theme::fg3);
-				addChild(&_titleText);
+				*this += &_titleText;
 			}
 
 			explicit Titler(const wchar_t* title) : Titler() {
@@ -21,7 +21,7 @@ namespace pizdanc {
 			}
 
 			Titler(const wchar_t* title, Element* element) : Titler(title) {
-				addChild(element);
+				*this += element;
 			}
 
 			void setText(const wchar_t* text) {
