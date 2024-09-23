@@ -127,6 +127,10 @@ namespace pizdanc {
 			Interpolator &getSpeedTrendInterpolator();
 			Interpolator &getAltitudeTrendInterpolator();
 			Interpolator &getVerticalSpeedInterpolator();
+			Interpolator& getAileronsInterpolator();
+			Interpolator& getFlapsInterpolator();
+			Interpolator& getElevatorInterpolator();
+			Interpolator& getRudderInterpolator();
 
 		private:
 			// -------------------------------- Hardware --------------------------------
@@ -173,6 +177,11 @@ namespace pizdanc {
 			Interpolator _pitchInterpolator = Interpolator();
 			Interpolator _rollInterpolator = Interpolator();
 			Interpolator _yawInterpolator = Interpolator();
+
+			Interpolator _aileronsInterpolator = Interpolator();
+			Interpolator _flapsInterpolator = Interpolator();
+			Interpolator _elevatorInterpolator = Interpolator();
+			Interpolator _rudderInterpolator = Interpolator();
 
 			// -------------------------------- Other shit --------------------------------
 

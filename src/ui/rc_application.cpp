@@ -117,6 +117,19 @@ namespace pizdanc {
 			_speedTrendInterpolator.setTargetValue(deltaSpeed * trendValueFactor);
 			_altitudeTrendInterpolator.setTargetValue(deltaAltitude * trendValueFactor);
 			_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60000.0f / testDeltaTime);
+
+			// Controls
+			auto handleControlSurfaces = [&](Interpolator& interpolator, float opposite = -1) {
+				interpolator.setTargetValue(interpolator.getTargetValue() + 127.0f / 255.0f);
+
+				if (interpolator.getTargetValue() >= 1)
+					interpolator.setTargetValue(opposite);
+			};
+
+			handleControlSurfaces(_aileronsInterpolator);
+			handleControlSurfaces(_flapsInterpolator, 0);
+			handleControlSurfaces(_rudderInterpolator);
+			handleControlSurfaces(_elevatorInterpolator);
 		}
 
 		auto deltaTime = (float) (millis() - _tickTime);
@@ -135,6 +148,11 @@ namespace pizdanc {
 			_pitchInterpolator.tick(interpolationFactor);
 			_rollInterpolator.tick(interpolationFactor);
 			_yawInterpolator.tick(interpolationFactor);
+
+			_aileronsInterpolator.tick(interpolationFactor);
+			_flapsInterpolator.tick(interpolationFactor);
+			_rudderInterpolator.tick(interpolationFactor);
+			_elevatorInterpolator.tick(interpolationFactor);
 
 			invalidate();
 
@@ -198,6 +216,22 @@ namespace pizdanc {
 
 	Interpolator &RCApplication::getVerticalSpeedInterpolator() {
 		return _verticalSpeedInterpolator;
+	}
+
+	Interpolator& RCApplication::getAileronsInterpolator() {
+		return _aileronsInterpolator;
+	}
+
+	Interpolator& RCApplication::getFlapsInterpolator() {
+		return _flapsInterpolator;
+	}
+
+	Interpolator& RCApplication::getRudderInterpolator() {
+		return _rudderInterpolator;
+	}
+
+	Interpolator& RCApplication::getElevatorInterpolator() {
+		return _elevatorInterpolator;
 	}
 
 	float RemoteData::getTemperature() const {
