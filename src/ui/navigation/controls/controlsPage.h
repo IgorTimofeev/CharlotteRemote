@@ -2,11 +2,13 @@
 
 #include "Arduino.h"
 
-#include "ui/text.h"
-#include "ui/slider.h"
+#include "../../../../lib/YOBA/src/ui/imageView.h"
 
-#include "ui/navigation/page.h"
-#include "ui/elements/titler.h"
+#include "../page.h"
+#include "../../elements/titler.h"
+#include "../../elements/titler.h"
+
+#include "backImage.h"
 
 using namespace yoba;
 
@@ -14,7 +16,13 @@ namespace pizdanc {
 	class ControlsPage : public RowsPage {
 		public:
 			ControlsPage() {
+				rows.setAlignment(Alignment::Center);
 
+				rows += &imageView;
 			}
+
+			static const BackImage backImage;
+
+			ImageView imageView = ImageView(&backImage);
 	};
 }

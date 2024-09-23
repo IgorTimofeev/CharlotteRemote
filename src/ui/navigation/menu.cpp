@@ -29,7 +29,8 @@ namespace pizdanc {
 		addPage(L"COM", &_radioPage);
 		addPage(L"BAT", &_batteryPage);
 		addPage(L"DBG", &_debugPage);
-		setSelectedIndex(1);
+
+		setSelectedIndex(2);
 	}
 
 	void Menu::onSelectionChanged() {
