@@ -18,47 +18,39 @@ namespace pizdanc {
 	void RCApplication::begin() {
 		Application::begin();
 
+		// Palette
+		_screenBuffer.setPaletteColors({
+			// Background
+			0x000000,
+			0x111111,
+			0x222222,
+			0x333333,
+			0x444444,
+			// Foreground
+			0xFFFFFF,
+			0xDDDDDD,
+			0x999999,
+			0x777777,
+			// Red
+			0xff0000,
+			// Purple
+			0xff00ff,
+			// Green
+			0x00FF00,
+			// Green speed
+			0x008100,
+			// Yellow
+			0xffd200,
+			// Ocean
+			0x00ffff,
+			// Ground
+			0x97b838,
+			// Sky
+			0x317fcb,
+		});
+
 		// Font
 		setDefaultFont(&Theme::font);
-
-		// Palette
-		{
-			uint8_t index = 0;
-
-			auto add = [&](uint8_t r, uint8_t g, uint8_t b) {
-				_screenBuffer.setPaletteColor(index++, Rgb888Color(r, g, b));
-			};
-
-			// Background
-			add(0x00, 0x00, 0x00);
-			add(0x11, 0x11, 0x11);
-			add(0x22, 0x22, 0x22);
-			add(0x33, 0x33, 0x33);
-			add(0x44, 0x44, 0x44);
-
-			// Foreground
-			add(0xFF, 0xFF, 0xFF);
-			add(0xDD, 0xDD, 0xDD);
-			add(0x99, 0x99, 0x99);
-			add(0x77, 0x77, 0x77);
-
-			// Red
-			add(0xff, 0x00, 0x00);
-			// Purple
-			add(0xff, 0x00, 0xff);
-			// Green
-			add(0x00, 0xFF, 0x00);
-			// Green speed
-			add(0x00, 0x81, 0x00);
-			// Yellow
-			add(0xff, 0xd2, 0x00);
-			// Ocean
-			add(0x00, 0xff, 0xff);
-			// Ground
-			add(0x97, 0xb8, 0x38);
-			// Sky
-			add(0x31, 0x7f, 0xcb);
-		}
 
 		// UI
 		_menu.begin();
