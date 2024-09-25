@@ -22,11 +22,11 @@ namespace pizdanc {
 		) {
 			selector.seven.setValue((uint32_t) valueGetter());
 
-			selector.knob.getOnRotate().add([&selector, valueGetter, valueSetter](KnobRotateEvent& event) {
+			selector.knob.getOnRotate() += [&selector, valueGetter, valueSetter](KnobRotateEvent& event) {
 				valueSetter(event);
 
 				selector.seven.setValue((uint32_t) valueGetter());
-			});
+			};
 		};
 
 		// Speed

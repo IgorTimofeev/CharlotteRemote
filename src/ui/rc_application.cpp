@@ -15,8 +15,8 @@ namespace pizdanc {
 		_tickTime = millis();
 	}
 
-	void RCApplication::begin() {
-		Application::begin();
+	void RCApplication::setup() {
+		Application::setup();
 
 		// Palette
 		_screenBuffer.setPaletteColors({
@@ -53,7 +53,7 @@ namespace pizdanc {
 		setDefaultFont(&Theme::font);
 
 		// UI
-		_menu.begin();
+		_menu.setup();
 		*this += &_menu;
 
 //		// Joysticks

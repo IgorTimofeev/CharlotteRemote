@@ -25,7 +25,7 @@ using namespace yoba;
 namespace pizdanc {
 	class Menu : public Selector {
 		public:
-			virtual void begin();
+			virtual void setup();
 
 		protected:
 			void onSelectionChanged() override;

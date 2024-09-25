@@ -2,7 +2,7 @@
 #include "../rc_application.h"
 
 namespace pizdanc {
-	void Menu::begin() {
+	void Menu::setup() {
 		*this += &_background;
 
 		// Menu

@@ -8,7 +8,7 @@ RCApplication& application = RCApplication::getInstance();
 void setup() {
 	Serial.begin(115200);
 
-	application.begin();
+	application.setup();
 }
 
 void loop() {

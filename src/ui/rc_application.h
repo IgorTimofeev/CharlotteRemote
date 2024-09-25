@@ -111,7 +111,7 @@ namespace pizdanc {
 
 			static RCApplication& getInstance();
 
-			void begin() override;
+			void setup() override;
 			void tick() override;
 
 			LocalData& getLocalData();
