@@ -553,8 +553,8 @@ namespace pizdanc {
 	) {
 		auto& app = RCApplication::getInstance();
 
-		const float radius = (float) bounds.getWidth() * 0.8f;
-		const auto visiblePartFromBottom = 50;
+		const float radius = (float) bounds.getWidth() * 1.8f;
+		const auto visiblePartFromBottom = 40;
 
 		const auto& center = Point(
 			bounds.getXCenter(),
@@ -564,7 +564,7 @@ namespace pizdanc {
 		const uint8_t lineLength = 5;
 		const uint8_t textOffset = 5;
 
-		const float angleStep = radians(5);
+		const float angleStep = radians(1);
 		const float yaw = app.getYawInterpolator().getValue();
 		const float yawClosestInteger = floor(yaw / angleStep) * angleStep;
 		const float yawClosestFractional = yaw - yawClosestInteger;
@@ -572,7 +572,8 @@ namespace pizdanc {
 		const int8_t linesLeftRightCount = 30;
 		float angle;
 
-		wchar_t text[8];
+		const uint8_t textLength = 3;
+		wchar_t text[textLength];
 		Size textSize;
 
 		for (int8_t i = -linesLeftRightCount; i <= linesLeftRightCount; i++) {
@@ -597,10 +598,29 @@ namespace pizdanc {
 			if (displayAngle < 0)
 				displayAngle += 360;
 
-			Serial.printf("Display angle: %d\n", displayAngle);
-
 			if (displayAngle % 10 == 0) {
-				swprintf(text, 8, L"%d", displayAngle);
+				switch (displayAngle) {
+					case 0:
+						swprintf(text, textLength, L"N");
+						break;
+
+					case 90:
+						swprintf(text, textLength, L"E");
+						break;
+
+					case 180:
+						swprintf(text, textLength, L"S");
+						break;
+
+					case 270:
+						swprintf(text, textLength, L"W");
+						break;
+
+					default:
+						swprintf(text, textLength, L"%d", displayAngle);
+						break;
+				}
+
 				textSize = Theme::font.getSize(text);
 
 				auto lineToText = lineTo + (Point) (lineToVecNorm * textOffset);
