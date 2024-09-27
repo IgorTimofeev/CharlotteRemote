@@ -11,29 +11,7 @@ namespace pizdanc {
 		public:
 			PFD();
 
-			void renderAutopilotValue(ScreenBuffer *screenBuffer, const Bounds &bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) const;
-
-			void renderCurrentValue(ScreenBuffer *screenBuffer, const Bounds &bounds, int32_t centerY, float currentValue, bool left) const;
-
-			static void renderTrendArrow(ScreenBuffer *screenBuffer, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value);
-
-			void renderSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
-
-			void renderHorizon(ScreenBuffer *screenBuffer, const Bounds &bounds);
-
-			void renderAltitude(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
-
-			void renderVerticalSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
-
-			void renderMiniPanel(ScreenBuffer *screenBuffer, const Bounds &bounds, const Color *bg, const Color *fg, wchar_t *buffer) const;
-
-			void renderPressure(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
-
-			void renderAutopilotSpeed(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
-
-			void renderAutopilotAltitude(ScreenBuffer *screenBuffer, const Bounds &bounds) const;
-
-			void onRender(ScreenBuffer *screenBuffer) override;
+			void onRender(ScreenBuffer* screenBuffer) override;
 
 		private:
 			const uint16_t lineSizeBig = 5;
@@ -75,14 +53,40 @@ namespace pizdanc {
 			const uint16_t verticalSpeedStepPixelsRight = 2;
 
 			// Autopilot indicator
-			const uint8_t autopilotIndicatorWidth = 5;
-			const uint8_t autopilotIndicatorHeight = 15;
+			const uint8_t autopilotIndicatorWidth = 4;
+			const uint8_t autopilotIndicatorHeight = miniHeight;
 			const uint8_t autopilotIndicatorHeightHalf = autopilotIndicatorHeight / 2;
 
-			const uint8_t autopilotIndicatorTriangleMargin = 3;
-			const uint8_t autopilotIndicatorTriangleWidth = 4;
-			const uint8_t autopilotIndicatorTriangleHeight = autopilotIndicatorHeight - autopilotIndicatorTriangleMargin * 2;
+			const uint8_t autopilotIndicatorTriangleVerticalMargin = 3;
+			const uint8_t autopilotIndicatorTriangleWidth = 3;
+			const uint8_t autopilotIndicatorTriangleHeight = autopilotIndicatorHeight - autopilotIndicatorTriangleVerticalMargin * 2;
 
 			const uint8_t autopilotIndicatorRectangleWidth = autopilotIndicatorWidth - autopilotIndicatorTriangleWidth;
+
+			void renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Point& point, bool left) const;
+
+			void renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) const;
+
+			void renderCurrentValue(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, float currentValue, bool left) const;
+
+			static void renderTrendArrow(ScreenBuffer* screenBuffer, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value);
+
+			void renderSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
+
+			void renderHorizon(ScreenBuffer* screenBuffer, const Bounds& bounds);
+
+			void renderAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
+
+			void renderVerticalSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
+
+			void renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, wchar_t *buffer, int8_t textXOffset) const;
+
+			void renderPressure(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
+
+			void renderAutopilotSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
+
+			void renderAutopilotAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
+
+			void renderMiniPanelWithAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color* bg, const Color* fg, float autopilotValue, bool left) const;
 	};
 }
