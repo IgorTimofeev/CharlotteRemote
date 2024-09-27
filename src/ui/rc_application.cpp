@@ -93,6 +93,12 @@ namespace pizdanc {
 			if (degrees(_rollInterpolator.getTargetValue()) > 40)
 				_rollInterpolator.setTargetValue(0);
 
+			// Yaw
+			_yawInterpolator.setTargetValue(_yawInterpolator.getTargetValue() + (float) radians(3));
+
+			if (degrees(_yawInterpolator.getTargetValue()) > 90)
+				_yawInterpolator.setTargetValue(radians(-90));
+
 			// A/P
 			_testTickTime = millis();
 

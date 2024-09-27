@@ -341,167 +341,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderHorizon(ScreenBuffer* screenBuffer, const Bounds& bounds) {
-		auto& app = RCApplication::getInstance();
-
-		const auto& center = bounds.getCenter();
-
-		const auto pitch = app.getPitchInterpolator().getValue();
-		const auto roll = app.getRollInterpolator().getValue();
-		const auto yaw = app.getYawInterpolator().getValue();
-
-		const auto horizontalScale = 2.5f;
-		const auto verticalScale = 1.5f;
-
-		const auto horizontalPixels = ((float) bounds.getWidth() * horizontalScale);
-		const auto verticalPixels = ((float) bounds.getHeight() * verticalScale);
-
-		const auto& radiusRollRotated = (Point) Vector2F(horizontalPixels, 0).rotate(roll);
-		const auto& radiusPitchRotated = (Point) Vector2F(verticalPixels, 0).rotate(pitch);
-
-		screenBuffer->renderFilledRectangle(
-			bounds,
-			&Theme::sky
-		);
-
-		// Ground
-		auto horizonLeft = Point(
-			center.getX() - radiusRollRotated.getX(),
-			center.getY() - radiusPitchRotated.getY() - radiusRollRotated.getY()
-		);
-
-		auto horizonRight = Point(
-			center.getX() + radiusRollRotated.getX(),
-			center.getY() - radiusPitchRotated.getY() + radiusRollRotated.getY()
-		);
-
-		auto groundMaxY = max(horizonLeft.getY(), horizonRight.getY());
-
-		// Triangle
-		screenBuffer->renderFilledTriangle(
-			horizonLeft.getY() < horizonRight.getY()
-			? horizonLeft
-			: horizonRight,
-			Point(
-				horizonLeft.getX(),
-				groundMaxY
-			),
-			Point(
-				horizonRight.getX(),
-				groundMaxY
-			),
-			&Theme::ground
-		);
-
-		// Rectangle
-
-		// Bottom
-		if (groundMaxY < bounds.getY2()) {
-			screenBuffer->renderFilledRectangle(
-				Bounds(
-					bounds.getX(),
-					groundMaxY,
-					bounds.getWidth(),
-					bounds.getHeight() - groundMaxY
-				),
-				&Theme::ground
-			);
-		}
-		// Left
-		else if (horizonLeft.getY() < bounds.getY() && horizonLeft.getX() > bounds.getX()) {
-			screenBuffer->renderFilledRectangle(
-				Bounds(
-					bounds.getX(),
-					bounds.getY(),
-					horizonLeft.getX() - bounds.getX(),
-					bounds.getHeight()
-				),
-				&Theme::ground
-			);
-		}
-		// Right
-		else if (horizonRight.getY() < bounds.getY() && horizonRight.getX() < bounds.getX2()) {
-			screenBuffer->renderFilledRectangle(
-				Bounds(
-					horizonRight.getX(),
-					bounds.getY(),
-					bounds.getX2() - horizonRight.getX(),
-					bounds.getHeight()
-				),
-				&Theme::ground
-			);
-		}
-
-		// Lines
-
-		// Middle
-		screenBuffer->renderLine(
-			horizonLeft,
-			horizonRight,
-			&Theme::fg1
-		);
-
-		// Non-middle
-		const float lineSmall = 14;
-		const float lineBig = 20;
-		const uint8_t lineAngleStepDeg = 5;
-		const float lineAngleStepRad = radians(lineAngleStepDeg);
-		const float linesInTotal = floor(((float) HALF_PI) / lineAngleStepRad);
-		const float linePixelStep = (float) verticalPixels / linesInTotal;
-
-		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);
-		const auto& horizonCenter = (Vector2F) horizonLeft + horizonVec / 2.0f;
-		const auto& horizonVecNorm = horizonVec.normalize();
-		const auto& horizonVecPerp = horizonVecNorm.perpendicular();
-
-		wchar_t text[10];
-		Size textSize;
-
-		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += lineAngleStepDeg) {
-			if (lineAngleDeg == 0)
-				continue;
-
-			float lineSize = lineAngleDeg % 10 == 0 ? lineBig : lineSmall;
-			float lineY = (float) lineAngleDeg / (float) lineAngleStepDeg * linePixelStep;
-
-			const auto& lineCenterVerticalPerp = horizonCenter + horizonVecPerp * lineY;
-			const auto& lineVec = horizonVecNorm * lineSize;
-			const auto& lineLeft = (Point) (lineCenterVerticalPerp - lineVec);
-			const auto& lineRight = (Point) (lineCenterVerticalPerp + lineVec);
-
-			screenBuffer->renderLine(
-				lineLeft,
-				lineRight,
-				&Theme::fg1
-			);
-
-			if (lineAngleDeg % 10 == 0) {
-				swprintf(text, 10, L"%d", -lineAngleDeg);
-				textSize = Theme::font.getSize(text);
-
-//				screenBuffer->renderText(
-//					Point(
-//						lineLeft.getX() - textSize.getWidth() - 8,
-//						lineLeft.getY() - textSize.getHeight() / 2
-//					),
-//					&Theme::font,
-//					&Theme::fg1,
-//					text
-//				);
-
-				screenBuffer->renderText(
-					Point(
-						lineRight.getX() + 8,
-						lineRight.getY() - textSize.getHeight() / 2
-					),
-					&Theme::font,
-					&Theme::fg1,
-					text
-				);
-			}
-		}
-
-		// Bird
+	void PFD::renderSyntheticVisionBird(ScreenBuffer* screenBuffer, const Point& center) {
 		const uint8_t birdWidth = 38;
 		const uint8_t birdThickness = 2;
 		const uint8_t birdHeight = 8;
@@ -559,24 +399,293 @@ namespace pizdanc {
 			),
 			&Theme::bg1
 		);
+	}
 
-		// Radio
-		wchar_t buffer[255];
+	void PFD::renderSyntheticVisionBackground(
+		ScreenBuffer* screenBuffer,
+		const Bounds& bounds,
+		const Point& horizonLeft,
+		const Point& horizonRight,
+		const Point& center
+	) {
+		// Sky
+		screenBuffer->renderFilledRectangle(
+			bounds,
+			&Theme::sky
+		);
 
-		swprintf(buffer, 255, L"RSSI: %.2f dBm", app.getTransceiver().getRssi());
+		// Ground
+		const auto groundMaxY = max(horizonLeft.getY(), horizonRight.getY());
+
+		// Triangle
+		screenBuffer->renderFilledTriangle(
+			horizonLeft.getY() < horizonRight.getY()
+			? horizonLeft
+			: horizonRight,
+			Point(
+				horizonLeft.getX(),
+				groundMaxY
+			),
+			Point(
+				horizonRight.getX(),
+				groundMaxY
+			),
+			&Theme::ground
+		);
+
+		// Rectangle
+
+		// Bottom
+		if (groundMaxY < bounds.getY2()) {
+			screenBuffer->renderFilledRectangle(
+				Bounds(
+					bounds.getX(),
+					groundMaxY,
+					bounds.getWidth(),
+					bounds.getHeight() - groundMaxY
+				),
+				&Theme::ground
+			);
+		}
+			// Left
+		else if (horizonLeft.getY() < bounds.getY() && horizonLeft.getX() > bounds.getX()) {
+			screenBuffer->renderFilledRectangle(
+				Bounds(
+					bounds.getX(),
+					bounds.getY(),
+					horizonLeft.getX() - bounds.getX(),
+					bounds.getHeight()
+				),
+				&Theme::ground
+			);
+		}
+			// Right
+		else if (horizonRight.getY() < bounds.getY() && horizonRight.getX() < bounds.getX2()) {
+			screenBuffer->renderFilledRectangle(
+				Bounds(
+					horizonRight.getX(),
+					bounds.getY(),
+					bounds.getX2() - horizonRight.getX(),
+					bounds.getHeight()
+				),
+				&Theme::ground
+			);
+		}
+	}
+
+	void PFD::renderSyntheticVisionVerticalOverlay(
+		ScreenBuffer* screenBuffer,
+		float unfoldedFOVHeight,
+		const Point& horizonLeft,
+		const Point& horizonRight
+	) {
+		// Middle
+		screenBuffer->renderLine(
+			horizonLeft,
+			horizonRight,
+			&Theme::fg1
+		);
+
+		// Non-middle
+		const float lineSmall = 14;
+		const float lineBig = 20;
+		const uint8_t lineAngleStepDeg = 5;
+		const float lineAngleStepRad = radians(lineAngleStepDeg);
+		const float linesInTotal = floor(((float) HALF_PI) / lineAngleStepRad);
+		const float linePixelStep = (float) unfoldedFOVHeight / linesInTotal;
+
+		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);
+		const auto& horizonCenter = (Vector2F) horizonLeft + horizonVec / 2.0f;
+		const auto& horizonVecNorm = horizonVec.normalize();
+		const auto& horizonVecPerp = horizonVecNorm.perpendicular();
+
+		wchar_t text[10];
+		Size textSize;
+
+		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += lineAngleStepDeg) {
+			if (lineAngleDeg == 0)
+				continue;
+
+			float lineSize = lineAngleDeg % 10 == 0 ? lineBig : lineSmall;
+			float lineY = (float) lineAngleDeg / (float) lineAngleStepDeg * linePixelStep;
+
+			const auto& lineCenterVerticalPerp = horizonCenter + horizonVecPerp * lineY;
+			const auto& lineVec = horizonVecNorm * lineSize;
+			const auto& lineLeft = (Point) (lineCenterVerticalPerp - lineVec);
+			const auto& lineRight = (Point) (lineCenterVerticalPerp + lineVec);
+
+			screenBuffer->renderLine(
+				lineLeft,
+				lineRight,
+				&Theme::fg1
+			);
+
+			if (lineAngleDeg % 10 == 0) {
+				swprintf(text, 10, L"%d", -lineAngleDeg);
+				textSize = Theme::font.getSize(text);
+
+//				screenBuffer->renderText(
+//					Point(
+//						lineLeft.getX() - textSize.getWidth() - 8,
+//						lineLeft.getY() - textSize.getHeight() / 2
+//					),
+//					&Theme::font,
+//					&Theme::fg1,
+//					text
+//				);
+
+				screenBuffer->renderText(
+					Point(
+						lineRight.getX() + 8,
+						lineRight.getY() - textSize.getHeight() / 2
+					),
+					&Theme::font,
+					&Theme::fg1,
+					text
+				);
+			}
+		}
+	}
+
+	void PFD::renderSyntheticVisionLateralOverlay(
+		ScreenBuffer* screenBuffer,
+		const Bounds& bounds
+	) {
+		auto& app = RCApplication::getInstance();
+
+		const float radius = (float) bounds.getWidth() * 0.8f;
+		const auto visiblePartFromBottom = 50;
+
+		const auto& center = Point(
+			bounds.getXCenter(),
+			bounds.getY2() + (int32_t) radius - visiblePartFromBottom
+		);
+
+		const uint8_t lineLength = 5;
+		const uint8_t textOffset = 5;
+
+		const float angleStep = radians(5);
+		const float yaw = app.getYawInterpolator().getValue();
+		const float yawClosestInteger = floor(yaw / angleStep) * angleStep;
+		const float yawClosestFractional = yaw - yawClosestInteger;
+
+		const int8_t linesLeftRightCount = 30;
+		float angle;
+
+		wchar_t text[8];
+		Size textSize;
+
+		for (int8_t i = -linesLeftRightCount; i <= linesLeftRightCount; i++) {
+			angle = (float) i * angleStep;
+
+			auto lineToVec = Vector2F(0, -radius).rotate(angle - yawClosestFractional);
+			auto lineToVecNorm = lineToVec.normalize();
+
+			auto lineTo = center + (Point) lineToVec;
+			auto lineFrom = lineTo + (Point) (lineToVecNorm * -lineLength);
+
+			// Line
+			screenBuffer->renderLine(
+				lineFrom,
+				lineTo,
+				&Theme::fg1
+			);
+
+			// Text
+			auto displayAngle = (int16_t) roundf((float) degrees(yawClosestInteger + angle));
+
+			if (displayAngle < 0)
+				displayAngle += 360;
+
+			Serial.printf("Display angle: %d\n", displayAngle);
+
+			if (displayAngle % 10 == 0) {
+				swprintf(text, 8, L"%d", displayAngle);
+				textSize = Theme::font.getSize(text);
+
+				auto lineToText = lineTo + (Point) (lineToVecNorm * textOffset);
+
+				screenBuffer->renderText(
+					Point(
+						lineToText.getX() - textSize.getWidth() / 2,
+						lineToText.getY() - textSize.getHeight()
+					),
+					&Theme::font,
+					&Theme::fg1,
+					text
+				);
+			}
+		}
+	}
+
+	void PFD::renderSyntheticVision(ScreenBuffer* screenBuffer, const Bounds& bounds) {
+		auto& app = RCApplication::getInstance();
+
+		const auto& center = bounds.getCenter();
+
+		const auto pitch = app.getPitchInterpolator().getValue();
+		const auto roll = app.getRollInterpolator().getValue();
+
+		// value = [180 deg of unfolded full range view] / [FOV deg of camera viewport] * [viewport size in pixels]
+		const float unfoldedFovWidth = PI / _horizontalFov * bounds.getWidth();
+		const float unfoldedFovHeight = PI / _verticalFov * bounds.getHeight();
+
+		const auto& horizonRollRotated = (Point) Vector2F(unfoldedFovWidth, 0).rotate(roll);
+		const auto& horizonPitchRotated = (Point) Vector2F(unfoldedFovHeight, 0).rotate(pitch);
+
+		const auto& horizonLeft = Point(
+			center.getX() - horizonRollRotated.getX(),
+			center.getY() - horizonPitchRotated.getY() - horizonRollRotated.getY()
+		);
+
+		const auto& horizonRight = Point(
+			center.getX() + horizonRollRotated.getX(),
+			center.getY() - horizonPitchRotated.getY() + horizonRollRotated.getY()
+		);
+
+		// Background
+		renderSyntheticVisionBackground(
+			screenBuffer,
+			bounds,
+			horizonLeft,
+			horizonRight,
+			center
+		);
+
+		// Vertical overlay
+		renderSyntheticVisionVerticalOverlay(
+			screenBuffer,
+			unfoldedFovHeight,
+			horizonLeft,
+			horizonRight
+		);
+
+		// Lateral overlay
+		renderSyntheticVisionLateralOverlay(
+			screenBuffer,
+			bounds
+		);
+
+		// Bird
+		renderSyntheticVisionBird(screenBuffer, center);
+
+		// Temp blyad radio
+		wchar_t text[127];
+
+		swprintf(text, 255, L"RSSI: %.2f dBm", app.getTransceiver().getRssi());
 		screenBuffer->renderText(
 			Point(bounds.getX() + 10, bounds.getY() + 10),
 			&Theme::font,
 			&Theme::fg1,
-			buffer
+			text
 		);
 
-		swprintf(buffer, 255, L"SNR: %.2f dB", app.getTransceiver().getSnr());
+		swprintf(text, 255, L"SNR: %.2f dB", app.getTransceiver().getSnr());
 		screenBuffer->renderText(
 			Point(bounds.getX() + 10, bounds.getY() + 20),
 			&Theme::font,
 			&Theme::fg1,
-			buffer
+			text
 		);
 	}
 
@@ -852,29 +961,30 @@ namespace pizdanc {
 
 		auto bg = &Theme::bg3;
 		auto fg = &Theme::blue;
-		wchar_t buffer[9];
+
+		wchar_t text[9];
 
 		switch (app.getLocalData().getAltimeterMode()) {
 			case QNH:
-				swprintf(buffer, 9, L"%d", (uint16_t) app.getLocalData().getAltimeterPressure());
+				swprintf(text, 9, L"%d", (uint16_t) app.getLocalData().getAltimeterPressure());
 
 				break;
 
 			case QNE:
-				swprintf(buffer, 9, L"STD");
+				swprintf(text, 9, L"STD");
 				bg = &Theme::yellow;
 				fg = &Theme::bg1;
 
 				break;
 		}
 
-		renderMiniPanel(screenBuffer, bounds, bg, fg, buffer, 0);
+		renderMiniPanel(screenBuffer, bounds, bg, fg, text, 0);
 	}
 
 	void PFD::onRender(ScreenBuffer* screenBuffer) {
 		auto &bounds = getBounds();
 
-		renderHorizon(screenBuffer, Bounds(
+		renderSyntheticVision(screenBuffer, Bounds(
 			bounds.getX() + speedWidth,
 			bounds.getY(),
 			bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,

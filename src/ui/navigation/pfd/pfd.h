@@ -63,6 +63,10 @@ namespace pizdanc {
 
 			const uint8_t autopilotIndicatorRectangleWidth = autopilotIndicatorWidth - autopilotIndicatorTriangleWidth;
 
+			// 3D
+			float _horizontalFov = radians(100);
+			float _verticalFov = radians(90);
+
 			void renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Point& point, bool left) const;
 
 			void renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) const;
@@ -73,7 +77,7 @@ namespace pizdanc {
 
 			void renderSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
 
-			void renderHorizon(ScreenBuffer* screenBuffer, const Bounds& bounds);
+			void renderSyntheticVision(ScreenBuffer* screenBuffer, const Bounds& bounds);
 
 			void renderAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
 
@@ -88,5 +92,13 @@ namespace pizdanc {
 			void renderAutopilotAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
 
 			void renderMiniPanelWithAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color* bg, const Color* fg, float autopilotValue, bool left) const;
+
+			static void renderSyntheticVisionBird(ScreenBuffer* screenBuffer, const Point& center);
+
+			static void renderSyntheticVisionVerticalOverlay(ScreenBuffer* screenBuffer, float unfoldedFOVHeight, const Point& horizonLeft, const Point& horizonRight);
+
+			static void renderSyntheticVisionBackground(ScreenBuffer* screenBuffer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight, const Point& center);
+
+			static void renderSyntheticVisionLateralOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds);
 	};
 }
