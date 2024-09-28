@@ -133,6 +133,9 @@ namespace pizdanc {
 			Interpolator& getFlapsInterpolator();
 			Interpolator& getElevatorInterpolator();
 			Interpolator& getRudderInterpolator();
+			Interpolator& getAileronsTrimInterpolator();
+			Interpolator& getElevatorTrimInterpolator();
+			Interpolator& getRudderTrimInterpolator();
 
 		private:
 			// -------------------------------- Hardware --------------------------------
@@ -183,9 +186,13 @@ namespace pizdanc {
 			Interpolator _yawInterpolator = Interpolator();
 
 			Interpolator _aileronsInterpolator = Interpolator();
-			Interpolator _flapsInterpolator = Interpolator();
 			Interpolator _elevatorInterpolator = Interpolator();
 			Interpolator _rudderInterpolator = Interpolator();
+			Interpolator _flapsInterpolator = Interpolator();
+
+			Interpolator _aileronsTrimInterpolator = Interpolator();
+			Interpolator _elevatorTrimInterpolator = Interpolator();
+			Interpolator _rudderTrimInterpolator = Interpolator();
 
 			// -------------------------------- Other shit --------------------------------
 

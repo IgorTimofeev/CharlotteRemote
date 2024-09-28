@@ -33,6 +33,10 @@ namespace pizdanc {
 		setSelectedIndex(0);
 	}
 
+	void Menu::tick() {
+		_pages[getSelectedIndex()]->tick();
+	}
+
 	void Menu::onSelectionChanged() {
 		_pageLayout.removeChildren();
 
@@ -43,7 +47,7 @@ namespace pizdanc {
 	}
 
 	void Menu::addPage(const wchar_t *name, Page *page) {
-		page->begin();
+		page->setup();
 		_pages.push_back(page);
 		addItem(new MenuItem(name));
 	}

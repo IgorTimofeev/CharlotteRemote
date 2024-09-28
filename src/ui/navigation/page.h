@@ -8,7 +8,11 @@ using namespace yoba;
 namespace pizdanc {
 	class Page : public Layout {
 		public:
-			virtual void begin() {
+			virtual void setup() {
+
+			}
+
+			virtual void tick() {
 
 			}
 	};

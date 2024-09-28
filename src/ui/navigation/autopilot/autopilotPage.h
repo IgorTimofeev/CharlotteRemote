@@ -7,6 +7,7 @@
 #include "../../../../lib/YOBA/src/ui/sevenSegment.h"
 #include "../../../../lib/YOBA/src/ui/knob.h"
 
+#include "../../theme.h"
 #include "../page.h"
 #include "../../elements/titler.h"
 #include "../../elements/rows.h"
@@ -15,13 +16,11 @@
 using namespace yoba;
 
 namespace pizdanc {
-	class RCApplication;
-
 	class AutopilotPage : public Page {
 		public:
 			StackLayout columns = StackLayout();
 
-			void begin() override;
+			void setup() override;
 
 		private:
 			AutopilotSelector spd = AutopilotSelector(3, L"Speed", L"A/T");

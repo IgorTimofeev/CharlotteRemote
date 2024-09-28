@@ -1098,21 +1098,13 @@ namespace pizdanc {
 		renderMiniPanel(screenBuffer, bounds, bg, fg, text, 0);
 	}
 
-	void PFD::renderInstruments(ScreenBuffer* screenBuffer, const Bounds& bounds) {
-		auto& app = RCApplication::getInstance();
-
-		auto throttle = app.getThrottleInterpolator().getValue();
-
-		screenBuffer->renderFilledRectangle(bounds, &Theme::bg2);
-	}
-
 	void PFD::onRender(ScreenBuffer* screenBuffer) {
 		auto& bounds = getBounds();
 
 		renderSyntheticVision(screenBuffer, Bounds(
 			bounds.getX() + speedWidth,
 			bounds.getY(),
-			bounds.getWidth() - instrumentsWidth - speedWidth - altitudeWidth - verticalSpeedWidth,
+			bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,
 			bounds.getHeight()
 		));
 
@@ -1131,37 +1123,30 @@ namespace pizdanc {
 		));
 
 		renderAltitude(screenBuffer, Bounds(
-			bounds.getX2() + 1 - instrumentsWidth - altitudeWidth - verticalSpeedWidth,
+			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
 			bounds.getY() + miniHeight,
 			altitudeWidth,
 			bounds.getHeight() - miniHeight * 2
 		));
 
 		renderAutopilotAltitude(screenBuffer, Bounds(
-			bounds.getX2() + 1 - instrumentsWidth - altitudeWidth - verticalSpeedWidth,
+			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
 			bounds.getY(),
 			altitudeWidth,
 			miniHeight
 		));
 
 		renderPressure(screenBuffer, Bounds(
-			bounds.getX2() + 1 - instrumentsWidth - altitudeWidth - verticalSpeedWidth,
+			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
 			bounds.getY2() + 1 - miniHeight,
 			altitudeWidth,
 			miniHeight
 		));
 
 		renderVerticalSpeed(screenBuffer, Bounds(
-			bounds.getX2() + 1 - instrumentsWidth - verticalSpeedWidth,
+			bounds.getX2() + 1 - verticalSpeedWidth,
 			bounds.getY(),
 			verticalSpeedWidth,
-			bounds.getHeight()
-		));
-
-		renderInstruments(screenBuffer, Bounds(
-			bounds.getX2() + 1 - instrumentsWidth,
-			bounds.getY(),
-			instrumentsWidth,
 			bounds.getHeight()
 		));
 	}

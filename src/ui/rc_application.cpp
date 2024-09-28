@@ -112,6 +112,18 @@ namespace pizdanc {
 			handleControlSurfaces(_flapsInterpolator, 0);
 			handleControlSurfaces(_rudderInterpolator);
 			handleControlSurfaces(_elevatorInterpolator);
+
+			// Trim
+			auto handleTrim = [&](Interpolator& interpolator) {
+				interpolator.setTargetValue(interpolator.getTargetValue() + 0.1f);
+
+				if (interpolator.getTargetValue() >= 1)
+					interpolator.setTargetValue(0);
+			};
+
+			handleTrim(_aileronsTrimInterpolator);
+			handleTrim(_rudderTrimInterpolator);
+			handleTrim(_elevatorTrimInterpolator);
 		}
 
 		auto deltaTime = (float) (millis() - _tickTime);
@@ -132,14 +144,20 @@ namespace pizdanc {
 			_yawInterpolator.tick(interpolationFactor);
 
 			_aileronsInterpolator.tick(interpolationFactor);
-			_flapsInterpolator.tick(interpolationFactor);
 			_rudderInterpolator.tick(interpolationFactor);
 			_elevatorInterpolator.tick(interpolationFactor);
+			_flapsInterpolator.tick(interpolationFactor);
+
+			_aileronsTrimInterpolator.tick(interpolationFactor);
+			_elevatorTrimInterpolator.tick(interpolationFactor);
+			_rudderTrimInterpolator.tick(interpolationFactor);
 
 			invalidate();
 
 			_tickTime = millis();
 		}
+
+		_menu.tick();
 
 		Application::tick();
 	}
@@ -218,6 +236,18 @@ namespace pizdanc {
 
 	Interpolator& RCApplication::getElevatorInterpolator() {
 		return _elevatorInterpolator;
+	}
+
+	Interpolator& RCApplication::getAileronsTrimInterpolator() {
+		return _aileronsTrimInterpolator;
+	}
+
+	Interpolator& RCApplication::getElevatorTrimInterpolator() {
+		return _elevatorTrimInterpolator;
+	}
+
+	Interpolator& RCApplication::getRudderTrimInterpolator() {
+		return _rudderTrimInterpolator;
 	}
 
 	float RemoteData::getTemperature() const {

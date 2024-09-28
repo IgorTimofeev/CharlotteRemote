@@ -2,7 +2,7 @@
 #include "../../rc_application.h"
 
 namespace pizdanc {
-	void AutopilotPage::begin() {
+	void AutopilotPage::setup() {
 		auto& app = RCApplication::getInstance();
 
 		columns.setAlignment(Alignment::Center);
