@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Arduino.h"
+#include "../theme.h"
 #include "../../../lib/YOBA/src/color.h"
 #include "../../../lib/YOBA/src/ui/selectorItem.h"
 #include "../../../lib/YOBA/src/ui/shapes/rectangle.h"
 #include "../../../lib/YOBA/src/ui/text.h"
 #include "../../../lib/YOBA/src/ui/stackLayout.h"
-#include "ui/theme.h"
 
 using namespace yoba;
 

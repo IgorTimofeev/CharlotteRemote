@@ -19,35 +19,7 @@ namespace pizdanc {
 		Application::setup();
 
 		// Palette
-		_screenBuffer.setPaletteColors({
-			// Background
-			0x000000,
-			0x111111,
-			0x222222,
-			0x333333,
-			0x444444,
-			// Foreground
-			0xFFFFFF,
-			0xDDDDDD,
-			0x999999,
-			0x777777,
-			// Red
-			0xff0000,
-			// Purple
-			0xff00ff,
-			// Green
-			0x00FF00,
-			// Green speed
-			0x008100,
-			// Yellow
-			0xffd200,
-			// Ocean
-			0x00ffff,
-			// Ground
-			0x97b838,
-			// Sky
-			0x317fcb,
-		});
+		_screenBuffer.setPaletteColors(Theme::palette, 256);
 
 		// Font
 		setDefaultFont(&Theme::font);
@@ -96,8 +68,8 @@ namespace pizdanc {
 			// Roll
 			_rollInterpolator.setTargetValue(_rollInterpolator.getTargetValue() + (float) radians(1));
 
-			if (degrees(_rollInterpolator.getTargetValue()) > 20)
-				_rollInterpolator.setTargetValue(radians(-20));
+			if (degrees(_rollInterpolator.getTargetValue()) > 30)
+				_rollInterpolator.setTargetValue(radians(-30));
 
 			// Yaw
 			_yawInterpolator.setTargetValue(_yawInterpolator.getTargetValue() + (float) radians(10));

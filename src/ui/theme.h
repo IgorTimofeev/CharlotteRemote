@@ -28,7 +28,12 @@ namespace pizdanc {
 			static const Bit8PaletteColor yellow;
 			static const Bit8PaletteColor blue;
 			static const Bit8PaletteColor ground;
+			static const Bit8PaletteColor ground2;
+
 			static const Bit8PaletteColor sky;
+			static const Bit8PaletteColor sky2;
+
+			PROGMEM static const uint32_t* palette;
 
 			static const PIXY10Font font;
 

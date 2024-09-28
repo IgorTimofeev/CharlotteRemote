@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../theme.h"
 #include "../../../../lib/YOBA/src/hardware/screen/buffers/screenBuffer.h"
 #include "../../../../lib/YOBA/src/ui/element.h"
 
@@ -63,21 +62,34 @@ namespace pizdanc {
 
 			static const uint8_t autopilotIndicatorRectangleWidth = autopilotIndicatorWidth - autopilotIndicatorTriangleWidth;
 
+			// Pitch overlay
+			static const Color* pitchOverlayColorSky;
+			static const Color* pitchOverlayColorGround;
+			static const uint8_t pitchOverlayAngleStep = 5;
+			static const uint8_t pitchOverlayLineSmall = 5;
+			static const uint8_t pitchOverlayLineBig = 10;
+			static const uint8_t pitchOverlayLineMiddle = 15;
+			static const uint8_t pitchOverlayTextOffset = 5;
+
 			// Yaw overlay
+			static const Color* yawOverlayColor;
 			static const uint8_t yawOverlayHeight = 20;
+			static const uint8_t yawOverlayAngleStepUnits = 2;
+			static const uint8_t yawOverlayAngleStepPixels = 9;
 			static const uint8_t yawOverlayLineSmallLength = 2;
 			static const uint8_t yawOverlayLineBigLength = 4;
 			static const uint8_t yawOverlayTextOffset = 0;
-			static const uint8_t yawOverlayAngleStepUnits = 2;
-			static const uint8_t yawOverlayAngleStepPixels = 9;
 			static const uint8_t yawOverlayTriangleSize = yawOverlayLineBigLength;
 
 			// Roll overlay
+			static const Color* rollOverlayColor;
 			static const uint8_t rollOverlayHeight = 30;
+			static const uint8_t rollOverlayAngleStep = 2;
+			static const uint8_t rollOverlayFromToAngle = 30;
+			static const uint8_t rollOverlayLinesCount = rollOverlayFromToAngle / rollOverlayAngleStep;
 			static const uint8_t rollOverlayLineSmallLength = 2;
 			static const uint8_t rollOverlayLineBigLength = 4;
-			static const uint8_t rollOverlayTextOffset = 4;
-			static const uint8_t rollOverlayAngleStepUnits = 5;
+			static const uint8_t rollOverlayTextOffset = 5;
 			static const uint8_t rollOverlayTriangleSize = yawOverlayLineBigLength;
 
 			// 3D

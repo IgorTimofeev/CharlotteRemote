@@ -2,6 +2,7 @@
 
 #include "hardware/transceiver/transceiver.h"
 #include "hardware/onboard_led.h"
+#include "theme.h"
 #include "../interpolator.h"
 #include "../../lib/YOBA/src/ui/application.h"
 #include "../../lib/YOBA/src/hardware/screen/drivers/ILI9341Driver.h"

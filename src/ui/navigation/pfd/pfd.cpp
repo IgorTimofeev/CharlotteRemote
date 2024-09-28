@@ -2,6 +2,11 @@
 #include "../../rc_application.h"
 
 namespace pizdanc {
+	const Color* PFD::rollOverlayColor = &Theme::sky2;
+	const Color* PFD::pitchOverlayColorSky = &Theme::sky2;
+	const Color* PFD::pitchOverlayColorGround = &Theme::ground2;
+	const Color* PFD::yawOverlayColor = &Theme::ground2;
+
 	PFD::PFD() {
 		setClipToBounds(true);
 	}
@@ -480,21 +485,9 @@ namespace pizdanc {
 		const Point& horizonLeft,
 		const Point& horizonRight
 	) {
-//		// Middle
-//		screenBuffer->renderLine(
-//			horizonLeft,
-//			horizonRight,
-//			&Theme::fg1
-//		);
-
 		screenBuffer->setViewport(bounds);
 
-		// Non-middle
-		const float lineSmall = 10;
-		const float lineBig = 18;
-		const float lineMiddle = 30;
-		const uint8_t lineAngleStepDeg = 5;
-		const float lineAngleStepRad = radians(lineAngleStepDeg);
+		const float lineAngleStepRad = radians(pitchOverlayAngleStep);
 		const float linesInTotal = floor(((float) HALF_PI) / lineAngleStepRad);
 		const float linePixelStep = (float) unfoldedFOVHeight / linesInTotal;
 
@@ -503,22 +496,39 @@ namespace pizdanc {
 		const auto& horizonVecNorm = horizonVec.normalize();
 		const auto& horizonVecPerp = horizonVecNorm.perpendicular();
 
+		Vector2F
+			lineCenterVerticalPerp,
+			lineVec;
+
+		Point
+			lineLeft,
+			lineRight;
+
 		wchar_t text[10];
 		Size textSize;
+		const Color* color;
 
-		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += lineAngleStepDeg) {
-			float lineSize = lineAngleDeg == 0 ? lineMiddle : (lineAngleDeg % 10 == 0 ? lineBig : lineSmall);
-			float lineY = (float) lineAngleDeg / (float) lineAngleStepDeg * linePixelStep;
+		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += pitchOverlayAngleStep) {
+			color = lineAngleDeg >= 0 ? pitchOverlayColorGround : pitchOverlayColorSky;
+			lineCenterVerticalPerp = horizonCenter + horizonVecPerp * ((float) lineAngleDeg / (float) pitchOverlayAngleStep * linePixelStep);
 
-			const auto& lineCenterVerticalPerp = horizonCenter + horizonVecPerp * lineY;
-			const auto& lineVec = horizonVecNorm * lineSize;
-			const auto& lineLeft = (Point) (lineCenterVerticalPerp - lineVec);
-			const auto& lineRight = (Point) (lineCenterVerticalPerp + lineVec);
+			lineVec = horizonVecNorm * (
+				lineAngleDeg == 0
+				? pitchOverlayLineMiddle
+				: (
+					lineAngleDeg % 10 == 0
+					? pitchOverlayLineBig
+					: pitchOverlayLineSmall
+				)
+			);
+
+			lineLeft = (Point) (lineCenterVerticalPerp - lineVec);
+			lineRight = (Point) (lineCenterVerticalPerp + lineVec);
 
 			screenBuffer->renderLine(
 				lineLeft,
 				lineRight,
-				&Theme::fg1
+				color
 			);
 
 			if (lineAngleDeg != 0 && lineAngleDeg % 10 == 0) {
@@ -527,11 +537,11 @@ namespace pizdanc {
 
 				screenBuffer->renderText(
 					Point(
-						lineRight.getX() + 8,
+						lineRight.getX() + pitchOverlayTextOffset,
 						lineRight.getY() - textSize.getHeight() / 2
 					),
 					&Theme::font,
-					&Theme::fg1,
+					color,
 					text
 				);
 			}
@@ -551,21 +561,19 @@ namespace pizdanc {
 		);
 
 		float closestInteger;
-		float closestFractional = modff(degrees(roll) / (float) rollOverlayAngleStepUnits, &closestInteger);
-		closestInteger *= (float) rollOverlayAngleStepUnits;
-
-		const int8_t sizeLinesCount = 6;
+		float closestFractional = modff(degrees(roll) / (float) rollOverlayAngleStep, &closestInteger);
+		closestInteger *= (float) rollOverlayAngleStep;
 
 		const uint8_t textLength = 5;
 		wchar_t text[textLength];
 		Size textSize;
 
-		for (int8_t i = -sizeLinesCount; i <= sizeLinesCount; i++) {
-			const float angle = (float) i * (float) rollOverlayAngleStepUnits;
+		for (int8_t i = -rollOverlayLinesCount; i <= rollOverlayLinesCount; i++) {
+			const float angle = (float) i * (float) rollOverlayAngleStep;
 
 			const auto angleDisplay = (int16_t) round(closestInteger + angle);
 			const auto isBig = angleDisplay % 10 == 0;
-			const auto& vec = Vector2F(0, -radius).rotate(radians(angle - closestFractional * rollOverlayAngleStepUnits));
+			const auto& vec = Vector2F(0, -radius).rotate((float) radians(angle - closestFractional * rollOverlayAngleStep));
 			const auto& lineTo = center + (Point) vec;
 			const auto& lineFrom = lineTo + (Point) (vec.normalize() * (isBig ? rollOverlayLineBigLength : rollOverlayLineSmallLength));
 
@@ -573,7 +581,7 @@ namespace pizdanc {
 			screenBuffer->renderLine(
 				lineTo,
 				lineFrom,
-				&Theme::fg1
+				rollOverlayColor
 			);
 
 			// Text
@@ -588,7 +596,7 @@ namespace pizdanc {
 						lineFrom.getY() + rollOverlayTextOffset
 					),
 					&Theme::font,
-					&Theme::fg1,
+					rollOverlayColor,
 					text
 				);
 			}
@@ -599,7 +607,7 @@ namespace pizdanc {
 			Point(center.getX() - rollOverlayTriangleSize, bounds.getY()),
 			Point(center.getX() + rollOverlayTriangleSize, bounds.getY()),
 			Point(center.getX(), bounds.getY() + rollOverlayTriangleSize),
-			&Theme::fg1
+			rollOverlayColor
 		);
 	}
 
@@ -627,19 +635,22 @@ namespace pizdanc {
 		const uint8_t textLength = 5;
 		wchar_t text[textLength];
 		Size textSize;
+		int32_t lineY;
 
 		while (x <= bounds.getX2()) {
 			isBig = angle % 10 == 0;
 			lineLength = isBig ? yawOverlayLineBigLength : yawOverlayLineSmallLength;
 
 			// Line
+			lineY = bounds.getY2() - lineLength + 1;
+
 			screenBuffer->renderVerticalLine(
 				Point(
 					x,
-					bounds.getY2() - lineLength + 1
+					lineY
 				),
 				lineLength,
-				&Theme::fg1
+				yawOverlayColor
 			);
 
 			// Text
@@ -671,10 +682,10 @@ namespace pizdanc {
 				screenBuffer->renderText(
 					Point(
 						x - textSize.getWidth() / 2,
-						bounds.getY2() - lineLength - yawOverlayTextOffset - textSize.getHeight()
+						lineY - yawOverlayTextOffset - textSize.getHeight()
 					),
 					&Theme::font,
-					&Theme::fg1,
+					yawOverlayColor,
 					text
 				);
 			}
@@ -688,7 +699,7 @@ namespace pizdanc {
 			Point(centerX - yawOverlayTriangleSize, bounds.getY2()),
 			Point(centerX + yawOverlayTriangleSize, bounds.getY2()),
 			Point(centerX, bounds.getY2() - yawOverlayTriangleSize),
-			&Theme::fg1
+			yawOverlayColor
 		);
 	}
 
@@ -705,7 +716,7 @@ namespace pizdanc {
 		const float unfoldedFovWidth = PI / _horizontalFov / 2 * bounds.getWidth();
 		const float unfoldedFovHeight = PI / _verticalFov / 2 * bounds.getHeight();
 
-		const auto& horizonRollRotated = (Point) Vector2F(unfoldedFovWidth, 0).rotate(roll);
+		const auto& horizonRollRotated = (Point) Vector2F(unfoldedFovWidth, 0).rotate(-roll);
 		const auto& horizonPitchRotated = (Point) Vector2F(unfoldedFovHeight, 0).rotate(pitch);
 
 		const auto& horizonLeft = Point(

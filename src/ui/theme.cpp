@@ -19,7 +19,45 @@ namespace pizdanc {
 	const Bit8PaletteColor Theme::yellow = Bit8PaletteColor(13);
 	const Bit8PaletteColor Theme::blue = Bit8PaletteColor(14);
 	const Bit8PaletteColor Theme::ground = Bit8PaletteColor(15);
-	const Bit8PaletteColor Theme::sky = Bit8PaletteColor(16);
+	const Bit8PaletteColor Theme::ground2 = Bit8PaletteColor(16);
+	const Bit8PaletteColor Theme::sky = Bit8PaletteColor(17);
+	const Bit8PaletteColor Theme::sky2 = Bit8PaletteColor(18);
+
+	static const uint32_t _palette[] = {
+		// Background
+		0x000000,
+		0x111111,
+		0x222222,
+		0x333333,
+		0x444444,
+		// Foreground
+		0xFFFFFF,
+		0xDDDDDD,
+		0x999999,
+		0x777777,
+		// Red
+		0xff0000,
+		// Purple
+		0xff00ff,
+		// Green
+		0x00FF00,
+		// Green speed
+		0x008100,
+		// Yellow
+		0xffd200,
+		// Ocean
+		0x00ffff,
+		// Ground
+		0x97b838,
+		// Ground 2
+		0xdef2a2,
+		// Sky
+		0x317fcb,
+		// Sky 2
+		0xaed1f2
+	};
+
+	const uint32_t* Theme::palette = _palette;
 
 	const PIXY10Font Theme::font = PIXY10Font();
 
