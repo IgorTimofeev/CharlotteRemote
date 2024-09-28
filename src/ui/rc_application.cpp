@@ -47,6 +47,12 @@ namespace pizdanc {
 		float testDelay = 1000;
 
 		if (testDeltaTime > testDelay) {
+			// Throttle
+			_throttleInterpolator.setTargetValue(_throttleInterpolator.getTargetValue() + 5);
+
+			if (_throttleInterpolator.getTargetValue() > 100)
+				_throttleInterpolator.setTargetValue(0);
+
 			// Speed
 			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) random(1, 20) / 10.0f * testDeltaTime / testDelay);
 
@@ -160,6 +166,10 @@ namespace pizdanc {
 
 	Transceiver& RCApplication::getTransceiver() {
 		return _transceiver;
+	}
+
+	Interpolator& RCApplication::getThrottleInterpolator() {
+		return _throttleInterpolator;
 	}
 
 	Interpolator &RCApplication::getSpeedInterpolator() {

@@ -2,6 +2,7 @@
 #include "../../rc_application.h"
 
 namespace pizdanc {
+	// No errors here, just linter's being pussy
 	const Color* PFD::rollOverlayColor = &Theme::sky2;
 	const Color* PFD::pitchOverlayColorSky = &Theme::sky2;
 	const Color* PFD::pitchOverlayColorGround = &Theme::ground2;
@@ -179,14 +180,11 @@ namespace pizdanc {
 	}
 
 	void PFD::renderSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
-		auto &app = RCApplication::getInstance();
+		auto& app = RCApplication::getInstance();
 
 		auto centerY = bounds.getYCenter();
 
-		screenBuffer->renderFilledRectangle(
-			bounds,
-			&Theme::bg2
-		);
+		screenBuffer->renderFilledRectangle(bounds, &Theme::bg2);
 
 		float speed = app.getSpeedInterpolator().getValue();
 
@@ -286,7 +284,10 @@ namespace pizdanc {
 			if (isBig) {
 				// Line
 				screenBuffer->renderHorizontalLine(
-					Point(bounds.getWidth() - speedBarSize - lineSizeBig, y),
+					Point(
+						bounds.getX2() + 1 - speedBarSize - lineSizeBig,
+						y
+					),
 					lineSizeBig,
 					lineColor
 				);
@@ -296,15 +297,19 @@ namespace pizdanc {
 				textSize = Theme::font.getSize(text);
 
 				screenBuffer->renderText(
-					Point(bounds.getWidth() - speedBarSize - lineSizeBig - 5 - textSize.getWidth(), y - textSize.getHeight() / 2),
+					Point(
+						bounds.getX2() + 1 - speedBarSize - lineSizeBig - 5 - textSize.getWidth(),
+						y - textSize.getHeight() / 2
+					),
 					&Theme::font,
 					lineColor,
 					text
 				);
-			} else {
+			}
+			else {
 				// Line
 				screenBuffer->renderHorizontalLine(
-					Point(bounds.getWidth() - speedBarSize - lineSizeSmall, y),
+					Point(bounds.getX2() + 1 - speedBarSize - lineSizeSmall, y),
 					lineSizeSmall,
 					lineColor
 				);
@@ -312,7 +317,7 @@ namespace pizdanc {
 
 			lineValue -= speedStepUnits;
 			y += speedStepPixels;
-		} while (y < bounds.getHeight() && lineValue >= 0);
+		} while (y <= bounds.getY2() && lineValue >= 0);
 
 		// Trend
 		renderTrendArrow(
@@ -414,10 +419,7 @@ namespace pizdanc {
 		const Point& center
 	) {
 		// Sky
-		screenBuffer->renderFilledRectangle(
-			bounds,
-			&Theme::sky
-		);
+		screenBuffer->renderFilledRectangle(bounds, &Theme::sky);
 
 		// Ground
 		const auto groundMaxY = max(horizonLeft.getY(), horizonRight.getY());
@@ -553,6 +555,8 @@ namespace pizdanc {
 		const Bounds& bounds,
 		float roll
 	) {
+		screenBuffer->setViewport(bounds);
+
 		const float radius = (float) bounds.getWidth() * 1.0f;
 
 		const auto center = Point(
@@ -616,13 +620,15 @@ namespace pizdanc {
 		const Bounds& bounds,
 		float yaw
 	) {
+		screenBuffer->setViewport(bounds);
+
 		const auto centerX = bounds.getXCenter();
 
 		float closestInteger;
 		float closestFractional = modff(degrees(yaw) / yawOverlayAngleStepUnits, &closestInteger);
 		closestInteger *= yawOverlayAngleStepUnits;
 
-		const uint8_t fullCount = (uint8_t) ceil((float) centerX / yawOverlayAngleStepPixels) + 1;
+		const uint8_t fullCount = (uint8_t) ceil((float) (centerX - bounds.getX()) / yawOverlayAngleStepPixels) + 1;
 		int32_t x = centerX - fullCount * yawOverlayAngleStepPixels - (int32_t) (closestFractional * (float) yawOverlayAngleStepPixels);
 		auto angle = (int16_t) (closestInteger - (float) (fullCount * yawOverlayAngleStepUnits));
 
@@ -766,8 +772,6 @@ namespace pizdanc {
 			horizonRight
 		);
 
-		screenBuffer->setViewport(oldViewport);
-
 		// Yaw overlay
 		renderYawOverlay(
 			screenBuffer,
@@ -779,6 +783,8 @@ namespace pizdanc {
 			),
 			yaw
 		);
+
+		screenBuffer->setViewport(oldViewport);
 
 		// Bird
 		renderSyntheticVisionBird(screenBuffer, center);
@@ -804,7 +810,7 @@ namespace pizdanc {
 	}
 
 	void PFD::renderAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
-		auto &app = RCApplication::getInstance();
+		auto& app = RCApplication::getInstance();
 
 		auto centerY = bounds.getYCenter();
 		auto x = bounds.getX();
@@ -924,14 +930,11 @@ namespace pizdanc {
 	}
 
 	void PFD::renderVerticalSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
-		auto &app = RCApplication::getInstance();
+		auto& app = RCApplication::getInstance();
 		auto centerY = bounds.getYCenter();
 
 		// Background
-		screenBuffer->renderFilledRectangle(
-			bounds,
-			&Theme::bg3
-		);
+		screenBuffer->renderFilledRectangle(bounds, &Theme::bg3);
 
 		// Lines
 		auto lineColor = &Theme::fg4;
@@ -1000,7 +1003,7 @@ namespace pizdanc {
 	}
 
 	void PFD::renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, wchar_t* buffer, int8_t textXOffset) const {
-		auto &app = RCApplication::getInstance();
+		auto& app = RCApplication::getInstance();
 
 		// Background
 		screenBuffer->renderFilledRectangle(bounds, bg);
@@ -1020,7 +1023,7 @@ namespace pizdanc {
 	}
 
 	void PFD::renderMiniPanelWithAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, float autopilotValue, bool left) const {
-		auto &app = RCApplication::getInstance();
+		auto& app = RCApplication::getInstance();
 
 		wchar_t text[8];
 
@@ -1053,7 +1056,7 @@ namespace pizdanc {
 	}
 
 	void PFD::renderAutopilotSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
-		auto &app = RCApplication::getInstance();
+		auto& app = RCApplication::getInstance();
 
 		auto bg = &Theme::bg3;
 		auto fg = &Theme::blue;
@@ -1062,7 +1065,7 @@ namespace pizdanc {
 	}
 
 	void PFD::renderAutopilotAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
-		auto &app = RCApplication::getInstance();
+		auto& app = RCApplication::getInstance();
 
 		auto bg = &Theme::bg3;
 		auto fg = &Theme::blue;
@@ -1071,7 +1074,7 @@ namespace pizdanc {
 	}
 
 	void PFD::renderPressure(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
-		auto &app = RCApplication::getInstance();
+		auto& app = RCApplication::getInstance();
 
 		auto bg = &Theme::bg3;
 		auto fg = &Theme::blue;
@@ -1095,13 +1098,21 @@ namespace pizdanc {
 		renderMiniPanel(screenBuffer, bounds, bg, fg, text, 0);
 	}
 
+	void PFD::renderInstruments(ScreenBuffer* screenBuffer, const Bounds& bounds) {
+		auto& app = RCApplication::getInstance();
+
+		auto throttle = app.getThrottleInterpolator().getValue();
+
+		screenBuffer->renderFilledRectangle(bounds, &Theme::bg2);
+	}
+
 	void PFD::onRender(ScreenBuffer* screenBuffer) {
-		auto &bounds = getBounds();
+		auto& bounds = getBounds();
 
 		renderSyntheticVision(screenBuffer, Bounds(
 			bounds.getX() + speedWidth,
 			bounds.getY(),
-			bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,
+			bounds.getWidth() - instrumentsWidth - speedWidth - altitudeWidth - verticalSpeedWidth,
 			bounds.getHeight()
 		));
 
@@ -1120,30 +1131,37 @@ namespace pizdanc {
 		));
 
 		renderAltitude(screenBuffer, Bounds(
-			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
+			bounds.getX2() + 1 - instrumentsWidth - altitudeWidth - verticalSpeedWidth,
 			bounds.getY() + miniHeight,
 			altitudeWidth,
 			bounds.getHeight() - miniHeight * 2
 		));
 
 		renderAutopilotAltitude(screenBuffer, Bounds(
-			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
+			bounds.getX2() + 1 - instrumentsWidth - altitudeWidth - verticalSpeedWidth,
 			bounds.getY(),
 			altitudeWidth,
 			miniHeight
 		));
 
 		renderPressure(screenBuffer, Bounds(
-			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
+			bounds.getX2() + 1 - instrumentsWidth - altitudeWidth - verticalSpeedWidth,
 			bounds.getY2() + 1 - miniHeight,
 			altitudeWidth,
 			miniHeight
 		));
 
 		renderVerticalSpeed(screenBuffer, Bounds(
-			bounds.getX2() + 1 - verticalSpeedWidth,
+			bounds.getX2() + 1 - instrumentsWidth - verticalSpeedWidth,
 			bounds.getY(),
 			verticalSpeedWidth,
+			bounds.getHeight()
+		));
+
+		renderInstruments(screenBuffer, Bounds(
+			bounds.getX2() + 1 - instrumentsWidth,
+			bounds.getY(),
+			instrumentsWidth,
 			bounds.getHeight()
 		));
 	}

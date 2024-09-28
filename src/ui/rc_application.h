@@ -120,14 +120,15 @@ namespace pizdanc {
 			OnboardLED& getOnboardLED();
 			Transceiver& getTransceiver();
 
-			Interpolator &getSpeedInterpolator();
-			Interpolator &getAltitudeInterpolator();
-			Interpolator &getPitchInterpolator();
-			Interpolator &getRollInterpolator();
-			Interpolator &getYawInterpolator();
-			Interpolator &getSpeedTrendInterpolator();
-			Interpolator &getAltitudeTrendInterpolator();
-			Interpolator &getVerticalSpeedInterpolator();
+			Interpolator& getThrottleInterpolator();
+			Interpolator& getSpeedInterpolator();
+			Interpolator& getAltitudeInterpolator();
+			Interpolator& getPitchInterpolator();
+			Interpolator& getRollInterpolator();
+			Interpolator& getYawInterpolator();
+			Interpolator& getSpeedTrendInterpolator();
+			Interpolator& getAltitudeTrendInterpolator();
+			Interpolator& getVerticalSpeedInterpolator();
 			Interpolator& getAileronsInterpolator();
 			Interpolator& getFlapsInterpolator();
 			Interpolator& getElevatorInterpolator();
@@ -166,6 +167,8 @@ namespace pizdanc {
 
 			uint32_t _tickTime = 0;
 			uint32_t _testTickTime = 0;
+
+			Interpolator _throttleInterpolator = Interpolator();
 
 			Interpolator _speedInterpolator = Interpolator();
 			Interpolator _speedTrendInterpolator = Interpolator();

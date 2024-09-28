@@ -22,6 +22,7 @@ namespace pizdanc {
 			static const uint8_t currentValueTriangleSize = 8;
 
 			// Speed
+			static const uint8_t instrumentsWidth = 54;
 			static const uint8_t speedWidth = 32;
 			static const uint8_t speedStepPixels = 8;
 			static const uint8_t speedStepUnits = 1;
@@ -131,5 +132,7 @@ namespace pizdanc {
 			static void renderRollOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds, float roll);
 
 			static void renderYawOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds, float yaw);
+
+			static void renderInstruments(ScreenBuffer* screenBuffer, const Bounds& bounds);
 	};
 }
