@@ -87,17 +87,23 @@ namespace pizdanc {
 			if (_altitudeInterpolator.getTargetValue() > 40)
 				_altitudeInterpolator.setTargetValue(0);
 
-			// Roll
-			_rollInterpolator.setTargetValue(_rollInterpolator.getTargetValue() + (float) radians(3));
+			// Pitch
+			_pitchInterpolator.setTargetValue(_pitchInterpolator.getTargetValue() + (float) radians(2));
 
-			if (degrees(_rollInterpolator.getTargetValue()) > 40)
-				_rollInterpolator.setTargetValue(0);
+			if (degrees(_pitchInterpolator.getTargetValue()) > 10)
+				_pitchInterpolator.setTargetValue(radians(-10));
+
+			// Roll
+			_rollInterpolator.setTargetValue(_rollInterpolator.getTargetValue() + (float) radians(1));
+
+			if (degrees(_rollInterpolator.getTargetValue()) > 20)
+				_rollInterpolator.setTargetValue(radians(-20));
 
 			// Yaw
-			_yawInterpolator.setTargetValue(_yawInterpolator.getTargetValue() + (float) radians(3));
+			_yawInterpolator.setTargetValue(_yawInterpolator.getTargetValue() + (float) radians(10));
 
-			if (degrees(_yawInterpolator.getTargetValue()) > 90)
-				_yawInterpolator.setTargetValue(radians(-90));
+			if (degrees(_yawInterpolator.getTargetValue()) > 170)
+				_yawInterpolator.setTargetValue(radians(-170));
 
 			// A/P
 			_testTickTime = millis();

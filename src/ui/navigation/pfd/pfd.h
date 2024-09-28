@@ -14,58 +14,75 @@ namespace pizdanc {
 			void onRender(ScreenBuffer* screenBuffer) override;
 
 		private:
-			const uint16_t lineSizeBig = 5;
-			const uint16_t lineSizeSmall = 2;
+			static const uint16_t lineSizeBig = 5;
+			static const uint16_t lineSizeSmall = 2;
 
-			const uint8_t miniHeight = 16;
+			static const uint8_t miniHeight = 16;
 
-			const uint16_t currentValueHeight = 20;
-			const uint8_t currentValueTriangleSize = 8;
+			static const uint16_t currentValueHeight = 20;
+			static const uint8_t currentValueTriangleSize = 8;
 
 			// Speed
-			const uint8_t speedWidth = 32;
-			const uint8_t speedStepPixels = 8;
-			const uint8_t speedStepUnits = 1;
-			const uint8_t speedStepUnitsBig = 5;
+			static const uint8_t speedWidth = 32;
+			static const uint8_t speedStepPixels = 8;
+			static const uint8_t speedStepUnits = 1;
+			static const uint8_t speedStepUnitsBig = 5;
 
-			const uint16_t speedBarSize = 4;
+			static const uint16_t speedBarSize = 4;
 
-			const uint16_t speedFlapsMin = 5;
-			const uint16_t speedFlapsMax = 30;
+			static const uint16_t speedFlapsMin = 5;
+			static const uint16_t speedFlapsMax = 30;
 
-			const uint16_t speedTurbulentMin = 10;
-			const uint16_t speedTurbulentMax = 80;
+			static const uint16_t speedTurbulentMin = 10;
+			static const uint16_t speedTurbulentMax = 80;
 
-			const uint16_t speedSmoothMax = 100;
+			static const uint16_t speedSmoothMax = 100;
 
 			// Altitude
-			const uint8_t altitudeWidth = 32;
-			const uint8_t altitudeStepUnits = 2;
-			const uint8_t altitudeStepUnitsBig = 10;
-			const uint8_t altitudeUnitPixels = 8;
+			static const uint8_t altitudeWidth = 32;
+			static const uint8_t altitudeStepUnits = 2;
+			static const uint8_t altitudeStepUnitsBig = 10;
+			static const uint8_t altitudeUnitPixels = 8;
 
 			// Vertical speed
-			const uint8_t verticalSpeedWidth = 16;
-			const uint16_t verticalSpeedStepUnits = 25;
-			const uint16_t verticalSpeedStepUnitsLimit = 200;
-			const uint16_t verticalSpeedStepUnitsBig = 100;
-			const uint16_t verticalSpeedStepPixels = 11;
-			const uint16_t verticalSpeedStepPixelsRight = 2;
+			static const uint8_t verticalSpeedWidth = 16;
+			static const uint16_t verticalSpeedStepUnits = 25;
+			static const uint16_t verticalSpeedStepUnitsLimit = 200;
+			static const uint16_t verticalSpeedStepUnitsBig = 100;
+			static const uint16_t verticalSpeedStepPixels = 11;
+			static const uint16_t verticalSpeedStepPixelsRight = 2;
 
 			// Autopilot indicator
-			const uint8_t autopilotIndicatorWidth = 4;
-			const uint8_t autopilotIndicatorHeight = miniHeight;
-			const uint8_t autopilotIndicatorHeightHalf = autopilotIndicatorHeight / 2;
+			static const uint8_t autopilotIndicatorWidth = 4;
+			static const uint8_t autopilotIndicatorHeight = miniHeight;
+			static const uint8_t autopilotIndicatorHeightHalf = autopilotIndicatorHeight / 2;
 
-			const uint8_t autopilotIndicatorTriangleVerticalMargin = 3;
-			const uint8_t autopilotIndicatorTriangleWidth = 3;
-			const uint8_t autopilotIndicatorTriangleHeight = autopilotIndicatorHeight - autopilotIndicatorTriangleVerticalMargin * 2;
+			static const uint8_t autopilotIndicatorTriangleVerticalMargin = 3;
+			static const uint8_t autopilotIndicatorTriangleWidth = 3;
+			static const uint8_t autopilotIndicatorTriangleHeight = autopilotIndicatorHeight - autopilotIndicatorTriangleVerticalMargin * 2;
 
-			const uint8_t autopilotIndicatorRectangleWidth = autopilotIndicatorWidth - autopilotIndicatorTriangleWidth;
+			static const uint8_t autopilotIndicatorRectangleWidth = autopilotIndicatorWidth - autopilotIndicatorTriangleWidth;
+
+			// Yaw overlay
+			static const uint8_t yawOverlayHeight = 20;
+			static const uint8_t yawOverlayLineSmallLength = 2;
+			static const uint8_t yawOverlayLineBigLength = 4;
+			static const uint8_t yawOverlayTextOffset = 0;
+			static const uint8_t yawOverlayAngleStepUnits = 2;
+			static const uint8_t yawOverlayAngleStepPixels = 9;
+			static const uint8_t yawOverlayTriangleSize = yawOverlayLineBigLength;
+
+			// Roll overlay
+			static const uint8_t rollOverlayHeight = 30;
+			static const uint8_t rollOverlayLineSmallLength = 2;
+			static const uint8_t rollOverlayLineBigLength = 4;
+			static const uint8_t rollOverlayTextOffset = 4;
+			static const uint8_t rollOverlayAngleStepUnits = 5;
+			static const uint8_t rollOverlayTriangleSize = yawOverlayLineBigLength;
 
 			// 3D
-			float _horizontalFov = radians(150);
-			float _verticalFov = radians(130);
+			float _horizontalFov = radians(120);
+			float _verticalFov = radians(90);
 
 			void renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Point& point, bool left) const;
 
@@ -77,7 +94,7 @@ namespace pizdanc {
 
 			void renderSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
 
-			void renderSyntheticVision(ScreenBuffer* screenBuffer, const Bounds& bounds);
+			void renderSyntheticVision(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
 
 			void renderAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
 
@@ -95,10 +112,12 @@ namespace pizdanc {
 
 			static void renderSyntheticVisionBird(ScreenBuffer* screenBuffer, const Point& center);
 
-			static void renderSyntheticVisionPitchOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds, float unfoldedFOVHeight, const Point& horizonLeft, const Point& horizonRight);
+			static void renderPitchOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds, float unfoldedFOVHeight, const Point& horizonLeft, const Point& horizonRight);
 
 			static void renderSyntheticVisionBackground(ScreenBuffer* screenBuffer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight, const Point& center);
 
-			static void renderSyntheticVisionYawOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds);
+			static void renderRollOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds, float roll);
+
+			static void renderYawOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds, float yaw);
 	};
 }
