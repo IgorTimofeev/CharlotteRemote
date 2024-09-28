@@ -473,8 +473,9 @@ namespace pizdanc {
 		}
 	}
 
-	void PFD::renderSyntheticVisionVerticalOverlay(
+	void PFD::renderSyntheticVisionPitchOverlay(
 		ScreenBuffer* screenBuffer,
+		const Bounds& bounds,
 		float unfoldedFOVHeight,
 		const Point& horizonLeft,
 		const Point& horizonRight
@@ -485,6 +486,8 @@ namespace pizdanc {
 			horizonRight,
 			&Theme::fg1
 		);
+
+		screenBuffer->setViewport(bounds);
 
 		// Non-middle
 		const float lineSmall = 14;
@@ -547,59 +550,61 @@ namespace pizdanc {
 		}
 	}
 
-	void PFD::renderSyntheticVisionLateralOverlay(
+	void PFD::renderSyntheticVisionYawOverlay(
 		ScreenBuffer* screenBuffer,
 		const Bounds& bounds
 	) {
 		auto& app = RCApplication::getInstance();
 
-		const float radius = (float) bounds.getWidth() * 1.8f;
-		const auto visiblePartFromBottom = 40;
+		const auto height = 18;
 
-		const auto& center = Point(
-			bounds.getXCenter(),
-			bounds.getY2() + (int32_t) radius - visiblePartFromBottom
-		);
+		const auto centerX = bounds.getXCenter();
 
-		const uint8_t lineLength = 5;
-		const uint8_t textOffset = 5;
+		// Vertical
+		const uint8_t lineSmallLength = 2;
+		const uint8_t lineBigLength = 4;
+		const uint8_t textOffset = 0;
 
-		const float angleStep = radians(1);
-		const float yaw = app.getYawInterpolator().getValue();
-		const float yawClosestInteger = floor(yaw / angleStep) * angleStep;
-		const float yawClosestFractional = yaw - yawClosestInteger;
+		const uint8_t angleStepUnits = 2;
+		const uint8_t angleStepPixels = 9;
 
-		const int8_t linesLeftRightCount = 30;
-		float angle;
+		const float yaw = degrees(app.getYawInterpolator().getValue());
+		const float yawClosest = yaw / angleStepUnits;
+		float yawClosestInteger = floor(yawClosest);
+		const float yawClosestFractional = yawClosest - yawClosestInteger;
+		yawClosestInteger *= angleStepUnits;
+
+		const uint8_t fullCount = (uint8_t) ceil((float) centerX / angleStepPixels) + 1;
+		int32_t x = centerX - fullCount * angleStepPixels - (int32_t) (yawClosestFractional * (float) angleStepPixels);
+		auto angle = (int16_t) (yawClosestInteger - (float) (fullCount * angleStepUnits));
+
+		if (angle < 0)
+			angle += 360;
+
+		bool isBig;
+		uint8_t lineLength;
 
 		const uint8_t textLength = 3;
 		wchar_t text[textLength];
 		Size textSize;
 
-		for (int8_t i = -linesLeftRightCount; i <= linesLeftRightCount; i++) {
-			angle = (float) i * angleStep;
-
-			auto lineToVec = Vector2F(0, -radius).rotate(angle - yawClosestFractional);
-			auto lineToVecNorm = lineToVec.normalize();
-
-			auto lineTo = center + (Point) lineToVec;
-			auto lineFrom = lineTo + (Point) (lineToVecNorm * -lineLength);
+		while (x <= bounds.getX2()) {
+			isBig = angle % 10 == 0;
+			lineLength = isBig ? lineBigLength : lineSmallLength;
 
 			// Line
-			screenBuffer->renderLine(
-				lineFrom,
-				lineTo,
+			screenBuffer->renderVerticalLine(
+				Point(
+					x,
+					bounds.getY2() - lineLength + 1
+				),
+				lineLength,
 				&Theme::fg1
 			);
 
 			// Text
-			auto displayAngle = (int16_t) roundf((float) degrees(yawClosestInteger + angle));
-
-			if (displayAngle < 0)
-				displayAngle += 360;
-
-			if (displayAngle % 10 == 0) {
-				switch (displayAngle) {
+			if (isBig) {
+				switch (angle) {
 					case 0:
 						swprintf(text, textLength, L"N");
 						break;
@@ -617,24 +622,25 @@ namespace pizdanc {
 						break;
 
 					default:
-						swprintf(text, textLength, L"%d", displayAngle);
+						swprintf(text, textLength, L"%d", angle);
 						break;
 				}
 
 				textSize = Theme::font.getSize(text);
 
-				auto lineToText = lineTo + (Point) (lineToVecNorm * textOffset);
-
 				screenBuffer->renderText(
 					Point(
-						lineToText.getX() - textSize.getWidth() / 2,
-						lineToText.getY() - textSize.getHeight()
+						x - textSize.getWidth() / 2,
+						bounds.getY2() - lineLength - textOffset - textSize.getHeight()
 					),
 					&Theme::font,
 					&Theme::fg1,
 					text
 				);
 			}
+
+			x += angleStepPixels;
+			angle += angleStepUnits;
 		}
 	}
 
@@ -672,18 +678,36 @@ namespace pizdanc {
 			center
 		);
 
-		// Vertical overlay
-		renderSyntheticVisionVerticalOverlay(
+		const uint8_t rollOverlayHeight = 30;
+		const uint8_t yawOverlayHeight = 18;
+
+		auto oldViewport = screenBuffer->getViewport();
+
+		// Pitch overlay
+		renderSyntheticVisionPitchOverlay(
 			screenBuffer,
+			Bounds(
+				bounds.getX(),
+				bounds.getY() + rollOverlayHeight + 1,
+				bounds.getWidth(),
+				bounds.getHeight() - rollOverlayHeight - yawOverlayHeight
+			),
 			unfoldedFovHeight,
 			horizonLeft,
 			horizonRight
 		);
 
-		// Lateral overlay
-		renderSyntheticVisionLateralOverlay(
+		screenBuffer->setViewport(oldViewport);
+
+		// Yaw overlay
+		renderSyntheticVisionYawOverlay(
 			screenBuffer,
-			bounds
+			Bounds(
+				bounds.getX(),
+				bounds.getY2() - yawOverlayHeight + 1,
+				bounds.getWidth(),
+				yawOverlayHeight
+			)
 		);
 
 		// Bird

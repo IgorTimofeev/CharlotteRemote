@@ -64,8 +64,8 @@ namespace pizdanc {
 			const uint8_t autopilotIndicatorRectangleWidth = autopilotIndicatorWidth - autopilotIndicatorTriangleWidth;
 
 			// 3D
-			float _horizontalFov = radians(100);
-			float _verticalFov = radians(90);
+			float _horizontalFov = radians(150);
+			float _verticalFov = radians(130);
 
 			void renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Point& point, bool left) const;
 
@@ -95,10 +95,10 @@ namespace pizdanc {
 
 			static void renderSyntheticVisionBird(ScreenBuffer* screenBuffer, const Point& center);
 
-			static void renderSyntheticVisionVerticalOverlay(ScreenBuffer* screenBuffer, float unfoldedFOVHeight, const Point& horizonLeft, const Point& horizonRight);
+			static void renderSyntheticVisionPitchOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds, float unfoldedFOVHeight, const Point& horizonLeft, const Point& horizonRight);
 
 			static void renderSyntheticVisionBackground(ScreenBuffer* screenBuffer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight, const Point& center);
 
-			static void renderSyntheticVisionLateralOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds);
+			static void renderSyntheticVisionYawOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds);
 	};
 }
