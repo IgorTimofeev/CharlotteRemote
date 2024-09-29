@@ -5,12 +5,7 @@
 class Interpolator {
 	public:
 		void tick(float factor) {
-			if (isnan(_value)) {
-				_value = _targetValue;
-				return;
-			}
-
-			_value = _value + (_targetValue - _value) * factor;
+			_value = isnan(_value) ? _targetValue : _value + (_targetValue - _value) * factor;
 		}
 
 		float getValue() const {

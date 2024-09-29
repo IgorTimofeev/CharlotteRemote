@@ -33,8 +33,6 @@ namespace pizdanc {
 			static const Bit8PaletteColor sky;
 			static const Bit8PaletteColor sky2;
 
-			PROGMEM static const uint32_t* palette;
-
 			static const PIXY10Font font;
 
 			static const uint16_t elementHeight = 32;

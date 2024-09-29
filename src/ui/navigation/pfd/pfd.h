@@ -97,7 +97,7 @@ namespace pizdanc {
 			float _horizontalFov = radians(120);
 			float _verticalFov = radians(90);
 
-			void renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Point& point, bool left) const;
+			static void renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Point& point, bool left) ;
 
 			void renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) const;
 
@@ -111,9 +111,9 @@ namespace pizdanc {
 
 			void renderAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
 
-			void renderVerticalSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
+			static void renderVerticalSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) ;
 
-			void renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, wchar_t *buffer, int8_t textXOffset) const;
+			static void renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, wchar_t *buffer, int8_t textXOffset) ;
 
 			void renderPressure(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
 

@@ -19,7 +19,39 @@ namespace pizdanc {
 		Application::setup();
 
 		// Palette
-		_screenBuffer.setPaletteColors(Theme::palette, 256);
+		_screenBuffer.setPaletteColors({
+			// Background
+			0x000000,
+			0x0E0E0E,
+			0x1E1E1E,
+			0x2E2E2E,
+			0x3E3E3E,
+			// Foreground
+			0xF0F0F0,
+			0xDDDDDD,
+			0x999999,
+			0x777777,
+			// Red
+			0xff0000,
+			// Purple
+			0xff00ff,
+			// Green
+			0x00FF00,
+			// Green speed
+			0x008100,
+			// Yellow
+			0xffd200,
+			// Ocean
+			0x00ffff,
+			// Ground
+			0x97b838,
+			// Ground 2
+			0xdef2a2,
+			// Sky
+			0x317fcb,
+			// Sky 2
+			0xaed1f2
+		});
 
 		// Font
 		setDefaultFont(&Theme::font);
@@ -43,15 +75,22 @@ namespace pizdanc {
 		_transceiver.tick(*this);
 		_onboardLED.tick();
 
+		// Test
 		const auto testDeltaTime = (float) (millis() - _testTickTime);
 		float testDelay = 1000;
 
 		if (testDeltaTime > testDelay) {
 			// Throttle
-			_throttleInterpolator.setTargetValue(_throttleInterpolator.getTargetValue() + 5);
+			const auto handleFloat = [&](Interpolator& interpolator, float increment = 0.1f, float opposite = 0.0f) {
+				interpolator.setTargetValue(interpolator.getTargetValue() + increment);
 
-			if (_throttleInterpolator.getTargetValue() > 100)
-				_throttleInterpolator.setTargetValue(0);
+				if (interpolator.getTargetValue() > 1) {
+					interpolator.setTargetValue(opposite);
+				}
+			};
+
+			handleFloat(_throttle1Interpolator);
+			handleFloat(_throttle2Interpolator);
 
 			// Speed
 			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) random(1, 20) / 10.0f * testDeltaTime / testDelay);
@@ -101,35 +140,25 @@ namespace pizdanc {
 			_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60000.0f / testDeltaTime);
 
 			// Controls
-			auto handleControlSurfaces = [&](Interpolator& interpolator, float opposite = -1) {
-				interpolator.setTargetValue(interpolator.getTargetValue() + 127.0f / 255.0f);
-
-				if (interpolator.getTargetValue() >= 1)
-					interpolator.setTargetValue(opposite);
-			};
-
-			handleControlSurfaces(_aileronsInterpolator);
-			handleControlSurfaces(_flapsInterpolator, 0);
-			handleControlSurfaces(_rudderInterpolator);
-			handleControlSurfaces(_elevatorInterpolator);
+			handleFloat(_aileronsInterpolator);
+			handleFloat(_flapsInterpolator);
+			handleFloat(_rudderInterpolator);
+			handleFloat(_elevatorInterpolator);
+			handleFloat(_spoilersInterpolator);
 
 			// Trim
-			auto handleTrim = [&](Interpolator& interpolator) {
-				interpolator.setTargetValue(interpolator.getTargetValue() + 0.1f);
-
-				if (interpolator.getTargetValue() >= 1)
-					interpolator.setTargetValue(0);
-			};
-
-			handleTrim(_aileronsTrimInterpolator);
-			handleTrim(_rudderTrimInterpolator);
-			handleTrim(_elevatorTrimInterpolator);
+			handleFloat(_aileronsTrimInterpolator);
+			handleFloat(_rudderTrimInterpolator);
+			handleFloat(_elevatorTrimInterpolator);
 		}
 
 		auto deltaTime = (float) (millis() - _tickTime);
 
 		if (deltaTime > settings::application::tickInterval) {
 			const float interpolationFactor = deltaTime / testDelay;
+
+			_throttle1Interpolator.tick(interpolationFactor);
+			_throttle2Interpolator.tick(interpolationFactor);
 
 			_speedInterpolator.tick(interpolationFactor);
 			_speedTrendInterpolator.tick(interpolationFactor);
@@ -147,6 +176,7 @@ namespace pizdanc {
 			_rudderInterpolator.tick(interpolationFactor);
 			_elevatorInterpolator.tick(interpolationFactor);
 			_flapsInterpolator.tick(interpolationFactor);
+			_spoilersInterpolator.tick(interpolationFactor);
 
 			_aileronsTrimInterpolator.tick(interpolationFactor);
 			_elevatorTrimInterpolator.tick(interpolationFactor);
@@ -186,8 +216,12 @@ namespace pizdanc {
 		return _transceiver;
 	}
 
-	Interpolator& RCApplication::getThrottleInterpolator() {
-		return _throttleInterpolator;
+	Interpolator& RCApplication::getThrottle1Interpolator() {
+		return _throttle1Interpolator;
+	}
+
+	Interpolator& RCApplication::getThrottle2Interpolator() {
+		return _throttle2Interpolator;
 	}
 
 	Interpolator &RCApplication::getSpeedInterpolator() {
@@ -228,6 +262,10 @@ namespace pizdanc {
 
 	Interpolator& RCApplication::getFlapsInterpolator() {
 		return _flapsInterpolator;
+	}
+
+	Interpolator& RCApplication::getSpoilersInterpolator() {
+		return _spoilersInterpolator;
 	}
 
 	Interpolator& RCApplication::getRudderInterpolator() {

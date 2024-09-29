@@ -33,7 +33,7 @@ namespace pizdanc {
 				left ? bounds.getX2() - currentValueTriangleSize - 1 : bounds.getX() + currentValueTriangleSize - 1,
 				y + currentValueHeight - 1
 			),
-			&Theme::bg3
+			&Theme::bg2
 		);
 
 		// Rect
@@ -44,7 +44,7 @@ namespace pizdanc {
 				bounds.getWidth() - currentValueTriangleSize,
 				currentValueHeight
 			),
-			&Theme::bg3
+			&Theme::bg2
 		);
 
 		// Text
@@ -61,7 +61,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Point& point, bool left) const {
+	void PFD::renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Point& point, bool left) {
 		// Upper
 		screenBuffer->renderFilledRectangle(
 			Bounds(
@@ -184,7 +184,7 @@ namespace pizdanc {
 
 		auto centerY = bounds.getYCenter();
 
-		screenBuffer->renderFilledRectangle(bounds, &Theme::bg2);
+		screenBuffer->renderFilledRectangle(bounds, &Theme::bg1);
 
 		float speed = app.getSpeedInterpolator().getValue();
 
@@ -815,7 +815,7 @@ namespace pizdanc {
 		auto centerY = bounds.getYCenter();
 		auto x = bounds.getX();
 
-		screenBuffer->renderFilledRectangle(bounds, &Theme::bg2);
+		screenBuffer->renderFilledRectangle(bounds, &Theme::bg1);
 
 		float altitude = app.getAltitudeInterpolator().getValue();
 		float snapped = altitude / (float) altitudeStepUnits;
@@ -929,12 +929,12 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderVerticalSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
+	void PFD::renderVerticalSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) {
 		auto& app = RCApplication::getInstance();
 		auto centerY = bounds.getYCenter();
 
 		// Background
-		screenBuffer->renderFilledRectangle(bounds, &Theme::bg3);
+		screenBuffer->renderFilledRectangle(bounds, &Theme::bg2);
 
 		// Lines
 		auto lineColor = &Theme::fg4;
@@ -947,7 +947,7 @@ namespace pizdanc {
 		bool isBig;
 
 		auto renderLines = [&](int32_t yAdder) {
-			for (; lineValue <= verticalSpeedStepUnitsLimit; lineValue += verticalSpeedStepUnits) {
+			while (lineValue <= verticalSpeedStepUnitsLimit) {
 				isBig = lineValue % verticalSpeedStepUnitsBig == 0;
 
 				if (isBig) {
@@ -985,6 +985,7 @@ namespace pizdanc {
 				}
 
 				y += yAdder;
+				lineValue += verticalSpeedStepUnits;
 			}
 		};
 
@@ -1002,7 +1003,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, wchar_t* buffer, int8_t textXOffset) const {
+	void PFD::renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, wchar_t* buffer, int8_t textXOffset) {
 		auto& app = RCApplication::getInstance();
 
 		// Background
@@ -1023,8 +1024,6 @@ namespace pizdanc {
 	}
 
 	void PFD::renderMiniPanelWithAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, float autopilotValue, bool left) const {
-		auto& app = RCApplication::getInstance();
-
 		wchar_t text[8];
 
 		if (autopilotValue > 0) {
@@ -1058,7 +1057,7 @@ namespace pizdanc {
 	void PFD::renderAutopilotSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
 		auto& app = RCApplication::getInstance();
 
-		auto bg = &Theme::bg3;
+		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
 		renderMiniPanelWithAutopilotValue(screenBuffer, bounds, bg, fg, app.getLocalData().getAutopilotSpeed(), true);
@@ -1067,7 +1066,7 @@ namespace pizdanc {
 	void PFD::renderAutopilotAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
 		auto& app = RCApplication::getInstance();
 
-		auto bg = &Theme::bg3;
+		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
 		renderMiniPanelWithAutopilotValue(screenBuffer, bounds, bg, fg, app.getLocalData().getAutopilotAltitude(), false);
@@ -1076,7 +1075,7 @@ namespace pizdanc {
 	void PFD::renderPressure(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
 		auto& app = RCApplication::getInstance();
 
-		auto bg = &Theme::bg3;
+		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
 		wchar_t text[9];
