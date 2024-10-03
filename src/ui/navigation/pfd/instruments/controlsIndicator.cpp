@@ -12,18 +12,23 @@ namespace pizdanc {
 		const auto& bounds = getBounds();
 		auto& app = RCApplication::getInstance();
 
+		// If surface rotation >= 5 deg
+		const auto badValue = radians(5) / radians(maxAngle);
+
 		// Lines
 		auto ebanina = [&](const Point& point, uint16_t length, float angle) {
+			const auto color = abs(angle) >= badValue ? &Theme::red : &Theme::green;
+
 			// A little bit faster
 			if (angle == 0) {
-				screenBuffer->renderHorizontalLine(point, length, &Theme::green);
+				screenBuffer->renderHorizontalLine(point, length, color);
 			}
 			// BUT...
 			else {
 				screenBuffer->renderLine(
 					point,
 					point + (Point) Vector2F(length, 0).rotate(angle),
-					&Theme::green
+					color
 				);
 			}
 		};

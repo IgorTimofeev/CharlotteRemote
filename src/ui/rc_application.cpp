@@ -81,16 +81,20 @@ namespace pizdanc {
 
 		if (testDeltaTime > testDelay) {
 			// Throttle
-			const auto handleFloat = [&](Interpolator& interpolator, float increment = 0.1f, float opposite = 0.0f) {
-				interpolator.setTargetValue(interpolator.getTargetValue() + increment);
+			const auto handleFloat = [&](Interpolator& interpolator, float increment = 0.1f, float trigger = 0.05f) {
+				if (abs(interpolator.getValue() - interpolator.getTargetValue()) > trigger)
+					return;
 
-				if (interpolator.getTargetValue() > 1) {
-					interpolator.setTargetValue(opposite);
+				if (interpolator.getTargetValue() >= 1.0f) {
+					interpolator.setTargetValue(0.0f);
+				}
+				else {
+					interpolator.setTargetValue(min(interpolator.getTargetValue() + increment, 1.0f));
 				}
 			};
 
-			handleFloat(_throttle1Interpolator);
-			handleFloat(_throttle2Interpolator);
+			handleFloat(_throttle1Interpolator, 0.2f, 0.01f);
+			handleFloat(_throttle2Interpolator, 0.2f, 0.01f);
 
 			// Speed
 			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) random(1, 20) / 10.0f * testDeltaTime / testDelay);

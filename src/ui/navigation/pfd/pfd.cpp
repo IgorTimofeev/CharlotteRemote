@@ -403,10 +403,37 @@ namespace pizdanc {
 	}
 
 	void PFD::renderSyntheticVisionBird(ScreenBuffer* screenBuffer, const Point& center) {
-		const uint8_t birdWidth = 38;
+//		const uint8_t sideWidth = 16;
+//		const uint8_t radius = 6;
+//
+//		screenBuffer->renderFilledCircle(
+//			center,
+//			radius,
+//			&Theme::fg1
+//		);
+//
+//		screenBuffer->renderHorizontalLine(
+//			Point(
+//				center.getX() - radius - sideWidth,
+//				center.getY()
+//			),
+//			sideWidth,
+//			&Theme::fg1
+//		);
+//
+//		screenBuffer->renderHorizontalLine(
+//			Point(
+//				center.getX() + radius,
+//				center.getY()
+//			),
+//			sideWidth,
+//			&Theme::fg1
+//		);
+
+		const uint8_t birdWidth = 30;
 		const uint8_t birdThickness = 2;
-		const uint8_t birdHeight = 8;
-		const uint8_t birdCenterOffset = 20;
+		const uint8_t birdHeight = 6;
+		const uint8_t birdCenterOffset = 16;
 
 		// Left
 		screenBuffer->renderFilledRectangle(
@@ -584,7 +611,7 @@ namespace pizdanc {
 			);
 
 			if (lineAngleDeg != 0 && lineAngleDeg % 10 == 0) {
-				swprintf(text, 10, L"%d", -lineAngleDeg);
+				swprintf(text, 10, L"%d", abs(lineAngleDeg));
 				textSize = Theme::font.getSize(text);
 
 				screenBuffer->renderText(
