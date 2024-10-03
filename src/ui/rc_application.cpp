@@ -94,8 +94,9 @@ namespace pizdanc {
 
 			// Speed
 			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) random(1, 20) / 10.0f * testDeltaTime / testDelay);
+//			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + 2.0f);
 
-			if (_speedInterpolator.getTargetValue() > 40)
+			if (_speedInterpolator.getTargetValue() > 150)
 				_speedInterpolator.setTargetValue(0);
 
 			// Altitude

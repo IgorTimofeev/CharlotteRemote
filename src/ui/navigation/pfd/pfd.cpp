@@ -12,12 +12,8 @@ namespace pizdanc {
 		setClipToBounds(true);
 	}
 
-	void PFD::renderCurrentValue(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, float currentValue, bool left) const {
-		wchar_t text[8];
-		swprintf(text, 8, L"%.0f", currentValue);
-		auto textSize = Theme::font.getSize(text);
-
-		auto y = centerY - currentValueHeight / 2;
+	void PFD::renderCurrentValue(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, float value, bool left) {
+		int32_t y = centerY - currentValueHeight / 2;
 
 		// Triangle
 		screenBuffer->renderFilledTriangle(
@@ -37,28 +33,83 @@ namespace pizdanc {
 		);
 
 		// Rect
-		screenBuffer->renderFilledRectangle(
-			Bounds(
-				left ? bounds.getX() : bounds.getX() + currentValueTriangleSize,
-				y,
-				bounds.getWidth() - currentValueTriangleSize,
-				currentValueHeight
-			),
-			&Theme::bg2
+		const auto& rectangleBounds = Bounds(
+			left ? bounds.getX() : bounds.getX() + currentValueTriangleSize,
+			y,
+			bounds.getWidth() - currentValueTriangleSize,
+			currentValueHeight
 		);
+
+		screenBuffer->renderFilledRectangle(rectangleBounds, &Theme::bg2);
 
 		// Text
 		const uint8_t textOffset = 2;
 
-		screenBuffer->renderText(
-			Point(
-				left ? bounds.getX2() - currentValueTriangleSize - textOffset - textSize.getWidth() : bounds.getX() + currentValueTriangleSize + textOffset,
-				y + currentValueHeight / 2 - textSize.getHeight() / 2
-			),
-			&Theme::font,
-			&Theme::fg1,
-			text
-		);
+		const auto oldViewport = screenBuffer->getViewport();
+		screenBuffer->setViewport(rectangleBounds);
+
+		auto uintValue = (uint32_t) value;
+
+		// Assuming 8 is "widest" digit
+		const uint8_t maxDigitWidth = Theme::font.getCharWidth(L'8');
+		const uint16_t maxTextWidth = maxDigitWidth * getDigitCount(uintValue);
+
+		int32_t x =
+			left
+			? bounds.getX2() - currentValueTriangleSize - textOffset
+			: bounds.getX() + currentValueTriangleSize + textOffset + maxTextWidth;
+
+		y = y + currentValueHeight / 2 - Theme::font.getHeight() / 2;
+
+		float integer;
+		const auto fractional = modf(value, &integer);
+		const int32_t scrolledY = y + (uint8_t) (fractional * (float) Theme::font.getHeight());
+
+		auto getNextDigit = [&](uint8_t digit, bool plus) {
+			return
+				plus
+				? (digit < 9 ? digit + 1 : 0)
+				: (digit > 1 ? digit - 1 : 9);
+		};
+
+		wchar_t text[5];
+
+		auto renderDigit = [&](int32_t digitY, uint8_t digit) {
+			swprintf(text, 5, L"%d", digit);
+
+			screenBuffer->renderChar(
+				Point(
+					x - Theme::font.getCharWidth(text[0]),
+					digitY
+				),
+				&Theme::font,
+				&Theme::fg1,
+				text[0]
+			);
+		};
+
+		auto shouldScroll = true;
+		uint8_t digit;
+
+		do {
+			digit = uintValue % 10;
+
+			if (shouldScroll) {
+				renderDigit(scrolledY - Theme::font.getHeight(), getNextDigit(digit, true));
+				renderDigit(scrolledY, digit);
+				renderDigit(scrolledY + Theme::font.getHeight(), getNextDigit(digit, false));
+			}
+			else {
+				renderDigit(y, digit);
+			}
+
+			x -= maxDigitWidth;
+
+			shouldScroll = digit == 9;
+			uintValue /= 10;
+		} while (uintValue > 0);
+
+		screenBuffer->setViewport(oldViewport);
 	}
 
 	void PFD::renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Point& point, bool left) {
@@ -130,7 +181,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) const {
+	void PFD::renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) {
 		if (autopilotValue <= 0)
 			return;
 
@@ -179,7 +230,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
+	void PFD::renderSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) {
 		auto& app = RCApplication::getInstance();
 
 		auto centerY = bounds.getYCenter();
@@ -415,8 +466,7 @@ namespace pizdanc {
 		ScreenBuffer* screenBuffer,
 		const Bounds& bounds,
 		const Point& horizonLeft,
-		const Point& horizonRight,
-		const Point& center
+		const Point& horizonRight
 	) {
 		// Sky
 		screenBuffer->renderFilledRectangle(bounds, &Theme::sky);
@@ -740,11 +790,10 @@ namespace pizdanc {
 			screenBuffer,
 			bounds,
 			horizonLeft,
-			horizonRight,
-			center
+			horizonRight
 		);
 
-		auto oldViewport = screenBuffer->getViewport();
+		const auto oldViewport = screenBuffer->getViewport();
 
 		// Roll overlay
 		renderRollOverlay(
@@ -809,7 +858,7 @@ namespace pizdanc {
 //		);
 	}
 
-	void PFD::renderAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
+	void PFD::renderAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) {
 		auto& app = RCApplication::getInstance();
 
 		auto centerY = bounds.getYCenter();
@@ -1004,8 +1053,6 @@ namespace pizdanc {
 	}
 
 	void PFD::renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, wchar_t* buffer, int8_t textXOffset) {
-		auto& app = RCApplication::getInstance();
-
 		// Background
 		screenBuffer->renderFilledRectangle(bounds, bg);
 
@@ -1023,7 +1070,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderMiniPanelWithAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, float autopilotValue, bool left) const {
+	void PFD::renderMiniPanelWithAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, float autopilotValue, bool left) {
 		wchar_t text[8];
 
 		if (autopilotValue > 0) {
@@ -1054,7 +1101,7 @@ namespace pizdanc {
 		}
 	}
 
-	void PFD::renderAutopilotSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
+	void PFD::renderAutopilotSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) {
 		auto& app = RCApplication::getInstance();
 
 		auto bg = &Theme::bg2;
@@ -1063,7 +1110,7 @@ namespace pizdanc {
 		renderMiniPanelWithAutopilotValue(screenBuffer, bounds, bg, fg, app.getLocalData().getAutopilotSpeed(), true);
 	}
 
-	void PFD::renderAutopilotAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
+	void PFD::renderAutopilotAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) {
 		auto& app = RCApplication::getInstance();
 
 		auto bg = &Theme::bg2;
@@ -1072,7 +1119,7 @@ namespace pizdanc {
 		renderMiniPanelWithAutopilotValue(screenBuffer, bounds, bg, fg, app.getLocalData().getAutopilotAltitude(), false);
 	}
 
-	void PFD::renderPressure(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
+	void PFD::renderPressure(ScreenBuffer* screenBuffer, const Bounds& bounds) {
 		auto& app = RCApplication::getInstance();
 
 		auto bg = &Theme::bg2;
