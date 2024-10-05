@@ -123,7 +123,7 @@ namespace pizdanc {
 
 			static void renderMiniPanelWithAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color* bg, const Color* fg, float autopilotValue, bool left) ;
 
-			static void renderSyntheticVisionBird(ScreenBuffer* screenBuffer, const Point& center);
+			static void renderAircraftSymbol(ScreenBuffer* screenBuffer, const Point& center);
 
 			static void renderPitchOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds, float unfoldedFOVHeight, const Point& horizonLeft, const Point& horizonRight);
 

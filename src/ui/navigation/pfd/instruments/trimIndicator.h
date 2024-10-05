@@ -11,99 +11,85 @@ namespace pizdanc {
 			void render(ScreenBuffer* screenBuffer) override {
 				const auto& bounds = getBounds();
 
-				const uint8_t triangleSize = 3;
-				const uint8_t triangleOffset = 2;
-				const uint8_t textOffset = 3;
+				const uint8_t triangleSize = 2;
+				const uint8_t suggestedValueSize = 2;
 
-				uint8_t textLength = 6;
-				wchar_t text[textLength];
-				uint16_t textWidth;
-				uint16_t lineLength;
-
-				// Vertical line
-				screenBuffer->renderVerticalLine(
-					Point(
-						bounds.getX(),
-						bounds.getY()
-					),
-					bounds.getHeight(),
-					&Theme::fg1
-				);
-
-				// Horizontal lines
-				auto drawHorizontalLine = [&](int32_t y, const wchar_t* title) {
-					swprintf(text, textLength, title);
-					textWidth = Theme::font.getWidth(text);
-
-					lineLength = bounds.getWidth() - textOffset - textWidth - 1;
-
-					// Line
-					screenBuffer->renderHorizontalLine(
-						Point(
-							bounds.getX() + 1,
-							y
-						),
-						lineLength,
+				if (_orientation == Orientation::Vertical) {
+					// Vertical line
+					screenBuffer->renderVerticalLine(
+						bounds.getTopLeft(),
+						bounds.getHeight(),
 						&Theme::fg1
 					);
-					
-					// Text
-					screenBuffer->renderText(
-						Point(
-							bounds.getX() + 1 + lineLength + textOffset,
-							y - Theme::font.getHeight() / 2
+
+					// Suggested value
+					screenBuffer->renderFilledRectangle(
+						Bounds(
+							bounds.getX(),
+							bounds.getY() + (int32_t) (_suggestedMinimum * (float) bounds.getHeight()),
+							suggestedValueSize,
+							(uint16_t) ((_suggestedMaximum - _suggestedMinimum) * (float) bounds.getHeight())
 						),
-						&Theme::font,
-						&Theme::fg1,
-						text
+						&Theme::green
 					);
-				};
 
-				drawHorizontalLine(bounds.getY(), L"ND");
-				drawHorizontalLine(bounds.getY2(), L"NU");
+					// Triangle
+					const auto trianglePosition = Point(
+						bounds.getX2() - triangleSize,
+						bounds.getY() + (int32_t) (_value * (float) bounds.getHeight())
+					);
 
-				// Suggested value
-				screenBuffer->renderFilledRectangle(
-					Bounds(
-						bounds.getX(),
-						bounds.getY() + (int32_t) (_suggestedMinimum * (float) bounds.getHeight()),
-						3,
-						(uint16_t) ((_suggestedMaximum - _suggestedMinimum) * (float) bounds.getHeight())
-					),
-					&Theme::green
-				);
+					screenBuffer->renderFilledTriangle(
+						Point(
+							trianglePosition.getX() + triangleSize,
+							trianglePosition.getY() - triangleSize
+						),
+						trianglePosition,
+						Point(
+							trianglePosition.getX() + triangleSize,
+							trianglePosition.getY() + triangleSize
+						),
+						&Theme::yellow
+					);
+				}
+				else {
+					// Horizontal line
+					screenBuffer->renderHorizontalLine(
+						bounds.getBottomLeft(),
+						bounds.getWidth(),
+						&Theme::fg1
+					);
 
-				// Triangle
-				const auto trianglePosition = Point(
-					bounds.getX() + triangleOffset + 1,
-					bounds.getY() + (int32_t) (_value * (float) bounds.getHeight())
-				);
+					// Suggested value
+					screenBuffer->renderFilledRectangle(
+						Bounds(
+							bounds.getX() + (int32_t) (_suggestedMinimum * (float) bounds.getWidth()),
+							bounds.getY2() - suggestedValueSize + 1,
+							(uint16_t) ((_suggestedMaximum - _suggestedMinimum) * (float) bounds.getWidth()),
+							suggestedValueSize
+						),
+						&Theme::green
+					);
 
-				screenBuffer->renderFilledTriangle(
-					Point(
-						trianglePosition.getX() + triangleSize,
-						trianglePosition.getY() - triangleSize
-					),
-					trianglePosition,
-					Point(
-						trianglePosition.getX() + triangleSize,
-						trianglePosition.getY() + triangleSize
-					),
-					&Theme::yellow
-				);
+					// Triangle
+					const auto trianglePosition = Point(
+						bounds.getX() + (int32_t) (_value * (float) bounds.getWidth()),
+						bounds.getY() + triangleSize
+					);
 
-				// Text
-				swprintf(text, textLength, L"%.1f", _value);
-
-				screenBuffer->renderText(
-					Point(
-						trianglePosition.getX() + triangleSize + textOffset + 1,
-						trianglePosition.getY()
-					),
-					&Theme::font,
-					&Theme::yellow,
-					text
-				);
+					screenBuffer->renderFilledTriangle(
+						Point(
+							trianglePosition.getX() - triangleSize,
+							trianglePosition.getY() - triangleSize
+						),
+						trianglePosition,
+						Point(
+							trianglePosition.getX() + triangleSize,
+							trianglePosition.getY() - triangleSize
+						),
+						&Theme::yellow
+					);
+				}
 			}
 
 			float getValue() const {
@@ -130,9 +116,18 @@ namespace pizdanc {
 				_suggestedMaximum = suggestedMaximum;
 			}
 
+			Orientation getOrientation() const {
+				return _orientation;
+			}
+
+			void setOrientation(Orientation orientation) {
+				_orientation = orientation;
+			}
+
 		private:
 			float _suggestedMinimum = 0;
 			float _suggestedMaximum = 0;
 			float _value = 0;
+			Orientation _orientation = Orientation::Vertical;
 	};
 }

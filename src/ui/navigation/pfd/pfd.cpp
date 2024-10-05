@@ -402,11 +402,11 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderSyntheticVisionBird(ScreenBuffer* screenBuffer, const Point& center) {
+	void PFD::renderAircraftSymbol(ScreenBuffer* screenBuffer, const Point& center) {
 //		const uint8_t sideWidth = 16;
 //		const uint8_t radius = 6;
 //
-//		screenBuffer->renderFilledCircle(
+//		screenBuffer->renderCircle(
 //			center,
 //			radius,
 //			&Theme::fg1
@@ -430,28 +430,28 @@ namespace pizdanc {
 //			&Theme::fg1
 //		);
 
-		const uint8_t birdWidth = 30;
-		const uint8_t birdThickness = 2;
-		const uint8_t birdHeight = 6;
-		const uint8_t birdCenterOffset = 16;
+		const uint8_t aircraftSymbolWidth = 30;
+		const uint8_t aircraftSymbolThickness = 2;
+		const uint8_t aircraftSymbolHeight = 6;
+		const uint8_t aircraftSymbolCenterOffset = 16;
 
 		// Left
 		screenBuffer->renderFilledRectangle(
 			Bounds(
-				center.getX() - birdCenterOffset - birdThickness,
-				center.getY() - birdThickness / 2,
-				birdThickness,
-				birdHeight
+				center.getX() - aircraftSymbolCenterOffset - aircraftSymbolThickness,
+				center.getY() - aircraftSymbolThickness / 2,
+				aircraftSymbolThickness,
+				aircraftSymbolHeight
 			),
 			&Theme::bg1
 		);
 
 		screenBuffer->renderFilledRectangle(
 			Bounds(
-				center.getX() - birdCenterOffset - birdThickness - birdWidth,
-				center.getY() - birdThickness / 2,
-				birdWidth,
-				birdThickness
+				center.getX() - aircraftSymbolCenterOffset - aircraftSymbolThickness - aircraftSymbolWidth,
+				center.getY() - aircraftSymbolThickness / 2,
+				aircraftSymbolWidth,
+				aircraftSymbolThickness
 			),
 			&Theme::bg1
 		);
@@ -459,20 +459,20 @@ namespace pizdanc {
 		// Right
 		screenBuffer->renderFilledRectangle(
 			Bounds(
-				center.getX() + birdCenterOffset,
-				center.getY() - birdThickness / 2,
-				birdThickness,
-				birdHeight
+				center.getX() + aircraftSymbolCenterOffset,
+				center.getY() - aircraftSymbolThickness / 2,
+				aircraftSymbolThickness,
+				aircraftSymbolHeight
 			),
 			&Theme::bg1
 		);
 
 		screenBuffer->renderFilledRectangle(
 			Bounds(
-				center.getX() + birdCenterOffset + birdThickness,
-				center.getY() - birdThickness / 2,
-				birdWidth,
-				birdThickness
+				center.getX() + aircraftSymbolCenterOffset + aircraftSymbolThickness,
+				center.getY() - aircraftSymbolThickness / 2,
+				aircraftSymbolWidth,
+				aircraftSymbolThickness
 			),
 			&Theme::bg1
 		);
@@ -480,10 +480,10 @@ namespace pizdanc {
 		// Dot
 		screenBuffer->renderFilledRectangle(
 			Bounds(
-				center.getX() + birdThickness / 2 - birdThickness / 2,
-				center.getY() - birdThickness / 2,
-				birdThickness,
-				birdThickness
+				center.getX() + aircraftSymbolThickness / 2 - aircraftSymbolThickness / 2,
+				center.getY() - aircraftSymbolThickness / 2,
+				aircraftSymbolThickness,
+				aircraftSymbolThickness
 			),
 			&Theme::bg1
 		);
@@ -863,7 +863,7 @@ namespace pizdanc {
 		screenBuffer->setViewport(oldViewport);
 
 		// Bird
-		renderSyntheticVisionBird(screenBuffer, center);
+		renderAircraftSymbol(screenBuffer, center);
 
 //		// Temp blyad radio
 //		wchar_t text[127];

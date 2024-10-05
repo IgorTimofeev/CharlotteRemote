@@ -25,12 +25,36 @@ namespace pizdanc {
 		// Controls
 		_rows += &_controlsTitle;
 
-		// Pitch
-		_pitchTrimIndicator.setSize(Size(20, 40));
-		_pitchTrimIndicator.setSuggestedMinimum(0.4);
-		_pitchTrimIndicator.setSuggestedMaximum(0.6);
-		_pitchTrimIndicator.setValue(0.5);
-		_rows += &_pitchTitle;
+		// Trim
+		_trimRow.setOrientation(Orientation::Horizontal);
+		_trimRow.setSpacing(4);
+
+		// Elevator
+		_elevatorTrimIndicator.setSize(Size(5, 28));
+		_elevatorTrimIndicator.setSuggestedMinimum(0.4);
+		_elevatorTrimIndicator.setSuggestedMaximum(0.6);
+		_trimRow += &_elevatorTrimTitle;
+
+		// Ailerons & rudder
+		_aileronsAndRudderRows.setSpacing(4);
+
+		// Ailerons
+		_aileronsTrimIndicator.setOrientation(Orientation::Horizontal);
+		_aileronsTrimIndicator.setSize(Size(28, 5));
+		_aileronsTrimIndicator.setSuggestedMinimum(0.4);
+		_aileronsTrimIndicator.setSuggestedMaximum(0.6);
+		_aileronsAndRudderRows += &_aileronsTrimTitle;
+
+		// Rudder
+		_rudderTrimIndicator.setOrientation(_aileronsTrimIndicator.getOrientation());
+		_rudderTrimIndicator.setSize(_aileronsTrimIndicator.getSize());
+		_rudderTrimIndicator.setSuggestedMinimum(_aileronsTrimIndicator.getSuggestedMinimum());
+		_rudderTrimIndicator.setSuggestedMaximum(_aileronsTrimIndicator.getSuggestedMaximum());
+		_aileronsAndRudderRows += &_rudderTrimTitle;
+
+		_trimRow += &_aileronsAndRudderRows;
+
+		_rows += &_trimRow;
 
 		*this += &_rows;
 	}
@@ -43,6 +67,8 @@ namespace pizdanc {
 		_throttle2Indicator.setValue(app.getThrottle2Interpolator().getValue());
 
 		// Trim
-		_pitchTrimIndicator.setValue(app.getElevatorTrimInterpolator().getValue());
+		_elevatorTrimIndicator.setValue(app.getElevatorTrimInterpolator().getValue());
+		_aileronsTrimIndicator.setValue(app.getAileronsTrimInterpolator().getValue());
+		_rudderTrimIndicator.setValue(app.getRudderTrimInterpolator().getValue());
 	}
 }

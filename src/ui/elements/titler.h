@@ -10,7 +10,7 @@ namespace pizdanc {
 	class Titler : public StackLayout {
 		public:
 			Titler() {
-				setSpacing(5);
+				setSpacing(3);
 
 				_titleText.setForegroundColor(&Theme::fg3);
 				*this += &_titleText;
