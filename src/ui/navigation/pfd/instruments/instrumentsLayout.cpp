@@ -27,7 +27,7 @@ namespace pizdanc {
 
 		// Trim
 		_trimRow.setOrientation(Orientation::Horizontal);
-		_trimRow.setSpacing(4);
+		_trimRow.setSpacing(5);
 
 		// Elevator
 		_elevatorTrimIndicator.setSize(Size(5, 28));
@@ -36,7 +36,7 @@ namespace pizdanc {
 		_trimRow += &_elevatorTrimTitle;
 
 		// Ailerons & rudder
-		_aileronsAndRudderRows.setSpacing(4);
+		_aileronsAndRudderRows.setSpacing(3);
 
 		// Ailerons
 		_aileronsTrimIndicator.setOrientation(Orientation::Horizontal);
