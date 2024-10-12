@@ -20,7 +20,7 @@ namespace pizdanc {
 		public:
 			Transceiver() = default;
 
-			void begin();
+			void setup();
 			void tick(RCApplication& application);
 
 

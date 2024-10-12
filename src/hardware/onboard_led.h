@@ -7,7 +7,7 @@ using namespace pizdanc;
 
 class OnboardLED {
 	public:
-		void begin() {
+		void setup() {
 			pinMode(settings::pinout::board::led, OUTPUT);
 			updateLED();
 		}

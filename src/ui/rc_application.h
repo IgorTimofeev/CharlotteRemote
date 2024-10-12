@@ -7,7 +7,7 @@
 #include "../../lib/YOBA/src/ui/application.h"
 #include "../../lib/YOBA/src/hardware/screen/drivers/ILI9341Driver.h"
 #include "../../lib/YOBA/src/hardware/screen/buffers/bits8PaletteBuffer.h"
-#include "../../lib/YOBA/src/hardware/touch/drivers/FT6336UDriver.h"
+#include "../../lib/YOBA/src/hardware/input/touch/FT6336UTouchPanel.h"
 #include "../../lib/YOBA/src/color.h"
 #include "../../lib/YOBA/src/ui/shapes/rectangle.h"
 #include "../../lib/YOBA/src/ui/text.h"
@@ -153,7 +153,7 @@ namespace pizdanc {
 
 			Bits8PaletteBuffer _screenBuffer = Bits8PaletteBuffer(&_screenDriver);
 
-			FT6336UDriver _touchDriver = FT6336UDriver(
+			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
 				settings::pinout::screen::touch::reset,
 				settings::pinout::screen::touch::interrupt
 			);

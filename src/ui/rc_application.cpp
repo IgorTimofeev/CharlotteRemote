@@ -6,10 +6,15 @@
 using namespace yoba;
 
 namespace pizdanc {
+	RCApplication& RCApplication::getInstance() {
+		static RCApplication instance;
+
+		return instance;
+	}
+
 	RCApplication::RCApplication() :
 		Application(
-			&_screenBuffer,
-			&_touchDriver
+			&_screenBuffer
 		)
 	{
 		_tickTime = millis();
@@ -60,12 +65,16 @@ namespace pizdanc {
 		_menu.setup();
 		*this += &_menu;
 
+		// Touch
+		_touchPanel.setup();
+		addInputDevice(&_touchPanel);
+
 //		// Joysticks
 //		_pitchHall.begin();
 //		_rollHall.begin();
 
-		_transceiver.begin();
-		_onboardLED.begin();
+		_transceiver.setup();
+		_onboardLED.setup();
 	}
 
 	void RCApplication::tick() {
@@ -195,12 +204,6 @@ namespace pizdanc {
 		_menu.tick();
 
 		Application::tick();
-	}
-
-	RCApplication& RCApplication::getInstance() {
-		static RCApplication instance;
-
-		return instance;
 	}
 
 	// ------------------------- Data -------------------------

@@ -8,7 +8,7 @@ namespace pizdanc {
 		_canOperate = true;
 	}
 
-	void Transceiver::begin() {
+	void Transceiver::setup() {
 		Serial.println("[SX1262] Initializing");
 
 		auto state = _sx1262.begin(
