@@ -15,7 +15,7 @@ namespace pizdanc {
 			void setup() override;
 
 		private:
-			PFD _pfd = PFD();
-			InstrumentsLayout _instrumentsLayout = InstrumentsLayout();
+			PFD _pfd {};
+			InstrumentsLayout _instrumentsLayout {};
 	};
 }

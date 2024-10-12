@@ -142,7 +142,7 @@ namespace pizdanc {
 		private:
 			// -------------------------------- Hardware --------------------------------
 
-			Transceiver _transceiver = Transceiver();
+			Transceiver _transceiver {};
 
 			ILI9341Driver _screenDriver = ILI9341Driver(
 				ScreenOrientation::Landscape270,
@@ -158,7 +158,7 @@ namespace pizdanc {
 				settings::pinout::screen::touch::interrupt
 			);
 
-			OnboardLED _onboardLED = OnboardLED();
+			OnboardLED _onboardLED {};
 
 			//
 //			Potentiometer _pitchHall;
@@ -166,42 +166,42 @@ namespace pizdanc {
 
 			// -------------------------------- UI --------------------------------
 
-			Menu _menu = Menu();
+			Menu _menu {};
 
 			// -------------------------------- Timings --------------------------------
 
 			uint32_t _tickTime = 0;
 			uint32_t _testTickTime = 0;
 
-			Interpolator _throttle1Interpolator = Interpolator();
-			Interpolator _throttle2Interpolator = Interpolator();
+			Interpolator _throttle1Interpolator {};
+			Interpolator _throttle2Interpolator {};
 
-			Interpolator _speedInterpolator = Interpolator();
-			Interpolator _speedTrendInterpolator = Interpolator();
+			Interpolator _speedInterpolator {};
+			Interpolator _speedTrendInterpolator {};
 
-			Interpolator _altitudeInterpolator = Interpolator();
-			Interpolator _altitudeTrendInterpolator = Interpolator();
+			Interpolator _altitudeInterpolator {};
+			Interpolator _altitudeTrendInterpolator {};
 
-			Interpolator _verticalSpeedInterpolator = Interpolator();
+			Interpolator _verticalSpeedInterpolator {};
 
-			Interpolator _pitchInterpolator = Interpolator();
-			Interpolator _rollInterpolator = Interpolator();
-			Interpolator _yawInterpolator = Interpolator();
+			Interpolator _pitchInterpolator {};
+			Interpolator _rollInterpolator {};
+			Interpolator _yawInterpolator {};
 
-			Interpolator _aileronsInterpolator = Interpolator();
-			Interpolator _elevatorInterpolator = Interpolator();
-			Interpolator _rudderInterpolator = Interpolator();
-			Interpolator _flapsInterpolator = Interpolator();
-			Interpolator _spoilersInterpolator = Interpolator();
+			Interpolator _aileronsInterpolator {};
+			Interpolator _elevatorInterpolator {};
+			Interpolator _rudderInterpolator {};
+			Interpolator _flapsInterpolator {};
+			Interpolator _spoilersInterpolator {};
 
-			Interpolator _aileronsTrimInterpolator = Interpolator();
-			Interpolator _elevatorTrimInterpolator = Interpolator();
-			Interpolator _rudderTrimInterpolator = Interpolator();
+			Interpolator _aileronsTrimInterpolator {};
+			Interpolator _elevatorTrimInterpolator {};
+			Interpolator _rudderTrimInterpolator {};
 
 			// -------------------------------- Other shit --------------------------------
 
-			LocalData _localData = LocalData();
-			RemoteData _remoteData = RemoteData();
+			LocalData _localData {};
+			RemoteData _remoteData {};
 
 			void simulateFlightData();
 	};

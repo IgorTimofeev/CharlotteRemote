@@ -18,13 +18,13 @@ using namespace yoba;
 namespace pizdanc {
 	class AutopilotPage : public Page {
 		public:
-			StackLayout columns = StackLayout();
-
 			void setup() override;
 
 		private:
-			AutopilotSelector spd = AutopilotSelector(3, L"Speed", L"A/T");
-			AutopilotSelector hdg = AutopilotSelector(3, L"Heading", L"HOLD");
-			AutopilotSelector alt = AutopilotSelector(4, L"Altitude", L"FLC");
+			StackLayout _columns {};
+
+			AutopilotSelector _spd = AutopilotSelector(3, L"Speed", L"A/T");
+			AutopilotSelector _hdg = AutopilotSelector(3, L"Heading", L"HOLD");
+			AutopilotSelector _alt = AutopilotSelector(4, L"Altitude", L"FLC");
 	};
 }

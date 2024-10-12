@@ -5,15 +5,15 @@ namespace pizdanc {
 	void AutopilotPage::setup() {
 		auto& app = RCApplication::getInstance();
 
-		columns.setAlignment(Alignment::Center);
-		columns.setOrientation(Orientation::Horizontal);
-		columns.setSpacing(20);
+		_columns.setAlignment(Alignment::Center);
+		_columns.setOrientation(Orientation::Horizontal);
+		_columns.setSpacing(20);
 
-		columns += &spd;
-		columns += &hdg;
-		columns += &alt;
+		_columns += &_spd;
+		_columns += &_hdg;
+		_columns += &_alt;
 
-		*this += &columns;
+		*this += &_columns;
 
 		auto govnoedstvo = [](
 			AutopilotSelector& selector,
@@ -31,7 +31,7 @@ namespace pizdanc {
 
 		// Speed
 		govnoedstvo(
-			spd,
+			_spd,
 			[&]() {
 				return app.getLocalData().getAutopilotSpeed();
 			},
@@ -42,7 +42,7 @@ namespace pizdanc {
 
 		// Heading
 		govnoedstvo(
-			hdg,
+			_hdg,
 			[&]() {
 				return app.getLocalData().getAutopilotHeading();
 			},
@@ -62,7 +62,7 @@ namespace pizdanc {
 
 		// Altitude
 		govnoedstvo(
-			alt,
+			_alt,
 			[&]() {
 				return app.getLocalData().getAutopilotAltitude();
 			},

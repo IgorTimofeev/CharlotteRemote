@@ -32,23 +32,23 @@ namespace pizdanc {
 
 		private:
 			Rectangle _background = Rectangle(&Theme::bg1);
-			Layout _pageLayout = Layout();
+			Layout _pageLayout {};
 
-			Layout _menu = Layout();
+			Layout _menu = {};
 			Rectangle _menuBackground = Rectangle(&Theme::bg2);
-			StackLayout _menuItemsLayout = StackLayout();
+			StackLayout _menuItemsLayout {};
 
 			std::vector<Page*> _pages {};
 
 			// ----------------------------- Pages -----------------------------
 
-			PFDPage _pfdPage = PFDPage();
-			AutopilotPage _autopilotPage = AutopilotPage();
-			ControlsPage _controlsPage = ControlsPage();
-			EnginePage _enginePage = EnginePage();
-			BatteryPage _batteryPage = BatteryPage();
-			RadioPage _radioPage = RadioPage();
-			DebugPage _debugPage = DebugPage();
+			PFDPage _pfdPage {};
+			AutopilotPage _autopilotPage {};
+			ControlsPage _controlsPage {};
+			EnginePage _enginePage {};
+			BatteryPage _batteryPage {};
+			RadioPage _radioPage {};
+			DebugPage _debugPage {};
 
 			void addPage(const wchar_t* name, Page* page);
 	};

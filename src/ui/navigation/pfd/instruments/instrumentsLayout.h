@@ -19,30 +19,30 @@ namespace pizdanc {
 			void setup();
 
 		private:
-			StackLayout _rows = StackLayout();
+			StackLayout _rows {};
 
 			Rectangle _backgroundRect = Rectangle(&Theme::bg1);
 
-			ThrottleIndicator _throttle1Indicator = ThrottleIndicator();
-			ThrottleIndicator _throttle2Indicator = ThrottleIndicator();
+			ThrottleIndicator _throttle1Indicator {};
+			ThrottleIndicator _throttle2Indicator {};
 
-			StackLayout _throttleRow = StackLayout();
+			StackLayout _throttleRow {};
 			Titler _throttleTitle = Titler(L"THR", &_throttleRow);
 
-			ControlsIndicator _controlsIndicator = ControlsIndicator();
+			ControlsIndicator _controlsIndicator {};
 			Titler _controlsTitle = Titler(L"SP/FL", &_controlsIndicator);
 
-			StackLayout _trimRow = StackLayout();
+			StackLayout _trimRow {};
 
-			TrimIndicator _elevatorTrimIndicator = TrimIndicator();
+			TrimIndicator _elevatorTrimIndicator {};
 			Titler _elevatorTrimTitle = Titler(L"E", &_elevatorTrimIndicator);
 
-			StackLayout _aileronsAndRudderRows = StackLayout();
+			StackLayout _aileronsAndRudderRows {};
 
-			TrimIndicator _aileronsTrimIndicator = TrimIndicator();
+			TrimIndicator _aileronsTrimIndicator {};
 			Titler _aileronsTrimTitle = Titler(L"A", &_aileronsTrimIndicator);
 
-			TrimIndicator _rudderTrimIndicator = TrimIndicator();
+			TrimIndicator _rudderTrimIndicator {};
 			Titler _rudderTrimTitle = Titler(L"R", &_rudderTrimIndicator);
 	};
 }
