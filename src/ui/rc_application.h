@@ -202,5 +202,7 @@ namespace pizdanc {
 
 			LocalData _localData = LocalData();
 			RemoteData _remoteData = RemoteData();
+
+			void simulateFlightData();
 	};
 }

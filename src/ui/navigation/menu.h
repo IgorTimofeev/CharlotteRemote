@@ -26,7 +26,6 @@ namespace pizdanc {
 	class Menu : public Selector {
 		public:
 			void setup();
-			void tick();
 
 		protected:
 			void onSelectionChanged() override;

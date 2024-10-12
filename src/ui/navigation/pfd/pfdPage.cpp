@@ -10,7 +10,7 @@ namespace pizdanc {
 		*this += &_instrumentsLayout;
 	}
 
-	void PFDPage::tick() {
-		_instrumentsLayout.tick();
+	void PFDPage::setup() {
+		_instrumentsLayout.setup();
 	}
 }

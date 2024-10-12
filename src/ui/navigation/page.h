@@ -11,10 +11,6 @@ namespace pizdanc {
 			virtual void setup() {
 
 			}
-
-			virtual void tick() {
-
-			}
 	};
 
 	class RowsPage : public Page {

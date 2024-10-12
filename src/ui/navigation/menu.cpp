@@ -33,10 +33,6 @@ namespace pizdanc {
 		setSelectedIndex(0);
 	}
 
-	void Menu::tick() {
-		_pages[getSelectedIndex()]->tick();
-	}
-
 	void Menu::onSelectionChanged() {
 		_pageLayout.removeChildren();
 

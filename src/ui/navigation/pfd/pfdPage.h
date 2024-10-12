@@ -12,7 +12,7 @@ namespace pizdanc {
 		public:
 			PFDPage();
 
-			void tick() override;
+			void setup() override;
 
 		private:
 			PFD _pfd = PFD();

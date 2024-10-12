@@ -63,6 +63,7 @@ namespace pizdanc {
 
 		// UI
 		_menu.setup();
+
 		*this += &_menu;
 
 		// Touch
@@ -78,6 +79,12 @@ namespace pizdanc {
 	}
 
 	void RCApplication::tick() {
+		simulateFlightData();
+
+		Application::tick();
+	}
+
+	void RCApplication::simulateFlightData() {
 		const auto oldSpeed = _speedInterpolator.getTargetValue();
 		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
@@ -200,10 +207,6 @@ namespace pizdanc {
 
 			_tickTime = millis();
 		}
-
-		_menu.tick();
-
-		Application::tick();
 	}
 
 	// ------------------------- Data -------------------------

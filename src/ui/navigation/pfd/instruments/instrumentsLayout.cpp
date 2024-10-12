@@ -59,16 +59,18 @@ namespace pizdanc {
 		*this += &_rows;
 	}
 
-	void InstrumentsLayout::tick() {
-		auto& app = RCApplication::getInstance();
+	void InstrumentsLayout::setup() {
+		auto app = &RCApplication::getInstance();
 
-		// Engine
-		_throttle1Indicator.setValue(app.getThrottle1Interpolator().getValue());
-		_throttle2Indicator.setValue(app.getThrottle2Interpolator().getValue());
+		app->getOnTick() += [this, app]() {
+			// Engine
+			_throttle1Indicator.setValue(app->getThrottle1Interpolator().getValue());
+			_throttle2Indicator.setValue(app->getThrottle2Interpolator().getValue());
 
-		// Trim
-		_elevatorTrimIndicator.setValue(app.getElevatorTrimInterpolator().getValue());
-		_aileronsTrimIndicator.setValue(app.getAileronsTrimInterpolator().getValue());
-		_rudderTrimIndicator.setValue(app.getRudderTrimInterpolator().getValue());
+			// Trim
+			_elevatorTrimIndicator.setValue(app->getElevatorTrimInterpolator().getValue());
+			_aileronsTrimIndicator.setValue(app->getAileronsTrimInterpolator().getValue());
+			_rudderTrimIndicator.setValue(app->getRudderTrimInterpolator().getValue());
+		};
 	}
 }
