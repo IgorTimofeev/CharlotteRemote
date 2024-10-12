@@ -3,13 +3,13 @@
 #include "cstdint"
 
 namespace pizdanc {
-	enum PacketType : uint8_t {
+	enum class PacketType : uint8_t {
 		AircraftAHRS = 1,
 
 		ControllerCommand = 2
 	};
 
-	enum AltimeterMode : uint8_t  {
+	enum class AltimeterMode : uint8_t  {
 		QNH,
 		QNE
 	};
@@ -55,7 +55,7 @@ namespace pizdanc {
 			Serial.printf("[AHRSPacket] Throttle, ailerons, rudder, flaps: %d, %d, %d, %d\n", throttle, ailerons, rudder, flaps);
 			Serial.printf("[AHRSPacket] Pitch, roll, yaw: %f, %f, %f\n", pitch, roll, yaw);
 			Serial.printf("[AHRSPacket] Temperature, pressure: %f, %f\n", temperature, pressure);
-			Serial.printf("[AHRSPacket] Altimeter mode, pressure: %d, %f\n", altimeterMode, altimeterPressure);
+			Serial.printf("[AHRSPacket] Altimeter mode, pressure: %d, %f\n", (uint8_t) altimeterMode, altimeterPressure);
 			Serial.printf("[AHRSPacket] Altitude, speed: %f, %f\n", altitude, speed);
 			Serial.printf("[AHRSPacket] Strobe lights: %d\n", strobeLights);
 		}

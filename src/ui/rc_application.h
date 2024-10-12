@@ -154,8 +154,8 @@ namespace pizdanc {
 			Bits8PaletteBuffer _screenBuffer = Bits8PaletteBuffer(&_screenDriver);
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
-				settings::pinout::screen::touch::reset,
-				settings::pinout::screen::touch::interrupt
+				settings::pinout::screen::touch::interrupt,
+				settings::pinout::screen::touch::reset
 			);
 
 			OnboardLED _onboardLED {};

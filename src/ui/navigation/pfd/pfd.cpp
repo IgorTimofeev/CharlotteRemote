@@ -1155,12 +1155,12 @@ namespace pizdanc {
 		wchar_t text[9];
 
 		switch (app.getLocalData().getAltimeterMode()) {
-			case QNH:
+			case AltimeterMode::QNH:
 				swprintf(text, 9, L"%d", (uint16_t) app.getLocalData().getAltimeterPressure());
 
 				break;
 
-			case QNE:
+			case AltimeterMode::QNE:
 				swprintf(text, 9, L"STD");
 				bg = &Theme::yellow;
 				fg = &Theme::bg1;

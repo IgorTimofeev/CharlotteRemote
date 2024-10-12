@@ -198,7 +198,7 @@ namespace pizdanc {
 		bufferPtr += sizeof(PacketType);
 
 		switch (packetType) {
-			case AircraftAHRS:
+			case PacketType::AircraftAHRS:
 				{
 					auto ahrsPacket = (AircraftAHRSPacket*) bufferPtr;
 					auto& remoteData = application.getRemoteData();
@@ -231,7 +231,7 @@ namespace pizdanc {
 				break;
 
 			default:
-				Serial.printf("[Transceiver] Unknown packet type: %d\n", packetType);
+				Serial.printf("[Transceiver] Unknown packet type: %d\n", (uint8_t) packetType);
 
 				break;
 		}

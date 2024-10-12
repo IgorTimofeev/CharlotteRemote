@@ -17,7 +17,7 @@ namespace pizdanc {
 			&_screenBuffer
 		)
 	{
-		_tickTime = millis();
+
 	}
 
 	void RCApplication::setup() {
@@ -59,7 +59,7 @@ namespace pizdanc {
 		});
 
 		// Font
-		setDefaultFont(&Theme::font);
+		setFont(&Theme::font);
 
 		// UI
 		_menu.setup();
