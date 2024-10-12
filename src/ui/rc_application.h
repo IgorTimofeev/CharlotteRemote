@@ -144,14 +144,15 @@ namespace pizdanc {
 
 			Transceiver _transceiver {};
 
-			Rgb565ILI9341Driver _screenDriver = Rgb565ILI9341Driver(
+			ILI9341Driver _screenDriver = ILI9341Driver(
+				ColorModel::Rgb565,
 				ScreenOrientation::Landscape270,
 				settings::pinout::screen::chipSelect,
 				settings::pinout::screen::dataCommand,
 				settings::pinout::screen::reset
 			);
 
-			Bit8Rgb565PaletteBuffer _screenBuffer = Bit8Rgb565PaletteBuffer(&_screenDriver);
+			Bit8PaletteBuffer _screenBuffer = Bit8PaletteBuffer(&_screenDriver);
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
 				settings::pinout::screen::touch::interrupt,
