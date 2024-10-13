@@ -152,7 +152,7 @@ namespace pizdanc {
 				settings::pinout::screen::reset
 			);
 
-			Rgb565Bit8PaletteBuffer<256> _screenBuffer = Rgb565Bit8PaletteBuffer<256>(&_screenDriver);
+			Bit8PaletteBuffer _screenBuffer = Bit8PaletteBuffer(&_screenDriver, 32);
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
 				settings::pinout::screen::touch::interrupt,

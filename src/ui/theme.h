@@ -10,28 +10,28 @@ using namespace yoba;
 namespace pizdanc {
 	class Theme {
 		public:
-			static const Bit8PaletteColor bg1;
-			static const Bit8PaletteColor bg2;
-			static const Bit8PaletteColor bg3;
-			static const Bit8PaletteColor bg4;
-			static const Bit8PaletteColor bg5;
+			static const PaletteColor bg1;
+			static const PaletteColor bg2;
+			static const PaletteColor bg3;
+			static const PaletteColor bg4;
+			static const PaletteColor bg5;
 
-			static const Bit8PaletteColor fg1;
-			static const Bit8PaletteColor fg2;
-			static const Bit8PaletteColor fg3;
-			static const Bit8PaletteColor fg4;
+			static const PaletteColor fg1;
+			static const PaletteColor fg2;
+			static const PaletteColor fg3;
+			static const PaletteColor fg4;
 
-			static const Bit8PaletteColor red;
-			static const Bit8PaletteColor purple;
-			static const Bit8PaletteColor green;
-			static const Bit8PaletteColor greenSpeed;
-			static const Bit8PaletteColor yellow;
-			static const Bit8PaletteColor blue;
-			static const Bit8PaletteColor ground;
-			static const Bit8PaletteColor ground2;
+			static const PaletteColor red;
+			static const PaletteColor purple;
+			static const PaletteColor green;
+			static const PaletteColor greenSpeed;
+			static const PaletteColor yellow;
+			static const PaletteColor blue;
+			static const PaletteColor ground;
+			static const PaletteColor ground2;
 
-			static const Bit8PaletteColor sky;
-			static const Bit8PaletteColor sky2;
+			static const PaletteColor sky;
+			static const PaletteColor sky2;
 
 			static const PIXY10Font font;
 
