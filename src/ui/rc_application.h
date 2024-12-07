@@ -146,7 +146,7 @@ namespace pizdanc {
 
 			ILI9341Driver _screenDriver = ILI9341Driver(
 				ColorModel::Rgb565,
-				ScreenOrientation::Landscape270,
+				ScreenOrientation::Clockwise270,
 				settings::pinout::screen::chipSelect,
 				settings::pinout::screen::dataCommand,
 				settings::pinout::screen::reset
