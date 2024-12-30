@@ -59,7 +59,7 @@ namespace pizdanc {
 		});
 
 		// Font
-		setFont(&Theme::font);
+		setFont(&Theme::fontNormal);
 
 		// UI
 		_menu.setup();

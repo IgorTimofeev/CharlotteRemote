@@ -2,6 +2,7 @@
 
 #include "../../lib/YOBA/src/color.h"
 #include "../../lib/YOBA/src/resources/fonts/PIXY10Font.h"
+#include "../../lib/YOBA/src/resources/fonts/Vaticanus8Font.h"
 #include "../../lib/YOBA/src/ui/button.h"
 #include "../../lib/YOBA/src/ui/slider.h"
 
@@ -33,7 +34,8 @@ namespace pizdanc {
 			static const PaletteColor sky;
 			static const PaletteColor sky2;
 
-			static const PIXY10Font font;
+			static const PIXY10Font fontNormal;
+			static const Vaticanus8Font fontSmall;
 
 			static const uint16_t elementHeight = 32;
 			static const uint16_t cornerRadius = 5;

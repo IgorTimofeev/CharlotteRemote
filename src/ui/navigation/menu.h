@@ -4,10 +4,9 @@
 
 #include "../../../lib/YOBA/src/ui/layout.h"
 #include "../../../lib/YOBA/src/ui/selector.h"
-#include "../../../lib/YOBA/src/ui/selectorItem.h"
 #include "../../../lib/YOBA/src/animation.h"
 #include "../../../lib/YOBA/src/ui/button.h"
-#include "../../../lib/YOBA/src/ui/shapes/rectangle.h"
+#include "../../../lib/YOBA/src/ui/rectangle.h"
 #include "../../../lib/YOBA/src/ui/stackLayout.h"
 
 #include "menuItem.h"

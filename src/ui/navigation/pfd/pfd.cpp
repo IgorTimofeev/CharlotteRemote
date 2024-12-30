@@ -51,7 +51,7 @@ namespace pizdanc {
 		auto uintValue = (uint32_t) value;
 
 		// Assuming 8 is "widest" digit
-		const uint8_t maxDigitWidth = Theme::font.getCharWidth(L'8');
+		const uint8_t maxDigitWidth = Theme::fontNormal.getCharWidth(L'8');
 		const uint16_t maxTextWidth = maxDigitWidth * getDigitCount(uintValue);
 
 		int32_t x =
@@ -59,11 +59,11 @@ namespace pizdanc {
 			? bounds.getX2() - currentValueTriangleSize - textOffset
 			: bounds.getX() + currentValueTriangleSize + textOffset + maxTextWidth;
 
-		y = y + currentValueHeight / 2 - Theme::font.getHeight() / 2;
+		y = y + currentValueHeight / 2 - Theme::fontNormal.getHeight() / 2;
 
 		float integer;
 		const auto fractional = modf(value, &integer);
-		const int32_t scrolledY = y + (uint8_t) (fractional * (float) Theme::font.getHeight());
+		const int32_t scrolledY = y + (uint8_t) (fractional * (float) Theme::fontNormal.getHeight());
 
 		auto getNextDigit = [&](uint8_t digit, bool plus) {
 			return
@@ -79,10 +79,10 @@ namespace pizdanc {
 
 			screenBuffer->renderChar(
 				Point(
-					x - Theme::font.getCharWidth(text[0]),
+					x - Theme::fontNormal.getCharWidth(text[0]),
 					digitY
 				),
-				&Theme::font,
+				&Theme::fontNormal,
 				&Theme::fg1,
 				text[0]
 			);
@@ -95,9 +95,9 @@ namespace pizdanc {
 			digit = uintValue % 10;
 
 			if (shouldScroll) {
-				renderDigit(scrolledY - Theme::font.getHeight(), getNextDigit(digit, true));
+				renderDigit(scrolledY - Theme::fontNormal.getHeight(), getNextDigit(digit, true));
 				renderDigit(scrolledY, digit);
-				renderDigit(scrolledY + Theme::font.getHeight(), getNextDigit(digit, false));
+				renderDigit(scrolledY + Theme::fontNormal.getHeight(), getNextDigit(digit, false));
 			}
 			else {
 				renderDigit(y, digit);
@@ -345,14 +345,14 @@ namespace pizdanc {
 
 				//Text
 				swprintf(text, 12, L"%d", lineValue);
-				textSize = Theme::font.getSize(text);
+				textSize = Theme::fontNormal.getSize(text);
 
 				screenBuffer->renderText(
 					Point(
 						bounds.getX2() + 1 - speedBarSize - lineSizeBig - 5 - textSize.getWidth(),
 						y - textSize.getHeight() / 2
 					),
-					&Theme::font,
+					&Theme::fontNormal,
 					lineColor,
 					text
 				);
@@ -612,14 +612,14 @@ namespace pizdanc {
 
 			if (lineAngleDeg != 0 && lineAngleDeg % 10 == 0) {
 				swprintf(text, 10, L"%d", abs(lineAngleDeg));
-				textSize = Theme::font.getSize(text);
+				textSize = Theme::fontSmall.getSize(text);
 
 				screenBuffer->renderText(
 					Point(
 						lineRight.getX() + pitchOverlayTextOffset,
 						lineRight.getY() - textSize.getHeight() / 2
 					),
-					&Theme::font,
+					&Theme::fontSmall,
 					color,
 					text
 				);
@@ -669,14 +669,14 @@ namespace pizdanc {
 			if (isBig) {
 				swprintf(text, textLength, L"%d", angleDisplay);
 
-				textSize = Theme::font.getSize(text);
+				textSize = Theme::fontSmall.getSize(text);
 
 				screenBuffer->renderText(
 					Point(
 						lineFrom.getX() - textSize.getWidth() / 2,
 						lineFrom.getY() + rollOverlayTextOffset
 					),
-					&Theme::font,
+					&Theme::fontSmall,
 					rollOverlayColor,
 					text
 				);
@@ -760,14 +760,14 @@ namespace pizdanc {
 						break;
 				}
 
-				textSize = Theme::font.getSize(text);
+				textSize = Theme::fontSmall.getSize(text);
 
 				screenBuffer->renderText(
 					Point(
 						x - textSize.getWidth() / 2,
 						lineY - yawOverlayTextOffset - textSize.getHeight()
 					),
-					&Theme::font,
+					&Theme::fontSmall,
 					yawOverlayColor,
 					text
 				);
@@ -922,11 +922,11 @@ namespace pizdanc {
 
 				//Text
 				swprintf(text, 10, L"%d", lineValue);
-				textSize = Theme::font.getSize(text);
+				textSize = Theme::fontNormal.getSize(text);
 
 				screenBuffer->renderText(
 					Point(x + lineSizeBig + 5, y - textSize.getHeight() / 2),
-					&Theme::font,
+					&Theme::fontNormal,
 					lineColor,
 					text
 				);
@@ -1037,14 +1037,14 @@ namespace pizdanc {
 					);
 
 					swprintf(text, 10, L"%d", lineValue / 100);
-					textSize = Theme::font.getSize(text);
+					textSize = Theme::fontNormal.getSize(text);
 
 					screenBuffer->renderText(
 						Point(
 							bounds.getX() + lineSizeBig + 4,
 							y - textSize.getHeight() / 2
 						),
-						&Theme::font,
+						&Theme::fontNormal,
 						lineColor,
 						text
 					);
@@ -1084,14 +1084,14 @@ namespace pizdanc {
 		screenBuffer->renderFilledRectangle(bounds, bg);
 
 		// Text
-		auto textSize = Theme::font.getSize(buffer);
+		auto textSize = Theme::fontSmall.getSize(buffer);
 
 		screenBuffer->renderText(
 			Point(
 				bounds.getX() + textXOffset + (bounds.getWidth() - textXOffset) / 2 - textSize.getWidth() / 2,
 				bounds.getY() + miniHeight / 2 - textSize.getHeight() / 2
 			),
-			&Theme::font,
+			&Theme::fontSmall,
 			fg,
 			buffer
 		);

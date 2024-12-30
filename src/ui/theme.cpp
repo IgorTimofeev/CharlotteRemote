@@ -23,24 +23,25 @@ namespace pizdanc {
 	const PaletteColor Theme::sky = PaletteColor(17);
 	const PaletteColor Theme::sky2 = PaletteColor(18);
 
-	const PIXY10Font Theme::font = PIXY10Font();
+	const PIXY10Font Theme::fontNormal = PIXY10Font();
+	const Vaticanus8Font Theme::fontSmall = Vaticanus8Font();
 
 	void Theme::apply(Button &button) {
 		button.setHeight(elementHeight);
 		button.setCornerRadius(cornerRadius);
 
-		button.setBackgroundColor(&Theme::yellow);
-		button.setPressedBackground(&Theme::purple);
+		button.setPrimaryColor(&Theme::yellow);
+		button.setPressedPrimaryColor(&Theme::purple);
 
-		button.setForegroundColor(&Theme::fg1);
-		button.setPressedForeground(&Theme::fg1);
+		button.setSecondaryColor(&Theme::fg1);
+		button.setPressedSecondaryColor(&Theme::fg1);
 	}
 
 	void Theme::apply(Slider &slider) {
 		slider.setHeight(elementHeight);
 		slider.setCornerRadius(cornerRadius);
 
-		slider.setBackgroundColor(&Theme::bg3);
-		slider.setForegroundColor(&Theme::yellow);
+		slider.setPrimaryColor(&Theme::bg3);
+		slider.setSecondaryColor(&Theme::yellow);
 	}
 }

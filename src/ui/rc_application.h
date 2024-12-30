@@ -9,7 +9,7 @@
 #include "../../lib/YOBA/src/hardware/screen/buffers/bit8PaletteBuffer.h"
 #include "../../lib/YOBA/src/hardware/input/touch/FT6336UTouchPanel.h"
 #include "../../lib/YOBA/src/color.h"
-#include "../../lib/YOBA/src/ui/shapes/rectangle.h"
+#include "../../lib/YOBA/src/ui/rectangle.h"
 #include "../../lib/YOBA/src/ui/text.h"
 #include "../../lib/YOBA/src/ui/application.h"
 #include "../../lib/YOBA/src/ui/debug/touchCanvas.h"

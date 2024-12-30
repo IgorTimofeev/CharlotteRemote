@@ -3,8 +3,8 @@
 #include "Arduino.h"
 #include "../theme.h"
 #include "../../../lib/YOBA/src/color.h"
-#include "../../../lib/YOBA/src/ui/selectorItem.h"
-#include "../../../lib/YOBA/src/ui/shapes/rectangle.h"
+#include "../../../lib/YOBA/src/ui/selector.h"
+#include "../../../lib/YOBA/src/ui/rectangle.h"
 #include "../../../lib/YOBA/src/ui/text.h"
 #include "../../../lib/YOBA/src/ui/stackLayout.h"
 
@@ -15,7 +15,7 @@ namespace pizdanc {
 		public:
 			explicit MenuItem(const wchar_t* text) {
 				// Selection
-				_selectionBackground.setBackgroundColor(&Theme::fg1);
+				_selectionBackground.setPrimaryColor(&Theme::fg1);
 				*this += &_selectionBackground;
 
 				// Text
@@ -41,7 +41,7 @@ namespace pizdanc {
 
 			void updateVisualsFromSelection() {
 				_selectionBackground.setVisible(isSelected());
-				_text.setForegroundColor(isSelected() ? &Theme::bg1 : &Theme::fg1);
+				_text.setSecondaryColor(isSelected() ? &Theme::bg1 : &Theme::fg1);
 			}
 	};
 }

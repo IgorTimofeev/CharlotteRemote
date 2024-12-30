@@ -12,7 +12,7 @@ namespace pizdanc {
 				const auto& bounds = getBounds();
 				const uint8_t lineOffset = 2;
 				const uint8_t textOffset = 2;
-				const auto textHeight = Theme::font.getHeight();
+				const auto textHeight = Theme::fontNormal.getHeight();
 				const uint16_t frameHeight = bounds.getHeight() - textHeight - textOffset;
 
 				// Frame
@@ -57,10 +57,10 @@ namespace pizdanc {
 
 				screenBuffer->renderText(
 					Point(
-						bounds.getX() + bounds.getWidth() / 2 - Theme::font.getWidth(text) / 2 + 1,
+						bounds.getX() + bounds.getWidth() / 2 - Theme::fontNormal.getWidth(text) / 2 + 1,
 						bounds.getY() + frameHeight + textOffset
 					),
-					&Theme::font,
+					&Theme::fontNormal,
 					&Theme::green,
 					text
 				);

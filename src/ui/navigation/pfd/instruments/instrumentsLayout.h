@@ -2,7 +2,7 @@
 
 #include "../../../../lib/YOBA/src/hardware/screen/buffers/screenBuffer.h"
 #include "../../../../lib/YOBA/src/ui/element.h"
-#include "../../../../lib/YOBA/src/ui/shapes/rectangle.h"
+#include "../../../../lib/YOBA/src/ui/rectangle.h"
 #include "../../../../lib/YOBA/src/ui/stackLayout.h"
 #include "../../../elements/titler.h"
 #include "trimIndicator.h"
