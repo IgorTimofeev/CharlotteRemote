@@ -12,8 +12,6 @@
 #include "../../lib/YOBA/src/ui/rectangle.h"
 #include "../../lib/YOBA/src/ui/text.h"
 #include "../../lib/YOBA/src/ui/application.h"
-#include "../../lib/YOBA/src/ui/debug/touchCanvas.h"
-#include "../../lib/YOBA/src/ui/debug/testView.h"
 #include "../ui/navigation/menu.h"
 
 using namespace yoba;

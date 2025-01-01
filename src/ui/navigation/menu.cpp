@@ -22,13 +22,13 @@ namespace pizdanc {
 		*this += &_pageLayout;
 
 		// Initialization
+		addPage(L"DBG", &_debugPage);
 		addPage(L"PFD", &_pfdPage);
 		addPage(L"A/P", &_autopilotPage);
 		addPage(L"CTL", &_controlsPage);
 		addPage(L"ENG", &_enginePage);
 		addPage(L"COM", &_radioPage);
 		addPage(L"BAT", &_batteryPage);
-		addPage(L"DBG", &_debugPage);
 
 		setSelectedIndex(0);
 	}
