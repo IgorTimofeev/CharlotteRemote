@@ -44,4 +44,18 @@ namespace pizdanc {
 		slider.setPrimaryColor(&Theme::bg3);
 		slider.setSecondaryColor(&Theme::yellow);
 	}
+
+	void Theme::apply(TextField& textField) {
+		textField.setHeight(elementHeight);
+		textField.setCornerRadius(cornerRadius);
+
+		textField.setPrimaryColor(&Theme::bg3);
+		textField.setSecondaryColor(&Theme::fg1);
+
+		textField.setKeyboardBackgroundColor(&Theme::bg3);
+		textField.setKeyboardTextButtonPrimaryColor(&Theme::bg5);
+		textField.setKeyboardTextButtonSecondaryColor(&Theme::fg1);
+		textField.setKeyboardActionButtonPrimaryColor(&Theme::bg4);
+		textField.setKeyboardActionButtonSecondaryColor(&Theme::fg1);
+	}
 }

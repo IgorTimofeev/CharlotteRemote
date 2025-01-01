@@ -5,6 +5,7 @@
 #include "../../lib/YOBA/src/resources/fonts/Vaticanus8Font.h"
 #include "../../lib/YOBA/src/ui/button.h"
 #include "../../lib/YOBA/src/ui/slider.h"
+#include "../../lib/YOBA/src/ui/textField.h"
 
 using namespace yoba;
 
@@ -42,5 +43,6 @@ namespace pizdanc {
 
 			static void apply(Button& button);
 			static void apply(Slider& slider);
+			static void apply(TextField& keyboard);
 	};
 }

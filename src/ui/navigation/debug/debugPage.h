@@ -3,8 +3,8 @@
 #include "Arduino.h"
 
 #include "../../../../lib/YOBA/src/ui/text.h"
+#include "../../../../lib/YOBA/src/ui/textField.h"
 #include "../../../../lib/YOBA/src/ui/slider.h"
-#include "../../../../lib/YOBA/src/ui/keyboard.h"
 
 #include "ui/navigation/page.h"
 #include "ui/elements/titler.h"
@@ -20,7 +20,10 @@ namespace pizdanc {
 			Slider slider = Slider();
 			Titler sliderTitle = Titler(L"Slider", &slider);
 
-			Button button1 = Button();
-			Titler button1Title = Titler(L"Button", &button1);
+			Button button = Button();
+			Titler buttonTitle = Titler(L"Button", &button);
+
+			TextField textField = TextField();
+			Titler textFieldTitle = Titler(L"Text", &textField);
 	};
 }
