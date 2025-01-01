@@ -41,7 +41,7 @@ namespace pizdanc {
 
 			void updateVisualsFromSelection() {
 				_selectionBackground.setVisible(isSelected());
-				_text.setSecondaryColor(isSelected() ? &Theme::bg1 : &Theme::fg1);
+				_text.setPrimaryColor(isSelected() ? &Theme::bg1 : &Theme::fg1);
 			}
 	};
 }

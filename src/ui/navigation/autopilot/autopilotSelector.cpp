@@ -12,7 +12,7 @@ namespace pizdanc {
 		// Title
 		title.setMargin(Margin(marginValue, marginValue, marginValue, 5));
 		title.setHorizontalAlignment(Alignment::Center);
-		title.setSecondaryColor(&Theme::fg3);
+		title.setPrimaryColor(&Theme::fg3);
 		title.setText(titleText);
 		rows += &title;
 

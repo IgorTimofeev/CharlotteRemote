@@ -19,7 +19,6 @@ namespace pizdanc {
 		rows += &button1Title;
 
 		button1.getOnClick() += [this]() {
-			auto overlay = new ModalOverlay();
 			auto root = button1.getRoot();
 
 			auto keyboard = new Keyboard({
@@ -36,23 +35,32 @@ namespace pizdanc {
 			keyboard->setActionButtonSecondaryColor(&Theme::fg1);
 			keyboard->setLayoutIndex(0);
 
-			overlay->getBackgroundRectangle().getEventHandlers() += [root, keyboard, overlay](InputEvent& event) {
-				if (event.getTypeID() != TouchDownEvent::typeID)
-					return;
+			auto keyboardAndRootElementsLayout = new KeyboardRootLayout();
+			*keyboardAndRootElementsLayout += keyboard;
 
-				event.setHandled(true);
+			auto existingRootElementsLayout = new Layout();
+			existingRootElementsLayout->setSize(root->getScreenBuffer()->getSize());
 
-				Serial.printf("Pizda: %p, %p, %p\n", root, keyboard, overlay);
+			for (auto child : *root) {
+				*existingRootElementsLayout += child;
+			}
 
-				*root -= overlay;
-				delete keyboard;
-				delete overlay;
-			};
+			*keyboardAndRootElementsLayout += existingRootElementsLayout;
 
-			*overlay += keyboard;
+//			newRoot->getBackgroundRectangle().getEventHandlers() += [root, keyboard, newRoot](InputEvent& event) {
+//				if (event.getTypeID() != TouchDownEvent::typeID)
+//					return;
+//
+//				event.setHandled(true);
+//
+//				*root -= newRoot;
+//				delete keyboard;
+//				delete newRoot;
+//			};
 
-			Serial.println("ADDED BLYAD");
-			*root += overlay;
+
+			root->removeChildren();
+			*root += keyboardAndRootElementsLayout;
 		};
 	}
 }
