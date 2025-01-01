@@ -7,7 +7,7 @@ namespace pizdanc {
 
 		// Menu
 		const uint16_t menuSize = 20;
-		_menu.setSize(Size(Size::Calculated, menuSize));
+		_menu.setSize(Size(Size::Auto, menuSize));
 		_menu.setVerticalAlignment(Alignment::End);
 		_menu += &_menuBackground;
 
