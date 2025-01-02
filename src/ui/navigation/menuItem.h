@@ -6,7 +6,7 @@
 #include "../../../lib/YOBA/src/ui/selector.h"
 #include "../../../lib/YOBA/src/ui/rectangle.h"
 #include "../../../lib/YOBA/src/ui/text.h"
-#include "../../../lib/YOBA/src/ui/stackLayout.h"
+#include "../../../lib/YOBA/src/ui/stackContainer.h"
 
 using namespace yoba;
 
@@ -36,7 +36,7 @@ namespace pizdanc {
 
 		private:
 			Rectangle _selectionBackground = Rectangle(&Theme::bg1);
-			StackLayout _row = StackLayout();
+			StackContainer _row = StackContainer();
 			Text _text = Text();
 
 			void updateVisualsFromSelection() {

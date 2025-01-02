@@ -1,13 +1,13 @@
 #pragma once
 
 #include "../../../lib/YOBA/src/ui/text.h"
-#include "../../../lib/YOBA/src/ui/stackLayout.h"
+#include "../../../lib/YOBA/src/ui/stackContainer.h"
 #include "../theme.h"
 
 using namespace yoba;
 
 namespace pizdanc {
-	class Titler : public StackLayout {
+	class Titler : public StackContainer {
 		public:
 			Titler() {
 				setSpacing(3);

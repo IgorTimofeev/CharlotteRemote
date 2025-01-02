@@ -14,12 +14,12 @@
 using namespace yoba;
 
 namespace pizdanc {
-	class AutopilotSelector : public Layout {
+	class AutopilotSelector : public Container {
 		public:
 			explicit AutopilotSelector(uint8_t digitCount, const wchar_t* titleText, const wchar_t *buttonText);
 
 			Rectangle background = Rectangle();
-			StackLayout rows = StackLayout();
+			StackContainer rows = StackContainer();
 			Text title = Text();
 			SevenSegment seven = SevenSegment();
 			Knob knob = Knob();

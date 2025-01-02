@@ -3,7 +3,7 @@
 #include "../../../../lib/YOBA/src/hardware/screen/buffers/screenBuffer.h"
 #include "../../../../lib/YOBA/src/ui/element.h"
 #include "../../../../lib/YOBA/src/ui/rectangle.h"
-#include "../../../../lib/YOBA/src/ui/stackLayout.h"
+#include "../../../../lib/YOBA/src/ui/stackContainer.h"
 #include "../../../elements/titler.h"
 #include "trimIndicator.h"
 #include "throttleIndicator.h"
@@ -12,32 +12,32 @@
 using namespace yoba;
 
 namespace pizdanc {
-	class InstrumentsLayout : public Layout {
+	class InstrumentsLayout : public Container {
 		public:
 			InstrumentsLayout();
 
 			void setup();
 
 		private:
-			StackLayout _rows {};
+			StackContainer _rows {};
 
 			Rectangle _backgroundRect = Rectangle(&Theme::bg1);
 
 			ThrottleIndicator _throttle1Indicator {};
 			ThrottleIndicator _throttle2Indicator {};
 
-			StackLayout _throttleRow {};
+			StackContainer _throttleRow {};
 			Titler _throttleTitle = Titler(L"THR", &_throttleRow);
 
 			ControlsIndicator _controlsIndicator {};
 			Titler _controlsTitle = Titler(L"SP/FL", &_controlsIndicator);
 
-			StackLayout _trimRow {};
+			StackContainer _trimRow {};
 
 			TrimIndicator _elevatorTrimIndicator {};
 			Titler _elevatorTrimTitle = Titler(L"E", &_elevatorTrimIndicator);
 
-			StackLayout _aileronsAndRudderRows {};
+			StackContainer _aileronsAndRudderRows {};
 
 			TrimIndicator _aileronsTrimIndicator {};
 			Titler _aileronsTrimTitle = Titler(L"A", &_aileronsTrimIndicator);

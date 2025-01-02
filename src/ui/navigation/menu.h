@@ -2,12 +2,12 @@
 
 #include "Arduino.h"
 
-#include "../../../lib/YOBA/src/ui/layout.h"
+#include "../../../lib/YOBA/src/ui/container.h"
 #include "../../../lib/YOBA/src/ui/selector.h"
 #include "../../../lib/YOBA/src/animation.h"
 #include "../../../lib/YOBA/src/ui/button.h"
 #include "../../../lib/YOBA/src/ui/rectangle.h"
-#include "../../../lib/YOBA/src/ui/stackLayout.h"
+#include "../../../lib/YOBA/src/ui/stackContainer.h"
 
 #include "menuItem.h"
 
@@ -31,11 +31,11 @@ namespace pizdanc {
 
 		private:
 			Rectangle _background = Rectangle(&Theme::bg1);
-			Layout _pageLayout {};
+			Container _pageLayout {};
 
-			Layout _menu = {};
+			Container _menu = {};
 			Rectangle _menuBackground = Rectangle(&Theme::bg2);
-			StackLayout _menuItemsLayout {};
+			StackContainer _menuItemsLayout {};
 
 			std::vector<Page*> _pages {};
 
