@@ -25,6 +25,7 @@ namespace pizdanc {
 
 	const PIXY10Font Theme::fontNormal = PIXY10Font();
 	const Vaticanus8Font Theme::fontSmall = Vaticanus8Font();
+	const unscii16Font Theme::fontBig = unscii16Font();
 
 	void Theme::apply(Button &button) {
 		button.setHeight(elementHeight);
@@ -52,9 +53,10 @@ namespace pizdanc {
 		textField.setPrimaryColor(&Theme::bg3);
 		textField.setSecondaryColor(&Theme::fg1);
 
+		textField.setKeyboardFont(&Theme::fontSmall);
 		textField.setKeyboardBackgroundColor(&Theme::bg3);
-		textField.setKeyboardTextButtonPrimaryColor(&Theme::bg5);
-		textField.setKeyboardTextButtonSecondaryColor(&Theme::fg1);
+		textField.setKeyboardDefaultButtonPrimaryColor(&Theme::bg5);
+		textField.setKeyboardDefaultButtonSecondaryColor(&Theme::fg1);
 		textField.setKeyboardActionButtonPrimaryColor(&Theme::bg4);
 		textField.setKeyboardActionButtonSecondaryColor(&Theme::fg1);
 	}
