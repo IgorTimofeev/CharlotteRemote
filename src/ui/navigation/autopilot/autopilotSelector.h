@@ -16,7 +16,7 @@ using namespace yoba;
 namespace pizdanc {
 	class AutopilotSelector : public Container {
 		public:
-			explicit AutopilotSelector(uint8_t digitCount, const std::u32string_view& titleText, const std::u32string_view& buttonText);
+			explicit AutopilotSelector(uint8_t digitCount, const std::wstring_view& titleText, const std::wstring_view& buttonText);
 
 			Rectangle background = Rectangle();
 			StackContainer rows = StackContainer();

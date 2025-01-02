@@ -1,7 +1,7 @@
 #include "autopilotSelector.h"
 
 namespace pizdanc {
-	AutopilotSelector::AutopilotSelector(uint8_t digitCount, const std::u32string_view& titleText, const std::u32string_view& buttonText) {
+	AutopilotSelector::AutopilotSelector(uint8_t digitCount, const std::wstring_view& titleText, const std::wstring_view& buttonText) {
 		const uint8_t marginValue = 10;
 
 		// Background

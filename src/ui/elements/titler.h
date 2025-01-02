@@ -16,15 +16,15 @@ namespace pizdanc {
 				*this += &_titleText;
 			}
 
-			explicit Titler(const std::u32string_view& title) : Titler() {
+			explicit Titler(const std::wstring_view& title) : Titler() {
 				_titleText.setText(title);
 			}
 
-			Titler(const std::u32string_view& title, Element* element) : Titler(title) {
+			Titler(const std::wstring_view& title, Element* element) : Titler(title) {
 				*this += element;
 			}
 
-			void setText(const std::u32string_view& text) {
+			void setText(const std::wstring_view& text) {
 				_titleText.setText(text);
 			}
 

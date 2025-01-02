@@ -27,22 +27,22 @@ namespace pizdanc {
 			ThrottleIndicator _throttle2Indicator {};
 
 			StackContainer _throttleRow {};
-			Titler _throttleTitle = Titler(U"THR", &_throttleRow);
+			Titler _throttleTitle = Titler(L"THR", &_throttleRow);
 
 			ControlsIndicator _controlsIndicator {};
-			Titler _controlsTitle = Titler(U"SP/FU", &_controlsIndicator);
+			Titler _controlsTitle = Titler(L"SP/FL", &_controlsIndicator);
 
 			StackContainer _trimRow {};
 
 			TrimIndicator _elevatorTrimIndicator {};
-			Titler _elevatorTrimTitle = Titler(U"E", &_elevatorTrimIndicator);
+			Titler _elevatorTrimTitle = Titler(L"E", &_elevatorTrimIndicator);
 
 			StackContainer _aileronsAndRudderRows {};
 
 			TrimIndicator _aileronsTrimIndicator {};
-			Titler _aileronsTrimTitle = Titler(U"A", &_aileronsTrimIndicator);
+			Titler _aileronsTrimTitle = Titler(L"A", &_aileronsTrimIndicator);
 
 			TrimIndicator _rudderTrimIndicator {};
-			Titler _rudderTrimTitle = Titler(U"R", &_rudderTrimIndicator);
+			Titler _rudderTrimTitle = Titler(L"R", &_rudderTrimIndicator);
 	};
 }

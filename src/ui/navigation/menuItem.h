@@ -13,7 +13,7 @@ using namespace yoba;
 namespace pizdanc {
 	class MenuItem : public SelectorItem {
 		public:
-			explicit MenuItem(const std::u32string_view& text) {
+			explicit MenuItem(const std::wstring_view& text) {
 				// Selection
 				_selectionBackground.setPrimaryColor(&Theme::fg1);
 				*this += &_selectionBackground;

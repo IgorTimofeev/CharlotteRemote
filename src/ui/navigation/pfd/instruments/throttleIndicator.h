@@ -52,17 +52,18 @@ namespace pizdanc {
 				);
 
 				// Text
-				std::basic_stringstream<char32_t> textBuffer;
+				std::wstringstream textBuffer;
 				textBuffer << (int32_t) (_value * 100);
+				const auto text = textBuffer.str();
 
 				screenBuffer->renderText(
 					Point(
-						bounds.getX() + bounds.getWidth() / 2 - Theme::fontNormal.getWidth<char32_t>(textBuffer.str()) / 2 + 1,
+						bounds.getX() + bounds.getWidth() / 2 - Theme::fontNormal.getWidth<wchar_t>(text) / 2 + 1,
 						bounds.getY() + frameHeight + textOffset
 					),
 					&Theme::fontNormal,
 					&Theme::green,
-					textBuffer.str()
+					text
 				);
 			}
 
