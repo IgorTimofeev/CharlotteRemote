@@ -241,7 +241,7 @@ namespace pizdanc {
 		// Bars
 		const auto barX = bounds.getX2() + 1 - speedBarSize;
 
-		const auto renderBar = [&](int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color *color) {
+		const auto renderBar = [&](int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) {
 			int32_t fromY = centerY + (int32_t) ceil(speed * (float) speedStepPixels - (float) fromSpeed * (float) speedStepPixels);
 			int32_t height = (toSpeed - fromSpeed) * speedStepPixels;
 
@@ -325,7 +325,7 @@ namespace pizdanc {
 
 		Size textSize;
 		bool isBig;
-		const Color *lineColor = &Theme::fg3;
+		const Color* lineColor = &Theme::fg3;
 
 		do {
 			isBig = lineValue % speedStepUnitsBig == 0;
@@ -915,7 +915,7 @@ namespace pizdanc {
 		Size textSize;
 		bool isBig;
 
-		const Color *lineColor = &Theme::fg3;
+		const Color* lineColor = &Theme::fg3;
 
 		do {
 			isBig = lineValue % altitudeStepUnitsBig == 0;
@@ -1096,7 +1096,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, const std::wstring_view& text, int8_t textXOffset) {
+	void PFD::renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color* bg, const Color* fg, const std::wstring_view& text, int8_t textXOffset) {
 		// Background
 		screenBuffer->renderFilledRectangle(bounds, bg);
 
@@ -1112,7 +1112,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderMiniPanelWithAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, float autopilotValue, bool left) {
+	void PFD::renderMiniPanelWithAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color* bg, const Color* fg, float autopilotValue, bool left) {
 		static std::wstringstream stream;
 		stream.str(std::wstring());
 		stream.clear();

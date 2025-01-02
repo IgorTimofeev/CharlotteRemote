@@ -18,7 +18,8 @@ namespace pizdanc {
 
 		// Text
 		Theme::apply(textField);
-		textField.setText(L"Hello world");
+		textField.setText(L"Hello");
+		textField.setCursorToEnd();
 		rows += &textFieldTitle;
 	}
 }

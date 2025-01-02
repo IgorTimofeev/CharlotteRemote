@@ -58,6 +58,9 @@ namespace pizdanc {
 			0xaed1f2
 		});
 
+		_screenBuffer.setPrimaryColor(&Theme::bg1);
+		_screenBuffer.setSecondaryColor(&Theme::fg1);
+
 		// Font
 		setFont(&Theme::fontNormal);
 
