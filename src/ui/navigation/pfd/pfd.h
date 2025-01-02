@@ -113,7 +113,7 @@ namespace pizdanc {
 
 			static void renderVerticalSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) ;
 
-			static void renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, wchar_t *buffer, int8_t textXOffset) ;
+			static void renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, const std::basic_stringstream<char32_t>& buffer, int8_t textXOffset) ;
 
 			static void renderPressure(ScreenBuffer* screenBuffer, const Bounds& bounds) ;
 

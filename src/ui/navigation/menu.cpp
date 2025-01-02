@@ -22,13 +22,13 @@ namespace pizdanc {
 		*this += &_pageLayout;
 
 		// Initialization
-		addPage(L"DBG", &_debugPage);
-		addPage(L"PFD", &_pfdPage);
-		addPage(L"A/P", &_autopilotPage);
-		addPage(L"CTL", &_controlsPage);
-		addPage(L"ENG", &_enginePage);
-		addPage(L"COM", &_radioPage);
-		addPage(L"BAT", &_batteryPage);
+		addPage(U"DBG", &_debugPage);
+		addPage(U"PFD", &_pfdPage);
+		addPage(U"A/P", &_autopilotPage);
+		addPage(U"CTU", &_controlsPage);
+		addPage(U"ENG", &_enginePage);
+		addPage(U"COM", &_radioPage);
+		addPage(U"BAT", &_batteryPage);
 
 		setSelectedIndex(0);
 	}
@@ -42,7 +42,7 @@ namespace pizdanc {
 		_pageLayout += _pages[getSelectedIndex()];
 	}
 
-	void Menu::addPage(const wchar_t *name, Page *page) {
+	void Menu::addPage(const std::u32string_view& name, Page *page) {
 		page->setup();
 		_pages.push_back(page);
 		addItem(new MenuItem(name));

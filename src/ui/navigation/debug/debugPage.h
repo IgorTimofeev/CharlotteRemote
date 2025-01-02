@@ -18,12 +18,12 @@ namespace pizdanc {
 			DebugPage();
 
 			Slider slider = Slider();
-			Titler sliderTitle = Titler(L"Slider", &slider);
+			Titler sliderTitle = Titler(U"Slider", &slider);
 
 			Button button = Button();
-			Titler buttonTitle = Titler(L"Button", &button);
+			Titler buttonTitle = Titler(U"Button", &button);
 
 			TextField textField = TextField();
-			Titler textFieldTitle = Titler(L"Text", &textField);
+			Titler textFieldTitle = Titler(U"Text", &textField);
 	};
 }

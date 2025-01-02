@@ -49,6 +49,6 @@ namespace pizdanc {
 			RadioPage _radioPage {};
 			DebugPage _debugPage {};
 
-			void addPage(const wchar_t* name, Page* page);
+			void addPage(const std::u32string_view& name, Page* page);
 	};
 }

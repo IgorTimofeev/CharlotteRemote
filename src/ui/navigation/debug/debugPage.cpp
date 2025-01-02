@@ -13,12 +13,12 @@ namespace pizdanc {
 
 		// Button 1
 		Theme::apply(button);
-		button.setText(L"Click");
+		button.setText(U"Click");
 		rows += &buttonTitle;
 
 		// Text
 		Theme::apply(textField);
-		textField.setText(L"Hello world");
+		textField.setText(U"Hello world");
 		rows += &textFieldTitle;
 	}
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sstream>
 #include "ui/element.h"
 #include "ui/theme.h"
 
@@ -51,18 +52,17 @@ namespace pizdanc {
 				);
 
 				// Text
-				uint8_t textLength = 3;
-				wchar_t text[textLength];
-				swprintf(text, textLength, L"%.0f", _value * 100);
+				std::basic_stringstream<char32_t> textBuffer;
+				textBuffer << (int32_t) (_value * 100);
 
 				screenBuffer->renderText(
 					Point(
-						bounds.getX() + bounds.getWidth() / 2 - Theme::fontNormal.getWidth(text) / 2 + 1,
+						bounds.getX() + bounds.getWidth() / 2 - Theme::fontNormal.getWidth<char32_t>(textBuffer.str()) / 2 + 1,
 						bounds.getY() + frameHeight + textOffset
 					),
 					&Theme::fontNormal,
 					&Theme::green,
-					text
+					textBuffer.str()
 				);
 			}
 

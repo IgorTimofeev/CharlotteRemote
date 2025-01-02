@@ -1,5 +1,6 @@
 #include "pfd.h"
 #include "../../rc_application.h"
+#include <sstream>
 
 namespace pizdanc {
 	// No errors here, just linter's being pussy
@@ -72,19 +73,20 @@ namespace pizdanc {
 				: (digit > 1 ? digit - 1 : 9);
 		};
 
-		wchar_t text[5];
+		std::basic_stringstream<char32_t> textBuffer;
 
 		auto renderDigit = [&](int32_t digitY, uint8_t digit) {
-			swprintf(text, 5, L"%d", digit);
+			textBuffer.clear();
+			textBuffer << digit;
 
 			screenBuffer->renderChar(
 				Point(
-					x - Theme::fontNormal.getCharWidth(text[0]),
+					x - Theme::fontNormal.getCharWidth(textBuffer.str()[0]),
 					digitY
 				),
 				&Theme::fontNormal,
 				&Theme::fg1,
-				text[0]
+				textBuffer.str()[0]
 			);
 		};
 
@@ -324,7 +326,7 @@ namespace pizdanc {
 
 		int32_t lineValue = (int32_t) (snappedInteger + 1) * speedStepUnits + altitudeYFullLines * speedStepUnits;
 
-		wchar_t text[12];
+		std::basic_stringstream<char32_t> textBuffer;
 		Size textSize;
 		bool isBig;
 		const Color *lineColor = &Theme::fg3;
@@ -344,8 +346,10 @@ namespace pizdanc {
 				);
 
 				//Text
-				swprintf(text, 12, L"%d", lineValue);
-				textSize = Theme::fontNormal.getSize(text);
+				textBuffer.clear();
+				textBuffer << lineValue;
+
+				textSize = Theme::fontNormal.getSize(textBuffer.str());
 
 				screenBuffer->renderText(
 					Point(
@@ -354,7 +358,7 @@ namespace pizdanc {
 					),
 					&Theme::fontNormal,
 					lineColor,
-					text
+					textBuffer.str()
 				);
 			}
 			else {
@@ -583,7 +587,7 @@ namespace pizdanc {
 			lineLeft,
 			lineRight;
 
-		wchar_t text[10];
+		std::basic_stringstream<char32_t> textBuffer;
 		Size textSize;
 		const Color* color;
 
@@ -611,8 +615,10 @@ namespace pizdanc {
 			);
 
 			if (lineAngleDeg != 0 && lineAngleDeg % 10 == 0) {
-				swprintf(text, 10, L"%d", abs(lineAngleDeg));
-				textSize = Theme::fontSmall.getSize(text);
+				textBuffer.clear();
+				textBuffer << abs(lineAngleDeg);
+
+				textSize = Theme::fontSmall.getSize(textBuffer.str());
 
 				screenBuffer->renderText(
 					Point(
@@ -621,7 +627,7 @@ namespace pizdanc {
 					),
 					&Theme::fontSmall,
 					color,
-					text
+					textBuffer.str()
 				);
 			}
 		}
@@ -645,8 +651,6 @@ namespace pizdanc {
 		float closestFractional = modff(degrees(roll) / (float) rollOverlayAngleStep, &closestInteger);
 		closestInteger *= (float) rollOverlayAngleStep;
 
-		const uint8_t textLength = 5;
-		wchar_t text[textLength];
 		Size textSize;
 
 		for (int8_t i = -rollOverlayLinesCount; i <= rollOverlayLinesCount; i++) {
@@ -667,7 +671,10 @@ namespace pizdanc {
 
 			// Text
 			if (isBig) {
-				swprintf(text, textLength, L"%d", angleDisplay);
+				static std::basic_stringstream<char32_t> textBuffer;
+				textBuffer.str(U"");
+				textBuffer << U"S" << angleDisplay<< U"E";
+				const auto text = textBuffer.str();
 
 				textSize = Theme::fontSmall.getSize(text);
 
@@ -715,8 +722,7 @@ namespace pizdanc {
 		bool isBig;
 		uint8_t lineLength;
 
-		const uint8_t textLength = 5;
-		wchar_t text[textLength];
+		std::basic_stringstream<char32_t> textBuffer;
 		Size textSize;
 		int32_t lineY;
 
@@ -738,29 +744,31 @@ namespace pizdanc {
 
 			// Text
 			if (isBig) {
+				textBuffer.clear();
+
 				switch (angle) {
 					case 0:
-						swprintf(text, textLength, L"N");
+						textBuffer << U'N';
 						break;
 
 					case 90:
-						swprintf(text, textLength, L"E");
+						textBuffer << U'E';
 						break;
 
 					case 180:
-						swprintf(text, textLength, L"S");
+						textBuffer << U'S';
 						break;
 
 					case 270:
-						swprintf(text, textLength, L"W");
+						textBuffer << U'W';
 						break;
 
 					default:
-						swprintf(text, textLength, L"%d", angle);
+						textBuffer << angle;
 						break;
 				}
 
-				textSize = Theme::fontSmall.getSize(text);
+				textSize = Theme::fontSmall.getSize(textBuffer.str());
 
 				screenBuffer->renderText(
 					Point(
@@ -769,7 +777,7 @@ namespace pizdanc {
 					),
 					&Theme::fontSmall,
 					yawOverlayColor,
-					text
+					textBuffer.str()
 				);
 			}
 
@@ -866,9 +874,8 @@ namespace pizdanc {
 		renderAircraftSymbol(screenBuffer, center);
 
 //		// Temp blyad radio
-//		wchar_t text[127];
 //
-//		swprintf(text, 255, L"RSSI: %.2f dBm", app.getTransceiver().getRssi());
+//		swprintf(text, 255, U"RSSI: %.2f dBm", app.getTransceiver().getRssi());
 //		screenBuffer->renderText(
 //			Point(bounds.getX() + 10, bounds.getY() + 10),
 //			&Theme::font,
@@ -876,7 +883,7 @@ namespace pizdanc {
 //			text
 //		);
 //
-//		swprintf(text, 255, L"SNR: %.2f dB", app.getTransceiver().getSnr());
+//		swprintf(text, 255, U"SNR: %.2f dB", app.getTransceiver().getSnr());
 //		screenBuffer->renderText(
 //			Point(bounds.getX() + 10, bounds.getY() + 20),
 //			&Theme::font,
@@ -904,7 +911,7 @@ namespace pizdanc {
 
 		int32_t lineValue = (int32_t) (snappedInteger + 1) * altitudeStepUnits + yFullLines * altitudeStepUnits;
 
-		wchar_t text[10];
+		std::basic_stringstream<char32_t> textBuffer;
 		Size textSize;
 		bool isBig;
 
@@ -921,14 +928,16 @@ namespace pizdanc {
 				);
 
 				//Text
-				swprintf(text, 10, L"%d", lineValue);
-				textSize = Theme::fontNormal.getSize(text);
+				textBuffer.clear();
+				textBuffer << lineValue;
+
+				textSize = Theme::fontNormal.getSize(textBuffer.str());
 
 				screenBuffer->renderText(
 					Point(x + lineSizeBig + 5, y - textSize.getHeight() / 2),
 					&Theme::fontNormal,
 					lineColor,
-					text
+					textBuffer.str()
 				);
 			} else {
 				screenBuffer->renderHorizontalLine(
@@ -1019,7 +1028,7 @@ namespace pizdanc {
 		int32_t lineValue = 0;
 
 		Size textSize;
-		wchar_t text[10];
+		std::basic_stringstream<char32_t> textBuffer;
 		bool isBig;
 
 		auto renderLines = [&](int32_t yAdder) {
@@ -1036,8 +1045,10 @@ namespace pizdanc {
 						lineColor
 					);
 
-					swprintf(text, 10, L"%d", lineValue / 100);
-					textSize = Theme::fontNormal.getSize(text);
+					textBuffer.clear();
+					textBuffer << lineValue / 100;
+
+					textSize = Theme::fontNormal.getSize(textBuffer.str());
 
 					screenBuffer->renderText(
 						Point(
@@ -1046,7 +1057,7 @@ namespace pizdanc {
 						),
 						&Theme::fontNormal,
 						lineColor,
-						text
+						textBuffer.str()
 					);
 				}
 				else {
@@ -1079,12 +1090,12 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, wchar_t* buffer, int8_t textXOffset) {
+	void PFD::renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, const std::basic_stringstream<char32_t>& buffer, int8_t textXOffset) {
 		// Background
 		screenBuffer->renderFilledRectangle(bounds, bg);
 
 		// Text
-		auto textSize = Theme::fontSmall.getSize(buffer);
+		auto textSize = Theme::fontSmall.getSize(buffer.str());
 
 		screenBuffer->renderText(
 			Point(
@@ -1093,18 +1104,18 @@ namespace pizdanc {
 			),
 			&Theme::fontSmall,
 			fg,
-			buffer
+			buffer.str()
 		);
 	}
 
 	void PFD::renderMiniPanelWithAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color *bg, const Color *fg, float autopilotValue, bool left) {
-		wchar_t text[8];
+		std::basic_stringstream<char32_t> textBuffer;
 
 		if (autopilotValue > 0) {
-			swprintf(text, 8, L"%.0f", autopilotValue);
+			textBuffer << (int32_t) autopilotValue;
 		}
 		else {
-			swprintf(text, 8, L"----");
+			textBuffer << U"----";
 		}
 
 		renderMiniPanel(
@@ -1112,7 +1123,7 @@ namespace pizdanc {
 			bounds,
 			bg,
 			fg,
-			text,
+			textBuffer,
 			(int8_t) (left ? -autopilotIndicatorTriangleWidth : autopilotIndicatorTriangleWidth)
 		);
 
@@ -1152,23 +1163,22 @@ namespace pizdanc {
 		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
-		wchar_t text[9];
+		std::basic_stringstream<char32_t> textBuffer;
 
 		switch (app.getLocalData().getAltimeterMode()) {
 			case AltimeterMode::QNH:
-				swprintf(text, 9, L"%d", (uint16_t) app.getLocalData().getAltimeterPressure());
-
+				textBuffer << (uint16_t) app.getLocalData().getAltimeterPressure();
 				break;
 
 			case AltimeterMode::QNE:
-				swprintf(text, 9, L"STD");
+				textBuffer << U"STD";
 				bg = &Theme::yellow;
 				fg = &Theme::bg1;
 
 				break;
 		}
 
-		renderMiniPanel(screenBuffer, bounds, bg, fg, text, 0);
+		renderMiniPanel(screenBuffer, bounds, bg, fg, textBuffer, 0);
 	}
 
 	void PFD::onRender(ScreenBuffer* screenBuffer) {

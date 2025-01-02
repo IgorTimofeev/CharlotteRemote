@@ -23,8 +23,8 @@ namespace pizdanc {
 		private:
 			StackContainer _columns {};
 
-			AutopilotSelector _spd = AutopilotSelector(3, L"Speed", L"A/T");
-			AutopilotSelector _hdg = AutopilotSelector(3, L"Heading", L"HOLD");
-			AutopilotSelector _alt = AutopilotSelector(4, L"Altitude", L"FLC");
+			AutopilotSelector _spd = AutopilotSelector(3, U"Speed", U"A/T");
+			AutopilotSelector _hdg = AutopilotSelector(3, U"Heading", U"HOLD");
+			AutopilotSelector _alt = AutopilotSelector(4, U"Altitude", U"FLC");
 	};
 }
