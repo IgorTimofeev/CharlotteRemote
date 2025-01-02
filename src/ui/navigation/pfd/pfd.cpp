@@ -74,22 +74,16 @@ namespace pizdanc {
 		};
 
 		auto renderDigit = [&](int32_t digitY, uint8_t digit) {
-			static std::wstringstream stream;
-			stream.str(std::wstring());
-			stream.clear();
-
-			stream << digit;
-
-			const auto& text = stream.str();
+			const wchar_t text = L'0' + digit;
 
 			screenBuffer->renderChar(
 				Point(
-					x - Theme::fontNormal.getCharWidth(text[0]),
+					x - Theme::fontNormal.getCharWidth(text),
 					digitY
 				),
 				&Theme::fontNormal,
 				&Theme::fg1,
-				text[0]
+				text
 			);
 		};
 
@@ -329,7 +323,6 @@ namespace pizdanc {
 
 		int32_t lineValue = (int32_t) (snappedInteger + 1) * speedStepUnits + altitudeYFullLines * speedStepUnits;
 
-		static std::wstringstream stream;
 		Size textSize;
 		bool isBig;
 		const Color *lineColor = &Theme::fg3;
@@ -349,6 +342,7 @@ namespace pizdanc {
 				);
 
 				// Text
+				static std::wstringstream stream;
 				stream.str(std::wstring());
 				stream.clear();
 
@@ -356,12 +350,10 @@ namespace pizdanc {
 
 				const auto& text = stream.str();
 
-				textSize = Theme::fontNormal.getSize(text);
-
 				screenBuffer->renderText(
 					Point(
-						bounds.getX2() + 1 - speedBarSize - lineSizeBig - 5 - textSize.getWidth(),
-						y - textSize.getHeight() / 2
+						bounds.getX2() + 1 - speedBarSize - lineSizeBig - 5 - Theme::fontNormal.getWidth(text),
+						y - Theme::fontNormal.getHeight() / 2
 					),
 					&Theme::fontNormal,
 					lineColor,
@@ -627,18 +619,14 @@ namespace pizdanc {
 
 				stream << abs(lineAngleDeg);
 
-				const auto& text = stream.str();
-
-				textSize = Theme::fontSmall.getSize(text);
-
 				screenBuffer->renderText(
 					Point(
 						lineRight.getX() + pitchOverlayTextOffset,
-						lineRight.getY() - textSize.getHeight() / 2
+						lineRight.getY() - Theme::fontSmall.getHeight() / 2
 					),
 					&Theme::fontSmall,
 					color,
-					text
+					stream.str()
 				);
 			}
 		}
@@ -690,11 +678,9 @@ namespace pizdanc {
 
 				const auto& text = stream.str();
 
-				textSize = Theme::fontSmall.getSize(text);
-
 				screenBuffer->renderText(
 					Point(
-						lineFrom.getX() - textSize.getWidth() / 2,
+						lineFrom.getX() - Theme::fontSmall.getWidth(text) / 2,
 						lineFrom.getY() + rollOverlayTextOffset
 					),
 					&Theme::fontSmall,
@@ -785,12 +771,10 @@ namespace pizdanc {
 
 				const auto& text = stream.str();
 
-				textSize = Theme::fontSmall.getSize(text);
-
 				screenBuffer->renderText(
 					Point(
-						x - textSize.getWidth() / 2,
-						lineY - yawOverlayTextOffset - textSize.getHeight()
+						x - Theme::fontSmall.getWidth(text) / 2,
+						lineY - yawOverlayTextOffset - Theme::fontSmall.getHeight()
 					),
 					&Theme::fontSmall,
 					yawOverlayColor,
@@ -928,7 +912,6 @@ namespace pizdanc {
 
 		int32_t lineValue = (int32_t) (snappedInteger + 1) * altitudeStepUnits + yFullLines * altitudeStepUnits;
 
-		std::wstringstream stream;
 		Size textSize;
 		bool isBig;
 
@@ -944,21 +927,23 @@ namespace pizdanc {
 					lineColor
 				);
 
-				//Text
+				// Text
+				static std::wstringstream stream;
 				stream.str(std::wstring());
 				stream.clear();
+
 				stream << lineValue;
+
 				const auto& text = stream.str();
 
-				textSize = Theme::fontNormal.getSize(text);
-
 				screenBuffer->renderText(
-					Point(x + lineSizeBig + 5, y - textSize.getHeight() / 2),
+					Point(x + lineSizeBig + 5, y - Theme::fontNormal.getHeight() / 2),
 					&Theme::fontNormal,
 					lineColor,
 					text
 				);
-			} else {
+			}
+			else {
 				screenBuffer->renderHorizontalLine(
 					Point(x, y),
 					lineSizeSmall,
@@ -1048,7 +1033,6 @@ namespace pizdanc {
 
 		Size textSize;
 		bool isBig;
-		static std::wstringstream stream;
 
 		auto renderLines = [&](int32_t yAdder) {
 			while (lineValue <= verticalSpeedStepUnitsLimit) {
@@ -1064,17 +1048,18 @@ namespace pizdanc {
 						lineColor
 					);
 
+					static std::wstringstream stream;
 					stream.str(std::wstring());
 					stream.clear();
-					stream << lineValue / 100;
-					const auto& text = stream.str();
 
-					textSize = Theme::fontNormal.getSize(text);
+					stream << lineValue / 100;
+
+					const auto& text = stream.str();
 
 					screenBuffer->renderText(
 						Point(
 							bounds.getX() + lineSizeBig + 4,
-							y - textSize.getHeight() / 2
+							y - Theme::fontNormal.getHeight() / 2
 						),
 						&Theme::fontNormal,
 						lineColor,
@@ -1116,12 +1101,10 @@ namespace pizdanc {
 		screenBuffer->renderFilledRectangle(bounds, bg);
 
 		// Text
-		auto textSize = Theme::fontSmall.getSize(text);
-
 		screenBuffer->renderText(
 			Point(
-				bounds.getX() + textXOffset + (bounds.getWidth() - textXOffset) / 2 - textSize.getWidth() / 2,
-				bounds.getY() + miniHeight / 2 - textSize.getHeight() / 2
+				bounds.getX() + textXOffset + (bounds.getWidth() - textXOffset) / 2 - Theme::fontSmall.getWidth(text) / 2,
+				bounds.getY() + miniHeight / 2 - Theme::fontSmall.getHeight() / 2
 			),
 			&Theme::fontSmall,
 			fg,
@@ -1205,9 +1188,7 @@ namespace pizdanc {
 				break;
 		}
 
-		const auto& text = stream.str();
-
-		renderMiniPanel(screenBuffer, bounds, bg, fg, text, 0);
+		renderMiniPanel(screenBuffer, bounds, bg, fg, stream.str(), 0);
 	}
 
 	void PFD::onRender(ScreenBuffer* screenBuffer) {
