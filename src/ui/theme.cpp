@@ -25,7 +25,7 @@ namespace pizdanc {
 
 	const PIXY10Font Theme::fontNormal = PIXY10Font();
 	const Vaticanus8Font Theme::fontSmall = Vaticanus8Font();
-	const unscii16Font Theme::fontBig = unscii16Font();
+//	const unscii16Font Theme::fontBig = unscii16Font();
 
 	void Theme::apply(Button &button) {
 		button.setHeight(elementHeight);

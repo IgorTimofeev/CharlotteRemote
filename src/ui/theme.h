@@ -39,7 +39,7 @@ namespace pizdanc {
 
 			static const PIXY10Font fontNormal;
 			static const Vaticanus8Font fontSmall;
-			static const unscii16Font fontBig;
+//			static const unscii16Font fontBig;
 
 			static const uint16_t elementHeight = 32;
 			static const uint16_t cornerRadius = 5;
