@@ -16,7 +16,7 @@ namespace pizdanc {
 		public:
 			InstrumentsLayout();
 
-			void setup();
+			void tick() override;
 
 		private:
 			StackContainer _rows {};

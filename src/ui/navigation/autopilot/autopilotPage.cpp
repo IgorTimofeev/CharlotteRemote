@@ -18,12 +18,12 @@ namespace pizdanc {
 		auto govnoedstvo = [](
 			AutopilotSelector& selector,
 			const std::function<float()>& valueGetter,
-			const std::function<void(KnobRotateEvent&)>& valueSetter
+			const std::function<void(float, float)>& valueSetter
 		) {
 			selector.seven.setValue((uint32_t) valueGetter());
 
-			selector.knob.getOnRotate() += [&selector, valueGetter, valueSetter](KnobRotateEvent& event) {
-				valueSetter(event);
+			selector.knob.getOnRotate() += [&selector, valueGetter, valueSetter](float oldAngle, float newAngle) {
+				valueSetter(oldAngle, newAngle);
 
 				selector.seven.setValue((uint32_t) valueGetter());
 			};
@@ -35,8 +35,8 @@ namespace pizdanc {
 			[&]() {
 				return app.getLocalData().getAutopilotSpeed();
 			},
-			[&](KnobRotateEvent& event) {
-				app.getLocalData().setAutopilotSpeed(clamp(app.getLocalData().getAutopilotSpeed() + (event.getDeltaAngle() > 0 ? 1.0f : -1.0f), 0.0f, 999.0f));
+			[&](float oldAngle, float newAngle) {
+				app.getLocalData().setAutopilotSpeed(clamp(app.getLocalData().getAutopilotSpeed() + (newAngle - oldAngle > 0 ? 1.0f : -1.0f), 0.0f, 999.0f));
 			}
 		);
 
@@ -46,8 +46,8 @@ namespace pizdanc {
 			[&]() {
 				return app.getLocalData().getAutopilotHeading();
 			},
-			[&](KnobRotateEvent& event) {
-				auto newValue = (float) degrees(event.getNewAngle());
+			[&](float oldAngle, float newAngle) {
+				auto newValue = (float) degrees(newAngle);
 
 				if (newValue < 0) {
 					newValue += 360;
@@ -66,8 +66,8 @@ namespace pizdanc {
 			[&]() {
 				return app.getLocalData().getAutopilotAltitude();
 			},
-			[&](KnobRotateEvent& event) {
-				app.getLocalData().setAutopilotAltitude(clamp(app.getLocalData().getAutopilotAltitude() + (event.getDeltaAngle() > 0 ? 10.0f : -10.0f), 0.0f, 9999.0f));
+			[&](float oldAngle, float newAngle) {
+				app.getLocalData().setAutopilotAltitude(clamp(app.getLocalData().getAutopilotAltitude() + (newAngle - oldAngle > 0 ? 10.0f : -10.0f), 0.0f, 9999.0f));
 			}
 		);
 	}

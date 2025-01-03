@@ -9,8 +9,4 @@ namespace pizdanc {
 		_instrumentsLayout.setWidth(_pfd.getMargin().getRight());
 		*this += &_instrumentsLayout;
 	}
-
-	void PFDPage::setup() {
-		_instrumentsLayout.setup();
-	}
 }
