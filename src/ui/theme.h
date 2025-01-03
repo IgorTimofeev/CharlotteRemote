@@ -46,6 +46,6 @@ namespace pizdanc {
 
 			static void apply(Button& button);
 			static void apply(Slider& slider);
-			static void apply(TextField& keyboard);
+			static void apply(TextField& textField);
 	};
 }

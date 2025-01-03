@@ -51,15 +51,39 @@ namespace pizdanc {
 		textField.setCornerRadius(cornerRadius);
 
 		textField.setPrimaryColor(&Theme::bg3);
+		textField.setFocusedPrimaryColor(&Theme::bg4);
+
 		textField.setSecondaryColor(&Theme::fg1);
-		textField.setBorderColor(&Theme::yellow);
+		textField.setFocusedSecondaryColor(&Theme::fg1);
+
+		textField.setBorderColor(&Theme::bg4);
+		textField.setFocusedBorderColor(&Theme::yellow);
+
 		textField.setCursorColor(&Theme::yellow);
 
-		textField.setKeyboardFont(&Theme::fontNormal);
-		textField.setKeyboardBackgroundColor(&Theme::bg3);
-		textField.setKeyboardDefaultButtonPrimaryColor(&Theme::bg5);
-		textField.setKeyboardDefaultButtonSecondaryColor(&Theme::fg1);
-		textField.setKeyboardActionButtonPrimaryColor(&Theme::bg4);
-		textField.setKeyboardActionButtonSecondaryColor(&Theme::fg1);
+		textField.setKeyboardConfigurator([](Keyboard* keyboard) {
+			keyboard->setKeyHeight(0.08f);
+			keyboard->setFont(&Theme::fontNormal);
+			keyboard->setBackgroundColor(&Theme::bg2);
+			keyboard->setDefaultButtonPrimaryColor(&Theme::bg5);
+			keyboard->setDefaultButtonSecondaryColor(&Theme::fg1);
+			keyboard->setActionButtonPrimaryColor(&Theme::bg3);
+			keyboard->setActionButtonSecondaryColor(&Theme::fg1);
+
+			keyboard->setCharactersLayoutBuilder([]() {
+				return new CharactersKeyboardLayout();
+			});
+
+			keyboard->setCyclicLayoutBuilders({
+				[]() {
+					return new EnglishKeyboardLayout();
+				},
+//			[]() {
+//				return new RussianKeyboardLayout();
+//			}
+			});
+
+			keyboard->setCyclicLayoutIndex(0);
+		});
 	}
 }
