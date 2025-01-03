@@ -55,7 +55,7 @@ namespace pizdanc {
 		textField.setBorderColor(&Theme::yellow);
 		textField.setCursorColor(&Theme::yellow);
 
-		textField.setKeyboardFont(&Theme::fontSmall);
+		textField.setKeyboardFont(&Theme::fontNormal);
 		textField.setKeyboardBackgroundColor(&Theme::bg3);
 		textField.setKeyboardDefaultButtonPrimaryColor(&Theme::bg5);
 		textField.setKeyboardDefaultButtonSecondaryColor(&Theme::fg1);
