@@ -18,7 +18,7 @@ namespace pizdanc {
 
 		// Text
 		Theme::apply(textField);
-		textField.setText(L"Hello");
+		textField.setText(L"Hello world pizda eblo ssanina penis chlen vagina");
 		textField.setCursorToEnd();
 		rows += &textFieldTitle;
 	}
