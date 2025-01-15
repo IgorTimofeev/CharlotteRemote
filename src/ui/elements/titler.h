@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../../../lib/YOBA/src/ui/text.h"
-#include "../../../lib/YOBA/src/ui/stackContainer.h"
+#include "../../../lib/YOBA/src/ui.h"
 #include "../theme.h"
 
 using namespace yoba;
+using namespace yoba::ui;
 
 namespace pizdanc {
 	class Titler : public StackContainer {

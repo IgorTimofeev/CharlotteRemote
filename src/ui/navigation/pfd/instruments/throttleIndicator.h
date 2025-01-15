@@ -9,7 +9,7 @@ using namespace yoba;
 namespace pizdanc {
 	class ThrottleIndicator : public Element {
 		public:
-			void render(ScreenBuffer* screenBuffer) override {
+			void render(Renderer* renderer) override {
 				const auto& bounds = getBounds();
 				const uint8_t lineOffset = 2;
 				const uint8_t textOffset = 2;
@@ -17,7 +17,7 @@ namespace pizdanc {
 				const uint16_t frameHeight = bounds.getHeight() - textHeight - textOffset;
 
 				// Frame
-				screenBuffer->renderRectangle(
+				renderer->renderRectangle(
 					Bounds(
 						bounds.getX(),
 						bounds.getY(),
@@ -31,7 +31,7 @@ namespace pizdanc {
 				const auto valueHeight = (uint16_t) ((float) frameHeight * _value);
 				const uint16_t valueY = bounds.getY() + frameHeight - valueHeight + 1;
 
-				screenBuffer->renderFilledRectangle(
+				renderer->renderFilledRectangle(
 					Bounds(
 						bounds.getX(),
 						valueY,
@@ -42,7 +42,7 @@ namespace pizdanc {
 				);
 
 				// Line
-				screenBuffer->renderHorizontalLine(
+				renderer->renderHorizontalLine(
 					Point(
 						bounds.getX() - lineOffset,
 						valueY
@@ -56,7 +56,7 @@ namespace pizdanc {
 				textBuffer << (int32_t) (_value * 100);
 				const auto text = textBuffer.str();
 
-				screenBuffer->renderText(
+				renderer->renderText(
 					Point(
 						bounds.getX() + bounds.getWidth() / 2 - Theme::fontNormal.getWidth(text) / 2 + 1,
 						bounds.getY() + frameHeight + textOffset

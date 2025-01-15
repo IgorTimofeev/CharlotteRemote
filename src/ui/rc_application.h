@@ -1,20 +1,19 @@
 #pragma once
 
+#include "../../lib/YOBA/src/yoba.h"
+#include "../../lib/YOBA/src/hardware/displays.h"
+#include "../../lib/YOBA/src/hardware/touchPanels.h"
+#include "../../lib/YOBA/src/ui.h"
+
 #include "hardware/transceiver/transceiver.h"
 #include "hardware/onboard_led.h"
 #include "theme.h"
 #include "../interpolator.h"
-#include "../../lib/YOBA/src/ui/application.h"
-#include "../../lib/YOBA/src/hardware/screen/drivers/ILI9341Driver.h"
-#include "../../lib/YOBA/src/hardware/screen/buffers/bit8PaletteBuffer.h"
-#include "../../lib/YOBA/src/hardware/input/touch/FT6336UTouchPanel.h"
-#include "../../lib/YOBA/src/color.h"
-#include "../../lib/YOBA/src/ui/rectangle.h"
-#include "../../lib/YOBA/src/ui/text.h"
-#include "../../lib/YOBA/src/ui/application.h"
 #include "../ui/navigation/menu.h"
 
 using namespace yoba;
+using namespace yoba::hardware;
+using namespace yoba::ui;
 
 namespace pizdanc {
 	class MutualData {
@@ -142,15 +141,15 @@ namespace pizdanc {
 
 			Transceiver _transceiver {};
 
-			ILI9341Driver _screenDriver = ILI9341Driver(
+			ILI9341Display _display = ILI9341Display(
 				ColorModel::Rgb565,
-				ScreenOrientation::Clockwise270,
+				RenderTargetOrientation::Clockwise270,
 				settings::pinout::screen::chipSelect,
 				settings::pinout::screen::dataCommand,
 				settings::pinout::screen::reset
 			);
 
-			Bit8PaletteBuffer _screenBuffer = Bit8PaletteBuffer(&_screenDriver, 32);
+			Bit8PaletteBufferedRenderer _renderer = Bit8PaletteBufferedRenderer(&_display, 32);
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
 				settings::pinout::screen::touch::interrupt,

@@ -9,8 +9,8 @@ namespace pizdanc {
 
 	}
 
-	void PizdaImageView::onRender(ScreenBuffer* screenBuffer) {
-		ImageView::onRender(screenBuffer);
+	void PizdaImageView::onRender(Renderer* renderer) {
+		ImageView::onRender(renderer);
 
 		auto& app = RCApplication::getInstance();
 
@@ -32,7 +32,7 @@ namespace pizdanc {
 		auto horiz = [&](const Point& point, uint16_t width, float value) {
 			calc(point.getY(), value);
 
-			screenBuffer->renderFilledRectangle(
+			renderer->renderFilledRectangle(
 				Bounds(point.getX(), position, width, size),
 				&Theme::green
 			);
@@ -41,7 +41,7 @@ namespace pizdanc {
 		auto vert = [&](const Point& point, uint16_t height, float value) {
 			calc(point.getX(), value);
 
-			screenBuffer->renderFilledRectangle(
+			renderer->renderFilledRectangle(
 				Bounds(position, point.getY(), size, height),
 				&Theme::green
 			);

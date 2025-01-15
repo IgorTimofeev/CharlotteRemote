@@ -2,15 +2,16 @@
 
 #include "Arduino.h"
 
-#include "../../../../lib/YOBA/src/ui/imageView.h"
+#include "../../../../lib/YOBA/src/yoba.h"
+#include "../../../../lib/YOBA/src/ui.h"
 
 #include "../page.h"
-#include "../../elements/titler.h"
 #include "../../elements/titler.h"
 
 #include "backImage.h"
 
 using namespace yoba;
+using namespace yoba::ui;
 
 namespace pizdanc {
 	class PizdaImageView : public ImageView {
@@ -19,7 +20,7 @@ namespace pizdanc {
 
 			static const BackImage backImage;
 
-			void onRender(ScreenBuffer* screenBuffer) override;
+			void onRender(Renderer* renderer) override;
 
 		private:
 			const uint8_t maxPixelValue = 12;

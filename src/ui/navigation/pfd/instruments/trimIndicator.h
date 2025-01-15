@@ -8,7 +8,7 @@ using namespace yoba;
 namespace pizdanc {
 	class TrimIndicator : public Element {
 		public:
-			void render(ScreenBuffer* screenBuffer) override {
+			void render(Renderer* renderer) override {
 				const auto& bounds = getBounds();
 
 				const uint8_t triangleSize = 2;
@@ -16,14 +16,14 @@ namespace pizdanc {
 
 				if (_orientation == Orientation::Vertical) {
 					// Vertical line
-					screenBuffer->renderVerticalLine(
+					renderer->renderVerticalLine(
 						bounds.getTopLeft(),
 						bounds.getHeight(),
 						&Theme::fg1
 					);
 
 					// Suggested value
-					screenBuffer->renderFilledRectangle(
+					renderer->renderFilledRectangle(
 						Bounds(
 							bounds.getX(),
 							bounds.getY() + (int32_t) (_suggestedMinimum * (float) bounds.getHeight()),
@@ -39,7 +39,7 @@ namespace pizdanc {
 						bounds.getY() + (int32_t) (_value * (float) bounds.getHeight())
 					);
 
-					screenBuffer->renderFilledTriangle(
+					renderer->renderFilledTriangle(
 						Point(
 							trianglePosition.getX() + triangleSize,
 							trianglePosition.getY() - triangleSize
@@ -54,14 +54,14 @@ namespace pizdanc {
 				}
 				else {
 					// Horizontal line
-					screenBuffer->renderHorizontalLine(
+					renderer->renderHorizontalLine(
 						bounds.getBottomLeft(),
 						bounds.getWidth(),
 						&Theme::fg1
 					);
 
 					// Suggested value
-					screenBuffer->renderFilledRectangle(
+					renderer->renderFilledRectangle(
 						Bounds(
 							bounds.getX() + (int32_t) (_suggestedMinimum * (float) bounds.getWidth()),
 							bounds.getY2() - suggestedValueSize + 1,
@@ -77,7 +77,7 @@ namespace pizdanc {
 						bounds.getY() + triangleSize
 					);
 
-					screenBuffer->renderFilledTriangle(
+					renderer->renderFilledTriangle(
 						Point(
 							trianglePosition.getX() - triangleSize,
 							trianglePosition.getY() - triangleSize

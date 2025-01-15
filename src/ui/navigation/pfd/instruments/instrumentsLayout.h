@@ -1,15 +1,15 @@
 #pragma once
 
-#include "../../../../lib/YOBA/src/hardware/screen/buffers/screenBuffer.h"
-#include "../../../../lib/YOBA/src/ui/element.h"
-#include "../../../../lib/YOBA/src/ui/rectangle.h"
-#include "../../../../lib/YOBA/src/ui/stackContainer.h"
+#include "../../../../lib/YOBA/src/yoba.h"
+#include "../../../../lib/YOBA/src/ui.h"
+
 #include "../../../elements/titler.h"
 #include "trimIndicator.h"
 #include "throttleIndicator.h"
 #include "controlsIndicator.h"
 
 using namespace yoba;
+using namespace yoba::ui;
 
 namespace pizdanc {
 	class InstrumentsLayout : public Container {

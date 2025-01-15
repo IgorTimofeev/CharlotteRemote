@@ -1,5 +1,4 @@
 #include "debugPage.h"
-#include "../../../../lib/YOBA/src/ui/application.h"
 
 namespace pizdanc {
 	DebugPage::DebugPage() {

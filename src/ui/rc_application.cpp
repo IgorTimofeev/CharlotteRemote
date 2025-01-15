@@ -14,7 +14,7 @@ namespace pizdanc {
 
 	RCApplication::RCApplication() :
 		Application(
-			&_screenBuffer
+			&_renderer
 		)
 	{
 
@@ -24,7 +24,7 @@ namespace pizdanc {
 		Application::setup();
 
 		// Palette
-		_screenBuffer.setPaletteColors({
+		_renderer.setPaletteColors({
 			// Background
 			0x000000,
 			0x0E0E0E,
@@ -58,8 +58,8 @@ namespace pizdanc {
 			0xaed1f2
 		});
 
-		_screenBuffer.setPrimaryColor(&Theme::bg1);
-		_screenBuffer.setSecondaryColor(&Theme::fg1);
+		_renderer.setPrimaryColor(&Theme::bg1);
+		_renderer.setSecondaryColor(&Theme::fg1);
 
 		// Font
 		setFont(&Theme::fontNormal);

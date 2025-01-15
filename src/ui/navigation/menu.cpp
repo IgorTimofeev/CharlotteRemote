@@ -1,5 +1,4 @@
 #include "menu.h"
-#include "../rc_application.h"
 
 namespace pizdanc {
 	void Menu::setup() {

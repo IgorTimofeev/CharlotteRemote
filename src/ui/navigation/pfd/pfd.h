@@ -1,17 +1,21 @@
 #pragma once
 
-#include "../../../../../lib/YOBA/src/hardware/screen/buffers/screenBuffer.h"
-#include "../../../../../lib/YOBA/src/ui/element.h"
+#include "Arduino.h"
+
+#include "../../../../lib/YOBA/src/yoba.h"
+#include "../../../../lib/YOBA/src/ui.h"
+
 #include "../../theme.h"
 
 using namespace yoba;
+using namespace yoba::ui;
 
 namespace pizdanc {
 	class PFD : public Element {
 		public:
 			PFD();
 
-			void onRender(ScreenBuffer* screenBuffer) override;
+			void onRender(Renderer* renderer) override;
 
 		private:
 			static const uint16_t lineSizeBig = 5;
@@ -97,40 +101,40 @@ namespace pizdanc {
 			float _horizontalFov = radians(120);
 			float _verticalFov = radians(90);
 
-			static void renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Point& point, bool left) ;
+			static void renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
 
-			static void renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) ;
+			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) ;
 
-			static void renderCurrentValue(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, float value, bool left) ;
+			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, float value, bool left) ;
 
-			static void renderTrendArrow(ScreenBuffer* screenBuffer, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value);
+			static void renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value);
 
-			static void renderSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) ;
+			static void renderSpeed(Renderer* renderer, const Bounds& bounds) ;
 
-			void renderSyntheticVision(ScreenBuffer* screenBuffer, const Bounds& bounds) const;
+			void renderSyntheticVision(Renderer* renderer, const Bounds& bounds) const;
 
-			static void renderAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) ;
+			static void renderAltitude(Renderer* renderer, const Bounds& bounds) ;
 
-			static void renderVerticalSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) ;
+			static void renderVerticalSpeed(Renderer* renderer, const Bounds& bounds) ;
 
-			static void renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color* bg, const Color* fg, const std::wstring_view& text, int8_t textXOffset) ;
+			static void renderMiniPanel(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, const std::wstring_view& text, int8_t textXOffset) ;
 
-			static void renderPressure(ScreenBuffer* screenBuffer, const Bounds& bounds) ;
+			static void renderPressure(Renderer* renderer, const Bounds& bounds) ;
 
-			static void renderAutopilotSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) ;
+			static void renderAutopilotSpeed(Renderer* renderer, const Bounds& bounds) ;
 
-			static void renderAutopilotAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) ;
+			static void renderAutopilotAltitude(Renderer* renderer, const Bounds& bounds) ;
 
-			static void renderMiniPanelWithAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color* bg, const Color* fg, float autopilotValue, bool left) ;
+			static void renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, float autopilotValue, bool left) ;
 
-			static void renderAircraftSymbol(ScreenBuffer* screenBuffer, const Point& center);
+			static void renderAircraftSymbol(Renderer* renderer, const Point& center);
 
-			static void renderPitchOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds, float unfoldedFOVHeight, const Point& horizonLeft, const Point& horizonRight);
+			static void renderPitchOverlay(Renderer* renderer, const Bounds& bounds, float unfoldedFOVHeight, const Point& horizonLeft, const Point& horizonRight);
 
-			static void renderSyntheticVisionBackground(ScreenBuffer* screenBuffer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight);
+			static void renderSyntheticVisionBackground(Renderer* renderer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight);
 
-			static void renderRollOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds, float roll);
+			static void renderRollOverlay(Renderer* renderer, const Bounds& bounds, float roll);
 
-			static void renderYawOverlay(ScreenBuffer* screenBuffer, const Bounds& bounds, float yaw);
+			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, float yaw);
 	};
 }

@@ -13,11 +13,11 @@ namespace pizdanc {
 		setClipToBounds(true);
 	}
 
-	void PFD::renderCurrentValue(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, float value, bool left) {
+	void PFD::renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, float value, bool left) {
 		int32_t y = centerY - currentValueHeight / 2;
 
 		// Triangle
-		screenBuffer->renderFilledTriangle(
+		renderer->renderFilledTriangle(
 			Point(
 				left ? bounds.getX2() - currentValueTriangleSize - 1 : bounds.getX() + currentValueTriangleSize - 1,
 				y
@@ -41,13 +41,13 @@ namespace pizdanc {
 			currentValueHeight
 		);
 
-		screenBuffer->renderFilledRectangle(rectangleBounds, &Theme::bg2);
+		renderer->renderFilledRectangle(rectangleBounds, &Theme::bg2);
 
 		// Text
 		const uint8_t textOffset = 2;
 
-		const auto oldViewport = screenBuffer->getViewport();
-		screenBuffer->setViewport(rectangleBounds);
+		const auto oldViewport = renderer->getViewport();
+		renderer->setViewport(rectangleBounds);
 
 		auto uintValue = (uint32_t) value;
 
@@ -76,7 +76,7 @@ namespace pizdanc {
 		auto renderDigit = [&](int32_t digitY, uint8_t digit) {
 			const wchar_t text = L'0' + digit;
 
-			screenBuffer->renderChar(
+			renderer->renderChar(
 				Point(
 					x - Theme::fontNormal.getCharWidth(text),
 					digitY
@@ -108,12 +108,12 @@ namespace pizdanc {
 			uintValue /= 10;
 		} while (uintValue > 0);
 
-		screenBuffer->setViewport(oldViewport);
+		renderer->setViewport(oldViewport);
 	}
 
-	void PFD::renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Point& point, bool left) {
+	void PFD::renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) {
 		// Upper
-		screenBuffer->renderFilledRectangle(
+		renderer->renderFilledRectangle(
 			Bounds(
 				point.getX(),
 				point.getY(),
@@ -124,7 +124,7 @@ namespace pizdanc {
 		);
 
 		// Lower
-		screenBuffer->renderFilledRectangle(
+		renderer->renderFilledRectangle(
 			Bounds(
 				point.getX(),
 				point.getY() + autopilotIndicatorHeight - autopilotIndicatorTriangleVerticalMargin,
@@ -135,7 +135,7 @@ namespace pizdanc {
 		);
 
 		// Rect
-		screenBuffer->renderFilledRectangle(
+		renderer->renderFilledRectangle(
 			Bounds(
 				left ? point.getX() + autopilotIndicatorTriangleWidth : point.getX(),
 				point.getY() + autopilotIndicatorTriangleVerticalMargin,
@@ -146,7 +146,7 @@ namespace pizdanc {
 		);
 
 		// Upper triangle
-		screenBuffer->renderFilledTriangle(
+		renderer->renderFilledTriangle(
 			Point(
 				left ? point.getX() : point.getX() + autopilotIndicatorRectangleWidth,
 				point.getY() + autopilotIndicatorTriangleVerticalMargin
@@ -163,7 +163,7 @@ namespace pizdanc {
 		);
 
 		// Lower triangle
-		screenBuffer->renderFilledTriangle(
+		renderer->renderFilledTriangle(
 			Point(
 				left ? point.getX() + autopilotIndicatorTriangleWidth - 1 : point.getX() + autopilotIndicatorRectangleWidth,
 				point.getY() + autopilotIndicatorHeightHalf
@@ -180,12 +180,12 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderAutopilotValueIndicator(ScreenBuffer* screenBuffer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) {
+	void PFD::renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) {
 		if (autopilotValue <= 0)
 			return;
 
 		renderAutopilotValueIndicator(
-			screenBuffer,
+			renderer,
 			Point(
 				left ? bounds.getX2() + 1 - autopilotIndicatorWidth : bounds.getX(),
 				centerY + (int32_t) ((currentValue - autopilotValue) * (float) unitPixels / (float) unitStep) - autopilotIndicatorHeightHalf
@@ -194,7 +194,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderTrendArrow(ScreenBuffer* screenBuffer, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value) {
+	void PFD::renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value) {
 		auto length = (int32_t) ((float) unitPixels * value / (float) unitStep);
 
 		if (abs(length) < 10)
@@ -206,13 +206,13 @@ namespace pizdanc {
 		auto yMin = min(y, yArrow);
 		auto yMax = max(y, yArrow);
 
-		screenBuffer->renderVerticalLine(
+		renderer->renderVerticalLine(
 			Point(x, yMin),
 			yMax - yMin,
 			&Theme::purple
 		);
 
-		screenBuffer->renderFilledTriangle(
+		renderer->renderFilledTriangle(
 			Point(
 				x - arrowSize,
 				yArrow
@@ -229,12 +229,12 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) {
+	void PFD::renderSpeed(Renderer* renderer, const Bounds& bounds) {
 		auto& app = RCApplication::getInstance();
 
 		auto centerY = bounds.getYCenter();
 
-		screenBuffer->renderFilledRectangle(bounds, &Theme::bg1);
+		renderer->renderFilledRectangle(bounds, &Theme::bg1);
 
 		float speed = app.getSpeedInterpolator().getValue();
 
@@ -245,7 +245,7 @@ namespace pizdanc {
 			int32_t fromY = centerY + (int32_t) ceil(speed * (float) speedStepPixels - (float) fromSpeed * (float) speedStepPixels);
 			int32_t height = (toSpeed - fromSpeed) * speedStepPixels;
 
-			screenBuffer->renderFilledRectangle(
+			renderer->renderFilledRectangle(
 				Bounds(
 					x,
 					fromY - height,
@@ -332,7 +332,7 @@ namespace pizdanc {
 
 			if (isBig) {
 				// Line
-				screenBuffer->renderHorizontalLine(
+				renderer->renderHorizontalLine(
 					Point(
 						bounds.getX2() + 1 - speedBarSize - lineSizeBig,
 						y
@@ -350,7 +350,7 @@ namespace pizdanc {
 
 				const auto& text = stream.str();
 
-				screenBuffer->renderText(
+				renderer->renderText(
 					Point(
 						bounds.getX2() + 1 - speedBarSize - lineSizeBig - 5 - Theme::fontNormal.getWidth(text),
 						y - Theme::fontNormal.getHeight() / 2
@@ -362,7 +362,7 @@ namespace pizdanc {
 			}
 			else {
 				// Line
-				screenBuffer->renderHorizontalLine(
+				renderer->renderHorizontalLine(
 					Point(bounds.getX2() + 1 - speedBarSize - lineSizeSmall, y),
 					lineSizeSmall,
 					lineColor
@@ -375,7 +375,7 @@ namespace pizdanc {
 
 		// Trend
 		renderTrendArrow(
-			screenBuffer,
+			renderer,
 			bounds.getX2() - speedBarSize - lineSizeBig,
 			centerY,
 			speedStepUnits,
@@ -385,7 +385,7 @@ namespace pizdanc {
 
 		// Autopilot
 		renderAutopilotValueIndicator(
-			screenBuffer,
+			renderer,
 			bounds,
 			centerY,
 			speedStepUnits,
@@ -397,7 +397,7 @@ namespace pizdanc {
 
 		// Current speed
 		renderCurrentValue(
-			screenBuffer,
+			renderer,
 			bounds,
 			centerY,
 			speed,
@@ -405,17 +405,17 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderAircraftSymbol(ScreenBuffer* screenBuffer, const Point& center) {
+	void PFD::renderAircraftSymbol(Renderer* renderer, const Point& center) {
 //		const uint8_t sideWidth = 16;
 //		const uint8_t radius = 6;
 //
-//		screenBuffer->renderCircle(
+//		renderer->renderCircle(
 //			center,
 //			radius,
 //			&Theme::fg1
 //		);
 //
-//		screenBuffer->renderHorizontalLine(
+//		renderer->renderHorizontalLine(
 //			Point(
 //				center.getX() - radius - sideWidth,
 //				center.getY()
@@ -424,7 +424,7 @@ namespace pizdanc {
 //			&Theme::fg1
 //		);
 //
-//		screenBuffer->renderHorizontalLine(
+//		renderer->renderHorizontalLine(
 //			Point(
 //				center.getX() + radius,
 //				center.getY()
@@ -439,7 +439,7 @@ namespace pizdanc {
 		const uint8_t aircraftSymbolCenterOffset = 16;
 
 		// Left
-		screenBuffer->renderFilledRectangle(
+		renderer->renderFilledRectangle(
 			Bounds(
 				center.getX() - aircraftSymbolCenterOffset - aircraftSymbolThickness,
 				center.getY() - aircraftSymbolThickness / 2,
@@ -449,7 +449,7 @@ namespace pizdanc {
 			&Theme::bg1
 		);
 
-		screenBuffer->renderFilledRectangle(
+		renderer->renderFilledRectangle(
 			Bounds(
 				center.getX() - aircraftSymbolCenterOffset - aircraftSymbolThickness - aircraftSymbolWidth,
 				center.getY() - aircraftSymbolThickness / 2,
@@ -460,7 +460,7 @@ namespace pizdanc {
 		);
 
 		// Right
-		screenBuffer->renderFilledRectangle(
+		renderer->renderFilledRectangle(
 			Bounds(
 				center.getX() + aircraftSymbolCenterOffset,
 				center.getY() - aircraftSymbolThickness / 2,
@@ -470,7 +470,7 @@ namespace pizdanc {
 			&Theme::bg1
 		);
 
-		screenBuffer->renderFilledRectangle(
+		renderer->renderFilledRectangle(
 			Bounds(
 				center.getX() + aircraftSymbolCenterOffset + aircraftSymbolThickness,
 				center.getY() - aircraftSymbolThickness / 2,
@@ -481,7 +481,7 @@ namespace pizdanc {
 		);
 
 		// Dot
-		screenBuffer->renderFilledRectangle(
+		renderer->renderFilledRectangle(
 			Bounds(
 				center.getX() + aircraftSymbolThickness / 2 - aircraftSymbolThickness / 2,
 				center.getY() - aircraftSymbolThickness / 2,
@@ -493,19 +493,19 @@ namespace pizdanc {
 	}
 
 	void PFD::renderSyntheticVisionBackground(
-		ScreenBuffer* screenBuffer,
+		Renderer* renderer,
 		const Bounds& bounds,
 		const Point& horizonLeft,
 		const Point& horizonRight
 	) {
 		// Sky
-		screenBuffer->renderFilledRectangle(bounds, &Theme::sky);
+		renderer->renderFilledRectangle(bounds, &Theme::sky);
 
 		// Ground
 		const auto groundMaxY = max(horizonLeft.getY(), horizonRight.getY());
 
 		// Triangle
-		screenBuffer->renderFilledTriangle(
+		renderer->renderFilledTriangle(
 			horizonLeft.getY() < horizonRight.getY()
 			? horizonLeft
 			: horizonRight,
@@ -524,7 +524,7 @@ namespace pizdanc {
 
 		// Bottom
 		if (groundMaxY < bounds.getY2()) {
-			screenBuffer->renderFilledRectangle(
+			renderer->renderFilledRectangle(
 				Bounds(
 					bounds.getX(),
 					groundMaxY,
@@ -536,7 +536,7 @@ namespace pizdanc {
 		}
 			// Left
 		else if (horizonLeft.getY() < bounds.getY() && horizonLeft.getX() > bounds.getX()) {
-			screenBuffer->renderFilledRectangle(
+			renderer->renderFilledRectangle(
 				Bounds(
 					bounds.getX(),
 					bounds.getY(),
@@ -548,7 +548,7 @@ namespace pizdanc {
 		}
 			// Right
 		else if (horizonRight.getY() < bounds.getY() && horizonRight.getX() < bounds.getX2()) {
-			screenBuffer->renderFilledRectangle(
+			renderer->renderFilledRectangle(
 				Bounds(
 					horizonRight.getX(),
 					bounds.getY(),
@@ -561,13 +561,13 @@ namespace pizdanc {
 	}
 
 	void PFD::renderPitchOverlay(
-		ScreenBuffer* screenBuffer,
+		Renderer* renderer,
 		const Bounds& bounds,
 		float unfoldedFOVHeight,
 		const Point& horizonLeft,
 		const Point& horizonRight
 	) {
-		screenBuffer->setViewport(bounds);
+		renderer->setViewport(bounds);
 
 		const float lineAngleStepRad = radians(pitchOverlayAngleStep);
 		const float linesInTotal = floor(((float) HALF_PI) / lineAngleStepRad);
@@ -607,7 +607,7 @@ namespace pizdanc {
 			lineLeft = (Point) (lineCenterVerticalPerp - lineVec);
 			lineRight = (Point) (lineCenterVerticalPerp + lineVec);
 
-			screenBuffer->renderLine(
+			renderer->renderLine(
 				lineLeft,
 				lineRight,
 				color
@@ -619,7 +619,7 @@ namespace pizdanc {
 
 				stream << abs(lineAngleDeg);
 
-				screenBuffer->renderText(
+				renderer->renderText(
 					Point(
 						lineRight.getX() + pitchOverlayTextOffset,
 						lineRight.getY() - Theme::fontSmall.getHeight() / 2
@@ -633,11 +633,11 @@ namespace pizdanc {
 	}
 
 	void PFD::renderRollOverlay(
-		ScreenBuffer* screenBuffer,
+		Renderer* renderer,
 		const Bounds& bounds,
 		float roll
 	) {
-		screenBuffer->setViewport(bounds);
+		renderer->setViewport(bounds);
 
 		const float radius = (float) bounds.getWidth() * 1.0f;
 
@@ -662,7 +662,7 @@ namespace pizdanc {
 			const auto& lineFrom = lineTo + (Point) (vec.normalize() * (isBig ? rollOverlayLineBigLength : rollOverlayLineSmallLength));
 
 			// Line
-			screenBuffer->renderLine(
+			renderer->renderLine(
 				lineTo,
 				lineFrom,
 				rollOverlayColor
@@ -678,7 +678,7 @@ namespace pizdanc {
 
 				const auto& text = stream.str();
 
-				screenBuffer->renderText(
+				renderer->renderText(
 					Point(
 						lineFrom.getX() - Theme::fontSmall.getWidth(text) / 2,
 						lineFrom.getY() + rollOverlayTextOffset
@@ -691,7 +691,7 @@ namespace pizdanc {
 		}
 
 		// Small triangle representing current roll
-		screenBuffer->renderFilledTriangle(
+		renderer->renderFilledTriangle(
 			Point(center.getX() - rollOverlayTriangleSize, bounds.getY()),
 			Point(center.getX() + rollOverlayTriangleSize, bounds.getY()),
 			Point(center.getX(), bounds.getY() + rollOverlayTriangleSize),
@@ -700,11 +700,11 @@ namespace pizdanc {
 	}
 
 	void PFD::renderYawOverlay(
-		ScreenBuffer* screenBuffer,
+		Renderer* renderer,
 		const Bounds& bounds,
 		float yaw
 	) {
-		screenBuffer->setViewport(bounds);
+		renderer->setViewport(bounds);
 
 		const auto centerX = bounds.getXCenter();
 
@@ -733,7 +733,7 @@ namespace pizdanc {
 			// Line
 			lineY = bounds.getY2() - lineLength + 1;
 
-			screenBuffer->renderVerticalLine(
+			renderer->renderVerticalLine(
 				Point(
 					x,
 					lineY
@@ -771,7 +771,7 @@ namespace pizdanc {
 
 				const auto& text = stream.str();
 
-				screenBuffer->renderText(
+				renderer->renderText(
 					Point(
 						x - Theme::fontSmall.getWidth(text) / 2,
 						lineY - yawOverlayTextOffset - Theme::fontSmall.getHeight()
@@ -787,7 +787,7 @@ namespace pizdanc {
 		}
 
 		// Small triangle representing current heading
-		screenBuffer->renderFilledTriangle(
+		renderer->renderFilledTriangle(
 			Point(centerX - yawOverlayTriangleSize, bounds.getY2()),
 			Point(centerX + yawOverlayTriangleSize, bounds.getY2()),
 			Point(centerX, bounds.getY2() - yawOverlayTriangleSize),
@@ -795,7 +795,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderSyntheticVision(ScreenBuffer* screenBuffer, const Bounds& bounds) const {
+	void PFD::renderSyntheticVision(Renderer* renderer, const Bounds& bounds) const {
 		auto& app = RCApplication::getInstance();
 
 		const auto& center = bounds.getCenter();
@@ -823,17 +823,17 @@ namespace pizdanc {
 
 		// Background
 		renderSyntheticVisionBackground(
-			screenBuffer,
+			renderer,
 			bounds,
 			horizonLeft,
 			horizonRight
 		);
 
-		const auto oldViewport = screenBuffer->getViewport();
+		const auto oldViewport = renderer->getViewport();
 
 		// Roll overlay
 		renderRollOverlay(
-			screenBuffer,
+			renderer,
 			Bounds(
 				bounds.getX(),
 				bounds.getY(),
@@ -845,7 +845,7 @@ namespace pizdanc {
 
 		// Pitch overlay
 		renderPitchOverlay(
-			screenBuffer,
+			renderer,
 			Bounds(
 				bounds.getX(),
 				bounds.getY() + rollOverlayHeight,
@@ -859,7 +859,7 @@ namespace pizdanc {
 
 		// Yaw overlay
 		renderYawOverlay(
-			screenBuffer,
+			renderer,
 			Bounds(
 				bounds.getX(),
 				bounds.getY2() - yawOverlayHeight + 1,
@@ -869,15 +869,15 @@ namespace pizdanc {
 			yaw
 		);
 
-		screenBuffer->setViewport(oldViewport);
+		renderer->setViewport(oldViewport);
 
 		// Bird
-		renderAircraftSymbol(screenBuffer, center);
+		renderAircraftSymbol(renderer, center);
 
 //		// Temp blyad radio
 //
 //		swprintf(text, 255, L"RSSI: %.2f dBm", app.getTransceiver().getRssi());
-//		screenBuffer->renderText(
+//		renderer->renderText(
 //			Point(bounds.getX() + 10, bounds.getY() + 10),
 //			&Theme::font,
 //			&Theme::fg1,
@@ -885,7 +885,7 @@ namespace pizdanc {
 //		);
 //
 //		swprintf(text, 255, L"SNR: %.2f dB", app.getTransceiver().getSnr());
-//		screenBuffer->renderText(
+//		renderer->renderText(
 //			Point(bounds.getX() + 10, bounds.getY() + 20),
 //			&Theme::font,
 //			&Theme::fg1,
@@ -893,13 +893,13 @@ namespace pizdanc {
 //		);
 	}
 
-	void PFD::renderAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) {
+	void PFD::renderAltitude(Renderer* renderer, const Bounds& bounds) {
 		auto& app = RCApplication::getInstance();
 
 		auto centerY = bounds.getYCenter();
 		auto x = bounds.getX();
 
-		screenBuffer->renderFilledRectangle(bounds, &Theme::bg1);
+		renderer->renderFilledRectangle(bounds, &Theme::bg1);
 
 		float altitude = app.getAltitudeInterpolator().getValue();
 		float snapped = altitude / (float) altitudeStepUnits;
@@ -921,7 +921,7 @@ namespace pizdanc {
 			isBig = lineValue % altitudeStepUnitsBig == 0;
 
 			if (isBig) {
-				screenBuffer->renderHorizontalLine(
+				renderer->renderHorizontalLine(
 					Point(x, y),
 					lineSizeBig,
 					lineColor
@@ -936,7 +936,7 @@ namespace pizdanc {
 
 				const auto& text = stream.str();
 
-				screenBuffer->renderText(
+				renderer->renderText(
 					Point(x + lineSizeBig + 5, y - Theme::fontNormal.getHeight() / 2),
 					&Theme::fontNormal,
 					lineColor,
@@ -944,7 +944,7 @@ namespace pizdanc {
 				);
 			}
 			else {
-				screenBuffer->renderHorizontalLine(
+				renderer->renderHorizontalLine(
 					Point(x, y),
 					lineSizeSmall,
 					lineColor
@@ -962,7 +962,7 @@ namespace pizdanc {
 			auto groundPoint2 = Point(x + groundSpacing, y);
 
 			do {
-				screenBuffer->renderLine(
+				renderer->renderLine(
 					groundPoint1,
 					groundPoint2,
 					&Theme::yellow
@@ -988,7 +988,7 @@ namespace pizdanc {
 
 		// Trend
 		renderTrendArrow(
-			screenBuffer,
+			renderer,
 			bounds.getX() + lineSizeBig,
 			centerY,
 			altitudeStepUnits,
@@ -998,7 +998,7 @@ namespace pizdanc {
 
 		// Autopilot
 		renderAutopilotValueIndicator(
-			screenBuffer,
+			renderer,
 			bounds,
 			centerY,
 			altitudeStepUnits,
@@ -1010,7 +1010,7 @@ namespace pizdanc {
 
 		// Current speed
 		renderCurrentValue(
-			screenBuffer,
+			renderer,
 			bounds,
 			centerY,
 			altitude,
@@ -1018,12 +1018,12 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderVerticalSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) {
+	void PFD::renderVerticalSpeed(Renderer* renderer, const Bounds& bounds) {
 		auto& app = RCApplication::getInstance();
 		auto centerY = bounds.getYCenter();
 
 		// Background
-		screenBuffer->renderFilledRectangle(bounds, &Theme::bg2);
+		renderer->renderFilledRectangle(bounds, &Theme::bg2);
 
 		// Lines
 		auto lineColor = &Theme::fg4;
@@ -1039,7 +1039,7 @@ namespace pizdanc {
 				isBig = lineValue % verticalSpeedStepUnitsBig == 0;
 
 				if (isBig) {
-					screenBuffer->renderHorizontalLine(
+					renderer->renderHorizontalLine(
 						Point(
 							bounds.getX(),
 							y
@@ -1056,7 +1056,7 @@ namespace pizdanc {
 
 					const auto& text = stream.str();
 
-					screenBuffer->renderText(
+					renderer->renderText(
 						Point(
 							bounds.getX() + lineSizeBig + 4,
 							y - Theme::fontNormal.getHeight() / 2
@@ -1067,7 +1067,7 @@ namespace pizdanc {
 					);
 				}
 				else {
-					screenBuffer->renderHorizontalLine(
+					renderer->renderHorizontalLine(
 						Point(
 							bounds.getX(),
 							y
@@ -1089,19 +1089,19 @@ namespace pizdanc {
 		renderLines(verticalSpeedStepPixels);
 
 		// Current value
-		screenBuffer->renderLine(
+		renderer->renderLine(
 			Point(bounds.getX(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * (float) verticalSpeedStepPixels / (float) verticalSpeedStepUnits)),
 			Point(bounds.getX2(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * (float) verticalSpeedStepPixelsRight / (float) verticalSpeedStepUnits)),
 			&Theme::green
 		);
 	}
 
-	void PFD::renderMiniPanel(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color* bg, const Color* fg, const std::wstring_view& text, int8_t textXOffset) {
+	void PFD::renderMiniPanel(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, const std::wstring_view& text, int8_t textXOffset) {
 		// Background
-		screenBuffer->renderFilledRectangle(bounds, bg);
+		renderer->renderFilledRectangle(bounds, bg);
 
 		// Text
-		screenBuffer->renderText(
+		renderer->renderText(
 			Point(
 				bounds.getX() + textXOffset + (bounds.getWidth() - textXOffset) / 2 - Theme::fontSmall.getWidth(text) / 2,
 				bounds.getY() + miniHeight / 2 - Theme::fontSmall.getHeight() / 2
@@ -1112,7 +1112,7 @@ namespace pizdanc {
 		);
 	}
 
-	void PFD::renderMiniPanelWithAutopilotValue(ScreenBuffer* screenBuffer, const Bounds& bounds, const Color* bg, const Color* fg, float autopilotValue, bool left) {
+	void PFD::renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, float autopilotValue, bool left) {
 		static std::wstringstream stream;
 		stream.str(std::wstring());
 		stream.clear();
@@ -1127,7 +1127,7 @@ namespace pizdanc {
 		const auto& text = stream.str();
 		
 		renderMiniPanel(
-			screenBuffer,
+			renderer,
 			bounds,
 			bg,
 			fg,
@@ -1137,7 +1137,7 @@ namespace pizdanc {
 
 		if (autopilotValue > 0) {
 			renderAutopilotValueIndicator(
-				screenBuffer,
+				renderer,
 				Point(
 					left ? bounds.getX2() - autopilotIndicatorTriangleWidth : bounds.getX(),
 					bounds.getY()
@@ -1147,25 +1147,25 @@ namespace pizdanc {
 		}
 	}
 
-	void PFD::renderAutopilotSpeed(ScreenBuffer* screenBuffer, const Bounds& bounds) {
+	void PFD::renderAutopilotSpeed(Renderer* renderer, const Bounds& bounds) {
 		auto& app = RCApplication::getInstance();
 
 		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
-		renderMiniPanelWithAutopilotValue(screenBuffer, bounds, bg, fg, app.getLocalData().getAutopilotSpeed(), true);
+		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, app.getLocalData().getAutopilotSpeed(), true);
 	}
 
-	void PFD::renderAutopilotAltitude(ScreenBuffer* screenBuffer, const Bounds& bounds) {
+	void PFD::renderAutopilotAltitude(Renderer* renderer, const Bounds& bounds) {
 		auto& app = RCApplication::getInstance();
 
 		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
-		renderMiniPanelWithAutopilotValue(screenBuffer, bounds, bg, fg, app.getLocalData().getAutopilotAltitude(), false);
+		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, app.getLocalData().getAutopilotAltitude(), false);
 	}
 
-	void PFD::renderPressure(ScreenBuffer* screenBuffer, const Bounds& bounds) {
+	void PFD::renderPressure(Renderer* renderer, const Bounds& bounds) {
 		auto& app = RCApplication::getInstance();
 
 		auto bg = &Theme::bg2;
@@ -1188,55 +1188,55 @@ namespace pizdanc {
 				break;
 		}
 
-		renderMiniPanel(screenBuffer, bounds, bg, fg, stream.str(), 0);
+		renderMiniPanel(renderer, bounds, bg, fg, stream.str(), 0);
 	}
 
-	void PFD::onRender(ScreenBuffer* screenBuffer) {
+	void PFD::onRender(Renderer* renderer) {
 		auto& bounds = getBounds();
 
-		renderSyntheticVision(screenBuffer, Bounds(
+		renderSyntheticVision(renderer, Bounds(
 			bounds.getX() + speedWidth,
 			bounds.getY(),
 			bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,
 			bounds.getHeight()
 		));
 
-		renderSpeed(screenBuffer, Bounds(
+		renderSpeed(renderer, Bounds(
 			bounds.getX(),
 			bounds.getY() + miniHeight,
 			speedWidth,
 			bounds.getHeight() - miniHeight
 		));
 
-		renderAutopilotSpeed(screenBuffer, Bounds(
+		renderAutopilotSpeed(renderer, Bounds(
 			bounds.getX(),
 			bounds.getY(),
 			speedWidth,
 			miniHeight
 		));
 
-		renderAltitude(screenBuffer, Bounds(
+		renderAltitude(renderer, Bounds(
 			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
 			bounds.getY() + miniHeight,
 			altitudeWidth,
 			bounds.getHeight() - miniHeight * 2
 		));
 
-		renderAutopilotAltitude(screenBuffer, Bounds(
+		renderAutopilotAltitude(renderer, Bounds(
 			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
 			bounds.getY(),
 			altitudeWidth,
 			miniHeight
 		));
 
-		renderPressure(screenBuffer, Bounds(
+		renderPressure(renderer, Bounds(
 			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
 			bounds.getY2() + 1 - miniHeight,
 			altitudeWidth,
 			miniHeight
 		));
 
-		renderVerticalSpeed(screenBuffer, Bounds(
+		renderVerticalSpeed(renderer, Bounds(
 			bounds.getX2() + 1 - verticalSpeedWidth,
 			bounds.getY(),
 			verticalSpeedWidth,

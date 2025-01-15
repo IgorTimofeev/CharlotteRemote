@@ -6,8 +6,8 @@ namespace pizdanc {
 		setImage(&_PFDCSImage);
 	}
 
-	void ControlsIndicator::render(ScreenBuffer* screenBuffer) {
-		ImageView::render(screenBuffer);
+	void ControlsIndicator::render(Renderer* renderer) {
+		ImageView::render(renderer);
 
 		const auto& bounds = getBounds();
 		auto& app = RCApplication::getInstance();
@@ -21,11 +21,11 @@ namespace pizdanc {
 
 			// A little bit faster
 			if (angle == 0) {
-				screenBuffer->renderHorizontalLine(point, length, color);
+				renderer->renderHorizontalLine(point, length, color);
 			}
 			// BUT...
 			else {
-				screenBuffer->renderLine(
+				renderer->renderLine(
 					point,
 					point + (Point) Vector2F(length, 0).rotate(angle),
 					color

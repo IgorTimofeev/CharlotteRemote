@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../lib/YOBA/src/image.h"
+#include "image.h"
 
 namespace pizdanc {
 	class BackImage : public Image {

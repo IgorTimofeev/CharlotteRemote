@@ -1,15 +1,13 @@
 #pragma once
 
-#include "../../lib/YOBA/src/color.h"
+#include "color.h"
+#include "../../lib/YOBA/src/ui.h"
 #include "../../lib/YOBA/src/resources/fonts/PIXY10Font.h"
 #include "../../lib/YOBA/src/resources/fonts/Vaticanus8Font.h"
 #include "../../lib/YOBA/src/resources/fonts/unscii16Font.h"
 
-#include "../../lib/YOBA/src/ui/button.h"
-#include "../../lib/YOBA/src/ui/slider.h"
-#include "../../lib/YOBA/src/ui/textField.h"
-
 using namespace yoba;
+using namespace yoba::ui;
 
 namespace pizdanc {
 	class Theme {

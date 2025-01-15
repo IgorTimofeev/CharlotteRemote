@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Arduino.h"
+
+#include "../../../../lib/YOBA/src/yoba.h"
+#include "../../../../lib/YOBA/src/ui.h"
+
 #include "../theme.h"
-#include "../../../lib/YOBA/src/color.h"
-#include "../../../lib/YOBA/src/ui/selector.h"
-#include "../../../lib/YOBA/src/ui/rectangle.h"
-#include "../../../lib/YOBA/src/ui/text.h"
-#include "../../../lib/YOBA/src/ui/stackContainer.h"
 
 using namespace yoba;
+using namespace yoba::ui;
 
 namespace pizdanc {
 	class MenuItem : public SelectorItem {

@@ -2,15 +2,9 @@
 
 #include "Arduino.h"
 
-#include "../../../lib/YOBA/src/ui/container.h"
-#include "../../../lib/YOBA/src/ui/selector.h"
-#include "../../../lib/YOBA/src/animation.h"
-#include "../../../lib/YOBA/src/ui/button.h"
-#include "../../../lib/YOBA/src/ui/rectangle.h"
-#include "../../../lib/YOBA/src/ui/stackContainer.h"
+#include "../../../lib/YOBA/src/ui.h"
 
 #include "menuItem.h"
-
 #include "engine/enginePage.h"
 #include "debug/debugPage.h"
 #include "battery/batteryPage.h"
@@ -18,8 +12,6 @@
 #include "autopilot/autopilotPage.h"
 #include "radio/radioPage.h"
 #include "controls/controlsPage.h"
-
-using namespace yoba;
 
 namespace pizdanc {
 	class Menu : public Selector {
