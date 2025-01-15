@@ -12,32 +12,32 @@ using namespace yoba;
 using namespace yoba::ui;
 
 namespace pizdanc {
-	class InstrumentsLayout : public Container {
+	class InstrumentsLayout : public Layout {
 		public:
 			InstrumentsLayout();
 
 			void tick() override;
 
 		private:
-			StackContainer _rows {};
+			StackLayout _rows {};
 
 			Rectangle _backgroundRect = Rectangle(&Theme::bg1);
 
 			ThrottleIndicator _throttle1Indicator {};
 			ThrottleIndicator _throttle2Indicator {};
 
-			StackContainer _throttleRow {};
+			StackLayout _throttleRow {};
 			Titler _throttleTitle = Titler(L"THR", &_throttleRow);
 
 			ControlsIndicator _controlsIndicator {};
 			Titler _controlsTitle = Titler(L"SP/FL", &_controlsIndicator);
 
-			StackContainer _trimRow {};
+			StackLayout _trimRow {};
 
 			TrimIndicator _elevatorTrimIndicator {};
 			Titler _elevatorTrimTitle = Titler(L"E", &_elevatorTrimIndicator);
 
-			StackContainer _aileronsAndRudderRows {};
+			StackLayout _aileronsAndRudderRows {};
 
 			TrimIndicator _aileronsTrimIndicator {};
 			Titler _aileronsTrimTitle = Titler(L"A", &_aileronsTrimIndicator);

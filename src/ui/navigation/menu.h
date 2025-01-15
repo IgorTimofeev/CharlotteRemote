@@ -23,11 +23,11 @@ namespace pizdanc {
 
 		private:
 			Rectangle _background = Rectangle(&Theme::bg1);
-			Container _pageLayout {};
+			Layout _pageLayout {};
 
-			Container _menu = {};
+			Layout _menu = {};
 			Rectangle _menuBackground = Rectangle(&Theme::bg2);
-			StackContainer _menuItemsLayout {};
+			StackLayout _menuItemsLayout {};
 
 			std::vector<Page*> _pages {};
 

@@ -7,7 +7,7 @@ using namespace yoba;
 using namespace yoba::ui;
 
 namespace pizdanc {
-	class Titler : public StackContainer {
+	class Titler : public StackLayout {
 		public:
 			Titler() {
 				setSpacing(3);

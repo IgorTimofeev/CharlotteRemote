@@ -6,7 +6,7 @@ using namespace yoba;
 using namespace yoba::ui;
 
 namespace pizdanc {
-	class Rows : public StackContainer {
+	class Rows : public StackLayout {
 		public:
 			Rows() {
 				setSpacing(10);

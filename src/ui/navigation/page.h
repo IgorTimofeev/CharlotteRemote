@@ -5,7 +5,7 @@
 using namespace yoba::ui;
 
 namespace pizdanc {
-	class Page : public Container {
+	class Page : public Layout {
 		public:
 			virtual void setup() {
 

@@ -60,7 +60,7 @@ namespace pizdanc {
 	}
 
 	void InstrumentsLayout::tick() {
-		Container::tick();
+		Layout::tick();
 
 		auto app = &RCApplication::getInstance();
 

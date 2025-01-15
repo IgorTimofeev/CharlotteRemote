@@ -178,7 +178,8 @@ namespace pizdanc {
 					}
 
 					application.getOnboardLED().blink();
-				} else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
+				}
+				else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
 					Serial.println("[Transceiver] readData() failed, CRC error");
 				}
 				else {

@@ -22,7 +22,7 @@ namespace pizdanc {
 		) {
 			selector.seven.setValue((uint32_t) valueGetter());
 
-			selector.knob.getOnRotate() += [&selector, valueGetter, valueSetter](float oldAngle, float newAngle) {
+			selector.knob.rotated += [&selector, valueGetter, valueSetter](float oldAngle, float newAngle) {
 				valueSetter(oldAngle, newAngle);
 
 				selector.seven.setValue((uint32_t) valueGetter());

@@ -36,7 +36,7 @@ namespace pizdanc {
 
 		private:
 			Rectangle _selectionBackground = Rectangle(&Theme::bg1);
-			StackContainer _row = StackContainer();
+			StackLayout _row = StackLayout();
 			Text _text = Text();
 
 			void updateVisualsFromSelection() {
