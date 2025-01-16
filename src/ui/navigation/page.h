@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../elements/rows.h"
-
 namespace pizdanc {
 	using namespace yoba::ui;
 
@@ -15,9 +13,10 @@ namespace pizdanc {
 	class RowsPage : public Page {
 		public:
 			RowsPage() {
+				rows.setSpacing(10);
 				*this += &rows;
 			}
 
-			Rows rows = Rows();
+			StackLayout rows = StackLayout();
 	};
 }

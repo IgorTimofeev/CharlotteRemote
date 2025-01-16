@@ -7,7 +7,6 @@
 
 #include "../page.h"
 #include "../../elements/titler.h"
-#include "../../elements/rows.h"
 #include "autopilotSelector.h"
 
 namespace pizdanc {
