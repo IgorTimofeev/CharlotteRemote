@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../lib/YOBA/src/yoba.h"
-#include "../../lib/YOBA/src/hardware/displays.h"
-#include "../../lib/YOBA/src/hardware/touchPanels.h"
-#include "../../lib/YOBA/src/ui.h"
+#include "../../lib/yoba/src/main.h"
+#include "../../lib/yoba/src/hardware/displays/ILI9341Display.h"
+#include "../../lib/yoba/src/hardware/touchPanels/FT6336UTouchPanel.h"
+#include "../../lib/yoba/src/ui.h"
 
 #include "interpolator.h"
 
@@ -146,7 +146,7 @@ namespace pizdanc {
 
 			ILI9341Display _display = ILI9341Display(
 				ColorModel::Rgb565,
-				RenderingOrientation::Clockwise270,
+				RenderTargetOrientation::Clockwise270,
 				settings::pinout::screen::chipSelect,
 				settings::pinout::screen::dataCommand,
 				settings::pinout::screen::reset

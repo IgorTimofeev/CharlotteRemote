@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../lib/YOBA/src/ui.h"
+#include "../../../lib/yoba/src/ui.h"
 #include "../theme.h"
 
 namespace pizdanc {

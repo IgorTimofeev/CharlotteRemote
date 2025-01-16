@@ -17,7 +17,7 @@ namespace pizdanc {
 				if (_orientation == Orientation::Vertical) {
 					// Vertical line
 					renderer->renderVerticalLine(
-						bounds.getTopLeft(),
+						bounds.getPosition(),
 						bounds.getHeight(),
 						&Theme::fg1
 					);

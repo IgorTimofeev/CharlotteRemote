@@ -2,7 +2,7 @@
 
 #include "Arduino.h"
 
-#include "../../../lib/YOBA/src/ui.h"
+#include "../../../lib/yoba/src/ui.h"
 
 #include "menuItem.h"
 #include "engine/enginePage.h"

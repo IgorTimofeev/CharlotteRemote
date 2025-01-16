@@ -1,10 +1,10 @@
 #pragma once
 
 #include "color.h"
-#include "../../lib/YOBA/src/ui.h"
-#include "../../lib/YOBA/src/resources/fonts/PIXY10Font.h"
-#include "../../lib/YOBA/src/resources/fonts/Vaticanus8Font.h"
-#include "../../lib/YOBA/src/resources/fonts/unscii16Font.h"
+#include "../../lib/yoba/src/ui.h"
+#include "../../lib/yoba/src/resources/fonts/PIXY10Font.h"
+#include "../../lib/yoba/src/resources/fonts/Vaticanus8Font.h"
+#include "../../lib/yoba/src/resources/fonts/unscii16Font.h"
 
 namespace pizdanc {
 	using namespace yoba;

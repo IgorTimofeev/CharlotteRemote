@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../../lib/YOBA/src/yoba.h"
-#include "../../../../lib/YOBA/src/ui.h"
+#include "../../../../lib/yoba/src/main.h"
+#include "../../../../lib/yoba/src/ui.h"
 
 #include "../../../elements/titler.h"
 #include "trimIndicator.h"

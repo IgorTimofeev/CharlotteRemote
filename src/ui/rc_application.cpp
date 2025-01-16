@@ -22,36 +22,36 @@ namespace pizdanc {
 		// Palette
 		_renderer.setPaletteColors({
 			// Background
-			0x000000,
-			0x0E0E0E,
-			0x1E1E1E,
-			0x2E2E2E,
-			0x3E3E3E,
+			Rgb888Color(0x000000),
+			Rgb888Color(0x0E0E0E),
+			Rgb888Color(0x1E1E1E),
+			Rgb888Color(0x2E2E2E),
+			Rgb888Color(0x3E3E3E),
 			// Foreground
-			0xF0F0F0,
-			0xDDDDDD,
-			0x999999,
-			0x777777,
+			Rgb888Color(0xF0F0F0),
+			Rgb888Color(0xDDDDDD),
+			Rgb888Color(0x999999),
+			Rgb888Color(0x777777),
 			// Red
-			0xff0000,
+			Rgb888Color(0xff0000),
 			// Purple
-			0xff00ff,
+			Rgb888Color(0xff00ff),
 			// Green
-			0x00FF00,
+			Rgb888Color(0x00FF00),
 			// Green speed
-			0x008100,
+			Rgb888Color(0x008100),
 			// Yellow
-			0xffd200,
+			Rgb888Color(0xffd200),
 			// Ocean
-			0x00ffff,
+			Rgb888Color(0x00ffff),
 			// Ground
-			0x97b838,
+			Rgb888Color(0x97b838),
 			// Ground 2
-			0xdef2a2,
+			Rgb888Color(0xdef2a2),
 			// Sky
-			0x317fcb,
+			Rgb888Color(0x317fcb),
 			// Sky 2
-			0xaed1f2
+			Rgb888Color(0xaed1f2)
 		});
 
 		_renderer.setPrimaryColor(&Theme::bg1);
