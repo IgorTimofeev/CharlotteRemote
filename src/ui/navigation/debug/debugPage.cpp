@@ -4,9 +4,7 @@
 
 namespace pizdanc {
 	DebugPage::DebugPage() {
-		rows.setWidth(140);
-		rows.setMargin(Margin(0, 20, 0, 20));
-		rows.setHorizontalAlignment(Alignment::center);
+		rows.setMargin(Margin(40, 20));
 
 		// Slider
 		Theme::apply(&slider);

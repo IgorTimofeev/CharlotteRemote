@@ -41,7 +41,7 @@ namespace pizdanc {
 //			static const unscii16Font fontBig;
 
 			static const uint16_t elementHeight = 28;
-			static const uint16_t cornerRadius = 5;
+			static const uint16_t cornerRadius = 3;
 
 			static void setup(Bit8PaletteBufferedRenderer* renderer);
 			static void apply(Titler* titler);

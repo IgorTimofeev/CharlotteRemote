@@ -46,8 +46,7 @@ namespace pizdanc {
 		// Text
 		const uint8_t textOffset = 2;
 
-		const auto oldViewport = renderer->getViewport();
-		renderer->setViewport(rectangleBounds);
+		const auto oldViewport = renderer->pushViewport(rectangleBounds);
 
 		auto uintValue = (uint32_t) value;
 
@@ -108,7 +107,7 @@ namespace pizdanc {
 			uintValue /= 10;
 		} while (uintValue > 0);
 
-		renderer->setViewport(oldViewport);
+		renderer->popViewport(oldViewport);
 	}
 
 	void PFD::renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) {
@@ -567,7 +566,7 @@ namespace pizdanc {
 		const Point& horizonLeft,
 		const Point& horizonRight
 	) {
-		renderer->setViewport(bounds);
+		const auto viewport = renderer->pushViewport(bounds);
 
 		const float lineAngleStepRad = radians(pitchOverlayAngleStep);
 		const float linesInTotal = floor(((float) HALF_PI) / lineAngleStepRad);
@@ -630,6 +629,8 @@ namespace pizdanc {
 				);
 			}
 		}
+
+		renderer->popViewport(viewport);
 	}
 
 	void PFD::renderRollOverlay(
@@ -637,7 +638,7 @@ namespace pizdanc {
 		const Bounds& bounds,
 		float roll
 	) {
-		renderer->setViewport(bounds);
+		const auto viewport = renderer->pushViewport(bounds);
 
 		const float radius = (float) bounds.getWidth() * 1.0f;
 
@@ -697,6 +698,8 @@ namespace pizdanc {
 			Point(center.getX(), bounds.getY() + rollOverlayTriangleSize),
 			rollOverlayColor
 		);
+
+		renderer->popViewport(viewport);
 	}
 
 	void PFD::renderYawOverlay(
@@ -704,7 +707,7 @@ namespace pizdanc {
 		const Bounds& bounds,
 		float yaw
 	) {
-		renderer->setViewport(bounds);
+		const auto viewport = renderer->pushViewport(bounds);
 
 		const auto centerX = bounds.getXCenter();
 
@@ -793,6 +796,8 @@ namespace pizdanc {
 			Point(centerX, bounds.getY2() - yawOverlayTriangleSize),
 			yawOverlayColor
 		);
+
+		renderer->popViewport(viewport);
 	}
 
 	void PFD::renderSyntheticVision(Renderer* renderer, const Bounds& bounds) const {
@@ -828,8 +833,6 @@ namespace pizdanc {
 			horizonLeft,
 			horizonRight
 		);
-
-		const auto oldViewport = renderer->getViewport();
 
 		// Roll overlay
 		renderRollOverlay(
@@ -868,8 +871,6 @@ namespace pizdanc {
 			),
 			yaw
 		);
-
-		renderer->setViewport(oldViewport);
 
 		// Bird
 		renderAircraftSymbol(renderer, center);
