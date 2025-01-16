@@ -42,6 +42,7 @@ namespace pizdanc {
 			static const uint16_t elementHeight = 32;
 			static const uint16_t cornerRadius = 5;
 
+			static void apply(Titler& titler);
 			static void apply(Button& button);
 			static void apply(Slider& slider);
 			static void apply(TextField& textField);

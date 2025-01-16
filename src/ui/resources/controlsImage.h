@@ -1,11 +1,14 @@
 #pragma once
 
-#include "image.h"
+#include "main.h"
+#include "ui.h"
 
 namespace pizdanc {
-	class BackImage : public Image {
+	using namespace yoba;
+
+	class ControlsImage : public Image {
 		public:
-			BackImage() : Image(
+			ControlsImage() : Image(
 				Size(
 					279,
 					77

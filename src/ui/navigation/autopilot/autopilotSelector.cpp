@@ -1,5 +1,7 @@
 #include "autopilotSelector.h"
 
+#include "ui/theme.h"
+
 namespace pizdanc {
 	AutopilotSelector::AutopilotSelector(uint8_t digitCount, const std::wstring_view& titleText, const std::wstring_view& buttonText) {
 		const uint8_t marginValue = 10;
@@ -13,6 +15,7 @@ namespace pizdanc {
 		title.setMargin(Margin(marginValue, marginValue, marginValue, 5));
 		title.setHorizontalAlignment(Alignment::Center);
 		title.setPrimaryColor(&Theme::fg3);
+		title.setFont(&Theme::fontNormal);
 		title.setText(titleText);
 		rows += &title;
 

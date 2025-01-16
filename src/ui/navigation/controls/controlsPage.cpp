@@ -1,15 +1,15 @@
 #include "controlsPage.h"
+
 #include "../../rc_application.h"
 
 namespace pizdanc {
-	const BackImage PizdaImageView::backImage = BackImage();
+	const ControlsImage ControlsView::controlsImage = ControlsImage();
 
-
-	PizdaImageView::PizdaImageView() : ImageView(&backImage) {
+	ControlsView::ControlsView() : ImageView(&controlsImage) {
 
 	}
 
-	void PizdaImageView::onRender(Renderer* renderer) {
+	void ControlsView::onRender(Renderer* renderer) {
 		ImageView::onRender(renderer);
 
 		auto& app = RCApplication::getInstance();

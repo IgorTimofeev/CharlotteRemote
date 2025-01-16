@@ -57,9 +57,6 @@ namespace pizdanc {
 		_renderer.setPrimaryColor(&Theme::bg1);
 		_renderer.setSecondaryColor(&Theme::fg1);
 
-		// Font
-		setFont(&Theme::fontNormal);
-
 		// UI
 		_menu.setup();
 

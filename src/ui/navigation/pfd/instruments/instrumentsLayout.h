@@ -3,7 +3,6 @@
 #include "../../../../lib/yoba/src/main.h"
 #include "../../../../lib/yoba/src/ui.h"
 
-#include "../../../elements/titler.h"
 #include "trimIndicator.h"
 #include "throttleIndicator.h"
 #include "controlsIndicator.h"

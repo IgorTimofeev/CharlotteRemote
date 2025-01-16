@@ -27,6 +27,11 @@ namespace pizdanc {
 	const Vaticanus8Font Theme::fontSmall = Vaticanus8Font();
 //	const unscii16Font Theme::fontBig = unscii16Font();
 
+	void Theme::apply(Titler& titler) {
+		titler.getTitle().setPrimaryColor(&Theme::fg3);
+		titler.getTitle().setFont(&Theme::fontNormal);
+	}
+
 	void Theme::apply(Button &button) {
 		button.setHeight(elementHeight);
 		button.setCornerRadius(cornerRadius);
@@ -36,6 +41,8 @@ namespace pizdanc {
 
 		button.setSecondaryColor(&Theme::fg1);
 		button.setPressedSecondaryColor(&Theme::fg1);
+
+		button.setFont(&Theme::fontNormal);
 	}
 
 	void Theme::apply(Slider &slider) {
@@ -60,6 +67,8 @@ namespace pizdanc {
 		textField.setFocusedBorderColor(&Theme::yellow);
 
 		textField.setCursorColor(&Theme::yellow);
+
+		textField.setFont(&Theme::fontNormal);
 
 		textField.setKeyboardConfigurator([](Keyboard* keyboard) {
 			keyboard->setKeyHeight(0.08f);

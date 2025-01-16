@@ -22,6 +22,7 @@ namespace pizdanc {
 				_text.setMargin(Margin(8, 0, 8, 0));
 				_text.setHorizontalAlignment(Alignment::Center);
 				_text.setVerticalAlignment(Alignment::Center);
+				_text.setFont(&Theme::fontNormal);
 				_text.setText(text);
 				*this += &_text;
 
