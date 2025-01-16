@@ -11,17 +11,19 @@ namespace pizdanc {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class DebugPage : public RowsPage {
+	class DebugPage : public Page {
 		public:
 			DebugPage();
+
+			ScrollView scrollView = ScrollView();
+
+			StackLayout rows = StackLayout(Orientation::vertical, 10);
 
 			Slider slider = Slider();
 			Titler sliderTitle = Titler(L"Slider", &slider);
 
-			Button button = Button();
-			Titler buttonTitle = Titler(L"Button", &button);
-
 			TextField textField = TextField();
 			Titler textFieldTitle = Titler(L"Text", &textField);
+
 	};
 }

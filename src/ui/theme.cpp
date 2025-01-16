@@ -65,54 +65,60 @@ namespace pizdanc {
 		});
 	}
 
-	void Theme::apply(Titler& titler) {
-		titler.getTitle().setPrimaryColor(&Theme::fg3);
-		titler.getTitle().setFont(&Theme::fontNormal);
+	void Theme::apply(Titler* titler) {
+		titler->getTitle().setPrimaryColor(&Theme::fg3);
+		titler->getTitle().setFont(&Theme::fontNormal);
 	}
 
-	void Theme::apply(Button &button) {
-		button.setHeight(elementHeight);
-		button.setCornerRadius(cornerRadius);
+	void Theme::apply(Button* button) {
+		button->setHeight(elementHeight);
+		button->setCornerRadius(cornerRadius);
 
-		button.setPrimaryColor(&Theme::yellow);
-		button.setPressedPrimaryColor(&Theme::purple);
+		button->setPrimaryColor(&Theme::yellow);
+		button->setPressedPrimaryColor(&Theme::purple);
 
-		button.setSecondaryColor(&Theme::fg1);
-		button.setPressedSecondaryColor(&Theme::fg1);
+		button->setSecondaryColor(&Theme::fg1);
+		button->setPressedSecondaryColor(&Theme::fg1);
 
-		button.setFont(&Theme::fontNormal);
+		button->setFont(&Theme::fontNormal);
 	}
 
-	void Theme::apply(Slider &slider) {
-		slider.setHeight(elementHeight);
-		slider.setCornerRadius(cornerRadius);
+	void Theme::apply(Slider* slider) {
+		slider->setHeight(elementHeight);
+		slider->setCornerRadius(cornerRadius);
 
-		slider.setPrimaryColor(&Theme::bg3);
-		slider.setSecondaryColor(&Theme::yellow);
+		slider->setPrimaryColor(&Theme::bg3);
+		slider->setSecondaryColor(&Theme::yellow);
 	}
 
-	void Theme::apply(TextField& textField) {
-		textField.setHeight(elementHeight);
-		textField.setCornerRadius(cornerRadius);
+	void Theme::apply(ScrollView* scrollView) {
+		scrollView->setScrollBarSize(4);
+		scrollView->setScrollBarOffset(4);
+		scrollView->setScrollBarColor(&Theme::yellow);
+	}
 
-		textField.setPrimaryColor(&Theme::bg3);
-		textField.setFocusedPrimaryColor(&Theme::bg4);
+	void Theme::apply(TextField* textField) {
+		textField->setHeight(elementHeight);
+		textField->setCornerRadius(cornerRadius);
 
-		textField.setSecondaryColor(&Theme::fg1);
-		textField.setFocusedSecondaryColor(&Theme::fg1);
+		textField->setPrimaryColor(&Theme::bg3);
+		textField->setFocusedPrimaryColor(&Theme::bg4);
 
-		textField.setBorderColor(&Theme::bg4);
-		textField.setFocusedBorderColor(&Theme::yellow);
+		textField->setSecondaryColor(&Theme::fg1);
+		textField->setFocusedSecondaryColor(&Theme::fg1);
 
-		textField.setCursorColor(&Theme::yellow);
+		textField->setBorderColor(&Theme::bg4);
+		textField->setFocusedBorderColor(&Theme::yellow);
 
-		textField.setFont(&Theme::fontNormal);
+		textField->setCursorColor(&Theme::yellow);
 
-		textField.setKeyboardConfigurator([](Keyboard* keyboard) {
+		textField->setFont(&Theme::fontNormal);
+
+		textField->setKeyboardConfigurator([](Keyboard* keyboard) {
 			keyboard->setKeyHeight(0.08f);
 			keyboard->setFont(&Theme::fontNormal);
 			keyboard->setBackgroundColor(&Theme::bg2);
-			keyboard->setDefaultButtonPrimaryColor(&Theme::bg5);
+			keyboard->setDefaultButtonPrimaryColor(&Theme::bg4);
 			keyboard->setDefaultButtonSecondaryColor(&Theme::fg1);
 			keyboard->setActionButtonPrimaryColor(&Theme::bg3);
 			keyboard->setActionButtonSecondaryColor(&Theme::fg1);
