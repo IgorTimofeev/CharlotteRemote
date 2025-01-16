@@ -13,7 +13,7 @@ namespace pizdanc {
 
 		// Title
 		title.setMargin(Margin(marginValue, marginValue, marginValue, 5));
-		title.setHorizontalAlignment(Alignment::Center);
+		title.setHorizontalAlignment(Alignment::center);
 		title.setPrimaryColor(&Theme::fg3);
 		title.setFont(&Theme::fontNormal);
 		title.setText(titleText);
@@ -21,7 +21,7 @@ namespace pizdanc {
 
 		// Seven segment
 		seven.setMargin(Margin(marginValue, 0, marginValue, 0));
-		seven.setHorizontalAlignment(Alignment::Center);
+		seven.setHorizontalAlignment(Alignment::center);
 		seven.setDigitCount(digitCount);
 		seven.setPrimaryColor(&Theme::bg4);
 		seven.setSecondaryColor(&Theme::fg1);
@@ -31,7 +31,7 @@ namespace pizdanc {
 
 		// Rotary knob
 		knob.setMargin(Margin(marginValue));
-		knob.setHorizontalAlignment(Alignment::Center);
+		knob.setHorizontalAlignment(Alignment::center);
 		knob.setPrimaryColor(&Theme::bg3);
 		knob.setMiddleColor(&Theme::bg5);
 		knob.setLineColor(&Theme::yellow);
@@ -45,7 +45,7 @@ namespace pizdanc {
 		button.setPrimaryColor(&Theme::bg3);
 		button.setPressedPrimaryColor(&Theme::fg1);
 		button.setSecondaryColor(&Theme::fg1);
-		button.setPressedSecondaryColor(&Theme::bg1);
+		button.setPressedSecondaryColor(&Theme::bg2);
 		button.setText(buttonText);
 		rows += &button;
 

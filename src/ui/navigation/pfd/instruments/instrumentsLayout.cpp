@@ -12,9 +12,9 @@ namespace pizdanc {
 		// Throttle
 		Theme::apply(_throttleTitle);
 
-		_throttleRow.setOrientation(Orientation::Horizontal);
+		_throttleRow.setOrientation(Orientation::horizontal);
 		_throttleRow.setSpacing(10);
-		_throttleRow.setHorizontalAlignment(Alignment::Center);
+		_throttleRow.setHorizontalAlignment(Alignment::center);
 
 		_throttle1Indicator.setSize(Size(8, 44));
 		_throttleRow += &_throttle1Indicator;
@@ -29,7 +29,7 @@ namespace pizdanc {
 		_rows += &_controlsTitle;
 
 		// Trim
-		_trimRow.setOrientation(Orientation::Horizontal);
+		_trimRow.setOrientation(Orientation::horizontal);
 		_trimRow.setSpacing(5);
 
 		// Elevator
@@ -44,7 +44,7 @@ namespace pizdanc {
 
 		// Ailerons
 		Theme::apply(_aileronsTrimTitle);
-		_aileronsTrimIndicator.setOrientation(Orientation::Horizontal);
+		_aileronsTrimIndicator.setOrientation(Orientation::horizontal);
 		_aileronsTrimIndicator.setSize(Size(28, 5));
 		_aileronsTrimIndicator.setSuggestedMinimum(0.4);
 		_aileronsTrimIndicator.setSuggestedMaximum(0.6);

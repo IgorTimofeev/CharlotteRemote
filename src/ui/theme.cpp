@@ -1,5 +1,7 @@
 #include "theme.h"
 
+#include "../../lib/yoba/src/main.h"
+
 namespace pizdanc {
 	const PaletteColor Theme::bg1 = PaletteColor(0);
 	const PaletteColor Theme::bg2 = PaletteColor(1);
@@ -26,6 +28,42 @@ namespace pizdanc {
 	const PIXY10Font Theme::fontNormal = PIXY10Font();
 	const Vaticanus8Font Theme::fontSmall = Vaticanus8Font();
 //	const unscii16Font Theme::fontBig = unscii16Font();
+
+	void Theme::setup(Bit8PaletteBufferedRenderer* renderer) {
+		renderer->setPaletteColors({
+			// Background
+			Rgb888Color(0x000000),
+			Rgb888Color(0x0C0C0C),
+			Rgb888Color(0x1C1C1C),
+			Rgb888Color(0x2C2C2C),
+			Rgb888Color(0x3C3C3C),
+			// Foreground
+			Rgb888Color(0xF0F0F0),
+			Rgb888Color(0xDDDDDD),
+			Rgb888Color(0x999999),
+			Rgb888Color(0x777777),
+			// Red
+			Rgb888Color(0xff0000),
+			// Purple
+			Rgb888Color(0xff00ff),
+			// Green
+			Rgb888Color(0x00FF00),
+			// Green speed
+			Rgb888Color(0x008100),
+			// Yellow
+			Rgb888Color(0xffd200),
+			// Ocean
+			Rgb888Color(0x00ffff),
+			// Ground
+			Rgb888Color(0x97b838),
+			// Ground 2
+			Rgb888Color(0xdef2a2),
+			// Sky
+			Rgb888Color(0x317fcb),
+			// Sky 2
+			Rgb888Color(0xaed1f2)
+		});
+	}
 
 	void Theme::apply(Titler& titler) {
 		titler.getTitle().setPrimaryColor(&Theme::fg3);

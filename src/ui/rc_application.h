@@ -145,8 +145,8 @@ namespace pizdanc {
 			Transceiver _transceiver {};
 
 			ILI9341Display _display = ILI9341Display(
-				ColorModel::Rgb565,
-				RenderTargetOrientation::Clockwise270,
+				ColorModel::rgb565,
+				RenderTargetOrientation::clockwise270,
 				settings::pinout::screen::chipSelect,
 				settings::pinout::screen::dataCommand,
 				settings::pinout::screen::reset

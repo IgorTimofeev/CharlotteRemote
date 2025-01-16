@@ -199,7 +199,7 @@ namespace pizdanc {
 		bufferPtr += sizeof(PacketType);
 
 		switch (packetType) {
-			case PacketType::AircraftAHRS:
+			case PacketType::aircraftAHRS:
 				{
 					auto ahrsPacket = (AircraftAHRSPacket*) bufferPtr;
 					auto& remoteData = application.getRemoteData();

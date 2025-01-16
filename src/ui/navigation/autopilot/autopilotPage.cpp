@@ -5,8 +5,8 @@ namespace pizdanc {
 	void AutopilotPage::setup() {
 		auto& app = RCApplication::getInstance();
 
-		_columns.setAlignment(Alignment::Center);
-		_columns.setOrientation(Orientation::Horizontal);
+		_columns.setAlignment(Alignment::center);
+		_columns.setOrientation(Orientation::horizontal);
 		_columns.setSpacing(20);
 
 		_columns += &_spd;

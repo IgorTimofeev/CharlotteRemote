@@ -5,19 +5,19 @@ namespace pizdanc {
 		*this += &_background;
 
 		// Menu
-		const uint16_t menuSize = 20;
-		_menu.setSize(Size(Size::Auto, menuSize));
-		_menu.setVerticalAlignment(Alignment::End);
+		const uint16_t menuHeight = 20;
+		_menu.setSize(Size(Size::Auto, menuHeight));
+		_menu.setVerticalAlignment(Alignment::end);
 		_menu += &_menuBackground;
 
-		_menuItemsLayout.setOrientation(Orientation::Horizontal);
+		_menuItemsLayout.setOrientation(Orientation::horizontal);
 		_menu += &_menuItemsLayout;
 		setItemsLayout(&_menuItemsLayout);
 
 		*this += &_menu;
 
 		// Page
-		_pageLayout.setMargin(Margin(0, 0, 0, menuSize));
+		_pageLayout.setMargin(Margin(0, 0, 0, menuHeight));
 		*this += &_pageLayout;
 
 		// Initialization

@@ -11,20 +11,52 @@ namespace pizdanc {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class MenuItem : public SelectorItem {
+	class TaxiDots : public Shape {
+		protected:
+			void onRender(Renderer* renderer) override {
+				Element::onRender(renderer);
+
+				const auto& bounds = getBounds();
+				const uint8_t dotSize = bounds.getHeight() / 2;
+				const auto color = getPrimaryColor();
+
+				auto step = false;
+
+				for (int32_t x = bounds.getX(); x < bounds.getX2(); x += dotSize) {
+					renderer->renderFilledRectangle(
+						Bounds(
+							x,
+							step ? bounds.getY() + dotSize : bounds.getY(),
+							dotSize,
+							dotSize
+						),
+						color
+					);
+
+					step = !step;
+				}
+			}
+	};
+
+	class MenuItem : public SelectorItem, public TextElement {
 		public:
 			explicit MenuItem(const std::wstring_view& text) {
 				// Selection
-				_selectionBackground.setPrimaryColor(&Theme::fg1);
+				_selectionBackground.setPrimaryColor(&Theme::bg3);
 				*this += &_selectionBackground;
 
 				// Text
-				_text.setMargin(Margin(8, 0, 8, 0));
-				_text.setHorizontalAlignment(Alignment::Center);
-				_text.setVerticalAlignment(Alignment::Center);
+				_text.setAlignment(Alignment::center);
+				_text.setMargin(Margin(8, 0, 8, 2));
 				_text.setFont(&Theme::fontNormal);
 				_text.setText(text);
 				*this += &_text;
+
+				// Line
+				_dots.setSize(Size(12, 2));
+				_dots.setMargin(Margin(0, 0, 0, 1));
+				_dots.setAlignment(Alignment::center, Alignment::end);
+				*this += &_dots;
 
 				updateVisualsFromSelection();
 			}
@@ -36,13 +68,14 @@ namespace pizdanc {
 			}
 
 		private:
-			Rectangle _selectionBackground = Rectangle(&Theme::bg1);
-			StackLayout _row = StackLayout();
+			Rectangle _selectionBackground = Rectangle();
+			TaxiDots _dots = TaxiDots();
 			Text _text = Text();
 
 			void updateVisualsFromSelection() {
 				_selectionBackground.setVisible(isSelected());
-				_text.setPrimaryColor(isSelected() ? &Theme::bg1 : &Theme::fg1);
+				_text.setPrimaryColor(isSelected() ? &Theme::fg1 : &Theme::fg4);
+				_dots.setPrimaryColor(isSelected() ? &Theme::green : &Theme::bg3);
 			}
 	};
 }

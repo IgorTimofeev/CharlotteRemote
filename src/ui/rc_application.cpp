@@ -12,54 +12,18 @@ namespace pizdanc {
 		return instance;
 	}
 
-	RCApplication::RCApplication() : Application(&_renderer){
+	RCApplication::RCApplication() : Application(&_renderer) {
 
 	}
 
 	void RCApplication::setup() {
 		Application::setup();
 
-		// Palette
-		_renderer.setPaletteColors({
-			// Background
-			Rgb888Color(0x000000),
-			Rgb888Color(0x0E0E0E),
-			Rgb888Color(0x1E1E1E),
-			Rgb888Color(0x2E2E2E),
-			Rgb888Color(0x3E3E3E),
-			// Foreground
-			Rgb888Color(0xF0F0F0),
-			Rgb888Color(0xDDDDDD),
-			Rgb888Color(0x999999),
-			Rgb888Color(0x777777),
-			// Red
-			Rgb888Color(0xff0000),
-			// Purple
-			Rgb888Color(0xff00ff),
-			// Green
-			Rgb888Color(0x00FF00),
-			// Green speed
-			Rgb888Color(0x008100),
-			// Yellow
-			Rgb888Color(0xffd200),
-			// Ocean
-			Rgb888Color(0x00ffff),
-			// Ground
-			Rgb888Color(0x97b838),
-			// Ground 2
-			Rgb888Color(0xdef2a2),
-			// Sky
-			Rgb888Color(0x317fcb),
-			// Sky 2
-			Rgb888Color(0xaed1f2)
-		});
-
-		_renderer.setPrimaryColor(&Theme::bg1);
-		_renderer.setSecondaryColor(&Theme::fg1);
+		// Theme
+		Theme::setup(&_renderer);
 
 		// UI
 		_menu.setup();
-
 		*this += &_menu;
 
 		// Touch

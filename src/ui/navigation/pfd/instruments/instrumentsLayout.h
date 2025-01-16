@@ -20,7 +20,7 @@ namespace pizdanc {
 		private:
 			StackLayout _rows {};
 
-			Rectangle _backgroundRect = Rectangle(&Theme::bg1);
+			Rectangle _backgroundRect = Rectangle(&Theme::bg2);
 
 			ThrottleIndicator _throttle1Indicator {};
 			ThrottleIndicator _throttle2Indicator {};

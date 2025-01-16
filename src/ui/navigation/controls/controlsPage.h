@@ -27,7 +27,7 @@ namespace pizdanc {
 	class ControlsPage : public RowsPage {
 		public:
 			ControlsPage() {
-				rows.setAlignment(Alignment::Center);
+				rows.setAlignment(Alignment::center);
 
 				rows += &controls;
 			}

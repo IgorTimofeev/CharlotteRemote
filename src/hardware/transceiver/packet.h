@@ -4,9 +4,8 @@
 
 namespace pizdanc {
 	enum class PacketType : uint8_t {
-		AircraftAHRS = 1,
-
-		ControllerCommand = 2
+		aircraftAHRS = 1,
+		controllerCommand = 2
 	};
 
 	enum class AltimeterMode : uint8_t  {

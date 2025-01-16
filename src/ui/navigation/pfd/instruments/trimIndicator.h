@@ -14,7 +14,7 @@ namespace pizdanc {
 				const uint8_t triangleSize = 2;
 				const uint8_t suggestedValueSize = 2;
 
-				if (_orientation == Orientation::Vertical) {
+				if (_orientation == Orientation::vertical) {
 					// Vertical line
 					renderer->renderVerticalLine(
 						bounds.getPosition(),
@@ -128,6 +128,6 @@ namespace pizdanc {
 			float _suggestedMinimum = 0;
 			float _suggestedMaximum = 0;
 			float _value = 0;
-			Orientation _orientation = Orientation::Vertical;
+			Orientation _orientation = Orientation::vertical;
 	};
 }

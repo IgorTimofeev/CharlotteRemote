@@ -1,6 +1,7 @@
 #pragma once
 
 #include "color.h"
+#include "../../lib/yoba/src/main.h"
 #include "../../lib/yoba/src/ui.h"
 #include "../../lib/yoba/src/resources/fonts/PIXY10Font.h"
 #include "../../lib/yoba/src/resources/fonts/Vaticanus8Font.h"
@@ -42,6 +43,7 @@ namespace pizdanc {
 			static const uint16_t elementHeight = 32;
 			static const uint16_t cornerRadius = 5;
 
+			static void setup(Bit8PaletteBufferedRenderer* renderer);
 			static void apply(Titler& titler);
 			static void apply(Button& button);
 			static void apply(Slider& slider);

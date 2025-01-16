@@ -4,7 +4,7 @@
 namespace pizdanc {
 	DebugPage::DebugPage() {
 		rows.setWidth(140);
-		rows.setAlignment(Alignment::Center);
+		rows.setAlignment(Alignment::center);
 
 		// Slider
 		Theme::apply(slider);
