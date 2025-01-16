@@ -7,10 +7,10 @@
 
 #include "../../theme.h"
 
-using namespace yoba;
-using namespace yoba::ui;
-
 namespace pizdanc {
+	using namespace yoba;
+	using namespace yoba::ui;
+
 	class PFD : public Element {
 		public:
 			PFD();

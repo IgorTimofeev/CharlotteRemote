@@ -2,9 +2,9 @@
 
 #include "../elements/rows.h"
 
-using namespace yoba::ui;
-
 namespace pizdanc {
+	using namespace yoba::ui;
+
 	class Page : public Layout {
 		public:
 			virtual void setup() {

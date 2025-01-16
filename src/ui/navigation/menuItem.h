@@ -7,10 +7,10 @@
 
 #include "../theme.h"
 
-using namespace yoba;
-using namespace yoba::ui;
-
 namespace pizdanc {
+	using namespace yoba;
+	using namespace yoba::ui;
+
 	class MenuItem : public SelectorItem {
 		public:
 			explicit MenuItem(const std::wstring_view& text) {

@@ -5,9 +5,9 @@
 #include "pfd.h"
 #include "instruments/instrumentsLayout.h"
 
-using namespace yoba;
-
 namespace pizdanc {
+	using namespace yoba;
+
 	class PFDPage : public Page {
 		public:
 			PFDPage();

@@ -9,10 +9,10 @@
 #include "ui/elements/titler.h"
 #include "ui/elements/rows.h"
 
-using namespace yoba;
-using namespace yoba::ui;
-
 namespace pizdanc {
+	using namespace yoba;
+	using namespace yoba::ui;
+
 	class DebugPage : public RowsPage {
 		public:
 			DebugPage();

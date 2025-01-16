@@ -5,17 +5,20 @@
 #include "../../lib/YOBA/src/hardware/touchPanels.h"
 #include "../../lib/YOBA/src/ui.h"
 
+#include "interpolator.h"
+
 #include "hardware/transceiver/transceiver.h"
 #include "hardware/onboard_led.h"
-#include "theme.h"
-#include "../interpolator.h"
-#include "../ui/navigation/menu.h"
 
-using namespace yoba;
-using namespace yoba::hardware;
-using namespace yoba::ui;
+#include "ui/theme.h"
+#include "ui/navigation/page.h"
+#include "ui/navigation/menu.h"
 
 namespace pizdanc {
+	using namespace yoba;
+	using namespace yoba::hardware;
+	using namespace yoba::ui;
+
 	class MutualData {
 		public:
 			uint8_t getThrottle() const;
@@ -143,7 +146,7 @@ namespace pizdanc {
 
 			ILI9341Display _display = ILI9341Display(
 				ColorModel::Rgb565,
-				RenderTargetOrientation::Clockwise270,
+				RenderingOrientation::Clockwise270,
 				settings::pinout::screen::chipSelect,
 				settings::pinout::screen::dataCommand,
 				settings::pinout::screen::reset

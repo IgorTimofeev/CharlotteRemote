@@ -3,20 +3,16 @@
 #include "settings.h"
 #include "ui/navigation/menu.h"
 
-using namespace yoba;
-
 namespace pizdanc {
+	using namespace yoba;
+
 	RCApplication& RCApplication::getInstance() {
 		static RCApplication instance;
 
 		return instance;
 	}
 
-	RCApplication::RCApplication() :
-		Application(
-			&_renderer
-		)
-	{
+	RCApplication::RCApplication() : Application(&_renderer){
 
 	}
 

@@ -8,10 +8,10 @@
 #include "../../elements/titler.h"
 #include "../../elements/rows.h"
 
-using namespace yoba;
-using namespace yoba::ui;
-
 namespace pizdanc {
+	using namespace yoba;
+	using namespace yoba::ui;
+
 	class AutopilotSelector : public Layout {
 		public:
 			explicit AutopilotSelector(uint8_t digitCount, const std::wstring_view& titleText, const std::wstring_view& buttonText);

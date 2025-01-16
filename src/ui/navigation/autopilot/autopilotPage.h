@@ -10,9 +10,9 @@
 #include "../../elements/rows.h"
 #include "autopilotSelector.h"
 
-using namespace yoba;
-
 namespace pizdanc {
+	using namespace yoba;
+
 	class AutopilotPage : public Page {
 		public:
 			void setup() override;

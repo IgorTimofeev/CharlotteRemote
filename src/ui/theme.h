@@ -6,10 +6,10 @@
 #include "../../lib/YOBA/src/resources/fonts/Vaticanus8Font.h"
 #include "../../lib/YOBA/src/resources/fonts/unscii16Font.h"
 
-using namespace yoba;
-using namespace yoba::ui;
-
 namespace pizdanc {
+	using namespace yoba;
+	using namespace yoba::ui;
+
 	class Theme {
 		public:
 			static const PaletteColor bg1;

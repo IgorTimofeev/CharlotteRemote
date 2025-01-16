@@ -4,9 +4,9 @@
 #include "ui/theme.h"
 #include "PFDFCSImage.h"
 
-using namespace yoba;
-
 namespace pizdanc {
+	using namespace yoba;
+
 	class ControlsIndicator : public ImageView {
 		public:
 			ControlsIndicator();

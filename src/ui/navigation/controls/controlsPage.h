@@ -10,10 +10,10 @@
 
 #include "backImage.h"
 
-using namespace yoba;
-using namespace yoba::ui;
-
 namespace pizdanc {
+	using namespace yoba;
+	using namespace yoba::ui;
+
 	class PizdaImageView : public ImageView {
 		public:
 			PizdaImageView();

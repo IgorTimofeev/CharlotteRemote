@@ -3,10 +3,10 @@
 #include "../../../lib/YOBA/src/ui.h"
 #include "../theme.h"
 
-using namespace yoba;
-using namespace yoba::ui;
-
 namespace pizdanc {
+	using namespace yoba;
+	using namespace yoba::ui;
+
 	class Titler : public StackLayout {
 		public:
 			Titler() {

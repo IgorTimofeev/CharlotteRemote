@@ -3,9 +3,9 @@
 #include "ui/element.h"
 #include "ui/theme.h"
 
-using namespace yoba;
-
 namespace pizdanc {
+	using namespace yoba;
+
 	class TrimIndicator : public Element {
 		public:
 			void render(Renderer* renderer) override {
