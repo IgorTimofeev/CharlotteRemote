@@ -125,12 +125,27 @@ namespace pizdanc {
 		button->setFont(&Theme::fontNormal);
 	}
 
-	void Theme::apply(Slider* slider) {
-		slider->setHeight(elementHeight);
-		slider->setCornerRadius(cornerRadius);
+	void Theme::apply(Switch* sw) {
+		sw->setSize(Size(50, 20));
+		sw->setCornerRadius(10);
 
-		slider->setPrimaryColor(&Theme::bg3);
-		slider->setSecondaryColor(&Theme::accent1);
+		sw->setDefaultTrackColor(&Theme::bg3);
+		sw->setCheckedTrackColor(&Theme::accent1);
+
+		sw->setHandleColor(&Theme::fg1);
+	}
+
+	void Theme::apply(Slider* slider) {
+		slider->setHeight(14);
+
+		slider->setTrackSize(4);
+		slider->setTrackCornerRadius(2);
+		slider->setDefaultTrackColor(&Theme::bg3);
+		slider->setActiveTrackColor(&Theme::accent1);
+
+		slider->setHandleSize(14);
+		slider->setHandleCornerRadius(7);
+		slider->setHandleColor(&Theme::fg1);
 	}
 
 	void Theme::apply(ScrollView* scrollView) {

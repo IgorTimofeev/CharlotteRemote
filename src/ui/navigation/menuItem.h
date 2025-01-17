@@ -2,8 +2,8 @@
 
 #include "Arduino.h"
 
-#include "../../../../lib/yoba/src/main.h"
-#include "../../../../lib/yoba/src/ui.h"
+#include "../../../lib/yoba/src/main.h"
+#include "../../../lib/yoba/src/ui.h"
 
 #include "../theme.h"
 

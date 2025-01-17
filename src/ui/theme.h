@@ -53,7 +53,7 @@ namespace pizdanc {
 			static const Vaticanus8Font fontSmall;
 //			static const unscii16Font fontBig;
 
-			static const uint16_t elementHeight = 26;
+			static const uint16_t elementHeight = 28;
 			static const uint16_t cornerRadius = 3;
 
 			static void setup(Bit8PaletteBufferedRenderer* renderer);
@@ -63,5 +63,6 @@ namespace pizdanc {
 			static void apply(TextField* textField);
 			static void apply(ScrollView* scrollView);
 			static void applyPageTitle(Text* text);
+			static void apply(Switch* sw);
 	};
 }

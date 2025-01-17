@@ -14,11 +14,21 @@ namespace pizdanc {
 		{
 			auto slider = new Slider();
 			Theme::apply(slider);
-			slider->setValue(0);
+			slider->setValue(0.8f);
 
 			auto sliderTitle = new Titler(L"Slider", slider);
 			Theme::apply(sliderTitle);
 			*rows += sliderTitle;
+		}
+
+		// Switch
+		{
+			auto sw = new Switch();
+			Theme::apply(sw);
+
+			auto swTitle = new Titler(L"Switch", sw);
+			Theme::apply(swTitle);
+			*rows += swTitle;
 		}
 
 		// Equal
@@ -43,6 +53,19 @@ namespace pizdanc {
 			*rows += equalLayoutTitle;
 		}
 
+		// TextField
+		{
+			auto textField = new TextField();
+			Theme::apply(textField);
+			textField->setText(L"Hello world pizda eblo ssanina penis chlen vagina");
+			textField->setCursorToEnd();
+
+			auto textFieldTitle = new Titler(L"Text", textField);
+			Theme::apply(textFieldTitle);
+
+			*rows += textFieldTitle;
+		}
+
 		// Buttons
 		{
 			static std::wstringstream stream;
@@ -61,19 +84,6 @@ namespace pizdanc {
 
 				*rows += buttonTitle;
 			}
-		}
-
-		// TextField
-		{
-			auto textField = new TextField();
-			Theme::apply(textField);
-			textField->setText(L"Hello world pizda eblo ssanina penis chlen vagina");
-			textField->setCursorToEnd();
-
-			auto textFieldTitle = new Titler(L"Text", textField);
-			Theme::apply(textFieldTitle);
-
-			*rows += textFieldTitle;
 		}
 
 		*scrollView += rows;
