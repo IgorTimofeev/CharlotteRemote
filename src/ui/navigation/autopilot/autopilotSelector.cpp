@@ -46,6 +46,7 @@ namespace pizdanc {
 		button.setPressedPrimaryColor(&Theme::fg1);
 		button.setSecondaryColor(&Theme::fg1);
 		button.setPressedSecondaryColor(&Theme::bg2);
+		button.setFont(&Theme::fontNormal);
 		button.setText(buttonText);
 		rows += &button;
 

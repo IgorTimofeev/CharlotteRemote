@@ -322,7 +322,6 @@ namespace pizdanc {
 
 		int32_t lineValue = (int32_t) (snappedInteger + 1) * speedStepUnits + altitudeYFullLines * speedStepUnits;
 
-		Size textSize;
 		bool isBig;
 		const Color* lineColor = &Theme::fg3;
 
@@ -585,7 +584,6 @@ namespace pizdanc {
 			lineRight;
 
 		std::wstringstream stream;
-		Size textSize;
 		const Color* color;
 
 		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += pitchOverlayAngleStep) {
@@ -700,7 +698,6 @@ namespace pizdanc {
 		uint8_t lineLength;
 
 		std::wstringstream stream;
-		Size textSize;
 		int32_t lineY;
 
 		while (x <= bounds.getX2()) {
@@ -821,7 +818,7 @@ namespace pizdanc {
 				bounds.getX(),
 				bounds.getY() + pitchOverlayMarginTop,
 				bounds.getWidth(),
-				bounds.getHeight() - pitchOverlayMarginTop - yawOverlayHeight - pitchOverlayMarginBottom
+				bounds.getHeight() - pitchOverlayMarginTop - yawOverlayHeight
 			),
 			unfoldedFovHeight,
 			horizonLeft,
@@ -881,7 +878,6 @@ namespace pizdanc {
 
 		int32_t lineValue = (int32_t) (snappedInteger + 1) * altitudeStepUnits + yFullLines * altitudeStepUnits;
 
-		Size textSize;
 		bool isBig;
 
 		const Color* lineColor = &Theme::fg3;
@@ -999,7 +995,6 @@ namespace pizdanc {
 		int32_t y = centerY;
 		int32_t lineValue = 0;
 
-		Size textSize;
 		bool isBig;
 
 		auto renderLines = [&](int32_t yAdder) {

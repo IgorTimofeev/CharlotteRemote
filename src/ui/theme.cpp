@@ -8,22 +8,36 @@ namespace pizdanc {
 	const PaletteColor Theme::bg3 = PaletteColor(2);
 	const PaletteColor Theme::bg4 = PaletteColor(3);
 	const PaletteColor Theme::bg5 = PaletteColor(4);
+	const PaletteColor Theme::bg6 = PaletteColor(5);
+	const PaletteColor Theme::bg7 = PaletteColor(6);
 
-	const PaletteColor Theme::fg1 = PaletteColor(5);
-	const PaletteColor Theme::fg2 = PaletteColor(6);
-	const PaletteColor Theme::fg3 = PaletteColor(7);
-	const PaletteColor Theme::fg4 = PaletteColor(8);
+	const PaletteColor Theme::fg1 = PaletteColor(7);
+	const PaletteColor Theme::fg2 = PaletteColor(8);
+	const PaletteColor Theme::fg3 = PaletteColor(9);
+	const PaletteColor Theme::fg4 = PaletteColor(10);
+	const PaletteColor Theme::fg5 = PaletteColor(11);
+	const PaletteColor Theme::fg6 = PaletteColor(12);
+	const PaletteColor Theme::fg7 = PaletteColor(13);
 
-	const PaletteColor Theme::red = PaletteColor(9);
-	const PaletteColor Theme::purple = PaletteColor(10);
-	const PaletteColor Theme::green = PaletteColor(11);
-	const PaletteColor Theme::greenSpeed = PaletteColor(12);
-	const PaletteColor Theme::yellow = PaletteColor(13);
-	const PaletteColor Theme::blue = PaletteColor(14);
-	const PaletteColor Theme::ground = PaletteColor(15);
-	const PaletteColor Theme::ground2 = PaletteColor(16);
-	const PaletteColor Theme::sky = PaletteColor(17);
-	const PaletteColor Theme::sky2 = PaletteColor(18);
+	const PaletteColor Theme::accent1 = PaletteColor(14);
+	const PaletteColor Theme::accent2 = PaletteColor(15);
+
+	const PaletteColor Theme::good1 = PaletteColor(16);
+	const PaletteColor Theme::good2 = PaletteColor(17);
+
+	const PaletteColor Theme::bad1 = PaletteColor(18);
+	const PaletteColor Theme::bad2 = PaletteColor(19);
+
+	const PaletteColor Theme::red = PaletteColor(20);
+	const PaletteColor Theme::purple = PaletteColor(21);
+	const PaletteColor Theme::green = PaletteColor(22);
+	const PaletteColor Theme::greenSpeed = PaletteColor(23);
+	const PaletteColor Theme::yellow = PaletteColor(24);
+	const PaletteColor Theme::blue = PaletteColor(25);
+	const PaletteColor Theme::ground = PaletteColor(26);
+	const PaletteColor Theme::ground2 = PaletteColor(27);
+	const PaletteColor Theme::sky = PaletteColor(28);
+	const PaletteColor Theme::sky2 = PaletteColor(29);
 
 	const PIXY10Font Theme::fontNormal = PIXY10Font();
 	const Vaticanus8Font Theme::fontSmall = Vaticanus8Font();
@@ -37,11 +51,33 @@ namespace pizdanc {
 			Rgb888Color(0x1C1C1C),
 			Rgb888Color(0x2C2C2C),
 			Rgb888Color(0x3C3C3C),
+			Rgb888Color(0x4C4C4C),
+			Rgb888Color(0x5C5C5C),
+
 			// Foreground
 			Rgb888Color(0xF0F0F0),
 			Rgb888Color(0xDDDDDD),
 			Rgb888Color(0x999999),
 			Rgb888Color(0x777777),
+			Rgb888Color(0x888888),
+			Rgb888Color(0x999999),
+			Rgb888Color(0xAAAAAA),
+
+			// Accent 1
+			Rgb888Color(0xffd200),
+			// Accent 2
+			Rgb888Color(0x997e53),
+
+			// Good 1
+			Rgb888Color(0x1db153),
+			// Good 2
+			Rgb888Color(0x28DA69),
+
+			// Bad 1
+			Rgb888Color(0x9f2d2d),
+			// Bad 2
+			Rgb888Color(0xf24949),
+
 			// Red
 			Rgb888Color(0xff0000),
 			// Purple
@@ -65,6 +101,12 @@ namespace pizdanc {
 		});
 	}
 
+	void Theme::applyPageTitle(Text* text) {
+		text->setPrimaryColor(&Theme::fg1);
+		text->setFont(&Theme::fontNormal);
+		text->setMargin(Margin(0, 0, 0, 8));
+	}
+
 	void Theme::apply(Titler* titler) {
 		titler->getTitle().setPrimaryColor(&Theme::fg3);
 		titler->getTitle().setFont(&Theme::fontNormal);
@@ -74,11 +116,11 @@ namespace pizdanc {
 		button->setHeight(elementHeight);
 		button->setCornerRadius(cornerRadius);
 
-		button->setPrimaryColor(&Theme::yellow);
-		button->setPressedPrimaryColor(&Theme::purple);
+		button->setPrimaryColor(&Theme::accent1);
+		button->setPressedPrimaryColor(&Theme::accent2);
 
-		button->setSecondaryColor(&Theme::fg1);
-		button->setPressedSecondaryColor(&Theme::fg1);
+		button->setSecondaryColor(&Theme::bg1);
+		button->setPressedSecondaryColor(&Theme::bg1);
 
 		button->setFont(&Theme::fontNormal);
 	}
@@ -88,7 +130,7 @@ namespace pizdanc {
 		slider->setCornerRadius(cornerRadius);
 
 		slider->setPrimaryColor(&Theme::bg3);
-		slider->setSecondaryColor(&Theme::yellow);
+		slider->setSecondaryColor(&Theme::accent1);
 	}
 
 	void Theme::apply(ScrollView* scrollView) {
@@ -109,9 +151,9 @@ namespace pizdanc {
 		textField->setFocusedSecondaryColor(&Theme::fg1);
 
 		textField->setBorderColor(&Theme::bg4);
-		textField->setFocusedBorderColor(&Theme::yellow);
+		textField->setFocusedBorderColor(&Theme::accent1);
 
-		textField->setCursorColor(&Theme::yellow);
+		textField->setCursorColor(&Theme::accent1);
 
 		textField->setFont(&Theme::fontNormal);
 

@@ -4,42 +4,81 @@
 
 namespace pizdanc {
 	DebugPage::DebugPage() {
-		rows.setMargin(Margin(60, 20));
+		auto scrollView = new ScrollView();
+
+		auto rows = new StackLayout(Orientation::vertical, 10);
+
+		rows->setMargin(Margin(60, 20));
 
 		// Slider
-		Theme::apply(&slider);
-		Theme::apply(&sliderTitle);
-		slider.setValue(0);
-		rows += &sliderTitle;
+		{
+			auto slider = new Slider();
+			Theme::apply(slider);
+			slider->setValue(0);
 
-		// Buttons
-		static std::wstringstream stream;
-
-		for (uint8_t i = 0; i < 5; i++) {
-			stream.str(std::wstring());
-			stream << L"Button ";
-			stream << i;
-
-			auto button = new Button[5];
-			Theme::apply(button);
-			button->setText(L"Click");
-
-			auto buttonTitle = new Titler(stream.str(), button);
-			Theme::apply(buttonTitle);
-
-			rows += buttonTitle;
+			auto sliderTitle = new Titler(L"Slider", slider);
+			Theme::apply(sliderTitle);
+			*rows += sliderTitle;
 		}
 
-		// Text
-		Theme::apply(&textField);
-		Theme::apply(&textFieldTitle);
-		textField.setText(L"Hello world pizda eblo ssanina penis chlen vagina");
-		textField.setCursorToEnd();
-		rows += &textFieldTitle;
+		// Equal
+		{
+			auto row = new EqualStackLayout(Orientation::horizontal, 10);
 
-		scrollView += &rows;
+			auto textField = new TextField();
+			Theme::apply(textField);
+			textField->setText(L"Hello world");
+			textField->setCursorToEnd();
+			*row += textField;
 
-		Theme::apply(&scrollView);
-		*this += &scrollView;
+			auto button = new Button();
+			Theme::apply(button);
+			button->setWidth(36);
+			button->setText(L".!.");
+			row->setFit(button);
+			*row += button;
+
+			auto equalLayoutTitle = new Titler(L"Equal layout", row);
+			Theme::apply(equalLayoutTitle);
+			*rows += equalLayoutTitle;
+		}
+
+		// Buttons
+		{
+			static std::wstringstream stream;
+
+			for (uint8_t i = 0; i < 5; i++) {
+				stream.str(std::wstring());
+				stream << L"Button ";
+				stream << i;
+
+				auto button = new Button();
+				Theme::apply(button);
+				button->setText(L"Click");
+
+				auto buttonTitle = new Titler(stream.str(), button);
+				Theme::apply(buttonTitle);
+
+				*rows += buttonTitle;
+			}
+		}
+
+		// TextField
+		{
+			auto textField = new TextField();
+			Theme::apply(textField);
+			textField->setText(L"Hello world pizda eblo ssanina penis chlen vagina");
+			textField->setCursorToEnd();
+
+			auto textFieldTitle = new Titler(L"Text", textField);
+			Theme::apply(textFieldTitle);
+
+			*rows += textFieldTitle;
+		}
+
+		*scrollView += rows;
+
+		Theme::apply(scrollView);
+		*this += scrollView;
 	}
 }
