@@ -70,6 +70,8 @@ namespace pizdanc {
 			// Pitch overlay
 			static const Color* pitchOverlayColorSky;
 			static const Color* pitchOverlayColorGround;
+			static const uint8_t pitchOverlayMarginTop = 30;
+			static const uint8_t pitchOverlayMarginBottom = 10;
 			static const uint8_t pitchOverlayAngleStep = 5;
 			static const uint8_t pitchOverlayLineSmall = 5;
 			static const uint8_t pitchOverlayLineBig = 10;
@@ -88,13 +90,9 @@ namespace pizdanc {
 
 			// Roll overlay
 			static const Color* rollOverlayColor;
-			static const uint8_t rollOverlayHeight = 30;
-			static const uint8_t rollOverlayAngleStep = 2;
-			static const uint8_t rollOverlayFromToAngle = 30;
-			static const uint8_t rollOverlayLinesCount = rollOverlayFromToAngle / rollOverlayAngleStep;
+			static const uint8_t rollOverlayHorizontalMargin = 5;
 			static const uint8_t rollOverlayLineSmallLength = 2;
-			static const uint8_t rollOverlayLineBigLength = 4;
-			static const uint8_t rollOverlayTextOffset = 5;
+			static const uint8_t rollOverlayLineBigLength = 7;
 			static const uint8_t rollOverlayTriangleSize = yawOverlayLineBigLength;
 
 			// 3D

@@ -343,7 +343,6 @@ namespace pizdanc {
 				// Text
 				static std::wstringstream stream;
 				stream.str(std::wstring());
-				stream.clear();
 
 				stream << lineValue;
 
@@ -614,7 +613,6 @@ namespace pizdanc {
 
 			if (lineAngleDeg != 0 && lineAngleDeg % 10 == 0) {
 				stream.str(std::wstring());
-				stream.clear();
 
 				stream << abs(lineAngleDeg);
 
@@ -638,58 +636,36 @@ namespace pizdanc {
 		const Bounds& bounds,
 		float roll
 	) {
-		const auto viewport = renderer->pushViewport(bounds);
+		const auto radius = (float) ((bounds.getWidth() - rollOverlayHorizontalMargin * 2) / 2);
 
-		const float radius = (float) bounds.getWidth() * 1.0f;
-
-		const auto center = Point(
+		const auto& center = Point(
 			bounds.getXCenter(),
-			bounds.getY() + ((uint16_t) radius) + 2
+			bounds.getY() + ((uint16_t) radius)
 		);
 
-		float closestInteger;
-		float closestFractional = modff(degrees(roll) / (float) rollOverlayAngleStep, &closestInteger);
-		closestInteger *= (float) rollOverlayAngleStep;
-
-		Size textSize;
-
-		for (int8_t i = -rollOverlayLinesCount; i <= rollOverlayLinesCount; i++) {
-			const float angle = (float) i * (float) rollOverlayAngleStep;
-
-			const auto angleDisplay = (int16_t) round(closestInteger + angle);
-			const auto isBig = angleDisplay % 10 == 0;
-			const auto& vec = Vector2F(0, -radius).rotate((float) radians(angle - closestFractional * rollOverlayAngleStep));
-			const auto& lineTo = center + (Point) vec;
+		const auto& renderLine = [renderer, &roll, &radius, &center](int8_t angle, bool isBig) {
+			const auto& vec = Vector2F(0, radius).rotate(radians(angle) - roll);
+			const auto& lineTo = center - (Point) vec;
 			const auto& lineFrom = lineTo + (Point) (vec.normalize() * (isBig ? rollOverlayLineBigLength : rollOverlayLineSmallLength));
 
-			// Line
 			renderer->renderLine(
 				lineTo,
 				lineFrom,
 				rollOverlayColor
 			);
+		};
 
-			// Text
-			if (isBig) {
-				static std::wstringstream stream;
-				stream.str(std::wstring());
-				stream.clear();
-
-				stream << angleDisplay;
-
-				const auto& text = stream.str();
-
-				renderer->renderText(
-					Point(
-						lineFrom.getX() - Theme::fontSmall.getWidth(text) / 2,
-						lineFrom.getY() + rollOverlayTextOffset
-					),
-					&Theme::fontSmall,
-					rollOverlayColor,
-					text
-				);
-			}
-		}
+		renderLine(-60, true);
+		renderLine(-45, true);
+		renderLine(-30, false);
+		renderLine(-20, false);
+		renderLine(-10, false);
+		renderLine(0, true);
+		renderLine(10, false);
+		renderLine(20, false);
+		renderLine(30, false);
+		renderLine(45, true);
+		renderLine(60, true);
 
 		// Small triangle representing current roll
 		renderer->renderFilledTriangle(
@@ -698,8 +674,6 @@ namespace pizdanc {
 			Point(center.getX(), bounds.getY() + rollOverlayTriangleSize),
 			rollOverlayColor
 		);
-
-		renderer->popViewport(viewport);
 	}
 
 	void PFD::renderYawOverlay(
@@ -748,7 +722,6 @@ namespace pizdanc {
 			// Text
 			if (isBig) {
 				stream.str(std::wstring());
-				stream.clear();
 
 				switch (angle) {
 					case 0:
@@ -837,12 +810,7 @@ namespace pizdanc {
 		// Roll overlay
 		renderRollOverlay(
 			renderer,
-			Bounds(
-				bounds.getX(),
-				bounds.getY(),
-				bounds.getWidth(),
-				rollOverlayHeight
-			),
+			bounds,
 			roll
 		);
 
@@ -851,9 +819,9 @@ namespace pizdanc {
 			renderer,
 			Bounds(
 				bounds.getX(),
-				bounds.getY() + rollOverlayHeight,
+				bounds.getY() + pitchOverlayMarginTop,
 				bounds.getWidth(),
-				bounds.getHeight() - rollOverlayHeight - yawOverlayHeight
+				bounds.getHeight() - pitchOverlayMarginTop - yawOverlayHeight - pitchOverlayMarginBottom
 			),
 			unfoldedFovHeight,
 			horizonLeft,
@@ -931,7 +899,6 @@ namespace pizdanc {
 				// Text
 				static std::wstringstream stream;
 				stream.str(std::wstring());
-				stream.clear();
 
 				stream << lineValue;
 
@@ -1051,7 +1018,6 @@ namespace pizdanc {
 
 					static std::wstringstream stream;
 					stream.str(std::wstring());
-					stream.clear();
 
 					stream << lineValue / 100;
 
@@ -1116,7 +1082,6 @@ namespace pizdanc {
 	void PFD::renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, float autopilotValue, bool left) {
 		static std::wstringstream stream;
 		stream.str(std::wstring());
-		stream.clear();
 
 		if (autopilotValue > 0) {
 			stream << (int32_t) autopilotValue;
@@ -1174,7 +1139,6 @@ namespace pizdanc {
 
 		static std::wstringstream stream;
 		stream.str(std::wstring());
-		stream.clear();
 
 		switch (app.getLocalData().getAltimeterMode()) {
 			case AltimeterMode::QNH:
