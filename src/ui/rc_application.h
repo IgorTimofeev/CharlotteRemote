@@ -113,6 +113,7 @@ namespace pizdanc {
 			static RCApplication& getInstance();
 
 			void setup() override;
+
 			void tick() override;
 
 			LocalData& getLocalData();
@@ -138,6 +139,9 @@ namespace pizdanc {
 			Interpolator& getAileronsTrimInterpolator();
 			Interpolator& getElevatorTrimInterpolator();
 			Interpolator& getRudderTrimInterpolator();
+
+		protected:
+			void onRender(Renderer* renderer) override;
 
 		private:
 			// -------------------------------- Hardware --------------------------------
@@ -203,6 +207,8 @@ namespace pizdanc {
 
 			LocalData _localData {};
 			RemoteData _remoteData {};
+
+			uint32_t _lastTickDeltaTime;
 
 			void simulateFlightData();
 	};

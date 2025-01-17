@@ -92,9 +92,10 @@ namespace pizdanc {
 	}
 
 	void Theme::apply(ScrollView* scrollView) {
-		scrollView->setScrollBarSize(4);
-		scrollView->setScrollBarOffset(4);
-		scrollView->setScrollBarColor(&Theme::yellow);
+		scrollView->setScrollBarSize(3);
+		scrollView->setScrollBarCornerRadius(1);
+		scrollView->setScrollBarOffset(3);
+		scrollView->setScrollBarColor(&Theme::bg3);
 	}
 
 	void Theme::apply(TextField* textField) {

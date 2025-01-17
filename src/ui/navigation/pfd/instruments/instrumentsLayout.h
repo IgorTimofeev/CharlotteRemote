@@ -15,7 +15,8 @@ namespace pizdanc {
 		public:
 			InstrumentsLayout();
 
-			void tick() override;
+		protected:
+			void onTick() override;
 
 		private:
 			StackLayout _rows {};

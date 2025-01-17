@@ -65,8 +65,8 @@ namespace pizdanc {
 		*this += &_rows;
 	}
 
-	void InstrumentsLayout::tick() {
-		Layout::tick();
+	void InstrumentsLayout::onTick() {
+		Layout::onTick();
 
 		auto app = &RCApplication::getInstance();
 

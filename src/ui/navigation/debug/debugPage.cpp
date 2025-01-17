@@ -4,7 +4,7 @@
 
 namespace pizdanc {
 	DebugPage::DebugPage() {
-		rows.setMargin(Margin(40, 20));
+		rows.setMargin(Margin(60, 20));
 
 		// Slider
 		Theme::apply(&slider);
@@ -17,7 +17,6 @@ namespace pizdanc {
 
 		for (uint8_t i = 0; i < 5; i++) {
 			stream.str(std::wstring());
-			stream.clear();
 			stream << L"Button ";
 			stream << i;
 

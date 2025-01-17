@@ -39,9 +39,26 @@ namespace pizdanc {
 	}
 
 	void RCApplication::tick() {
+		uint32_t tickTime = millis();
+
 		simulateFlightData();
 
 		Application::tick();
+
+		_lastTickDeltaTime = millis() - tickTime;
+	}
+
+	void RCApplication::onRender(Renderer* renderer) {
+		Layout::onRender(renderer);
+
+		// Debug info
+		int32_t y = 0;
+
+		static std::wstringstream stream;
+		stream.str(std::wstring());
+		stream << "FPS: ";
+		stream << (_lastTickDeltaTime == 0 ? 0 : 1000 / _lastTickDeltaTime);
+		renderer->renderText(Point(y, 0), &Theme::fontSmall, &Theme::purple, stream.str());
 	}
 
 	void RCApplication::simulateFlightData() {
