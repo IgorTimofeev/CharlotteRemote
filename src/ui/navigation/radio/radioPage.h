@@ -11,7 +11,7 @@ namespace pizdanc {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class RadioPage : public RowsPage {
+	class RadioPage : public Page {
 		public:
 			RadioPage() {
 				

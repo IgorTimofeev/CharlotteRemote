@@ -347,7 +347,7 @@ namespace pizdanc {
 
 				const auto& text = stream.str();
 
-				renderer->renderText(
+				renderer->renderString(
 					Point(
 						bounds.getX2() + 1 - speedBarSize - lineSizeBig - 5 - Theme::fontNormal.getWidth(text),
 						y - Theme::fontNormal.getHeight() / 2
@@ -526,12 +526,12 @@ namespace pizdanc {
 					bounds.getX(),
 					groundMaxY,
 					bounds.getWidth(),
-					bounds.getHeight() - groundMaxY
+					bounds.getY2() - groundMaxY + 1
 				),
 				&Theme::ground
 			);
 		}
-			// Left
+		// Left
 		else if (horizonLeft.getY() < bounds.getY() && horizonLeft.getX() > bounds.getX()) {
 			renderer->renderFilledRectangle(
 				Bounds(
@@ -614,7 +614,7 @@ namespace pizdanc {
 
 				stream << abs(lineAngleDeg);
 
-				renderer->renderText(
+				renderer->renderString(
 					Point(
 						lineRight.getX() + pitchOverlayTextOffset,
 						lineRight.getY() - Theme::fontSmall.getHeight() / 2
@@ -744,7 +744,7 @@ namespace pizdanc {
 
 				const auto& text = stream.str();
 
-				renderer->renderText(
+				renderer->renderString(
 					Point(
 						x - Theme::fontSmall.getWidth(text) / 2,
 						lineY - yawOverlayTextOffset - Theme::fontSmall.getHeight()
@@ -900,7 +900,7 @@ namespace pizdanc {
 
 				const auto& text = stream.str();
 
-				renderer->renderText(
+				renderer->renderString(
 					Point(x + lineSizeBig + 5, y - Theme::fontNormal.getHeight() / 2),
 					&Theme::fontNormal,
 					lineColor,
@@ -1018,7 +1018,7 @@ namespace pizdanc {
 
 					const auto& text = stream.str();
 
-					renderer->renderText(
+					renderer->renderString(
 						Point(
 							bounds.getX() + lineSizeBig + 4,
 							y - Theme::fontNormal.getHeight() / 2
@@ -1063,7 +1063,7 @@ namespace pizdanc {
 		renderer->renderFilledRectangle(bounds, bg);
 
 		// Text
-		renderer->renderText(
+		renderer->renderString(
 			Point(
 				bounds.getX() + textXOffset + (bounds.getWidth() - textXOffset) / 2 - Theme::fontSmall.getWidth(text) / 2,
 				bounds.getY() + miniHeight / 2 - Theme::fontSmall.getHeight() / 2

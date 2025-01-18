@@ -6,6 +6,7 @@
 #include "../../../lib/yoba/src/ui.h"
 
 #include "../theme.h"
+#include "page.h"
 
 namespace pizdanc {
 	using namespace yoba;
@@ -40,14 +41,13 @@ namespace pizdanc {
 
 	class MenuItem : public SelectorItem, public TextElement {
 		public:
-			explicit MenuItem(const std::wstring_view& text) {
+			MenuItem(const std::wstring_view& text, const std::function<Page*()>& pageBuilder) : _pageBuilder(pageBuilder) {
 				// Selection
 				_selectionBackground.setPrimaryColor(&Theme::bg3);
 				*this += &_selectionBackground;
 
 				// Text
 				_text.setAlignment(Alignment::center);
-				_text.setMargin(Margin(8, 0, 8, 2));
 				_text.setFont(&Theme::fontNormal);
 				_text.setText(text);
 				*this += &_text;
@@ -68,10 +68,15 @@ namespace pizdanc {
 				updateVisualsFromSelection();
 			}
 
+			const std::function<Page*()>& getPageBuilder() const {
+				return _pageBuilder;
+			}
+
 		private:
 			Rectangle _selectionBackground = Rectangle();
 			TaxiDots _dots = TaxiDots();
 			Text _text = Text();
+			std::function<Page*()> _pageBuilder;
 
 			void updateVisualsFromSelection() {
 				_selectionBackground.setVisible(isSelected());

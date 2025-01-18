@@ -140,6 +140,10 @@ namespace pizdanc {
 			Interpolator& getElevatorTrimInterpolator();
 			Interpolator& getRudderTrimInterpolator();
 
+			bool getShowDebugInfo() const;
+
+			void setShowDebugInfo(bool showDebugInfo);
+
 		protected:
 			void onRender(Renderer* renderer) override;
 
@@ -150,7 +154,7 @@ namespace pizdanc {
 
 			ILI9341Display _display = ILI9341Display(
 				ColorModel::rgb565,
-				RenderTargetOrientation::clockwise270,
+				RenderTargetOrientation::clockwise0,
 				settings::pinout::screen::chipSelect,
 				settings::pinout::screen::dataCommand,
 				settings::pinout::screen::reset
@@ -208,6 +212,7 @@ namespace pizdanc {
 			LocalData _localData {};
 			RemoteData _remoteData {};
 
+			bool _showDebugInfo = false;
 			uint32_t _lastTickDeltaTime;
 
 			void simulateFlightData();

@@ -24,12 +24,11 @@ namespace pizdanc {
 			const uint8_t maxPixelValue = 12;
 	};
 
-	class ControlsPage : public RowsPage {
+	class ControlsPage : public Page {
 		public:
 			ControlsPage() {
-				rows.setAlignment(Alignment::center);
-
-				rows += &controls;
+				controls.setAlignment(Alignment::center);
+				*this += &controls;
 			}
 
 			ControlsView controls = ControlsView();

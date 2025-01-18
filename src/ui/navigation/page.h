@@ -4,22 +4,17 @@
 #include "../../../lib/yoba/src/ui.h"
 
 namespace pizdanc {
+	using namespace yoba;
 	using namespace yoba::ui;
 
 	class Page : public Layout {
 		public:
+			virtual ~Page() {
+				Serial.println("Page deleted!");
+			}
+
 			virtual void setup() {
 
 			}
-	};
-
-	class RowsPage : public Page {
-		public:
-			RowsPage() {
-				rows.setSpacing(10);
-				*this += &rows;
-			}
-
-			StackLayout rows = StackLayout();
 	};
 }

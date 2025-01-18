@@ -2,11 +2,11 @@
 
 namespace pizdanc {
 	PFDPage::PFDPage() {
-		_pfd.setMargin(Margin(0, 0, 54, 0));
+		_pfd.setMargin(Margin(0, 0, 0, InstrumentsLayout::panelSize));
 		*this += &_pfd;
 
-		_instrumentsLayout.setHorizontalAlignment(Alignment::end);
-		_instrumentsLayout.setWidth(_pfd.getMargin().getRight());
+		_instrumentsLayout.setVerticalAlignment(Alignment::end);
+		_instrumentsLayout.setHeight(InstrumentsLayout::panelSize);
 		*this += &_instrumentsLayout;
 	}
 }

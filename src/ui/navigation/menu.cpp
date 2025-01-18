@@ -1,49 +1,82 @@
 #include "menu.h"
+#include "debug/debugPage.h"
+#include "battery/batteryPage.h"
+#include "pfd/pfdPage.h"
+#include "autopilot/autopilotPage.h"
+#include "radio/radioPage.h"
+#include "controls/controlsPage.h"
 
 namespace pizdanc {
 	void Menu::setup() {
 		*this += &_background;
 
-		// Menu
-		const uint16_t menuHeight = 20;
-		_menu.setSize(Size(Size::computed, menuHeight));
-		_menu.setVerticalAlignment(Alignment::end);
-		_menu += &_menuBackground;
-
-		_menuItemsLayout.setOrientation(Orientation::horizontal);
-		_menu += &_menuItemsLayout;
-		setItemsLayout(&_menuItemsLayout);
-
-		*this += &_menu;
-
 		// Page
-		_pageLayout.setMargin(Margin(0, 0, 0, menuHeight));
+		_pageLayout.setMargin(Margin(0, 0, 0, selectorHeight));
 		*this += &_pageLayout;
 
+		// Items
+		_itemsHolder.setHeight(selectorHeight);
+		_itemsHolder.setVerticalAlignment(Alignment::end);
+
+		_itemsHolder += &_itemsBackground;
+
+		_itemsLayout.setOrientation(Orientation::horizontal);
+		_itemsHolder += &_itemsLayout;
+		setItemsLayout(&_itemsLayout);
+
+		*this += &_itemsHolder;
+
 		// Initialization
-		addPage(L"DBG", &_debugPage);
-		addPage(L"PFD", &_pfdPage);
-		addPage(L"A/P", &_autopilotPage);
-		addPage(L"CTL", &_controlsPage);
-		addPage(L"ENG", &_enginePage);
-		addPage(L"COM", &_radioPage);
-		addPage(L"BAT", &_batteryPage);
+//		addPage(L"PFD", &_PFDPage);
+//		addPage(L"A/P", &_autopilotPage);
+//		addPage(L"CTL", &_controlsPage);
+//		addPage(L"COM", &_radioPage);
+//		addPage(L"BAT", &_batteryPage);
+//		addPage(L"DBG", &_debugPage);
+
+		addItem(new MenuItem(L"PFD", []() {
+			return new PFDPage();
+		}));
+
+		addItem(new MenuItem(L"A/P", []() {
+			return new AutopilotPage();
+		}));
+
+		addItem(new MenuItem(L"CTL", []() {
+			return new ControlsPage();
+		}));
+
+		addItem(new MenuItem(L"COM", []() {
+			return new RadioPage();
+		}));
+
+		addItem(new MenuItem(L"BAT", []() {
+			return new BatteryPage();
+		}));
+
+		addItem(new MenuItem(L"DBG", []() {
+			return new DebugPage();
+		}));
 
 		setSelectedIndex(0);
 	}
 
 	void Menu::onSelectionChanged() {
-		_pageLayout.removeChildren();
+		auto selectedItem = reinterpret_cast<MenuItem*>(getSelectedItem());
 
-		if (getSelectedIndex() < 0)
+		if (!selectedItem)
 			return;
 
-		_pageLayout += _pages[getSelectedIndex()];
-	}
+		// Removing old page
+		if (_pageLayout.getChildrenCount() > 0) {
+			auto oldPage = dynamic_cast<Page*>(_pageLayout[0]);
+			_pageLayout.removeChildAt(0);
+			delete oldPage;
+		}
 
-	void Menu::addPage(const std::wstring_view& name, Page *page) {
-		page->setup();
-		_pages.push_back(page);
-		addItem(new MenuItem(name));
+		// Creating new page
+		auto newPage = selectedItem->getPageBuilder()();
+		newPage->setup();
+		_pageLayout += newPage;
 	}
 }

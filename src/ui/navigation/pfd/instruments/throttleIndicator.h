@@ -56,7 +56,7 @@ namespace pizdanc {
 				textBuffer << (int32_t) (_value * 100);
 				const auto text = textBuffer.str();
 
-				renderer->renderText(
+				renderer->renderString(
 					Point(
 						bounds.getX() + bounds.getWidth() / 2 - Theme::fontNormal.getWidth(text) / 2 + 1,
 						bounds.getY() + frameHeight + textOffset

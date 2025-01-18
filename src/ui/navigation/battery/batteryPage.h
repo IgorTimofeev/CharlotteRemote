@@ -11,7 +11,7 @@ namespace pizdanc {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class BatteryPage : public RowsPage {
+	class BatteryPage : public Page {
 		public:
 			BatteryPage() {
 

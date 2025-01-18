@@ -126,8 +126,8 @@ namespace pizdanc {
 	}
 
 	void Theme::apply(Switch* sw) {
-		sw->setSize(Size(50, 20));
-		sw->setCornerRadius(10);
+		sw->setSize(Size(48, 18));
+		sw->setCornerRadius(9);
 
 		sw->setDefaultTrackColor(&Theme::bg3);
 		sw->setCheckedTrackColor(&Theme::accent1);
@@ -173,13 +173,19 @@ namespace pizdanc {
 		textField->setFont(&Theme::fontNormal);
 
 		textField->setKeyboardConfigurator([](Keyboard* keyboard) {
-			keyboard->setKeyHeight(0.08f);
 			keyboard->setFont(&Theme::fontNormal);
 			keyboard->setBackgroundColor(&Theme::bg2);
-			keyboard->setDefaultButtonPrimaryColor(&Theme::bg4);
-			keyboard->setDefaultButtonSecondaryColor(&Theme::fg1);
-			keyboard->setActionButtonPrimaryColor(&Theme::bg3);
-			keyboard->setActionButtonSecondaryColor(&Theme::fg1);
+
+			keyboard->setKeyHeight(28);
+			keyboard->setKeyCornerRadius(0);
+
+			keyboard->setHorizontalKeySpacing(1);
+			keyboard->setVerticalKeySpacing(1);
+
+			keyboard->setDefaultKeyPrimaryColor(&Theme::bg4);
+			keyboard->setDefaultKeySecondaryColor(&Theme::fg1);
+			keyboard->setActionKeyPrimaryColor(&Theme::bg3);
+			keyboard->setActionKeySecondaryColor(&Theme::fg1);
 
 			keyboard->setCharactersLayoutBuilder([]() {
 				return new CharactersKeyboardLayout();

@@ -15,13 +15,15 @@ namespace pizdanc {
 		public:
 			InstrumentsLayout();
 
+			static const uint8_t panelSize = 50;
+
 		protected:
 			void onTick() override;
 
 		private:
-			StackLayout _rows {};
+			StackLayout _row {};
 
-			Rectangle _backgroundRect = Rectangle(&Theme::bg2);
+			Rectangle _backgroundRect = Rectangle(&Theme::bg1);
 
 			ThrottleIndicator _throttle1Indicator {};
 			ThrottleIndicator _throttle2Indicator {};
@@ -32,17 +34,7 @@ namespace pizdanc {
 			ControlsIndicator _controlsIndicator {};
 			Titler _controlsTitle = Titler(L"SP/FL", &_controlsIndicator);
 
-			StackLayout _trimRow {};
-
 			TrimIndicator _elevatorTrimIndicator {};
-			Titler _elevatorTrimTitle = Titler(L"E", &_elevatorTrimIndicator);
-
-			StackLayout _aileronsAndRudderRows {};
-
-			TrimIndicator _aileronsTrimIndicator {};
-			Titler _aileronsTrimTitle = Titler(L"A", &_aileronsTrimIndicator);
-
-			TrimIndicator _rudderTrimIndicator {};
-			Titler _rudderTrimTitle = Titler(L"R", &_rudderTrimIndicator);
+			Titler _elevatorTrimTitle = Titler(L"Trim", &_elevatorTrimIndicator);
 	};
 }

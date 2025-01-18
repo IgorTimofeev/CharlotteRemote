@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <sstream>
 #include "rc_application.h"
 #include "settings.h"
 #include "ui/navigation/menu.h"
@@ -51,14 +52,40 @@ namespace pizdanc {
 	void RCApplication::onRender(Renderer* renderer) {
 		Layout::onRender(renderer);
 
+		if (!_showDebugInfo)
+			return;
+
 		// Debug info
 		int32_t y = 0;
-
 		static std::wstringstream stream;
-		stream.str(std::wstring());
-		stream << "FPS: ";
-		stream << (_lastTickDeltaTime == 0 ? 0 : 1000 / _lastTickDeltaTime);
-		renderer->renderText(Point(y, 0), &Theme::fontSmall, &Theme::purple, stream.str());
+
+		const auto go = [renderer, &y](std::function<void()> streamWriter)  {
+			stream.str(std::wstring());
+			streamWriter();
+
+			renderer->renderString(Point(0, y), &Theme::fontNormal, &Theme::purple, stream.str());
+
+			y += Theme::fontNormal.getHeight() + 2;
+		};
+
+		go([this]() {
+			stream << "FPS: ";
+			stream << (_lastTickDeltaTime == 0 ? 0 : 1000 / _lastTickDeltaTime);
+		});
+
+		go([]() {
+			stream << "CPU freq: ";
+			stream << ESP.getCpuFreqMHz();
+			stream << " MHz";
+		});
+
+		go([]() {
+			stream << "Heap: ";
+			stream << yoba::round((float) ESP.getFreeHeap() / 1024.f, 2);
+			stream << " kB / ";
+			stream << yoba::round((float) ESP.getHeapSize() / 1024.f, 2);
+			stream << " kB";
+		});
 	}
 
 	void RCApplication::simulateFlightData() {
@@ -274,6 +301,14 @@ namespace pizdanc {
 
 	Interpolator& RCApplication::getRudderTrimInterpolator() {
 		return _rudderTrimInterpolator;
+	}
+
+	bool RCApplication::getShowDebugInfo() const {
+		return _showDebugInfo;
+	}
+
+	void RCApplication::setShowDebugInfo(bool showDebugInfo) {
+		_showDebugInfo = showDebugInfo;
 	}
 
 	float RemoteData::getTemperature() const {

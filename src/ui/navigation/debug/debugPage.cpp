@@ -1,92 +1,73 @@
 #include "debugPage.h"
 #include "ui/theme.h"
+#include "ui/rc_application.h"
 #include <sstream>
 
 namespace pizdanc {
 	DebugPage::DebugPage() {
 		auto scrollView = new ScrollView();
 
-		auto rows = new StackLayout(Orientation::vertical, 10);
+		_rows.setSpacing(10);
+		_rows.setMargin(Margin(30, 20, 30, 20));
 
-		rows->setMargin(Margin(60, 20));
+		// Page title
+		Theme::applyPageTitle(&_pageTitle);
+		_pageTitle.setText(L"Debug page");
+		_rows += &_pageTitle;
 
 		// Slider
-		{
-			auto slider = new Slider();
-			Theme::apply(slider);
-			slider->setValue(0.8f);
+		Theme::apply(&_slider);
+		_slider.setValue(0.4f);
 
-			auto sliderTitle = new Titler(L"Slider", slider);
-			Theme::apply(sliderTitle);
-			*rows += sliderTitle;
-		}
+		Theme::apply(&_sliderTitle);
+		_rows += &_sliderTitle;
+
+		// Slider 2
+		Theme::apply(&_slider2);
+		_slider2.setValue(0.8f);
+		_slider2.setActiveTrackColor(&Theme::bad2);
+
+		Theme::apply(&_slider2Title);
+		_rows += &_slider2Title;
 
 		// Switch
-		{
-			auto sw = new Switch();
-			Theme::apply(sw);
+		Theme::apply(&_switch);
 
-			auto swTitle = new Titler(L"Switch", sw);
-			Theme::apply(swTitle);
-			*rows += swTitle;
-		}
+		_switch.isCheckedChanged += []() {
+			auto& app = RCApplication::getInstance();
 
-		// Equal
-		{
-			auto row = new EqualStackLayout(Orientation::horizontal, 10);
+			app.setShowDebugInfo(!app.getShowDebugInfo());
+		};
 
-			auto textField = new TextField();
-			Theme::apply(textField);
-			textField->setText(L"Hello world");
-			textField->setCursorToEnd();
-			*row += textField;
-
-			auto button = new Button();
-			Theme::apply(button);
-			button->setWidth(36);
-			button->setText(L".!.");
-			row->setFit(button);
-			*row += button;
-
-			auto equalLayoutTitle = new Titler(L"Equal layout", row);
-			Theme::apply(equalLayoutTitle);
-			*rows += equalLayoutTitle;
-		}
+		Theme::apply(&_switchTitle);
+		_rows += &_switchTitle;
 
 		// TextField
-		{
-			auto textField = new TextField();
-			Theme::apply(textField);
-			textField->setText(L"Hello world pizda eblo ssanina penis chlen vagina");
-			textField->setCursorToEnd();
+		Theme::apply(&_textField);
+		_textField.setText(L"Hello world pizda eblo ssanina penis chlen vagina");
+		_textField.setCursorToEnd();
 
-			auto textFieldTitle = new Titler(L"Text", textField);
-			Theme::apply(textFieldTitle);
+		Theme::apply(&textFieldTitle);
+		_rows += &textFieldTitle;
 
-			*rows += textFieldTitle;
-		}
+		// Button
+		Theme::apply(&_button);
+		_button.setText(L"Click me");
 
-		// Buttons
-		{
-			static std::wstringstream stream;
+		Theme::apply(&_buttonTitle);
+		_rows += &_buttonTitle;
 
-			for (uint8_t i = 0; i < 5; i++) {
-				stream.str(std::wstring());
-				stream << L"Button ";
-				stream << i;
+		// Toggle button
+		Theme::apply(&_toggleButton);
+		_toggleButton.setToggle(true);
+		_toggleButton.setPrimaryColor(&Theme::good2);
+		_toggleButton.setPressedPrimaryColor(&Theme::good1);
+		_toggleButton.setText(L"Change state");
 
-				auto button = new Button();
-				Theme::apply(button);
-				button->setText(L"Click");
+		Theme::apply(&_toggleButtonTitle);
+		_rows += &_toggleButtonTitle;
 
-				auto buttonTitle = new Titler(stream.str(), button);
-				Theme::apply(buttonTitle);
-
-				*rows += buttonTitle;
-			}
-		}
-
-		*scrollView += rows;
+		*scrollView += &_rows;
 
 		Theme::apply(scrollView);
 		*this += scrollView;
