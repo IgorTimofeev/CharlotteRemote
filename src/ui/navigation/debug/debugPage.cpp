@@ -8,7 +8,7 @@ namespace pizdanc {
 		auto scrollView = new ScrollView();
 
 		_rows.setSpacing(10);
-		_rows.setMargin(Margin(30, 20, 30, 20));
+		_rows.setMargin(Margin(20, 20, 20, 20));
 
 		// Page title
 		Theme::applyPageTitle(&_pageTitle);
@@ -18,6 +18,10 @@ namespace pizdanc {
 		// Slider
 		Theme::apply(&_slider);
 		_slider.setValue(0.4f);
+
+		_slider.valueChanged += [this]() {
+			_pageTitle.setFontScale(1 + (uint8_t) std::round(_slider.getValue() * 9));
+		};
 
 		Theme::apply(&_sliderTitle);
 		_rows += &_sliderTitle;
@@ -61,8 +65,8 @@ namespace pizdanc {
 		// Toggle button
 		Theme::apply(&_toggleButton);
 		_toggleButton.setToggle(true);
-		_toggleButton.setPrimaryColor(&Theme::good2);
-		_toggleButton.setPressedPrimaryColor(&Theme::good1);
+		_toggleButton.setDefaultBackgroundColor(&Theme::good2);
+		_toggleButton.setPressedBackgroundColor(&Theme::good1);
 		_toggleButton.setText(L"Change state");
 
 		Theme::apply(&_toggleButtonTitle);

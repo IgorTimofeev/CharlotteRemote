@@ -3,11 +3,11 @@
 
 namespace pizdanc {
 	InstrumentsLayout::InstrumentsLayout() {
-		_backgroundRect.setPrimaryColor(&Theme::bg1);
+		_backgroundRect.setFillColor(&Theme::bg1);
 		*this += &_backgroundRect;
 
 		// Titles
-		_titlesRect.setPrimaryColor(&Theme::bg2);
+		_titlesRect.setFillColor(&Theme::bg2);
 		_titlesRect.setHeight(12);
 		_titlesRect.setVerticalAlignment(Alignment::start);
 		*this += &_titlesRect;

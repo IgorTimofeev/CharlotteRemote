@@ -102,13 +102,14 @@ namespace pizdanc {
 	}
 
 	void Theme::applyPageTitle(Text* text) {
-		text->setPrimaryColor(&Theme::fg1);
+		text->setTextColor(&Theme::fg1);
 		text->setFont(&Theme::fontNormal);
+		text->setFontScale(2);
 		text->setMargin(Margin(0, 0, 0, 8));
 	}
 
 	void Theme::apply(Titler* titler) {
-		titler->getTitle().setPrimaryColor(&Theme::fg3);
+		titler->getTitle().setTextColor(&Theme::fg3);
 		titler->getTitle().setFont(&Theme::fontNormal);
 	}
 
@@ -116,11 +117,11 @@ namespace pizdanc {
 		button->setHeight(elementHeight);
 		button->setCornerRadius(cornerRadius);
 
-		button->setPrimaryColor(&Theme::accent1);
-		button->setPressedPrimaryColor(&Theme::accent2);
+		button->setDefaultBackgroundColor(&Theme::accent1);
+		button->setPressedBackgroundColor(&Theme::accent2);
 
-		button->setSecondaryColor(&Theme::bg1);
-		button->setPressedSecondaryColor(&Theme::bg1);
+		button->setDefaultTextColor(&Theme::bg1);
+		button->setPressedTextColor(&Theme::bg1);
 
 		button->setFont(&Theme::fontNormal);
 	}
@@ -152,7 +153,7 @@ namespace pizdanc {
 		scrollView->setScrollBarSize(3);
 		scrollView->setScrollBarCornerRadius(1);
 		scrollView->setScrollBarOffset(3);
-		scrollView->setScrollBarColor(&Theme::bg3);
+		scrollView->setScrollBarThumbColor(&Theme::bg3);
 	}
 
 	void Theme::apply(TextField* textField) {
@@ -182,9 +183,9 @@ namespace pizdanc {
 			keyboard->setHorizontalKeySpacing(1);
 			keyboard->setVerticalKeySpacing(1);
 
-			keyboard->setDefaultKeyPrimaryColor(&Theme::bg4);
-			keyboard->setDefaultKeySecondaryColor(&Theme::fg1);
-			keyboard->setActionKeyPrimaryColor(&Theme::bg3);
+			keyboard->setDefaultKeyBackgroundColor(&Theme::bg4);
+			keyboard->setDefaultKeyTextColor(&Theme::fg1);
+			keyboard->setActionKeyBackgroundColor(&Theme::bg3);
 			keyboard->setActionKeySecondaryColor(&Theme::fg1);
 
 			keyboard->setCharactersLayoutBuilder([]() {

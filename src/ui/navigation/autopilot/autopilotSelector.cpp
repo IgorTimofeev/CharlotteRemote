@@ -7,14 +7,14 @@ namespace pizdanc {
 		const uint8_t marginValue = 10;
 
 		// Background
-		background.setPrimaryColor(&Theme::bg2);
+		background.setFillColor(&Theme::bg2);
 		background.setCornerRadius(5);
 		*this += &background;
 
 		// Title
 		title.setMargin(Margin(marginValue, marginValue, marginValue, 5));
 		title.setHorizontalAlignment(Alignment::center);
-		title.setPrimaryColor(&Theme::fg3);
+		title.setTextColor(&Theme::fg3);
 		title.setFont(&Theme::fontNormal);
 		title.setText(titleText);
 		rows += &title;
@@ -32,7 +32,7 @@ namespace pizdanc {
 		// Rotary knob
 		knob.setMargin(Margin(marginValue));
 		knob.setHorizontalAlignment(Alignment::center);
-		knob.setPrimaryColor(&Theme::bg3);
+		knob.setBackgroundColor(&Theme::bg3);
 		knob.setMiddleColor(&Theme::bg5);
 		knob.setLineColor(&Theme::yellow);
 		knob.setSize(Size(50, 50));
@@ -42,10 +42,13 @@ namespace pizdanc {
 		button.setToggle(true);
 		button.setHeight(24);
 		button.setCornerRadius(5);
-		button.setPrimaryColor(&Theme::bg3);
-		button.setPressedPrimaryColor(&Theme::fg1);
-		button.setSecondaryColor(&Theme::fg1);
-		button.setPressedSecondaryColor(&Theme::bg2);
+
+		button.setDefaultBackgroundColor(&Theme::bg3);
+		button.setPressedBackgroundColor(&Theme::fg1);
+
+		button.setDefaultTextColor(&Theme::fg1);
+		button.setPressedTextColor(&Theme::bg2);
+
 		button.setFont(&Theme::fontNormal);
 		button.setText(buttonText);
 		rows += &button;

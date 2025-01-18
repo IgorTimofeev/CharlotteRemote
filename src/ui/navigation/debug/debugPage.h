@@ -21,7 +21,7 @@ namespace pizdanc {
 			Text _pageTitle;
 
 			Slider _slider;
-			Titler _sliderTitle = Titler(L"Slider", &_slider);
+			Titler _sliderTitle = Titler(L"Title size slider", &_slider);
 
 			Slider _slider2;
 			Titler _slider2Title = Titler(L"Another slider", &_slider2);
