@@ -10,7 +10,7 @@ namespace pizdanc {
 	class Page : public Layout {
 		public:
 			virtual ~Page() {
-				Serial.println("Page deleted!");
+
 			}
 
 			virtual void setup() {

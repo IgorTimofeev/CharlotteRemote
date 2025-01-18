@@ -32,6 +32,7 @@ namespace pizdanc {
 
 		// Switch
 		Theme::apply(&_switch);
+		_switch.setCheckedTrackColor(&Theme::sky);
 
 		_switch.isCheckedChanged += []() {
 			auto& app = RCApplication::getInstance();

@@ -15,7 +15,7 @@ namespace pizdanc {
 		public:
 			InstrumentsLayout();
 
-			static const uint8_t panelSize = 50;
+			static const uint8_t panelSize = 60;
 
 		protected:
 			void onTick() override;
@@ -23,10 +23,11 @@ namespace pizdanc {
 		private:
 			StackLayout _row {};
 
-			Rectangle _backgroundRect = Rectangle(&Theme::bg1);
+			Rectangle _backgroundRect;
+			Rectangle _titlesRect;
 
-			ThrottleIndicator _throttle1Indicator {};
-			ThrottleIndicator _throttle2Indicator {};
+			ThrottleIndicator _throttle1Indicator;
+			ThrottleIndicator _throttle2Indicator;
 
 			StackLayout _throttleRow {};
 			Titler _throttleTitle = Titler(L"THR", &_throttleRow);

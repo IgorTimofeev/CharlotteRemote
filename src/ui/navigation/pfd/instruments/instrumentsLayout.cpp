@@ -3,13 +3,20 @@
 
 namespace pizdanc {
 	InstrumentsLayout::InstrumentsLayout() {
+		_backgroundRect.setPrimaryColor(&Theme::bg1);
 		*this += &_backgroundRect;
+
+		// Titles
+		_titlesRect.setPrimaryColor(&Theme::bg2);
+		_titlesRect.setHeight(12);
+		_titlesRect.setVerticalAlignment(Alignment::start);
+		*this += &_titlesRect;
 
 		// Row
 		_row.setOrientation(Orientation::horizontal);
 		_row.setSpacing(15);
 		_row.setHorizontalAlignment(Alignment::center);
-		_row.setMargin(Margin(8, 4, 8, 4));
+		_row.setMargin(Margin(8, 2, 8, 2));
 
 		// Throttle
 		Theme::apply(&_throttleTitle);

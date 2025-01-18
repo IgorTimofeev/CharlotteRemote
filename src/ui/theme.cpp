@@ -176,7 +176,7 @@ namespace pizdanc {
 			keyboard->setFont(&Theme::fontNormal);
 			keyboard->setBackgroundColor(&Theme::bg2);
 
-			keyboard->setKeyHeight(28);
+			keyboard->setKeyHeight(26);
 			keyboard->setKeyCornerRadius(0);
 
 			keyboard->setHorizontalKeySpacing(1);
