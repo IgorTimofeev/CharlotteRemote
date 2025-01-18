@@ -20,23 +20,23 @@ namespace pizdanc {
 		_slider.setValue(0.4f);
 
 		_slider.valueChanged += [this]() {
-			_pageTitle.setFontScale(1 + (uint8_t) std::round(_slider.getValue() * 9));
+			_pageTitle.setFontScale(1 + (uint8_t) std::round(_slider.getValue() * 12));
 		};
 
 		Theme::apply(&_sliderTitle);
 		_rows += &_sliderTitle;
 
-		// Slider 2
-		Theme::apply(&_slider2);
-		_slider2.setValue(0.8f);
-		_slider2.setActiveTrackColor(&Theme::bad2);
+		// Progress bar
+		Theme::apply(&_progressBar);
+		_progressBar.setValue(0.8f);
+		_progressBar.setFillColor(&Theme::bad2);
 
-		Theme::apply(&_slider2Title);
-		_rows += &_slider2Title;
+		Theme::apply(&_progressBarTitle);
+		_rows += &_progressBarTitle;
 
 		// Switch
 		Theme::apply(&_switch);
-		_switch.setCheckedTrackColor(&Theme::sky);
+		_switch.setCheckedColor(&Theme::sky);
 
 		_switch.isCheckedChanged += []() {
 			auto& app = RCApplication::getInstance();

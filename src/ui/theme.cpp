@@ -1,7 +1,5 @@
 #include "theme.h"
 
-#include "../../lib/yoba/src/main.h"
-
 namespace pizdanc {
 	const PaletteColor Theme::bg1 = PaletteColor(0);
 	const PaletteColor Theme::bg2 = PaletteColor(1);
@@ -105,7 +103,7 @@ namespace pizdanc {
 		text->setTextColor(&Theme::fg1);
 		text->setFont(&Theme::fontNormal);
 		text->setFontScale(2);
-		text->setMargin(Margin(0, 0, 0, 8));
+		text->setMargin(Margin(0, 0, 0, 5));
 	}
 
 	void Theme::apply(Titler* titler) {
@@ -130,8 +128,8 @@ namespace pizdanc {
 		sw->setSize(Size(48, 18));
 		sw->setCornerRadius(9);
 
-		sw->setDefaultTrackColor(&Theme::bg3);
-		sw->setCheckedTrackColor(&Theme::accent1);
+		sw->setTrackColor(&Theme::bg3);
+		sw->setCheckedColor(&Theme::accent1);
 
 		sw->setHandleColor(&Theme::fg1);
 	}
@@ -141,12 +139,19 @@ namespace pizdanc {
 
 		slider->setTrackSize(4);
 		slider->setTrackCornerRadius(2);
-		slider->setDefaultTrackColor(&Theme::bg3);
-		slider->setActiveTrackColor(&Theme::accent1);
+		slider->setTrackColor(&Theme::bg3);
+		slider->setFillColor(&Theme::accent1);
 
 		slider->setHandleSize(14);
 		slider->setHandleCornerRadius(7);
 		slider->setHandleColor(&Theme::fg1);
+	}
+
+	void Theme::apply(ProgressBar* progressBar) {
+		progressBar->setHeight(4);
+		progressBar->setCornerRadius(2);
+		progressBar->setTrackColor(&Theme::bg3);
+		progressBar->setFillColor(&Theme::accent1);
 	}
 
 	void Theme::apply(ScrollView* scrollView) {

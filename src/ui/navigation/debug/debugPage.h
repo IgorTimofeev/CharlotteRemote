@@ -23,8 +23,8 @@ namespace pizdanc {
 			Slider _slider;
 			Titler _sliderTitle = Titler(L"Title size slider", &_slider);
 
-			Slider _slider2;
-			Titler _slider2Title = Titler(L"Another slider", &_slider2);
+			ProgressBar _progressBar;
+			Titler _progressBarTitle = Titler(L"Progress bar", &_progressBar);
 
 			Switch _switch;
 			Titler _switchTitle = Titler(L"Switch", &_switch);
