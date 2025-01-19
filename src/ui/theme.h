@@ -65,5 +65,6 @@ namespace pizdanc {
 			static void applyPageTitle(Text* text);
 			static void apply(Switch* sw);
 			static void apply(ProgressBar* progressBar);
+			static void applyDescription(Text* text);
 	};
 }

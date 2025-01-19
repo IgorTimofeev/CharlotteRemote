@@ -20,8 +20,13 @@ namespace pizdanc {
 
 			Text _pageTitle;
 
-			Slider _slider;
-			Titler _sliderTitle = Titler(L"Title size slider", &_slider);
+			Text _wrappedText;
+
+			Slider _slider1;
+			Titler _slider1Title = Titler(L"Font size slider", &_slider1);
+
+			Slider _slider2;
+			Titler _slider2Title = Titler(L"Margin slider", &_slider2);
 
 			ProgressBar _progressBar;
 			Titler _progressBarTitle = Titler(L"Progress bar", &_progressBar);

@@ -15,24 +15,46 @@ namespace pizdanc {
 		_pageTitle.setText(L"Debug page");
 		_rows += &_pageTitle;
 
-		// Slider
-		Theme::apply(&_slider);
-		_slider.setValue(0.4f);
+		// Slider 1
+		Theme::apply(&_slider1);
+		_slider1.setValue(0.4f);
 
-		_slider.valueChanged += [this]() {
-			_pageTitle.setFontScale(1 + (uint8_t) std::round(_slider.getValue() * 12));
+		_slider1.valueChanged += [this]() {
+			_wrappedText.setFontScale(1 + (uint8_t) std::round(_slider1.getValue() * 8));
 		};
 
-		Theme::apply(&_sliderTitle);
-		_rows += &_sliderTitle;
+		Theme::apply(&_slider1Title);
+		_rows += &_slider1Title;
 
-		// Progress bar
-		Theme::apply(&_progressBar);
-		_progressBar.setValue(0.8f);
-		_progressBar.setFillColor(&Theme::bad2);
+		// Slider 2
+		Theme::apply(&_slider2);
+		_slider2.setFillColor(&Theme::good2);
+		_slider2.setValue(0.5f);
 
-		Theme::apply(&_progressBarTitle);
-		_rows += &_progressBarTitle;
+		_slider2.valueChanged += [this]() {
+			uint16_t value = 1 + (uint8_t) std::round(_slider2.getValue() * 80);
+
+			_rows.setMargin(Margin(value, _rows.getMargin().getTop(), value, _rows.getMargin().getTop()));
+		};
+
+		Theme::apply(&_slider2Title);
+		_rows += &_slider2Title;
+
+		// Wrapped text
+		Theme::applyDescription(&_wrappedText);
+
+		_wrappedText.setWrappingEnabled(true);
+
+		_wrappedText.setText(
+LR"(Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions)"
+		);
+
+		_rows += &_wrappedText;
 
 		// Switch
 		Theme::apply(&_switch);
@@ -44,6 +66,14 @@ namespace pizdanc {
 
 		Theme::apply(&_switchTitle);
 		_rows += &_switchTitle;
+
+		// Progress bar
+		Theme::apply(&_progressBar);
+		_progressBar.setValue(0.8f);
+		_progressBar.setFillColor(&Theme::bad2);
+
+		Theme::apply(&_progressBarTitle);
+		_rows += &_progressBarTitle;
 
 		// TextField
 		Theme::apply(&_textField);

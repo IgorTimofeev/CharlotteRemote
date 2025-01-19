@@ -36,13 +36,13 @@ namespace pizdanc {
 	}
 
 	void RC::tick() {
-		uint32_t tickTime = millis();
+		auto time = millis();
 
 		simulateFlightData();
 
 		_application.tick();
 
-		_tickDeltaTime = millis() - tickTime;
+		_tickDeltaTime = millis() - time;
 	}
 
 	void RC::simulateFlightData() {

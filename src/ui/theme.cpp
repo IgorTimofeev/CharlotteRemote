@@ -99,6 +99,11 @@ namespace pizdanc {
 		});
 	}
 
+	void Theme::applyDescription(Text* text) {
+		text->setTextColor(&Theme::fg3);
+		text->setFont(&Theme::fontNormal);
+	}
+
 	void Theme::applyPageTitle(Text* text) {
 		text->setTextColor(&Theme::fg1);
 		text->setFont(&Theme::fontNormal);
