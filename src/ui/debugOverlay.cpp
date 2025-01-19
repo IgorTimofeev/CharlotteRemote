@@ -9,14 +9,23 @@ namespace pizdanc {
 		int32_t y = 0;
 		static std::wstringstream stream;
 
-		const auto renderLine = [renderer, &y](std::function<void()> streamWriter) {
+		const auto renderLine = [renderer, &y](std::function<void()> streamWriter, const Color* color = &Theme::purple, uint8_t scale = 1) {
 			stream.str(std::wstring());
 			streamWriter();
 
-			renderer->renderString(Point(0, y), &Theme::fontNormal, &Theme::purple, stream.str());
+			renderer->renderString(Point(10, y), &Theme::fontNormal, color, stream.str(), scale);
 
-			y += Theme::fontNormal.getHeight() + 2;
+			y += Theme::fontNormal.getHeight(scale) + 2;
 		};
+
+		// Big fucking FPS counter
+		renderLine(
+			[&rc]() {
+				stream << (1000 / rc.getTickDeltaTime());
+			},
+			&Theme::yellow,
+			3
+		);
 
 		renderLine([]() {
 			stream
@@ -58,12 +67,7 @@ namespace pizdanc {
 		});
 
 		renderLine([&rc]() {
-			stream
-			<< L"Total: "
-			<< rc.getTickDeltaTime()
-			<< L" ms, "
-			<< (1000 / rc.getTickDeltaTime())
-			<< L" FPS";
+			stream << L"Total: " << rc.getTickDeltaTime() << L" ms";
 		});
 	}
 }
