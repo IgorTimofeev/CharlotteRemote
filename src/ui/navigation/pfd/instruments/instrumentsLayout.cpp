@@ -1,5 +1,5 @@
 #include "instrumentsLayout.h"
-#include "../../../rc_application.h"
+#include "../../../rc.h"
 
 namespace pizdanc {
 	InstrumentsLayout::InstrumentsLayout() {
@@ -51,13 +51,13 @@ namespace pizdanc {
 	void InstrumentsLayout::onTick() {
 		Layout::onTick();
 
-		auto app = &RCApplication::getInstance();
+		auto rc = &RC::getInstance();
 
 		// Throttle
-		_throttle1Indicator.setValue(app->getThrottle1Interpolator().getValue());
-		_throttle2Indicator.setValue(app->getThrottle2Interpolator().getValue());
+		_throttle1Indicator.setValue(rc->getThrottle1Interpolator().getValue());
+		_throttle2Indicator.setValue(rc->getThrottle2Interpolator().getValue());
 
 		// Trim
-		_elevatorTrimIndicator.setValue(app->getElevatorTrimInterpolator().getValue());
+		_elevatorTrimIndicator.setValue(rc->getElevatorTrimInterpolator().getValue());
 	}
 }

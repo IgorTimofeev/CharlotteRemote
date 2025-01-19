@@ -11,8 +11,8 @@
 #include "hardware/onboard_led.h"
 
 #include "ui/theme.h"
-#include "ui/navigation/page.h"
 #include "ui/navigation/menu.h"
+#include "ui/debugOverlay.h"
 
 namespace pizdanc {
 	using namespace yoba;
@@ -106,15 +106,16 @@ namespace pizdanc {
 			float _speed = 0;
 	};
 
-	class RCApplication : public Application {
+	class RC  {
 		public:
-			RCApplication();
+			static RC& getInstance();
 
-			static RCApplication& getInstance();
+			void setup();
 
-			void setup() override;
+			void tick();
 
-			void tick() override;
+			Application& getApplication();
+			Element& getDebugOverlay();
 
 			LocalData& getLocalData();
 			RemoteData& getRemoteData();
@@ -140,17 +141,12 @@ namespace pizdanc {
 			Interpolator& getElevatorTrimInterpolator();
 			Interpolator& getRudderTrimInterpolator();
 
-			bool getShowDebugInfo() const;
-
-			void setShowDebugInfo(bool showDebugInfo);
-
-		protected:
-			void onRender(Renderer* renderer) override;
+			uint32_t getTickDeltaTime() const;
 
 		private:
 			// -------------------------------- Hardware --------------------------------
 
-			Transceiver _transceiver {};
+			Transceiver _transceiver;
 
 			ILI9341Display _display = ILI9341Display(
 				ColorModel::rgb565,
@@ -160,14 +156,14 @@ namespace pizdanc {
 				settings::pinout::screen::reset
 			);
 
-			Bit8PaletteBufferedRenderer _renderer = Bit8PaletteBufferedRenderer(&_display, 32);
+			Bit8PaletteBufferedRenderer _renderer = Bit8PaletteBufferedRenderer(32);
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
 				settings::pinout::screen::touch::interrupt,
 				settings::pinout::screen::touch::reset
 			);
 
-			OnboardLED _onboardLED {};
+			OnboardLED _onboardLED;
 
 			//
 //			Potentiometer _pitchHall;
@@ -175,45 +171,45 @@ namespace pizdanc {
 
 			// -------------------------------- UI --------------------------------
 
-			Menu _menu {};
+			Application _application;
+			Menu _menu;
+			DebugOverlay _debugOverlay;
 
 			// -------------------------------- Timings --------------------------------
 
-			uint32_t _tickTime = 0;
-			uint32_t _testTickTime = 0;
+			uint32_t _simulationTickTime1 = 0;
+			uint32_t _simulationTickTime2 = 0;
 
-			Interpolator _throttle1Interpolator {};
-			Interpolator _throttle2Interpolator {};
+			Interpolator _throttle1Interpolator;
+			Interpolator _throttle2Interpolator;
 
-			Interpolator _speedInterpolator {};
-			Interpolator _speedTrendInterpolator {};
+			Interpolator _speedInterpolator;
+			Interpolator _speedTrendInterpolator;
 
-			Interpolator _altitudeInterpolator {};
-			Interpolator _altitudeTrendInterpolator {};
+			Interpolator _altitudeInterpolator;
+			Interpolator _altitudeTrendInterpolator;
 
-			Interpolator _verticalSpeedInterpolator {};
+			Interpolator _verticalSpeedInterpolator;
 
-			Interpolator _pitchInterpolator {};
-			Interpolator _rollInterpolator {};
-			Interpolator _yawInterpolator {};
+			Interpolator _pitchInterpolator;
+			Interpolator _rollInterpolator;
+			Interpolator _yawInterpolator;
 
-			Interpolator _aileronsInterpolator {};
-			Interpolator _elevatorInterpolator {};
-			Interpolator _rudderInterpolator {};
-			Interpolator _flapsInterpolator {};
-			Interpolator _spoilersInterpolator {};
+			Interpolator _aileronsInterpolator;
+			Interpolator _elevatorInterpolator;
+			Interpolator _rudderInterpolator;
+			Interpolator _flapsInterpolator;
+			Interpolator _spoilersInterpolator;
 
-			Interpolator _aileronsTrimInterpolator {};
-			Interpolator _elevatorTrimInterpolator {};
-			Interpolator _rudderTrimInterpolator {};
+			Interpolator _aileronsTrimInterpolator;
+			Interpolator _elevatorTrimInterpolator;
+			Interpolator _rudderTrimInterpolator;
 
 			// -------------------------------- Other shit --------------------------------
 
-			LocalData _localData {};
-			RemoteData _remoteData {};
-
-			bool _showDebugInfo = false;
-			uint32_t _lastTickDeltaTime;
+			LocalData _localData;
+			RemoteData _remoteData;
+			uint32_t _tickDeltaTime;
 
 			void simulateFlightData();
 	};

@@ -13,8 +13,7 @@ namespace pizdanc {
 			PFDPage();
 
 		private:
-			PFD _pfd {};
-
-			InstrumentsLayout _instrumentsLayout {};
+			PFD _pfd;
+			InstrumentsLayout _instrumentsLayout;
 	};
 }

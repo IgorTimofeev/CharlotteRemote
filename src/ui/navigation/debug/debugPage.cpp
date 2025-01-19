@@ -1,6 +1,6 @@
 #include "debugPage.h"
 #include "ui/theme.h"
-#include "ui/rc_application.h"
+#include "ui/rc.h"
 #include <sstream>
 
 namespace pizdanc {
@@ -38,10 +38,8 @@ namespace pizdanc {
 		Theme::apply(&_switch);
 		_switch.setCheckedColor(&Theme::sky);
 
-		_switch.isCheckedChanged += []() {
-			auto& app = RCApplication::getInstance();
-
-			app.setShowDebugInfo(!app.getShowDebugInfo());
+		_switch.isCheckedChanged += [this]() {
+			RC::getInstance().getDebugOverlay().setVisible(_switch.isChecked());
 		};
 
 		Theme::apply(&_switchTitle);

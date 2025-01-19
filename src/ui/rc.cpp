@@ -1,94 +1,51 @@
 #include <cstdint>
-#include <sstream>
-#include "rc_application.h"
+#include "rc.h"
 #include "settings.h"
 #include "ui/navigation/menu.h"
 
 namespace pizdanc {
 	using namespace yoba;
 
-	RCApplication& RCApplication::getInstance() {
-		static RCApplication instance;
+	RC& RC::getInstance() {
+		static RC instance;
 
 		return instance;
 	}
 
-	RCApplication::RCApplication() : Application(&_renderer) {
+	void RC::setup() {
+		// Hardware
+		_application.setupRenderingHardware(&_display, &_renderer);
 
-	}
-
-	void RCApplication::setup() {
-		Application::setup();
-
-		// Theme
-		Theme::setup(&_renderer);
-
-		// UI
-		_menu.setup();
-		*this += &_menu;
-
-		// Touch
 		_touchPanel.setup();
-		addInputDevice(&_touchPanel);
+		_application.addInputDevice(&_touchPanel);
 
-//		// Joysticks
 //		_pitchHall.begin();
 //		_rollHall.begin();
 
 		_transceiver.setup();
 		_onboardLED.setup();
+
+		// UI
+		Theme::setup(&_renderer);
+
+		_menu.setup();
+		_application += &_menu;
+
+		_debugOverlay.setVisible(false);
+		_application += &_debugOverlay;
 	}
 
-	void RCApplication::tick() {
+	void RC::tick() {
 		uint32_t tickTime = millis();
 
 		simulateFlightData();
 
-		Application::tick();
+		_application.tick();
 
-		_lastTickDeltaTime = millis() - tickTime;
+		_tickDeltaTime = millis() - tickTime;
 	}
 
-	void RCApplication::onRender(Renderer* renderer) {
-		Layout::onRender(renderer);
-
-		if (!_showDebugInfo)
-			return;
-
-		// Debug info
-		int32_t y = 0;
-		static std::wstringstream stream;
-
-		const auto go = [renderer, &y](std::function<void()> streamWriter)  {
-			stream.str(std::wstring());
-			streamWriter();
-
-			renderer->renderString(Point(0, y), &Theme::fontNormal, &Theme::purple, stream.str());
-
-			y += Theme::fontNormal.getHeight() + 2;
-		};
-
-		go([this]() {
-			stream << "FPS: ";
-			stream << (_lastTickDeltaTime == 0 ? 0 : 1000 / _lastTickDeltaTime);
-		});
-
-		go([]() {
-			stream << "CPU freq: ";
-			stream << ESP.getCpuFreqMHz();
-			stream << " MHz";
-		});
-
-		go([]() {
-			stream << "Heap: ";
-			stream << yoba::round((float) ESP.getFreeHeap() / 1024.f, 2);
-			stream << " kB / ";
-			stream << yoba::round((float) ESP.getHeapSize() / 1024.f, 2);
-			stream << " kB";
-		});
-	}
-
-	void RCApplication::simulateFlightData() {
+	void RC::simulateFlightData() {
 		const auto oldSpeed = _speedInterpolator.getTargetValue();
 		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
@@ -96,7 +53,7 @@ namespace pizdanc {
 		_onboardLED.tick();
 
 		// Test
-		const auto testDeltaTime = (float) (millis() - _testTickTime);
+		const auto testDeltaTime = (float) (millis() - _simulationTickTime2);
 		float testDelay = 1000;
 
 		if (testDeltaTime > testDelay) {
@@ -148,7 +105,7 @@ namespace pizdanc {
 				_yawInterpolator.setTargetValue(radians(-170));
 
 			// A/P
-			_testTickTime = millis();
+			_simulationTickTime2 = millis();
 
 			const auto newSpeed = _speedInterpolator.getTargetValue();
 			const auto newAltitude = _altitudeInterpolator.getTargetValue();
@@ -177,7 +134,7 @@ namespace pizdanc {
 			handleFloat(_elevatorTrimInterpolator);
 		}
 
-		auto deltaTime = (float) (millis() - _tickTime);
+		auto deltaTime = (float) (millis() - _simulationTickTime1);
 
 		if (deltaTime > settings::application::tickInterval) {
 			const float interpolationFactor = deltaTime / testDelay;
@@ -207,108 +164,112 @@ namespace pizdanc {
 			_elevatorTrimInterpolator.tick(interpolationFactor);
 			_rudderTrimInterpolator.tick(interpolationFactor);
 
-			invalidate();
+			_application.invalidate();
 
-			_tickTime = millis();
+			_simulationTickTime1 = millis();
 		}
 	}
 
 	// ------------------------- Data -------------------------
 
-	LocalData &RCApplication::getLocalData() {
+	LocalData &RC::getLocalData() {
 		return _localData;
 	}
 
-	RemoteData &RCApplication::getRemoteData() {
+	RemoteData &RC::getRemoteData() {
 		return _remoteData;
 	}
 
-	OnboardLED &RCApplication::getOnboardLED() {
+	OnboardLED &RC::getOnboardLED() {
 		return _onboardLED;
 	}
 
-	Transceiver& RCApplication::getTransceiver() {
+	Transceiver& RC::getTransceiver() {
 		return _transceiver;
 	}
 
-	Interpolator& RCApplication::getThrottle1Interpolator() {
+	Interpolator& RC::getThrottle1Interpolator() {
 		return _throttle1Interpolator;
 	}
 
-	Interpolator& RCApplication::getThrottle2Interpolator() {
+	Interpolator& RC::getThrottle2Interpolator() {
 		return _throttle2Interpolator;
 	}
 
-	Interpolator &RCApplication::getSpeedInterpolator() {
+	Interpolator &RC::getSpeedInterpolator() {
 		return _speedInterpolator;
 	}
 
-	Interpolator &RCApplication::getAltitudeInterpolator() {
+	Interpolator &RC::getAltitudeInterpolator() {
 		return _altitudeInterpolator;
 	}
 
-	Interpolator &RCApplication::getPitchInterpolator() {
+	Interpolator &RC::getPitchInterpolator() {
 		return _pitchInterpolator;
 	}
 
-	Interpolator &RCApplication::getRollInterpolator() {
+	Interpolator &RC::getRollInterpolator() {
 		return _rollInterpolator;
 	}
 
-	Interpolator &RCApplication::getYawInterpolator() {
+	Interpolator &RC::getYawInterpolator() {
 		return _yawInterpolator;
 	}
 
-	Interpolator &RCApplication::getSpeedTrendInterpolator() {
+	Interpolator &RC::getSpeedTrendInterpolator() {
 		return _speedTrendInterpolator;
 	}
 
-	Interpolator &RCApplication::getAltitudeTrendInterpolator() {
+	Interpolator &RC::getAltitudeTrendInterpolator() {
 		return _altitudeTrendInterpolator;
 	}
 
-	Interpolator &RCApplication::getVerticalSpeedInterpolator() {
+	Interpolator &RC::getVerticalSpeedInterpolator() {
 		return _verticalSpeedInterpolator;
 	}
 
-	Interpolator& RCApplication::getAileronsInterpolator() {
+	Interpolator& RC::getAileronsInterpolator() {
 		return _aileronsInterpolator;
 	}
 
-	Interpolator& RCApplication::getFlapsInterpolator() {
+	Interpolator& RC::getFlapsInterpolator() {
 		return _flapsInterpolator;
 	}
 
-	Interpolator& RCApplication::getSpoilersInterpolator() {
+	Interpolator& RC::getSpoilersInterpolator() {
 		return _spoilersInterpolator;
 	}
 
-	Interpolator& RCApplication::getRudderInterpolator() {
+	Interpolator& RC::getRudderInterpolator() {
 		return _rudderInterpolator;
 	}
 
-	Interpolator& RCApplication::getElevatorInterpolator() {
+	Interpolator& RC::getElevatorInterpolator() {
 		return _elevatorInterpolator;
 	}
 
-	Interpolator& RCApplication::getAileronsTrimInterpolator() {
+	Interpolator& RC::getAileronsTrimInterpolator() {
 		return _aileronsTrimInterpolator;
 	}
 
-	Interpolator& RCApplication::getElevatorTrimInterpolator() {
+	Interpolator& RC::getElevatorTrimInterpolator() {
 		return _elevatorTrimInterpolator;
 	}
 
-	Interpolator& RCApplication::getRudderTrimInterpolator() {
+	Interpolator& RC::getRudderTrimInterpolator() {
 		return _rudderTrimInterpolator;
 	}
 
-	bool RCApplication::getShowDebugInfo() const {
-		return _showDebugInfo;
+	Application& RC::getApplication() {
+		return _application;
 	}
 
-	void RCApplication::setShowDebugInfo(bool showDebugInfo) {
-		_showDebugInfo = showDebugInfo;
+	Element& RC::getDebugOverlay() {
+		return _debugOverlay;
+	}
+
+	uint32_t RC::getTickDeltaTime() const {
+		return _tickDeltaTime;
 	}
 
 	float RemoteData::getTemperature() const {

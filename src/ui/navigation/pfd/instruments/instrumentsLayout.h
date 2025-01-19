@@ -21,7 +21,7 @@ namespace pizdanc {
 			void onTick() override;
 
 		private:
-			StackLayout _row {};
+			StackLayout _row;
 
 			Rectangle _backgroundRect;
 			Rectangle _titlesRect;
@@ -29,13 +29,13 @@ namespace pizdanc {
 			ThrottleIndicator _throttle1Indicator;
 			ThrottleIndicator _throttle2Indicator;
 
-			StackLayout _throttleRow {};
+			StackLayout _throttleRow;
 			Titler _throttleTitle = Titler(L"THR", &_throttleRow);
 
-			ControlsIndicator _controlsIndicator {};
+			ControlsIndicator _controlsIndicator;
 			Titler _controlsTitle = Titler(L"SP/FL", &_controlsIndicator);
 
-			TrimIndicator _elevatorTrimIndicator {};
+			TrimIndicator _elevatorTrimIndicator;
 			Titler _elevatorTrimTitle = Titler(L"Trim", &_elevatorTrimIndicator);
 	};
 }

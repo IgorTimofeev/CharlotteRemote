@@ -16,7 +16,7 @@ namespace pizdanc {
 			void setup() override;
 
 		private:
-			StackLayout _columns {};
+			StackLayout _columns;
 
 			AutopilotSelector _spd = AutopilotSelector(3, L"Speed", L"A/T");
 			AutopilotSelector _hdg = AutopilotSelector(3, L"Heading", L"HOLD");

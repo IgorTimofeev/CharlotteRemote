@@ -1,5 +1,5 @@
 #include "transceiver.h"
-#include "ui/rc_application.h"
+#include "ui/rc.h"
 
 namespace pizdanc {
 	volatile bool Transceiver::_canOperate = true;
@@ -36,7 +36,7 @@ namespace pizdanc {
 		_mode = TransceiverMode::StartReceive;
 	}
 
-	void Transceiver::tick(RCApplication &application) {
+	void Transceiver::tick(RC& rc) {
 		if (!_canOperate || millis() < _deadline)
 			return;
 
@@ -60,7 +60,7 @@ namespace pizdanc {
 				break;
 
 			case Receive:
-				receive(application);
+				receive(rc);
 				break;
 		}
 
@@ -124,7 +124,7 @@ namespace pizdanc {
 		}
 	}
 
-	void Transceiver::receive(RCApplication &application) {
+	void Transceiver::receive(RC& rc) {
 		_mode = TransceiverMode::StartReceive;
 
 		// Putting transceiver to standby mode while reading
@@ -168,7 +168,7 @@ namespace pizdanc {
 							_rssi = _sx1262.getRSSI();
 							_snr = _sx1262.getSNR();
 
-							parsePacket(application, _AESBuffer);
+							parsePacket(rc, _AESBuffer);
 						}
 						else {
 							Serial.printf("[Transceiver] Decrypting failed: %d\n", encryptedLength);
@@ -177,7 +177,7 @@ namespace pizdanc {
 						Serial.printf("[Transceiver] Unsupported header: %02X\n", header);
 					}
 
-					application.getOnboardLED().blink();
+					rc.getOnboardLED().blink();
 				}
 				else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
 					Serial.println("[Transceiver] readData() failed, CRC error");
@@ -194,7 +194,7 @@ namespace pizdanc {
 		}
 	}
 
-	void Transceiver::parsePacket(RCApplication &application, uint8_t *bufferPtr) {
+	void Transceiver::parsePacket(RC &application, uint8_t *bufferPtr) {
 		auto packetType = (PacketType) *bufferPtr;
 		bufferPtr += sizeof(PacketType);
 
@@ -225,8 +225,6 @@ namespace pizdanc {
 					remoteData.setSpeed(ahrsPacket->speed);
 
 					remoteData.setStrobeLights(ahrsPacket->strobeLights);
-
-					application.invalidate();
 				}
 
 				break;

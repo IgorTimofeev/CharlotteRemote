@@ -1,5 +1,5 @@
 #include "pfd.h"
-#include "../../rc_application.h"
+#include "../../rc.h"
 #include <sstream>
 
 namespace pizdanc {
@@ -229,13 +229,13 @@ namespace pizdanc {
 	}
 
 	void PFD::renderSpeed(Renderer* renderer, const Bounds& bounds) {
-		auto& app = RCApplication::getInstance();
+		auto& rc = RC::getInstance();
 
 		auto centerY = bounds.getYCenter();
 
 		renderer->renderFilledRectangle(bounds, &Theme::bg1);
 
-		float speed = app.getSpeedInterpolator().getValue();
+		float speed = rc.getSpeedInterpolator().getValue();
 
 		// Bars
 		const auto barX = bounds.getX2() + 1 - speedBarSize;
@@ -377,7 +377,7 @@ namespace pizdanc {
 			centerY,
 			speedStepUnits,
 			speedStepPixels,
-			app.getSpeedTrendInterpolator().getValue()
+			rc.getSpeedTrendInterpolator().getValue()
 		);
 
 		// Autopilot
@@ -388,7 +388,7 @@ namespace pizdanc {
 			speedStepUnits,
 			speedStepPixels,
 			speed,
-			app.getLocalData().getAutopilotSpeed(),
+			rc.getLocalData().getAutopilotSpeed(),
 			true
 		);
 
@@ -771,13 +771,13 @@ namespace pizdanc {
 	}
 
 	void PFD::renderSyntheticVision(Renderer* renderer, const Bounds& bounds) const {
-		auto& app = RCApplication::getInstance();
+		auto& rc = RC::getInstance();
 
 		const auto& center = bounds.getCenter();
 
-		const auto pitch = app.getPitchInterpolator().getValue();
-		const auto roll = app.getRollInterpolator().getValue();
-		const auto yaw = app.getYawInterpolator().getValue();
+		const auto pitch = rc.getPitchInterpolator().getValue();
+		const auto roll = rc.getRollInterpolator().getValue();
+		const auto yaw = rc.getYawInterpolator().getValue();
 
 		// value = [180 deg of unfolded full range view] / [FOV deg of camera viewport] * [viewport size in pixels]
 		const float unfoldedFovWidth = PI / _horizontalFov / 2 * bounds.getWidth();
@@ -860,14 +860,14 @@ namespace pizdanc {
 	}
 
 	void PFD::renderAltitude(Renderer* renderer, const Bounds& bounds) {
-		auto& app = RCApplication::getInstance();
+		auto& rc = RC::getInstance();
 
 		auto centerY = bounds.getYCenter();
 		auto x = bounds.getX();
 
 		renderer->renderFilledRectangle(bounds, &Theme::bg1);
 
-		float altitude = app.getAltitudeInterpolator().getValue();
+		float altitude = rc.getAltitudeInterpolator().getValue();
 		float snapped = altitude / (float) altitudeStepUnits;
 		float snappedInteger = floor(snapped);
 		float snappedFractional = snapped - snappedInteger;
@@ -957,7 +957,7 @@ namespace pizdanc {
 			centerY,
 			altitudeStepUnits,
 			altitudeUnitPixels,
-			app.getAltitudeTrendInterpolator().getValue()
+			rc.getAltitudeTrendInterpolator().getValue()
 		);
 
 		// Autopilot
@@ -967,8 +967,8 @@ namespace pizdanc {
 			centerY,
 			altitudeStepUnits,
 			altitudeUnitPixels,
-			app.getAltitudeInterpolator().getValue(),
-			app.getLocalData().getAutopilotAltitude(),
+			rc.getAltitudeInterpolator().getValue(),
+			rc.getLocalData().getAutopilotAltitude(),
 			false
 		);
 
@@ -983,7 +983,7 @@ namespace pizdanc {
 	}
 
 	void PFD::renderVerticalSpeed(Renderer* renderer, const Bounds& bounds) {
-		auto& app = RCApplication::getInstance();
+		auto& rc = RC::getInstance();
 		auto centerY = bounds.getYCenter();
 
 		// Background
@@ -1052,8 +1052,8 @@ namespace pizdanc {
 
 		// Current value
 		renderer->renderLine(
-			Point(bounds.getX(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * (float) verticalSpeedStepPixels / (float) verticalSpeedStepUnits)),
-			Point(bounds.getX2(), centerY - (int32_t) (app.getVerticalSpeedInterpolator().getValue() * (float) verticalSpeedStepPixelsRight / (float) verticalSpeedStepUnits)),
+			Point(bounds.getX(), centerY - (int32_t) (rc.getVerticalSpeedInterpolator().getValue() * (float) verticalSpeedStepPixels / (float) verticalSpeedStepUnits)),
+			Point(bounds.getX2(), centerY - (int32_t) (rc.getVerticalSpeedInterpolator().getValue() * (float) verticalSpeedStepPixelsRight / (float) verticalSpeedStepUnits)),
 			&Theme::green
 		);
 	}
@@ -1109,25 +1109,25 @@ namespace pizdanc {
 	}
 
 	void PFD::renderAutopilotSpeed(Renderer* renderer, const Bounds& bounds) {
-		auto& app = RCApplication::getInstance();
+		auto& rc = RC::getInstance();
 
 		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
-		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, app.getLocalData().getAutopilotSpeed(), true);
+		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getLocalData().getAutopilotSpeed(), true);
 	}
 
 	void PFD::renderAutopilotAltitude(Renderer* renderer, const Bounds& bounds) {
-		auto& app = RCApplication::getInstance();
+		auto& rc = RC::getInstance();
 
 		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
-		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, app.getLocalData().getAutopilotAltitude(), false);
+		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getLocalData().getAutopilotAltitude(), false);
 	}
 
 	void PFD::renderPressure(Renderer* renderer, const Bounds& bounds) {
-		auto& app = RCApplication::getInstance();
+		auto& rc = RC::getInstance();
 
 		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
@@ -1135,9 +1135,9 @@ namespace pizdanc {
 		static std::wstringstream stream;
 		stream.str(std::wstring());
 
-		switch (app.getLocalData().getAltimeterMode()) {
+		switch (rc.getLocalData().getAltimeterMode()) {
 			case AltimeterMode::QNH:
-				stream << (uint16_t) app.getLocalData().getAltimeterPressure();
+				stream << (uint16_t) rc.getLocalData().getAltimeterPressure();
 				break;
 
 			case AltimeterMode::QNE:

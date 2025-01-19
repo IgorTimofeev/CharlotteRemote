@@ -1,5 +1,5 @@
 #include "controlsIndicator.h"
-#include "../../../rc_application.h"
+#include "../../../rc.h"
 
 namespace pizdanc {
 	ControlsIndicator::ControlsIndicator() {
@@ -10,7 +10,7 @@ namespace pizdanc {
 		ImageView::render(renderer);
 
 		const auto& bounds = getBounds();
-		auto& app = RCApplication::getInstance();
+		auto& rc = RC::getInstance();
 
 		// If surface rotation >= 5 deg
 		const auto badValue = radians(5) / radians(maxAngle);
@@ -40,7 +40,7 @@ namespace pizdanc {
 				bounds.getY() + 1
 			),
 			7,
-			-app.getSpoilersInterpolator().getValue() * (float) radians(maxAngle)
+			-rc.getSpoilersInterpolator().getValue() * (float) radians(maxAngle)
 		);
 
 		// Flaps
@@ -50,7 +50,7 @@ namespace pizdanc {
 				bounds.getY() + 3
 			),
 			8,
-			app.getFlapsInterpolator().getValue() * (float) radians(maxAngle)
+			rc.getFlapsInterpolator().getValue() * (float) radians(maxAngle)
 		);
 	}
 }

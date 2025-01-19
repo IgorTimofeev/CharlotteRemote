@@ -1,6 +1,6 @@
 #include "controlsPage.h"
 
-#include "../../rc_application.h"
+#include "../../rc.h"
 
 namespace pizdanc {
 	const ControlsImage ControlsView::controlsImage = ControlsImage();
@@ -12,7 +12,7 @@ namespace pizdanc {
 	void ControlsView::onRender(Renderer* renderer) {
 		ImageView::onRender(renderer);
 
-		auto& app = RCApplication::getInstance();
+		auto& rc = RC::getInstance();
 
 		const auto& bounds = getBounds();
 
@@ -54,7 +54,7 @@ namespace pizdanc {
 				bounds.getY() + 58
 			),
 			30,
-			app.getAileronsInterpolator().getValue()
+			rc.getAileronsInterpolator().getValue()
 		);
 
 		horiz(
@@ -63,7 +63,7 @@ namespace pizdanc {
 				bounds.getY() + 58
 			),
 			30,
-			-app.getAileronsInterpolator().getValue()
+			-rc.getAileronsInterpolator().getValue()
 		);
 
 		// Flaps
@@ -73,7 +73,7 @@ namespace pizdanc {
 				bounds.getY() + 59
 			),
 			32,
-			app.getFlapsInterpolator().getValue()
+			rc.getFlapsInterpolator().getValue()
 		);
 
 		horiz(
@@ -82,7 +82,7 @@ namespace pizdanc {
 				bounds.getY() + 59
 			),
 			32,
-			app.getFlapsInterpolator().getValue()
+			rc.getFlapsInterpolator().getValue()
 		);
 
 		// Elevator
@@ -92,7 +92,7 @@ namespace pizdanc {
 				bounds.getY() + 3
 			),
 			37,
-			app.getElevatorInterpolator().getValue()
+			rc.getElevatorInterpolator().getValue()
 		);
 
 		horiz(
@@ -101,7 +101,7 @@ namespace pizdanc {
 				bounds.getY() + 3
 			),
 			37,
-			app.getElevatorInterpolator().getValue()
+			rc.getElevatorInterpolator().getValue()
 		);
 
 		// Rudder
@@ -111,7 +111,7 @@ namespace pizdanc {
 				bounds.getY() + 8
 			),
 			36,
-			app.getRudderInterpolator().getValue()
+			rc.getRudderInterpolator().getValue()
 		);
 	}
 }

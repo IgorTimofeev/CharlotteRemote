@@ -1,16 +1,16 @@
 #include <Arduino.h>
-#include "ui/rc_application.h"
+#include "ui/rc.h"
 
 using namespace pizdanc;
 
-RCApplication& application = RCApplication::getInstance();
+RC& rc = RC::getInstance();
 
 void setup() {
 	Serial.begin(115200);
 
-	application.setup();
+	rc.setup();
 }
 
 void loop() {
-	application.tick();
+	rc.tick();
 }
