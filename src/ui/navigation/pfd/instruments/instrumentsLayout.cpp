@@ -16,12 +16,12 @@ namespace pizdanc {
 		_row.setOrientation(Orientation::horizontal);
 		_row.setSpacing(15);
 		_row.setHorizontalAlignment(Alignment::center);
-		_row.setMargin(Margin(8, 2, 8, 2));
+		_row.setMargin(Margin(8, 1, 8, 0));
 
 		// Throttle
 		Theme::apply(&_throttleTitle);
 
-		const uint8_t contentHeight = InstrumentsLayout::panelSize - _row.getMargin().getVertical() - _throttleTitle.getSpacing() - _throttleTitle.getTitle().getFont()->getHeight();
+		const uint8_t contentHeight = InstrumentsLayout::panelSize - _row.getMargin().getTop() - _throttleTitle.getSpacing() - _throttleTitle.getTitle().getFont()->getHeight();
 
 		_throttleRow.setOrientation(Orientation::horizontal);
 		_throttleRow.setSpacing(12);
@@ -40,7 +40,7 @@ namespace pizdanc {
 
 		// Elevator trim
 		Theme::apply(&_elevatorTrimTitle);
-		_elevatorTrimIndicator.setSize(Size(5, contentHeight));
+		_elevatorTrimIndicator.setSize(Size(5, contentHeight - 4));
 		_elevatorTrimIndicator.setSuggestedMinimum(0.4);
 		_elevatorTrimIndicator.setSuggestedMaximum(0.6);
 		_row += &_elevatorTrimTitle;

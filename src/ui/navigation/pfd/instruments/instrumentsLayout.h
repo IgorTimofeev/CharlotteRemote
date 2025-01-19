@@ -15,7 +15,7 @@ namespace pizdanc {
 		public:
 			InstrumentsLayout();
 
-			static const uint8_t panelSize = 60;
+			static const uint8_t panelSize = 52;
 
 		protected:
 			void onTick() override;
