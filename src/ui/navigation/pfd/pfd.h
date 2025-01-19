@@ -18,8 +18,9 @@ namespace pizdanc {
 			void onRender(Renderer* renderer) override;
 
 		private:
-			static const uint16_t lineSizeBig = 5;
+			static const uint16_t lineSizeBig = 4;
 			static const uint16_t lineSizeSmall = 2;
+			static const uint16_t lineSizeTextOffset = 4;
 
 			static const uint8_t miniHeight = 16;
 
@@ -43,18 +44,19 @@ namespace pizdanc {
 			static const uint16_t speedSmoothMax = 100;
 
 			// Altitude
-			static const uint8_t altitudeWidth = 32;
+			static const uint8_t altitudeWidth = speedWidth;
 			static const uint8_t altitudeStepUnits = 2;
 			static const uint8_t altitudeStepUnitsBig = 10;
 			static const uint8_t altitudeUnitPixels = 8;
 
 			// Vertical speed
-			static const uint8_t verticalSpeedWidth = 16;
+			static const uint8_t verticalSpeedWidth = 15;
 			static const uint16_t verticalSpeedStepUnits = 25;
 			static const uint16_t verticalSpeedStepUnitsLimit = 200;
 			static const uint16_t verticalSpeedStepUnitsBig = 100;
 			static const uint16_t verticalSpeedStepPixels = 11;
 			static const uint16_t verticalSpeedStepPixelsRight = 2;
+			static const uint16_t verticalSpeedTextOffset = 3;
 
 			// Autopilot indicator
 			static const uint8_t autopilotIndicatorWidth = 4;

@@ -44,7 +44,7 @@ namespace pizdanc {
 		renderer->renderFilledRectangle(rectangleBounds, &Theme::bg2);
 
 		// Text
-		const uint8_t textOffset = 2;
+		const uint8_t textOffset = 3;
 
 		const auto oldViewport = renderer->pushViewport(rectangleBounds);
 
@@ -349,7 +349,7 @@ namespace pizdanc {
 
 				renderer->renderString(
 					Point(
-						bounds.getX2() + 1 - speedBarSize - lineSizeBig - 5 - Theme::fontNormal.getWidth(text),
+						bounds.getX2() + 1 - speedBarSize - lineSizeBig - lineSizeTextOffset - Theme::fontNormal.getWidth(text),
 						y - Theme::fontNormal.getHeight() / 2
 					),
 					&Theme::fontNormal,
@@ -895,16 +895,13 @@ namespace pizdanc {
 				// Text
 				static std::wstringstream stream;
 				stream.str(std::wstring());
-
 				stream << lineValue;
 
-				const auto& text = stream.str();
-
 				renderer->renderString(
-					Point(x + lineSizeBig + 5, y - Theme::fontNormal.getHeight() / 2),
+					Point(x + lineSizeBig + lineSizeTextOffset, y - Theme::fontNormal.getHeight() / 2),
 					&Theme::fontNormal,
 					lineColor,
-					text
+					stream.str()
 				);
 			}
 			else {
@@ -997,7 +994,7 @@ namespace pizdanc {
 
 		bool isBig;
 
-		auto renderLines = [&](int32_t yAdder) {
+		auto renderLines = [&lineValue, &isBig, renderer, lineColor, &bounds, &y](int32_t yAdder) {
 			while (lineValue <= verticalSpeedStepUnitsLimit) {
 				isBig = lineValue % verticalSpeedStepUnitsBig == 0;
 
@@ -1013,19 +1010,16 @@ namespace pizdanc {
 
 					static std::wstringstream stream;
 					stream.str(std::wstring());
-
 					stream << lineValue / 100;
-
-					const auto& text = stream.str();
 
 					renderer->renderString(
 						Point(
-							bounds.getX() + lineSizeBig + 4,
+							bounds.getX() + lineSizeBig + verticalSpeedTextOffset,
 							y - Theme::fontNormal.getHeight() / 2
 						),
 						&Theme::fontNormal,
 						lineColor,
-						text
+						stream.str()
 					);
 				}
 				else {
