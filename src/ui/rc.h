@@ -156,7 +156,7 @@ namespace pizdanc {
 				settings::pinout::screen::reset
 			);
 
-			Bit8PaletteBufferedRenderer _renderer = Bit8PaletteBufferedRenderer(32);
+			Bit8PaletteRenderer _renderer = Bit8PaletteRenderer(32);
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
 				settings::pinout::screen::touch::interrupt,
