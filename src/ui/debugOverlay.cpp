@@ -17,11 +17,7 @@ namespace pizdanc {
 
 			y += Theme::fontNormal.getHeight() + 2;
 		};
-
-		renderLine([]() {
-			stream << L"Freq: " << ESP.getCpuFreqMHz() << L" MHz";
-		});
-
+		
 		renderLine([]() {
 			stream
 				<< L"Heap: "
