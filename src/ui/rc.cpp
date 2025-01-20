@@ -13,15 +13,14 @@ namespace pizdanc {
 	}
 
 	void RC::setup() {
-		// Hardware
-		_application.setupRenderingHardware(&_display, &_renderer);
+		// Application
+		_application.setup(&_display, &_renderer, &_touchPanel);
 
-		_touchPanel.setup();
-		_application.addInputDevice(&_touchPanel);
-
+		// Joysticks
 //		_pitchHall.begin();
 //		_rollHall.begin();
 
+		// Other
 		_transceiver.setup();
 		_onboardLED.setup();
 

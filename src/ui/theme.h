@@ -56,7 +56,7 @@ namespace pizdanc {
 			static const uint16_t elementHeight = 28;
 			static const uint16_t cornerRadius = 3;
 
-			static void setup(Bit8PaletteRenderer* renderer);
+			static void setup(EightBitPaletteRenderer* renderer);
 			static void apply(Titler* titler);
 			static void apply(Button* button);
 			static void apply(Slider* slider);

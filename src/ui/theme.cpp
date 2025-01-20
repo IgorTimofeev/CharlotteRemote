@@ -41,7 +41,7 @@ namespace pizdanc {
 	const Vaticanus8Font Theme::fontSmall = Vaticanus8Font();
 //	const UNSCII16Font Theme::fontBig = UNSCII16Font();
 
-	void Theme::setup(Bit8PaletteRenderer* renderer) {
+	void Theme::setup(EightBitPaletteRenderer* renderer) {
 		renderer->setPaletteColors({
 			// Background
 			Rgb888Color(0x000000),

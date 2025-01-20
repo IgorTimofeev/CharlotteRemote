@@ -1,9 +1,9 @@
 #pragma once
 
 #include "../../lib/yoba/src/main.h"
+#include "../../lib/yoba/src/ui.h"
 #include "../../lib/yoba/src/hardware/displays/ILI9341Display.h"
 #include "../../lib/yoba/src/hardware/touchPanels/FT6336UTouchPanel.h"
-#include "../../lib/yoba/src/ui.h"
 
 #include "interpolator.h"
 
@@ -108,6 +108,8 @@ namespace pizdanc {
 
 	class RC {
 		public:
+			RC() {}
+
 			static RC& getInstance();
 
 			void setup();
@@ -147,20 +149,19 @@ namespace pizdanc {
 			// -------------------------------- Hardware --------------------------------
 
 			ILI9341Display _display = ILI9341Display(
-				ColorModel::rgb565,
-				RenderTargetOrientation::clockwise0,
 				settings::pinout::screen::chipSelect,
 				settings::pinout::screen::dataCommand,
-				settings::pinout::screen::reset
+				settings::pinout::screen::reset,
+				settings::pinout::screen::frequency
 			);
 
-			Bit8PaletteRenderer _renderer = Bit8PaletteRenderer(32);
+			EightBitPaletteRenderer _renderer = EightBitPaletteRenderer(32);
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
-				settings::pinout::screen::touch::interrupt,
-				settings::pinout::screen::touch::reset,
+				settings::pinout::screen::touch::scl,
 				settings::pinout::screen::touch::sda,
-				settings::pinout::screen::touch::scl
+				settings::pinout::screen::touch::reset,
+				settings::pinout::screen::touch::interrupt
 			);
 
 			Transceiver _transceiver;
@@ -172,7 +173,7 @@ namespace pizdanc {
 
 			// -------------------------------- UI --------------------------------
 
-			Application _application = Application();
+			Application _application;
 			Menu _menu;
 			DebugOverlay _debugOverlay;
 

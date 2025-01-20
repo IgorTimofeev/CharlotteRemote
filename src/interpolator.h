@@ -1,11 +1,12 @@
 #pragma once
 
-#include "cstdint"
+#include <cstdint>
+#include <cmath>
 
 class Interpolator {
 	public:
 		void tick(float factor) {
-			_value = isnan(_value) ? _targetValue : _value + (_targetValue - _value) * factor;
+			_value = std::isnan(_value) ? _targetValue : _value + (_targetValue - _value) * factor;
 		}
 
 		float getValue() const {
