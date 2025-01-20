@@ -18,18 +18,6 @@ namespace pizdanc {
 			y += Theme::fontNormal.getHeight() + 2;
 		};
 
-		const auto renderTimeLine = [&renderLine, &rc](const std::wstring_view& key, uint32_t time) {
-			renderLine([&rc, time, &key]() {
-				stream
-					<< key
-					<< L": "
-					<< time
-					<< L" ms, "
-					<< (time * 100 / rc.getTickDeltaTime())
-					<< L"%";
-			});
-		};
-
 		renderLine([]() {
 			stream << L"Freq: " << ESP.getCpuFreqMHz() << L" MHz";
 		});
@@ -43,17 +31,43 @@ namespace pizdanc {
 				<< L" kB";
 		});
 
+		const auto renderTimeLine = [&renderLine, &rc](const std::wstring_view& key, uint32_t time) {
+			renderLine([&rc, time, &key]() {
+				stream
+					<< key
+					<< L": "
+					<< time
+					<< L" ms, "
+					<< (time * 100 / rc.getTickDeltaTime())
+					<< L"%";
+			});
+		};
+
 		renderTimeLine(L"Tick", rc.getApplication().getTickDeltaTime());
 		renderTimeLine(L"Layout", rc.getApplication().getLayoutDeltaTime());
 		renderTimeLine(L"Render", rc.getApplication().getRenderDeltaTime());
 		renderTimeLine(L"Flush", rc.getApplication().getFlushDeltaTime());
 
 		renderLine([&rc]() {
-			stream << L"Total: " << rc.getTickDeltaTime() << L" ms";
+			const auto sum =
+				rc.getApplication().getTickDeltaTime()
+				+ rc.getApplication().getLayoutDeltaTime()
+				+ rc.getApplication().getRenderDeltaTime()
+				+ rc.getApplication().getFlushDeltaTime();
+
+			stream
+			<< L"Other: "
+			<< (sum > rc.getTickDeltaTime() ? rc.getTickDeltaTime() - sum : 0)
+			<< L" ms";
 		});
 
 		renderLine([&rc]() {
-			stream << L"FPS: " << (1000 / rc.getTickDeltaTime());
+			stream
+			<< L"Total: "
+			<< rc.getTickDeltaTime()
+			<< L" ms, "
+			<< (1000 / rc.getTickDeltaTime())
+			<< L" FPS";
 		});
 	}
 }

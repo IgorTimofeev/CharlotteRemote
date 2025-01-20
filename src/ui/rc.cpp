@@ -42,13 +42,13 @@ namespace pizdanc {
 	}
 
 	void RC::tick() {
-		auto time = millis();
+		auto time = system::getTime();
 
 		simulateFlightData();
 
 		_application.tick();
 
-		_tickDeltaTime = millis() - time;
+		_tickDeltaTime = system::getTime() - time;
 	}
 
 	void RC::simulateFlightData() {
@@ -59,20 +59,20 @@ namespace pizdanc {
 		_onboardLED.tick();
 
 		// Test
-		const auto testDeltaTime = (float) (millis() - _simulationTickTime2);
+		const auto testDeltaTime = (float) (system::getTime() - _simulationTickTime2);
 		float testDelay = 1000;
 
 		if (testDeltaTime > testDelay) {
 			// Throttle
 			const auto handleFloat = [&](Interpolator& interpolator, float increment = 0.1f, float trigger = 0.05f) {
-				if (abs(interpolator.getValue() - interpolator.getTargetValue()) > trigger)
+				if (std::abs(interpolator.getValue() - interpolator.getTargetValue()) > trigger)
 					return;
 
 				if (interpolator.getTargetValue() >= 1.0f) {
 					interpolator.setTargetValue(0.0f);
 				}
 				else {
-					interpolator.setTargetValue(min(interpolator.getTargetValue() + increment, 1.0f));
+					interpolator.setTargetValue(std::min(interpolator.getTargetValue() + increment, 1.0f));
 				}
 			};
 
@@ -111,7 +111,7 @@ namespace pizdanc {
 				_yawInterpolator.setTargetValue(toRadians(-170));
 
 			// A/P
-			_simulationTickTime2 = millis();
+			_simulationTickTime2 = system::getTime();
 
 			const auto newSpeed = _speedInterpolator.getTargetValue();
 			const auto newAltitude = _altitudeInterpolator.getTargetValue();
@@ -140,7 +140,7 @@ namespace pizdanc {
 			handleFloat(_elevatorTrimInterpolator);
 		}
 
-		auto deltaTime = (float) (millis() - _simulationTickTime1);
+		auto deltaTime = (float) (system::getTime() - _simulationTickTime1);
 
 		if (deltaTime > settings::application::tickInterval) {
 			const float interpolationFactor = deltaTime / testDelay;
@@ -172,7 +172,7 @@ namespace pizdanc {
 
 			_application.invalidate();
 
-			_simulationTickTime1 = millis();
+			_simulationTickTime1 = system::getTime();
 		}
 	}
 
