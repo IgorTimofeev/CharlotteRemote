@@ -47,7 +47,7 @@ namespace pizdanc {
 				return rc.getLocalData().getAutopilotHeading();
 			},
 			[&](float oldAngle, float newAngle) {
-				auto newValue = (float) degrees(newAngle);
+				auto newValue = (float) toDegrees(newAngle);
 
 				if (newValue < 0) {
 					newValue += 360;

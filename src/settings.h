@@ -20,6 +20,8 @@ namespace pizdanc {
 				namespace touch {
 					const uint8_t reset = 32;
 					const uint8_t interrupt = 26;
+					const uint8_t sda = 21;
+					const uint8_t scl = 22;
 				}
 
 				const uint8_t chipSelect = 5;

@@ -97,8 +97,8 @@ namespace pizdanc {
 			static const uint8_t rollOverlayTriangleSize = yawOverlayLineBigLength;
 
 			// 3D
-			float _horizontalFov = radians(120);
-			float _verticalFov = radians(90);
+			float _horizontalFov = toRadians(120);
+			float _verticalFov = toRadians(90);
 
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
 

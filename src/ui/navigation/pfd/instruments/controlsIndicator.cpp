@@ -13,7 +13,7 @@ namespace pizdanc {
 		auto& rc = RC::getInstance();
 
 		// If surface rotation >= 5 deg
-		const auto badValue = radians(5) / radians(maxAngle);
+		const auto badValue = toRadians(5) / toRadians(maxAngle);
 
 		// Lines
 		auto ebanina = [&](const Point& point, uint16_t length, float angle) {
@@ -40,7 +40,7 @@ namespace pizdanc {
 				bounds.getY() + 1
 			),
 			7,
-			-rc.getSpoilersInterpolator().getValue() * (float) radians(maxAngle)
+			-rc.getSpoilersInterpolator().getValue() * (float) toRadians(maxAngle)
 		);
 
 		// Flaps
@@ -50,7 +50,7 @@ namespace pizdanc {
 				bounds.getY() + 3
 			),
 			8,
-			rc.getFlapsInterpolator().getValue() * (float) radians(maxAngle)
+			rc.getFlapsInterpolator().getValue() * (float) toRadians(maxAngle)
 		);
 	}
 }

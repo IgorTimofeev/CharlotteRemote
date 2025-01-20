@@ -87,22 +87,22 @@ namespace pizdanc {
 				_altitudeInterpolator.setTargetValue(0);
 
 			// Pitch
-			_pitchInterpolator.setTargetValue(_pitchInterpolator.getTargetValue() + (float) radians(2));
+			_pitchInterpolator.setTargetValue(_pitchInterpolator.getTargetValue() + (float) toRadians(2));
 
-			if (degrees(_pitchInterpolator.getTargetValue()) > 10)
-				_pitchInterpolator.setTargetValue(radians(-10));
+			if (toDegrees(_pitchInterpolator.getTargetValue()) > 10)
+				_pitchInterpolator.setTargetValue(toRadians(-10));
 
 			// Roll
-			_rollInterpolator.setTargetValue(_rollInterpolator.getTargetValue() + (float) radians(1));
+			_rollInterpolator.setTargetValue(_rollInterpolator.getTargetValue() + (float) toRadians(1));
 
-			if (degrees(_rollInterpolator.getTargetValue()) > 30)
-				_rollInterpolator.setTargetValue(radians(-30));
+			if (toDegrees(_rollInterpolator.getTargetValue()) > 30)
+				_rollInterpolator.setTargetValue(toRadians(-30));
 
 			// Yaw
-			_yawInterpolator.setTargetValue(_yawInterpolator.getTargetValue() + (float) radians(10));
+			_yawInterpolator.setTargetValue(_yawInterpolator.getTargetValue() + (float) toRadians(10));
 
-			if (degrees(_yawInterpolator.getTargetValue()) > 170)
-				_yawInterpolator.setTargetValue(radians(-170));
+			if (toDegrees(_yawInterpolator.getTargetValue()) > 170)
+				_yawInterpolator.setTargetValue(toRadians(-170));
 
 			// A/P
 			_simulationTickTime2 = millis();

@@ -62,7 +62,7 @@ namespace pizdanc {
 		y = y + currentValueHeight / 2 - Theme::fontNormal.getHeight() / 2;
 
 		float integer;
-		const auto fractional = modf(value, &integer);
+		const auto fractional = std::modf(value, &integer);
 		const int32_t scrolledY = y + (uint8_t) (fractional * (float) Theme::fontNormal.getHeight());
 
 		auto getNextDigit = [&](uint8_t digit, bool plus) {
@@ -566,7 +566,7 @@ namespace pizdanc {
 	) {
 		const auto viewport = renderer->pushViewport(bounds);
 
-		const float lineAngleStepRad = radians(pitchOverlayAngleStep);
+		const float lineAngleStepRad = toRadians(pitchOverlayAngleStep);
 		const float linesInTotal = floor(((float) HALF_PI) / lineAngleStepRad);
 		const float linePixelStep = (float) unfoldedFOVHeight / linesInTotal;
 
@@ -642,7 +642,7 @@ namespace pizdanc {
 		);
 
 		const auto& renderLine = [renderer, &roll, &radius, &center](int8_t angle, bool isBig) {
-			const auto& vec = Vector2F(0, radius).rotate(radians(angle) - roll);
+			const auto& vec = Vector2F(0, radius).rotate(toRadians(angle) - roll);
 			const auto& lineTo = center - (Point) vec;
 			const auto& lineFrom = lineTo + (Point) (vec.normalize() * (isBig ? rollOverlayLineBigLength : rollOverlayLineSmallLength));
 
@@ -684,7 +684,7 @@ namespace pizdanc {
 		const auto centerX = bounds.getXCenter();
 
 		float closestInteger;
-		float closestFractional = modff(degrees(yaw) / yawOverlayAngleStepUnits, &closestInteger);
+		float closestFractional = modff(toDegrees(yaw) / yawOverlayAngleStepUnits, &closestInteger);
 		closestInteger *= yawOverlayAngleStepUnits;
 
 		const uint8_t fullCount = (uint8_t) ceil((float) (centerX - bounds.getX()) / yawOverlayAngleStepPixels) + 1;
