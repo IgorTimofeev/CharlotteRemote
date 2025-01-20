@@ -58,7 +58,7 @@ namespace pizdanc {
 			return new DebugPage();
 		}));
 
-		setSelectedIndex(4);
+		setSelectedIndex(0);
 	}
 
 	void Menu::onSelectionChanged() {

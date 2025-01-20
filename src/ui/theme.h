@@ -1,11 +1,11 @@
 #pragma once
 
-#include "color.h"
+#include "main/color.h"
 #include "../../lib/yoba/src/main.h"
 #include "../../lib/yoba/src/ui.h"
 #include "../../lib/yoba/src/resources/fonts/PIXY10Font.h"
 #include "../../lib/yoba/src/resources/fonts/Vaticanus8Font.h"
-#include "../../lib/yoba/src/resources/fonts/unscii16Font.h"
+#include "../../lib/yoba/src/resources/fonts/UNSCII16Font.h"
 
 namespace pizdanc {
 	using namespace yoba;
@@ -51,7 +51,7 @@ namespace pizdanc {
 
 			static const PIXY10Font fontNormal;
 			static const Vaticanus8Font fontSmall;
-//			static const unscii16Font fontBig;
+//			static const UNSCII16Font fontBig;
 
 			static const uint16_t elementHeight = 28;
 			static const uint16_t cornerRadius = 3;

@@ -106,7 +106,7 @@ namespace pizdanc {
 			float _speed = 0;
 	};
 
-	class RC  {
+	class RC {
 		public:
 			static RC& getInstance();
 

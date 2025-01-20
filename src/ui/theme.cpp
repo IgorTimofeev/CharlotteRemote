@@ -39,7 +39,7 @@ namespace pizdanc {
 
 	const PIXY10Font Theme::fontNormal = PIXY10Font();
 	const Vaticanus8Font Theme::fontSmall = Vaticanus8Font();
-//	const unscii16Font Theme::fontBig = unscii16Font();
+//	const UNSCII16Font Theme::fontBig = UNSCII16Font();
 
 	void Theme::setup(Bit8PaletteRenderer* renderer) {
 		renderer->setPaletteColors({
