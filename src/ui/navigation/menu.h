@@ -9,7 +9,7 @@
 namespace pizdanc {
 	class Menu : public Selector {
 		public:
-			void setup();
+			explicit Menu();
 
 		protected:
 			void onSelectionChanged() override;
@@ -17,7 +17,6 @@ namespace pizdanc {
 		private:
 			static const uint16_t selectorHeight = 20;
 
-			Rectangle _background = Rectangle(&Theme::bg1);
 			Layout _pageLayout;
 
 			Layout _itemsHolder;

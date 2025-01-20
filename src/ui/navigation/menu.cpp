@@ -7,9 +7,7 @@
 #include "controls/controlsPage.h"
 
 namespace pizdanc {
-	void Menu::setup() {
-		*this += &_background;
-
+	Menu::Menu() {
 		// Page
 		_pageLayout.setMargin(Margin(0, 0, 0, selectorHeight));
 		*this += &_pageLayout;
@@ -57,8 +55,6 @@ namespace pizdanc {
 		addItem(new MenuItem(L"DBG", []() {
 			return new DebugPage();
 		}));
-
-		setSelectedIndex(0);
 	}
 
 	void Menu::onSelectionChanged() {

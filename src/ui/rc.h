@@ -158,8 +158,8 @@ namespace pizdanc {
 			EightBitPaletteRenderer _renderer = EightBitPaletteRenderer(32);
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
-				settings::pinout::screen::touch::scl,
 				settings::pinout::screen::touch::sda,
+				settings::pinout::screen::touch::scl,
 				settings::pinout::screen::touch::reset,
 				settings::pinout::screen::touch::interrupt
 			);

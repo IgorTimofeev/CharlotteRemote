@@ -13,6 +13,8 @@ namespace pizdanc {
 	}
 
 	void RC::setup() {
+		// -------------------------------- Hardware --------------------------------
+
 		// Application
 		_application.setup(&_display, &_renderer, &_touchPanel);
 
@@ -24,12 +26,17 @@ namespace pizdanc {
 		_transceiver.setup();
 		_onboardLED.setup();
 
-		// UI
-		Theme::setup(&_renderer);
+		// -------------------------------- UI --------------------------------
 
-		_menu.setup();
+		// Theme
+		Theme::setup(&_renderer);
+		_application.setBackgroundColor(&Theme::bg1);
+
+		// Menu
+		_menu.setSelectedIndex(0);
 		_application += &_menu;
 
+		// Debug overlay
 		_debugOverlay.setVisible(false);
 		_application += &_debugOverlay;
 	}
