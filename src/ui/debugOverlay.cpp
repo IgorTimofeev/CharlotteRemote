@@ -17,7 +17,7 @@ namespace pizdanc {
 
 			y += Theme::fontNormal.getHeight() + 2;
 		};
-		
+
 		renderLine([]() {
 			stream
 				<< L"Heap: "
@@ -53,7 +53,7 @@ namespace pizdanc {
 
 			stream
 			<< L"Other: "
-			<< (sum > rc.getTickDeltaTime() ? rc.getTickDeltaTime() - sum : 0)
+			<< (sum <= rc.getTickDeltaTime() ? rc.getTickDeltaTime() - sum : 0)
 			<< L" ms";
 		});
 
