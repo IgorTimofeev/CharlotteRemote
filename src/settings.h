@@ -17,6 +17,9 @@ namespace pizdanc {
 					static const uint8_t scl = 22;
 				}
 
+				static const uint8_t mosi = 23;
+				static const uint8_t miso = 19;
+				static const uint8_t sck = 18;
 				static const uint8_t chipSelect = 5;
 				static const uint8_t dataCommand = 16;
 				static const uint8_t reset = 17;

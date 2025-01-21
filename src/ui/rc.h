@@ -149,6 +149,9 @@ namespace pizdanc {
 			// -------------------------------- Hardware --------------------------------
 
 			ILI9341Display _display = ILI9341Display(
+				settings::pinout::screen::mosi,
+				settings::pinout::screen::miso,
+				settings::pinout::screen::sck,
 				settings::pinout::screen::chipSelect,
 				settings::pinout::screen::dataCommand,
 				settings::pinout::screen::reset,
