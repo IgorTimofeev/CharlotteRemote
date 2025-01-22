@@ -1,0 +1,18 @@
+#pragma once
+
+#include "../../../../components/yoba/src/main.h"
+#include "../../../../components/yoba/src/ui.h"
+
+#include "../page.h"
+
+namespace pizdanc {
+	using namespace yoba;
+	using namespace yoba::ui;
+
+	class RadioPage : public Page {
+		public:
+			RadioPage() {
+				
+			}
+	};
+}

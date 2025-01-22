@@ -1,0 +1,24 @@
+dependencies:
+  RadioLib:
+    dependencies: []
+    source:
+      path: C:\Users\Igor\Documents\Code\MCU\ESP32\PullTick\components\RadioLib
+      type: local
+    version: 7.1.2
+  idf:
+    source:
+      type: idf
+    version: 5.4.0
+  yoba:
+    dependencies: []
+    source:
+      path: C:\Users\Igor\Documents\Code\MCU\ESP32\PullTick\components\yoba
+      type: local
+    version: 0.0.1
+direct_dependencies:
+- RadioLib
+- idf
+- yoba
+manifest_hash: da75b1efa1c43a24060320c0dca09ab84afea005872584e45d36c31b164a9a84
+target: esp32
+version: 2.0.0
