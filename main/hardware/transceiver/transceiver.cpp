@@ -14,13 +14,13 @@ namespace pizdanc {
 		ESP_LOGI("Transceiver", "Initializing");
 
 		auto state = _sx1262.begin(
-			settings::transceiver::frequency,
-			settings::transceiver::bandwidth,
-			settings::transceiver::spreadingFactor,
-			settings::transceiver::codingRate,
+			constants::transceiver::frequency,
+			constants::transceiver::bandwidth,
+			constants::transceiver::spreadingFactor,
+			constants::transceiver::codingRate,
 			RADIOLIB_SX126X_SYNC_WORD_PRIVATE,
-			settings::transceiver::power,
-			settings::transceiver::preambleLength,
+			constants::transceiver::power,
+			constants::transceiver::preambleLength,
 			0,
 			false
 		);
@@ -65,7 +65,7 @@ namespace pizdanc {
 				break;
 		}
 
-		_deadline = esp_timer_get_time() + settings::transceiver::tickInterval;
+		_deadline = esp_timer_get_time() + constants::transceiver::tickInterval;
 	}
 
 	template<typename T>
@@ -142,9 +142,9 @@ namespace pizdanc {
 				if (state == RADIOLIB_ERR_NONE) {
 					// Checking header
 					auto header = ((uint32_t *) &_sx1262Buffer)[0];
-					uint8_t headerLength = sizeof(settings::transceiver::packetHeader);
+					uint8_t headerLength = sizeof(constants::transceiver::packetHeader);
 
-					if (header == settings::transceiver::packetHeader) {
+					if (header == constants::transceiver::packetHeader) {
 						uint8_t encryptedLength = packetLength - headerLength;
 
 						// Decrypting

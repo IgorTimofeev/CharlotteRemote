@@ -24,7 +24,7 @@ namespace pizdanc {
 		// Big fucking FPS counter
 		renderLine(
 			[&totalDeltaTime]() {
-				stream << (1000 / totalDeltaTime);
+				stream << (totalDeltaTime > 0 ? 1000 / totalDeltaTime : 0);
 			},
 			&Theme::yellow,
 			3
@@ -64,7 +64,7 @@ namespace pizdanc {
 					<< L": "
 					<< time
 					<< L" ms, "
-					<< (time * 100 / totalDeltaTime)
+					<< (totalDeltaTime > 0 ? time * 100 / totalDeltaTime : 0)
 					<< L"%";
 			});
 		};

@@ -5,9 +5,10 @@
 #include "src/hardware/displays/ILI9341Display.h"
 #include "src/hardware/touchPanels/FT6336UTouchPanel.h"
 
+#include "settings.h"
+#include "constants.h"
 #include "data.h"
 #include "interpolator.h"
-#include "settings.h"
 #include "hardware/transceiver/transceiver.h"
 
 #include "ui/theme.h"
@@ -26,7 +27,6 @@ namespace pizdanc {
 			void run();
 
 			Application& getApplication();
-			DebugOverlay& getDebugOverlay();
 
 			LocalData& getLocalData();
 			RemoteData& getRemoteData();
@@ -50,7 +50,10 @@ namespace pizdanc {
 			Interpolator& getElevatorTrimInterpolator();
 			Interpolator& getRudderTrimInterpolator();
 
+			void updateDebugInfoVisibility();
+
 			uint32_t getTickDeltaTime() const;
+			Settings& getSettings();
 
 		private:
 			RC() = default;
@@ -58,22 +61,22 @@ namespace pizdanc {
 			// -------------------------------- Hardware --------------------------------
 
 			ILI9341Display _display = ILI9341Display(
-				settings::pinout::screen::mosi,
-				settings::pinout::screen::miso,
-				settings::pinout::screen::sck,
-				settings::pinout::screen::chipSelect,
-				settings::pinout::screen::dataCommand,
-				settings::pinout::screen::reset,
-				settings::pinout::screen::frequency
+				constants::pinout::screen::mosi,
+				constants::pinout::screen::miso,
+				constants::pinout::screen::sck,
+				constants::pinout::screen::chipSelect,
+				constants::pinout::screen::dataCommand,
+				constants::pinout::screen::reset,
+				constants::pinout::screen::frequency
 			);
 
 			EightBitPaletteRenderer _renderer = EightBitPaletteRenderer(32);
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
-				settings::pinout::screen::touch::sda,
-				settings::pinout::screen::touch::scl,
-				settings::pinout::screen::touch::reset,
-				settings::pinout::screen::touch::interrupt
+				constants::pinout::screen::touch::sda,
+				constants::pinout::screen::touch::scl,
+				constants::pinout::screen::touch::reset,
+				constants::pinout::screen::touch::interrupt
 			);
 
 			//
@@ -82,9 +85,9 @@ namespace pizdanc {
 
 			// -------------------------------- UI --------------------------------
 
-			Application _application = Application();
-			Menu _menu = Menu();
-			DebugOverlay _debugOverlay = DebugOverlay();
+			Application _application;
+			Menu _menu;
+			DebugOverlay _debugOverlay;
 
 			// -------------------------------- Timings --------------------------------
 
@@ -118,6 +121,7 @@ namespace pizdanc {
 
 			// -------------------------------- Other shit --------------------------------
 
+			Settings _settings;
 			LocalData _localData;
 			RemoteData _remoteData;
 			uint32_t _tickDeltaTime = 0;

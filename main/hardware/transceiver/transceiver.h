@@ -4,7 +4,7 @@
 #include "RadioLib.h"
 #include "radioLibESPHAL.h"
 #include "packet.h"
-#include "../../settings.h"
+#include "../../constants.h"
 
 namespace pizdanc {
 	enum TransceiverMode : uint8_t {
@@ -26,10 +26,10 @@ namespace pizdanc {
 
 			SX1262 _sx1262 = new Module(
 				&_hal,
-				settings::pinout::transceiver::chipSelect,
-				settings::pinout::transceiver::dio0,
-				settings::pinout::transceiver::reset,
-				settings::pinout::transceiver::busy
+				constants::pinout::transceiver::chipSelect,
+				constants::pinout::transceiver::dio0,
+				constants::pinout::transceiver::reset,
+				constants::pinout::transceiver::busy
 			);
 
 			TransceiverMode _mode = TransceiverMode::StartReceive;

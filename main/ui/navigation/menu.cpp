@@ -5,6 +5,7 @@
 #include "autopilot/autopilotPage.h"
 #include "radio/radioPage.h"
 #include "controls/controlsPage.h"
+#include "../../rc.h"
 
 namespace pizdanc {
 	Menu::Menu() {
@@ -58,10 +59,12 @@ namespace pizdanc {
 	}
 
 	void Menu::onSelectionChanged() {
-		auto selectedItem = reinterpret_cast<MenuItem*>(getSelectedItem());
+		auto selectedIndex = getSelectedIndex();
 
-		if (!selectedItem)
+		if (selectedIndex < 0)
 			return;
+
+		auto selectedItem = reinterpret_cast<MenuItem*>(getItemAt(selectedIndex));
 
 		// Removing old page
 		if (_pageLayout.getChildrenCount() > 0) {
@@ -74,5 +77,14 @@ namespace pizdanc {
 		auto newPage = selectedItem->getPageBuilder()();
 		newPage->setup();
 		_pageLayout += newPage;
+
+		// Settings
+		auto& settings = RC::getInstance().getSettings();
+
+		if (selectedIndex == settings.menuPageIndex)
+			return;
+
+		settings.menuPageIndex = selectedIndex;
+		settings.enqueueWrite();
 	}
 }

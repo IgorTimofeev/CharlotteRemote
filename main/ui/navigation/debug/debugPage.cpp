@@ -57,9 +57,16 @@ furnished to do so, subject to the following conditions)"
 		// Switch
 		Theme::apply(&_switch);
 		_switch.setCheckedColor(&Theme::sky);
+		_switch.setChecked(RC::getInstance().getSettings().debugInfoVisible);
 
 		_switch.isCheckedChanged += [this]() {
-			RC::getInstance().getDebugOverlay().setVisible(_switch.isChecked());
+			auto& rc = RC::getInstance();
+
+			auto& settings = rc.getSettings();
+			settings.debugInfoVisible = _switch.isChecked();
+			settings.enqueueWrite();
+
+			rc.updateDebugInfoVisibility();
 		};
 
 		Theme::apply(&_switchTitle);

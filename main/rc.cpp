@@ -1,7 +1,7 @@
 #include <cstdint>
 #include <esp_timer.h>
 #include "rc.h"
-#include "settings.h"
+#include "constants.h"
 #include "ui/navigation/menu.h"
 #include "ui/debugOverlay.h"
 
@@ -15,10 +15,22 @@ namespace pizdanc {
 	}
 
 	void RC::run() {
-		// -------------------------------- Hardware --------------------------------
+		// -------------------------------- Main --------------------------------
 
-		// Application
-		_application.setup(&_display, &_renderer, &_touchPanel);
+		// Settings
+		_settings.setup();
+		_settings.read();
+
+		// Display
+		_display.setup();
+
+		// Renderer
+		_renderer.setTarget(&_display);
+		_application.setRenderer(&_renderer);
+
+		// Touch panel
+		_touchPanel.setup();
+		_application.addInputDevice(&_touchPanel);
 
 		// Joysticks
 //		_pitchHall.begin();
@@ -33,11 +45,11 @@ namespace pizdanc {
 		_application.setBackgroundColor(&Theme::bg1);
 
 		// Menu
-		_menu.setSelectedIndex(0);
+		_menu.setSelectedIndex(_settings.menuPageIndex);
 		_application += &_menu;
 
 		// Debug overlay
-		_debugOverlay.setVisible(false);
+		updateDebugInfoVisibility();
 		_application += &_debugOverlay;
 
 		while (true) {
@@ -46,6 +58,7 @@ namespace pizdanc {
 			simulateFlightData();
 
 			_application.tick();
+			_settings.tick();
 
 			_tickDeltaTime = (esp_timer_get_time() - time) / 1000;
 		}
@@ -139,7 +152,7 @@ namespace pizdanc {
 
 		auto deltaTime = (float) (esp_timer_get_time() - _simulationTickTime1);
 
-		if (deltaTime > settings::application::tickInterval) {
+		if (deltaTime > constants::application::tickInterval) {
 			const float interpolationFactor = deltaTime / testDelay;
 
 			_throttle1Interpolator.tick(interpolationFactor);
@@ -259,11 +272,15 @@ namespace pizdanc {
 		return _application;
 	}
 
-	DebugOverlay& RC::getDebugOverlay() {
-		return _debugOverlay;
-	}
-
 	uint32_t RC::getTickDeltaTime() const {
 		return _tickDeltaTime;
+	}
+
+	Settings& RC::getSettings() {
+		return _settings;
+	}
+
+	void RC::updateDebugInfoVisibility() {
+		_debugOverlay.setVisible(_settings.debugInfoVisible);
 	}
 }
