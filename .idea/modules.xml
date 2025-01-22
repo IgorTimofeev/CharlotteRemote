@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/IDFTest.iml" filepath="$PROJECT_DIR$/.idea/IDFTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PullTick.iml" filepath="$PROJECT_DIR$/.idea/PullTick.iml" />
     </modules>
   </component>
 </project>
