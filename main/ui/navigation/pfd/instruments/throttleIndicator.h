@@ -73,6 +73,8 @@ namespace pizdanc {
 
 			void setValue(float value) {
 				_value = value;
+
+				invalidate();
 			}
 
 		private:

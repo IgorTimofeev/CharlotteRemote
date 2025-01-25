@@ -1,5 +1,7 @@
 #pragma once
 
+#include "esp_adc/adc_oneshot.h"
+
 #include "src/main.h"
 #include "src/ui.h"
 #include "src/hardware/displays/ILI9341Display.h"
@@ -51,7 +53,7 @@ namespace pizdanc {
 			Interpolator& getRudderTrimInterpolator();
 
 			void updateDebugInfoVisibility();
-
+			float getBatteryCharge() const;
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
 
@@ -89,7 +91,22 @@ namespace pizdanc {
 			Menu _menu;
 			DebugOverlay _debugOverlay;
 
+			// -------------------------------- Battery --------------------------------
+
+			static const uint8_t _batteryVoltageMaxCount = 16;
+			static const uint32_t _batteryVoltageInterval = 1000000 / _batteryVoltageMaxCount;
+			const float _batteryVoltageDividerMin = 1.83f;
+			const float _batteryVoltageDividerMax = 2.89f;
+
+			adc_oneshot_unit_handle_t _batteryVoltageADCHandle;
+			uint32_t _batteryVoltageTime = 0;
+			uint32_t _batteryVoltageSum = 0;
+			uint8_t _batteryVoltageCount = 0;
+			float _batteryCharge = 0.0f;
+
 			// -------------------------------- Timings --------------------------------
+
+			uint32_t _tickDeltaTime = 0;
 
 			uint32_t _simulationTickTime1 = 0;
 			uint32_t _simulationTickTime2 = 0;
@@ -124,8 +141,9 @@ namespace pizdanc {
 			Settings _settings;
 			LocalData _localData;
 			RemoteData _remoteData;
-			uint32_t _tickDeltaTime = 0;
 
 			void simulateFlightData();
+
+			void readBatteryVoltage();
 	};
 }

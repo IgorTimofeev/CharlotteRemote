@@ -6,6 +6,7 @@
 #include "trimIndicator.h"
 #include "throttleIndicator.h"
 #include "controlsIndicator.h"
+#include "batteryIndicator.h"
 
 namespace pizdanc {
 	using namespace yoba;
@@ -37,5 +38,10 @@ namespace pizdanc {
 
 			TrimIndicator _elevatorTrimIndicator;
 			Titler _elevatorTrimTitle = Titler(L"Trim", &_elevatorTrimIndicator);
+
+			BatteryIndicator _batteryIndicatorController;
+			BatteryIndicator _batteryIndicatorAircraft;
+			StackLayout _batteryIndicatorRows;
+			Titler _batteryIndicatorTitle = Titler(L"BAT", &_batteryIndicatorRows);
 	};
 }

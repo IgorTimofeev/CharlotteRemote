@@ -45,6 +45,18 @@ namespace pizdanc {
 		_elevatorTrimIndicator.setSuggestedMaximum(0.6);
 		_row += &_elevatorTrimTitle;
 
+		// Battery
+		Theme::apply(&_batteryIndicatorTitle);
+
+		_batteryIndicatorController.setSize(Size(30, 14));
+		_batteryIndicatorAircraft.setSize(_batteryIndicatorController.getSize());
+
+		_batteryIndicatorRows.setSpacing(5);
+		_batteryIndicatorRows += &_batteryIndicatorController;
+		_batteryIndicatorRows += &_batteryIndicatorAircraft;
+
+		_row += &_batteryIndicatorTitle;
+
 		*this += &_row;
 	}
 
@@ -59,5 +71,9 @@ namespace pizdanc {
 
 		// Trim
 		_elevatorTrimIndicator.setValue(rc->getElevatorTrimInterpolator().getValue());
+
+		// Battery
+		_batteryIndicatorController.setValue(rc->getBatteryCharge());
+		_batteryIndicatorAircraft.setValue(rc->getBatteryCharge() * 0.8f);
 	}
 }

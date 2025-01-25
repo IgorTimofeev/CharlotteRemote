@@ -36,7 +36,21 @@ namespace pizdanc {
 //		_pitchHall.begin();
 //		_rollHall.begin();
 
-		// Other
+		// Battery
+		adc_oneshot_unit_init_cfg_t batteryADCInitConfig = {
+			.unit_id = ADC_UNIT_1,
+			.clk_src = ADC_RTC_CLK_SRC_DEFAULT,
+			.ulp_mode = ADC_ULP_MODE_DISABLE
+		};
+
+		ESP_ERROR_CHECK(adc_oneshot_new_unit(&batteryADCInitConfig, &_batteryVoltageADCHandle));
+
+		adc_oneshot_chan_cfg_t batteryADCChannelConfig = {
+			.atten = ADC_ATTEN_DB_12,
+			.bitwidth = ADC_BITWIDTH_DEFAULT,
+		};
+
+		ESP_ERROR_CHECK(adc_oneshot_config_channel(_batteryVoltageADCHandle, constants::pinout::board::batteryVoltage, &batteryADCChannelConfig));
 
 		// -------------------------------- UI --------------------------------
 
@@ -55,6 +69,7 @@ namespace pizdanc {
 		while (true) {
 			auto time = esp_timer_get_time();
 
+			readBatteryVoltage();
 			simulateFlightData();
 
 			_application.tick();
@@ -62,6 +77,42 @@ namespace pizdanc {
 
 			_tickDeltaTime = (esp_timer_get_time() - time) / 1000;
 		}
+	}
+
+	void RC::readBatteryVoltage() {
+		const uint32_t time = esp_timer_get_time();
+
+		if (time < _batteryVoltageTime)
+			return;
+
+		int value;
+		adc_oneshot_read(_batteryVoltageADCHandle, constants::pinout::board::batteryVoltage, &value);
+
+		_batteryVoltageSum += value;
+		_batteryVoltageCount++;
+
+		if (_batteryVoltageCount >= _batteryVoltageMaxCount) {
+			const auto averageValue = (float) _batteryVoltageSum / (float) _batteryVoltageCount;
+			const auto minValue = _batteryVoltageDividerMin / 3.3f * 4096.f;
+			const auto maxValue = _batteryVoltageDividerMax / 3.3f * 4096.f;
+
+			if (averageValue <= minValue) {
+				_batteryCharge = 0;
+			}
+			else if (averageValue >= maxValue) {
+				_batteryCharge = 1;
+			}
+			else {
+				_batteryCharge = (averageValue - minValue) / (maxValue - minValue);
+			}
+
+//			ESP_LOGI("VOLTS", "Time: %lu, Value: %d, average: %f, percent: %f", time, value, averageValue, _batteryCharge);
+
+			_batteryVoltageSum = 0;
+			_batteryVoltageCount = 0;
+		}
+
+		_batteryVoltageTime = time + _batteryVoltageInterval;
 	}
 
 	void RC::simulateFlightData() {
@@ -282,5 +333,9 @@ namespace pizdanc {
 
 	void RC::updateDebugInfoVisibility() {
 		_debugOverlay.setVisible(_settings.debugInfoVisible);
+	}
+
+	float RC::getBatteryCharge() const {
+		return _batteryCharge;
 	}
 }
