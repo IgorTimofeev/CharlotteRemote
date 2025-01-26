@@ -37,20 +37,7 @@ namespace pizdanc {
 //		_rollHall.begin();
 
 		// Battery
-		adc_oneshot_unit_init_cfg_t batteryADCInitConfig = {
-			.unit_id = ADC_UNIT_1,
-			.clk_src = ADC_RTC_CLK_SRC_DEFAULT,
-			.ulp_mode = ADC_ULP_MODE_DISABLE
-		};
-
-		ESP_ERROR_CHECK(adc_oneshot_new_unit(&batteryADCInitConfig, &_batteryVoltageADCHandle));
-
-		adc_oneshot_chan_cfg_t batteryADCChannelConfig = {
-			.atten = ADC_ATTEN_DB_12,
-			.bitwidth = ADC_BITWIDTH_DEFAULT,
-		};
-
-		ESP_ERROR_CHECK(adc_oneshot_config_channel(_batteryVoltageADCHandle, constants::pinout::board::batteryVoltage, &batteryADCChannelConfig));
+		batterySetup();
 
 		// -------------------------------- UI --------------------------------
 
@@ -69,7 +56,7 @@ namespace pizdanc {
 		while (true) {
 			auto time = esp_timer_get_time();
 
-			readBatteryVoltage();
+			batteryTick();
 			simulateFlightData();
 
 			_application.tick();
@@ -79,40 +66,64 @@ namespace pizdanc {
 		}
 	}
 
-	void RC::readBatteryVoltage() {
+	void RC::batterySetup() {
+		adc_oneshot_unit_init_cfg_t batteryADCInitConfig = {
+			.unit_id = ADC_UNIT_1,
+			.clk_src = ADC_RTC_CLK_SRC_DEFAULT,
+			.ulp_mode = ADC_ULP_MODE_DISABLE
+		};
+
+		ESP_ERROR_CHECK(adc_oneshot_new_unit(&batteryADCInitConfig, &_batteryADCHandle));
+
+		adc_oneshot_chan_cfg_t batteryADCChannelConfig = {
+			.atten = ADC_ATTEN_DB_12,
+			.bitwidth = ADC_BITWIDTH_12,
+		};
+
+		ESP_ERROR_CHECK(adc_oneshot_config_channel(_batteryADCHandle, constants::pinout::board::batteryVoltage, &batteryADCChannelConfig));
+
+		adc_cali_line_fitting_config_t cali_config = {
+			.unit_id = ADC_UNIT_1,
+			.atten = ADC_ATTEN_DB_12,
+			.bitwidth = ADC_BITWIDTH_DEFAULT,
+			.default_vref = ADC_CALI_LINE_FITTING_EFUSE_VAL_DEFAULT_VREF
+		};
+
+		ESP_ERROR_CHECK(adc_cali_create_scheme_line_fitting(&cali_config, &_batteryADCCaliHandle));
+	}
+
+	void RC::batteryTick() {
 		const uint32_t time = esp_timer_get_time();
 
-		if (time < _batteryVoltageTime)
+		if (time < _batteryADCSampleTime)
 			return;
 
-		int value;
-		adc_oneshot_read(_batteryVoltageADCHandle, constants::pinout::board::batteryVoltage, &value);
+		int adcVoltage;
+		ESP_ERROR_CHECK(adc_oneshot_get_calibrated_result(_batteryADCHandle, _batteryADCCaliHandle, constants::pinout::board::batteryVoltage, &adcVoltage));
 
-		_batteryVoltageSum += value;
-		_batteryVoltageCount++;
+		_batteryADCSampleSum += adcVoltage;
+		_batteryADCSampleIndex++;
 
-		if (_batteryVoltageCount >= _batteryVoltageMaxCount) {
-			const auto averageValue = (float) _batteryVoltageSum / (float) _batteryVoltageCount;
-			const auto minValue = _batteryVoltageDividerMin / 3.3f * 4096.f;
-			const auto maxValue = _batteryVoltageDividerMax / 3.3f * 4096.f;
+		if (_batteryADCSampleIndex >= _batteryADCSampleCount) {
+			const uint16_t averageValue = _batteryADCSampleSum / _batteryADCSampleIndex;
 
-			if (averageValue <= minValue) {
+			if (averageValue <= _batteryADCVoltageMin) {
 				_batteryCharge = 0;
 			}
-			else if (averageValue >= maxValue) {
-				_batteryCharge = 1;
+			else if (averageValue >= _batteryADCVoltageMax) {
+				_batteryCharge = _batteryChargeMax;
 			}
 			else {
-				_batteryCharge = (averageValue - minValue) / (maxValue - minValue);
+				_batteryCharge = (uint32_t) (averageValue - _batteryADCVoltageMin) * _batteryChargeMax / (_batteryADCVoltageMax - _batteryADCVoltageMin);
 			}
 
-//			ESP_LOGI("VOLTS", "Time: %lu, Value: %d, average: %f, percent: %f", time, value, averageValue, _batteryCharge);
+//			ESP_LOGI("ADC", "Value: %d, average: %hu, charge: %hu, percent: %d%%", adcVoltage, averageValue, _batteryCharge, _batteryCharge * 100 / _batteryChargeMax);
 
-			_batteryVoltageSum = 0;
-			_batteryVoltageCount = 0;
+			_batteryADCSampleSum = 0;
+			_batteryADCSampleIndex = 0;
 		}
 
-		_batteryVoltageTime = time + _batteryVoltageInterval;
+		_batteryADCSampleTime = time + _batteryADCSamplingInterval;
 	}
 
 	void RC::simulateFlightData() {
@@ -335,7 +346,7 @@ namespace pizdanc {
 		_debugOverlay.setVisible(_settings.debugInfoVisible);
 	}
 
-	float RC::getBatteryCharge() const {
+	uint16_t RC::getBatteryCharge() const {
 		return _batteryCharge;
 	}
 }

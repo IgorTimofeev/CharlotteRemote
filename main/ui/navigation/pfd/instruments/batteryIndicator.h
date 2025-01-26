@@ -18,39 +18,42 @@ namespace pizdanc {
 				const uint16_t borderWidth = bounds.getWidth() - tipSize.getWidth();
 
 				// Border
-				renderer->renderRectangle(Bounds(bounds.getX(), bounds.getY(), borderWidth, bounds.getHeight()), 2, &Theme::bg4);
+				renderer->renderRectangle(Bounds(bounds.getX(), bounds.getY(), borderWidth, bounds.getHeight()), &Theme::bg4);
 
 				// Tip
-				renderer->renderRectangle(Bounds(tipPosition, tipSize), 2, &Theme::bg4);
+				renderer->renderRectangle(Bounds(tipPosition, tipSize), &Theme::bg4);
 
 				// Fill
-				const Color* color;
+				const auto fillWidth = (uint16_t) ((uint32_t) (borderWidth - 2) * _value / 0xFFFF);
 
-				if (_value < 0.3) {
-					color = &Theme::bad2;
-				}
-				else if (_value < 0.6) {
-					color = &Theme::yellow;
-				}
-				else {
-					color = &Theme::good2;
-				}
+				if (fillWidth > 0) {
+					const Color* color;
 
-				renderer->renderFilledRectangle(
-					Bounds(
-						bounds.getX(),
-						bounds.getY(),
-						(uint16_t) ((float) borderWidth * _value),
-						bounds.getHeight()
-					),
-					2,
-					color
-				);
+					if (_value < std::numeric_limits<uint16_t>::max() * 1 / 3) {
+						color = &Theme::bad2;
+					}
+					else if (_value < std::numeric_limits<uint16_t>::max() * 2 / 3) {
+						color = &Theme::yellow;
+					}
+					else {
+						color = &Theme::good2;
+					}
+
+					renderer->renderFilledRectangle(
+						Bounds(
+							bounds.getX() + 1,
+							bounds.getY() + 1,
+							fillWidth,
+							bounds.getHeight() - 2
+						),
+						color
+					);
+				}
 
 				// Text
 				static std::wstringstream stream;
 				stream.str(std::wstring());
-				stream << std::round(_value * 100);
+				stream << (_value * 100 / 0xFFFF);
 				const auto text = stream.str();
 
 				renderer->renderString(
@@ -64,17 +67,17 @@ namespace pizdanc {
 				);
 			}
 
-			float getValue() const {
+			uint16_t getValue() const {
 				return _value;
 			}
 
-			void setValue(float value) {
+			void setValue(uint16_t value) {
 				_value = value;
 
 				invalidate();
 			}
 
 		private:
-			float _value = 0;
+			uint16_t _value = 0;
 	};
 }

@@ -48,7 +48,7 @@ namespace pizdanc {
 		// Battery
 		Theme::apply(&_batteryIndicatorTitle);
 
-		_batteryIndicatorController.setSize(Size(30, 14));
+		_batteryIndicatorController.setSize(Size(28, 12));
 		_batteryIndicatorAircraft.setSize(_batteryIndicatorController.getSize());
 
 		_batteryIndicatorRows.setSpacing(5);
