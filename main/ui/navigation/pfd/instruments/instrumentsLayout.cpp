@@ -73,7 +73,7 @@ namespace pizdanc {
 		_elevatorTrimIndicator.setValue(rc->getElevatorTrimInterpolator().getValue());
 
 		// Battery
-		_batteryIndicatorController.setValue(rc->getBatteryCharge());
-		_batteryIndicatorAircraft.setValue(rc->getBatteryCharge() * 0.8f);
+		_batteryIndicatorController.setValue(rc->getBattery().getCharge());
+		_batteryIndicatorAircraft.setValue(rc->getBattery().getCharge() * 1 / 3);
 	}
 }

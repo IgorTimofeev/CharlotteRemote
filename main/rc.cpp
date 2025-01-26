@@ -37,7 +37,7 @@ namespace pizdanc {
 //		_rollHall.begin();
 
 		// Battery
-		batterySetup();
+		_battery.setup();
 
 		// -------------------------------- UI --------------------------------
 
@@ -56,9 +56,8 @@ namespace pizdanc {
 		while (true) {
 			auto time = esp_timer_get_time();
 
-			batteryTick();
 			simulateFlightData();
-
+			_battery.tick();
 			_application.tick();
 			_settings.tick();
 
@@ -66,65 +65,7 @@ namespace pizdanc {
 		}
 	}
 
-	void RC::batterySetup() {
-		adc_oneshot_unit_init_cfg_t batteryADCInitConfig = {
-			.unit_id = ADC_UNIT_1,
-			.clk_src = ADC_RTC_CLK_SRC_DEFAULT,
-			.ulp_mode = ADC_ULP_MODE_DISABLE
-		};
 
-		ESP_ERROR_CHECK(adc_oneshot_new_unit(&batteryADCInitConfig, &_batteryADCHandle));
-
-		adc_oneshot_chan_cfg_t batteryADCChannelConfig = {
-			.atten = ADC_ATTEN_DB_12,
-			.bitwidth = ADC_BITWIDTH_12,
-		};
-
-		ESP_ERROR_CHECK(adc_oneshot_config_channel(_batteryADCHandle, constants::pinout::board::batteryVoltage, &batteryADCChannelConfig));
-
-		adc_cali_line_fitting_config_t cali_config = {
-			.unit_id = ADC_UNIT_1,
-			.atten = ADC_ATTEN_DB_12,
-			.bitwidth = ADC_BITWIDTH_DEFAULT,
-			.default_vref = ADC_CALI_LINE_FITTING_EFUSE_VAL_DEFAULT_VREF
-		};
-
-		ESP_ERROR_CHECK(adc_cali_create_scheme_line_fitting(&cali_config, &_batteryADCCaliHandle));
-	}
-
-	void RC::batteryTick() {
-		const uint32_t time = esp_timer_get_time();
-
-		if (time < _batteryADCSampleTime)
-			return;
-
-		int adcVoltage;
-		ESP_ERROR_CHECK(adc_oneshot_get_calibrated_result(_batteryADCHandle, _batteryADCCaliHandle, constants::pinout::board::batteryVoltage, &adcVoltage));
-
-		_batteryADCSampleSum += adcVoltage;
-		_batteryADCSampleIndex++;
-
-		if (_batteryADCSampleIndex >= _batteryADCSampleCount) {
-			const uint16_t averageValue = _batteryADCSampleSum / _batteryADCSampleIndex;
-
-			if (averageValue <= _batteryADCVoltageMin) {
-				_batteryCharge = 0;
-			}
-			else if (averageValue >= _batteryADCVoltageMax) {
-				_batteryCharge = _batteryChargeMax;
-			}
-			else {
-				_batteryCharge = (uint32_t) (averageValue - _batteryADCVoltageMin) * _batteryChargeMax / (_batteryADCVoltageMax - _batteryADCVoltageMin);
-			}
-
-//			ESP_LOGI("ADC", "Value: %d, average: %hu, charge: %hu, percent: %d%%", adcVoltage, averageValue, _batteryCharge, _batteryCharge * 100 / _batteryChargeMax);
-
-			_batteryADCSampleSum = 0;
-			_batteryADCSampleIndex = 0;
-		}
-
-		_batteryADCSampleTime = time + _batteryADCSamplingInterval;
-	}
 
 	void RC::simulateFlightData() {
 		const auto oldSpeed = _speedInterpolator.getTargetValue();
@@ -346,7 +287,7 @@ namespace pizdanc {
 		_debugOverlay.setVisible(_settings.debugInfoVisible);
 	}
 
-	uint16_t RC::getBatteryCharge() const {
-		return _batteryCharge;
+	const Battery& RC::getBattery() const {
+		return _battery;
 	}
 }

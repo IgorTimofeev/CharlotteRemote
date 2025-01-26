@@ -1,7 +1,6 @@
 #pragma once
 
-#include "esp_adc/adc_oneshot.h"
-#include "esp_adc/adc_cali.h"
+
 
 #include "src/main.h"
 #include "src/ui.h"
@@ -17,6 +16,7 @@
 #include "ui/theme.h"
 #include "ui/navigation/menu.h"
 #include "ui/debugOverlay.h"
+#include "hardware/battery.h"
 
 namespace pizdanc {
 	using namespace yoba;
@@ -54,9 +54,10 @@ namespace pizdanc {
 			Interpolator& getRudderTrimInterpolator();
 
 			void updateDebugInfoVisibility();
-			uint16_t getBatteryCharge() const;
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
+
+			const Battery& getBattery() const;
 
 		private:
 			RC() = default;
@@ -86,48 +87,34 @@ namespace pizdanc {
 //			Potentiometer _pitchHall;
 //			Potentiometer _rollHall;
 
+
+			/**
+			Some thoughts about measuring voltage & charge in percents using ADC:
+
+			1) Safe voltage range for Li-ion 18650 battery is [2.5; 4.2]V, and for 2x batteries
+			in series it escalates to [5.0; 8.4]V. But let's give it some safety margins like
+			[6.0; 8.4]V, because of tons of trash batteries on market
+
+			2) In theory ADC should read up to 3.3V from GPIO, but Espressif docs says that ADC
+			configured with 12 dB attenuation can accurately measure only [0.15; 2.45]V on ESP32
+			See: https://docs.espressif.com/projects/esp-idf/en/release-v4.3/esp32/api-reference/peripherals/adc.html
+
+			Based on this shit & resistors I have, the voltage divider will be 680R / 330R,
+			giving final input range of [1.96; 2.74]V. This will slightly exceed the 2.45V
+			ADC limit, but there's no any risks while we're staying below 3.3V. ADC will simple
+			interpret such "higher" values as "max values"
+			*/
+			Battery _battery = Battery(
+				constants::pinout::batteryVoltage,
+				1960,
+				2744
+			);
+
 			// -------------------------------- UI --------------------------------
 
 			Application _application;
 			Menu _menu;
 			DebugOverlay _debugOverlay;
-
-			// -------------------------------- Battery --------------------------------
-
-			/**
-			Some thoughts about measuring voltage & charge in percents using ADC:
-
-			1) "Safe" voltage range for Li-ion 18650 battery is [2.6; 4.2]V, so for 2x batteries
-			in series the range becomes [5.2; 8.4]V
-
-			2) In theory ADC should read up to 3.3V from GPIO, but Espressif docs says that ADC
-			configured with ADC_ATTEN_DB_12 can accurately measure only [0.15; 2.45]V on ESP32
-			See: https://docs.espressif.com/projects/esp-idf/en/release-v4.3/esp32/api-reference/peripherals/adc.html
-
-			Based on this shit & resistors I have, the voltage divider will be 680R / 330R,
-		 	giving final working range of [1,69; 2.74]V
-			*/
-
-			// 8 samples per second should be more than enough
-			static constexpr uint8_t _batteryADCSampleCount = 8;
-			static constexpr uint32_t _batteryADCSamplingInterval = 1000000 / _batteryADCSampleCount;
-
-			static constexpr uint16_t _batteryVoltageDividerMin = 1830;
-			static constexpr uint16_t _batteryVoltageDividerMax = 2540;
-			static constexpr uint16_t _batteryVoltagePinMax = 3300;
-
-			static constexpr uint16_t _batteryADCMax = 4095;
-			static constexpr uint16_t _batteryADCVoltageMin = _batteryVoltageDividerMin * _batteryADCMax / _batteryVoltagePinMax;
-			static constexpr uint16_t _batteryADCVoltageMax = _batteryVoltageDividerMax * _batteryADCMax / _batteryVoltagePinMax;
-
-			static constexpr uint16_t _batteryChargeMax = std::numeric_limits<uint16_t>::max();
-
-			adc_cali_handle_t _batteryADCCaliHandle;
-			adc_oneshot_unit_handle_t _batteryADCHandle;
-			uint32_t _batteryADCSampleTime = 0;
-			uint32_t _batteryADCSampleSum = 0;
-			uint8_t _batteryADCSampleIndex = 0;
-			uint16_t _batteryCharge = 0;
 
 			// -------------------------------- Timings --------------------------------
 
@@ -168,9 +155,5 @@ namespace pizdanc {
 			RemoteData _remoteData;
 
 			void simulateFlightData();
-
-			void batteryTick();
-
-			void batterySetup();
 	};
 }

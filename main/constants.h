@@ -6,10 +6,8 @@
 namespace pizdanc {
 	namespace constants {
 		namespace pinout {
-			namespace board {
-				static const uint8_t led = 2;
-				static const adc_channel_t batteryVoltage = ADC_CHANNEL_6;
-			}
+			static const uint8_t led = 2;
+			static const adc_channel_t batteryVoltage = ADC_CHANNEL_6;
 
 			namespace screen {
 				namespace touch {

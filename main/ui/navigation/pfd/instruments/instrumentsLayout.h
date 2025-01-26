@@ -34,10 +34,10 @@ namespace pizdanc {
 			Titler _throttleTitle = Titler(L"THR", &_throttleRow);
 
 			ControlsIndicator _controlsIndicator;
-			Titler _controlsTitle = Titler(L"SP/FL", &_controlsIndicator);
+			Titler _controlsTitle = Titler(L"CTL", &_controlsIndicator);
 
 			TrimIndicator _elevatorTrimIndicator;
-			Titler _elevatorTrimTitle = Titler(L"Trim", &_elevatorTrimIndicator);
+			Titler _elevatorTrimTitle = Titler(L"TRM", &_elevatorTrimIndicator);
 
 			BatteryIndicator _batteryIndicatorController;
 			BatteryIndicator _batteryIndicatorAircraft;
