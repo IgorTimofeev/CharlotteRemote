@@ -9,9 +9,7 @@ namespace pizdanc {
 
 	class TrimIndicator : public Element {
 		public:
-			void render(Renderer* renderer) override {
-				const auto& bounds = getBounds();
-
+			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				const uint8_t triangleSize = 2;
 				const uint8_t suggestedValueSize = 2;
 

@@ -21,9 +21,7 @@ namespace pizdanc {
 			}
 
 		protected:
-			void onRender(Renderer* renderer) override {
-				const auto& bounds = getBounds();
-
+			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				if (isSelected()) {
 					// Background
 					renderer->renderFilledRectangle(bounds, &Theme::bg3);

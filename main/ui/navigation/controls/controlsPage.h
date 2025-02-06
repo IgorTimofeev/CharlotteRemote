@@ -16,7 +16,7 @@ namespace pizdanc {
 
 			static const ControlsImage controlsImage;
 
-			void onRender(Renderer* renderer) override;
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
 			const uint8_t maxPixelValue = 12;

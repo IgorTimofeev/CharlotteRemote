@@ -65,8 +65,6 @@ namespace pizdanc {
 		}
 	}
 
-
-
 	void RC::simulateFlightData() {
 		const auto oldSpeed = _speedInterpolator.getTargetValue();
 		const auto oldAltitude = _altitudeInterpolator.getTargetValue();

@@ -9,19 +9,17 @@ namespace pizdanc {
 
 	}
 
-	void ControlsView::onRender(Renderer* renderer) {
-		ImageView::onRender(renderer);
+	void ControlsView::onRender(Renderer* renderer, const Bounds& bounds) {
+		ImageView::onRender(renderer, bounds);
 
 		auto& rc = RC::getInstance();
-
-		const auto& bounds = getBounds();
 
 		int32_t position;
 		uint16_t size;
 
 		auto calc = [&](int32_t coord, float value) {
 			position = coord;
-			int32_t position2 = position + (int32_t) round(value * (float) maxPixelValue);
+			int32_t position2 = position + (int32_t) std::round(value * (float) maxPixelValue);
 
 			if (position2 < position)
 				std::swap(position, position2);

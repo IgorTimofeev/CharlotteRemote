@@ -11,7 +11,7 @@ namespace pizdanc {
 		public:
 			PFD();
 
-			void onRender(Renderer* renderer) override;
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
 			static const uint16_t lineSizeBig = 4;

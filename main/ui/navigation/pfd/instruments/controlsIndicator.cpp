@@ -6,10 +6,9 @@ namespace pizdanc {
 		setImage(&_PFDCSImage);
 	}
 
-	void ControlsIndicator::render(Renderer* renderer) {
-		ImageView::render(renderer);
+	void ControlsIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
+		ImageView::onRender(renderer, bounds);
 
-		const auto& bounds = getBounds();
 		auto& rc = RC::getInstance();
 
 		// If surface rotation >= 5 deg

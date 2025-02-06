@@ -9,8 +9,7 @@ namespace pizdanc {
 
 	class BatteryIndicator : public Element {
 		public:
-			void render(Renderer* renderer) override {
-				const auto& bounds = getBounds();
+			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				const int32_t yCenter = bounds.getYCenter();
 
 				const auto tipSize = Size(4, 6);

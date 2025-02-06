@@ -1146,9 +1146,7 @@ namespace pizdanc {
 		renderMiniPanel(renderer, bounds, bg, fg, stream.str(), 0);
 	}
 
-	void PFD::onRender(Renderer* renderer) {
-		auto& bounds = getBounds();
-
+	void PFD::onRender(Renderer* renderer, const Bounds& bounds) {
 		renderSyntheticVision(renderer, Bounds(
 			bounds.getX() + speedWidth,
 			bounds.getY(),

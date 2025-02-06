@@ -4,7 +4,7 @@
 #include <esp_private/esp_clk.h>
 
 namespace pizdanc {
-	void DebugOverlay::onRender(Renderer* renderer) {
+	void DebugOverlay::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 
 		int32_t y = 0;

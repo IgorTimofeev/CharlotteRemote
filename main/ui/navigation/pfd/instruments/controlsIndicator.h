@@ -11,7 +11,7 @@ namespace pizdanc {
 		public:
 			ControlsIndicator();
 
-			void render(Renderer* renderer) override;
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
 			static const uint8_t maxAngle = 45;
