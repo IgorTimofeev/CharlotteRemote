@@ -2,6 +2,7 @@
 
 #include "../../../../components/yoba/src/main.h"
 #include "../../../../components/yoba/src/ui.h"
+#include "../../theme.h"
 
 namespace pizdanc {
 	using namespace yoba;
@@ -66,8 +67,8 @@ namespace pizdanc {
 			static const uint8_t autopilotIndicatorRectangleWidth = autopilotIndicatorWidth - autopilotIndicatorTriangleWidth;
 
 			// Pitch overlay
-			static const Color* pitchOverlayColorSky;
-			static const Color* pitchOverlayColorGround;
+			constexpr static const Color* pitchOverlayColorSky = &Theme::sky2;
+			constexpr static const Color* pitchOverlayColorGround = &Theme::ground2;
 			static const uint8_t pitchOverlayMarginTop = 30;
 			static const uint8_t pitchOverlayAngleStep = 5;
 			static const uint8_t pitchOverlayLineSmall = 5;
@@ -76,7 +77,7 @@ namespace pizdanc {
 			static const uint8_t pitchOverlayTextOffset = 5;
 
 			// Yaw overlay
-			static const Color* yawOverlayColor;
+			constexpr static const Color* yawOverlayColor = &Theme::ground2;
 			static const uint8_t yawOverlayHeight = 20;
 			static const uint8_t yawOverlayAngleStepUnits = 2;
 			static const uint8_t yawOverlayAngleStepPixels = 9;
@@ -86,7 +87,7 @@ namespace pizdanc {
 			static const uint8_t yawOverlayTriangleSize = yawOverlayLineBigLength;
 
 			// Roll overlay
-			static const Color* rollOverlayColor;
+			constexpr static const Color* rollOverlayColor = &Theme::sky2;
 			static const uint8_t rollOverlayHorizontalMargin = 3;
 			static const uint8_t rollOverlayLineSmallLength = 3;
 			static const uint8_t rollOverlayLineBigLength = 7;

@@ -4,12 +4,6 @@
 #include "../../theme.h"
 
 namespace pizdanc {
-	// No errors here, just linter's being pussy
-	const Color* PFD::rollOverlayColor = &Theme::sky2;
-	const Color* PFD::pitchOverlayColorSky = &Theme::sky2;
-	const Color* PFD::pitchOverlayColorGround = &Theme::ground2;
-	const Color* PFD::yawOverlayColor = &Theme::ground2;
-
 	PFD::PFD() {
 		setClipToBounds(true);
 	}
@@ -318,7 +312,7 @@ namespace pizdanc {
 		float snappedFractional = snapped - snappedInteger;
 
 		int32_t y = centerY - (uint16_t) ((1.0f - snappedFractional) * (float) speedStepPixels);
-		int32_t altitudeYFullLines = std::ceilf((float) y / (float) speedStepPixels);
+		auto altitudeYFullLines = (int32_t) std::ceil((float) y / (float) speedStepPixels);
 		y = y - altitudeYFullLines * speedStepPixels;
 
 		int32_t lineValue = (int32_t) (snappedInteger + 1) * speedStepUnits + altitudeYFullLines * speedStepUnits;

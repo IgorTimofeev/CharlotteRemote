@@ -27,7 +27,7 @@ namespace pizdanc {
 		public:
 			static RC& getInstance();
 
-			void run();
+			[[noreturn]] void run();
 
 			Application& getApplication();
 

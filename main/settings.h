@@ -21,7 +21,7 @@ namespace pizdanc {
 					// NVS partition was truncated and needs to be erased
 					// Retry nvs_flash_init
 					ESP_ERROR_CHECK(nvs_flash_erase());
-					status = nvs_flash_init();
+					ESP_ERROR_CHECK(nvs_flash_init());
 				}
 				else {
 					ESP_ERROR_CHECK(status);

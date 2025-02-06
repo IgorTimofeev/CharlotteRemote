@@ -14,7 +14,7 @@ namespace pizdanc {
 		return instance;
 	}
 
-	void RC::run() {
+	[[noreturn]] void RC::run() {
 		// -------------------------------- Main --------------------------------
 
 		// Settings

@@ -16,6 +16,6 @@ namespace pizdanc {
 		private:
 			static const uint8_t maxAngle = 45;
 
-			PFDFCSImage _PFDCSImage = PFDFCSImage();
+			PFDFCSImage _image {};
 	};
 }

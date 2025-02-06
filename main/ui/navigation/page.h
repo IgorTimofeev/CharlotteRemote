@@ -9,10 +9,6 @@ namespace pizdanc {
 
 	class Page : public Layout {
 		public:
-			virtual ~Page() {
-
-			}
-
 			virtual void setup() {
 
 			}

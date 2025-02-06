@@ -3,7 +3,7 @@
 
 namespace pizdanc {
 	ControlsIndicator::ControlsIndicator() {
-		setImage(&_PFDCSImage);
+		setImage(&_image);
 	}
 
 	void ControlsIndicator::onRender(Renderer* renderer, const Bounds& bounds) {

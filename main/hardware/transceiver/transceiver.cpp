@@ -150,17 +150,17 @@ namespace pizdanc {
 						// Decrypting
 						auto aes = esp_aes_context();
 						esp_aes_init(&aes);
-						esp_aes_setkey(&aes, _AESKey, sizeof(_AESKey) * 8);
+						esp_aes_setkey(&aes, _aesKey, sizeof(_aesKey) * 8);
 
-						memcpy(_AESIVCopy, _AESIV, sizeof(_AESIV));
+						memcpy(_aesIVCopy, _aesIV, sizeof(_aesIV));
 
 						auto decryptState = esp_aes_crypt_cbc(
 							&aes,
 							ESP_AES_DECRYPT,
 							encryptedLength,
-							_AESIVCopy,
+							_aesIVCopy,
 							(uint8_t *) &_sx1262Buffer + headerLength,
-							_AESBuffer
+							_aesBuffer
 						);
 
 						esp_aes_free(&aes);
@@ -169,7 +169,7 @@ namespace pizdanc {
 							_rssi = _sx1262.getRSSI();
 							_snr = _sx1262.getSNR();
 
-							parsePacket(_AESBuffer);
+							parsePacket(_aesBuffer);
 						}
 						else {
 							ESP_LOGE("Transceiver", "Decrypting failed: %d\n", encryptedLength);
