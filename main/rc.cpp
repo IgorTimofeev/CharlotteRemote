@@ -2,6 +2,7 @@
 #include <esp_timer.h>
 #include "rc.h"
 #include "constants.h"
+#include "resources/sounds.h"
 #include "ui/navigation/menu.h"
 #include "ui/debugOverlay.h"
 
@@ -41,6 +42,7 @@ namespace pizdanc {
 
 		// Speaker
 		_speaker.setup();
+		_speaker.play(resources::sounds::boot());
 
 		// -------------------------------- UI --------------------------------
 
@@ -55,6 +57,8 @@ namespace pizdanc {
 		// Debug overlay
 		updateDebugInfoVisibility();
 		_application += &_debugOverlay;
+
+		// -------------------------------- Main loop --------------------------------
 
 		while (true) {
 			auto time = esp_timer_get_time();

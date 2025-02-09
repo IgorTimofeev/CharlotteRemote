@@ -13,19 +13,26 @@ namespace pizdanc {
 		_pageTitle.setText(L"Debug page");
 		_rows += &_pageTitle;
 
-		// Speaker frequency slider
+		// Speaker frequency
 		Theme::apply(&_speakerFrequencySlider);
 		_speakerFrequencySlider.setValue(0.5f);
 
 		Theme::apply(&_speakerFrequencySliderTitle);
 		_rows += &_speakerFrequencySliderTitle;
 
-		// Speaker duration slider
+		// Speaker duration
 		Theme::apply(&_speakerDurationSlider);
 		_speakerDurationSlider.setValue(0.5f);
 
 		Theme::apply(&_speakerDurationSliderTitle);
 		_rows += &_speakerDurationSliderTitle;
+
+		// Speaker сщгте
+		Theme::apply(&_speakerCountSlider);
+		_speakerCountSlider.setValue(0.2f);
+
+		Theme::apply(&_speakerCountSliderTitle);
+		_rows += &_speakerCountSliderTitle;
 
 		// Speaker button
 		Theme::apply(&_speakerButton);
@@ -36,18 +43,20 @@ namespace pizdanc {
 
 			auto& rc = RC::getInstance();
 
-			const auto frequency = (uint32_t) (_speakerFrequencySlider.getValue() * (float) 8000);
-			const auto duration = (uint32_t) (_speakerDurationSlider.getValue() * (float) 1000000);
+			const auto frequency = (uint32_t) (_speakerFrequencySlider.getValue() * (float) 10000);
+			const auto duration = (uint32_t) (_speakerDurationSlider.getValue() * (float) 500 * 1000);
+			const auto count = (uint8_t) (_speakerCountSlider.getValue() * (float) 10);
 
-			rc.getSpeaker().play(Sound({
-				Note(frequency, duration),
-				Delay(duration),
+			ESP_LOGI("Debug", "Speaker test: %lu, %lu, %d", frequency, duration, count);
 
-				Note(frequency, duration),
-				Delay(duration),
+			std::vector<Note> notes {};
 
-				Note(frequency, duration),
-			}));
+			for (uint8_t i = 0; i < count; i++) {
+				notes.emplace_back(frequency, duration);
+				notes.push_back(Delay(duration));
+			}
+
+			rc.getSpeaker().play(Sound(notes));
 		};
 
 		_rows += &_speakerButton;

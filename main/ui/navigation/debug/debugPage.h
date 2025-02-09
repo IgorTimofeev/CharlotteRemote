@@ -25,6 +25,10 @@ namespace pizdanc {
 			Slider _speakerDurationSlider;
 			Titler _speakerDurationSliderTitle = Titler(L"Speaker duration", &_speakerDurationSlider);
 
+			Slider _speakerCountSlider;
+			Titler _speakerCountSliderTitle = Titler(L"Speaker count", &_speakerCountSlider);
+			Text _speakerCountText;
+
 			Button _speakerButton;
 
 			Slider _textFontSizeSlider;
