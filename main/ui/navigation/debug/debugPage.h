@@ -19,13 +19,21 @@ namespace pizdanc {
 
 			Text _pageTitle;
 
-			Text _wrappedText;
+			Slider _speakerFrequencySlider;
+			Titler _speakerFrequencySliderTitle = Titler(L"Speaker frequency", &_speakerFrequencySlider);
 
-			Slider _slider1;
-			Titler _slider1Title = Titler(L"Font size slider", &_slider1);
+			Slider _speakerDurationSlider;
+			Titler _speakerDurationSliderTitle = Titler(L"Speaker duration", &_speakerDurationSlider);
 
-			Slider _slider2;
-			Titler _slider2Title = Titler(L"Margin slider", &_slider2);
+			Button _speakerButton;
+
+			Slider _textFontSizeSlider;
+			Titler _textSliderTitle = Titler(L"Font size slider", &_textFontSizeSlider);
+
+			Slider _textMarginSlider;
+			Titler _textMarginSliderTitle = Titler(L"Margin slider", &_textMarginSlider);
+
+			Text _text;
 
 			ProgressBar _progressBar;
 			Titler _progressBarTitle = Titler(L"Progress bar", &_progressBar);
@@ -35,11 +43,5 @@ namespace pizdanc {
 
 			TextField _textField;
 			Titler textFieldTitle = Titler(L"Text", &_textField);
-
-			Button _button;
-			Titler _buttonTitle = Titler(L"Button", &_button);
-
-			Button _toggleButton;
-			Titler _toggleButtonTitle = Titler(L"Toggle button", &_toggleButton);
 	};
 }

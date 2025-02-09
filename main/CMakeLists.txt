@@ -1,10 +1,10 @@
-file(GLOB_RECURSE PIZDA_SOURCES
+file(GLOB_RECURSE pizda_sources
      "*.*"
 )
 
 idf_component_register(
-    SRCS ${PIZDA_SOURCES}
+    SRCS ${pizda_sources}
     PRIV_REQUIRES spi_flash
     INCLUDE_DIRS ""
-    REQUIRES esp_timer driver mbedtls nvs_flash esp_adc yoba
+    REQUIRES esp_timer esp_driver_ledc driver mbedtls nvs_flash esp_adc yoba
 )

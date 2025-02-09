@@ -1,7 +1,6 @@
 #pragma once
 
 
-
 #include "src/main.h"
 #include "src/ui.h"
 #include "src/hardware/displays/ILI9341Display.h"
@@ -11,12 +10,14 @@
 #include "constants.h"
 #include "data.h"
 #include "interpolator.h"
-#include "hardware/transceiver/transceiver.h"
 
 #include "ui/theme.h"
 #include "ui/navigation/menu.h"
 #include "ui/debugOverlay.h"
+
+#include "hardware/transceiver/transceiver.h"
 #include "hardware/battery.h"
+#include "hardware/speaker.h"
 
 namespace pizdanc {
 	using namespace yoba;
@@ -58,6 +59,7 @@ namespace pizdanc {
 			Settings& getSettings();
 
 			const Battery& getBattery() const;
+			Speaker& getSpeaker();
 
 		private:
 			RC() = default;
@@ -65,22 +67,22 @@ namespace pizdanc {
 			// -------------------------------- Hardware --------------------------------
 
 			ILI9341Display _display = ILI9341Display(
-				constants::pinout::screen::mosi,
-				constants::pinout::screen::miso,
-				constants::pinout::screen::sck,
-				constants::pinout::screen::chipSelect,
-				constants::pinout::screen::dataCommand,
-				constants::pinout::screen::reset,
-				constants::pinout::screen::frequency
+				constants::hardware::screen::mosi,
+				constants::hardware::screen::miso,
+				constants::hardware::screen::sck,
+				constants::hardware::screen::chipSelect,
+				constants::hardware::screen::dataCommand,
+				constants::hardware::screen::reset,
+				constants::hardware::screen::frequency
 			);
 
 			EightBitPaletteRenderer _renderer = EightBitPaletteRenderer(32);
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
-				constants::pinout::screen::touch::sda,
-				constants::pinout::screen::touch::scl,
-				constants::pinout::screen::touch::reset,
-				constants::pinout::screen::touch::interrupt
+				constants::hardware::screen::touch::sda,
+				constants::hardware::screen::touch::scl,
+				constants::hardware::screen::touch::reset,
+				constants::hardware::screen::touch::interrupt
 			);
 
 			//
@@ -104,11 +106,9 @@ namespace pizdanc {
 			ADC limit, but there's no any risks while we're staying below 3.3V. ADC will simple
 			interpret such "higher" values as "max values"
 			*/
-			Battery _battery = Battery(
-				constants::pinout::batteryVoltage,
-				1960,
-				2744
-			);
+			Battery _battery {};
+
+			Speaker _speaker {};
 
 			// -------------------------------- UI --------------------------------
 

@@ -13,37 +13,76 @@ namespace pizdanc {
 		_pageTitle.setText(L"Debug page");
 		_rows += &_pageTitle;
 
-		// Slider 1
-		Theme::apply(&_slider1);
-		_slider1.setValue(0.4f);
+		// Speaker frequency slider
+		Theme::apply(&_speakerFrequencySlider);
+		_speakerFrequencySlider.setValue(0.5f);
 
-		_slider1.valueChanged += [this]() {
-			_wrappedText.setFontScale(1 + (uint8_t) std::round(_slider1.getValue() * 8));
+		Theme::apply(&_speakerFrequencySliderTitle);
+		_rows += &_speakerFrequencySliderTitle;
+
+		// Speaker duration slider
+		Theme::apply(&_speakerDurationSlider);
+		_speakerDurationSlider.setValue(0.5f);
+
+		Theme::apply(&_speakerDurationSliderTitle);
+		_rows += &_speakerDurationSliderTitle;
+
+		// Speaker button
+		Theme::apply(&_speakerButton);
+		_speakerButton.setText(L"Play sound");
+		_speakerButton.pressedChanged += [this]() {
+			if (_speakerButton.isPressed())
+				return;
+
+			auto& rc = RC::getInstance();
+
+			const auto frequency = (uint32_t) (_speakerFrequencySlider.getValue() * (float) 8000);
+			const auto duration = (uint32_t) (_speakerDurationSlider.getValue() * (float) 1000000);
+
+			rc.getSpeaker().play(Sound({
+				Note(frequency, duration),
+				Delay(duration),
+
+				Note(frequency, duration),
+				Delay(duration),
+
+				Note(frequency, duration),
+			}));
 		};
 
-		Theme::apply(&_slider1Title);
-		_rows += &_slider1Title;
+		_rows += &_speakerButton;
 
-		// Slider 2
-		Theme::apply(&_slider2);
-		_slider2.setFillColor(&Theme::good2);
-		_slider2.setValue(0.5f);
+		// Text font size slider
+		Theme::apply(&_textFontSizeSlider);
+		_textFontSizeSlider.setValue(0.4f);
 
-		_slider2.valueChanged += [this]() {
-			uint16_t value = 1 + (uint8_t) std::round(_slider2.getValue() * 80);
+		_textFontSizeSlider.valueChanged += [this]() {
+			_text.setFontScale(1 + (uint8_t) std::round(_textFontSizeSlider.getValue() * 8));
+		};
+
+		Theme::apply(&_textSliderTitle);
+		_rows += &_textSliderTitle;
+
+		// Text margin slider
+		Theme::apply(&_textMarginSlider);
+		_textMarginSlider.setFillColor(&Theme::good2);
+		_textMarginSlider.setValue(0.5f);
+
+		_textMarginSlider.valueChanged += [this]() {
+			uint16_t value = 1 + (uint8_t) std::round(_textMarginSlider.getValue() * 80);
 
 			_rows.setMargin(Margin(value, _rows.getMargin().getTop(), value, _rows.getMargin().getTop()));
 		};
 
-		Theme::apply(&_slider2Title);
-		_rows += &_slider2Title;
+		Theme::apply(&_textMarginSliderTitle);
+		_rows += &_textMarginSliderTitle;
 
-		// Wrapped text
-		Theme::applyDescription(&_wrappedText);
+		// Text
+		Theme::applyDescription(&_text);
 
-		_wrappedText.setWrappingEnabled(true);
+		_text.setWrappingEnabled(true);
 
-		_wrappedText.setText(
+		_text.setText(
 LR"(Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -52,7 +91,7 @@ copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions)"
 		);
 
-		_rows += &_wrappedText;
+		_rows += &_text;
 
 		// Switch
 		Theme::apply(&_switch);
@@ -87,23 +126,6 @@ furnished to do so, subject to the following conditions)"
 
 		Theme::apply(&textFieldTitle);
 		_rows += &textFieldTitle;
-
-		// Button
-		Theme::apply(&_button);
-		_button.setText(L"Click me");
-
-		Theme::apply(&_buttonTitle);
-		_rows += &_buttonTitle;
-
-		// Toggle button
-		Theme::apply(&_toggleButton);
-		_toggleButton.setToggle(true);
-		_toggleButton.setDefaultBackgroundColor(&Theme::good2);
-		_toggleButton.setPressedBackgroundColor(&Theme::good1);
-		_toggleButton.setText(L"Change state");
-
-		Theme::apply(&_toggleButtonTitle);
-		_rows += &_toggleButtonTitle;
 
 		_scrollView += &_rows;
 

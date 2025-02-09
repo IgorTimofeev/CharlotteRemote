@@ -26,10 +26,10 @@ namespace pizdanc {
 
 			SX1262 _sx1262 = new Module(
 				&_hal,
-				constants::pinout::transceiver::chipSelect,
-				constants::pinout::transceiver::dio0,
-				constants::pinout::transceiver::reset,
-				constants::pinout::transceiver::busy
+				constants::hardware::transceiver::chipSelect,
+				constants::hardware::transceiver::dio0,
+				constants::hardware::transceiver::reset,
+				constants::hardware::transceiver::busy
 			);
 
 			TransceiverMode _mode = TransceiverMode::StartReceive;

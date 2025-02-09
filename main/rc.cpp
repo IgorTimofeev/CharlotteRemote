@@ -39,6 +39,9 @@ namespace pizdanc {
 		// Battery
 		_battery.setup();
 
+		// Speaker
+		_speaker.setup();
+
 		// -------------------------------- UI --------------------------------
 
 		// Theme
@@ -56,9 +59,15 @@ namespace pizdanc {
 		while (true) {
 			auto time = esp_timer_get_time();
 
+			// High priority tasks
 			simulateFlightData();
-			_battery.tick();
+
+			// UI
 			_application.tick();
+
+			// Low priority tasks
+			_speaker.tick();
+			_battery.tick();
 			_settings.tick();
 
 			_tickDeltaTime = (esp_timer_get_time() - time) / 1000;
@@ -287,5 +296,9 @@ namespace pizdanc {
 
 	const Battery& RC::getBattery() const {
 		return _battery;
+	}
+
+	Speaker& RC::getSpeaker() {
+		return _speaker;
 	}
 }

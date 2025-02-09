@@ -14,13 +14,13 @@ namespace pizdanc {
 			uint8_t menuPageIndex = 0;
 			bool debugInfoVisible = false;
 
-			void setup() {
+			void setup() { // NOLINT(*-convert-member-functions-to-static)
 				auto status = nvs_flash_init();
 
 				if (status == ESP_ERR_NVS_NO_FREE_PAGES || status == ESP_ERR_NVS_NEW_VERSION_FOUND) {
 					// NVS partition was truncated and needs to be erased
-					// Retry nvs_flash_init
 					ESP_ERROR_CHECK(nvs_flash_erase());
+					// Retry init
 					ESP_ERROR_CHECK(nvs_flash_init());
 				}
 				else {
@@ -73,25 +73,19 @@ namespace pizdanc {
 			}
 
 			void tick() {
-				if (_timeToWrite == 0)
-					return;
-
-				auto time = esp_timer_get_time();
-
-				if (time < _timeToWrite)
+				if (_timeToWrite == 0 || esp_timer_get_time() < _timeToWrite)
 					return;
 
 				_timeToWrite = 0;
+
 				write();
 			}
 
 		private:
-			static const uint32_t _writeDelay = 5000000;
+			static const uint32_t _writeDelay = 2500000;
 			static const uint8_t _version = 2;
 			uint32_t _timeToWrite = 0;
 	};
 
 	#pragma pack(pop)
-
-
 }
