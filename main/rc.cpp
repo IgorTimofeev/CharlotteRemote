@@ -3,7 +3,7 @@
 #include "rc.h"
 #include "constants.h"
 #include "resources/sounds.h"
-#include "ui/navigation/menu.h"
+#include "ui/navigation/tabBar.h"
 #include "ui/debugOverlay.h"
 
 namespace pizdanc {
@@ -51,8 +51,8 @@ namespace pizdanc {
 		_application.setBackgroundColor(&Theme::bg1);
 
 		// Menu
-		_menu.setSelectedIndex(_settings.menuPageIndex);
-		_application += &_menu;
+		_tabBar.setSelectedIndex(0);
+		_application += &_tabBar;
 
 		// Debug overlay
 		updateDebugInfoVisibility();

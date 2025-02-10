@@ -11,7 +11,6 @@ namespace pizdanc {
 
 	class Settings {
 		public:
-			uint8_t menuPageIndex = 0;
 			bool debugInfoVisible = false;
 
 			void setup() { // NOLINT(*-convert-member-functions-to-static)
@@ -83,7 +82,7 @@ namespace pizdanc {
 
 		private:
 			static const uint32_t _writeDelay = 2500000;
-			static const uint8_t _version = 2;
+			static const uint8_t _version = 3;
 			uint32_t _timeToWrite = 0;
 	};
 

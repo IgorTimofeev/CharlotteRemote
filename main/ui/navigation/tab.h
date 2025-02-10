@@ -10,9 +10,9 @@ namespace pizdanc {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class MenuItem : public SelectorItem, public TextElement {
+	class Tab : public SelectorItem, public TextElement {
 		public:
-			MenuItem(const std::wstring_view& text, const std::function<Page*()>& pageBuilder) : _pageBuilder(pageBuilder) {
+			Tab(const std::wstring_view& text, const std::function<Page*()>& pageBuilder) : _pageBuilder(pageBuilder) {
 				setText(text);
 			}
 

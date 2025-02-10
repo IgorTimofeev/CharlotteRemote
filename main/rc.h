@@ -12,7 +12,7 @@
 #include "interpolator.h"
 
 #include "ui/theme.h"
-#include "ui/navigation/menu.h"
+#include "ui/navigation/tabBar.h"
 #include "ui/debugOverlay.h"
 
 #include "hardware/transceiver/transceiver.h"
@@ -113,7 +113,7 @@ namespace pizdanc {
 			// -------------------------------- UI --------------------------------
 
 			Application _application;
-			Menu _menu;
+			TabBar _tabBar;
 			DebugOverlay _debugOverlay;
 
 			// -------------------------------- Timings --------------------------------
