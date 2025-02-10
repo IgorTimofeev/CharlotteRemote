@@ -7,7 +7,8 @@
 #include "pfd/pfdPage.h"
 #include "nd/ndPage.h"
 #include "autopilot/autopilotPage.h"
-#include "settings/settingsPage.h"
+#include "debug/debugPage.h"
+#include "controls/controlsPage.h"
 
 namespace pizdanc {
 	class TabBar : public Selector {
@@ -15,7 +16,7 @@ namespace pizdanc {
 			explicit TabBar();
 
 		private:
-			static const uint16_t _tabBarSize = 30;
+			static const uint16_t _tabBarSize = 26;
 
 			Layout _pageLayout;
 
@@ -23,20 +24,25 @@ namespace pizdanc {
 			Rectangle _tabsBackground = Rectangle(&Theme::bg2);
 			EqualStackLayout _tabsLayout = EqualStackLayout(Orientation::horizontal);
 
-			Tab _pfdTab = Tab(L"PFD", []() {
-				return new PFDPage();
-			});
+			Tab
+				_pfdTab = Tab(L"PFD", []() {
+					return new PFDPage();
+				}),
 
-			Tab _ndTab = Tab(L"N/D", []() {
-				return new NDPage();
-			});
+				_ndTab = Tab(L"N/D", []() {
+					return new NDPage();
+				}),
 
-			Tab _apTab = Tab(L"A/P", []() {
-				return new AutopilotPage();
-			});
+				_apTab = Tab(L"A/P", []() {
+					return new AutopilotPage();
+				}),
 
-			Tab _settingsTab = Tab(L"...", []() {
-				return new SettingsPage();
-			});
+				_controlsTab = Tab(L"CTL", []() {
+					return new ControlsPage();
+				}),
+
+				_debugTab = Tab(L"DBG", []() {
+					return new DebugPage();
+				});
 	};
 }

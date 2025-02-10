@@ -2,7 +2,7 @@
 
 #include "src/main.h"
 #include "src/ui.h"
-#include "../../page.h"
+#include "../page.h"
 
 namespace pizdanc {
 	using namespace yoba;

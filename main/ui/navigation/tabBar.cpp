@@ -44,6 +44,7 @@ namespace pizdanc {
 		addItem(&_pfdTab);
 		addItem(&_ndTab);
 		addItem(&_apTab);
-		addItem(&_settingsTab);
+		addItem(&_controlsTab);
+		addItem(&_debugTab);
 	}
 }

@@ -3,8 +3,8 @@
 #include "src/main.h"
 #include "src/ui.h"
 
-#include "../../page.h"
-#include "../../../../resources/images/controlsImage.h"
+#include "../page.h"
+#include "../../../resources/images/controlsImage.h"
 
 namespace pizdanc {
 	using namespace yoba;

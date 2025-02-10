@@ -1,6 +1,6 @@
 #include "debugPage.h"
-#include "../../../theme.h"
-#include "../../../../rc.h"
+#include "../../theme.h"
+#include "../../../rc.h"
 #include <sstream>
 
 namespace pizdanc {
