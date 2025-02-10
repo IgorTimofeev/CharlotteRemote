@@ -1,6 +1,6 @@
 #include "controlsPage.h"
 
-#include "../../../rc.h"
+#include "../../../../rc.h"
 
 namespace pizdanc {
 	const ControlsImage ControlsView::controlsImage = ControlsImage();

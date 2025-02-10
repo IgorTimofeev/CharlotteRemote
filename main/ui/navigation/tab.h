@@ -26,17 +26,23 @@ namespace pizdanc {
 					// Background
 					renderer->renderFilledRectangle(bounds, &Theme::bg3);
 
-					// Line
-					static const uint8_t lineHorizontalOffset = 9;
-					static const uint8_t lineVerticalOffset = 2;
+//					// Line
+//					static const uint8_t lineHorizontalOffset = 9;
+//					static const uint8_t lineVerticalOffset = 2;
+//
+//					renderer->renderHorizontalLine(
+//						Point(
+//							bounds.getX() + lineHorizontalOffset,
+//							bounds.getY2() - lineVerticalOffset
+//						),
+//						bounds.getWidth() - lineHorizontalOffset * 2,
+//						&Theme::green
+//					);
 
 					renderer->renderHorizontalLine(
-						Point(
-							bounds.getX() + lineHorizontalOffset,
-							bounds.getY2() - lineVerticalOffset
-						),
-						bounds.getWidth() - lineHorizontalOffset * 2,
-						&Theme::green
+						bounds.getBottomLeft(),
+						bounds.getWidth(),
+						&Theme::fg1
 					);
 				}
 

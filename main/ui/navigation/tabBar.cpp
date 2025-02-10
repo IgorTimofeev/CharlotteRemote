@@ -1,20 +1,13 @@
 #include "tabBar.h"
-#include "settings/settingsPage.h"
-#include "battery/batteryPage.h"
-#include "pfd/pfdPage.h"
-#include "nd/ndPage.h"
-#include "autopilot/autopilotPage.h"
-#include "radio/radioPage.h"
-#include "controls/controlsPage.h"
 
 namespace pizdanc {
 	TabBar::TabBar() {
 		// Page
-		_pageLayout.setMargin(Margin(0, 0, 0, _tabsHeight));
+		_pageLayout.setMargin(Margin(0, 0, 0, _tabBarSize));
 		*this += &_pageLayout;
 
 		// Tabs
-		_tabsLayoutHolder.setHeight(_tabsHeight);
+		_tabsLayoutHolder.setHeight(_tabBarSize);
 		_tabsLayoutHolder.setVerticalAlignment(Alignment::end);
 
 		_tabsLayoutHolder += &_tabsBackground;
@@ -36,7 +29,7 @@ namespace pizdanc {
 
 			// Removing old page
 			if (_pageLayout.getChildrenCount() > 0) {
-				auto oldPage = dynamic_cast<Page*>(_pageLayout[0]);
+				auto oldPage = _pageLayout[0];
 				_pageLayout.removeChildAt(0);
 				delete oldPage;
 			}
@@ -48,32 +41,9 @@ namespace pizdanc {
 		};
 
 		// Initialization
-		addItem(new Tab(L"PFD", []() {
-			return new PFDPage();
-		}));
-
-		addItem(new Tab(L"N/D", []() {
-			return new NDPage();
-		}));
-
-		addItem(new Tab(L"A/P", []() {
-			return new AutopilotPage();
-		}));
-
-		addItem(new Tab(L"CTL", []() {
-			return new ControlsPage();
-		}));
-
-		addItem(new Tab(L"COM", []() {
-			return new RadioPage();
-		}));
-
-		addItem(new Tab(L"BAT", []() {
-			return new BatteryPage();
-		}));
-
-		addItem(new Tab(L"SET", []() {
-			return new SettingsPage();
-		}));
+		addItem(&_pfdTab);
+		addItem(&_ndTab);
+		addItem(&_apTab);
+		addItem(&_settingsTab);
 	}
 }

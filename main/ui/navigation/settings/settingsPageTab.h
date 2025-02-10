@@ -27,9 +27,9 @@ namespace pizdanc {
 					renderer->renderFilledRectangle(bounds, &Theme::bg3);
 
 					// Line
-					renderer->renderVerticalLine(
+					renderer->renderHorizontalLine(
 						bounds.getTopLeft(),
-						bounds.getHeight(),
+						bounds.getWidth(),
 						&Theme::accent1
 					);
 				}
