@@ -10,36 +10,9 @@ namespace pizdanc {
 		background.setCornerRadius(5);
 		*this += &background;
 
-		// Title
-		title.setMargin(Margin(marginValue, marginValue, marginValue, 5));
-		title.setHorizontalAlignment(Alignment::center);
-		title.setTextColor(&Theme::fg3);
-		title.setFont(&Theme::fontNormal);
-		title.setText(titleText);
-		rows += &title;
-
-		// Seven segment
-		seven.setMargin(Margin(marginValue, 0, marginValue, 0));
-		seven.setHorizontalAlignment(Alignment::center);
-		seven.setDigitCount(digitCount);
-		seven.setPrimaryColor(&Theme::bg4);
-		seven.setSecondaryColor(&Theme::fg1);
-		seven.setSegmentThickness(2);
-		seven.setSegmentLength(10);
-		rows += &seven;
-
-		// Rotary knob
-		knob.setMargin(Margin(marginValue));
-		knob.setHorizontalAlignment(Alignment::center);
-		knob.setBackgroundColor(&Theme::bg3);
-		knob.setMiddleColor(&Theme::bg5);
-		knob.setLineColor(&Theme::yellow);
-		knob.setSize(Size(50, 50));
-		rows += &knob;
-
 		// Button
 		button.setToggle(true);
-		button.setHeight(24);
+		button.setWidth(30);
 		button.setCornerRadius(5);
 
 		button.setDefaultBackgroundColor(&Theme::bg3);
@@ -50,8 +23,38 @@ namespace pizdanc {
 
 		button.setFont(&Theme::fontNormal);
 		button.setText(buttonText);
-		rows += &button;
 
-		*this += &rows;
+		row.setFit(&button);
+		row += &button;
+
+		// Titler
+		titler.setMargin(Margin(marginValue));
+		titler.setVerticalAlignment(Alignment::center);
+		titler.getTitle().setTextColor(&Theme::fg3);
+		titler.getTitle().setFont(&Theme::fontNormal);
+		titler.getTitle().setText(titleText);
+		row += &titler;
+
+		// Seven segment
+		seven.setVerticalAlignment(Alignment::center);
+		seven.setDigitCount(digitCount);
+		seven.setPrimaryColor(&Theme::bg4);
+		seven.setSecondaryColor(&Theme::fg1);
+		seven.setSegmentThickness(2);
+		seven.setSegmentLength(10);
+		titler += &seven;
+
+		// Rotary knob
+		knob.setMargin(Margin(marginValue));
+		knob.setVerticalAlignment(Alignment::center);
+		knob.setBackgroundColor(&Theme::bg3);
+		knob.setMiddleColor(&Theme::bg5);
+		knob.setLineColor(&Theme::yellow);
+		knob.setSize(Size(46, 46));
+
+		row.setFit(&knob);
+		row += &knob;
+
+		*this += &row;
 	}
 }

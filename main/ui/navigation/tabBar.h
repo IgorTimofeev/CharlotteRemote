@@ -22,7 +22,7 @@ namespace pizdanc {
 
 			Layout _tabsLayoutHolder;
 			Rectangle _tabsBackground = Rectangle(&Theme::bg2);
-			EqualStackLayout _tabsLayout = EqualStackLayout(Orientation::horizontal);
+			EqualLayout _tabsLayout = EqualLayout(Orientation::horizontal);
 
 			Tab
 				_pfdTab = Tab(L"PFD", []() {

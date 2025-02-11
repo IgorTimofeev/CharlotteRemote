@@ -9,14 +9,14 @@ namespace pizdanc {
 
 	class AutopilotSelector : public Layout {
 		public:
-			explicit AutopilotSelector(uint8_t digitCount, const std::wstring_view& titleText, const std::wstring_view& buttonText);
+			AutopilotSelector(uint8_t digitCount, const std::wstring_view& titleText, const std::wstring_view& buttonText);
 
-			Rectangle background = Rectangle();
-			StackLayout rows = StackLayout();
-			Text title = Text();
-			SevenSegment seven = SevenSegment();
-			Knob knob = Knob();
-			Button button = Button();
+			Rectangle background;
+			EqualLayout row = EqualLayout(Orientation::horizontal);
+			SevenSegment seven;
+			Knob knob;
+			Button button;
+			Titler titler;
 
 		private:
 	};

@@ -17,7 +17,7 @@ namespace pizdanc {
 			StackLayout rows;
 
 			AutopilotSelector _spd = AutopilotSelector(3, L"Speed", L"A/T");
-			AutopilotSelector _hdg = AutopilotSelector(3, L"Heading", L"HOLD");
+			AutopilotSelector _hdg = AutopilotSelector(3, L"Heading", L"HDG");
 			AutopilotSelector _alt = AutopilotSelector(4, L"Altitude", L"FLC");
 	};
 }
