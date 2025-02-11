@@ -2,18 +2,15 @@
 #include "../../../rc.h"
 
 namespace pizdanc {
-	void AutopilotPage::setup() {
-		auto& rc = RC::getInstance();
+	AutopilotPage::AutopilotPage() {
+		rows.setMargin(Margin(20));
+		rows.setSpacing(20);
 
-		_columns.setAlignment(Alignment::center);
-		_columns.setOrientation(Orientation::horizontal);
-		_columns.setSpacing(20);
+		rows += &_spd;
+		rows += &_hdg;
+		rows += &_alt;
 
-		_columns += &_spd;
-		_columns += &_hdg;
-		_columns += &_alt;
-
-		*this += &_columns;
+		*this += &rows;
 
 		auto govnoedstvo = [](
 			AutopilotSelector& selector,
@@ -32,10 +29,14 @@ namespace pizdanc {
 		// Speed
 		govnoedstvo(
 			_spd,
-			[&]() {
+			[]() {
+				auto& rc = RC::getInstance();
+				
 				return rc.getLocalData().getAutopilotSpeed();
 			},
-			[&](float oldAngle, float newAngle) {
+			[](float oldAngle, float newAngle) {
+				auto& rc = RC::getInstance();
+				
 				rc.getLocalData().setAutopilotSpeed(clamp(rc.getLocalData().getAutopilotSpeed() + (newAngle - oldAngle > 0 ? 1.0f : -1.0f), 0.0f, 999.0f));
 			}
 		);
@@ -43,10 +44,14 @@ namespace pizdanc {
 		// Heading
 		govnoedstvo(
 			_hdg,
-			[&]() {
+			[]() {
+				auto& rc = RC::getInstance();
+				
 				return rc.getLocalData().getAutopilotHeading();
 			},
-			[&](float oldAngle, float newAngle) {
+			[](float oldAngle, float newAngle) {
+				auto& rc = RC::getInstance();
+				
 				auto newValue = (float) toDegrees(newAngle);
 
 				if (newValue < 0) {
@@ -63,10 +68,14 @@ namespace pizdanc {
 		// Altitude
 		govnoedstvo(
 			_alt,
-			[&]() {
+			[]() {
+				auto& rc = RC::getInstance();
+				
 				return rc.getLocalData().getAutopilotAltitude();
 			},
-			[&](float oldAngle, float newAngle) {
+			[](float oldAngle, float newAngle) {
+				auto& rc = RC::getInstance();
+				
 				rc.getLocalData().setAutopilotAltitude(clamp(rc.getLocalData().getAutopilotAltitude() + (newAngle - oldAngle > 0 ? 10.0f : -10.0f), 0.0f, 9999.0f));
 			}
 		);

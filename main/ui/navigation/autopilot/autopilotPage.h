@@ -11,10 +11,10 @@ namespace pizdanc {
 
 	class AutopilotPage : public Page {
 		public:
-			void setup() override;
+			AutopilotPage();
 
 		private:
-			StackLayout _columns;
+			StackLayout rows;
 
 			AutopilotSelector _spd = AutopilotSelector(3, L"Speed", L"A/T");
 			AutopilotSelector _hdg = AutopilotSelector(3, L"Heading", L"HOLD");
