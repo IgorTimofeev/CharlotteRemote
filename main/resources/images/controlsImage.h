@@ -2,7 +2,7 @@
 
 #include "main.h"
 
-namespace pizdanc {
+namespace pizda {
 	using namespace yoba;
 
 	class ControlsImage : public Image {

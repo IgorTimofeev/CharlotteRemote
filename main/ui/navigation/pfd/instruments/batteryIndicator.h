@@ -4,7 +4,7 @@
 #include "../../../components/yoba/src/ui.h"
 #include "../../../theme.h"
 
-namespace pizdanc {
+namespace pizda {
 	using namespace yoba;
 
 	class BatteryIndicator : public Element {

@@ -6,7 +6,7 @@
 #include "../../components/yoba/src/resources/fonts/PIXY10Font.h"
 #include "../../components/yoba/src/resources/fonts/Vaticanus8Font.h"
 
-namespace pizdanc {
+namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 

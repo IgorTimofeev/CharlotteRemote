@@ -3,7 +3,7 @@
 #include <cstdio>
 #include "vector"
 
-namespace pizdanc {
+namespace pizda {
 	class Note {
 		public:
 			Note(uint32_t frequency, uint32_t duration) : _frequency(frequency), _duration(duration) {

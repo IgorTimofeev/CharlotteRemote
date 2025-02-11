@@ -2,7 +2,7 @@
 
 #include "../../../rc.h"
 
-namespace pizdanc {
+namespace pizda {
 	const ControlsImage ControlsView::controlsImage = ControlsImage();
 
 	ControlsView::ControlsView() : ImageView(&controlsImage) {

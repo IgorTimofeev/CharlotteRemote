@@ -3,10 +3,14 @@
 #include <cstdint>
 #include <cmath>
 
-namespace pizdanc {
+namespace pizda {
 	class SinAndCos {
 		public:
-			explicit SinAndCos(float angle) {
+			explicit SinAndCos() : _sin(0), _cos(0) {
+
+			}
+
+			explicit SinAndCos(float angle) : SinAndCos() {
 				fromAngle(angle);
 			}
 
@@ -32,7 +36,7 @@ namespace pizdanc {
 			}
 
 		private:
-			float _sin = 0;
-			float _cos = 0;
+			float _sin;
+			float _cos;
 	};
 }

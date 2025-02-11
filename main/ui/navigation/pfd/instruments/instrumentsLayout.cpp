@@ -1,7 +1,7 @@
 #include "instrumentsLayout.h"
 #include "../../../../rc.h"
 
-namespace pizdanc {
+namespace pizda {
 	InstrumentsLayout::InstrumentsLayout() {
 		_backgroundRect.setFillColor(&Theme::bg1);
 		*this += &_backgroundRect;

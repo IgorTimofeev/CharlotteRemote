@@ -4,7 +4,7 @@
 #include "cstdint"
 #include "esp_adc/adc_oneshot.h"
 
-namespace pizdanc {
+namespace pizda {
 	namespace constants {
 		namespace hardware {
 			namespace battery {

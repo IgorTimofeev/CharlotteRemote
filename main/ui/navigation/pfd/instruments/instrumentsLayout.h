@@ -8,7 +8,7 @@
 #include "controlsIndicator.h"
 #include "batteryIndicator.h"
 
-namespace pizdanc {
+namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 

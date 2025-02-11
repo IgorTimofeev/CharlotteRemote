@@ -1,6 +1,6 @@
 #include "data.h"
 
-namespace pizdanc {
+namespace pizda {
 	float RemoteData::getTemperature() const {
 		return _temperature;
 	}

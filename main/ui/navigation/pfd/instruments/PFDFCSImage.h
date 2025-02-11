@@ -2,7 +2,7 @@
 
 #include "../../../components/yoba/src/ui.h"
 
-namespace pizdanc {
+namespace pizda {
 	using namespace yoba;
 
 	class PFDFCSImage : public Image {

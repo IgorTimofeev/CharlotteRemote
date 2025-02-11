@@ -6,7 +6,7 @@
 #include "../page.h"
 #include "../../../resources/images/controlsImage.h"
 
-namespace pizdanc {
+namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 

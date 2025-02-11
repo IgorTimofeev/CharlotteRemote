@@ -3,7 +3,7 @@
 #include "../../../components/yoba/src/main.h"
 #include "../../../components/yoba/src/ui.h"
 
-namespace pizdanc {
+namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 

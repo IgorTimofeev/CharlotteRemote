@@ -3,7 +3,7 @@
 #include "cstdint"
 #include "../../data.h"
 
-namespace pizdanc {
+namespace pizda {
 	enum class PacketType : uint8_t {
 		aircraftAHRS = 1,
 		controllerCommand = 2

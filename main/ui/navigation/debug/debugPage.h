@@ -4,7 +4,7 @@
 #include "src/ui.h"
 #include "../page.h"
 
-namespace pizdanc {
+namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 

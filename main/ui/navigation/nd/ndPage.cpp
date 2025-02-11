@@ -1,6 +1,6 @@
 #include "ndPage.h"
 
-namespace pizdanc {
+namespace pizda {
 	NDPage::NDPage() {
 		*this += &_nd;
 	}

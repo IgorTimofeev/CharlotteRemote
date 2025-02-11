@@ -3,7 +3,7 @@
 #include "../../../rc.h"
 #include <sstream>
 
-namespace pizdanc {
+namespace pizda {
 	DebugPage::DebugPage() {
 		_rows.setSpacing(10);
 		_rows.setMargin(Margin(20, 20, 20, 20));

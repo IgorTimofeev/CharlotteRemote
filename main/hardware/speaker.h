@@ -8,7 +8,7 @@
 #include "../sound.h"
 #include "../constants.h"
 
-namespace pizdanc {
+namespace pizda {
 	class Speaker {
 		public:
 			void setup() const {

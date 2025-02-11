@@ -3,7 +3,7 @@
 #include <cmath>
 #include "../../../rc.h"
 
-namespace pizdanc {
+namespace pizda {
 	ND::ND() {
 		setClipToBounds(true);
 	}
@@ -21,7 +21,53 @@ namespace pizdanc {
 			computedData.getLongitudeSinAndCos()
 		);
 
+		for (auto& point : _points) {
+			auto pointPosition = geographicToCartesian(
+				distanceFromAircraftToEarthCenter,
+				SinAndCos(point.getX()),
+				SinAndCos(point.getY())
+			);
 
+			pointPosition.setX(pointPosition.getX() * std::sinf())
+
+			renderer->renderCircle(
+				Point(
+
+				),
+				10,
+				&Theme::yellow
+			);
+		}
+
+		// Pixels per meter
+		renderer->renderString(
+			bounds.getTopLeft(),
+			&Theme::fontNormal,
+			&Theme::fg1,
+			std::format(L"Scale: {}", _pixelsPerMeter)
+		);
+	}
+
+	void ND::onEvent(Event& event) {
+		Element::onEvent(event);
+
+		if (event.getTypeID() == PinchDownEvent::typeID) {
+			auto pinchDownEvent = (PinchDownEvent&) event;
+
+			_pinchDownPixelsPerMeter = _pixelsPerMeter;
+			_pinchDownLength = (pinchDownEvent.getPosition2() - pinchDownEvent.getPosition1()).getLength();
+
+			event.setHandled(true);
+		}
+		else if (event.getTypeID() == PinchDragEvent::typeID) {
+			auto pinchDragEvent = (PinchDragEvent&) event;
+
+			const auto pinchFactor = (float) (pinchDragEvent.getPosition2() - pinchDragEvent.getPosition1()).getLength() / (float) _pinchDownLength;
+
+			_pixelsPerMeter = _pinchDownPixelsPerMeter * pinchFactor;
+
+			event.setHandled(true);
+		}
 	}
 
 	Vector3F ND::geographicToCartesian(float distanceFromAircraftToEarthCenter, const SinAndCos& latitude, const SinAndCos& longitude) {
@@ -31,6 +77,4 @@ namespace pizdanc {
 			distanceFromAircraftToEarthCenter * latitude.getSin()
 		};
 	}
-
-
 }

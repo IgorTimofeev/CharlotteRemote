@@ -1,7 +1,7 @@
 #include "controlsIndicator.h"
 #include "../../../../rc.h"
 
-namespace pizdanc {
+namespace pizda {
 	ControlsIndicator::ControlsIndicator() {
 		setImage(&_image);
 	}

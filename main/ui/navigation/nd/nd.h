@@ -4,8 +4,9 @@
 #include "../../../../components/yoba/src/ui.h"
 #include "../../theme.h"
 #include "../../../vector3.h"
+#include "../../../sinAndCos.h"
 
-namespace pizdanc {
+namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
@@ -15,15 +16,19 @@ namespace pizdanc {
 
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
+		protected:
+			void onEvent(Event& event) override;
+
 		private:
 			constexpr static const float _earthEquatorialRadius = 6378137;
 
-			// ~100m to south from airfield center & 1000 meters above MSL
-			Vector3F _cameraPosition = Vector3F(
-				60.01390881058745f,
-				29.70243078099165f,
-				1000.0f
-			);
+			// Testing on Google Maps with scale 60px = 200m
+			// Kronshtadt runway length is ~500m long
+			// So to fit it on 240px remote screen, PPM should be like
+			float _pixelsPerMeter = 240.f * 200.f / 60.f;
+
+			float _pinchDownPixelsPerMeter;
+			int32_t _pinchDownLength;
 
 			std::vector<Vector3F> _points {
 				// Airfield west corner

@@ -6,7 +6,7 @@
 #include "packet.h"
 #include "../../constants.h"
 
-namespace pizdanc {
+namespace pizda {
 	enum TransceiverMode : uint8_t {
 		Transmit,
 		StartReceive,

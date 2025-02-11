@@ -6,7 +6,7 @@
 #include "ui/navigation/tabBar.h"
 #include "ui/debugOverlay.h"
 
-namespace pizdanc {
+namespace pizda {
 	using namespace yoba;
 
 	RC& RC::getInstance() {
@@ -20,7 +20,6 @@ namespace pizdanc {
 
 		// Settings
 		_settings.setup();
-		_settings.read();
 
 		// Display
 		_display.setup();
@@ -42,7 +41,6 @@ namespace pizdanc {
 
 		// Speaker
 		_speaker.setup();
-		_speaker.play(resources::sounds::boot());
 
 		// -------------------------------- UI --------------------------------
 
@@ -50,7 +48,7 @@ namespace pizdanc {
 		Theme::setup(&_renderer);
 		_application.setBackgroundColor(&Theme::bg1);
 
-		// Menu
+		// Tab bar
 		_tabBar.setSelectedIndex(0);
 		_application += &_tabBar;
 
@@ -59,6 +57,8 @@ namespace pizdanc {
 		_application += &_debugOverlay;
 
 		// -------------------------------- Main loop --------------------------------
+
+		_speaker.play(resources::sounds::boot());
 
 		while (true) {
 			auto time = esp_timer_get_time();

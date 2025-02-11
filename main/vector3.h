@@ -3,21 +3,7 @@
 #include <cstdint>
 #include <cmath>
 
-namespace pizdanc {
-	class SinAndCos {
-		public:
-			float getSin() const;
-			void setSin(float sin);
-
-			float getCos() const;
-			void setCos(float cos);
-
-		private:
-			float _sin;
-			float _cos;
-	};
-
-
+namespace pizda {
 	template<typename T>
 	class Vector3 {
 		public:

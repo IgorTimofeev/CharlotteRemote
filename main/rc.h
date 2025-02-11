@@ -19,7 +19,7 @@
 #include "hardware/battery.h"
 #include "hardware/speaker.h"
 
-namespace pizdanc {
+namespace pizda {
 	using namespace yoba;
 	using namespace yoba::hardware;
 	using namespace yoba::ui;

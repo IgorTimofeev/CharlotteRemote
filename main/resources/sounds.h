@@ -2,7 +2,7 @@
 
 #include "../sound.h"
 
-namespace pizdanc::resources::sounds {
+namespace pizda::resources::sounds {
 	static Sound boot() {
 		return Sound({
 			Note(7500, 40000),

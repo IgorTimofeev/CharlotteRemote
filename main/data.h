@@ -3,7 +3,7 @@
 #include <cstdint>
 #include "sinAndCos.h"
 
-namespace pizdanc {
+namespace pizda {
 	enum class AltimeterMode : uint8_t  {
 		QNH,
 		QNE

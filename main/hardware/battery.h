@@ -7,7 +7,7 @@
 #include "esp_adc/adc_cali.h"
 #include "../constants.h"
 
-namespace pizdanc {
+namespace pizda {
 	class Battery {
 		public:
 			void setup() {

@@ -10,7 +10,7 @@
 #include "debug/debugPage.h"
 #include "controls/controlsPage.h"
 
-namespace pizdanc {
+namespace pizda {
 	class TabBar : public Selector {
 		public:
 			explicit TabBar();

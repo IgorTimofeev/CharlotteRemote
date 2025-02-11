@@ -6,7 +6,7 @@
 #include "nvs_flash.h"
 #include "nvs.h"
 
-namespace pizdanc {
+namespace pizda {
 	#pragma pack(push, 1)
 
 	class Settings {
@@ -25,16 +25,14 @@ namespace pizdanc {
 				else {
 					ESP_ERROR_CHECK(status);
 				}
-			}
 
-			void read() {
 				// Opening
 				nvs_handle_t handle;
 				ESP_ERROR_CHECK(nvs_open("settings", NVS_READWRITE, &handle));
 
 				// Reading version
 				uint8_t readVersion = 0;
-				auto status = nvs_get_u8(handle, "version", &readVersion);
+				status = nvs_get_u8(handle, "version", &readVersion);
 				assert(status == ESP_OK || status == ESP_ERR_NVS_NOT_FOUND);
 
 				// Nothing to read || version has changed, need to use default settings

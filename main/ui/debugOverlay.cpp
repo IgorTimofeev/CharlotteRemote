@@ -3,7 +3,7 @@
 #include <sstream>
 #include <esp_private/esp_clk.h>
 
-namespace pizdanc {
+namespace pizda {
 	void DebugOverlay::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 

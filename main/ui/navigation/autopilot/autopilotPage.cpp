@@ -1,7 +1,7 @@
 #include "autopilotPage.h"
 #include "../../../rc.h"
 
-namespace pizdanc {
+namespace pizda {
 	AutopilotPage::AutopilotPage() {
 		rows.setMargin(Margin(20));
 		rows.setSpacing(20);

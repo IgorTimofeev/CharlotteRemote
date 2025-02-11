@@ -3,7 +3,7 @@
 #include "mbedtls/aes.h"
 #include "../../rc.h"
 
-namespace pizdanc {
+namespace pizda {
 	volatile bool Transceiver::_canOperate = true;
 
 	void Transceiver::onDio1Action() {

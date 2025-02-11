@@ -1,6 +1,6 @@
 #include "pfdPage.h"
 
-namespace pizdanc {
+namespace pizda {
 	PFDPage::PFDPage() {
 		_pfd.setMargin(Margin(0, 0, 0, InstrumentsLayout::panelSize));
 		*this += &_pfd;

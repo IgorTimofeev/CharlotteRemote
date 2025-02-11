@@ -6,7 +6,7 @@
 #include "../page.h"
 #include "autopilotSelector.h"
 
-namespace pizdanc {
+namespace pizda {
 	using namespace yoba;
 
 	class AutopilotPage : public Page {

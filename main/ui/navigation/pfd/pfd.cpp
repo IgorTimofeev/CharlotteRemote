@@ -3,7 +3,7 @@
 #include "../../../rc.h"
 #include "../../theme.h"
 
-namespace pizdanc {
+namespace pizda {
 	PFD::PFD() {
 		setClipToBounds(true);
 	}

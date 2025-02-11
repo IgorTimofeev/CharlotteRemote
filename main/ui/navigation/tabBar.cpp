@@ -1,6 +1,6 @@
 #include "tabBar.h"
 
-namespace pizdanc {
+namespace pizda {
 	TabBar::TabBar() {
 		// Page
 		_pageLayout.setMargin(Margin(0, 0, 0, _tabBarSize));
