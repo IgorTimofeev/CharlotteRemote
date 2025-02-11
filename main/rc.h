@@ -34,6 +34,7 @@ namespace pizdanc {
 
 			LocalData& getLocalData();
 			RemoteData& getRemoteData();
+			ComputedData& getComputedData();
 
 			Interpolator& getThrottle1Interpolator();
 			Interpolator& getThrottle2Interpolator();
@@ -153,7 +154,10 @@ namespace pizdanc {
 			Settings _settings;
 			LocalData _localData;
 			RemoteData _remoteData;
+			ComputedData _computedData;
 
 			void simulateFlightData();
+
+			void updateComputedData();
 	};
 }

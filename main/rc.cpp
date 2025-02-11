@@ -65,6 +65,7 @@ namespace pizdanc {
 
 			// High priority tasks
 			simulateFlightData();
+			updateComputedData();
 
 			// UI
 			_application.tick();
@@ -210,6 +211,10 @@ namespace pizdanc {
 		return _remoteData;
 	}
 
+	ComputedData& RC::getComputedData() {
+		return _computedData;
+	}
+
 	Interpolator& RC::getThrottle1Interpolator() {
 		return _throttle1Interpolator;
 	}
@@ -304,5 +309,13 @@ namespace pizdanc {
 
 	Speaker& RC::getSpeaker() {
 		return _speaker;
+	}
+
+	void RC::updateComputedData() {
+		_computedData.getLatitudeSinAndCos().fromAngle(_remoteData.getLatitude());
+		_computedData.getLongitudeSinAndCos().fromAngle(_remoteData.getLongitude());
+		_computedData.getRollSinAndCos().fromAngle(_remoteData.getRoll());
+		_computedData.getPitchSinAndCos().fromAngle(_remoteData.getPitch());
+		_computedData.getYawSinAndCos().fromAngle(_remoteData.getYaw());
 	}
 }

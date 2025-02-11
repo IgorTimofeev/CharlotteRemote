@@ -1,137 +1,177 @@
 #include "data.h"
 
-float RemoteData::getTemperature() const {
-	return _temperature;
-}
+namespace pizdanc {
+	float RemoteData::getTemperature() const {
+		return _temperature;
+	}
 
-void RemoteData::setTemperature(float temperature) {
-	_temperature = temperature;
-}
+	void RemoteData::setTemperature(float temperature) {
+		_temperature = temperature;
+	}
 
-float RemoteData::getPressure() const {
-	return _pressure;
-}
+	float RemoteData::getPressure() const {
+		return _pressure;
+	}
 
-void RemoteData::setPressure(float pressure) {
-	_pressure = pressure;
-}
+	void RemoteData::setPressure(float pressure) {
+		_pressure = pressure;
+	}
 
-float RemoteData::getAltitude() const {
-	return _altitude;
-}
+	float RemoteData::getAltitude() const {
+		return _altitude;
+	}
 
-void RemoteData::setAltitude(float altitude) {
-	_altitude = altitude;
-}
+	void RemoteData::setAltitude(float altitude) {
+		_altitude = altitude;
+	}
 
-float RemoteData::getPitch() const {
-	return _pitch;
-}
+	float RemoteData::getPitch() const {
+		return _pitch;
+	}
 
-void RemoteData::setPitch(float pitch) {
-	_pitch = pitch;
-}
+	void RemoteData::setPitch(float pitch) {
+		_pitch = pitch;
+	}
 
-float RemoteData::getRoll() const {
-	return _roll;
-}
+	float RemoteData::getRoll() const {
+		return _roll;
+	}
 
-void RemoteData::setRoll(float roll) {
-	_roll = roll;
-}
+	void RemoteData::setRoll(float roll) {
+		_roll = roll;
+	}
 
-float RemoteData::getYaw() const {
-	return _yaw;
-}
+	float RemoteData::getYaw() const {
+		return _yaw;
+	}
 
-void RemoteData::setYaw(float yaw) {
-	_yaw = yaw;
-}
+	void RemoteData::setYaw(float yaw) {
+		_yaw = yaw;
+	}
 
-float RemoteData::getSpeed() const {
-	return _speed;
-}
+	float RemoteData::getSpeed() const {
+		return _speed;
+	}
 
-void RemoteData::setSpeed(float speed) {
-	_speed = speed;
-}
+	void RemoteData::setSpeed(float speed) {
+		_speed = speed;
+	}
 
-uint8_t LocalData::getThrottle() const {
-	return _throttle;
-}
+	float RemoteData::getLatitude() const {
+		return _latitude;
+	}
 
-void LocalData::setThrottle(uint8_t throttle) {
-	_throttle = throttle;
-}
+	void RemoteData::setLatitude(float latitude) {
+		_latitude = latitude;
+	}
 
-uint8_t LocalData::getAilerons() const {
-	return _ailerons;
-}
+	float RemoteData::getLongitude() const {
+		return _longitude;
+	}
 
-void LocalData::setAilerons(uint8_t ailerons) {
-	_ailerons = ailerons;
-}
+	void RemoteData::setLongitude(float longitude) {
+		_longitude = longitude;
+	}
 
-uint8_t LocalData::getRudder() const {
-	return _rudder;
-}
+	uint8_t LocalData::getThrottle() const {
+		return _throttle;
+	}
 
-void LocalData::setRudder(uint8_t rudder) {
-	_rudder = rudder;
-}
+	void LocalData::setThrottle(uint8_t throttle) {
+		_throttle = throttle;
+	}
 
-uint8_t LocalData::getFlaps() const {
-	return _flaps;
-}
+	uint8_t LocalData::getAilerons() const {
+		return _ailerons;
+	}
 
-void LocalData::setFlaps(uint8_t flaps) {
-	_flaps = flaps;
-}
+	void LocalData::setAilerons(uint8_t ailerons) {
+		_ailerons = ailerons;
+	}
 
-AltimeterMode LocalData::getAltimeterMode() const {
-	return _altimeterMode;
-}
+	uint8_t LocalData::getRudder() const {
+		return _rudder;
+	}
 
-void LocalData::setAltimeterMode(AltimeterMode value) {
-	_altimeterMode = value;
-}
+	void LocalData::setRudder(uint8_t rudder) {
+		_rudder = rudder;
+	}
 
-float LocalData::getAltimeterPressure() const {
-	return _altimeterPressure;
-}
+	uint8_t LocalData::getFlaps() const {
+		return _flaps;
+	}
 
-void LocalData::setAltimeterPressure(float value) {
-	_altimeterPressure = value;
-}
+	void LocalData::setFlaps(uint8_t flaps) {
+		_flaps = flaps;
+	}
 
-bool LocalData::getStrobeLights() const {
-	return _strobeLights;
-}
+	AltimeterMode LocalData::getAltimeterMode() const {
+		return _altimeterMode;
+	}
 
-void LocalData::setStrobeLights(bool strobeLights) {
-	_strobeLights = strobeLights;
-}
+	void LocalData::setAltimeterMode(AltimeterMode value) {
+		_altimeterMode = value;
+	}
 
-float LocalData::getAutopilotSpeed() const {
-	return _autopilotSpeed;
-}
+	float LocalData::getAltimeterPressure() const {
+		return _altimeterPressure;
+	}
 
-void LocalData::setAutopilotSpeed(float autopilotSpeed) {
-	_autopilotSpeed = autopilotSpeed;
-}
+	void LocalData::setAltimeterPressure(float value) {
+		_altimeterPressure = value;
+	}
 
-float LocalData::getAutopilotAltitude() const {
-	return _autopilotAltitude;
-}
+	bool LocalData::getStrobeLights() const {
+		return _strobeLights;
+	}
 
-void LocalData::setAutopilotAltitude(float autopilotAltitude) {
-	_autopilotAltitude = autopilotAltitude;
-}
+	void LocalData::setStrobeLights(bool strobeLights) {
+		_strobeLights = strobeLights;
+	}
 
-float LocalData::getAutopilotHeading() const {
-	return _autopilotHeading;
-}
+	float LocalData::getAutopilotSpeed() const {
+		return _autopilotSpeed;
+	}
 
-void LocalData::setAutopilotHeading(float autopilotHeading) {
-	_autopilotHeading = autopilotHeading;
+	void LocalData::setAutopilotSpeed(float autopilotSpeed) {
+		_autopilotSpeed = autopilotSpeed;
+	}
+
+	float LocalData::getAutopilotAltitude() const {
+		return _autopilotAltitude;
+	}
+
+	void LocalData::setAutopilotAltitude(float autopilotAltitude) {
+		_autopilotAltitude = autopilotAltitude;
+	}
+
+	float LocalData::getAutopilotHeading() const {
+		return _autopilotHeading;
+	}
+
+	void LocalData::setAutopilotHeading(float autopilotHeading) {
+		_autopilotHeading = autopilotHeading;
+	}
+
+	// -------------------------------- ComputedData --------------------------------
+
+	SinAndCos& ComputedData::getLatitudeSinAndCos() {
+		return _latitudeSinAndCos;
+	}
+
+	SinAndCos& ComputedData::getLongitudeSinAndCos() {
+		return _longitudeSinAndCos;
+	}
+
+	SinAndCos& ComputedData::getRollSinAndCos() {
+		return _rollSinAndCos;
+	}
+
+	SinAndCos& ComputedData::getPitchSinAndCos() {
+		return _pitchSinAndCos;
+	}
+
+	SinAndCos& ComputedData::getYawSinAndCos() {
+		return _yawSinAndCos;
+	}
 }
