@@ -4,6 +4,7 @@
 #include "../../../components/yoba/src/ui.h"
 
 #include "vector3.h"
+#include "camera.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -13,7 +14,7 @@ namespace pizda {
 		public:
 			virtual Vector3F* getVertices() = 0;
 			virtual uint16_t getVertexCount() = 0;
-			virtual void onRender(Renderer* renderer, Point* points) = 0;
+			virtual void onRender(Renderer* renderer, Camera* camera, Vector3F* vertices) = 0;
 	};
 
 	class Line : public Object {
@@ -31,8 +32,18 @@ namespace pizda {
 				return 2;
 			}
 
-			void onRender(Renderer* renderer, Point* points) override {
-				renderer->renderLine(points[0], points[1], _color);
+			void onRender(Renderer* renderer, Camera* camera, Vector3F* vertices) override {
+				renderer->renderLine(
+					Point(
+						(int32_t) vertices[0].getX(),
+						(int32_t) vertices[0].getY()
+					),
+					Point(
+						(int32_t) vertices[1].getX(),
+						(int32_t) vertices[1].getY()
+					),
+					_color
+				);
 			}
 
 			Vector3F getFrom() const {
@@ -79,9 +90,14 @@ namespace pizda {
 				return 1;
 			}
 
-			void onRender(Renderer* renderer, Point* points) override {
-				renderer->renderCircle(points[0], 10, _color);
-				renderer->renderString(Point(points[0].getX() + 10, points[0].getY()), _font, _color, _text);
+			void onRender(Renderer* renderer, Camera* camera, Vector3F* vertices) override {
+				const auto point = Point(
+					(int32_t) vertices[0].getX(),
+					(int32_t) vertices[0].getY()
+				);
+
+				renderer->renderCircle(point, 10, _color);
+				renderer->renderString(Point(point.getX() + 10, point.getY()), _font, _color, _text);
 			}
 
 			const Vector3F& getPosition() const {
@@ -135,25 +151,56 @@ namespace pizda {
 				return _vertexCount;
 			}
 
-			void onRender(Renderer* renderer, Point* points) override {
+			void onRender(Renderer* renderer, Camera* camera, Vector3F* vertices) override {
+				const auto zClip = camera->getNearPlaneDistance();
+				Vector3F vertex0, vertex1, vertex2;
+
 				for (uint16_t i = 0; i < _triangleVertexIndicesCount; i += 3) {
-					renderer->renderLine(
-						points[_triangleVertexIndices[i]],
-						points[_triangleVertexIndices[i + 1]],
-						_color
-					);
+					vertex0 = vertices[_triangleVertexIndices[i]];
+					vertex1 = vertices[_triangleVertexIndices[i + 1]];
+					vertex2 = vertices[_triangleVertexIndices[i + 2]];
 
-					renderer->renderLine(
-						points[_triangleVertexIndices[i + 1]],
-						points[_triangleVertexIndices[i + 2]],
-						_color
-					);
+					if (vertex0.getZ() > zClip && vertex1.getZ() > zClip) {
+						renderer->renderLine(
+							Point(
+								(int32_t) vertex0.getX(),
+								(int32_t) vertex0.getY()
+							),
+							Point(
+								(int32_t) vertex1.getX(),
+								(int32_t) vertex1.getY()
+							),
+							_color
+						);
+					}
 
-					renderer->renderLine(
-						points[_triangleVertexIndices[i + 2]],
-						points[_triangleVertexIndices[i]],
-						_color
-					);
+					if (vertex1.getZ() > zClip && vertex2.getZ() > zClip) {
+						renderer->renderLine(
+							Point(
+								(int32_t) vertex1.getX(),
+								(int32_t) vertex1.getY()
+							),
+							Point(
+								(int32_t) vertex2.getX(),
+								(int32_t) vertex2.getY()
+							),
+							_color
+						);
+					}
+
+					if (vertex2.getZ() > zClip && vertex0.getZ() > zClip) {
+						renderer->renderLine(
+							Point(
+								(int32_t) vertex2.getX(),
+								(int32_t) vertex2.getY()
+							),
+							Point(
+								(int32_t) vertex0.getX(),
+								(int32_t) vertex0.getY()
+							),
+							_color
+						);
+					}
 				}
 			}
 
@@ -184,7 +231,7 @@ namespace pizda {
 					_vertices,
 					8,
 					_triangleVertexIndices,
-					10,
+					36,
 					color
 				)
 			{

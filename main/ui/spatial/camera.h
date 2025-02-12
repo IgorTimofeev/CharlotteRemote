@@ -27,17 +27,38 @@ namespace pizda {
 				_rotation = rotation;
 			}
 
-			float getFov() const {
-				return _fov;
+			float getNearPlaneDistance() const {
+				return _nearPlaneDistance;
 			}
 
-			void setFov(float fov) {
-				_fov = fov;
+			void setNearPlaneDistance(float nearPlaneDistance) {
+				_nearPlaneDistance = nearPlaneDistance;
 			}
+
+			float getFarPlaneDistance() const {
+				return _farPlaneDistance;
+			}
+
+			void setFarPlaneDistance(float farPlaneDistance) {
+				_farPlaneDistance = farPlaneDistance;
+			}
+
+			float getFieldOfView() const {
+				return _fieldOfView;
+			}
+
+			void setFieldOfView(float fieldOfView) {
+				_fieldOfView = fieldOfView;
+			}
+
 
 		private:
 			Vector3F _position;
 			Vector3F _rotation;
-			float _fov = 90;
+
+			float _nearPlaneDistance = 50.f;
+			float _farPlaneDistance = 1000.f;
+
+			float _fieldOfView = yoba::toRadians(45);
 	};
 }

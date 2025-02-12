@@ -32,6 +32,31 @@ namespace pizda {
 			&Theme::yellow,
 			L"Right"
 		));
+
+		_spatialView.addObject(new Line(
+			Vector3F(0, 0, 0),
+			Vector3F(_earthEquatorialRadius, 0, 0),
+			&Theme::red
+		));
+
+		// Axis
+		_spatialView.addObject(new Line(
+			Vector3F(0, 0, 0),
+			Vector3F(_earthEquatorialRadius, 0, 0),
+			&Theme::red
+		));
+
+		_spatialView.addObject(new Line(
+			Vector3F(0, 0, 0),
+			Vector3F(0, _earthEquatorialRadius, 0),
+			&Theme::green
+		));
+
+		_spatialView.addObject(new Line(
+			Vector3F(0, 0, 0),
+			Vector3F(0, 0, _earthEquatorialRadius),
+			&Theme::blue
+		));
 	}
 
 	void ND::onTick() {
@@ -42,7 +67,7 @@ namespace pizda {
 		auto& computedData = rc.getComputedData();
 
 		auto rotationLatitude = yoba::toRadians(remoteData.getLatitude()) + _cameraOffset.getX();
-		auto rotationLongitude = yoba::toRadians(remoteData.getLatitude()) + _cameraOffset.getX();
+		auto rotationLongitude = yoba::toRadians(remoteData.getLatitude()) + _cameraOffset.getY();
 
 		auto cameraPosition = geographicToCartesian(
 			SinAndCos(rotationLatitude),
@@ -51,8 +76,8 @@ namespace pizda {
 		);
 
 		auto cameraRotation = Vector3F(
-			rotationLongitude,
-			rotationLatitude,
+			-rotationLongitude,
+			-rotationLatitude,
 			0
 		);
 
@@ -93,7 +118,7 @@ namespace pizda {
 			position,
 			&Theme::fontNormal,
 			&Theme::yellow,
-			std::format(L"Camera offset |: {}", _cameraOffset.getZ())
+			std::format(L"Camera offset Z: {}", _cameraOffset.getZ())
 		);
 
 		position += spacing;
@@ -147,8 +172,8 @@ namespace pizda {
 //			);
 
 			auto deltaAngles = Vector2F(
-				yoba::toRadians(yoba::toRadians(deltaPixels.getX() > 0 ? 1 : -1)),
-				yoba::toRadians(yoba::toRadians(deltaPixels.getY() > 0 ? 1 : -1))
+				yoba::toRadians(deltaPixels.getX() > 0 ? 2 : -2),
+				yoba::toRadians(deltaPixels.getY() > 0 ? 2 : -2)
 			);
 
 			ESP_LOGI("ND", "deltaAngles: %f, %f", deltaAngles.getX(), deltaAngles.getY());
