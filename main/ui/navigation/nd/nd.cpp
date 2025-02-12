@@ -1,103 +1,106 @@
 #include "nd.h"
-#include <sstream>
-#include <cmath>
 #include "../../../rc.h"
 
 namespace pizda {
 	ND::ND() {
 		setClipToBounds(true);
+
+		*this += &_spatialView;
+
+		const auto distanceFromObjectsToEarthCenter = _earthEquatorialRadius;
+
+		_spatialView.addObject(new Cube(distanceFromObjectsToEarthCenter * 2, &Theme::fg1));
+
+		_spatialView.addObject(new Label(
+			geographicToCartesian(
+				SinAndCos(yoba::toRadians(60.01483325540486f)),
+				SinAndCos(yoba::toRadians(29.69835915766679f)),
+				_earthEquatorialRadius
+			),
+			&Theme::fontNormal,
+			&Theme::yellow,
+			L"Left"
+		));
+
+		_spatialView.addObject(new Label(
+			geographicToCartesian(
+				SinAndCos(yoba::toRadians(60.014390616612474f)),
+				SinAndCos(yoba::toRadians(29.706975357970624f)),
+				distanceFromObjectsToEarthCenter
+			),
+			&Theme::fontNormal,
+			&Theme::yellow,
+			L"Right"
+		));
 	}
 
-	void ND::onRender(Renderer* renderer, const Bounds& bounds) {
+	void ND::onTick() {
+		Layout::onTick();
+
 		auto& rc = RC::getInstance();
 		auto& remoteData = rc.getRemoteData();
 		auto& computedData = rc.getComputedData();
 
-//		const auto distanceFromAircraftToEarthCenter = _earthEquatorialRadius + remoteData.getAltitude();
-		const auto distanceFromAircraftToEarthCenter = 100;
+		auto rotationLatitude = yoba::toRadians(remoteData.getLatitude()) + _cameraOffset.getX();
+		auto rotationLongitude = yoba::toRadians(remoteData.getLatitude()) + _cameraOffset.getX();
 
-		const auto aircraftPosition = geographicToCartesian(
-			computedData.getLatitudeSinAndCos(),
-			computedData.getLongitudeSinAndCos(),
-			distanceFromAircraftToEarthCenter
+		auto cameraPosition = geographicToCartesian(
+			SinAndCos(rotationLatitude),
+			SinAndCos(rotationLongitude),
+			_earthEquatorialRadius + _cameraOffset.getZ()
 		);
 
-		auto cameraPosition =  geographicToCartesian(
-			SinAndCos(remoteData.getLatitude() + _cameraOffset.getX()),
-			SinAndCos(remoteData.getLongitude() + _cameraOffset.getY()),
-			distanceFromAircraftToEarthCenter
+		auto cameraRotation = Vector3F(
+			rotationLongitude,
+			rotationLatitude,
+			0
 		);
-
-		auto cameraRotation = -aircraftPosition;
 
 //		ESP_LOGI("ND", "--------------");
 //		ESP_LOGI("ND", "Camera: %f, %f, %f", cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ());
 
-		for (auto& point : _points) {
-			auto pointPosition = geographicToCartesian(
-				SinAndCos(point.getX()),
-				SinAndCos(point.getY()),
-				distanceFromAircraftToEarthCenter
-			);
+		_spatialView.getCamera().setPosition(cameraPosition);
+		_spatialView.getCamera().setRotation(cameraRotation);
 
-//			ESP_LOGI("ND", "Point: %f, %f, %f", pointPosition.getX(), pointPosition.getY(), pointPosition.getZ());
+		invalidate();
+	}
 
-			// Пиздим кодыч с майноси. КАКОВА ПРАВА!1 ГОВОРИЛА ОНА...........
-			// OCGL.translate(-scene.camera.position[1], -scene.camera.position[2], -scene.camera.position[3])
-			// OCGL.rotate(OCGL.rotateVectorRelativeToYAxis, -scene.camera.rotation[2])
-			// OCGL.rotate(OCGL.rotateVectorRelativeToXAxis, -scene.camera.rotation[1])
+	void ND::onRender(Renderer* renderer, const Bounds& bounds) {
+		Layout::onRender(renderer, bounds);
 
-			// Translating camera to point
-			pointPosition -= cameraPosition;
+		auto position = bounds.getTopLeft() + Point(5, 5);
+		auto spacing = Point(0, Theme::fontNormal.getHeight() + 1);
 
-			// Rotating camera
-			auto cameraRotationXSinCos = SinAndCos(cameraRotation.getX());
-			auto cameraRotationZSinCos = SinAndCos(cameraRotation.getZ());
-
-			pointPosition = pointPosition.rotateAroundZAxis(
-				-cameraRotationZSinCos.getSin(),
-				-cameraRotationZSinCos.getCos()
-			);
-
-			pointPosition = pointPosition.rotateAroundXAxis(
-				-cameraRotationXSinCos.getSin(),
-				-cameraRotationXSinCos.getCos()
-			);
-
-			// Applying perspective projection
-
-//			zProjectionDivZ = math.abs(renderer.viewport.projectionSurface / OCGL.vertices[vertexIndex][3])
-//			OCGL.vertices[vertexIndex][1] = zProjectionDivZ * OCGL.vertices[vertexIndex][1]
-//			OCGL.vertices[vertexIndex][2] = zProjectionDivZ * OCGL.vertices[vertexIndex][2]
-
-//			const auto zFactor = std::abs(cameraPosition.getZ() / pointPosition.getZ());
-			const auto zFactor = 1.f;
-
-			const auto screenPosition = Point(
-				bounds.getXCenter() + (int32_t) (pointPosition.getX() * zFactor),
-				bounds.getYCenter() + (int32_t) (pointPosition.getY() * zFactor)
-			);
-
-//			ESP_LOGI("ND", "Screen: %ld, %ld", screenPosition.getX(), screenPosition.getY());
-
-			renderer->renderCircle(
-				screenPosition,
-				10,
-				&Theme::yellow
-			);
-		}
-
-		// Pixels per meter
 		renderer->renderString(
-			bounds.getTopLeft(),
+			position,
 			&Theme::fontNormal,
-			&Theme::fg1,
-			std::format(L"Scale: {}", _metersPerPixel)
+			&Theme::yellow,
+			std::format(L"Camera offset X: {}", yoba::toDegrees(_cameraOffset.getX()))
 		);
+
+		position += spacing;
+
+		renderer->renderString(
+			position,
+			&Theme::fontNormal,
+			&Theme::yellow,
+			std::format(L"Camera offset Y: {}", yoba::toDegrees(_cameraOffset.getY()))
+		);
+
+		position += spacing;
+
+		renderer->renderString(
+			position,
+			&Theme::fontNormal,
+			&Theme::yellow,
+			std::format(L"Camera offset |: {}", _cameraOffset.getZ())
+		);
+
+		position += spacing;
 	}
 
 	void ND::onEvent(Event& event) {
-		Element::onEvent(event);
+		Layout::onEvent(event);
 
 		if (event.getTypeID() == PinchDownEvent::typeID) {
 			auto pinchDownEvent = (PinchDownEvent&) event;
@@ -113,6 +116,8 @@ namespace pizda {
 			const auto pinchFactor = (float) (pinchDragEvent.getPosition2() - pinchDragEvent.getPosition1()).getLength() / (float) _pinchDownLength;
 
 			_metersPerPixel = _pinchDownPixelsPerMeter * pinchFactor;
+
+			_cameraOffset.setZ(_cameraOffset.getZ() + (pinchFactor > 1 ? 10.f : -10.f));
 
 			event.setHandled(true);
 		}
@@ -131,20 +136,27 @@ namespace pizda {
 			const auto position = touchDragEventEvent.getPosition();
 
 			auto deltaPixels= position - _touchDownPosition;
-			auto deltaMeters= (Vector2F) deltaPixels * _metersPerPixel;
+			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
+
+//			auto deltaMeters= (Vector2F) deltaPixels * _metersPerPixel;
+//			ESP_LOGI("ND", "deltaMeters: %f, %f", deltaMeters.getX(), deltaMeters.getY());
+//
+//			auto deltaAngles = Vector2F(
+//				yoba::toRadians(deltaMeters.getX() / _earthMetersPer1EquatorialDeg),
+//				yoba::toRadians(deltaMeters.getY() / _earthMetersPer1EquatorialDeg)
+//			);
+
 			auto deltaAngles = Vector2F(
-				yoba::toRadians(deltaMeters.getX() / _earthMetersPer1EquatorialDeg),
-				yoba::toRadians(deltaMeters.getY() / _earthMetersPer1EquatorialDeg)
+				yoba::toRadians(yoba::toRadians(deltaPixels.getX() > 0 ? 1 : -1)),
+				yoba::toRadians(yoba::toRadians(deltaPixels.getY() > 0 ? 1 : -1))
 			);
 
-			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
-			ESP_LOGI("ND", "deltaMeters: %f, %f", deltaMeters.getX(), deltaMeters.getY());
 			ESP_LOGI("ND", "deltaAngles: %f, %f", deltaAngles.getX(), deltaAngles.getY());
 
 			// Lat
-			_cameraOffset.setX(_cameraOffset.getX() + (float) deltaAngles.getY());
+			_cameraOffset.setX(_cameraOffset.getX() + (float) deltaAngles.getX());
 			// Lon
-			_cameraOffset.setY(_cameraOffset.getY() + (float) deltaAngles.getX());
+			_cameraOffset.setY(_cameraOffset.getY() + (float) deltaAngles.getY());
 
 			ESP_LOGI("ND", "_cameraOffset: %f, %f", _cameraOffset.getX(), _cameraOffset.getY());
 

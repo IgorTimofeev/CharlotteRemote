@@ -25,7 +25,9 @@ namespace pizda {
 			T getLength() const;
 			Vector3 normalize() const;
 			Vector3 rotateAroundXAxis(float angleSin, float angleCos) const;
-			Vector3 rotateAroundZAxis(float angleSin, float angleCos) const;
+			Vector3 rotateAroundXAxis(float angle) const;
+			Vector3 rotateAroundYAxis(float angleSin, float angleCos) const;
+			Vector3 rotateAroundYAxis(float angle) const;
 
 			Vector3 operator+(const Vector3& right) const;
 			Vector3& operator+=(const Vector3& right);
@@ -121,12 +123,22 @@ namespace pizda {
 	}
 
 	template<typename T>
-	Vector3<T> Vector3<T>::rotateAroundZAxis(float angleSin, float angleCos) const {
+	Vector3<T> Vector3<T>::rotateAroundXAxis(float angle) const {
+		return rotateAroundXAxis(std::sin(angle), std::cos(angle));
+	}
+
+	template<typename T>
+	Vector3<T> Vector3<T>::rotateAroundYAxis(float angleSin, float angleCos) const {
 		return {
 			(T) (angleCos * (float) _x + angleSin * (float) _z),
 			_y,
 			(T) (angleCos * (float) _z - angleSin * (float) _x)
 		};
+	}
+
+	template<typename T>
+	Vector3<T> Vector3<T>::rotateAroundYAxis(float angle) const {
+		return rotateAroundYAxis(std::sin(angle), std::cos(angle));
 	}
 
 	template<typename T>
