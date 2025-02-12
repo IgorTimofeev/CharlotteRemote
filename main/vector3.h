@@ -24,11 +24,18 @@ namespace pizda {
 
 			T getLength() const;
 			Vector3 normalize() const;
+			Vector3 rotateAroundXAxis(float angleSin, float angleCos) const;
+			Vector3 rotateAroundZAxis(float angleSin, float angleCos) const;
 
 			Vector3 operator+(const Vector3& right) const;
+			Vector3& operator+=(const Vector3& right);
 			Vector3 operator-(const Vector3& right) const;
+			Vector3 operator-() const;
+			Vector3<T>& operator-=(const Vector3& right);
 			Vector3 operator*(T factor) const;
+			Vector3& operator*=(const Vector3& right);
 			Vector3 operator/(T factor) const;
+			Vector3& operator/=(const Vector3& right);
 			bool operator==(const Vector3 &right) const;
 			bool operator!=(const Vector3 &right) const;
 
@@ -105,20 +112,20 @@ namespace pizda {
 	}
 
 	template<typename T>
-	Vector3<T> Vector3<T>::operator*(T factor) const {
+	Vector3<T> Vector3<T>::rotateAroundXAxis(float angleSin, float angleCos) const {
 		return {
-			_x * factor,
-			_y * factor,
-			_z * factor
+			(T) _x,
+			(T) (angleCos * (float) _y - angleSin * (float) _z),
+			(T) (angleSin * (float) _y + angleCos * (float) _z)
 		};
 	}
 
 	template<typename T>
-	Vector3<T> Vector3<T>::operator/(T factor) const {
+	Vector3<T> Vector3<T>::rotateAroundZAxis(float angleSin, float angleCos) const {
 		return {
-			_x / factor,
-			_y / factor,
-			_z / factor
+			(T) (angleCos * (float) _x + angleSin * (float) _z),
+			_y,
+			(T) (angleCos * (float) _z - angleSin * (float) _x)
 		};
 	}
 
@@ -132,12 +139,75 @@ namespace pizda {
 	}
 
 	template<typename T>
+	Vector3<T>& Vector3<T>::operator+=(const Vector3& right) {
+		_x += right._x;
+		_y += right._y;
+		_z += right._z;
+
+		return *this;
+	}
+
+	template<typename T>
 	Vector3<T> Vector3<T>::operator-(const Vector3& right) const {
 		return {
 			_x - right._x,
 			_y - right._y,
 			_z - right._z,
 		};
+	}
+
+	template<typename T>
+	Vector3<T> Vector3<T>::operator-() const {
+		return {
+			-_x,
+			-_y,
+			-_z,
+		};
+	}
+
+	template<typename T>
+	Vector3<T>& Vector3<T>::operator-=(const Vector3& right) {
+		_x -= right._x;
+		_y -= right._y;
+		_z -= right._z;
+
+		return *this;
+	}
+
+	template<typename T>
+	Vector3<T> Vector3<T>::operator*(T factor) const {
+		return {
+			_x * factor,
+			_y * factor,
+			_z * factor
+		};
+	}
+
+	template<typename T>
+	Vector3<T>& Vector3<T>::operator*=(const Vector3& right) {
+		_x *= right._x;
+		_y *= right._y;
+		_z *= right._z;
+
+		return *this;
+	}
+
+	template<typename T>
+	Vector3<T> Vector3<T>::operator/(T factor) const {
+		return {
+			_x / factor,
+			_y / factor,
+			_z / factor
+		};
+	}
+
+	template<typename T>
+	Vector3<T>& Vector3<T>::operator/=(const Vector3& right) {
+		_x /= right._x;
+		_y /= right._y;
+		_z /= right._z;
+
+		return *this;
 	}
 
 	template<typename T>

@@ -21,14 +21,18 @@ namespace pizda {
 
 		private:
 			constexpr static const float _earthEquatorialRadius = 6378137;
+			constexpr static const float _earthEquatorialLength = 2 * M_PI * _earthEquatorialRadius;
+			constexpr static const float _earthMetersPer1EquatorialDeg = _earthEquatorialLength / 360;
 
 			// Testing on Google Maps with scale 60px = 200m
 			// Kronshtadt runway length is ~500m long
-			// So to fit it on 240px remote screen, PPM should be like
-			float _pixelsPerMeter = 240.f * 200.f / 60.f;
+			// So to fit it on 240px remote screen, MPP should be like
+			float _metersPerPixel = 240.f * 200.f / 60.f;
 
-			float _pinchDownPixelsPerMeter;
-			int32_t _pinchDownLength;
+			float _pinchDownPixelsPerMeter = 0;
+			int32_t _pinchDownLength = 0;
+			Point _touchDownPosition;
+			Vector2F _cameraOffset;
 
 			std::vector<Vector3F> _points {
 				// Airfield west corner
@@ -45,6 +49,6 @@ namespace pizda {
 				),
 			};
 
-			static Vector3F geographicToCartesian(float distanceFromAircraftToEarthCenter, const SinAndCos& latitude, const SinAndCos& longitude);
+			static Vector3F geographicToCartesian(const SinAndCos& latitude, const SinAndCos& longitude, float distanceToEarthCenter);
 	};
 }
