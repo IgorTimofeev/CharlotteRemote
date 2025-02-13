@@ -58,27 +58,25 @@ namespace pizda {
 		auto& remoteData = rc.getRemoteData();
 		auto& computedData = rc.getComputedData();
 
-//		auto rotationLatitude = remoteData.getLatitude() + _cameraOffset.getX();
-		auto rotationLatitude = _cameraOffset.getX();
+//		const auto rotationLatitude = _cameraOffset.getX();
+//		const auto rotationLongitude = _cameraOffset.getY();
 
-		auto rotationLongitude = remoteData.getLongitude() + _cameraOffset.getY();
+		const auto rotationLatitude = remoteData.getLatitude() + _cameraOffset.getX();
+		const auto rotationLongitude = remoteData.getLongitude() - _cameraOffset.getY();
 
-		auto cameraPosition = geographicToCartesian(
+		getCamera().setPosition(geographicToCartesian(
 			SinAndCos(rotationLatitude),
 			SinAndCos(rotationLongitude),
 			_earthEquatorialRadius + _cameraOffset.getZ()
-		);
+		));
 
-		auto cameraRotation = Vector3F(
+		getCamera().setRotation(Vector3F(
 			rotationLatitude,
 			// Longitude uses X axis for Y rotation, but camera uses Z, so...
 			// 90 - rotation + 180 or 270 - rotation
-			(float) M_3PI_4 - rotationLongitude,
+			yoba::toRadians(270) - rotationLongitude,
 			0
-		);
-
-		getCamera().setPosition(cameraPosition);
-		getCamera().setRotation(cameraRotation);
+		));
 
 		invalidate();
 	}
@@ -141,7 +139,7 @@ namespace pizda {
 
 			_metersPerPixel = _pinchDownPixelsPerMeter * pinchFactor;
 
-			_cameraOffset.setZ(_cameraOffset.getZ() + (pinchFactor > 1 ? 10.f : -10.f));
+			_cameraOffset.setZ(_cameraOffset.getZ() + (pinchFactor > 1 ? -10.f : 10.f));
 
 			event->setHandled(true);
 		}
@@ -178,7 +176,7 @@ namespace pizda {
 			ESP_LOGI("ND", "deltaAngles: %f, %f", deltaAngles.getX(), deltaAngles.getY());
 
 			// Lat
-//			_cameraOffset.setX(_cameraOffset.getX() + (float) deltaAngles.getY());
+			_cameraOffset.setX(_cameraOffset.getX() + (float) deltaAngles.getY());
 			// Long
 			_cameraOffset.setY(_cameraOffset.getY() + (float) deltaAngles.getX());
 
