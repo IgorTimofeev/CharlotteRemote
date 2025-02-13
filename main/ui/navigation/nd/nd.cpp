@@ -25,7 +25,7 @@ namespace pizda {
 		));
 
 		// Cube
-		addObject(new Cube(_earthEquatorialRadius * 2, &Theme::fg1));
+		addObject(new LinearCubeMesh(_earthEquatorialRadius * 2, &Theme::fg1));
 
 		// Labels
 		addObject(new Label(

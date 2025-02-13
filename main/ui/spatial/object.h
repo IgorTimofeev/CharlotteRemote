@@ -156,7 +156,7 @@ namespace pizda {
 
 	class Mesh : public Object {
 		public:
-			Mesh(Vector3F* vertices, uint16_t vertexCount, uint16_t* triangleVertexIndices, uint16_t triangleVertexIndicesCount, const Color* color) : _color(color), _vertices(vertices), _vertexCount(vertexCount), _triangleVertexIndices(triangleVertexIndices), _triangleVertexIndicesCount(triangleVertexIndicesCount) {}
+			Mesh(Vector3F* vertices, uint16_t vertexCount) : _vertices(vertices), _vertexCount(vertexCount) {}
 
 			Vector3F* getVertices() override {
 				return _vertices;
@@ -166,16 +166,30 @@ namespace pizda {
 				return _vertexCount;
 			}
 
+		private:
+			Vector3F* _vertices = nullptr;
+			uint16_t _vertexCount = 0;
+	};
+
+	class LinearMesh : public Mesh {
+		public:
+			LinearMesh(Vector3F* vertices, uint16_t vertexCount, uint16_t* lineVertexIndices, uint16_t lineVertexIndicesCount, const Color* color) :
+				Mesh(vertices, vertexCount),
+				_lineVertexIndices(lineVertexIndices),
+				_lineVertexIndicesCount(lineVertexIndicesCount),
+				_color(color)
+			{
+
+			}
+
 			void onRender(Renderer* renderer, Camera* camera, Vector3F* vertices) override {
 				const auto nearPlane = camera->getNearPlaneDistance();
 				Vector3F* vertex0;
 				Vector3F* vertex1;
-				Vector3F* vertex2;
 
-				for (uint16_t i = 0; i < _triangleVertexIndicesCount; i += 3) {
-					vertex0 = &vertices[_triangleVertexIndices[i]];
-					vertex1 = &vertices[_triangleVertexIndices[i + 1]];
-					vertex2 = &vertices[_triangleVertexIndices[i + 2]];
+				for (uint16_t i = 0; i < _lineVertexIndicesCount; i += 2) {
+					vertex0 = &vertices[_lineVertexIndices[i]];
+					vertex1 = &vertices[_lineVertexIndices[i + 1]];
 
 					if (!(
 						vertex0->getZ() < nearPlane
@@ -193,52 +207,14 @@ namespace pizda {
 							_color
 						);
 					}
-
-					if (!(
-						vertex1->getZ() < nearPlane
-						|| vertex2->getZ() < nearPlane
-					)) {
-						renderer->renderLine(
-							Point(
-								(int32_t) vertex1->getX(),
-								(int32_t) vertex1->getY()
-							),
-							Point(
-								(int32_t) vertex2->getX(),
-								(int32_t) vertex2->getY()
-							),
-							_color
-						);
-					}
-
-					if (!(
-						vertex2->getZ() < nearPlane
-						|| vertex0->getZ() < nearPlane
-					)) {
-						renderer->renderLine(
-							Point(
-								(int32_t) vertex2->getX(),
-								(int32_t) vertex2->getY()
-							),
-							Point(
-								(int32_t) vertex0->getX(),
-								(int32_t) vertex0->getY()
-							),
-							_color
-						);
-					}
 				}
 			}
 
-
 		private:
+			uint16_t* _lineVertexIndices = nullptr;
+			uint16_t _lineVertexIndicesCount = 0;
+
 			const Color* _color = nullptr;
-
-			Vector3F* _vertices = nullptr;
-			uint16_t _vertexCount = 0;
-
-			uint16_t* _triangleVertexIndices = nullptr;
-			uint16_t _triangleVertexIndicesCount = 0;
 	};
 
 	// |    /
@@ -250,13 +226,13 @@ namespace pizda {
 	// 1######2  2######5  5######6  6######1  6######5  7######4
 	// ########  ########  ########  ########  ########  ########
 	// 0######3  3######4  4######7  7######0  1######2  0######3
-	class Cube : public Mesh {
+	class LinearCubeMesh : public LinearMesh {
 		public:
-			Cube(float size, const Color* color) :
-				Mesh(
+			LinearCubeMesh(float size, const Color* color) :
+				LinearMesh(
 					_vertices,
 					8,
-					_triangleVertexIndices,
+					_lineVertexIndices,
 					36,
 					color
 				)
@@ -274,62 +250,48 @@ namespace pizda {
 				_vertices[7] = Vector3F(-sizeHalf, -sizeHalf, sizeHalf);
 
 				// Front
-				_triangleVertexIndices[0] = 0;
-				_triangleVertexIndices[1] = 1;
-				_triangleVertexIndices[2] = 2;
+				_lineVertexIndices[0] = 0;
+				_lineVertexIndices[1] = 1;
 
-				_triangleVertexIndices[3] = 0;
-				_triangleVertexIndices[4] = 3;
-				_triangleVertexIndices[5] = 2;
+				_lineVertexIndices[2] = 1;
+				_lineVertexIndices[3] = 2;
 
-				// Left
-				_triangleVertexIndices[6] = 3;
-				_triangleVertexIndices[7] = 2;
-				_triangleVertexIndices[8] = 5;
+				_lineVertexIndices[4] = 2;
+				_lineVertexIndices[5] = 3;
 
-				_triangleVertexIndices[9] = 3;
-				_triangleVertexIndices[10] = 4;
-				_triangleVertexIndices[11] = 5;
+				_lineVertexIndices[6] = 0;
+				_lineVertexIndices[7] = 3;
 
 				// Back
-				_triangleVertexIndices[12] = 4;
-				_triangleVertexIndices[13] = 5;
-				_triangleVertexIndices[14] = 6;
+				_lineVertexIndices[8] = 4;
+				_lineVertexIndices[9] = 5;
 
-				_triangleVertexIndices[15] = 4;
-				_triangleVertexIndices[16] = 7;
-				_triangleVertexIndices[17] = 6;
+				_lineVertexIndices[10] = 5;
+				_lineVertexIndices[11] = 6;
+
+				_lineVertexIndices[12] = 6;
+				_lineVertexIndices[13] = 7;
+
+				_lineVertexIndices[14] = 4;
+				_lineVertexIndices[15] = 7;
+
+				// Left
+				_lineVertexIndices[16] = 2;
+				_lineVertexIndices[17] = 5;
+
+				_lineVertexIndices[18] = 3;
+				_lineVertexIndices[19] = 4;
 
 				// Right
-				_triangleVertexIndices[18] = 7;
-				_triangleVertexIndices[19] = 6;
-				_triangleVertexIndices[20] = 1;
+				_lineVertexIndices[20] = 1;
+				_lineVertexIndices[21] = 6;
 
-				_triangleVertexIndices[21] = 7;
-				_triangleVertexIndices[22] = 0;
-				_triangleVertexIndices[23] = 1;
-
-				// Top
-				_triangleVertexIndices[24] = 1;
-				_triangleVertexIndices[25] = 6;
-				_triangleVertexIndices[26] = 5;
-
-				_triangleVertexIndices[27] = 1;
-				_triangleVertexIndices[28] = 2;
-				_triangleVertexIndices[29] = 5;
-
-				// Bottom
-				_triangleVertexIndices[30] = 0;
-				_triangleVertexIndices[31] = 7;
-				_triangleVertexIndices[32] = 4;
-
-				_triangleVertexIndices[33] = 0;
-				_triangleVertexIndices[34] = 3;
-				_triangleVertexIndices[35] = 4;
+				_lineVertexIndices[22] = 0;
+				_lineVertexIndices[23] = 7;
 			}
 
 		private:
 			Vector3F _vertices[8] {};
-			uint16_t _triangleVertexIndices[36] {};
+			uint16_t _lineVertexIndices[24] {};
 	};
 }
