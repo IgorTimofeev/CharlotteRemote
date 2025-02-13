@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include "sinAndCos.h"
+#include "../components/yoba/src/main.h"
 
 namespace pizda {
 	enum class AltimeterMode : uint8_t  {
@@ -88,8 +89,8 @@ namespace pizda {
 
 		private:
 			// Kronshtadt airfield in Saint-Petersburg for UI testing
-			float _latitude = 60.01449883137194;
-			float _longitude = 29.702554658332105;
+			float _latitude = yoba::toRadians(60.01449883137194);
+			float _longitude = yoba::toRadians(29.702554658332105);
 
 			float _pitch = 0;
 			float _roll = 0;

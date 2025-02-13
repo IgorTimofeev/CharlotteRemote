@@ -775,8 +775,8 @@ namespace pizda {
 		const auto yaw = rc.getYawInterpolator().getValue();
 
 		// value = [180 deg of unfolded full range view] / [FOV deg of camera viewport] * [viewport size in pixels]
-		const float unfoldedFovWidth = M_PI / _horizontalFov / 2 * bounds.getWidth();
-		const float unfoldedFovHeight = M_PI / _verticalFov / 2 * bounds.getHeight();
+		const float unfoldedFovWidth = (float) M_PI / _horizontalFov / 2 * (float) bounds.getWidth();
+		const float unfoldedFovHeight = (float) M_PI / _verticalFov / 2 * (float) bounds.getHeight();
 
 		const auto& horizonRollRotated = (Point) Vector2F(unfoldedFovWidth, 0).rotate(-roll);
 		const auto& horizonPitchRotated = (Point) Vector2F(unfoldedFovHeight, 0).rotate(pitch);

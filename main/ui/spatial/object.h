@@ -108,8 +108,11 @@ namespace pizda {
 					(int32_t) vertices[0].getY()
 				);
 
-				renderer->renderCircle(point, 10, _color);
-				renderer->renderString(Point(point.getX() + 10, point.getY()), _font, _color, _text);
+				const uint8_t radius = 4;
+				const uint8_t textOffset = 5;
+				
+				renderer->renderFilledCircle(point, radius, _color);
+				renderer->renderString(Point(point.getX() + radius + textOffset, point.getY()), _font, _color, _text);
 			}
 
 			const Vector3F& getPosition() const {

@@ -30,7 +30,7 @@ namespace pizda {
 		private:
 //			constexpr static const float _earthEquatorialRadius = 6378137;
 			constexpr static const float _earthEquatorialRadius = 100;
-			constexpr static const float _earthEquatorialLength = M_PI * 2 * _earthEquatorialRadius;
+			constexpr static const float _earthEquatorialLength = (float) M_PI * 2 * _earthEquatorialRadius;
 			constexpr static const float _earthMetersPer1EquatorialDeg = _earthEquatorialLength / 360;
 
 			// Testing on Google Maps with scale 60px = 200m
@@ -41,7 +41,12 @@ namespace pizda {
 			float _pinchDownPixelsPerMeter = 0;
 			int32_t _pinchDownLength = 0;
 			Point _touchDownPosition;
-			Vector3F _cameraOffset {};
+
+			Vector3F _cameraOffset {
+				0,
+				0,
+				100
+			};
 
 			static Vector3F geographicToCartesian(const SinAndCos& latitude, const SinAndCos& longitude, float distanceToEarthCenter);
 	};

@@ -5,38 +5,6 @@ namespace pizda {
 	ND::ND() {
 		setClipToBounds(true);
 
-		const auto distanceFromObjectsToEarthCenter = _earthEquatorialRadius;
-
-		addObject(new Cube(distanceFromObjectsToEarthCenter * 2, &Theme::fg1));
-
-		addObject(new Label(
-			geographicToCartesian(
-				SinAndCos(yoba::toRadians(60.01483325540486f)),
-				SinAndCos(yoba::toRadians(29.69835915766679f)),
-				_earthEquatorialRadius
-			),
-			&Theme::fontNormal,
-			&Theme::yellow,
-			L"Left"
-		));
-
-		addObject(new Label(
-			geographicToCartesian(
-				SinAndCos(yoba::toRadians(60.014390616612474f)),
-				SinAndCos(yoba::toRadians(29.706975357970624f)),
-				distanceFromObjectsToEarthCenter
-			),
-			&Theme::fontNormal,
-			&Theme::yellow,
-			L"Right"
-		));
-
-		addObject(new Line(
-			Vector3F(0, 0, 0),
-			Vector3F(_earthEquatorialRadius, 0, 0),
-			&Theme::red
-		));
-
 		// Axis
 		addObject(new Line(
 			Vector3F(0, 0, 0),
@@ -55,6 +23,32 @@ namespace pizda {
 			Vector3F(0, 0, _earthEquatorialRadius),
 			&Theme::blue
 		));
+
+		// Cube
+		addObject(new Cube(_earthEquatorialRadius * 2, &Theme::fg1));
+
+		// Labels
+		addObject(new Label(
+			geographicToCartesian(
+				SinAndCos(yoba::toRadians(60.01483325540486f)),
+				SinAndCos(yoba::toRadians(29.69835915766679f)),
+				_earthEquatorialRadius
+			),
+			&Theme::fontNormal,
+			&Theme::yellow,
+			L"Left"
+		));
+
+		addObject(new Label(
+			geographicToCartesian(
+				SinAndCos(yoba::toRadians(60.014390616612474f)),
+				SinAndCos(yoba::toRadians(29.706975357970624f)),
+				_earthEquatorialRadius
+			),
+			&Theme::fontNormal,
+			&Theme::yellow,
+			L"Right"
+		));
 	}
 
 	void ND::onTick() {
@@ -64,23 +58,24 @@ namespace pizda {
 		auto& remoteData = rc.getRemoteData();
 		auto& computedData = rc.getComputedData();
 
-		auto rotationLatitude =_cameraOffset.getX();
-		auto rotationLongitude = _cameraOffset.getY();
+//		auto rotationLatitude = remoteData.getLatitude() + _cameraOffset.getX();
+		auto rotationLatitude = _cameraOffset.getX();
 
-		auto cameraPosition = Vector3F(
-			_earthEquatorialRadius * 2,
-			_earthEquatorialRadius * 2,
-			-_earthEquatorialRadius * 3 + _cameraOffset.getZ()
+		auto rotationLongitude = remoteData.getLongitude() + _cameraOffset.getY();
+
+		auto cameraPosition = geographicToCartesian(
+			SinAndCos(rotationLatitude),
+			SinAndCos(rotationLongitude),
+			_earthEquatorialRadius + _cameraOffset.getZ()
 		);
 
 		auto cameraRotation = Vector3F(
-			rotationLongitude,
 			rotationLatitude,
+			// Longitude uses X axis for Y rotation, but camera uses Z, so...
+			// 90 - rotation + 180 or 270 - rotation
+			(float) M_3PI_4 - rotationLongitude,
 			0
 		);
-
-//		ESP_LOGI("ND", "--------------");
-//		ESP_LOGI("ND", "Camera: %f, %f, %f", cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ());
 
 		getCamera().setPosition(cameraPosition);
 		getCamera().setRotation(cameraRotation);
@@ -94,29 +89,32 @@ namespace pizda {
 		auto position = bounds.getTopLeft() + Point(5, 5);
 		auto spacing = Point(0, Theme::fontNormal.getHeight() + 1);
 
+		// Offset
 		renderer->renderString(
 			position,
 			&Theme::fontNormal,
 			&Theme::yellow,
-			std::format(L"Camera offset X: {}", yoba::toDegrees(_cameraOffset.getX()))
+			std::format(L"Camera off: {} x {} x {}", yoba::round(yoba::toDegrees(_cameraOffset.getX()), 2), yoba::round(yoba::toDegrees(_cameraOffset.getY()), 2), yoba::round(_cameraOffset.getZ(), 2))
 		);
 
 		position += spacing;
 
+		// Pos
 		renderer->renderString(
 			position,
 			&Theme::fontNormal,
-			&Theme::yellow,
-			std::format(L"Camera offset Y: {}", yoba::toDegrees(_cameraOffset.getY()))
+			&Theme::purple,
+			std::format(L"Camera pos: {} x {} x {}", yoba::round(yoba::toDegrees(getCamera().getPosition().getX()), 2), yoba::round(yoba::toDegrees(getCamera().getPosition().getY()), 2), yoba::round(yoba::toDegrees(getCamera().getPosition().getZ()), 2))
 		);
 
 		position += spacing;
 
+		// Rot
 		renderer->renderString(
 			position,
 			&Theme::fontNormal,
-			&Theme::yellow,
-			std::format(L"Camera offset Z: {}", _cameraOffset.getZ())
+			&Theme::green,
+			std::format(L"Camera rot: {} x {} x {}", yoba::round(yoba::toDegrees(getCamera().getRotation().getX()), 2), yoba::round(yoba::toDegrees(getCamera().getRotation().getY()), 2), yoba::round(yoba::toDegrees(getCamera().getRotation().getZ()), 2))
 		);
 
 		position += spacing;
@@ -180,11 +178,9 @@ namespace pizda {
 			ESP_LOGI("ND", "deltaAngles: %f, %f", deltaAngles.getX(), deltaAngles.getY());
 
 			// Lat
-			_cameraOffset.setX(_cameraOffset.getX() + (float) deltaAngles.getX());
-			// Lon
-			_cameraOffset.setY(_cameraOffset.getY() + (float) deltaAngles.getY());
-
-			ESP_LOGI("ND", "_cameraOffset: %f, %f", _cameraOffset.getX(), _cameraOffset.getY());
+//			_cameraOffset.setX(_cameraOffset.getX() + (float) deltaAngles.getY());
+			// Long
+			_cameraOffset.setY(_cameraOffset.getY() + (float) deltaAngles.getX());
 
 			_touchDownPosition = position;
 
@@ -200,8 +196,8 @@ namespace pizda {
 	Vector3F ND::geographicToCartesian(const SinAndCos& latitude, const SinAndCos& longitude, float distanceToEarthCenter) {
 		return {
 			distanceToEarthCenter * latitude.getCos() * longitude.getCos(),
+			distanceToEarthCenter * latitude.getSin(),
 			distanceToEarthCenter * latitude.getCos() * longitude.getSin(),
-			distanceToEarthCenter * latitude.getSin()
 		};
 	}
 }
