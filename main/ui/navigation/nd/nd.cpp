@@ -72,10 +72,10 @@ namespace pizda {
 
 		getCamera().setRotation(Vector3F(
 			rotationLatitude,
+			0,
 			// Longitude uses X axis for Y rotation, but camera uses Z, so...
 			// 90 - rotation + 180 or 270 - rotation
-			yoba::toRadians(270) - rotationLongitude,
-			0
+			yoba::toRadians(270) - rotationLongitude
 		));
 
 		invalidate();
@@ -194,8 +194,8 @@ namespace pizda {
 	Vector3F ND::geographicToCartesian(const SinAndCos& latitude, const SinAndCos& longitude, float distanceToEarthCenter) {
 		return {
 			distanceToEarthCenter * latitude.getCos() * longitude.getCos(),
-			distanceToEarthCenter * latitude.getSin(),
 			distanceToEarthCenter * latitude.getCos() * longitude.getSin(),
+			distanceToEarthCenter * latitude.getSin()
 		};
 	}
 }

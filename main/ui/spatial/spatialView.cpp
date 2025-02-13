@@ -23,8 +23,8 @@ namespace pizda {
 				vertex -= _camera.getPosition();
 
 				// Rotating point around camera
-				vertex = vertex.rotateAroundYAxis(-_camera.getRotation().getY());
-				vertex = vertex.rotateAroundXAxis(-_camera.getRotation().getX());
+				vertex = vertex.rotateAroundVerticalAxis(-_camera.getRotation().getZ());
+				vertex = vertex.rotateAroundHorizontalAxis(-_camera.getRotation().getX());
 
 				// Applying perspective projection
 				// camera.projectionSurface = camera.farClippingSurface - camera.FOV / math.rad(180) * (camera.farClippingSurface - camera.nearClippingSurface)
