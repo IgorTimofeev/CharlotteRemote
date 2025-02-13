@@ -33,6 +33,14 @@ namespace pizda {
 			}
 
 			void onRender(Renderer* renderer, Camera* camera, Vector3F* vertices) override {
+				const auto nearPlane = camera->getNearPlaneDistance();
+
+				if (
+					vertices[0].getZ() < nearPlane
+					|| vertices[1].getZ() < nearPlane
+				)
+					return;
+
 				renderer->renderLine(
 					Point(
 						(int32_t) vertices[0].getX(),
@@ -81,7 +89,6 @@ namespace pizda {
 
 			}
 
-
 			Vector3F* getVertices() override {
 				return &_position;
 			}
@@ -91,6 +98,11 @@ namespace pizda {
 			}
 
 			void onRender(Renderer* renderer, Camera* camera, Vector3F* vertices) override {
+				const auto nearPlane = camera->getNearPlaneDistance();
+
+				if (vertices[0].getZ() < nearPlane)
+					return;
+
 				const auto point = Point(
 					(int32_t) vertices[0].getX(),
 					(int32_t) vertices[0].getY()
@@ -152,51 +164,62 @@ namespace pizda {
 			}
 
 			void onRender(Renderer* renderer, Camera* camera, Vector3F* vertices) override {
-				const auto zClip = camera->getNearPlaneDistance();
-				Vector3F vertex0, vertex1, vertex2;
+				const auto nearPlane = camera->getNearPlaneDistance();
+				Vector3F* vertex0;
+				Vector3F* vertex1;
+				Vector3F* vertex2;
 
 				for (uint16_t i = 0; i < _triangleVertexIndicesCount; i += 3) {
-					vertex0 = vertices[_triangleVertexIndices[i]];
-					vertex1 = vertices[_triangleVertexIndices[i + 1]];
-					vertex2 = vertices[_triangleVertexIndices[i + 2]];
+					vertex0 = &vertices[_triangleVertexIndices[i]];
+					vertex1 = &vertices[_triangleVertexIndices[i + 1]];
+					vertex2 = &vertices[_triangleVertexIndices[i + 2]];
 
-					if (vertex0.getZ() > zClip && vertex1.getZ() > zClip) {
+					if (!(
+						vertex0->getZ() < nearPlane
+						|| vertex1->getZ() < nearPlane
+					)) {
 						renderer->renderLine(
 							Point(
-								(int32_t) vertex0.getX(),
-								(int32_t) vertex0.getY()
+								(int32_t) vertex0->getX(),
+								(int32_t) vertex0->getY()
 							),
 							Point(
-								(int32_t) vertex1.getX(),
-								(int32_t) vertex1.getY()
+								(int32_t) vertex1->getX(),
+								(int32_t) vertex1->getY()
 							),
 							_color
 						);
 					}
 
-					if (vertex1.getZ() > zClip && vertex2.getZ() > zClip) {
+					if (!(
+						vertex1->getZ() < nearPlane
+						|| vertex2->getZ() < nearPlane
+					)) {
 						renderer->renderLine(
 							Point(
-								(int32_t) vertex1.getX(),
-								(int32_t) vertex1.getY()
+								(int32_t) vertex1->getX(),
+								(int32_t) vertex1->getY()
 							),
 							Point(
-								(int32_t) vertex2.getX(),
-								(int32_t) vertex2.getY()
+								(int32_t) vertex2->getX(),
+								(int32_t) vertex2->getY()
 							),
 							_color
 						);
 					}
 
-					if (vertex2.getZ() > zClip && vertex0.getZ() > zClip) {
+					if (!(
+						vertex2->getZ() < nearPlane
+						|| vertex0->getZ() < nearPlane
+					)) {
 						renderer->renderLine(
 							Point(
-								(int32_t) vertex2.getX(),
-								(int32_t) vertex2.getY()
+								(int32_t) vertex2->getX(),
+								(int32_t) vertex2->getY()
 							),
 							Point(
-								(int32_t) vertex0.getX(),
-								(int32_t) vertex0.getY()
+								(int32_t) vertex0->getX(),
+								(int32_t) vertex0->getY()
 							),
 							_color
 						);

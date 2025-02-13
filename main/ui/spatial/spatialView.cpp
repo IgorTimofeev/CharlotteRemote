@@ -40,8 +40,8 @@ namespace pizda {
 
 				const auto screenPosition = Vector3F(
 					(float) bounds.getXCenter() + vertex.getX() * perspectiveFactor,
-					(float) bounds.getYCenter() + vertex.getY() * perspectiveFactor,
-					-vertex.getZ()
+					(float) bounds.getYCenter() - vertex.getY() * perspectiveFactor,
+					vertex.getZ()
 				);
 
 //				ESP_LOGI("ND", "Screen: %ld, %ld", screenPosition.getX(), screenPosition.getY());

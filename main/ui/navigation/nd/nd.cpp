@@ -5,13 +5,11 @@ namespace pizda {
 	ND::ND() {
 		setClipToBounds(true);
 
-		*this += &_spatialView;
-
 		const auto distanceFromObjectsToEarthCenter = _earthEquatorialRadius;
 
-		_spatialView.addObject(new Cube(distanceFromObjectsToEarthCenter * 2, &Theme::fg1));
+		addObject(new Cube(distanceFromObjectsToEarthCenter * 2, &Theme::fg1));
 
-		_spatialView.addObject(new Label(
+		addObject(new Label(
 			geographicToCartesian(
 				SinAndCos(yoba::toRadians(60.01483325540486f)),
 				SinAndCos(yoba::toRadians(29.69835915766679f)),
@@ -22,7 +20,7 @@ namespace pizda {
 			L"Left"
 		));
 
-		_spatialView.addObject(new Label(
+		addObject(new Label(
 			geographicToCartesian(
 				SinAndCos(yoba::toRadians(60.014390616612474f)),
 				SinAndCos(yoba::toRadians(29.706975357970624f)),
@@ -33,26 +31,26 @@ namespace pizda {
 			L"Right"
 		));
 
-		_spatialView.addObject(new Line(
+		addObject(new Line(
 			Vector3F(0, 0, 0),
 			Vector3F(_earthEquatorialRadius, 0, 0),
 			&Theme::red
 		));
 
 		// Axis
-		_spatialView.addObject(new Line(
+		addObject(new Line(
 			Vector3F(0, 0, 0),
 			Vector3F(_earthEquatorialRadius, 0, 0),
 			&Theme::red
 		));
 
-		_spatialView.addObject(new Line(
+		addObject(new Line(
 			Vector3F(0, 0, 0),
 			Vector3F(0, _earthEquatorialRadius, 0),
 			&Theme::green
 		));
 
-		_spatialView.addObject(new Line(
+		addObject(new Line(
 			Vector3F(0, 0, 0),
 			Vector3F(0, 0, _earthEquatorialRadius),
 			&Theme::blue
@@ -60,38 +58,38 @@ namespace pizda {
 	}
 
 	void ND::onTick() {
-		Layout::onTick();
+		SpatialView::onTick();
 
 		auto& rc = RC::getInstance();
 		auto& remoteData = rc.getRemoteData();
 		auto& computedData = rc.getComputedData();
 
-		auto rotationLatitude = yoba::toRadians(remoteData.getLatitude()) + _cameraOffset.getX();
-		auto rotationLongitude = yoba::toRadians(remoteData.getLatitude()) + _cameraOffset.getY();
+		auto rotationLatitude =_cameraOffset.getX();
+		auto rotationLongitude = _cameraOffset.getY();
 
-		auto cameraPosition = geographicToCartesian(
-			SinAndCos(rotationLatitude),
-			SinAndCos(rotationLongitude),
-			_earthEquatorialRadius + _cameraOffset.getZ()
+		auto cameraPosition = Vector3F(
+			_earthEquatorialRadius * 2,
+			_earthEquatorialRadius * 2,
+			-_earthEquatorialRadius * 3 + _cameraOffset.getZ()
 		);
 
 		auto cameraRotation = Vector3F(
-			-rotationLongitude,
-			-rotationLatitude,
+			rotationLongitude,
+			rotationLatitude,
 			0
 		);
 
 //		ESP_LOGI("ND", "--------------");
 //		ESP_LOGI("ND", "Camera: %f, %f, %f", cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ());
 
-		_spatialView.getCamera().setPosition(cameraPosition);
-		_spatialView.getCamera().setRotation(cameraRotation);
+		getCamera().setPosition(cameraPosition);
+		getCamera().setRotation(cameraRotation);
 
 		invalidate();
 	}
 
 	void ND::onRender(Renderer* renderer, const Bounds& bounds) {
-		Layout::onRender(renderer, bounds);
+		SpatialView::onRender(renderer, bounds);
 
 		auto position = bounds.getTopLeft() + Point(5, 5);
 		auto spacing = Point(0, Theme::fontNormal.getHeight() + 1);
@@ -124,41 +122,44 @@ namespace pizda {
 		position += spacing;
 	}
 
-	void ND::onEvent(Event& event) {
-		Layout::onEvent(event);
+	void ND::onEvent(Event* event) {
+		SpatialView::onEvent(event);
 
-		if (event.getTypeID() == PinchDownEvent::typeID) {
-			auto pinchDownEvent = (PinchDownEvent&) event;
+		if (event->getTypeID() == PinchDownEvent::typeID) {
+			auto pinchDownEvent = (PinchDownEvent*) event;
 
 			_pinchDownPixelsPerMeter = _metersPerPixel;
-			_pinchDownLength = (pinchDownEvent.getPosition2() - pinchDownEvent.getPosition1()).getLength();
+			_pinchDownLength = (pinchDownEvent->getPosition2() - pinchDownEvent->getPosition1()).getLength();
 
-			event.setHandled(true);
+			event->setHandled(true);
 		}
-		else if (event.getTypeID() == PinchDragEvent::typeID) {
-			auto pinchDragEvent = (PinchDragEvent&) event;
+		else if (event->getTypeID() == PinchDragEvent::typeID) {
+			auto pinchDragEvent = (PinchDragEvent*) event;
 
-			const auto pinchFactor = (float) (pinchDragEvent.getPosition2() - pinchDragEvent.getPosition1()).getLength() / (float) _pinchDownLength;
+			const auto pinchLength = (pinchDragEvent->getPosition2() - pinchDragEvent->getPosition1()).getLength();
+
+			const auto pinchFactor = (float) pinchLength / (float) _pinchDownLength;
+			_pinchDownLength = pinchLength;
 
 			_metersPerPixel = _pinchDownPixelsPerMeter * pinchFactor;
 
 			_cameraOffset.setZ(_cameraOffset.getZ() + (pinchFactor > 1 ? 10.f : -10.f));
 
-			event.setHandled(true);
+			event->setHandled(true);
 		}
-		else if (event.getTypeID() == TouchDownEvent::typeID) {
-			auto touchDownEvent = (TouchDownEvent&) event;
+		else if (event->getTypeID() == TouchDownEvent::typeID) {
+			auto touchDownEvent = (TouchDownEvent*) event;
 
 			setCaptured(true);
 
-			_touchDownPosition = touchDownEvent.getPosition();
+			_touchDownPosition = touchDownEvent->getPosition();
 
-			event.setHandled(true);
+			event->setHandled(true);
 		}
-		else if (event.getTypeID() == TouchDragEvent::typeID) {
-			auto touchDragEventEvent = (TouchDragEvent&) event;
+		else if (event->getTypeID() == TouchDragEvent::typeID) {
+			auto touchDragEventEvent = (TouchDragEvent*) event;
 
-			const auto position = touchDragEventEvent.getPosition();
+			const auto position = touchDragEventEvent->getPosition();
 
 			auto deltaPixels= position - _touchDownPosition;
 			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
@@ -172,8 +173,8 @@ namespace pizda {
 //			);
 
 			auto deltaAngles = Vector2F(
-				yoba::toRadians(deltaPixels.getX() > 0 ? 2 : -2),
-				yoba::toRadians(deltaPixels.getY() > 0 ? 2 : -2)
+				yoba::toRadians((float) deltaPixels.getX() * 0.2f),
+				yoba::toRadians((float) deltaPixels.getY() * 0.2f)
 			);
 
 			ESP_LOGI("ND", "deltaAngles: %f, %f", deltaAngles.getX(), deltaAngles.getY());
@@ -187,12 +188,12 @@ namespace pizda {
 
 			_touchDownPosition = position;
 
-			event.setHandled(true);
+			event->setHandled(true);
 		}
-		else if (event.getTypeID() == TouchUpEvent::typeID) {
+		else if (event->getTypeID() == TouchUpEvent::typeID) {
 			setCaptured(false);
 
-			event.setHandled(true);
+			event->setHandled(true);
 		}
 	}
 

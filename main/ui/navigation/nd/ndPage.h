@@ -12,5 +12,9 @@ namespace pizda {
 
 		private:
 			ND _nd;
+
+			StackLayout _slidersLayout;
+			Slider _fovSlider;
+			Slider _clipSlider;
 	};
 }

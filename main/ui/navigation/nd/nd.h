@@ -16,7 +16,7 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class ND : public Layout {
+	class ND : public SpatialView {
 		public:
 			ND();
 
@@ -25,15 +25,13 @@ namespace pizda {
 
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
-			void onEvent(Event& event) override;
+			void onEvent(Event* event) override;
 
 		private:
 //			constexpr static const float _earthEquatorialRadius = 6378137;
 			constexpr static const float _earthEquatorialRadius = 100;
 			constexpr static const float _earthEquatorialLength = M_PI * 2 * _earthEquatorialRadius;
 			constexpr static const float _earthMetersPer1EquatorialDeg = _earthEquatorialLength / 360;
-
-			SpatialView _spatialView;
 
 			// Testing on Google Maps with scale 60px = 200m
 			// Kronshtadt runway length is ~500m long

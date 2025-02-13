@@ -56,9 +56,9 @@ namespace pizda {
 			Vector3F _position;
 			Vector3F _rotation;
 
-			float _nearPlaneDistance = 50.f;
+			float _nearPlaneDistance = 100.f;
 			float _farPlaneDistance = 1000.f;
 
-			float _fieldOfView = yoba::toRadians(45);
+			float _fieldOfView = yoba::toRadians(90);
 	};
 }
