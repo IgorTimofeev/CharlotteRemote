@@ -108,11 +108,11 @@ namespace pizda {
 					(int32_t) vertices[0].getY()
 				);
 
-				const uint8_t radius = 4;
+				const uint8_t radius = 3;
 				const uint8_t textOffset = 5;
 				
 				renderer->renderFilledCircle(point, radius, _color);
-				renderer->renderString(Point(point.getX() + radius + textOffset, point.getY()), _font, _color, _text);
+				renderer->renderString(Point(point.getX() + radius + textOffset, point.getY() - _font->getHeight() / 2), _font, _color, _text);
 			}
 
 			const Vector3F& getPosition() const {
@@ -191,22 +191,23 @@ namespace pizda {
 					vertex0 = &vertices[_lineVertexIndices[i]];
 					vertex1 = &vertices[_lineVertexIndices[i + 1]];
 
-					if (!(
+					if (
 						vertex0->getZ() < nearPlane
 						|| vertex1->getZ() < nearPlane
-					)) {
-						renderer->renderLine(
-							Point(
-								(int32_t) vertex0->getX(),
-								(int32_t) vertex0->getY()
-							),
-							Point(
-								(int32_t) vertex1->getX(),
-								(int32_t) vertex1->getY()
-							),
-							_color
-						);
-					}
+					)
+						continue;
+
+					renderer->renderLine(
+						Point(
+							(int32_t) vertex0->getX(),
+							(int32_t) vertex0->getY()
+						),
+						Point(
+							(int32_t) vertex1->getX(),
+							(int32_t) vertex1->getY()
+						),
+						_color
+					);
 				}
 			}
 
@@ -233,7 +234,7 @@ namespace pizda {
 					_vertices,
 					8,
 					_lineVertexIndices,
-					36,
+					24,
 					color
 				)
 			{

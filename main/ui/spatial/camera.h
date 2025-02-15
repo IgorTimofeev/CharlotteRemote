@@ -43,22 +43,20 @@ namespace pizda {
 				_farPlaneDistance = farPlaneDistance;
 			}
 
-			float getFieldOfView() const {
-				return _fieldOfView;
+			float getProjectionPlaneDistance() const {
+				return _projectionPlaneDistance;
 			}
 
-			void setFieldOfView(float fieldOfView) {
-				_fieldOfView = fieldOfView;
+			void setProjectionPlaneDistance(float projectionPlaneDistance) {
+				_projectionPlaneDistance = projectionPlaneDistance;
 			}
-
 
 		private:
 			Vector3F _position;
 			Vector3F _rotation;
 
-			float _nearPlaneDistance = 100.f;
+			float _projectionPlaneDistance = 360.f;
+			float _nearPlaneDistance = 0.1f;
 			float _farPlaneDistance = 1000.f;
-
-			float _fieldOfView = yoba::toRadians(90);
 	};
 }

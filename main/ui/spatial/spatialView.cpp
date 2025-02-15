@@ -27,26 +27,18 @@ namespace pizda {
 				vertex = vertex.rotateAroundHorizontalAxis(-_camera.getRotation().getX());
 
 				// Applying perspective projection
-				// camera.projectionSurface = camera.farClippingSurface - camera.FOV / math.rad(180) * (camera.farClippingSurface - camera.nearClippingSurface)
-				// zProjectionDivZ = math.abs(renderer.viewport.projectionSurface / OCGL.vertices[vertexIndex][3])
-				// OCGL.vertices[vertexIndex][1] = zProjectionDivZ * OCGL.vertices[vertexIndex][1]
-				// OCGL.vertices[vertexIndex][2] = zProjectionDivZ * OCGL.vertices[vertexIndex][2]
-
 				// From WebGL wiki:
 				// https://learnwebgl.brown37.net/08_projections/projections_perspective.html
 				// x' = (x*near)/z
 				// y' = (y*near)/z
-				const auto perspectiveFactor = std::abs(_camera.getNearPlaneDistance() / vertex.getZ()) * ((float) M_PI / _camera.getFieldOfView());
 
-				const auto screenPosition = Vector3F(
+				const auto perspectiveFactor = _camera.getProjectionPlaneDistance() / vertex.getZ();
+
+				screenPositions[i] = Vector3F(
 					(float) bounds.getXCenter() + vertex.getX() * perspectiveFactor,
 					(float) bounds.getYCenter() - vertex.getY() * perspectiveFactor,
 					vertex.getZ()
 				);
-
-//				ESP_LOGI("ND", "Screen: %ld, %ld", screenPosition.getX(), screenPosition.getY());
-
-				screenPositions[i] = screenPosition;
 			}
 
 			object->onRender(renderer, &_camera, screenPositions);

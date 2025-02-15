@@ -14,7 +14,7 @@ namespace pizda {
 			ND _nd;
 
 			StackLayout _slidersLayout;
-			Slider _fovSlider;
+			Slider _projectionSlider;
 			Slider _clipSlider;
 	};
 }
