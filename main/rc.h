@@ -59,7 +59,6 @@ namespace pizda {
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
 
-			const Battery& getBattery() const;
 			Speaker& getSpeaker();
 
 		private:
@@ -68,9 +67,10 @@ namespace pizda {
 			// -------------------------------- Hardware --------------------------------
 
 			ILI9341Display _display = ILI9341Display(
-				constants::hardware::screen::mosi,
-				constants::hardware::screen::miso,
-				constants::hardware::screen::sck,
+				constants::hardware::spi::mosi,
+				constants::hardware::spi::miso,
+				constants::hardware::spi::sck,
+
 				constants::hardware::screen::chipSelect,
 				constants::hardware::screen::dataCommand,
 				constants::hardware::screen::reset,
@@ -89,25 +89,6 @@ namespace pizda {
 			//
 //			Potentiometer _pitchHall;
 //			Potentiometer _rollHall;
-
-
-			/**
-			Some thoughts about measuring voltage & charge in percents using ADC:
-
-			1) Safe voltage range for Li-ion 18650 battery is [2.5; 4.2]V, and for 2x batteries
-			in series it escalates to [5.0; 8.4]V. But let's give it some safety margins like
-			[6.0; 8.4]V, because of tons of trash batteries on market
-
-			2) In theory ADC should read up to 3.3V from GPIO, but Espressif docs says that ADC
-			configured with 12 dB attenuation can accurately measure only [0.15; 2.45]V on ESP32
-			See: https://docs.espressif.com/projects/esp-idf/en/release-v4.3/esp32/api-reference/peripherals/adc.html
-
-			Based on this shit & resistors I have, the voltage divider will be 680R / 330R,
-			giving final input range of [1.96; 2.74]V. This will slightly exceed the 2.45V
-			ADC limit, but there's no any risks while we're staying below 3.3V. ADC will simple
-			interpret such "higher" values as "max values"
-			*/
-			Battery _battery {};
 
 			Speaker _speaker {};
 

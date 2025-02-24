@@ -36,9 +36,6 @@ namespace pizda {
 //		_pitchHall.begin();
 //		_rollHall.begin();
 
-		// Battery
-		_battery.setup();
-
 		// Speaker
 		_speaker.setup();
 
@@ -72,7 +69,6 @@ namespace pizda {
 
 			// Low priority tasks
 			_speaker.tick();
-			_battery.tick();
 			_settings.tick();
 
 			_tickDeltaTime = (esp_timer_get_time() - time) / 1000;
@@ -301,10 +297,6 @@ namespace pizda {
 
 	void RC::updateDebugInfoVisibility() {
 		_debugOverlay.setVisible(_settings.debugInfoVisible);
-	}
-
-	const Battery& RC::getBattery() const {
-		return _battery;
 	}
 
 	Speaker& RC::getSpeaker() {

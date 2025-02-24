@@ -73,7 +73,7 @@ namespace pizda {
 		_elevatorTrimIndicator.setValue(rc->getElevatorTrimInterpolator().getValue());
 
 		// Battery
-		_batteryIndicatorController.setValue(rc->getBattery().getCharge());
-		_batteryIndicatorAircraft.setValue(rc->getBattery().getCharge() * 1 / 3);
+//		_batteryIndicatorController.setValue(rc->getBattery().getCharge());
+//		_batteryIndicatorAircraft.setValue(rc->getBattery().getCharge() * 1 / 3);
 	}
 }
