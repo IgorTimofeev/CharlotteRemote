@@ -93,6 +93,7 @@ namespace pizda {
 
 			Speaker _speaker {};
 			Slave _slave {};
+			Transceiver _transceiver {};
 
 			// -------------------------------- UI --------------------------------
 
@@ -142,5 +143,9 @@ namespace pizda {
 			void simulateFlightData();
 
 			void updateComputedData();
+
+			void SPIBusSetup();
+
+			void fromSlave();
 	};
 }

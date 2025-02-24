@@ -21,6 +21,9 @@ namespace pizda {
 		// Settings
 		_settings.setup();
 
+		// SPI bus
+		SPIBusSetup();
+
 		// Display
 		_display.setup();
 
@@ -32,15 +35,31 @@ namespace pizda {
 		_touchPanel.setup();
 		_application.addInputDevice(&_touchPanel);
 
+		// Transceiver
+		gpio_config_t config = {
+			.pin_bit_mask = BIT64(constants::hardware::transceiver::slaveSelect),
+			.mode = GPIO_MODE_OUTPUT,
+			.pull_up_en = GPIO_PULLUP_ENABLE,
+			.pull_down_en = GPIO_PULLDOWN_DISABLE,
+			.intr_type = GPIO_INTR_DISABLE
+		};
+
+		gpio_config(&config);
+		gpio_set_level(constants::hardware::transceiver::slaveSelect, true);
+
+//		_transceiver.setup();
+
 		// Joysticks
 //		_pitchHall.begin();
 //		_rollHall.begin();
 
+		// Slave
+		_slave.setup();
+
+
 		// Speaker
 		_speaker.setup();
 
-		// Slave
-		_slave.setup();
 
 		// -------------------------------- UI --------------------------------
 
@@ -64,6 +83,9 @@ namespace pizda {
 			auto time = esp_timer_get_time();
 
 			// High priority tasks
+			_slave.tick();
+			fromSlave();
+
 			simulateFlightData();
 			updateComputedData();
 
@@ -73,7 +95,6 @@ namespace pizda {
 			// Low priority tasks
 			_speaker.tick();
 			_settings.tick();
-			_slave.tick();
 
 			_tickDeltaTime = (esp_timer_get_time() - time) / 1000;
 		}
@@ -117,23 +138,23 @@ namespace pizda {
 			if (_altitudeInterpolator.getTargetValue() > 40)
 				_altitudeInterpolator.setTargetValue(0);
 
-			// Pitch
-			_pitchInterpolator.setTargetValue(_pitchInterpolator.getTargetValue() + (float) toRadians(2));
+//			// Pitch
+//			_pitchInterpolator.setTargetValue(_pitchInterpolator.getTargetValue() + (float) toRadians(2));
+//
+//			if (toDegrees(_pitchInterpolator.getTargetValue()) > 10)
+//				_pitchInterpolator.setTargetValue(toRadians(-10));
+//
+//			// Roll
+//			_rollInterpolator.setTargetValue(_rollInterpolator.getTargetValue() + (float) toRadians(1));
+//
+//			if (toDegrees(_rollInterpolator.getTargetValue()) > 30)
+//				_rollInterpolator.setTargetValue(toRadians(-30));
 
-			if (toDegrees(_pitchInterpolator.getTargetValue()) > 10)
-				_pitchInterpolator.setTargetValue(toRadians(-10));
-
-			// Roll
-			_rollInterpolator.setTargetValue(_rollInterpolator.getTargetValue() + (float) toRadians(1));
-
-			if (toDegrees(_rollInterpolator.getTargetValue()) > 30)
-				_rollInterpolator.setTargetValue(toRadians(-30));
-
-			// Yaw
-			_yawInterpolator.setTargetValue(_yawInterpolator.getTargetValue() + (float) toRadians(10));
-
-			if (toDegrees(_yawInterpolator.getTargetValue()) > 170)
-				_yawInterpolator.setTargetValue(toRadians(-170));
+//			// Yaw
+//			_yawInterpolator.setTargetValue(_yawInterpolator.getTargetValue() + (float) toRadians(10));
+//
+//			if (toDegrees(_yawInterpolator.getTargetValue()) > 170)
+//				_yawInterpolator.setTargetValue(toRadians(-170));
 
 			// A/P
 			_simulationTickTime2 = esp_timer_get_time();
@@ -317,5 +338,29 @@ namespace pizda {
 		_computedData.getRollSinAndCos().fromAngle(_remoteData.getRoll());
 		_computedData.getPitchSinAndCos().fromAngle(_remoteData.getPitch());
 		_computedData.getYawSinAndCos().fromAngle(_remoteData.getYaw());
+	}
+
+	void RC::SPIBusSetup() {
+		// SPI bus
+		spi_bus_config_t busConfig {};
+		busConfig.mosi_io_num = constants::hardware::spi::mosi;
+		busConfig.miso_io_num = constants::hardware::spi::miso;
+		busConfig.sclk_io_num = constants::hardware::spi::sck;
+		busConfig.quadwp_io_num = -1;
+		busConfig.quadhd_io_num = -1;
+		busConfig.max_transfer_sz = 0xFFFF;
+
+		ESP_ERROR_CHECK(spi_bus_initialize(SPI2_HOST, &busConfig, SPI_DMA_CH_AUTO));
+	}
+
+	void RC::fromSlave() {
+		float pizda = yoba::toRadians(-45) + (float) _slave.getData().joystickVertical / 4096.f * yoba::toRadians(90);
+		_pitchInterpolator.setTargetValue(pizda);
+
+		pizda = yoba::toRadians(-45) + (float) _slave.getData().joystickHorizontal / 4096.f * yoba::toRadians(90);
+		_rollInterpolator.setTargetValue(pizda);
+
+		pizda = (float) _slave.getData().ring / 4096.f * yoba::toRadians(45);
+		_yawInterpolator.setTargetValue(pizda);
 	}
 }

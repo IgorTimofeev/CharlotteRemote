@@ -22,7 +22,11 @@ namespace pizda {
 			float getSnr() const;
 
 		private:
-			EspHal _hal = EspHal(5, 19, 27);
+			EspHal _hal = EspHal(
+				constants::hardware::spi::sck,
+				constants::hardware::spi::miso,
+				constants::hardware::spi::mosi
+			);
 
 			SX1262 _sx1262 = new Module(
 				&_hal,

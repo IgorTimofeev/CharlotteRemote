@@ -7,6 +7,7 @@ namespace pizda {
 	struct SlaveData {
 		uint16_t leverLeft = 0;
 		int32_t encoderRotation = 0;
+		bool encoderPressed = false;
 		uint16_t leverRight = 0;
 		uint16_t joystickHorizontal = 0;
 		uint16_t joystickVertical = 0;
@@ -27,21 +28,10 @@ namespace pizda {
 					.intr_type = GPIO_INTR_DISABLE
 				};
 
+				gpio_config(&config);
 				gpio_set_level(constants::hardware::slave::slaveSelect, true);
 
-				gpio_config(&config);
-
-				// SPI
-				spi_bus_config_t busConfig {};
-				busConfig.mosi_io_num = -1;
-				busConfig.miso_io_num = constants::hardware::spi::miso;
-				busConfig.sclk_io_num = constants::hardware::spi::sck;
-				busConfig.quadwp_io_num = -1;
-				busConfig.quadhd_io_num = -1;
-				busConfig.max_transfer_sz = 0xFFFF;
-
-				ESP_ERROR_CHECK(spi_bus_initialize(SPI2_HOST, &busConfig, SPI_DMA_CH_AUTO));
-
+				// Interface
 				spi_device_interface_config_t interfaceConfig {};
 				interfaceConfig.mode = 0;
 				interfaceConfig.clock_speed_hz = (int) constants::hardware::slave::frequency;
@@ -52,12 +42,31 @@ namespace pizda {
 			}
 
 			void tick() {
-				spi_transaction_t transaction {};
-				transaction.length = sizeof(SlaveData)* 8;
-				transaction.tx_buffer = nullptr;
-				transaction.rx_buffer = &_slaveData;
+				if (esp_timer_get_time() < _tickTime)
+					return;
 
-				ESP_ERROR_CHECK(spi_device_transmit(_deviceHandle, &transaction));
+				// Transaction
+				spi_transaction_t _transaction {};
+				_transaction.length = sizeof(SlaveData) * 8;
+				_transaction.tx_buffer = nullptr;
+				_transaction.rx_buffer = &_slaveData;
+
+				ESP_ERROR_CHECK(spi_device_transmit(_deviceHandle, &_transaction));
+
+//				ESP_LOGI("Data", "------------------------------------");
+//
+//				ESP_LOGI("Data", "Lever left: %d", _slaveData.leverLeft);
+//				ESP_LOGI("Data", "Encoder: %ld", _slaveData.encoderRotation);
+//				ESP_LOGI("Data", "Lever right: %d", _slaveData.leverRight);
+//
+//				ESP_LOGI("Data", "Joy horiz: %d", _slaveData.joystickHorizontal);
+//				ESP_LOGI("Data", "Hoy vert: %d", _slaveData.joystickVertical);
+//
+//				ESP_LOGI("Data", "Ring: %d", _slaveData.ring);
+//
+//				ESP_LOGI("Data", "BChr: %d", _slaveData.batteryCharge);
+
+				_tickTime = esp_timer_get_time() + constants::hardware::slave::tickInterval;
 			}
 
 			const SlaveData& getData() const {
@@ -65,6 +74,8 @@ namespace pizda {
 			}
 
 		private:
+			uint32_t _tickTime = 0;
+
 			SlaveData _slaveData {};
 			spi_device_handle_t _deviceHandle;
 	};

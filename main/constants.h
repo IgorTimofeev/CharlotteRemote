@@ -16,6 +16,7 @@ namespace pizda {
 			namespace slave {
 				static const gpio_num_t slaveSelect = GPIO_NUM_27;
 				static const uint32_t frequency = 1000000;
+				static const uint32_t tickInterval = 1000000 / 30;
 			}
 
 			namespace screen {
