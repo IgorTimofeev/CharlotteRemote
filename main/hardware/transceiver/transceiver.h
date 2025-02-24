@@ -26,7 +26,7 @@ namespace pizda {
 
 			SX1262 _sx1262 = new Module(
 				&_hal,
-				constants::hardware::transceiver::chipSelect,
+				constants::hardware::transceiver::slaveSelect,
 				constants::hardware::transceiver::dio0,
 				constants::hardware::transceiver::reset,
 				constants::hardware::transceiver::busy

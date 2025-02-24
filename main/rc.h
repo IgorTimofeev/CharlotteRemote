@@ -16,8 +16,8 @@
 #include "ui/debugOverlay.h"
 
 #include "hardware/transceiver/transceiver.h"
-#include "hardware/battery.h"
 #include "hardware/speaker.h"
+#include "hardware/slave.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -60,6 +60,7 @@ namespace pizda {
 			Settings& getSettings();
 
 			Speaker& getSpeaker();
+			Slave& getSlave();
 
 		private:
 			RC() = default;
@@ -71,7 +72,7 @@ namespace pizda {
 				constants::hardware::spi::miso,
 				constants::hardware::spi::sck,
 
-				constants::hardware::screen::chipSelect,
+				constants::hardware::screen::slaveSelect,
 				constants::hardware::screen::dataCommand,
 				constants::hardware::screen::reset,
 				constants::hardware::screen::frequency
@@ -91,6 +92,7 @@ namespace pizda {
 //			Potentiometer _rollHall;
 
 			Speaker _speaker {};
+			Slave _slave {};
 
 			// -------------------------------- UI --------------------------------
 

@@ -39,6 +39,9 @@ namespace pizda {
 		// Speaker
 		_speaker.setup();
 
+		// Slave
+		_slave.setup();
+
 		// -------------------------------- UI --------------------------------
 
 		// Theme
@@ -70,6 +73,7 @@ namespace pizda {
 			// Low priority tasks
 			_speaker.tick();
 			_settings.tick();
+			_slave.tick();
 
 			_tickDeltaTime = (esp_timer_get_time() - time) / 1000;
 		}
@@ -301,6 +305,10 @@ namespace pizda {
 
 	Speaker& RC::getSpeaker() {
 		return _speaker;
+	}
+
+	Slave& RC::getSlave() {
+		return _slave;
 	}
 
 	void RC::updateComputedData() {

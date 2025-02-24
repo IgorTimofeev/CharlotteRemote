@@ -14,8 +14,8 @@ namespace pizda {
 			}
 
 			namespace slave {
-				static const gpio_num_t chipSelect = GPIO_NUM_27;
-				static const uint32_t frequency = 20000;
+				static const gpio_num_t slaveSelect = GPIO_NUM_27;
+				static const uint32_t frequency = 1000000;
 			}
 
 			namespace screen {
@@ -26,14 +26,14 @@ namespace pizda {
 					static const gpio_num_t scl = GPIO_NUM_22;
 				}
 
-				static const gpio_num_t chipSelect = GPIO_NUM_5;
+				static const gpio_num_t slaveSelect = GPIO_NUM_5;
 				static const gpio_num_t dataCommand = GPIO_NUM_16;
 				static const gpio_num_t reset = GPIO_NUM_17;
 				static const uint32_t frequency = 60000000;
 			}
 
 			namespace transceiver {
-				static const gpio_num_t chipSelect = GPIO_NUM_4;
+				static const gpio_num_t slaveSelect = GPIO_NUM_4;
 				static const gpio_num_t reset = GPIO_NUM_33;
 				static const gpio_num_t busy = GPIO_NUM_25;
 				static const gpio_num_t dio0 = GPIO_NUM_35;
@@ -45,7 +45,6 @@ namespace pizda {
 				static const ledc_timer_t timer = LEDC_TIMER_0;
 				static const ledc_mode_t mode = LEDC_LOW_SPEED_MODE;
 			}
-
 		}
 
 		namespace application {
