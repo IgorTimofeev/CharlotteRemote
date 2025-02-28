@@ -5,6 +5,7 @@
 
 namespace pizda {
 	using namespace yoba;
+	using namespace yoba::ui;
 
 	class NDPage : public Page {
 		public:

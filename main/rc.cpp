@@ -271,7 +271,7 @@ namespace pizda {
 		return _speaker;
 	}
 
-	Analog& RC::getLeverLeft() {
+	Axis& RC::getLeverLeft() {
 		return _leverLeft;
 	}
 
@@ -279,19 +279,19 @@ namespace pizda {
 		return _encoder;
 	}
 
-	Analog& RC::getLeverRight() {
+	Axis& RC::getLeverRight() {
 		return _leverRight;
 	}
 
-	Analog& RC::getJoystickHorizontal() {
+	Axis& RC::getJoystickHorizontal() {
 		return _joystickHorizontal;
 	}
 
-	Analog& RC::getJoystickVertical() {
+	Axis& RC::getJoystickVertical() {
 		return _joystickVertical;
 	}
 
-	Analog& RC::getRing() {
+	Axis& RC::getRing() {
 		return _ring;
 	}
 
@@ -356,13 +356,13 @@ namespace pizda {
 //		ESP_LOGI("HID", "Ring: %d", _ring.getValue());
 //		ESP_LOGI("HID", "BChr: %d", _battery.getCharge());
 
-		float pizda = yoba::toRadians(-90) + _joystickVertical.getFloatValue() * yoba::toRadians(180);
+		float pizda = yoba::toRadians(-90) + _joystickVertical.getProcessedFloatValue() * yoba::toRadians(180);
 		_pitchInterpolator.setTargetValue(pizda);
 
-		pizda = yoba::toRadians(-90) + _joystickHorizontal.getFloatValue() * yoba::toRadians(180);
+		pizda = yoba::toRadians(-90) + _joystickHorizontal.getProcessedFloatValue() * yoba::toRadians(180);
 		_rollInterpolator.setTargetValue(pizda);
 
-		pizda = _ring.getFloatValue() * yoba::toRadians(90);
+		pizda = _ring.getProcessedFloatValue() * yoba::toRadians(90);
 		_yawInterpolator.setTargetValue(pizda);
 
 		_axisTickTime = esp_timer_get_time() + _axisTickInterval;

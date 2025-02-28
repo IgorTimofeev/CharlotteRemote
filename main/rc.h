@@ -17,7 +17,7 @@
 
 #include "hardware/transceiver/transceiver.h"
 #include "hardware/speaker.h"
-#include "hardware/analog.h"
+#include "hardware/axis.h"
 #include "hardware/battery.h"
 #include "hardware/encoder.h"
 
@@ -53,18 +53,24 @@ namespace pizda {
 			Interpolator& getElevatorTrimInterpolator();
 			Interpolator& getRudderTrimInterpolator();
 
+			float getThrottle1() const;
+			void setThrottle1(float throttle1);
+
+			float getThrottle2() const;
+			void setThrottle2(float throttle2);
+
 			void updateDebugInfoVisibility();
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
 
 			Speaker& getSpeaker();
 
-			Analog& getLeverLeft();
+			Axis& getLeverLeft();
 			Encoder& getEncoder();
-			Analog& getLeverRight();
-			Analog& getJoystickHorizontal();
-			Analog& getJoystickVertical();
-			Analog& getRing();
+			Axis& getLeverRight();
+			Axis& getJoystickHorizontal();
+			Axis& getJoystickVertical();
+			Axis& getRing();
 			Battery& getBattery();
 
 		private:
@@ -98,13 +104,45 @@ namespace pizda {
 			Speaker _speaker {};
 			Transceiver _transceiver {};
 
-			Analog _leverLeft = Analog(&_ADC1UnitHandle, ADC_CHANNEL_0);
-			Encoder _encoder = Encoder(GPIO_NUM_25, GPIO_NUM_26, GPIO_NUM_27);
-			Analog _leverRight = Analog(&_ADC1UnitHandle, ADC_CHANNEL_3);
 
-			Analog _joystickHorizontal = Analog(&_ADC1UnitHandle, ADC_CHANNEL_7);
-			Analog _joystickVertical = Analog(&_ADC1UnitHandle, ADC_CHANNEL_5);
-			Analog _ring = Analog(&_ADC1UnitHandle, ADC_CHANNEL_6);
+			// Encoder
+			uint32_t _encoderRotationTime = 0;
+			bool _encoderWasPressed = false;
+			Encoder _encoder = Encoder(GPIO_NUM_25, GPIO_NUM_26, GPIO_NUM_27);
+
+			// Axis
+			constexpr static const uint32_t _axisTickInterval = 1 * 1000 * 1000 / 60;
+			uint32_t _axisTickTime = 0;
+
+			Axis _leverLeft = Axis(
+				&_ADC1UnitHandle,
+				ADC_CHANNEL_0,
+				&_settings.leverLeftAxis
+			);
+
+			Axis _leverRight = Axis(
+				&_ADC1UnitHandle,
+				ADC_CHANNEL_3,
+				&_settings.leverRightAxis
+			);
+
+			Axis _joystickHorizontal = Axis(
+				&_ADC1UnitHandle,
+				ADC_CHANNEL_7,
+				&_settings.joystickHorizontalAxis
+			);
+
+			Axis _joystickVertical = Axis(
+				&_ADC1UnitHandle,
+				ADC_CHANNEL_5,
+				&_settings.joystickVerticalAxis
+			);
+
+			Axis _ring = Axis(
+				&_ADC1UnitHandle,
+				ADC_CHANNEL_6,
+				&_settings.ringAxis
+			);
 
 			/**
 			Some thoughts about measuring voltage & charge in percents using ADC:
@@ -139,11 +177,10 @@ namespace pizda {
 
 			uint32_t _tickDeltaTime = 0;
 
-			uint32_t _simulationTickTime1 = 0;
-			uint32_t _simulationTickTime2 = 0;
+			constexpr static float _interpolationTickInterval = 500 * 1000;
+			uint32_t _interpolatorTickTime = 0;
 
-			constexpr static const uint32_t _inputDevicesTickInterval = 1000000 / 30;
-			uint32_t _inputDevicesTickTime = 0;
+			uint32_t _simulationTickTime = 0;
 
 			Interpolator _speedInterpolator;
 			Interpolator _speedTrendInterpolator;
@@ -167,6 +204,9 @@ namespace pizda {
 
 			// -------------------------------- Other shit --------------------------------
 
+			float _throttle1 = 0;
+			float _throttle2 = 0;
+
 			Settings _settings;
 			LocalData _localData;
 			RemoteData _remoteData;
@@ -179,6 +219,8 @@ namespace pizda {
 			static void SPIBusSetup();
 			void ADCUnitsSetup();
 
-			void inputDevicesTick();
+			void axisTick();
+
+			void encoderTick();
 	};
 }

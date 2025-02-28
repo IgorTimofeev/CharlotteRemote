@@ -4,34 +4,29 @@
 
 namespace pizda {
 	void DebugPage::setup() {
-		_rows.setSpacing(10);
-		_rows.setMargin(Margin(20, 20, 20, 20));
-
 		// Page title
-		Theme::applyPageTitle(&_pageTitle);
-		_pageTitle.setText(L"Debug page");
-		_rows += &_pageTitle;
+		pageTitle.setText(L"Debug page");
 
 		// Speaker frequency
 		Theme::apply(&_speakerFrequencySlider);
 		_speakerFrequencySlider.setValue(0.5f);
 
 		Theme::apply(&_speakerFrequencySliderTitle);
-		_rows += &_speakerFrequencySliderTitle;
+		rows += &_speakerFrequencySliderTitle;
 
 		// Speaker duration
 		Theme::apply(&_speakerDurationSlider);
 		_speakerDurationSlider.setValue(0.5f);
 
 		Theme::apply(&_speakerDurationSliderTitle);
-		_rows += &_speakerDurationSliderTitle;
+		rows += &_speakerDurationSliderTitle;
 
-		// Speaker сщгте
+		// Speaker
 		Theme::apply(&_speakerCountSlider);
 		_speakerCountSlider.setValue(0.2f);
 
 		Theme::apply(&_speakerCountSliderTitle);
-		_rows += &_speakerCountSliderTitle;
+		rows += &_speakerCountSliderTitle;
 
 		// Speaker button
 		Theme::apply(&_speakerButton);
@@ -58,7 +53,7 @@ namespace pizda {
 			rc.getSpeaker().play(Sound(notes));
 		};
 
-		_rows += &_speakerButton;
+		rows += &_speakerButton;
 
 		// Text font size slider
 		Theme::apply(&_textFontSizeSlider);
@@ -69,7 +64,7 @@ namespace pizda {
 		};
 
 		Theme::apply(&_textSliderTitle);
-		_rows += &_textSliderTitle;
+		rows += &_textSliderTitle;
 
 		// Text margin slider
 		Theme::apply(&_textMarginSlider);
@@ -79,11 +74,11 @@ namespace pizda {
 		_textMarginSlider.valueChanged += [this]() {
 			uint16_t value = 1 + (uint8_t) std::round(_textMarginSlider.getValue() * 80);
 
-			_rows.setMargin(Margin(value, _rows.getMargin().getTop(), value, _rows.getMargin().getTop()));
+			rows.setMargin(Margin(value, rows.getMargin().getTop(), value, rows.getMargin().getTop()));
 		};
 
 		Theme::apply(&_textMarginSliderTitle);
-		_rows += &_textMarginSliderTitle;
+		rows += &_textMarginSliderTitle;
 
 		// Text
 		Theme::applyDescription(&_text);
@@ -99,7 +94,7 @@ copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions)"
 		);
 
-		_rows += &_text;
+		rows += &_text;
 
 		// Switch
 		Theme::apply(&_switch);
@@ -117,7 +112,7 @@ furnished to do so, subject to the following conditions)"
 		};
 
 		Theme::apply(&_switchTitle);
-		_rows += &_switchTitle;
+		rows += &_switchTitle;
 
 		// Progress bar
 		Theme::apply(&_progressBar);
@@ -125,7 +120,7 @@ furnished to do so, subject to the following conditions)"
 		_progressBar.setFillColor(&Theme::bad2);
 
 		Theme::apply(&_progressBarTitle);
-		_rows += &_progressBarTitle;
+		rows += &_progressBarTitle;
 
 		// TextField
 		Theme::apply(&_textField);
@@ -133,11 +128,6 @@ furnished to do so, subject to the following conditions)"
 		_textField.setCursorToEnd();
 
 		Theme::apply(&textFieldTitle);
-		_rows += &textFieldTitle;
-
-		_scrollView += &_rows;
-
-		Theme::apply(&_scrollView);
-		*this += &_scrollView;
+		rows += &textFieldTitle;
 	}
 }

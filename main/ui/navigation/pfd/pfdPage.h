@@ -6,6 +6,7 @@
 
 namespace pizda {
 	using namespace yoba;
+	using namespace yoba::ui;
 
 	class PFDPage : public Page {
 		public:

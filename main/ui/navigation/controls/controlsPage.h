@@ -4,31 +4,24 @@
 #include "src/ui.h"
 
 #include "../page.h"
-#include "../../../resources/images/controlsImage.h"
+#include "controlsView.h"
+#include "axisEditor.h"
 
 namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class ControlsView : public ImageView {
+	class ControlsPage : public ScrollViewPage {
 		public:
-			ControlsView();
-
-			static const ControlsImage controlsImage;
-
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void setup();
 
 		private:
-			const uint8_t maxPixelValue = 12;
-	};
+			ControlsView _controls;
 
-	class ControlsPage : public Page {
-		public:
-			ControlsPage() {
-				controls.setAlignment(Alignment::center);
-				*this += &controls;
-			}
-
-			ControlsView controls = ControlsView();
+			AxisEditor _leverLeftEditor;
+			AxisEditor _leverRightAxisEditor;
+			AxisEditor _joystickHorizontalAxisEditor;
+			AxisEditor _joystickVerticalAxisEditor;
+			AxisEditor _ringAxisEditor;
 	};
 }

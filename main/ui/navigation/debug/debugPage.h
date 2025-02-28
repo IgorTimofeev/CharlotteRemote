@@ -8,17 +8,11 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class DebugPage : public Page {
+	class DebugPage : public ScrollViewPage {
 		public:
 			void setup();
 
 		private:
-			ScrollView _scrollView;
-
-			StackLayout _rows;
-
-			Text _pageTitle;
-
 			Slider _speakerFrequencySlider;
 			Titler _speakerFrequencySliderTitle = Titler(L"Speaker frequency", &_speakerFrequencySlider);
 

@@ -11,6 +11,9 @@
 #include "controls/controlsPage.h"
 
 namespace pizda {
+	using namespace yoba;
+	using namespace yoba::ui;
+
 	class TabBar : public Selector {
 		public:
 			void setup();

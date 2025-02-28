@@ -1,6 +1,49 @@
 #include "encoder.h"
 
 namespace pizda {
+	uint16_t EncoderRotateEvent::typeID = 0;
+
+	int32_t EncoderRotateEvent::getRPS() const {
+		return _RPS;
+	}
+
+	int16_t EncoderRotateEvent::getMappedRPS(uint16_t check1, int16_t value1, int16_t valueElse) {
+		const auto absRPS = std::abs(_RPS);
+		int16_t value;
+
+		if (absRPS < check1) {
+			value = value1;
+		}
+		else {
+			value = valueElse;
+		}
+
+		return _RPS > 0 ? value : -value;
+	}
+
+	int16_t EncoderRotateEvent::getMappedRPS(uint16_t check1, uint16_t check2, int16_t value1, int16_t value2, int16_t valueElse) {
+		const auto absRPS = std::abs(_RPS);
+		int16_t value;
+
+		if (absRPS < check1) {
+			value = value1;
+		}
+		else if (absRPS < check2) {
+			value = value2;
+		}
+		else {
+			value = valueElse;
+		}
+
+		return _RPS > 0 ? value : -value;
+	}
+
+	uint16_t EncoderPushEvent::typeID = 0;
+
+	bool EncoderPushEvent::isDown() const {
+		return _down;
+	}
+
 	Encoder::Encoder(gpio_num_t clkPin, gpio_num_t dtPin, gpio_num_t swPin) :
 		_clkPin(clkPin),
 		_dtPin(dtPin),
@@ -26,26 +69,6 @@ namespace pizda {
 		gpio_isr_handler_add(_swPin, swInterruptHandler, this);
 	}
 
-	bool Encoder::wasInterrupted() const {
-		return _interrupted;
-	}
-
-	void Encoder::acknowledgeInterrupt() {
-		_interrupted = false;
-	}
-
-	bool Encoder::isPressed() const {
-		return !gpio_get_level(_swPin);
-	}
-
-	int32_t Encoder::getRotation() const {
-		return _rotation;
-	}
-
-	void Encoder::setRotation(int32_t value) {
-		_rotation = value;
-	}
-
 	void Encoder::clkDtInterruptHandler(void* args) {
 		auto instance = (Encoder*) args;
 
@@ -57,6 +80,11 @@ namespace pizda {
 		auto instance = (Encoder*) args;
 
 		instance->_interrupted = true;
+		instance->readPressed();
+	}
+
+	void Encoder::readPressed() {
+		_pressed = !gpio_get_level(_swPin);
 	}
 
 	void Encoder::readRotation() {
@@ -92,5 +120,25 @@ namespace pizda {
 
 			_oldClkAndDt = clkAndDt;
 		}
+	}
+
+	bool Encoder::interrupted() const {
+		return _interrupted;
+	}
+
+	int32_t Encoder::getRotation() const {
+		return _rotation;
+	}
+
+	bool Encoder::isPressed() const {
+		return _pressed;
+	}
+
+	void Encoder::acknowledgeInterrupt() {
+		_interrupted = false;
+	}
+
+	void Encoder::setRotation(int32_t rotation) {
+		_rotation = rotation;
 	}
 }

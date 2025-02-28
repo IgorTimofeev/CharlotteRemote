@@ -48,7 +48,7 @@ namespace pizda {
 		// Battery
 		Theme::apply(&_batteryIndicatorTitle);
 
-		_batteryIndicatorController.setSize(Size(32, 14));
+		_batteryIndicatorController.setSize(Size(32, 12));
 		_batteryIndicatorAircraft.setSize(_batteryIndicatorController.getSize());
 
 		_batteryIndicatorRows.setSpacing(5);
@@ -65,17 +65,6 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 
-		if (rc.getEncoder().wasInterrupted()) {
-			if (rc.getEncoder().getRotation() != 0) {
-				_throttle1Indicator.setValue(yoba::clamp(_throttle1Indicator.getValue() + rc.getEncoder().getRotation() / 100.f, 0.f, 1.f));
-				_throttle2Indicator.setValue(_throttle1Indicator.getValue());
-
-				rc.getEncoder().setRotation(0);
-			}
-
-			rc.getEncoder().acknowledgeInterrupt();
-		}
-
 		// Trim
 		_elevatorTrimIndicator.setValue(rc.getElevatorTrimInterpolator().getValue());
 
@@ -85,5 +74,28 @@ namespace pizda {
 
 		_batteryIndicatorAircraft.setVoltage(28000);
 		_batteryIndicatorAircraft.setCharge(0xFF);
+	}
+
+	void InstrumentsLayout::onEvent(Event* event) {
+		Layout::onEvent(event);
+
+		if (event->getTypeID() == EncoderRotateEvent::typeID) {
+			auto rotateEvent = (EncoderRotateEvent*) event;
+
+			// Throttle
+			ESP_LOGI("Encoder", "RPS: %ld", rotateEvent->getRPS());
+
+			_throttle1Indicator.setValue(yoba::addSaturating(_throttle1Indicator.getValue(), rotateEvent->getMappedRPS(60, 1, 10) * 0xFFFF / 100));
+			_throttle2Indicator.setValue(_throttle1Indicator.getValue());
+
+			event->setHandled(true);
+		}
+		else if (event->getTypeID() == EncoderPushEvent::typeID) {
+			auto pushEvent = (EncoderPushEvent*) event;
+
+			ESP_LOGI("Encoder", "Push down: %d", pushEvent->isDown());
+
+			event->setHandled(true);
+		}
 	}
 }

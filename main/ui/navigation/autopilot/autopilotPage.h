@@ -8,6 +8,7 @@
 
 namespace pizda {
 	using namespace yoba;
+	using namespace yoba::ui;
 
 	class AutopilotPage : public Page {
 		public:

@@ -22,7 +22,7 @@ namespace pizda {
 		// Big fucking FPS counter
 		renderLine(
 			[&totalDeltaTime, &text]() {
-				text = std::format(L"{}", totalDeltaTime > 0 ? 1000 / totalDeltaTime : 0);
+				text = std::to_wstring(totalDeltaTime > 0 ? 1000 / totalDeltaTime : 0);
 			},
 			&Theme::yellow,
 			3

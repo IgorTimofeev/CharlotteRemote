@@ -21,6 +21,8 @@ namespace pizda {
 		protected:
 			void onTick() override;
 
+			void onEvent(Event* event) override;
+
 		private:
 			StackLayout _row;
 

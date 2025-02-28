@@ -38,6 +38,7 @@ namespace pizda {
 		// Initialization
 		_autopilotPage.setup();
 		_debugPage.setup();
+		_controlsPage.setup();
 
 		addItem(&_PFDTab);
 		addItem(&_NDTab);

@@ -27,7 +27,7 @@ namespace pizda {
 				);
 
 				// Value rect
-				const auto valueHeight = (uint16_t) ((float) frameHeight * _value);
+				const auto valueHeight = (uint16_t) (frameHeight * _value / 0xFFFF);
 				const uint16_t valueY = bounds.getY() + frameHeight - valueHeight + 1;
 
 				renderer->renderFilledRectangle(
@@ -51,7 +51,7 @@ namespace pizda {
 				);
 
 				// Text
-				const auto text = std::format(L"{}", (int32_t) (_value * 100));
+				const auto text = std::to_wstring((int32_t) (_value * 100 / 0xFFFF));
 
 				renderer->renderString(
 					Point(
@@ -64,17 +64,17 @@ namespace pizda {
 				);
 			}
 
-			float getValue() const {
+			uint16_t getValue() const {
 				return _value;
 			}
 
-			void setValue(float value) {
+			void setValue(uint16_t value) {
 				_value = value;
 
 				invalidate();
 			}
 
 		private:
-			float _value = 0;
+			uint16_t _value = 0;
 	};
 }

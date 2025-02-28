@@ -5,6 +5,7 @@
 #include <esp_log.h>
 #include "nvs_flash.h"
 #include "nvs.h"
+#include "hardware/axis.h"
 
 namespace pizda {
 	#pragma pack(push, 1)
@@ -12,6 +13,12 @@ namespace pizda {
 	class Settings {
 		public:
 			bool debugInfoVisible = false;
+
+			AxisSettings leverLeftAxis;
+			AxisSettings leverRightAxis;
+			AxisSettings joystickHorizontalAxis;
+			AxisSettings joystickVerticalAxis;
+			AxisSettings ringAxis;
 
 			void setup() { // NOLINT(*-convert-member-functions-to-static)
 				auto status = nvs_flash_init();
@@ -80,7 +87,7 @@ namespace pizda {
 
 		private:
 			static const uint32_t _writeDelay = 2500000;
-			static const uint8_t _version = 3;
+			static const uint8_t _version = 4;
 			uint32_t _timeToWrite = 0;
 	};
 

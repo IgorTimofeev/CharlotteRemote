@@ -334,7 +334,7 @@ namespace pizda {
 				);
 
 				// Text
-				const auto& text = std::format(L"{}", lineValue);
+				const auto& text = std::to_wstring(lineValue);
 
 				renderer->renderString(
 					Point(
@@ -605,7 +605,7 @@ namespace pizda {
 					),
 					&Theme::fontSmall,
 					color,
-					std::format(L"{}", abs(lineAngleDeg))
+					std::to_wstring(abs(lineAngleDeg))
 				);
 			}
 		}
@@ -721,7 +721,7 @@ namespace pizda {
 						break;
 
 					default:
-						text = std::format(L"{}", angle);
+						text = std::to_wstring(angle);
 						break;
 				}
 
@@ -878,7 +878,7 @@ namespace pizda {
 					Point(x + lineSizeBig + lineSizeTextOffset, y - Theme::fontNormal.getHeight() / 2),
 					&Theme::fontNormal,
 					lineColor,
-					std::format(L"{}", lineValue)
+					std::to_wstring(lineValue)
 				);
 			}
 			else {
@@ -992,7 +992,7 @@ namespace pizda {
 						),
 						&Theme::fontNormal,
 						lineColor,
-						std::format(L"{}", lineValue / 100)
+						std::to_wstring(lineValue / 100)
 					);
 				}
 				else {
@@ -1045,7 +1045,7 @@ namespace pizda {
 		std::wstring text;
 
 		if (autopilotValue > 0) {
-			text = std::format(L"{}", (int32_t) autopilotValue);
+			text = std::to_wstring((int32_t) autopilotValue);
 		}
 		else {
 			text = L"----";
@@ -1100,7 +1100,7 @@ namespace pizda {
 
 		switch (rc.getLocalData().getAltimeterMode()) {
 			case AltimeterMode::QNH:
-				text = std::format(L"{}", (uint16_t) rc.getLocalData().getAltimeterPressure());
+				text = std::to_wstring((uint16_t) rc.getLocalData().getAltimeterPressure());
 				break;
 
 			case AltimeterMode::QNE:
