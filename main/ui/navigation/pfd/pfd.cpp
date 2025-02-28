@@ -1115,53 +1115,53 @@ namespace pizda {
 	}
 
 	void PFD::onRender(Renderer* renderer, const Bounds& bounds) {
-//		renderSyntheticVision(renderer, Bounds(
-//			bounds.getX() + speedWidth,
-//			bounds.getY(),
-//			bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,
-//			bounds.getHeight()
-//		));
-//
-//		renderSpeed(renderer, Bounds(
-//			bounds.getX(),
-//			bounds.getY() + miniHeight,
-//			speedWidth,
-//			bounds.getHeight() - miniHeight
-//		));
-//
-//		renderAutopilotSpeed(renderer, Bounds(
-//			bounds.getX(),
-//			bounds.getY(),
-//			speedWidth,
-//			miniHeight
-//		));
-//
-//		renderAltitude(renderer, Bounds(
-//			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
-//			bounds.getY() + miniHeight,
-//			altitudeWidth,
-//			bounds.getHeight() - miniHeight * 2
-//		));
-//
-//		renderAutopilotAltitude(renderer, Bounds(
-//			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
-//			bounds.getY(),
-//			altitudeWidth,
-//			miniHeight
-//		));
-//
-//		renderPressure(renderer, Bounds(
-//			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
-//			bounds.getY2() + 1 - miniHeight,
-//			altitudeWidth,
-//			miniHeight
-//		));
-//
-//		renderVerticalSpeed(renderer, Bounds(
-//			bounds.getX2() + 1 - verticalSpeedWidth,
-//			bounds.getY(),
-//			verticalSpeedWidth,
-//			bounds.getHeight()
-//		));
+		renderSyntheticVision(renderer, Bounds(
+			bounds.getX() + speedWidth,
+			bounds.getY(),
+			bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,
+			bounds.getHeight()
+		));
+
+		renderSpeed(renderer, Bounds(
+			bounds.getX(),
+			bounds.getY() + miniHeight,
+			speedWidth,
+			bounds.getHeight() - miniHeight
+		));
+
+		renderAutopilotSpeed(renderer, Bounds(
+			bounds.getX(),
+			bounds.getY(),
+			speedWidth,
+			miniHeight
+		));
+
+		renderAltitude(renderer, Bounds(
+			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
+			bounds.getY() + miniHeight,
+			altitudeWidth,
+			bounds.getHeight() - miniHeight * 2
+		));
+
+		renderAutopilotAltitude(renderer, Bounds(
+			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
+			bounds.getY(),
+			altitudeWidth,
+			miniHeight
+		));
+
+		renderPressure(renderer, Bounds(
+			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
+			bounds.getY2() + 1 - miniHeight,
+			altitudeWidth,
+			miniHeight
+		));
+
+		renderVerticalSpeed(renderer, Bounds(
+			bounds.getX2() + 1 - verticalSpeedWidth,
+			bounds.getY(),
+			verticalSpeedWidth,
+			bounds.getHeight()
+		));
 	}
 }
