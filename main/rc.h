@@ -120,7 +120,14 @@ namespace pizda {
 			Based on this shit & resistors I have, the voltage divider will be 1M / 330K,
 			giving final input range of [1,488; 2.084]V
 			*/
-			Battery _battery = Battery(ADC_UNIT_1, &_ADC1UnitHandle, ADC_CHANNEL_4);
+			Battery _battery = Battery(
+				&_ADC1UnitHandle,
+				ADC_CHANNEL_4,
+				6000,
+				7400,
+				1000000,
+				330000
+			);
 
 			// -------------------------------- UI --------------------------------
 
@@ -134,6 +141,9 @@ namespace pizda {
 
 			uint32_t _simulationTickTime1 = 0;
 			uint32_t _simulationTickTime2 = 0;
+
+			constexpr static const uint32_t _inputDevicesTickInterval = 1000000 / 30;
+			uint32_t _inputDevicesTickTime = 0;
 
 			Interpolator _speedInterpolator;
 			Interpolator _speedTrendInterpolator;

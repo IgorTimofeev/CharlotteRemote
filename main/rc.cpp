@@ -309,6 +309,9 @@ namespace pizda {
 	}
 
 	void RC::inputDevicesTick() {
+		if (esp_timer_get_time() < _inputDevicesTickTime)
+			return;
+
 		_leverLeft.tick();
 		_leverRight.tick();
 		_joystickHorizontal.tick();
@@ -334,6 +337,8 @@ namespace pizda {
 
 		pizda = _ring.getFloatValue() * yoba::toRadians(90);
 		_yawInterpolator.setTargetValue(pizda);
+
+		_inputDevicesTickTime = esp_timer_get_time() + _inputDevicesTickInterval;
 	}
 
 	void RC::SPIBusSetup() {

@@ -80,7 +80,10 @@ namespace pizda {
 		_elevatorTrimIndicator.setValue(rc.getElevatorTrimInterpolator().getValue());
 
 		// Battery
-		_batteryIndicatorController.setValue(rc.getBattery().getVoltage());
-		_batteryIndicatorAircraft.setValue(rc.getBattery().getVoltage() * 1 / 3);
+		_batteryIndicatorController.setVoltage(rc.getBattery().getVoltage());
+		_batteryIndicatorController.setCharge(rc.getBattery().getCharge());
+
+		_batteryIndicatorAircraft.setVoltage(28000);
+		_batteryIndicatorAircraft.setCharge(0xFF);
 	}
 }
