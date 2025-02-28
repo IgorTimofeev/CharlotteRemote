@@ -8,23 +8,28 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		// Page title
-		pageTitle.setText(L"Controls");
+		pageTitle.setText(L"Control axis");
 
 		// Axis
-		_leverLeftEditor.setAxis(&rc.getLeverLeft());
-		rows += &_leverLeftEditor;
+		Theme::apply(&_aileronsAxisEditorTitle);
+		_aileronsAxisEditor.setAxis(&rc.getJoystickHorizontal());
+		rows += &_aileronsAxisEditorTitle;
 
-		_leverRightAxisEditor.setAxis(&rc.getLeverRight());
-		rows += &_leverRightAxisEditor;
+		Theme::apply(&_elevatorAxisEditorTitle);
+		_elevatorAxisEditor.setAxis(&rc.getJoystickVertical());
+		rows += &_elevatorAxisEditorTitle;
 
-		_joystickHorizontalAxisEditor.setAxis(&rc.getJoystickHorizontal());
-		rows += &_joystickHorizontalAxisEditor;
+		Theme::apply(&_rudderAxisEditorTitle);
+		_rudderAxisEditor.setAxis(&rc.getRing());
+		rows += &_rudderAxisEditorTitle;
 
-		_joystickVerticalAxisEditor.setAxis(&rc.getJoystickVertical());
-		rows += &_joystickVerticalAxisEditor;
+		Theme::apply(&_spoilersAxisEditorTitle);
+		_spoilersAxisEditor.setAxis(&rc.getLeverLeft());
+		rows += &_spoilersAxisEditorTitle;
 
-		_ringAxisEditor.setAxis(&rc.getRing());
-		rows += &_ringAxisEditor;
+		Theme::apply(&_flapsAxisEditorTitle);
+		_flapsAxisEditor.setAxis(&rc.getLeverRight());
+		rows += &_flapsAxisEditorTitle;
 
 		// Controls
 		_controls.setHorizontalAlignment(Alignment::start);

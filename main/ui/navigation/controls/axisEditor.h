@@ -9,30 +9,9 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class AxisEditor;
-
-	class AxisEditorPin : public Element {
+	class AxisEditor : public Element {
 		public:
-			AxisEditorPin(bool isTo);
-
-		protected:
-
-			void onEvent(Event* event) override;
-
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
-
-
-		private:
-			int32_t _oldTouchX = 0;
-
-			bool _isTo;
-
-			AxisEditor* getEditor();
-	};
-
-	class AxisEditor : public Layout {
-		public:
-			explicit AxisEditor();
+			AxisEditor();
 
 			Axis* getAxis() const;
 
@@ -40,10 +19,11 @@ namespace pizda {
 
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onEvent(Event* event) override;
 
 		private:
 			Axis* _axis = nullptr;
-			AxisEditorPin _fromPin = AxisEditorPin(false);
-			AxisEditorPin _toPin = AxisEditorPin(true);
+
+			bool _touchedTo = false;
 	};
 }

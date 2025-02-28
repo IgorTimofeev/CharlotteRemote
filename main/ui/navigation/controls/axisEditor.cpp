@@ -1,37 +1,107 @@
 #include "axisEditor.h"
 
 #include "../../theme.h"
+#include "../../../rc.h"
 
 namespace pizda {
-	AxisEditorPin::AxisEditorPin(bool isTo) : _isTo(isTo) {
-		setWidth(30);
+	AxisEditor::AxisEditor() {
+		setHeight(30);
 	}
 
-	void AxisEditorPin::onRender(Renderer* renderer, const Bounds& bounds) {
-		Element::onRender(renderer, bounds);
+	void AxisEditor::onRender(Renderer* renderer, const Bounds& bounds) {
+		// Track
+		renderer->renderFilledRectangle(bounds, Theme::cornerRadius, &Theme::bg2);
+		renderer->renderRectangle(bounds, Theme::cornerRadius, &Theme::bg3);
 
-		const uint8_t circleRadius = 10;
-		const uint16_t lineHeight = bounds.getHeight() - circleRadius * 2;
+		// Fill
+		const int32_t fromX = bounds.getX() + _axis->getSettings()->from * bounds.getWidth() / 4096;
+		const int32_t toX = bounds.getX() + _axis->getSettings()->to * bounds.getWidth() / 4096;
 
-		// Line
-		renderer->renderVerticalLine(bounds.getTopLeft(), lineHeight, &Theme::fg1);
-
-		// Circle
-		const auto circleCenter = Point(bounds.getX(), bounds.getY() + lineHeight + circleRadius);
-		renderer->renderFilledCircle(circleCenter, circleRadius, &Theme::fg1);
-
-		// Text
-		const auto text = _isTo ?  L"<" : L">";
-
-		renderer->renderString(
-			Point(circleCenter.getX() - Theme::fontSmall.getWidth(text) / 2, circleCenter.getY() - Theme::fontSmall.getHeight() / 2),
-			&Theme::fontSmall,
-			&Theme::bg1,
-			text
+		renderer->renderFilledRectangle(
+			Bounds(
+				fromX,
+				bounds.getY(),
+				toX - fromX,
+				bounds.getHeight()
+			),
+			Theme::cornerRadius,
+			&Theme::bg4
 		);
+
+		// Axis value thumb
+		constexpr uint16_t axisValueBarWidth = 4;
+
+		renderer->renderFilledRectangle(
+			Bounds(
+				bounds.getX() + _axis->getRawValue() * (bounds.getWidth() - axisValueBarWidth) / 4096,
+				bounds.getY(),
+				axisValueBarWidth,
+				bounds.getHeight()
+			),
+			&Theme::accent1
+		);
+
+		// Pins
+		const auto renderPin = [renderer, &bounds](int32_t x, uint16_t settingsValue, bool to) {
+			// Line
+			renderer->renderVerticalLine(
+				Point(x, bounds.getY()),
+				bounds.getHeight() - Theme::cornerRadius,
+				&Theme::fg1
+			);
+
+			// Flag
+			const auto text = std::to_wstring(settingsValue * 100 / 4096);
+			constexpr uint8_t textOffsetX = 5;
+			constexpr uint8_t textOffsetY = 0;
+
+			const auto flagSize = Size(
+				Theme::fontSmall.getWidth(text) + textOffsetX * 2,
+				Theme::fontSmall.getHeight() + textOffsetY * 2
+			);
+
+			const auto flagBounds = Bounds(
+				Point(
+					to ? x - flagSize.getWidth() : x,
+					bounds.getY() + bounds.getHeight() - flagSize.getHeight()
+				),
+				flagSize
+			);
+
+			renderer->renderFilledRectangle(flagBounds, Theme::cornerRadius, &Theme::fg1);
+
+			renderer->renderString(
+				Point(flagBounds.getX() + textOffsetX, flagBounds.getY() + textOffsetY),
+				&Theme::fontSmall,
+				&Theme::bg1,
+				text
+			);
+		};
+
+		renderPin(
+			fromX,
+			_axis->getSettings()->from,
+			false
+		);
+
+		renderPin(
+			toX,
+			_axis->getSettings()->to,
+			true
+		);
+
+		Element::onRender(renderer, bounds);
 	}
 
-	void AxisEditorPin::onEvent(Event* event) {
+	Axis* AxisEditor::getAxis() const {
+		return _axis;
+	}
+
+	void AxisEditor::setAxis(Axis* axis) {
+		_axis = axis;
+	}
+
+	void AxisEditor::onEvent(Event* event) {
 		Element::onEvent(event);
 
 		const auto isTouchDown = event->getTypeID() == TouchDownEvent::typeID;
@@ -42,72 +112,36 @@ namespace pizda {
 			return;
 
 		if (isTouchDown) {
-			auto touchDownEvent = (TouchDownEvent*) event;
+			const auto touchDownEvent = (TouchDownEvent*) event;
 
-			_oldTouchX = touchDownEvent->getPosition().getX();
+			const auto& bounds = getBounds();
+
+			const auto touchX = touchDownEvent->getPosition().getX();
+			const int32_t touchValue = (touchX - bounds.getX()) * 4096 / bounds.getWidth();
+
+			_touchedTo = std::abs(touchValue - _axis->getSettings()->to) <= std::abs(touchValue - _axis->getSettings()->from);
 
 			setCaptured(true);
 		}
 		else if (isTouchDrag) {
-			auto touchDragEvent = (TouchDragEvent*) event;
+			const auto touchDragEvent = (TouchDragEvent*) event;
 
-			auto touchX = touchDragEvent->getPosition().getX();
-			auto deltaX = touchX - _oldTouchX;
-			_oldTouchX = touchX;
+			const auto touchX = touchDragEvent->getPosition().getX();
 
-			auto editor = getEditor();
-			const auto& editorBounds = editor->getBounds();
-
-			// Updating margin
-			auto marginLeft = yoba::clamp(getMargin().getLeft() + deltaX, (int32_t) 0, (int32_t) editorBounds.getWidth());
-			setMargin(Margin(marginLeft, 0, 0, 0));
+			const auto& bounds = getBounds();
+			const int32_t clampedTouchX = yoba::clamp((int32_t) (touchX - bounds.getX()), (int32_t) 0, (int32_t) bounds.getWidth());
 
 			// Updating settings
-			auto axis = editor->getAxis();
-			auto settingsValue = _isTo ? &axis->getSettings()->to : &axis->getSettings()->from;
-			*settingsValue = marginLeft * 4096 / (int32_t) editorBounds.getWidth();
+			auto settingsValue = _touchedTo ? &_axis->getSettings()->to : &_axis->getSettings()->from;
+			*settingsValue = clampedTouchX * 4096 / bounds.getWidth();
 		}
 		else {
-			_oldTouchX = 0;
+			// Saving changes
+			RC::getInstance().getSettings().enqueueWrite();
 
 			setCaptured(false);
 		}
 
 		event->setHandled(true);
-	}
-
-	AxisEditor::AxisEditor() {
-		setHeight(30);
-
-		_fromPin.setHorizontalAlignment(Alignment::start);
-		*this += &_fromPin;
-
-		_toPin.setHorizontalAlignment(Alignment::start);
-		*this += &_toPin;
-	}
-
-	AxisEditor* AxisEditorPin::getEditor() {
-		return dynamic_cast<AxisEditor*>(getParent());
-	}
-
-	void AxisEditor::onRender(Renderer* renderer, const Bounds& bounds) {
-		const uint16_t barHeight = 24;
-
-		renderer->renderFilledRectangle(Bounds(bounds.getX(), bounds.getY(), bounds.getWidth(), barHeight), Theme::cornerRadius, &Theme::bg4);
-
-		const int32_t axisX = _axis->getProcessedValue() * bounds.getWidth() / 4096;
-		const uint16_t axisWidth = 10;
-
-		renderer->renderFilledRectangle(Bounds(bounds.getX() + axisX, bounds.getY(), axisWidth, barHeight), Theme::cornerRadius, &Theme::accent1);
-
-		Layout::onRender(renderer, bounds);
-	}
-
-	Axis* AxisEditor::getAxis() const {
-		return _axis;
-	}
-
-	void AxisEditor::setAxis(Axis* axis) {
-		_axis = axis;
 	}
 }

@@ -18,10 +18,19 @@ namespace pizda {
 		private:
 			ControlsView _controls;
 
-			AxisEditor _leverLeftEditor;
-			AxisEditor _leverRightAxisEditor;
-			AxisEditor _joystickHorizontalAxisEditor;
-			AxisEditor _joystickVerticalAxisEditor;
-			AxisEditor _ringAxisEditor;
+			AxisEditor _spoilersAxisEditor;
+			Titler _spoilersAxisEditorTitle = Titler(L"Spoilers", &_spoilersAxisEditor);
+
+			AxisEditor _flapsAxisEditor;
+			Titler _flapsAxisEditorTitle = Titler(L"Flaps", &_flapsAxisEditor);
+
+			AxisEditor _aileronsAxisEditor;
+			Titler _aileronsAxisEditorTitle = Titler(L"Ailerons", &_aileronsAxisEditor);
+
+			AxisEditor _elevatorAxisEditor;
+			Titler _elevatorAxisEditorTitle = Titler(L"Elevator", &_elevatorAxisEditor);
+
+			AxisEditor _rudderAxisEditor;
+			Titler _rudderAxisEditorTitle = Titler(L"Rudder", &_rudderAxisEditor);
 	};
 }
