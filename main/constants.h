@@ -3,6 +3,7 @@
 #include "driver/ledc.h"
 #include "cstdint"
 #include "esp_adc/adc_oneshot.h"
+#include "RadioLib.h"
 
 namespace pizda {
 	namespace constants {
@@ -13,38 +14,39 @@ namespace pizda {
 				static const gpio_num_t sck = GPIO_NUM_18;
 			}
 
-			namespace slave {
-				static const gpio_num_t slaveSelect = GPIO_NUM_27;
-				static const uint32_t frequency = 1000000;
-				static const uint32_t tickInterval = 1000000 / 30;
+			namespace i2c {
+				static const gpio_num_t sda = GPIO_NUM_21;
+				static const gpio_num_t scl = GPIO_NUM_22;
 			}
 
 			namespace screen {
 				namespace touch {
-					static const gpio_num_t reset = GPIO_NUM_32;
-					static const gpio_num_t interrupt = GPIO_NUM_34;
-					static const gpio_num_t sda = GPIO_NUM_21;
-					static const gpio_num_t scl = GPIO_NUM_22;
+					static const gpio_num_t reset = GPIO_NUM_NC;
+					static const gpio_num_t interrupt = GPIO_NUM_5;
 				}
 
-				static const gpio_num_t slaveSelect = GPIO_NUM_5;
+				static const gpio_num_t slaveSelect = GPIO_NUM_17;
 				static const gpio_num_t dataCommand = GPIO_NUM_16;
-				static const gpio_num_t reset = GPIO_NUM_17;
+				static const gpio_num_t reset = GPIO_NUM_NC;
 				static const uint32_t frequency = 60000000;
 			}
 
 			namespace transceiver {
-				static const gpio_num_t slaveSelect = GPIO_NUM_4;
-				static const gpio_num_t reset = GPIO_NUM_33;
-				static const gpio_num_t busy = GPIO_NUM_25;
-				static const gpio_num_t dio0 = GPIO_NUM_35;
+				static const gpio_num_t slaveSelect = GPIO_NUM_14;
+				static const gpio_num_t busy = GPIO_NUM_12;
+				static const gpio_num_t dio0 = GPIO_NUM_13;
+				static const uint32_t reset = RADIOLIB_NC;
 			}
 
 			namespace speaker {
-				static const gpio_num_t gpio = GPIO_NUM_2;
+				static const gpio_num_t gpio = GPIO_NUM_4;
 				static const ledc_channel_t channel = LEDC_CHANNEL_0;
 				static const ledc_timer_t timer = LEDC_TIMER_0;
 				static const ledc_mode_t mode = LEDC_LOW_SPEED_MODE;
+			}
+
+			namespace hid {
+
 			}
 		}
 

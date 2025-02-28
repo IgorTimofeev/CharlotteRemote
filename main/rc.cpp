@@ -3,8 +3,6 @@
 #include "rc.h"
 #include "constants.h"
 #include "resources/sounds.h"
-#include "ui/navigation/tabBar.h"
-#include "ui/debugOverlay.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -36,28 +34,20 @@ namespace pizda {
 		_application.addInputDevice(&_touchPanel);
 
 		// Transceiver
-		gpio_config_t config = {
-			.pin_bit_mask = BIT64(constants::hardware::transceiver::slaveSelect),
-			.mode = GPIO_MODE_OUTPUT,
-			.pull_up_en = GPIO_PULLUP_ENABLE,
-			.pull_down_en = GPIO_PULLDOWN_DISABLE,
-			.intr_type = GPIO_INTR_DISABLE
-		};
-
-		gpio_config(&config);
-		gpio_set_level(constants::hardware::transceiver::slaveSelect, true);
-
 //		_transceiver.setup();
 
-		// Joysticks
-//		_pitchHall.begin();
-//		_rollHall.begin();
+		// -------------------------------- HID --------------------------------
 
-		// Slave
-		_slave.setup();
+		ADCUnitsSetup();
 
+		_leverLeft.setup();
+		_encoder.setup();
+		_leverRight.setup();
+		_joystickHorizontal.setup();
+		_joystickVertical.setup();
+		_ring.setup();
+		_battery.setup();
 
-		// Speaker
 		_speaker.setup();
 
 
@@ -83,9 +73,7 @@ namespace pizda {
 			auto time = esp_timer_get_time();
 
 			// High priority tasks
-			_slave.tick();
-			fromSlave();
-
+			inputDevicesTick();
 			simulateFlightData();
 			updateComputedData();
 
@@ -122,9 +110,6 @@ namespace pizda {
 				}
 			};
 
-			handleFloat(_throttle1Interpolator, 0.2f, 0.01f);
-			handleFloat(_throttle2Interpolator, 0.2f, 0.01f);
-
 			// Speed
 			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) yoba::random(1, 20) / 10.0f * testDeltaTime / testDelay);
 //			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + 2.0f);
@@ -137,24 +122,6 @@ namespace pizda {
 
 			if (_altitudeInterpolator.getTargetValue() > 40)
 				_altitudeInterpolator.setTargetValue(0);
-
-//			// Pitch
-//			_pitchInterpolator.setTargetValue(_pitchInterpolator.getTargetValue() + (float) toRadians(2));
-//
-//			if (toDegrees(_pitchInterpolator.getTargetValue()) > 10)
-//				_pitchInterpolator.setTargetValue(toRadians(-10));
-//
-//			// Roll
-//			_rollInterpolator.setTargetValue(_rollInterpolator.getTargetValue() + (float) toRadians(1));
-//
-//			if (toDegrees(_rollInterpolator.getTargetValue()) > 30)
-//				_rollInterpolator.setTargetValue(toRadians(-30));
-
-//			// Yaw
-//			_yawInterpolator.setTargetValue(_yawInterpolator.getTargetValue() + (float) toRadians(10));
-//
-//			if (toDegrees(_yawInterpolator.getTargetValue()) > 170)
-//				_yawInterpolator.setTargetValue(toRadians(-170));
 
 			// A/P
 			_simulationTickTime2 = esp_timer_get_time();
@@ -175,10 +142,8 @@ namespace pizda {
 
 			// Controls
 			handleFloat(_aileronsInterpolator);
-			handleFloat(_flapsInterpolator);
 			handleFloat(_rudderInterpolator);
 			handleFloat(_elevatorInterpolator);
-			handleFloat(_spoilersInterpolator);
 
 			// Trim
 			handleFloat(_aileronsTrimInterpolator);
@@ -190,9 +155,6 @@ namespace pizda {
 
 		if (deltaTime > constants::application::tickInterval) {
 			const float interpolationFactor = deltaTime / testDelay;
-
-			_throttle1Interpolator.tick(interpolationFactor);
-			_throttle2Interpolator.tick(interpolationFactor);
 
 			_speedInterpolator.tick(interpolationFactor);
 			_speedTrendInterpolator.tick(interpolationFactor);
@@ -209,8 +171,6 @@ namespace pizda {
 			_aileronsInterpolator.tick(interpolationFactor);
 			_rudderInterpolator.tick(interpolationFactor);
 			_elevatorInterpolator.tick(interpolationFactor);
-			_flapsInterpolator.tick(interpolationFactor);
-			_spoilersInterpolator.tick(interpolationFactor);
 
 			_aileronsTrimInterpolator.tick(interpolationFactor);
 			_elevatorTrimInterpolator.tick(interpolationFactor);
@@ -234,14 +194,6 @@ namespace pizda {
 
 	ComputedData& RC::getComputedData() {
 		return _computedData;
-	}
-
-	Interpolator& RC::getThrottle1Interpolator() {
-		return _throttle1Interpolator;
-	}
-
-	Interpolator& RC::getThrottle2Interpolator() {
-		return _throttle2Interpolator;
 	}
 
 	Interpolator &RC::getSpeedInterpolator() {
@@ -278,14 +230,6 @@ namespace pizda {
 
 	Interpolator& RC::getAileronsInterpolator() {
 		return _aileronsInterpolator;
-	}
-
-	Interpolator& RC::getFlapsInterpolator() {
-		return _flapsInterpolator;
-	}
-
-	Interpolator& RC::getSpoilersInterpolator() {
-		return _spoilersInterpolator;
 	}
 
 	Interpolator& RC::getRudderInterpolator() {
@@ -328,8 +272,32 @@ namespace pizda {
 		return _speaker;
 	}
 
-	Slave& RC::getSlave() {
-		return _slave;
+	Analog& RC::getLeverLeft() {
+		return _leverLeft;
+	}
+
+	Encoder& RC::getEncoder() {
+		return _encoder;
+	}
+
+	Analog& RC::getLeverRight() {
+		return _leverRight;
+	}
+
+	Analog& RC::getJoystickHorizontal() {
+		return _joystickHorizontal;
+	}
+
+	Analog& RC::getJoystickVertical() {
+		return _joystickVertical;
+	}
+
+	Analog& RC::getRing() {
+		return _ring;
+	}
+
+	Battery& RC::getBattery() {
+		return _battery;
 	}
 
 	void RC::updateComputedData() {
@@ -338,6 +306,34 @@ namespace pizda {
 		_computedData.getRollSinAndCos().fromAngle(_remoteData.getRoll());
 		_computedData.getPitchSinAndCos().fromAngle(_remoteData.getPitch());
 		_computedData.getYawSinAndCos().fromAngle(_remoteData.getYaw());
+	}
+
+	void RC::inputDevicesTick() {
+		_leverLeft.tick();
+		_leverRight.tick();
+		_joystickHorizontal.tick();
+		_joystickVertical.tick();
+		_ring.tick();
+		_battery.tick();
+
+//		ESP_LOGI("HID", "------------------------------------");
+//		ESP_LOGI("HID", "Lever left: %d", _leverLeft.getValue());
+//		ESP_LOGI("HID", "Encoder rotation: %ld", _encoder.getRotation());
+//		ESP_LOGI("HID", "Encoder pressed: %b", _encoder.isPressed());
+//		ESP_LOGI("HID", "Lever right: %d", _leverRight.getValue());
+//		ESP_LOGI("HID", "Joy horiz: %d", _joystickHorizontal.getValue());
+//		ESP_LOGI("HID", "Hoy vert: %d", _joystickVertical.getValue());
+//		ESP_LOGI("HID", "Ring: %d", _ring.getValue());
+//		ESP_LOGI("HID", "BChr: %d", _battery.getCharge());
+
+		float pizda = yoba::toRadians(-90) + _joystickVertical.getFloatValue() * yoba::toRadians(180);
+		_pitchInterpolator.setTargetValue(pizda);
+
+		pizda = yoba::toRadians(-90) + _joystickHorizontal.getFloatValue() * yoba::toRadians(180);
+		_rollInterpolator.setTargetValue(pizda);
+
+		pizda = _ring.getFloatValue() * yoba::toRadians(90);
+		_yawInterpolator.setTargetValue(pizda);
 	}
 
 	void RC::SPIBusSetup() {
@@ -353,14 +349,13 @@ namespace pizda {
 		ESP_ERROR_CHECK(spi_bus_initialize(SPI2_HOST, &busConfig, SPI_DMA_CH_AUTO));
 	}
 
-	void RC::fromSlave() {
-		float pizda = yoba::toRadians(-45) + (float) _slave.getData().joystickVertical / 4096.f * yoba::toRadians(90);
-		_pitchInterpolator.setTargetValue(pizda);
+	void RC::ADCUnitsSetup() {
+		adc_oneshot_unit_init_cfg_t ADC1UnitConfig = {
+			.unit_id = ADC_UNIT_1,
+			.clk_src = ADC_RTC_CLK_SRC_DEFAULT,
+			.ulp_mode = ADC_ULP_MODE_DISABLE
+		};
 
-		pizda = yoba::toRadians(-45) + (float) _slave.getData().joystickHorizontal / 4096.f * yoba::toRadians(90);
-		_rollInterpolator.setTargetValue(pizda);
-
-		pizda = (float) _slave.getData().ring / 4096.f * yoba::toRadians(45);
-		_yawInterpolator.setTargetValue(pizda);
+		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &_ADC1UnitHandle));
 	}
 }

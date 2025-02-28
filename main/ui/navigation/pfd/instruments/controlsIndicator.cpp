@@ -39,7 +39,7 @@ namespace pizda {
 				bounds.getY() + 1
 			),
 			7,
-			-rc.getSpoilersInterpolator().getValue() * (float) toRadians(maxAngle)
+			-rc.getLeverLeft().getFloatValue() * (float) toRadians(maxAngle)
 		);
 
 		// Flaps
@@ -49,7 +49,7 @@ namespace pizda {
 				bounds.getY() + 3
 			),
 			8,
-			rc.getFlapsInterpolator().getValue() * (float) toRadians(maxAngle)
+			rc.getLeverRight().getFloatValue() * (float) toRadians(maxAngle)
 		);
 	}
 }

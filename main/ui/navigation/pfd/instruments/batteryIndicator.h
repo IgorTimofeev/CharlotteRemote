@@ -52,7 +52,9 @@ namespace pizda {
 				// Text
 				static std::wstringstream stream;
 				stream.str(std::wstring());
-				stream << (_value * 100 / 0xFFFF);
+//				stream << (_value * 100 / std::numeric_limits<uint16_t>::max());
+				stream << _value;
+
 				const auto text = stream.str();
 
 				renderer->renderString(

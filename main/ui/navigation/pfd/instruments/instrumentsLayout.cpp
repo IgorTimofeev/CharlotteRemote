@@ -63,17 +63,24 @@ namespace pizda {
 	void InstrumentsLayout::onTick() {
 		Layout::onTick();
 
-		auto rc = &RC::getInstance();
+		auto& rc = RC::getInstance();
 
-		// Throttle
-		_throttle1Indicator.setValue(rc->getThrottle1Interpolator().getValue());
-		_throttle2Indicator.setValue(rc->getThrottle2Interpolator().getValue());
+		if (rc.getEncoder().wasInterrupted()) {
+			if (rc.getEncoder().getRotation() != 0) {
+				_throttle1Indicator.setValue(yoba::clamp(_throttle1Indicator.getValue() + rc.getEncoder().getRotation() / 100.f, 0.f, 1.f));
+				_throttle2Indicator.setValue(_throttle1Indicator.getValue());
+
+				rc.getEncoder().setRotation(0);
+			}
+
+			rc.getEncoder().acknowledgeInterrupt();
+		}
 
 		// Trim
-		_elevatorTrimIndicator.setValue(rc->getElevatorTrimInterpolator().getValue());
+		_elevatorTrimIndicator.setValue(rc.getElevatorTrimInterpolator().getValue());
 
 		// Battery
-//		_batteryIndicatorController.setValue(rc->getBattery().getCharge());
-//		_batteryIndicatorAircraft.setValue(rc->getBattery().getCharge() * 1 / 3);
+		_batteryIndicatorController.setValue(rc.getBattery().getVoltage());
+		_batteryIndicatorAircraft.setValue(rc.getBattery().getVoltage() * 1 / 3);
 	}
 }

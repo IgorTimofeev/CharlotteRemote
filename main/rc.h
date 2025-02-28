@@ -17,7 +17,9 @@
 
 #include "hardware/transceiver/transceiver.h"
 #include "hardware/speaker.h"
-#include "hardware/slave.h"
+#include "hardware/analog.h"
+#include "hardware/battery.h"
+#include "hardware/encoder.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -36,8 +38,6 @@ namespace pizda {
 			RemoteData& getRemoteData();
 			ComputedData& getComputedData();
 
-			Interpolator& getThrottle1Interpolator();
-			Interpolator& getThrottle2Interpolator();
 			Interpolator& getSpeedInterpolator();
 			Interpolator& getAltitudeInterpolator();
 			Interpolator& getPitchInterpolator();
@@ -47,8 +47,6 @@ namespace pizda {
 			Interpolator& getAltitudeTrendInterpolator();
 			Interpolator& getVerticalSpeedInterpolator();
 			Interpolator& getAileronsInterpolator();
-			Interpolator& getFlapsInterpolator();
-			Interpolator& getSpoilersInterpolator();
 			Interpolator& getElevatorInterpolator();
 			Interpolator& getRudderInterpolator();
 			Interpolator& getAileronsTrimInterpolator();
@@ -60,12 +58,21 @@ namespace pizda {
 			Settings& getSettings();
 
 			Speaker& getSpeaker();
-			Slave& getSlave();
+
+			Analog& getLeverLeft();
+			Encoder& getEncoder();
+			Analog& getLeverRight();
+			Analog& getJoystickHorizontal();
+			Analog& getJoystickVertical();
+			Analog& getRing();
+			Battery& getBattery();
 
 		private:
 			RC() = default;
 
 			// -------------------------------- Hardware --------------------------------
+
+			adc_oneshot_unit_handle_t _ADC1UnitHandle {};
 
 			ILI9341Display _display = ILI9341Display(
 				constants::hardware::spi::mosi,
@@ -81,19 +88,39 @@ namespace pizda {
 			EightBitPaletteRenderer _renderer = EightBitPaletteRenderer(32);
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
-				constants::hardware::screen::touch::sda,
-				constants::hardware::screen::touch::scl,
+				constants::hardware::i2c::sda,
+				constants::hardware::i2c::scl,
+
 				constants::hardware::screen::touch::reset,
 				constants::hardware::screen::touch::interrupt
 			);
 
-			//
-//			Potentiometer _pitchHall;
-//			Potentiometer _rollHall;
-
 			Speaker _speaker {};
-			Slave _slave {};
 			Transceiver _transceiver {};
+
+			Analog _leverLeft = Analog(&_ADC1UnitHandle, ADC_CHANNEL_0);
+			Encoder _encoder = Encoder(GPIO_NUM_25, GPIO_NUM_26, GPIO_NUM_27);
+			Analog _leverRight = Analog(&_ADC1UnitHandle, ADC_CHANNEL_3);
+
+			Analog _joystickHorizontal = Analog(&_ADC1UnitHandle, ADC_CHANNEL_7);
+			Analog _joystickVertical = Analog(&_ADC1UnitHandle, ADC_CHANNEL_5);
+			Analog _ring = Analog(&_ADC1UnitHandle, ADC_CHANNEL_6);
+
+			/**
+			Some thoughts about measuring voltage & charge in percents using ADC:
+
+			1) Safe voltage range for Li-ion 18650 battery is [2.5; 4.2]V, and for 2x batteries
+			in series it escalates to [5.0; 8.4]V. But let's give it some safety margins like
+			[6.0; 8.4]V, because of tons of trash batteries on market
+
+			2) In theory ADC should read up to 3.3V from GPIO, but Espressif docs says that ADC
+			configured with 12 dB attenuation can accurately measure only [0.15; 2.45]V on ESP32
+			See: https://docs.espressif.com/projects/esp-idf/en/release-v4.3/esp32/api-reference/peripherals/adc.html
+
+			Based on this shit & resistors I have, the voltage divider will be 1M / 330K,
+			giving final input range of [1,488; 2.084]V
+			*/
+			Battery _battery = Battery(ADC_UNIT_1, &_ADC1UnitHandle, ADC_CHANNEL_4);
 
 			// -------------------------------- UI --------------------------------
 
@@ -107,9 +134,6 @@ namespace pizda {
 
 			uint32_t _simulationTickTime1 = 0;
 			uint32_t _simulationTickTime2 = 0;
-
-			Interpolator _throttle1Interpolator;
-			Interpolator _throttle2Interpolator;
 
 			Interpolator _speedInterpolator;
 			Interpolator _speedTrendInterpolator;
@@ -126,8 +150,6 @@ namespace pizda {
 			Interpolator _aileronsInterpolator;
 			Interpolator _elevatorInterpolator;
 			Interpolator _rudderInterpolator;
-			Interpolator _flapsInterpolator;
-			Interpolator _spoilersInterpolator;
 
 			Interpolator _aileronsTrimInterpolator;
 			Interpolator _elevatorTrimInterpolator;
@@ -144,8 +166,9 @@ namespace pizda {
 
 			void updateComputedData();
 
-			void SPIBusSetup();
+			static void SPIBusSetup();
+			void ADCUnitsSetup();
 
-			void fromSlave();
+			void inputDevicesTick();
 	};
 }

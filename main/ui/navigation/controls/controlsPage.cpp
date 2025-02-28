@@ -71,7 +71,7 @@ namespace pizda {
 				bounds.getY() + 59
 			),
 			32,
-			rc.getFlapsInterpolator().getValue()
+			rc.getLeverRight().getFloatValue()
 		);
 
 		horiz(
@@ -80,7 +80,7 @@ namespace pizda {
 				bounds.getY() + 59
 			),
 			32,
-			rc.getFlapsInterpolator().getValue()
+			rc.getLeverRight().getFloatValue()
 		);
 
 		// Elevator
