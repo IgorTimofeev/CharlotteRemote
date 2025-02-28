@@ -1,5 +1,6 @@
 #include "nd.h"
 #include "../../../rc.h"
+#include <format>
 
 namespace pizda {
 	ND::ND() {

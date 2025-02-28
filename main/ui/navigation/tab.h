@@ -16,8 +16,8 @@ namespace pizda {
 				setText(text);
 			}
 
-			const std::function<Page*()>& getPageBuilder() const {
-				return _pageBuilder;
+			Page* buildPage() const {
+				return _pageBuilder();
 			}
 
 		protected:
@@ -26,19 +26,7 @@ namespace pizda {
 					// Background
 					renderer->renderFilledRectangle(bounds, &Theme::bg3);
 
-//					// Line
-//					static const uint8_t lineHorizontalOffset = 9;
-//					static const uint8_t lineVerticalOffset = 2;
-//
-//					renderer->renderHorizontalLine(
-//						Point(
-//							bounds.getX() + lineHorizontalOffset,
-//							bounds.getY2() - lineVerticalOffset
-//						),
-//						bounds.getWidth() - lineHorizontalOffset * 2,
-//						&Theme::green
-//					);
-
+					// Line
 					renderer->renderHorizontalLine(
 						bounds.getBottomLeft(),
 						bounds.getWidth(),

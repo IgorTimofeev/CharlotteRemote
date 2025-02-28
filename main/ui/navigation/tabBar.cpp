@@ -1,3 +1,4 @@
+#include <esp_log.h>
 #include "tabBar.h"
 
 namespace pizda {
@@ -25,7 +26,7 @@ namespace pizda {
 			if (selectedIndex < 0)
 				return;
 
-			auto tab = reinterpret_cast<Tab*>(getItemAt(selectedIndex));
+			auto tab = dynamic_cast<Tab*>(getItemAt(selectedIndex));
 
 			// Removing old page
 			if (_pageLayout.getChildrenCount() > 0) {
@@ -35,9 +36,16 @@ namespace pizda {
 			}
 
 			// Creating new page
-			auto newPage = tab->getPageBuilder()();
+			auto newPage = tab->buildPage();
 			newPage->setup();
 			_pageLayout += newPage;
+
+			if (heap_caps_check_integrity_all(true)) {
+				ESP_LOGI("HEAP", "heap_caps_check_integrity_all passed");
+			}
+			else {
+				ESP_LOGE("HEAP", "heap_caps_check_integrity_all failed");
+			}
 		};
 
 		// Initialization
