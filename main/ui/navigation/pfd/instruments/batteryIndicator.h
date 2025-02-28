@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sstream>
+#include <format>
 #include "../../../components/yoba/src/ui.h"
 #include "../../../theme.h"
 
@@ -50,14 +50,16 @@ namespace pizda {
 				}
 
 				// Text
-				static std::wstringstream stream;
-				stream.str(std::wstring());
-				stream << (_charge * 100 / 0xFF);
-				stream << L"%";
-				const auto text = stream.str();
-
+//				static std::wstringstream stream;
+//				stream.str(std::wstring());
+//				stream << (_voltage / 1000);
+//				stream << L'.';
+//				stream << (_voltage % 1000 / 100);
+//				stream << L'%';
+//				const auto text = stream.str();
+//
 				// Wtf
-//				const auto text = std::format(L"{}%", _charge * 100 / 0xFF);
+				const auto& text = std::format(L"{}v", _voltage);
 
 				renderer->renderString(
 					Point(
@@ -86,6 +88,8 @@ namespace pizda {
 
 			void setCharge(uint8_t charge) {
 				_charge = charge;
+
+				invalidate();
 			}
 
 		private:

@@ -1,6 +1,5 @@
 #include "debugOverlay.h"
 #include "../rc.h"
-#include <sstream>
 #include <esp_private/esp_clk.h>
 
 namespace pizda {
@@ -8,36 +7,32 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		int32_t y = 0;
-		static std::wstringstream stream;
+		std::wstring text;
 
 		const auto totalDeltaTime = rc.getTickDeltaTime();
 
-		const auto renderLine = [renderer, &y](const std::function<void()>& streamWriter, const Color* color = &Theme::purple, uint8_t scale = 1) {
-			stream.str(std::wstring());
-			streamWriter();
+		const auto renderLine = [renderer, &y, &text](const std::function<void()>& textSetter, const Color* color = &Theme::purple, uint8_t scale = 1) {
+			textSetter();
 
-			renderer->renderString(Point(10, y), &Theme::fontNormal, color, stream.str(), scale);
+			renderer->renderString(Point(10, y), &Theme::fontNormal, color, text, scale);
 
 			y += Theme::fontNormal.getHeight(scale) + 2;
 		};
 
 		// Big fucking FPS counter
 		renderLine(
-			[&totalDeltaTime]() {
-				stream << (totalDeltaTime > 0 ? 1000 / totalDeltaTime : 0);
+			[&totalDeltaTime, &text]() {
+				text = std::format(L"{}", totalDeltaTime > 0 ? 1000 / totalDeltaTime : 0);
 			},
 			&Theme::yellow,
 			3
 		);
 
-		renderLine([]() {
-			stream
-				<< L"CPU clock: "
-				<< ((uint32_t) esp_clk_cpu_freq() / 1000000UL)
-				<< L" MHz";
+		renderLine([&text]() {
+			text = std::format(L"CPU clock: {} MHz", ((uint32_t) esp_clk_cpu_freq() / 1000000UL));
 		});
 
-		renderLine([]() {
+		renderLine([&text]() {
 //			multi_heap_info_t info;
 //			heap_caps_get_info(&info, MALLOC_CAP_INTERNAL);
 //			const auto totalHeap = info.total_free_bytes + info.total_allocated_bytes;
@@ -51,21 +46,12 @@ namespace pizda {
 //				<< (info.total_free_bytes / totalHeap)
 //				<< L"%";
 
-			stream
-				<< L"Heap: "
-				<< (esp_get_free_heap_size() / 1024)
-				<< L" kB";
+			text = std::format(L"Heap: {} kB", esp_get_free_heap_size() / 1024);
 		});
 
-		const auto renderTimeLine = [&renderLine, &totalDeltaTime](const std::wstring_view& key, uint32_t time) {
-			renderLine([time, &key, &totalDeltaTime]() {
-				stream
-					<< key
-					<< L": "
-					<< time
-					<< L" ms, "
-					<< (totalDeltaTime > 0 ? time * 100 / totalDeltaTime : 0)
-					<< L"%";
+		const auto renderTimeLine = [&renderLine, &totalDeltaTime, &text](std::wstring_view key, uint32_t time) {
+			renderLine([time, &key, &totalDeltaTime, &text]() {
+				text = std::format(L"{}: {} ms, {}%", key, time, totalDeltaTime > 0 ? time * 100 / totalDeltaTime : 0);
 			});
 		};
 
@@ -75,8 +61,8 @@ namespace pizda {
 		renderTimeLine(L"Render", rc.getApplication().getRenderDeltaTime());
 		renderTimeLine(L"Flush", rc.getApplication().getFlushDeltaTime());
 
-		renderLine([&totalDeltaTime]() {
-			stream << L"Total: " << totalDeltaTime << L" ms";
+		renderLine([&totalDeltaTime, &text]() {
+			text = std::format(L"Total: {} ms", totalDeltaTime);
 		});
 	}
 }

@@ -1,5 +1,4 @@
 #include "pfd.h"
-#include <sstream>
 #include "../../../rc.h"
 #include "../../theme.h"
 
@@ -335,12 +334,7 @@ namespace pizda {
 				);
 
 				// Text
-				static std::wstringstream stream;
-				stream.str(std::wstring());
-
-				stream << lineValue;
-
-				const auto& text = stream.str();
+				const auto& text = std::format(L"{}", lineValue);
 
 				renderer->renderString(
 					Point(
@@ -578,7 +572,6 @@ namespace pizda {
 			lineLeft,
 			lineRight;
 
-		std::wstringstream stream;
 		const Color* color;
 
 		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += pitchOverlayAngleStep) {
@@ -605,10 +598,6 @@ namespace pizda {
 			);
 
 			if (lineAngleDeg != 0 && lineAngleDeg % 10 == 0) {
-				stream.str(std::wstring());
-
-				stream << abs(lineAngleDeg);
-
 				renderer->renderString(
 					Point(
 						lineRight.getX() + pitchOverlayTextOffset,
@@ -616,7 +605,7 @@ namespace pizda {
 					),
 					&Theme::fontSmall,
 					color,
-					stream.str()
+					std::format(L"{}", abs(lineAngleDeg))
 				);
 			}
 		}
@@ -692,7 +681,6 @@ namespace pizda {
 		bool isBig;
 		uint8_t lineLength;
 
-		std::wstringstream stream;
 		int32_t lineY;
 
 		while (x <= bounds.getX2()) {
@@ -713,31 +701,29 @@ namespace pizda {
 
 			// Text
 			if (isBig) {
-				stream.str(std::wstring());
+				std::wstring text;
 
 				switch (angle) {
 					case 0:
-						stream << L'N';
+						text = L'N';
 						break;
 
 					case 90:
-						stream << L'E';
+						text = L'E';
 						break;
 
 					case 180:
-						stream << L'S';
+						text = L'S';
 						break;
 
 					case 270:
-						stream << L'W';
+						text = L'W';
 						break;
 
 					default:
-						stream << angle;
+						text = std::format(L"{}", angle);
 						break;
 				}
-
-				const auto& text = stream.str();
 
 				renderer->renderString(
 					Point(
@@ -888,15 +874,11 @@ namespace pizda {
 				);
 
 				// Text
-				static std::wstringstream stream;
-				stream.str(std::wstring());
-				stream << lineValue;
-
 				renderer->renderString(
 					Point(x + lineSizeBig + lineSizeTextOffset, y - Theme::fontNormal.getHeight() / 2),
 					&Theme::fontNormal,
 					lineColor,
-					stream.str()
+					std::format(L"{}", lineValue)
 				);
 			}
 			else {
@@ -1003,10 +985,6 @@ namespace pizda {
 						lineColor
 					);
 
-					static std::wstringstream stream;
-					stream.str(std::wstring());
-					stream << lineValue / 100;
-
 					renderer->renderString(
 						Point(
 							bounds.getX() + lineSizeBig + verticalSpeedTextOffset,
@@ -1014,7 +992,7 @@ namespace pizda {
 						),
 						&Theme::fontNormal,
 						lineColor,
-						stream.str()
+						std::format(L"{}", lineValue / 100)
 					);
 				}
 				else {
@@ -1047,7 +1025,7 @@ namespace pizda {
 		);
 	}
 
-	void PFD::renderMiniPanel(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, const std::wstring_view& text, int8_t textXOffset) {
+	void PFD::renderMiniPanel(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, std::wstring_view text, int8_t textXOffset) {
 		// Background
 		renderer->renderFilledRectangle(bounds, bg);
 
@@ -1064,18 +1042,15 @@ namespace pizda {
 	}
 
 	void PFD::renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, float autopilotValue, bool left) {
-		static std::wstringstream stream;
-		stream.str(std::wstring());
+		std::wstring text;
 
 		if (autopilotValue > 0) {
-			stream << (int32_t) autopilotValue;
+			text = std::format(L"{}", (int32_t) autopilotValue);
 		}
 		else {
-			stream << L"----";
+			text = L"----";
 		}
 
-		const auto& text = stream.str();
-		
 		renderMiniPanel(
 			renderer,
 			bounds,
@@ -1121,73 +1096,72 @@ namespace pizda {
 		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
-		static std::wstringstream stream;
-		stream.str(std::wstring());
+		std::wstring text;
 
 		switch (rc.getLocalData().getAltimeterMode()) {
 			case AltimeterMode::QNH:
-				stream << (uint16_t) rc.getLocalData().getAltimeterPressure();
+				text = std::format(L"{}", (uint16_t) rc.getLocalData().getAltimeterPressure());
 				break;
 
 			case AltimeterMode::QNE:
-				stream << L"STD";
+				text = L"STD";
 				bg = &Theme::yellow;
 				fg = &Theme::bg1;
 
 				break;
 		}
 
-		renderMiniPanel(renderer, bounds, bg, fg, stream.str(), 0);
+		renderMiniPanel(renderer, bounds, bg, fg, text, 0);
 	}
 
 	void PFD::onRender(Renderer* renderer, const Bounds& bounds) {
-		renderSyntheticVision(renderer, Bounds(
-			bounds.getX() + speedWidth,
-			bounds.getY(),
-			bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,
-			bounds.getHeight()
-		));
-
-		renderSpeed(renderer, Bounds(
-			bounds.getX(),
-			bounds.getY() + miniHeight,
-			speedWidth,
-			bounds.getHeight() - miniHeight
-		));
-
-		renderAutopilotSpeed(renderer, Bounds(
-			bounds.getX(),
-			bounds.getY(),
-			speedWidth,
-			miniHeight
-		));
-
-		renderAltitude(renderer, Bounds(
-			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
-			bounds.getY() + miniHeight,
-			altitudeWidth,
-			bounds.getHeight() - miniHeight * 2
-		));
-
-		renderAutopilotAltitude(renderer, Bounds(
-			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
-			bounds.getY(),
-			altitudeWidth,
-			miniHeight
-		));
-
-		renderPressure(renderer, Bounds(
-			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
-			bounds.getY2() + 1 - miniHeight,
-			altitudeWidth,
-			miniHeight
-		));
-
-		renderVerticalSpeed(renderer, Bounds(
-			bounds.getX2() + 1 - verticalSpeedWidth,
-			bounds.getY(),
-			verticalSpeedWidth,
-			bounds.getHeight()
-		));
+//		renderSyntheticVision(renderer, Bounds(
+//			bounds.getX() + speedWidth,
+//			bounds.getY(),
+//			bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,
+//			bounds.getHeight()
+//		));
+//
+//		renderSpeed(renderer, Bounds(
+//			bounds.getX(),
+//			bounds.getY() + miniHeight,
+//			speedWidth,
+//			bounds.getHeight() - miniHeight
+//		));
+//
+//		renderAutopilotSpeed(renderer, Bounds(
+//			bounds.getX(),
+//			bounds.getY(),
+//			speedWidth,
+//			miniHeight
+//		));
+//
+//		renderAltitude(renderer, Bounds(
+//			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
+//			bounds.getY() + miniHeight,
+//			altitudeWidth,
+//			bounds.getHeight() - miniHeight * 2
+//		));
+//
+//		renderAutopilotAltitude(renderer, Bounds(
+//			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
+//			bounds.getY(),
+//			altitudeWidth,
+//			miniHeight
+//		));
+//
+//		renderPressure(renderer, Bounds(
+//			bounds.getX2() + 1 - altitudeWidth - verticalSpeedWidth,
+//			bounds.getY2() + 1 - miniHeight,
+//			altitudeWidth,
+//			miniHeight
+//		));
+//
+//		renderVerticalSpeed(renderer, Bounds(
+//			bounds.getX2() + 1 - verticalSpeedWidth,
+//			bounds.getY(),
+//			verticalSpeedWidth,
+//			bounds.getHeight()
+//		));
 	}
 }

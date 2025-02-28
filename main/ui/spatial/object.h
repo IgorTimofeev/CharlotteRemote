@@ -85,7 +85,7 @@ namespace pizda {
 
 	class Label : public Object {
 		public:
-			Label(const Vector3F& position, const Font* font, const Color* color, const std::wstring_view& text) : _position(position), _font(font), _color(color), _text(text) {
+			Label(const Vector3F& position, const Font* font, const Color* color, std::wstring_view text) : _position(position), _font(font), _color(color), _text(text) {
 
 			}
 
@@ -139,11 +139,11 @@ namespace pizda {
 				_font = font;
 			}
 
-			const std::wstring_view& getText() const {
+			std::wstring_view getText() const {
 				return _text;
 			}
 
-			void setText(const std::wstring_view& text) {
+			void setText(std::wstring_view text) {
 				_text = text;
 			}
 

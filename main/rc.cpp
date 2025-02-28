@@ -58,7 +58,7 @@ namespace pizda {
 		_application.setBackgroundColor(&Theme::bg1);
 
 		// Tab bar
-		_tabBar.setSelectedIndex(0);
+		_tabBar.setSelectedIndex(1);
 		_application += &_tabBar;
 
 		// Debug overlay

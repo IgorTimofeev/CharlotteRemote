@@ -9,7 +9,7 @@ namespace pizda {
 
 	class AutopilotSelector : public Layout {
 		public:
-			AutopilotSelector(uint8_t digitCount, const std::wstring_view& titleText, const std::wstring_view& buttonText);
+			AutopilotSelector(uint8_t digitCount, std::wstring_view titleText, std::wstring_view buttonText);
 
 			Rectangle background;
 			EqualLayout row = EqualLayout(Orientation::horizontal);

@@ -12,7 +12,7 @@ namespace pizda {
 
 	class Tab : public SelectorItem, public TextElement {
 		public:
-			Tab(const std::wstring_view& text, const std::function<Page*()>& pageBuilder) : _pageBuilder(pageBuilder) {
+			Tab(std::wstring_view text, const std::function<Page*()>& pageBuilder) : _pageBuilder(pageBuilder) {
 				setText(text);
 			}
 

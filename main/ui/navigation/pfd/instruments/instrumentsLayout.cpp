@@ -48,7 +48,7 @@ namespace pizda {
 		// Battery
 		Theme::apply(&_batteryIndicatorTitle);
 
-		_batteryIndicatorController.setSize(Size(28, 12));
+		_batteryIndicatorController.setSize(Size(32, 14));
 		_batteryIndicatorAircraft.setSize(_batteryIndicatorController.getSize());
 
 		_batteryIndicatorRows.setSpacing(5);

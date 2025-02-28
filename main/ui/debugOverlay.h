@@ -9,6 +9,6 @@ namespace pizda {
 
 	class DebugOverlay : public Element {
 		protected:
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer* textSetter, const Bounds& bounds) override;
 	};
 }

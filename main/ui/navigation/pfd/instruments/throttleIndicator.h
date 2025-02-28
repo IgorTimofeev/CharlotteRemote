@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sstream>
+#include <format>
 #include "../../../components/yoba/src/ui.h"
 #include "../../../theme.h"
 
@@ -51,9 +51,7 @@ namespace pizda {
 				);
 
 				// Text
-				std::wstringstream textBuffer;
-				textBuffer << (int32_t) (_value * 100);
-				const auto text = textBuffer.str();
+				const auto text = std::format(L"{}", (int32_t) (_value * 100));
 
 				renderer->renderString(
 					Point(
