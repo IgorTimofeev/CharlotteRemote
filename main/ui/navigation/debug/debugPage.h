@@ -10,9 +10,7 @@ namespace pizda {
 
 	class DebugPage : public Page {
 		public:
-			DebugPage();
-
-			void setup() override;
+			void setup();
 
 		private:
 			ScrollView _scrollView;

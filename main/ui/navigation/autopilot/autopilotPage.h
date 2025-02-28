@@ -11,9 +11,7 @@ namespace pizda {
 
 	class AutopilotPage : public Page {
 		public:
-			AutopilotPage();
-
-			void setup() override;
+			void setup();
 
 		private:
 			StackLayout rows;

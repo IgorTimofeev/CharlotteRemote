@@ -2,10 +2,6 @@
 
 namespace pizda {
 	PFDPage::PFDPage() {
-
-	}
-
-	void PFDPage::setup() {
 		_pfd.setMargin(Margin(0, 0, 0, InstrumentsLayout::panelSize));
 		*this += &_pfd;
 

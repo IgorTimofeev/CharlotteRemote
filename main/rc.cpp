@@ -36,8 +36,7 @@ namespace pizda {
 		// Transceiver
 //		_transceiver.setup();
 
-		// -------------------------------- HID --------------------------------
-
+		// -------------------------------- Input devices --------------------------------
 		ADCUnitsSetup();
 
 		_leverLeft.setup();
@@ -49,7 +48,6 @@ namespace pizda {
 		_battery.setup();
 
 		_speaker.setup();
-
 
 		// -------------------------------- UI --------------------------------
 
@@ -73,7 +71,8 @@ namespace pizda {
 			auto time = esp_timer_get_time();
 
 			// High priority tasks
-			inputDevicesTick();
+			axisTick();
+			encoderTick();
 			simulateFlightData();
 			updateComputedData();
 
@@ -93,10 +92,10 @@ namespace pizda {
 		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
 		// Test
-		const auto testDeltaTime = (float) (esp_timer_get_time() - _simulationTickTime2);
-		float testDelay = 1000000;
+		auto deltaTime = (float) (esp_timer_get_time() - _simulationTickTime);
+		float simulationInterval = 1000000;
 
-		if (testDeltaTime > testDelay) {
+		if (deltaTime > simulationInterval) {
 			// Throttle
 			const auto handleFloat = [&](Interpolator& interpolator, float increment = 0.1f, float trigger = 0.05f) {
 				if (std::abs(interpolator.getValue() - interpolator.getTargetValue()) > trigger)
@@ -111,20 +110,20 @@ namespace pizda {
 			};
 
 			// Speed
-			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) yoba::random(1, 20) / 10.0f * testDeltaTime / testDelay);
+			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) yoba::random(1, 20) / 10.0f * deltaTime / simulationInterval);
 //			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + 2.0f);
 
 			if (_speedInterpolator.getTargetValue() > 150)
 				_speedInterpolator.setTargetValue(0);
 
 			// Altitude
-			_altitudeInterpolator.setTargetValue(_altitudeInterpolator.getTargetValue() + (float) yoba::random(1, 30) / 10.0f * testDeltaTime / testDelay);
+			_altitudeInterpolator.setTargetValue(_altitudeInterpolator.getTargetValue() + (float) yoba::random(1, 30) / 10.0f * deltaTime / simulationInterval);
 
 			if (_altitudeInterpolator.getTargetValue() > 40)
 				_altitudeInterpolator.setTargetValue(0);
 
 			// A/P
-			_simulationTickTime2 = esp_timer_get_time();
+			_simulationTickTime = esp_timer_get_time();
 
 			const auto newSpeed = _speedInterpolator.getTargetValue();
 			const auto newAltitude = _altitudeInterpolator.getTargetValue();
@@ -134,11 +133,11 @@ namespace pizda {
 
 			// Shows where spd/alt should target in 10 sec
 			const float trendValueDeltaTime = 10 * 1000000;
-			const auto trendValueFactor = trendValueDeltaTime / testDeltaTime;
+			const auto trendValueFactor = trendValueDeltaTime / deltaTime;
 
 			_speedTrendInterpolator.setTargetValue(deltaSpeed * trendValueFactor);
 			_altitudeTrendInterpolator.setTargetValue(deltaAltitude * trendValueFactor);
-			_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60000.0f / testDeltaTime);
+			_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60000000.0f / deltaTime);
 
 			// Controls
 			handleFloat(_aileronsInterpolator);
@@ -151,10 +150,10 @@ namespace pizda {
 			handleFloat(_elevatorTrimInterpolator);
 		}
 
-		auto deltaTime = (float) (esp_timer_get_time() - _simulationTickTime1);
+		deltaTime = (float) (esp_timer_get_time() - _interpolatorTickTime);
 
 		if (deltaTime > constants::application::tickInterval) {
-			const float interpolationFactor = deltaTime / testDelay;
+			const float interpolationFactor = deltaTime / _interpolationTickInterval;
 
 			_speedInterpolator.tick(interpolationFactor);
 			_speedTrendInterpolator.tick(interpolationFactor);
@@ -178,7 +177,7 @@ namespace pizda {
 
 			_application.invalidate();
 
-			_simulationTickTime1 = esp_timer_get_time();
+			_interpolatorTickTime = esp_timer_get_time();
 		}
 	}
 
@@ -308,8 +307,36 @@ namespace pizda {
 		_computedData.getYawSinAndCos().fromAngle(_remoteData.getYaw());
 	}
 
-	void RC::inputDevicesTick() {
-		if (esp_timer_get_time() < _inputDevicesTickTime)
+	void RC::encoderTick() {
+		if (!_encoder.interrupted())
+			return;
+
+		_encoder.acknowledgeInterrupt();
+
+		// Rotation
+		if (std::abs(_encoder.getRotation()) > 2) {
+			const uint32_t time = esp_timer_get_time();
+			const uint32_t deltaTime = time - _encoderRotationTime;
+			_encoderRotationTime = time;
+
+			// No cast = sign lost
+			auto event = EncoderRotateEvent(_encoder.getRotation() * 1 * 1000 * 1000 / (int32_t) deltaTime);
+			_application.handleEvent(&event);
+
+			_encoder.setRotation(0);
+		}
+
+		// Push
+		if (_encoder.isPressed() != _encoderWasPressed) {
+			auto event = EncoderPushEvent(_encoder.isPressed());
+			_application.handleEvent(&event);
+
+			_encoderWasPressed = _encoder.isPressed();
+		}
+	}
+
+	void RC::axisTick() {
+		if (esp_timer_get_time() < _axisTickTime)
 			return;
 
 		_leverLeft.tick();
@@ -338,7 +365,7 @@ namespace pizda {
 		pizda = _ring.getFloatValue() * yoba::toRadians(90);
 		_yawInterpolator.setTargetValue(pizda);
 
-		_inputDevicesTickTime = esp_timer_get_time() + _inputDevicesTickInterval;
+		_axisTickTime = esp_timer_get_time() + _axisTickInterval;
 	}
 
 	void RC::SPIBusSetup() {
@@ -362,5 +389,21 @@ namespace pizda {
 		};
 
 		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &_ADC1UnitHandle));
+	}
+
+	float RC::getThrottle1() const {
+		return _throttle1;
+	}
+
+	void RC::setThrottle1(float throttle1) {
+		_throttle1 = throttle1;
+	}
+
+	float RC::getThrottle2() const {
+		return _throttle2;
+	}
+
+	void RC::setThrottle2(float throttle2) {
+		_throttle2 = throttle2;
 	}
 }

@@ -10,8 +10,6 @@ namespace pizda {
 		public:
 			NDPage();
 
-			void setup() override;
-
 		private:
 			ND _nd;
 

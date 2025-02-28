@@ -13,60 +13,7 @@
 namespace pizda {
 	class TabBar : public Selector {
 		public:
-			explicit TabBar();
-
-			void setup() {
-				// Page
-				_pageLayout.setMargin(Margin(0, 0, 0, _tabBarSize));
-				*this += &_pageLayout;
-
-				// Tabs
-				_tabsLayoutHolder.setHeight(_tabBarSize);
-				_tabsLayoutHolder.setVerticalAlignment(Alignment::end);
-
-				_tabsLayoutHolder += &_tabsBackground;
-
-				_tabsLayout.setOrientation(Orientation::horizontal);
-				_tabsLayoutHolder += &_tabsLayout;
-				setItemsLayout(&_tabsLayout);
-
-				*this += &_tabsLayoutHolder;
-
-				// Callbacks
-				selectionChanged += [this]() {
-					auto selectedIndex = getSelectedIndex();
-
-					if (selectedIndex < 0)
-						return;
-
-					auto tab = dynamic_cast<Tab*>(getItemAt(selectedIndex));
-
-					// Removing old page
-					if (_pageLayout.getChildrenCount() > 0) {
-						auto oldPage = _pageLayout[0];
-						_pageLayout.removeChildAt(0);
-//						delete oldPage;
-					}
-
-					// Creating new page
-					_pageLayout += tab->getPage();
-				};
-
-				// Initialization
-				_PFDPage.setup();
-				_NDPage.setup();
-				_autopilotPage.setup();
-				_controlsPage.setup();
-				_debugPage.setup();
-
-				addItem(&_PFDTab);
-				addItem(&_NDTab);
-				addItem(&_autopilotTab);
-				addItem(&_controlsTab);
-				addItem(&_debugTab);
-
-				setSelectedIndex(1);
-			}
+			void setup();
 
 		private:
 			static const uint16_t _tabBarSize = 26;

@@ -3,10 +3,6 @@
 #include "../../../rc.h"
 
 namespace pizda {
-	DebugPage::DebugPage() {
-
-	}
-
 	void DebugPage::setup() {
 		_rows.setSpacing(10);
 		_rows.setMargin(Margin(20, 20, 20, 20));

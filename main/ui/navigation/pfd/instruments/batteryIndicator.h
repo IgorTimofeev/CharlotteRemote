@@ -50,7 +50,7 @@ namespace pizda {
 				}
 
 				// Text
-				const auto text = std::format(L"{:.1f} v", (float) _voltage / 1000.f);
+				const auto text = std::format(L"{:.1f}v", (float) _voltage / 1000.f);
 
 				renderer->renderString(
 					Point(
