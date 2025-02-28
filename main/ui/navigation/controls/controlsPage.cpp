@@ -8,27 +8,27 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		// Page title
-		pageTitle.setText(L"Control axis");
+		pageTitle.setText(L"Axis calibration");
 
 		// Axis
 		Theme::apply(&_aileronsAxisEditorTitle);
-		_aileronsAxisEditor.setAxis(&rc.getJoystickHorizontal());
+		_aileronsAxisEditor.setup(&rc.getJoystickHorizontal());
 		rows += &_aileronsAxisEditorTitle;
 
 		Theme::apply(&_elevatorAxisEditorTitle);
-		_elevatorAxisEditor.setAxis(&rc.getJoystickVertical());
+		_elevatorAxisEditor.setup(&rc.getJoystickVertical());
 		rows += &_elevatorAxisEditorTitle;
 
 		Theme::apply(&_rudderAxisEditorTitle);
-		_rudderAxisEditor.setAxis(&rc.getRing());
+		_rudderAxisEditor.setup(&rc.getRing());
 		rows += &_rudderAxisEditorTitle;
 
 		Theme::apply(&_spoilersAxisEditorTitle);
-		_spoilersAxisEditor.setAxis(&rc.getLeverLeft());
+		_spoilersAxisEditor.setup(&rc.getLeverLeft());
 		rows += &_spoilersAxisEditorTitle;
 
 		Theme::apply(&_flapsAxisEditorTitle);
-		_flapsAxisEditor.setAxis(&rc.getLeverRight());
+		_flapsAxisEditor.setup(&rc.getLeverRight());
 		rows += &_flapsAxisEditorTitle;
 
 		// Controls

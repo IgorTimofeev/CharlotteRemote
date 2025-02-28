@@ -13,7 +13,7 @@ namespace pizda {
 		public:
 			uint16_t from = 0;
 			uint16_t to = 4096;
-			bool reverse = false;
+			bool inverted = false;
 	};
 
 	#pragma pack(pop)
@@ -44,14 +44,12 @@ namespace pizda {
 				const auto newValue = readValue();
 				const auto delta = newValue - _rawValue;
 
-				if (std::abs(delta) < 20) {
+				if (std::abs(delta) < 20)
 					return;
-				}
 
-				_rawValue = newValue;
+				_rawValue = _settings->inverted ? 4096 - newValue : newValue;
 
-				const uint16_t reversed = _settings->reverse ? 4096 - _rawValue : _rawValue;
-				const uint16_t clamped = yoba::clamp(reversed, _settings->from, _settings->to);
+				const uint16_t clamped = yoba::clamp(_rawValue, _settings->from, _settings->to);
 				const uint16_t deltaFrom = clamped - _settings->from;
 				const uint16_t deltaSettings = _settings->to > _settings->from ? _settings->to - _settings->from : 0;
 
