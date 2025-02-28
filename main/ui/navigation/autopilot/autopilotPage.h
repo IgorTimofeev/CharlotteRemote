@@ -13,6 +13,8 @@ namespace pizda {
 		public:
 			AutopilotPage();
 
+			void setup() override;
+
 		private:
 			StackLayout rows;
 

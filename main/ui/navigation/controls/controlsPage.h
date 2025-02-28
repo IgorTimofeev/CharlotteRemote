@@ -25,6 +25,10 @@ namespace pizda {
 	class ControlsPage : public Page {
 		public:
 			ControlsPage() {
+
+			}
+
+			void setup() override {
 				controls.setAlignment(Alignment::center);
 				*this += &controls;
 			}

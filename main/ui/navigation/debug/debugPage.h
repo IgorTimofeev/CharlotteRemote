@@ -12,6 +12,8 @@ namespace pizda {
 		public:
 			DebugPage();
 
+			void setup() override;
+
 		private:
 			ScrollView _scrollView;
 

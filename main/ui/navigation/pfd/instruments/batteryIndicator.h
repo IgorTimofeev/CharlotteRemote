@@ -50,27 +50,17 @@ namespace pizda {
 				}
 
 				// Text
-//				static std::wstringstream stream;
-//				stream.str(std::wstring());
-//				stream << (_voltage / 1000);
-//				stream << L'.';
-//				stream << (_voltage % 1000 / 100);
-//				stream << L'%';
-//				const auto text = stream.str();
-//
-				// Wtf
-//				const auto text = std::format(L"{}v", yoba::round(_voltage / 1000.f, 1));
-//				auto text = std::to_wstring(_voltage);
-//
-//				renderer->renderString(
-//					Point(
-//						bounds.getX() + borderWidth / 2 - Theme::fontSmall.getWidth(text) / 2,
-//						bounds.getYCenter() - Theme::fontSmall.getHeight() / 2
-//					),
-//					&Theme::fontSmall,
-//					&Theme::fg1,
-//					text
-//				);
+				const auto text = std::format(L"{:.1f} v", (float) _voltage / 1000.f);
+
+				renderer->renderString(
+					Point(
+						bounds.getX() + borderWidth / 2 - Theme::fontSmall.getWidth(text) / 2,
+						bounds.getYCenter() - Theme::fontSmall.getHeight() / 2
+					),
+					&Theme::fontSmall,
+					&Theme::fg1,
+					text
+				);
 			}
 
 			uint16_t getValue() const {

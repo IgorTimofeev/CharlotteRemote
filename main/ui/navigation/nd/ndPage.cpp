@@ -3,6 +3,10 @@
 
 namespace pizda {
 	NDPage::NDPage() {
+
+	}
+
+	void NDPage::setup() {
 		*this += &_nd;
 
 		// Projection

@@ -3,6 +3,10 @@
 
 namespace pizda {
 	AutopilotPage::AutopilotPage() {
+
+	}
+
+	void AutopilotPage::setup() {
 		rows.setMargin(Margin(20));
 		rows.setSpacing(20);
 
@@ -31,12 +35,12 @@ namespace pizda {
 			_spd,
 			[]() {
 				auto& rc = RC::getInstance();
-				
+
 				return rc.getLocalData().getAutopilotSpeed();
 			},
 			[](float oldAngle, float newAngle) {
 				auto& rc = RC::getInstance();
-				
+
 				rc.getLocalData().setAutopilotSpeed(clamp(rc.getLocalData().getAutopilotSpeed() + (newAngle - oldAngle > 0 ? 1.0f : -1.0f), 0.0f, 999.0f));
 			}
 		);
@@ -46,12 +50,12 @@ namespace pizda {
 			_hdg,
 			[]() {
 				auto& rc = RC::getInstance();
-				
+
 				return rc.getLocalData().getAutopilotHeading();
 			},
 			[](float oldAngle, float newAngle) {
 				auto& rc = RC::getInstance();
-				
+
 				auto newValue = (float) toDegrees(newAngle);
 
 				if (newValue < 0) {
@@ -70,12 +74,12 @@ namespace pizda {
 			_alt,
 			[]() {
 				auto& rc = RC::getInstance();
-				
+
 				return rc.getLocalData().getAutopilotAltitude();
 			},
 			[](float oldAngle, float newAngle) {
 				auto& rc = RC::getInstance();
-				
+
 				rc.getLocalData().setAutopilotAltitude(clamp(rc.getLocalData().getAutopilotAltitude() + (newAngle - oldAngle > 0 ? 10.0f : -10.0f), 0.0f, 9999.0f));
 			}
 		);
