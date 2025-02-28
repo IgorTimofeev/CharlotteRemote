@@ -64,7 +64,7 @@ namespace pizda {
 					return 0xFF;
 				}
 				else {
-					return (uint32_t) (_voltage - _voltageMin) * 0xFF / (_voltageMax - _voltageMin);
+					return (uint8_t) ((_voltage - _voltageMin) * 0xFF / (_voltageMax - _voltageMin));
 				}
 			}
 

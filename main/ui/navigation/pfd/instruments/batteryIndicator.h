@@ -1,7 +1,6 @@
 #pragma once
 
 #include <sstream>
-#include <iomanip>
 #include "../../../components/yoba/src/ui.h"
 #include "../../../theme.h"
 
@@ -29,10 +28,10 @@ namespace pizda {
 				if (fillWidth > 0) {
 					const Color* color;
 
-					if (_charge < 0xFF * 1 / 3) {
+					if (_charge < 0xFF * 1 / 4) {
 						color = &Theme::bad2;
 					}
-					else if (_charge < 0xFF * 2 / 3) {
+					else if (_charge < 0xFF * 3 / 4) {
 						color = &Theme::yellow;
 					}
 					else {
@@ -51,15 +50,14 @@ namespace pizda {
 				}
 
 				// Text
-				std::wstringstream stream;
+				static std::wstringstream stream;
 				stream.str(std::wstring());
-				stream << yoba::round(_voltage / 1000.f, 1);
-				stream << L"v";
-
+				stream << (_charge * 100 / 0xFF);
+				stream << L"%";
 				const auto text = stream.str();
 
-				// Crash, wtf
-//				const auto text = std::format(L"{}v", yoba::round(_voltage / 1000.f, 1));
+				// Wtf
+//				const auto text = std::format(L"{}%", _charge * 100 / 0xFF);
 
 				renderer->renderString(
 					Point(
