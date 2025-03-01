@@ -93,6 +93,8 @@ namespace pizda {
 			if (_tickDeltaTime < constants::application::mainTickInterval) {
 				// FreeRTOS tasks can be only delayed by ms, so...
 				vTaskDelay((constants::application::mainTickInterval - _tickDeltaTime) / 1000 / portTICK_PERIOD_MS);
+
+//				ESP_LOGI("Main", "Skipping ticks for %lu ms", (constants::application::mainTickInterval - _tickDeltaTime) / 1000);
 			}
 
 			_tickDeltaTime /= 1000;
