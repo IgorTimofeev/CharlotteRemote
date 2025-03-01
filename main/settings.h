@@ -5,21 +5,31 @@
 #include <esp_log.h>
 #include "nvs_flash.h"
 #include "nvs.h"
-#include "hardware/axis.h"
 
 namespace pizda {
 	#pragma pack(push, 1)
 
+	class AxisSettings {
+		public:
+			uint16_t from = 0;
+			uint16_t to = 4096;
+			bool inverted = false;
+	};
+
+	class SettingsAxis {
+		public:
+			AxisSettings leverLeft;
+			AxisSettings leverRight;
+			AxisSettings joystickHorizontal;
+			AxisSettings joystickVertical;
+			AxisSettings ring;
+			uint16_t lowPassFactor = 0xFFFF * 20 / 100;
+	};
+
 	class Settings {
 		public:
 			bool debugInfoVisible = false;
-
-			AxisSettings leverLeftAxis;
-			AxisSettings leverRightAxis;
-			AxisSettings joystickHorizontalAxis;
-			AxisSettings joystickVerticalAxis;
-			AxisSettings ringAxis;
-			uint16_t axisLowPassFactor = 0xFFFF * 20 / 100;
+			SettingsAxis axis;
 
 			void setup() { // NOLINT(*-convert-member-functions-to-static)
 				auto status = nvs_flash_init();

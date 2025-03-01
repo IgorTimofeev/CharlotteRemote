@@ -3,6 +3,12 @@
 #include <esp_private/esp_clk.h>
 
 namespace pizda {
+	void DebugOverlay::onTick() {
+		Element::onTick();
+
+		invalidateRender();
+	}
+
 	void DebugOverlay::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 

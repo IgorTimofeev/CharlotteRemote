@@ -1,19 +1,9 @@
 #pragma once
 
 #include "esp_adc/adc_oneshot.h"
+#include "../settings.h"
 
 namespace pizda {
-	#pragma pack(push, 1)
-
-	class AxisSettings {
-		public:
-			uint16_t from = 0;
-			uint16_t to = 4096;
-			bool inverted = false;
-	};
-
-	#pragma pack(pop)
-
 	class Axis {
 		public:
 			Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, AxisSettings* settings);

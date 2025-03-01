@@ -16,11 +16,12 @@ namespace pizda {
 	[[noreturn]] void RC::run() {
 		// -------------------------------- Main --------------------------------
 
+		// GPIO
+		SPIBusSetup();
+		ADCUnitsSetup();
+
 		// Settings
 		_settings.setup();
-
-		// SPI bus
-		SPIBusSetup();
 
 		// Display
 		_display.setup();
@@ -36,17 +37,20 @@ namespace pizda {
 		// Transceiver
 //		_transceiver.setup();
 
-		// -------------------------------- Input devices --------------------------------
-		ADCUnitsSetup();
-
+		// Axis
 		_leverLeft.setup();
-		_encoder.setup();
 		_leverRight.setup();
 		_joystickHorizontal.setup();
 		_joystickVertical.setup();
 		_ring.setup();
+
+		// Encoder
+		_encoder.setup();
+
+		// Battery
 		_battery.setup();
 
+		// Speaker
 		_speaker.setup();
 
 		// -------------------------------- UI --------------------------------
@@ -56,19 +60,19 @@ namespace pizda {
 		_application.setBackgroundColor(&Theme::bg1);
 
 		// Tab bar
-		_tabBar.setSelectedIndex(0);
+		_tabBar.setSelectedIndex(2);
 		_application += &_tabBar;
 
 		// Debug overlay
-		updateDebugInfoVisibility();
+		updateDebugOverlayVisibility();
 		_application += &_debugOverlay;
 
-		// -------------------------------- Main loop --------------------------------
+		// -------------------------------- Take off --------------------------------
 
 		_speaker.play(resources::sounds::boot());
 
 		while (true) {
-			auto time = esp_timer_get_time();
+			const auto time = esp_timer_get_time();
 
 			// High priority tasks
 			axisTick();
@@ -93,9 +97,9 @@ namespace pizda {
 
 		// Test
 		auto deltaTime = (float) (esp_timer_get_time() - _simulationTickTime);
-		float simulationInterval = 1000000;
+		float simulationTickInterval = 1000000;
 
-		if (deltaTime > simulationInterval) {
+		if (deltaTime > simulationTickInterval) {
 			// Throttle
 			const auto handleFloat = [&](Interpolator& interpolator, float increment = 0.1f, float trigger = 0.05f) {
 				if (std::abs(interpolator.getValue() - interpolator.getTargetValue()) > trigger)
@@ -110,14 +114,14 @@ namespace pizda {
 			};
 
 			// Speed
-			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) yoba::random(1, 20) / 10.0f * deltaTime / simulationInterval);
+			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) yoba::random(1, 20) / 10.0f * deltaTime / simulationTickInterval);
 //			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + 2.0f);
 
 			if (_speedInterpolator.getTargetValue() > 150)
 				_speedInterpolator.setTargetValue(0);
 
 			// Altitude
-			_altitudeInterpolator.setTargetValue(_altitudeInterpolator.getTargetValue() + (float) yoba::random(1, 30) / 10.0f * deltaTime / simulationInterval);
+			_altitudeInterpolator.setTargetValue(_altitudeInterpolator.getTargetValue() + (float) yoba::random(1, 30) / 10.0f * deltaTime / simulationTickInterval);
 
 			if (_altitudeInterpolator.getTargetValue() > 40)
 				_altitudeInterpolator.setTargetValue(0);
@@ -132,7 +136,7 @@ namespace pizda {
 			const auto deltaAltitude = newAltitude - oldAltitude;
 
 			// Shows where spd/alt should target in 10 sec
-			const float trendValueDeltaTime = 10 * 1000000;
+			const float trendValueDeltaTime = 10'000'000;
 			const auto trendValueFactor = trendValueDeltaTime / deltaTime;
 
 			_speedTrendInterpolator.setTargetValue(deltaSpeed * trendValueFactor);
@@ -153,7 +157,9 @@ namespace pizda {
 		deltaTime = (float) (esp_timer_get_time() - _interpolatorTickTime);
 
 		if (deltaTime > constants::application::tickInterval) {
-			const float interpolationFactor = deltaTime / _interpolationTickInterval;
+			constexpr static float interpolationTickInterval = 500 * 1000;
+
+			const float interpolationFactor = deltaTime / interpolationTickInterval;
 
 			_speedInterpolator.tick(interpolationFactor);
 			_speedTrendInterpolator.tick(interpolationFactor);
@@ -174,8 +180,6 @@ namespace pizda {
 			_aileronsTrimInterpolator.tick(interpolationFactor);
 			_elevatorTrimInterpolator.tick(interpolationFactor);
 			_rudderTrimInterpolator.tick(interpolationFactor);
-
-			_application.invalidate();
 
 			_interpolatorTickTime = esp_timer_get_time();
 		}
@@ -263,7 +267,7 @@ namespace pizda {
 		return _settings;
 	}
 
-	void RC::updateDebugInfoVisibility() {
+	void RC::updateDebugOverlayVisibility() {
 		_debugOverlay.setVisible(_settings.debugInfoVisible);
 	}
 
@@ -320,7 +324,7 @@ namespace pizda {
 			_encoderRotationTime = time;
 
 			// No cast = sign lost
-			auto event = EncoderRotateEvent(_encoder.getRotation() * 1 * 1000 * 1000 / (int32_t) deltaTime);
+			auto event = EncoderRotateEvent(_encoder.getRotation() * 1'000'000 / (int32_t) deltaTime);
 			_application.handleEvent(&event);
 
 			_encoder.setRotation(0);
@@ -365,15 +369,14 @@ namespace pizda {
 		pizda = _ring.getProcessedFloatValue() * yoba::toRadians(90);
 		_yawInterpolator.setTargetValue(pizda);
 
-		_axisTickTime = esp_timer_get_time() + _axisTickInterval;
+		_axisTickTime = esp_timer_get_time() + constants::axis::tickInterval;
 	}
 
 	void RC::SPIBusSetup() {
-		// SPI bus
 		spi_bus_config_t busConfig {};
-		busConfig.mosi_io_num = constants::hardware::spi::mosi;
-		busConfig.miso_io_num = constants::hardware::spi::miso;
-		busConfig.sclk_io_num = constants::hardware::spi::sck;
+		busConfig.mosi_io_num = constants::spi::mosi;
+		busConfig.miso_io_num = constants::spi::miso;
+		busConfig.sclk_io_num = constants::spi::sck;
 		busConfig.quadwp_io_num = -1;
 		busConfig.quadhd_io_num = -1;
 		busConfig.max_transfer_sz = 0xFFFF;
@@ -388,6 +391,6 @@ namespace pizda {
 			.ulp_mode = ADC_ULP_MODE_DISABLE
 		};
 
-		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &_ADC1UnitHandle));
+		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &constants::adc::unit1));
 	}
 }

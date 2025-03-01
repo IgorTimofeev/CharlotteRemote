@@ -53,7 +53,7 @@ namespace pizda {
 			Interpolator& getElevatorTrimInterpolator();
 			Interpolator& getRudderTrimInterpolator();
 
-			void updateDebugInfoVisibility();
+			void updateDebugOverlayVisibility();
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
 
@@ -74,92 +74,83 @@ namespace pizda {
 
 			// -------------------------------- Hardware --------------------------------
 
-			adc_oneshot_unit_handle_t _ADC1UnitHandle {};
 
 			ILI9341Display _display = ILI9341Display(
-				constants::hardware::spi::mosi,
-				constants::hardware::spi::miso,
-				constants::hardware::spi::sck,
+				constants::spi::mosi,
+				constants::spi::miso,
+				constants::spi::sck,
 
-				constants::hardware::screen::slaveSelect,
-				constants::hardware::screen::dataCommand,
-				constants::hardware::screen::reset,
-				constants::hardware::screen::frequency
+				constants::screen::slaveSelect,
+				constants::screen::dataCommand,
+				constants::screen::reset,
+				constants::screen::frequency
 			);
 
 			EightBitPaletteRenderer _renderer = EightBitPaletteRenderer(32);
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
-				constants::hardware::i2c::sda,
-				constants::hardware::i2c::scl,
+				constants::i2c::sda,
+				constants::i2c::scl,
 
-				constants::hardware::screen::touch::reset,
-				constants::hardware::screen::touch::interrupt
+				constants::screen::touch::reset,
+				constants::screen::touch::interrupt
 			);
 
-			Speaker _speaker {};
-			Transceiver _transceiver {};
+			Speaker _speaker;
+			Transceiver _transceiver;
 
 			// Encoder
 			uint32_t _encoderRotationTime = 0;
 			bool _encoderWasPressed = false;
-			Encoder _encoder = Encoder(GPIO_NUM_25, GPIO_NUM_26, GPIO_NUM_27);
+
+			Encoder _encoder = Encoder(
+				constants::encoder::a,
+				constants::encoder::b,
+				constants::encoder::sw
+			);
 
 			// Axis
-			constexpr static uint32_t _axisTickInterval = 1 * 1000 * 1000 / 60;
 			uint32_t _axisTickTime = 0;
 
 			Axis _leverLeft = Axis(
-				&_ADC1UnitHandle,
-				ADC_CHANNEL_0,
-				&_settings.leverLeftAxis
+				constants::axis::leverLeft::unit,
+				constants::axis::leverLeft::channel,
+				&_settings.axis.leverLeft
 			);
 
 			Axis _leverRight = Axis(
-				&_ADC1UnitHandle,
-				ADC_CHANNEL_3,
-				&_settings.leverRightAxis
+				constants::axis::leverRight::unit,
+				constants::axis::leverRight::channel,
+				&_settings.axis.leverRight
 			);
 
 			Axis _joystickHorizontal = Axis(
-				&_ADC1UnitHandle,
-				ADC_CHANNEL_7,
-				&_settings.joystickHorizontalAxis
+				constants::axis::joystickHorizontal::unit,
+				constants::axis::joystickHorizontal::channel,
+				&_settings.axis.joystickHorizontal
 			);
 
 			Axis _joystickVertical = Axis(
-				&_ADC1UnitHandle,
-				ADC_CHANNEL_5,
-				&_settings.joystickVerticalAxis
+				constants::axis::joystickVertical::unit,
+				constants::axis::joystickVertical::channel,
+				&_settings.axis.joystickVertical
 			);
 
 			Axis _ring = Axis(
-				&_ADC1UnitHandle,
-				ADC_CHANNEL_6,
-				&_settings.ringAxis
+				constants::axis::ring::unit,
+				constants::axis::ring::channel,
+				&_settings.axis.ring
 			);
 
-			/**
-			Some thoughts about measuring voltage & charge in percents using ADC:
-
-			1) Safe voltage range for Li-ion 18650 battery is [2.5; 4.2]V, and for 2x batteries
-			in series it escalates to [5.0; 8.4]V. But let's give it some safety margins like
-			[6.0; 8.4]V, because of tons of trash batteries on market
-
-			2) In theory ADC should read up to 3.3V from GPIO, but Espressif docs says that ADC
-			configured with 12 dB attenuation can accurately measure only [0.15; 2.45]V on ESP32
-			See: https://docs.espressif.com/projects/esp-idf/en/release-v4.3/esp32/api-reference/peripherals/adc.html
-
-			Based on this shit & resistors I have, the voltage divider will be 1M / 330K,
-			giving final input range of [1,488; 2.084]V
-			*/
 			Battery _battery = Battery(
-				&_ADC1UnitHandle,
-				ADC_CHANNEL_4,
-				6000,
-				7400,
-				1000000,
-				330000
+				constants::battery::unit,
+				constants::battery::channel,
+
+				constants::battery::voltageMin,
+				constants::battery::voltageMax,
+
+				constants::battery::voltageDividerR1,
+				constants::battery::voltageDividerR2
 			);
 
 			// -------------------------------- UI --------------------------------
@@ -172,7 +163,6 @@ namespace pizda {
 
 			uint32_t _tickDeltaTime = 0;
 
-			constexpr static float _interpolationTickInterval = 500 * 1000;
 			uint32_t _interpolatorTickTime = 0;
 
 			uint32_t _simulationTickTime = 0;

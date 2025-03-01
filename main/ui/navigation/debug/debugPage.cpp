@@ -38,9 +38,9 @@ namespace pizda {
 
 			auto& rc = RC::getInstance();
 
-			const auto frequency = (uint32_t) (_speakerFrequencySlider.getValue() * 10000 / 0xFFFF);
-			const auto duration = (uint32_t) (_speakerDurationSlider.getValue() * 500 * 1000 / 0xFFFF);
-			const auto count = (uint8_t) (_speakerCountSlider.getValue() * 10 / 0xFFFF);
+			const uint32_t frequency = (uint32_t) _speakerFrequencySlider.getValue() * 10'000ul / 0xFFFFul;
+			const uint32_t duration = (uint64_t) _speakerDurationSlider.getValue() * 2'000'000ull / 0xFFFFull;
+			const auto count = (uint8_t) ((uint32_t)_speakerCountSlider.getValue() * 10ul / 0xFFFFul);
 
 			ESP_LOGI("Debug", "Speaker test: %lu, %lu, %d", frequency, duration, count);
 
@@ -109,7 +109,7 @@ furnished to do so, subject to the following conditions)"
 			settings.debugInfoVisible = _switch.isChecked();
 			settings.enqueueWrite();
 
-			rc.updateDebugInfoVisibility();
+			rc.updateDebugOverlayVisibility();
 		};
 
 		Theme::apply(&_switchTitle);

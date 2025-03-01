@@ -23,17 +23,17 @@ namespace pizda {
 
 		private:
 			EspHal _hal = EspHal(
-				constants::hardware::spi::sck,
-				constants::hardware::spi::miso,
-				constants::hardware::spi::mosi
+				constants::spi::sck,
+				constants::spi::miso,
+				constants::spi::mosi
 			);
 
 			SX1262 _sx1262 = new Module(
 				&_hal,
-				constants::hardware::transceiver::slaveSelect,
-				constants::hardware::transceiver::dio0,
-				constants::hardware::transceiver::reset,
-				constants::hardware::transceiver::busy
+				constants::transceiver::slaveSelect,
+				constants::transceiver::dio0,
+				constants::transceiver::reset,
+				constants::transceiver::busy
 			);
 
 			TransceiverMode _mode = TransceiverMode::StartReceive;

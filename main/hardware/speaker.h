@@ -13,19 +13,19 @@ namespace pizda {
 		public:
 			void setup() const {
 				ledc_timer_config_t timerConfig {};
-				timerConfig.speed_mode = constants::hardware::speaker::mode;
+				timerConfig.speed_mode = constants::speaker::mode;
 				timerConfig.duty_resolution = LEDC_TIMER_13_BIT;
-				timerConfig.timer_num = constants::hardware::speaker::timer;
+				timerConfig.timer_num = constants::speaker::timer;
 				timerConfig.freq_hz = 4000;
 				timerConfig.clk_cfg = LEDC_AUTO_CLK;
 				ESP_ERROR_CHECK(ledc_timer_config(&timerConfig));
 
 				ledc_channel_config_t channelConfig {};
-				channelConfig.gpio_num = constants::hardware::speaker::gpio;
-				channelConfig.speed_mode = constants::hardware::speaker::mode;
-				channelConfig.channel = constants::hardware::speaker::channel;
+				channelConfig.gpio_num = constants::speaker::gpio;
+				channelConfig.speed_mode = constants::speaker::mode;
+				channelConfig.channel = constants::speaker::channel;
 				channelConfig.intr_type = LEDC_INTR_DISABLE;
-				channelConfig.timer_sel = constants::hardware::speaker::timer;
+				channelConfig.timer_sel = constants::speaker::timer;
 				channelConfig.duty = 0;
 				channelConfig.hpoint = 0;
 				ESP_ERROR_CHECK(ledc_channel_config(&channelConfig));
@@ -106,12 +106,12 @@ namespace pizda {
 			std::vector<Track> _tracks {};
 
 			static void setDuty(bool value) {
-				ESP_ERROR_CHECK(ledc_set_duty(constants::hardware::speaker::mode, constants::hardware::speaker::channel, value ? 4096 : 0));
-				ESP_ERROR_CHECK(ledc_update_duty(constants::hardware::speaker::mode, constants::hardware::speaker::channel));
+				ESP_ERROR_CHECK(ledc_set_duty(constants::speaker::mode, constants::speaker::channel, value ? 4096 : 0));
+				ESP_ERROR_CHECK(ledc_update_duty(constants::speaker::mode, constants::speaker::channel));
 			}
 
 			void setFrequency(uint32_t value) {
-				ESP_ERROR_CHECK(ledc_set_freq(constants::hardware::speaker::mode, constants::hardware::speaker::timer, value));
+				ESP_ERROR_CHECK(ledc_set_freq(constants::speaker::mode, constants::speaker::timer, value));
 			}
 
 			void playNote(Track& track, const Note& note) {

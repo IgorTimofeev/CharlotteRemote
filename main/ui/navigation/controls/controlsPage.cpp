@@ -33,11 +33,13 @@ namespace pizda {
 		// Low pass slider
 		Theme::apply(&_lowPassFactorSlider);
 
-		_lowPassFactorSlider.setValue(RC::getInstance().getSettings().axisLowPassFactor);
+		_lowPassFactorSlider.setValue(RC::getInstance().getSettings().axis.lowPassFactor);
 
 		_lowPassFactorSlider.valueChanged += [this]() {
-			RC::getInstance().getSettings().axisLowPassFactor = _lowPassFactorSlider.getValue();
-			RC::getInstance().getSettings().enqueueWrite();
+			auto& settings = RC::getInstance().getSettings();
+
+			settings.axis.lowPassFactor = _lowPassFactorSlider.getValue();
+			settings.enqueueWrite();
 		};
 
 		Theme::apply(&_lowPassFactorSliderTitle);

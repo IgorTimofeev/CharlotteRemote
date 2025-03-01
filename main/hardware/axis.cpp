@@ -7,7 +7,7 @@
 #include "../rc.h"
 
 namespace pizda {
-	pizda::Axis::Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, pizda::AxisSettings* settings) : _channel(channel), _unitHandle(unitHandle), _settings(settings) {
+	Axis::Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, AxisSettings* settings) : _channel(channel), _unitHandle(unitHandle), _settings(settings) {
 
 	}
 
@@ -39,7 +39,7 @@ namespace pizda {
 		_rawValue =
 			_rawValue == 0xFFFF
 			? rawValue
-			: _rawValue * (0xFFFF - settings.axisLowPassFactor) / 0xFFFF + rawValue * settings.axisLowPassFactor / 0xFFFF;
+			: _rawValue * (0xFFFF - settings.axis.lowPassFactor) / 0xFFFF + rawValue * settings.axis.lowPassFactor / 0xFFFF;
 
 		_processedValue = (std::clamp(_rawValue, _settings->from, _settings->to) - _settings->from) * maxValue / (_settings->to - _settings->from);
 	}
