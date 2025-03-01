@@ -16,7 +16,7 @@ namespace pizda {
 			explicit TabBar();
 
 		private:
-			static const uint16_t _tabBarSize = 26;
+			constexpr static uint16_t _tabBarSize = 26;
 
 			Layout _pageLayout;
 

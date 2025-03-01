@@ -68,13 +68,13 @@ namespace pizda {
 
 			const auto flagBounds = Bounds(
 				Point(
-					to ? x - flagSize.getWidth() : x,
+					to ? x - flagSize.getWidth() + 1 : x,
 					bounds.getY() + bounds.getHeight() - flagSize.getHeight()
 				),
 				flagSize
 			);
 
-			renderer->renderFilledRectangle(flagBounds, Theme::cornerRadius, &Theme::fg1);
+			renderer->renderFilledRectangle(flagBounds, &Theme::fg1);
 
 			renderer->renderString(
 				Point(flagBounds.getX() + textOffsetX, flagBounds.getY() + textOffsetY),
@@ -167,9 +167,9 @@ namespace pizda {
 		_invertButton.setCornerRadius(Theme::cornerRadius);
 
 		_invertButton.setDefaultBackgroundColor(&Theme::bg3);
-		_invertButton.setPressedBackgroundColor(&Theme::fg1);
+		_invertButton.setPressedBackgroundColor(&Theme::accent1);
 
-		_invertButton.setDefaultTextColor(&Theme::fg7);
+		_invertButton.setDefaultTextColor(&Theme::bg7);
 		_invertButton.setPressedTextColor(&Theme::bg2);
 
 		_invertButton.setFont(&Theme::fontSmall);

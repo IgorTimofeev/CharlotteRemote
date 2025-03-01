@@ -106,7 +106,7 @@ namespace pizda {
 			Encoder _encoder = Encoder(GPIO_NUM_25, GPIO_NUM_26, GPIO_NUM_27);
 
 			// Axis
-			constexpr static const uint32_t _axisTickInterval = 1 * 1000 * 1000 / 60;
+			constexpr static uint32_t _axisTickInterval = 1 * 1000 * 1000 / 60;
 			uint32_t _axisTickTime = 0;
 
 			Axis _leverLeft = Axis(
