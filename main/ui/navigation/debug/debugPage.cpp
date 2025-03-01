@@ -3,27 +3,27 @@
 #include "../../../rc.h"
 
 namespace pizda {
-	void DebugPage::setup() {
+	DebugPage::DebugPage() {
 		// Page title
 		pageTitle.setText(L"Debug page");
 
 		// Speaker frequency
 		Theme::apply(&_speakerFrequencySlider);
-		_speakerFrequencySlider.setValue(0.5f);
+		_speakerFrequencySlider.setValue(0xFFFF * 50 / 100);
 
 		Theme::apply(&_speakerFrequencySliderTitle);
 		rows += &_speakerFrequencySliderTitle;
 
 		// Speaker duration
 		Theme::apply(&_speakerDurationSlider);
-		_speakerDurationSlider.setValue(0.5f);
+		_speakerDurationSlider.setValue(0xFFFF * 50 / 100);
 
 		Theme::apply(&_speakerDurationSliderTitle);
 		rows += &_speakerDurationSliderTitle;
 
 		// Speaker
 		Theme::apply(&_speakerCountSlider);
-		_speakerCountSlider.setValue(0.2f);
+		_speakerCountSlider.setValue(0xFFFF * 20 / 100);
 
 		Theme::apply(&_speakerCountSliderTitle);
 		rows += &_speakerCountSliderTitle;
@@ -31,15 +31,16 @@ namespace pizda {
 		// Speaker button
 		Theme::apply(&_speakerButton);
 		_speakerButton.setText(L"Play sound");
+
 		_speakerButton.pressedChanged += [this]() {
 			if (_speakerButton.isPressed())
 				return;
 
 			auto& rc = RC::getInstance();
 
-			const auto frequency = (uint32_t) (_speakerFrequencySlider.getValue() * (float) 10000);
-			const auto duration = (uint32_t) (_speakerDurationSlider.getValue() * (float) 500 * 1000);
-			const auto count = (uint8_t) (_speakerCountSlider.getValue() * (float) 10);
+			const auto frequency = (uint32_t) (_speakerFrequencySlider.getValue() * 10000 / 0xFFFF);
+			const auto duration = (uint32_t) (_speakerDurationSlider.getValue() * 500 * 1000 / 0xFFFF);
+			const auto count = (uint8_t) (_speakerCountSlider.getValue() * 10 / 0xFFFF);
 
 			ESP_LOGI("Debug", "Speaker test: %lu, %lu, %d", frequency, duration, count);
 
@@ -57,10 +58,10 @@ namespace pizda {
 
 		// Text font size slider
 		Theme::apply(&_textFontSizeSlider);
-		_textFontSizeSlider.setValue(0.4f);
+		_textFontSizeSlider.setValue(0xFFFF * 40 / 100);
 
 		_textFontSizeSlider.valueChanged += [this]() {
-			_text.setFontScale(1 + (uint8_t) std::round(_textFontSizeSlider.getValue() * 8));
+			_text.setFontScale(1 + (uint8_t) std::round(_textFontSizeSlider.getValue() * 8 / 0xFFFF));
 		};
 
 		Theme::apply(&_textSliderTitle);
@@ -69,10 +70,10 @@ namespace pizda {
 		// Text margin slider
 		Theme::apply(&_textMarginSlider);
 		_textMarginSlider.setFillColor(&Theme::good2);
-		_textMarginSlider.setValue(0.5f);
+		_textMarginSlider.setValue(0xFFFF * 50 / 100);
 
 		_textMarginSlider.valueChanged += [this]() {
-			uint16_t value = 1 + (uint8_t) std::round(_textMarginSlider.getValue() * 80);
+			uint16_t value = 1 + (uint8_t) std::round(_textMarginSlider.getValue() * 80 / 0xFFFF);
 
 			rows.setMargin(Margin(value, rows.getMargin().getTop(), value, rows.getMargin().getTop()));
 		};
@@ -116,7 +117,7 @@ furnished to do so, subject to the following conditions)"
 
 		// Progress bar
 		Theme::apply(&_progressBar);
-		_progressBar.setValue(0.8f);
+		_progressBar.setValue(0xFFFF * 80 / 100);
 		_progressBar.setFillColor(&Theme::bad2);
 
 		Theme::apply(&_progressBarTitle);

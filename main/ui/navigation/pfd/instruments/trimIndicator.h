@@ -25,9 +25,9 @@ namespace pizda {
 					renderer->renderFilledRectangle(
 						Bounds(
 							bounds.getX(),
-							bounds.getY() + (int32_t) (_suggestedMinimum * (float) bounds.getHeight()),
+							bounds.getY() + _suggestedMinimum * bounds.getHeight() / 0xFFFF,
 							suggestedValueSize,
-							(uint16_t) ((_suggestedMaximum - _suggestedMinimum) * (float) bounds.getHeight())
+							(_suggestedMaximum - _suggestedMinimum) * bounds.getHeight() / 0xFFFF
 						),
 						&Theme::green
 					);
@@ -35,7 +35,7 @@ namespace pizda {
 					// Triangle
 					const auto trianglePosition = Point(
 						bounds.getX2() - triangleSize,
-						bounds.getY() + (int32_t) (_value * (float) bounds.getHeight())
+						bounds.getY() + (int32_t) (_value * bounds.getHeight() / 0xFFFF)
 					);
 
 					renderer->renderFilledTriangle(
@@ -62,9 +62,9 @@ namespace pizda {
 					// Suggested value
 					renderer->renderFilledRectangle(
 						Bounds(
-							bounds.getX() + (int32_t) (_suggestedMinimum * (float) bounds.getWidth()),
+							bounds.getX() + _suggestedMinimum * bounds.getWidth() / 0xFFFF,
 							bounds.getY2() - suggestedValueSize + 1,
-							(uint16_t) ((_suggestedMaximum - _suggestedMinimum) * (float) bounds.getWidth()),
+							(_suggestedMaximum - _suggestedMinimum) * bounds.getWidth() / 0xFFFF,
 							suggestedValueSize
 						),
 						&Theme::green
@@ -72,7 +72,7 @@ namespace pizda {
 
 					// Triangle
 					const auto trianglePosition = Point(
-						bounds.getX() + (int32_t) (_value * (float) bounds.getWidth()),
+						bounds.getX() + _value * bounds.getWidth() / 0xFFFF,
 						bounds.getY() + triangleSize
 					);
 
@@ -91,27 +91,27 @@ namespace pizda {
 				}
 			}
 
-			float getValue() const {
+			uint16_t getValue() const {
 				return _value;
 			}
 
-			void setValue(float value) {
+			void setValue(uint16_t value) {
 				_value = value;
 			}
 
-			float getSuggestedMinimum() const {
+			uint16_t getSuggestedMinimum() const {
 				return _suggestedMinimum;
 			}
 
-			void setSuggestedMinimum(float suggestedMinimum) {
+			void setSuggestedMinimum(uint16_t suggestedMinimum) {
 				_suggestedMinimum = suggestedMinimum;
 			}
 
-			float getSuggestedMaximum() const {
+			uint16_t getSuggestedMaximum() const {
 				return _suggestedMaximum;
 			}
 
-			void setSuggestedMaximum(float suggestedMaximum) {
+			void setSuggestedMaximum(uint16_t suggestedMaximum) {
 				_suggestedMaximum = suggestedMaximum;
 			}
 
@@ -124,9 +124,9 @@ namespace pizda {
 			}
 
 		private:
-			float _suggestedMinimum = 0;
-			float _suggestedMaximum = 0;
-			float _value = 0;
+			uint16_t _suggestedMinimum = 0;
+			uint16_t _suggestedMaximum = 0;
+			uint16_t _value = 0;
 			Orientation _orientation = Orientation::vertical;
 	};
 }

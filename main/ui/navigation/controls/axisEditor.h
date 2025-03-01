@@ -24,9 +24,9 @@ namespace pizda {
 			AxisEditor* getEditor();
 	};
 
-	class AxisEditor : public EqualLayout {
+	class AxisEditor : public Layout {
 		public:
-			void setup(Axis* axis);
+			explicit AxisEditor(Axis* axis);
 
 			Axis* getAxis() const;
 

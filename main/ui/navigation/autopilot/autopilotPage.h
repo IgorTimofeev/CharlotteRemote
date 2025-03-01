@@ -12,7 +12,7 @@ namespace pizda {
 
 	class AutopilotPage : public Page {
 		public:
-			void setup();
+			explicit AutopilotPage();
 
 		private:
 			StackLayout rows;

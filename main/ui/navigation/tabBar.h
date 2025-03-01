@@ -11,12 +11,9 @@
 #include "controls/controlsPage.h"
 
 namespace pizda {
-	using namespace yoba;
-	using namespace yoba::ui;
-
 	class TabBar : public Selector {
 		public:
-			void setup();
+			explicit TabBar();
 
 		private:
 			static const uint16_t _tabBarSize = 26;
@@ -27,19 +24,25 @@ namespace pizda {
 			Rectangle _tabsBackground = Rectangle(&Theme::bg2);
 			EqualLayout _tabsLayout = EqualLayout(Orientation::horizontal);
 
-			PFDPage _PFDPage;
-			Tab _PFDTab = Tab(L"PFD", &_PFDPage);
+			Tab
+				_PFDTab = Tab(L"PFD", []() {
+					return new PFDPage();
+				}),
 
-			NDPage _NDPage;
-			Tab _NDTab = Tab(L"N/D", &_NDPage);
+				_NDTab = Tab(L"N/D", []() {
+					return new NDPage();
+				}),
 
-			AutopilotPage _autopilotPage;
-			Tab _autopilotTab = Tab(L"A/P", &_autopilotPage);
+				_APTab = Tab(L"A/P", []() {
+					return new AutopilotPage();
+				}),
 
-			ControlsPage _controlsPage;
-			Tab _controlsTab = Tab(L"CTL", &_controlsPage);
+				_controlsTab = Tab(L"CTL", []() {
+					return new ControlsPage();
+				}),
 
-			DebugPage _debugPage;
-			Tab _debugTab = Tab(L"DBG", &_debugPage);
+				_debugTab = Tab(L"DBG", []() {
+					return new DebugPage();
+				});
 	};
 }

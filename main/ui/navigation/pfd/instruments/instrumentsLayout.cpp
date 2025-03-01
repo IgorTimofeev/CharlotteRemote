@@ -41,8 +41,8 @@ namespace pizda {
 		// Elevator trim
 		Theme::apply(&_elevatorTrimTitle);
 		_elevatorTrimIndicator.setSize(Size(5, contentHeight - 4));
-		_elevatorTrimIndicator.setSuggestedMinimum(0.4);
-		_elevatorTrimIndicator.setSuggestedMaximum(0.6);
+		_elevatorTrimIndicator.setSuggestedMinimum(0xFFFF * 40 / 100);
+		_elevatorTrimIndicator.setSuggestedMaximum(0xFFFF * 60 / 100);
 		_row += &_elevatorTrimTitle;
 
 		// Battery
@@ -66,7 +66,7 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		// Trim
-		_elevatorTrimIndicator.setValue(rc.getElevatorTrimInterpolator().getValue());
+		_elevatorTrimIndicator.setValue((uint16_t) (rc.getElevatorTrimInterpolator().getValue() * (float) 0xFFFF));
 
 		// Battery
 		_batteryIndicatorController.setVoltage(rc.getBattery().getVoltage());

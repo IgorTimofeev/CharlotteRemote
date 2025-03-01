@@ -10,7 +10,7 @@ namespace pizda {
 
 	class DebugPage : public ScrollViewPage {
 		public:
-			void setup();
+			explicit DebugPage();
 
 		private:
 			Slider _speakerFrequencySlider;

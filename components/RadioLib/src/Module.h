@@ -476,9 +476,9 @@ class Module {
          Module::END_OF_MODE_TABLE,
       };
 
-      void setup() {
+      void setAxis() {
         ...
-        // Then somewhere in setup, pass them to radiolib
+        // Then somewhere in setAxis, pass them to radiolib
         radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);
         ...
       }

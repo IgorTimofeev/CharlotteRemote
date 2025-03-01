@@ -9,9 +9,9 @@ namespace pizda {
 		Theme::apply(&_projectionSlider);
 
 		_projectionSlider.valueChanged += [this]() {
-			_nd.getCamera().setProjectionPlaneDistance(0.1f + _projectionSlider.getValue() * 1000);
+			_nd.getCamera().setProjectionPlaneDistance(0.1f + _projectionSlider.getValue() * 1000 / 0xFFFF);
 
-			ESP_LOGI("ND", "Proj: %f", _projectionSlider.getValue());
+			ESP_LOGI("ND", "Proj: %d", _projectionSlider.getValue() / 0xFFFF);
 		};
 
 		_slidersLayout += &_projectionSlider;
@@ -20,9 +20,9 @@ namespace pizda {
 		Theme::apply(&_clipSlider);
 
 		_clipSlider.valueChanged += [this]() {
-			_nd.getCamera().setNearPlaneDistance(0.1f + _clipSlider.getValue() * 100);
+			_nd.getCamera().setNearPlaneDistance(0.1f + _clipSlider.getValue() * 100 / 0xFFFF);
 
-			ESP_LOGI("ND", "Near: %f", _clipSlider.getValue());
+			ESP_LOGI("ND", "Near: %d", _clipSlider.getValue() / 0xFFFF);
 		};
 
 		_slidersLayout += &_clipSlider;

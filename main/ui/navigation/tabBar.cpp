@@ -1,7 +1,7 @@
 #include "tabBar.h"
 
 namespace pizda {
-	void TabBar::setup() {
+	TabBar::TabBar() {
 		// Page
 		_pageLayout.setMargin(Margin(0, 0, 0, _tabBarSize));
 		*this += &_pageLayout;
@@ -28,24 +28,22 @@ namespace pizda {
 			auto tab = dynamic_cast<Tab*>(getItemAt(selectedIndex));
 
 			// Removing old page
-			if (_pageLayout.getChildrenCount() > 0)
+			if (_pageLayout.getChildrenCount() > 0) {
+				auto oldPage = _pageLayout[0];
 				_pageLayout.removeChildAt(0);
 
+				delete oldPage;
+			}
+
 			// Creating new page
-			_pageLayout += tab->getPage();
+			_pageLayout += tab->newPage();
 		};
 
 		// Initialization
-		_autopilotPage.setup();
-		_debugPage.setup();
-		_controlsPage.setup();
-
 		addItem(&_PFDTab);
 		addItem(&_NDTab);
-		addItem(&_autopilotTab);
+		addItem(&_APTab);
 		addItem(&_controlsTab);
 		addItem(&_debugTab);
-
-		setSelectedIndex(0);
 	}
 }

@@ -24,7 +24,7 @@ paste the sketch here, even if it is an unmodified example code
 </p>
 </details> 
 
-**Hardware setup**
+**Hardware setAxis**
 Wiring diagram, schematic, pictures etc.
 
 **Debug mode output**

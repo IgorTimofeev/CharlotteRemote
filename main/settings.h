@@ -19,6 +19,7 @@ namespace pizda {
 			AxisSettings joystickHorizontalAxis;
 			AxisSettings joystickVerticalAxis;
 			AxisSettings ringAxis;
+			uint16_t axisLowPassFactor = 0xFFFF * 20 / 100;
 
 			void setup() { // NOLINT(*-convert-member-functions-to-static)
 				auto status = nvs_flash_init();
@@ -87,7 +88,7 @@ namespace pizda {
 
 		private:
 			static const uint32_t _writeDelay = 2500000;
-			static const uint8_t _version = 4;
+			static const uint8_t _version = 1;
 			uint32_t _timeToWrite = 0;
 	};
 

@@ -4,35 +4,43 @@
 #include "../../theme.h"
 
 namespace pizda {
-	void ControlsPage::setup() {
-		auto& rc = RC::getInstance();
-
+	ControlsPage::ControlsPage() :
+		_aileronsAxisEditor(AxisEditor(&RC::getInstance().getJoystickHorizontal())),
+		_elevatorAxisEditor(AxisEditor(&RC::getInstance().getJoystickVertical())),
+		_rudderAxisEditor(AxisEditor(&RC::getInstance().getRing())),
+		_spoilersAxisEditor(AxisEditor(&RC::getInstance().getLeverLeft())),
+		_flapsAxisEditor(AxisEditor(&RC::getInstance().getLeverRight()))
+	{
 		// Page title
 		pageTitle.setText(L"Axis calibration");
 
 		// Axis
 		Theme::apply(&_aileronsAxisEditorTitle);
-		_aileronsAxisEditor.setup(&rc.getJoystickHorizontal());
 		rows += &_aileronsAxisEditorTitle;
 
 		Theme::apply(&_elevatorAxisEditorTitle);
-		_elevatorAxisEditor.setup(&rc.getJoystickVertical());
 		rows += &_elevatorAxisEditorTitle;
 
 		Theme::apply(&_rudderAxisEditorTitle);
-		_rudderAxisEditor.setup(&rc.getRing());
 		rows += &_rudderAxisEditorTitle;
 
 		Theme::apply(&_spoilersAxisEditorTitle);
-		_spoilersAxisEditor.setup(&rc.getLeverLeft());
 		rows += &_spoilersAxisEditorTitle;
 
 		Theme::apply(&_flapsAxisEditorTitle);
-		_flapsAxisEditor.setup(&rc.getLeverRight());
 		rows += &_flapsAxisEditorTitle;
 
-		// Controls
-		_controls.setHorizontalAlignment(Alignment::start);
-		rows += &_controls;
+		// Low pass slider
+		Theme::apply(&_lowPassFactorSlider);
+
+		_lowPassFactorSlider.setValue(RC::getInstance().getSettings().axisLowPassFactor);
+
+		_lowPassFactorSlider.valueChanged += [this]() {
+			RC::getInstance().getSettings().axisLowPassFactor = _lowPassFactorSlider.getValue();
+			RC::getInstance().getSettings().enqueueWrite();
+		};
+
+		Theme::apply(&_lowPassFactorSliderTitle);
+		rows += &_lowPassFactorSliderTitle;
 	}
 }

@@ -56,7 +56,7 @@ namespace pizda {
 		_application.setBackgroundColor(&Theme::bg1);
 
 		// Tab bar
-		_tabBar.setup();
+		_tabBar.setSelectedIndex(0);
 		_application += &_tabBar;
 
 		// Debug overlay
@@ -389,21 +389,5 @@ namespace pizda {
 		};
 
 		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &_ADC1UnitHandle));
-	}
-
-	float RC::getThrottle1() const {
-		return _throttle1;
-	}
-
-	void RC::setThrottle1(float throttle1) {
-		_throttle1 = throttle1;
-	}
-
-	float RC::getThrottle2() const {
-		return _throttle2;
-	}
-
-	void RC::setThrottle2(float throttle2) {
-		_throttle2 = throttle2;
 	}
 }

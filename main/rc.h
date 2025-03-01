@@ -53,12 +53,6 @@ namespace pizda {
 			Interpolator& getElevatorTrimInterpolator();
 			Interpolator& getRudderTrimInterpolator();
 
-			float getThrottle1() const;
-			void setThrottle1(float throttle1);
-
-			float getThrottle2() const;
-			void setThrottle2(float throttle2);
-
 			void updateDebugInfoVisibility();
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
@@ -75,6 +69,8 @@ namespace pizda {
 
 		private:
 			RC() = default;
+
+			Settings _settings;
 
 			// -------------------------------- Hardware --------------------------------
 
@@ -103,7 +99,6 @@ namespace pizda {
 
 			Speaker _speaker {};
 			Transceiver _transceiver {};
-
 
 			// Encoder
 			uint32_t _encoderRotationTime = 0;
@@ -204,10 +199,6 @@ namespace pizda {
 
 			// -------------------------------- Other shit --------------------------------
 
-			float _throttle1 = 0;
-			float _throttle2 = 0;
-
-			Settings _settings;
 			LocalData _localData;
 			RemoteData _remoteData;
 			ComputedData _computedData;

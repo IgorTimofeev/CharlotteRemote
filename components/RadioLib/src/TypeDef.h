@@ -422,7 +422,7 @@
 /*!
   \brief SX126x failed to execute SPI command.
   Often this means that the module is trying to use TCXO while
-  XTAL is connected (or vice versa). Make sure your crystal setup
+  XTAL is connected (or vice versa). Make sure your crystal setAxis
   (e.g. TCXO reference voltage) matches your hardware by setting
   "tcxoVoltage" to 0 when using XTAL module, or to appropriate value
   when using TCXO module.

@@ -4,7 +4,6 @@
 #include "src/ui.h"
 
 #include "../page.h"
-#include "controlsView.h"
 #include "axisEditor.h"
 
 namespace pizda {
@@ -13,17 +12,9 @@ namespace pizda {
 
 	class ControlsPage : public ScrollViewPage {
 		public:
-			void setup();
+			explicit ControlsPage();
 
 		private:
-			ControlsView _controls;
-
-			AxisEditor _spoilersAxisEditor;
-			Titler _spoilersAxisEditorTitle = Titler(L"Spoilers", &_spoilersAxisEditor);
-
-			AxisEditor _flapsAxisEditor;
-			Titler _flapsAxisEditorTitle = Titler(L"Flaps", &_flapsAxisEditor);
-
 			AxisEditor _aileronsAxisEditor;
 			Titler _aileronsAxisEditorTitle = Titler(L"Ailerons", &_aileronsAxisEditor);
 
@@ -32,5 +23,14 @@ namespace pizda {
 
 			AxisEditor _rudderAxisEditor;
 			Titler _rudderAxisEditorTitle = Titler(L"Rudder", &_rudderAxisEditor);
+
+			AxisEditor _spoilersAxisEditor;
+			Titler _spoilersAxisEditorTitle = Titler(L"Spoilers", &_spoilersAxisEditor);
+
+			AxisEditor _flapsAxisEditor;
+			Titler _flapsAxisEditorTitle = Titler(L"Flaps", &_flapsAxisEditor);
+
+			Slider _lowPassFactorSlider;
+			Titler _lowPassFactorSliderTitle = Titler(L"Response speed", &_lowPassFactorSlider);
 	};
 }

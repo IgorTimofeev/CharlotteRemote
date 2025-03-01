@@ -12,8 +12,8 @@ namespace pizda {
 		renderer->renderRectangle(bounds, Theme::cornerRadius, &Theme::bg3);
 
 		// Fill
-		const int32_t fromX = bounds.getX() + editor->getAxis()->getSettings()->from * bounds.getWidth() / 4096;
-		const int32_t toX = bounds.getX() + editor->getAxis()->getSettings()->to * bounds.getWidth() / 4096;
+		const int32_t fromX = bounds.getX() + editor->getAxis()->getSettings()->from * bounds.getWidth() / Axis::maxValue;
+		const int32_t toX = bounds.getX() + editor->getAxis()->getSettings()->to * bounds.getWidth() / Axis::maxValue;
 		const uint16_t fillWidth = toX - fromX;
 
 		renderer->renderFilledRectangle(
@@ -39,7 +39,7 @@ namespace pizda {
 
 		renderer->renderFilledRectangle(
 			Bounds(
-				bounds.getX() + axisValueThumbWidth / 2 + editor->getAxis()->getRawValue() * (bounds.getWidth() - axisValueThumbWidth) / 4096,
+				bounds.getX() + axisValueThumbWidth / 2 + editor->getAxis()->getRawValue() * (bounds.getWidth() - axisValueThumbWidth) / Axis::maxValue,
 				bounds.getY(),
 				axisValueThumbWidth,
 				bounds.getHeight()
@@ -57,7 +57,7 @@ namespace pizda {
 			);
 
 			// Flag
-			const auto text = std::to_wstring(settingsValue * 100 / 4096);
+			const auto text = std::to_wstring(settingsValue * 100 / Axis::maxValue);
 			constexpr uint8_t textOffsetX = 4;
 			constexpr uint8_t textOffsetY = 0;
 
@@ -116,7 +116,7 @@ namespace pizda {
 			const auto& bounds = getBounds();
 
 			const auto touchX = touchDownEvent->getPosition().getX();
-			const int32_t touchValue = (touchX - bounds.getX()) * 4096 / bounds.getWidth();
+			const int32_t touchValue = (touchX - bounds.getX()) * Axis::maxValue / bounds.getWidth();
 
 			_touchedTo = std::abs(touchValue - editor->getAxis()->getSettings()->to) <= std::abs(touchValue - editor->getAxis()->getSettings()->from);
 
@@ -126,18 +126,21 @@ namespace pizda {
 			const auto touchDragEvent = (TouchDragEvent*) event;
 
 			auto editor = getEditor();
+			auto settings = editor->getAxis()->getSettings();
 			const auto touchX = touchDragEvent->getPosition().getX();
 
 			const auto& bounds = getBounds();
-			const int32_t clampedTouchX = yoba::clamp((int32_t) (touchX - bounds.getX()), (int32_t) 0, (int32_t) bounds.getWidth());
+			const int32_t clampedTouchX = std::clamp((int32_t) (touchX - bounds.getX()), (int32_t) 0, (int32_t) bounds.getWidth());
 
 			// Updating settings
-			auto settingsValue =
-				_touchedTo
-				? &editor->getAxis()->getSettings()->to
-				: &editor->getAxis()->getSettings()->from;
+			uint16_t value = clampedTouchX * Axis::maxValue / bounds.getWidth();
 
-			*settingsValue = clampedTouchX * 4096 / bounds.getWidth();
+			if (_touchedTo) {
+				settings->to = std::max(settings->from, value);
+			}
+			else {
+				settings->from = std::min(settings->to, value);
+			}
 		}
 		else {
 			// Saving changes
@@ -153,22 +156,17 @@ namespace pizda {
 		return dynamic_cast<AxisEditor*>(getParent());
 	}
 
-	void AxisEditor::setup(Axis* axis) {
-		_axis = axis;
-
-		setOrientation(Orientation::horizontal);
-		setSpacing(8);
+	AxisEditor::AxisEditor(Axis* axis) : _axis(axis) {
 		setHeight(Theme::elementHeight);
 
-		// Track
-		*this += &_track;
-
 		// Invert button
-		_invertButton.setToggle(true);
 		_invertButton.setWidth(Theme::elementHeight);
+		_invertButton.setHorizontalAlignment(Alignment::end);
+
+		_invertButton.setToggle(true);
 		_invertButton.setCornerRadius(Theme::cornerRadius);
 
-		_invertButton.setDefaultBackgroundColor(&Theme::bg2);
+		_invertButton.setDefaultBackgroundColor(&Theme::bg3);
 		_invertButton.setPressedBackgroundColor(&Theme::fg1);
 
 		_invertButton.setDefaultTextColor(&Theme::fg7);
@@ -185,8 +183,11 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		setFit(&_invertButton, true);
 		*this += &_invertButton;
+
+		// Track
+		_track.setMargin(Margin(0, 0, Theme::elementHeight - Theme::cornerRadius - 1, 0));
+		*this += &_track;
 	}
 
 	Axis* AxisEditor::getAxis() const {

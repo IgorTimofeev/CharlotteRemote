@@ -12,12 +12,12 @@ namespace pizda {
 
 	class Tab : public SelectorItem, public TextElement {
 		public:
-			Tab(std::wstring_view text, Page* page) : _page(page) {
+			Tab(std::wstring_view text, const std::function<Page*()>& pageBuilder) : _pageBuilder(pageBuilder) {
 				setText(text);
 			}
 
-			Page* getPage() {
-				return _page;
+			Page* newPage() const {
+				return _pageBuilder();
 			}
 
 		protected:
@@ -49,6 +49,6 @@ namespace pizda {
 			}
 
 		private:
-			Page* _page;
+			std::function<Page*()> _pageBuilder;
 	};
 }
