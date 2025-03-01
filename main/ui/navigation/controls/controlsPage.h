@@ -14,6 +14,9 @@ namespace pizda {
 		public:
 			explicit ControlsPage();
 
+		protected:
+			void onTick() override;
+
 		private:
 			AxisEditor _aileronsAxisEditor;
 			Titler _aileronsAxisEditorTitle = Titler(L"Ailerons", &_aileronsAxisEditor);

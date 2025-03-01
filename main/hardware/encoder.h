@@ -18,8 +18,8 @@ namespace pizda {
 
 			int32_t getRPS() const;
 
-			int16_t getMappedRPS(uint16_t check1, int16_t value1, int16_t valueElse);
-			int16_t getMappedRPS(uint16_t check1, uint16_t check2, int16_t value1, int16_t value2, int16_t valueElse);
+			int16_t getRPSFactor(uint16_t check1, int16_t value1, int16_t valueElse);
+			int16_t getRPSFactor(uint16_t check1, uint16_t check2, int16_t value1, int16_t value2, int16_t valueElse);
 
 		private:
 			int32_t _RPS;

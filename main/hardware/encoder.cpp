@@ -7,7 +7,7 @@ namespace pizda {
 		return _RPS;
 	}
 
-	int16_t EncoderRotateEvent::getMappedRPS(uint16_t check1, int16_t value1, int16_t valueElse) {
+	int16_t EncoderRotateEvent::getRPSFactor(uint16_t check1, int16_t value1, int16_t valueElse) {
 		const auto absRPS = std::abs(_RPS);
 		int16_t value;
 
@@ -21,7 +21,7 @@ namespace pizda {
 		return _RPS > 0 ? value : -value;
 	}
 
-	int16_t EncoderRotateEvent::getMappedRPS(uint16_t check1, uint16_t check2, int16_t value1, int16_t value2, int16_t valueElse) {
+	int16_t EncoderRotateEvent::getRPSFactor(uint16_t check1, uint16_t check2, int16_t value1, int16_t value2, int16_t valueElse) {
 		const auto absRPS = std::abs(_RPS);
 		int16_t value;
 

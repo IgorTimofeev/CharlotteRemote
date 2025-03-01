@@ -45,4 +45,10 @@ namespace pizda {
 		Theme::apply(&_lowPassFactorSliderTitle);
 		rows += &_lowPassFactorSliderTitle;
 	}
+
+	void ControlsPage::onTick() {
+		Layout::onTick();
+
+		invalidate();
+	}
 }

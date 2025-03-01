@@ -17,7 +17,7 @@ namespace pizda {
 		public:
 			ScrollViewPage() {
 				rows.setSpacing(10);
-				rows.setMargin(Margin(20, 20, 20, 20));
+				rows.setMargin(Margin(20, 15));
 
 				// Page title
 				Theme::applyPageTitle(&pageTitle);

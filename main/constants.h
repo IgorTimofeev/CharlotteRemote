@@ -120,7 +120,10 @@ namespace pizda {
 		}
 
 		namespace application {
-			constexpr static uint32_t tickInterval = 1'000'000 / 30;
+			// 60 FPS are barely achievable on SPI displays, so let's take them for max tick rate
+			constexpr static uint32_t mainTickInterval = 1'000'000 / 60;
+
+			constexpr static uint32_t remoteDataInterpolationTickInterval = 1'000'000 / 30;
 		}
 	}
 }

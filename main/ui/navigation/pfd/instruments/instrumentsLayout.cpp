@@ -85,7 +85,7 @@ namespace pizda {
 			// Throttle
 			ESP_LOGI("Encoder", "RPS: %ld", rotateEvent->getRPS());
 
-			_throttle1Indicator.setValue(yoba::addSaturating(_throttle1Indicator.getValue(), rotateEvent->getMappedRPS(60, 1, 10) * 0xFFFF / 100));
+			_throttle1Indicator.setValue(yoba::addSaturating(_throttle1Indicator.getValue(), rotateEvent->getRPSFactor(60, 1, 10) * 0xFFFF / 100));
 			_throttle2Indicator.setValue(_throttle1Indicator.getValue());
 
 			event->setHandled(true);

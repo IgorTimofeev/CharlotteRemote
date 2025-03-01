@@ -9,4 +9,10 @@ namespace pizda {
 		_instrumentsLayout.setHeight(InstrumentsLayout::panelSize);
 		*this += &_instrumentsLayout;
 	}
+
+	void PFDPage::onTick() {
+		Layout::onTick();
+
+		invalidate();
+	}
 }

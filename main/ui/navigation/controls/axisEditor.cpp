@@ -167,7 +167,7 @@ namespace pizda {
 		_invertButton.setCornerRadius(Theme::cornerRadius);
 
 		_invertButton.setDefaultBackgroundColor(&Theme::bg3);
-		_invertButton.setPressedBackgroundColor(&Theme::accent1);
+		_invertButton.setPressedBackgroundColor(&Theme::fg1);
 
 		_invertButton.setDefaultTextColor(&Theme::bg7);
 		_invertButton.setPressedTextColor(&Theme::bg2);

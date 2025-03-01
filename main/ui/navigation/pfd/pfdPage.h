@@ -12,6 +12,9 @@ namespace pizda {
 		public:
 			PFDPage();
 
+		protected:
+			void onTick() override;
+
 		private:
 			PFD _pfd;
 			InstrumentsLayout _instrumentsLayout;

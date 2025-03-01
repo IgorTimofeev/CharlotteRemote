@@ -60,7 +60,7 @@ namespace pizda {
 		_application.setBackgroundColor(&Theme::bg1);
 
 		// Tab bar
-		_tabBar.setSelectedIndex(2);
+		_tabBar.setSelectedIndex(0);
 		_application += &_tabBar;
 
 		// Debug overlay
@@ -87,7 +87,15 @@ namespace pizda {
 			_speaker.tick();
 			_settings.tick();
 
-			_tickDeltaTime = (esp_timer_get_time() - time) / 1000;
+			_tickDeltaTime = esp_timer_get_time() - time;
+
+			// Skipping remaining tick time if any
+			if (_tickDeltaTime < constants::application::mainTickInterval) {
+				// FreeRTOS tasks can be only delayed by ms, so...
+				vTaskDelay((constants::application::mainTickInterval - _tickDeltaTime) / 1000 / portTICK_PERIOD_MS);
+			}
+
+			_tickDeltaTime /= 1000;
 		}
 	}
 
@@ -156,7 +164,7 @@ namespace pizda {
 
 		deltaTime = (float) (esp_timer_get_time() - _interpolatorTickTime);
 
-		if (deltaTime > constants::application::tickInterval) {
+		if (deltaTime > constants::application::remoteDataInterpolationTickInterval) {
 			constexpr static float interpolationTickInterval = 500 * 1000;
 
 			const float interpolationFactor = deltaTime / interpolationTickInterval;
