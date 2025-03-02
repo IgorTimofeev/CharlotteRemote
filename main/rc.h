@@ -52,6 +52,7 @@ namespace pizda {
 			Interpolator& getAileronsTrimInterpolator();
 			Interpolator& getElevatorTrimInterpolator();
 			Interpolator& getRudderTrimInterpolator();
+			uint16_t* getThrottles();
 
 			void updateDebugOverlayVisibility();
 			uint32_t getTickDeltaTime() const;
@@ -162,10 +163,12 @@ namespace pizda {
 			// -------------------------------- Timings --------------------------------
 
 			uint32_t _tickDeltaTime = 0;
+			uint32_t _interpolationTickTime = 0;
 
-			uint32_t _interpolatorTickTime = 0;
-
-			uint32_t _simulationTickTime = 0;
+			uint16_t _throttles[2] = {
+				0,
+				0
+			};
 
 			Interpolator _speedInterpolator;
 			Interpolator _speedTrendInterpolator;
@@ -193,8 +196,6 @@ namespace pizda {
 			RemoteData _remoteData;
 			ComputedData _computedData;
 
-			void simulateFlightData();
-
 			void updateComputedData();
 
 			static void SPIBusSetup();
@@ -205,5 +206,7 @@ namespace pizda {
 			void encoderTick();
 
 			void NVSSetup();
+
+			void interpolationTick();
 	};
 }

@@ -551,7 +551,7 @@
 
 /*!
   \brief A simple assert macro, will return on error.
-  If RADIOLIB_VERBOSE_ASSERT is enabled, the macro will also print out file and line number trace,
+  If RADIOLIB_VERBOSE_ASSERT is enabled, the macro will also log out file and line number trace,
   at a significant program storage cost.
 */
 #if RADIOLIB_VERBOSE_ASSERT

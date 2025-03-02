@@ -52,8 +52,12 @@ namespace pizda {
 		return _processedValue;
 	}
 
-	float Axis::getProcessedFloatValue() {
+	float Axis::getMappedFloatValue() {
 		return (float) getProcessedValue() / (float) maxValue;
+	}
+
+	uint16_t Axis::getMappedUint16Value() {
+		return getProcessedValue() * 0xFFFF / maxValue;
 	}
 
 	SettingsAxisData* Axis::getSettings() {

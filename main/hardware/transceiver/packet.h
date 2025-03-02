@@ -24,36 +24,40 @@ namespace pizda {
 		T body;
 	};
 
-	struct AircraftAHRSPacket {
-		float pitch;
-		float roll;
-		float yaw;
+	struct AircraftPacket {
+		float latitude;
+		float longitude;
 
-		float temperature;
-		float pressure;
+		float pitch;
+		float yaw;
+		float roll;
 
 		float altitude;
 		float speed;
 
-		bool strobeLights;
+		float pressure;
+		float temperature;
 
-		void print() const {
-			ESP_LOGI("AHRSPacket", " Pitch, roll, yaw: %f, %f, %f\n", pitch, roll, yaw);
-			ESP_LOGI("AHRSPacket", " Temperature, pressure: %f, %f\n", temperature, pressure);
-			ESP_LOGI("AHRSPacket", " Altitude, speed: %f, %f\n", altitude, speed);
-			ESP_LOGI("AHRSPacket", " Strobe lights: %d\n", strobeLights);
+		void log() const {
+			ESP_LOGI("AHRSPacket", "Latitude, longitude: %f, %f", latitude, longitude);
+			ESP_LOGI("AHRSPacket", "Pitch, roll, yaw: %f, %f, %f", pitch, roll, yaw);
+			ESP_LOGI("AHRSPacket", "Altitude, speed: %f, %f", altitude, speed);
+			ESP_LOGI("AHRSPacket", "Temperature, pressure: %f, %f", temperature, pressure);
 		}
 	};
 
-	struct ControllerCommandPacket {
-		uint8_t throttle;
-		uint8_t ailerons;
-		uint8_t rudder;
-		uint8_t flaps;
+	struct RemotePacket {
+		uint16_t throttle1;
+		uint16_t throttle2;
 
-		AltimeterMode altimeterMode;
-		float altimeterPressure;
+		uint16_t ailerons;
+		uint16_t elevator;
+		uint16_t rudder;
 
+		uint16_t flaps;
+		uint16_t spoilers;
+
+		bool landingGear;
 		bool strobeLights;
 	};
 

@@ -113,7 +113,7 @@ class HellClient: public RadioLibPrint {
     int16_t begin(float base, float rate = 122.5);
 
     /*!
-      \brief Method to "print" a buffer of pixels, this is exposed to allow users to send custom characters.
+      \brief Method to "log" a buffer of pixels, this is exposed to allow users to send custom characters.
       \param buff Buffer of pixels to send, in a 7x7 pixel array.
       \returns Always returns the number of printed glyphs (1).
     */

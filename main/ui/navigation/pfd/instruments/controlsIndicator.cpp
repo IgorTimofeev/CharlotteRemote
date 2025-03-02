@@ -39,7 +39,7 @@ namespace pizda {
 				bounds.getY() + 1
 			),
 			7,
-			-rc.getLeverLeft().getProcessedFloatValue() * (float) toRadians(maxAngle)
+			-rc.getLeverLeft().getMappedFloatValue() * (float) toRadians(maxAngle)
 		);
 
 		// Flaps
@@ -49,7 +49,7 @@ namespace pizda {
 				bounds.getY() + 3
 			),
 			8,
-			rc.getLeverRight().getProcessedFloatValue() * (float) toRadians(maxAngle)
+			rc.getLeverRight().getMappedFloatValue() * (float) toRadians(maxAngle)
 		);
 	}
 }

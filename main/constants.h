@@ -56,6 +56,8 @@ namespace pizda {
 			namespace wifi {
 				constexpr static const char* ssid = "IT";
 				constexpr static const char* password = "SERGTIM64ST17";
+				constexpr static const char* address = "192.168.1.38";
+				constexpr static const uint16_t port = 25569;
 			}
 		}
 

@@ -1,16 +1,8 @@
-#include <esp_timer.h>
 #include "WiFiTransceiver.h"
-
-/* The event group allows multiple bits for each event, but we only care about two events:
-* - we are connected to the AP with an IP
-* - we failed to connect after the maximum amount of retries */
-#define WIFI_CONNECTED_BIT BIT0
-#define WIFI_FAIL_BIT      BIT1
+#include "../../rc.h"
+#include <esp_timer.h>
 
 namespace pizda {
-	uint8_t WiFiTransceiver::_retryCount = 0;
-	EventGroupHandle_t WiFiTransceiver::_WiFiEventGroup = {};
-
 	void WiFiTransceiver::setup() {
 		WiFiSetup();
 	}
@@ -19,12 +11,13 @@ namespace pizda {
 		if (esp_timer_get_time() < _tickInterval)
 			return;
 
+		TCPTick();
 
 		_tickInterval = esp_timer_get_time() + constants::transceiver::tickInterval;
 	}
 
 	void WiFiTransceiver::WiFiSetup() {
-		_WiFiEventGroup = xEventGroupCreate();
+		ESP_LOGI("Transceiver (WiFi)", "Starting");
 
 		ESP_ERROR_CHECK(esp_netif_init());
 		ESP_ERROR_CHECK(esp_event_loop_create_default());
@@ -39,8 +32,8 @@ namespace pizda {
 		ESP_ERROR_CHECK(esp_event_handler_instance_register(
 			WIFI_EVENT,
 			ESP_EVENT_ANY_ID,
-			&WiFiEventHandler,
-			NULL,
+			WiFiEventHandler,
+			this,
 			&eventHandlerInstanceID
 		));
 
@@ -49,69 +42,151 @@ namespace pizda {
 		ESP_ERROR_CHECK(esp_event_handler_instance_register(
 			IP_EVENT,
 			IP_EVENT_STA_GOT_IP,
-			&WiFiEventHandler,
-			NULL,
+			WiFiEventHandler,
+			this,
 			&eventHandlerInstanceIP
 		));
 
 		ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
 
 		wifi_config_t wifi_config {};
-		strncpy(reinterpret_cast<char*>(wifi_config.sta.ssid), constants::transceiver::wifi::ssid, sizeof(wifi_config.sta.ssid));
-		strncpy(reinterpret_cast<char*>(wifi_config.sta.password), constants::transceiver::wifi::password, sizeof(wifi_config.sta.password));
+
+		strncpy(
+		    reinterpret_cast<char*>(wifi_config.sta.ssid),
+			constants::transceiver::wifi::ssid,
+			std::size(wifi_config.sta.ssid)
+		);
+
+		strncpy(
+			reinterpret_cast<char*>(wifi_config.sta.password),
+			constants::transceiver::wifi::password,
+			std::size(wifi_config.sta.password)
+		);
+
 		wifi_config.sta.threshold.authmode = WIFI_AUTH_WPA_WPA2_PSK;
 
 		ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
 		ESP_ERROR_CHECK(esp_wifi_start());
-
-		ESP_LOGI("WiFi Transceiver", "Started");
-
-		/* Waiting until either the connection is established (WIFI_CONNECTED_BIT) or connection failed for the maximum
-		 * number of re-tries (WIFI_FAIL_BIT). The bits are set by event_handler() (see above) */
-		EventBits_t bits = xEventGroupWaitBits(
-			_WiFiEventGroup,
-			WIFI_CONNECTED_BIT | WIFI_FAIL_BIT,
-			pdFALSE,
-			pdFALSE,
-			portMAX_DELAY
-		);
-
-		/* xEventGroupWaitBits() returns the bits before the call returned, hence we can test which event actually happened. */
-		if (bits & WIFI_CONNECTED_BIT) {
-			ESP_LOGI("WiFi Transceiver", "Connected");
-		}
-		else if (bits & WIFI_FAIL_BIT) {
-			ESP_LOGI("WiFi Transceiver", "Connection failed");
-		}
-		else {
-			ESP_LOGE("WiFi Transceiver", "Unexpected event");
-		}
 	}
 
-	void WiFiTransceiver::WiFiEventHandler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data) {
-		if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
+	void WiFiTransceiver::WiFiEventHandler(void* arg, esp_event_base_t eventBase, int32_t eventID, void* eventData) {
+		auto instance = (WiFiTransceiver*) arg;
+
+		if (eventBase == WIFI_EVENT && eventID == WIFI_EVENT_STA_START) {
+			ESP_LOGI("Transceiver (WiFi)", "Connecting");
+
 			esp_wifi_connect();
 		}
-		else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
-			if (_retryCount < _maxRetries) {
-				ESP_LOGI("WiFi Transceiver", "Disconnected, retrying connection");
+		else if (eventBase == WIFI_EVENT && eventID == WIFI_EVENT_STA_DISCONNECTED) {
+			ESP_LOGI("Transceiver (WiFi)", "Disconnected, retrying connection");
 
-				esp_wifi_connect();
-				_retryCount++;
-			}
-			else {
-				ESP_LOGI("WiFi Transceiver", "Disconnected, max retry count of %d exceeded", _retryCount);
-
-				xEventGroupSetBits(_WiFiEventGroup, WIFI_FAIL_BIT);
-			}
+			instance->_WiFiConnected = false;
+			esp_wifi_connect();
 		}
-		else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
-			auto event = (ip_event_got_ip_t*) event_data;
-			_retryCount = 0;
-			xEventGroupSetBits(_WiFiEventGroup, WIFI_CONNECTED_BIT);
+		else if (eventBase == IP_EVENT && eventID == IP_EVENT_STA_GOT_IP) {
+			instance->_WiFiConnected = true;
 
-			ESP_LOGI("WiFi Transceiver", "got ip:" IPSTR, IP2STR(&event->ip_info.ip));
+			auto event = (ip_event_got_ip_t*) eventData;
+			ESP_LOGI("Transceiver (WiFi)", "Connected with ip " IPSTR, IP2STR(&event->ip_info.ip));
+
+			instance->TCPConnect();
 		}
 	}
 
+	void WiFiTransceiver::TCPConnect() {
+		ESP_LOGE("Transceiver (TCP)", "Creating socket");
+
+		inet_pton(AF_INET, constants::transceiver::wifi::address, &_socketAddress.sin_addr);
+		_socketAddress.sin_family = AF_INET;
+		_socketAddress.sin_port = htons(constants::transceiver::wifi::port);
+
+		_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
+
+		if (_socket < 0) {
+			ESP_LOGE("Transceiver (TCP)", "Unable to create socket: errno %d, %s", errno, strerror(errno));
+			return;
+		}
+
+		ESP_LOGE("Transceiver (TCP)", "Connecting to socket");
+
+		auto err = connect(_socket, (struct sockaddr*) &_socketAddress, sizeof(_socketAddress));
+
+		if (err != 0) {
+			ESP_LOGE("Transceiver (TCP)", "Unable to connect: errno %d, %s", errno, strerror(errno));
+
+			shutdown(_socket, 0);
+			_socket = -1;
+
+			return;
+		}
+
+		ESP_LOGI("Transceiver (TCP)", "Connected");
+	}
+
+	RemotePacket WiFiTransceiver::newRemotePacket() {
+		auto& rc = RC::getInstance();
+
+		return RemotePacket {
+			.throttle1 = rc.getThrottles()[0],
+			.throttle2 = rc.getThrottles()[0],
+
+			.ailerons = rc.getJoystickHorizontal().getMappedUint16Value(),
+			.elevator = rc.getJoystickVertical().getMappedUint16Value(),
+
+			.rudder = rc.getRing().getMappedUint16Value(),
+			.flaps = rc.getLeverRight().getMappedUint16Value(),
+			.spoilers = rc.getLeverLeft().getMappedUint16Value(),
+
+			.landingGear = true,
+			.strobeLights = true
+		};
+	}
+
+	void WiFiTransceiver::TCPSend() {
+		const auto packet = newRemotePacket();
+
+		auto err = send(_socket, &packet, sizeof(RemotePacket), 0);
+
+		if (err < 0) {
+			ESP_LOGE("Transceiver (TCP)", "Error occurred during sending: errno %d, %s", errno, strerror(errno));
+		}
+	}
+
+	void WiFiTransceiver::TCPReceive() {
+		const size_t bufferLength = sizeof(AircraftPacket);
+		uint8_t buffer[bufferLength];
+
+		auto receivedLength = recv(_socket, buffer, bufferLength, 0);
+
+		if (receivedLength < 0) {
+			ESP_LOGE("Transceiver (TCP)", "recv failed: errno %d", errno);
+			return;
+		}
+		else if (receivedLength != bufferLength) {
+			ESP_LOGE("Transceiver (TCP)", "Received length %d != packet length %d", receivedLength, bufferLength);
+			return;
+		}
+
+		AircraftPacket packet {};
+		memcpy(&packet, buffer, bufferLength);
+
+		auto& rc = RC::getInstance();
+
+		rc.getPitchInterpolator().setTargetValue(packet.pitch);
+		rc.getRollInterpolator().setTargetValue(packet.roll);
+		rc.getYawInterpolator().setTargetValue(packet.yaw);
+
+		rc.getAltitudeInterpolator().setTargetValue(packet.altitude);
+		rc.getSpeedInterpolator().setTargetValue(packet.speed);
+
+//		packet.log();
+	}
+
+	void WiFiTransceiver::TCPTick() {
+		if (!_WiFiConnected || _socket < 0)
+			return;
+
+		TCPSend();
+		TCPReceive();
+	}
 }

@@ -202,7 +202,7 @@ namespace pizda {
 		switch (packetType) {
 			case PacketType::aircraftAHRS:
 				{
-					auto ahrsPacket = (AircraftAHRSPacket*) bufferPtr;
+					auto ahrsPacket = (AircraftPacket*) bufferPtr;
 					auto& remoteData = rc.getRemoteData();
 
 //					ahrsPacket->print();

@@ -241,7 +241,7 @@ size_t RadioLibPrint::printNumber(unsigned long n, uint8_t base) {
   return(l);
 }
 
-/// \todo improve ITA2 float print speed (characters are sent one at a time)
+/// \todo improve ITA2 float log speed (characters are sent one at a time)
 size_t RadioLibPrint::printFloat(double number, uint8_t digits)  {
   size_t n = 0;
 

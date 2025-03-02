@@ -5,6 +5,9 @@
 #include "esp_event.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
+#include <netdb.h>
+#include <arpa/inet.h>
+#include "esp_netif.h"
 
 #include "packet.h"
 #include "../../constants.h"
@@ -17,16 +20,25 @@ namespace pizda {
 			void tick();
 
 		private:
-			constexpr static uint8_t _maxRetries = 10;
-			static uint8_t _retryCount;
-
 			uint32_t _tickInterval = 0;
 
-			/* FreeRTOS event group to signal when we are connected*/
-			static EventGroupHandle_t _WiFiEventGroup;
+			bool _WiFiConnected = false;
 
-			static void WiFiEventHandler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data);
+			int _socket = -1;
+			struct sockaddr_in _socketAddress;
+
+			static void WiFiEventHandler(void* arg, esp_event_base_t eventBase, int32_t eventID, void* eventData);
 
 			void WiFiSetup();
+
+			void TCPConnect();
+
+			void TCPTick();
+
+			void TCPSend();
+
+			RemotePacket newRemotePacket();
+
+			void TCPReceive();
 	};
 }

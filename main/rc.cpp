@@ -78,8 +78,8 @@ namespace pizda {
 			// High priority tasks
 			axisTick();
 			encoderTick();
-			simulateFlightData();
 			updateComputedData();
+			interpolationTick();
 
 			// UI
 			_application.tick();
@@ -88,6 +88,7 @@ namespace pizda {
 			_transceiver.tick();
 			_speaker.tick();
 			_settings.tick();
+
 
 			_tickDeltaTime = esp_timer_get_time() - time;
 
@@ -103,98 +104,53 @@ namespace pizda {
 		}
 	}
 
-	void RC::simulateFlightData() {
+	void RC::interpolationTick() {
+		const auto deltaTime = esp_timer_get_time() - _interpolationTickTime;
+
+		if (deltaTime < constants::application::remoteDataInterpolationTickInterval)
+			return;
+
+		constexpr static float interpolationTickInterval = 500 * 1000;
+		const float interpolationFactor = deltaTime / interpolationTickInterval;
+
 		const auto oldSpeed = _speedInterpolator.getTargetValue();
 		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
-		// Test
-		auto deltaTime = (float) (esp_timer_get_time() - _simulationTickTime);
-		float simulationTickInterval = 1000000;
+		_speedInterpolator.tick(interpolationFactor);
+		_speedTrendInterpolator.tick(interpolationFactor);
 
-		if (deltaTime > simulationTickInterval) {
-			// Throttle
-			const auto handleFloat = [&](Interpolator& interpolator, float increment = 0.1f, float trigger = 0.05f) {
-				if (std::abs(interpolator.getValue() - interpolator.getTargetValue()) > trigger)
-					return;
+		_altitudeInterpolator.tick(interpolationFactor);
+		_altitudeTrendInterpolator.tick(interpolationFactor);
 
-				if (interpolator.getTargetValue() >= 1.0f) {
-					interpolator.setTargetValue(0.0f);
-				}
-				else {
-					interpolator.setTargetValue(std::min(interpolator.getTargetValue() + increment, 1.0f));
-				}
-			};
+		_verticalSpeedInterpolator.tick(interpolationFactor);
 
-			// Speed
-			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + (float) yoba::random(1, 20) / 10.0f * deltaTime / simulationTickInterval);
-//			_speedInterpolator.setTargetValue(_speedInterpolator.getTargetValue() + 2.0f);
+		_pitchInterpolator.tick(interpolationFactor);
+		_rollInterpolator.tick(interpolationFactor);
+		_yawInterpolator.tick(interpolationFactor);
 
-			if (_speedInterpolator.getTargetValue() > 150)
-				_speedInterpolator.setTargetValue(0);
+		_aileronsInterpolator.tick(interpolationFactor);
+		_rudderInterpolator.tick(interpolationFactor);
+		_elevatorInterpolator.tick(interpolationFactor);
 
-			// Altitude
-			_altitudeInterpolator.setTargetValue(_altitudeInterpolator.getTargetValue() + (float) yoba::random(1, 30) / 10.0f * deltaTime / simulationTickInterval);
+		_aileronsTrimInterpolator.tick(interpolationFactor);
+		_elevatorTrimInterpolator.tick(interpolationFactor);
+		_rudderTrimInterpolator.tick(interpolationFactor);
 
-			if (_altitudeInterpolator.getTargetValue() > 40)
-				_altitudeInterpolator.setTargetValue(0);
+		const auto newSpeed = _speedInterpolator.getTargetValue();
+		const auto newAltitude = _altitudeInterpolator.getTargetValue();
 
-			// A/P
-			_simulationTickTime = esp_timer_get_time();
+		const auto deltaSpeed = newSpeed - oldSpeed;
+		const auto deltaAltitude = newAltitude - oldAltitude;
 
-			const auto newSpeed = _speedInterpolator.getTargetValue();
-			const auto newAltitude = _altitudeInterpolator.getTargetValue();
+		// Shows where spd/alt should target in 10 sec
+		const float trendValueDeltaTime = 10'000'000;
+		const auto trendValueFactor = trendValueDeltaTime / deltaTime;
 
-			const auto deltaSpeed = newSpeed - oldSpeed;
-			const auto deltaAltitude = newAltitude - oldAltitude;
+		_speedTrendInterpolator.setTargetValue(deltaSpeed * trendValueFactor);
+		_altitudeTrendInterpolator.setTargetValue(deltaAltitude * trendValueFactor);
+		_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60000000.0f / deltaTime);
 
-			// Shows where spd/alt should target in 10 sec
-			const float trendValueDeltaTime = 10'000'000;
-			const auto trendValueFactor = trendValueDeltaTime / deltaTime;
-
-			_speedTrendInterpolator.setTargetValue(deltaSpeed * trendValueFactor);
-			_altitudeTrendInterpolator.setTargetValue(deltaAltitude * trendValueFactor);
-			_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60000000.0f / deltaTime);
-
-			// Controls
-			handleFloat(_aileronsInterpolator);
-			handleFloat(_rudderInterpolator);
-			handleFloat(_elevatorInterpolator);
-
-			// Trim
-			handleFloat(_aileronsTrimInterpolator);
-			handleFloat(_rudderTrimInterpolator);
-			handleFloat(_elevatorTrimInterpolator);
-		}
-
-		deltaTime = (float) (esp_timer_get_time() - _interpolatorTickTime);
-
-		if (deltaTime > constants::application::remoteDataInterpolationTickInterval) {
-			constexpr static float interpolationTickInterval = 500 * 1000;
-
-			const float interpolationFactor = deltaTime / interpolationTickInterval;
-
-			_speedInterpolator.tick(interpolationFactor);
-			_speedTrendInterpolator.tick(interpolationFactor);
-
-			_altitudeInterpolator.tick(interpolationFactor);
-			_altitudeTrendInterpolator.tick(interpolationFactor);
-
-			_verticalSpeedInterpolator.tick(interpolationFactor);
-
-			_pitchInterpolator.tick(interpolationFactor);
-			_rollInterpolator.tick(interpolationFactor);
-			_yawInterpolator.tick(interpolationFactor);
-
-			_aileronsInterpolator.tick(interpolationFactor);
-			_rudderInterpolator.tick(interpolationFactor);
-			_elevatorInterpolator.tick(interpolationFactor);
-
-			_aileronsTrimInterpolator.tick(interpolationFactor);
-			_elevatorTrimInterpolator.tick(interpolationFactor);
-			_rudderTrimInterpolator.tick(interpolationFactor);
-
-			_interpolatorTickTime = esp_timer_get_time();
-		}
+		_interpolationTickTime = esp_timer_get_time() + constants::application::remoteDataInterpolationTickInterval;
 	}
 
 	// ------------------------- Data -------------------------
@@ -265,6 +221,10 @@ namespace pizda {
 
 	Interpolator& RC::getRudderTrimInterpolator() {
 		return _rudderTrimInterpolator;
+	}
+
+	uint16_t* RC::getThrottles() {
+		return _throttles;
 	}
 
 	Application& RC::getApplication() {
@@ -372,14 +332,14 @@ namespace pizda {
 //		ESP_LOGI("HID", "Ring: %d", _ring.getValue());
 //		ESP_LOGI("HID", "BChr: %d", _battery.getCharge());
 
-		float pizda = yoba::toRadians(-90) + _joystickVertical.getProcessedFloatValue() * yoba::toRadians(180);
-		_pitchInterpolator.setTargetValue(pizda);
-
-		pizda = yoba::toRadians(-90) + _joystickHorizontal.getProcessedFloatValue() * yoba::toRadians(180);
-		_rollInterpolator.setTargetValue(pizda);
-
-		pizda = _ring.getProcessedFloatValue() * yoba::toRadians(90);
-		_yawInterpolator.setTargetValue(pizda);
+//		float pizda = yoba::toRadians(-90) + _joystickVertical.getMappedFloatValue() * yoba::toRadians(180);
+//		_pitchInterpolator.setTargetValue(pizda);
+//
+//		pizda = yoba::toRadians(-90) + _joystickHorizontal.getMappedFloatValue() * yoba::toRadians(180);
+//		_rollInterpolator.setTargetValue(pizda);
+//
+//		pizda = _ring.getMappedFloatValue() * yoba::toRadians(90);
+//		_yawInterpolator.setTargetValue(pizda);
 
 		_axisTickTime = esp_timer_get_time() + constants::axis::tickInterval;
 	}

@@ -65,6 +65,10 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 
+		// Throttles
+		_throttle1Indicator.setValue(rc.getThrottles()[0]);
+		_throttle2Indicator.setValue(rc.getThrottles()[1]);
+
 		// Trim
 		_elevatorTrimIndicator.setValue((uint16_t) (rc.getElevatorTrimInterpolator().getValue() * (float) 0xFFFF));
 
@@ -81,12 +85,13 @@ namespace pizda {
 
 		if (event->getTypeID() == EncoderRotateEvent::typeID) {
 			auto rotateEvent = (EncoderRotateEvent*) event;
+			auto throttles = RC::getInstance().getThrottles();
 
 			// Throttle
 			ESP_LOGI("Encoder", "RPS: %ld", rotateEvent->getRPS());
 
-			_throttle1Indicator.setValue(yoba::addSaturating(_throttle1Indicator.getValue(), rotateEvent->getRPSFactor(60, 1, 10) * 0xFFFF / 100));
-			_throttle2Indicator.setValue(_throttle1Indicator.getValue());
+			throttles[0] = yoba::addSaturating(throttles[0], rotateEvent->getRPSFactor(60, 1, 10) * 0xFFFF / 100);
+			throttles[1] = throttles[0];
 
 			event->setHandled(true);
 		}

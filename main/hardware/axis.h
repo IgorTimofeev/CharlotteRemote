@@ -17,7 +17,8 @@ namespace pizda {
 
 			uint16_t getRawValue();
 			uint16_t getProcessedValue();
-			float getProcessedFloatValue();
+			float getMappedFloatValue();
+			uint16_t getMappedUint16Value();
 
 		private:
 			adc_channel_t _channel;
@@ -26,5 +27,6 @@ namespace pizda {
 
 			uint16_t _rawValue = 0xFFFF;
 			uint16_t _processedValue = 0;
+
 	};
 }
