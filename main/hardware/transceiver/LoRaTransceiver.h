@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "RadioLib.h"
@@ -7,13 +6,13 @@
 #include "../../constants.h"
 
 namespace pizda {
-	enum TransceiverMode : uint8_t {
-		Transmit,
-		StartReceive,
-		Receive
+	enum class LoRaTransceiverMode : uint8_t {
+		transmit,
+		startReceive,
+		receive
 	};
 
-	class Transceiver {
+	class LoRaTransceiver {
 		public:
 			void setup();
 			void tick();
@@ -30,13 +29,13 @@ namespace pizda {
 
 			SX1262 _sx1262 = new Module(
 				&_hal,
-				constants::transceiver::slaveSelect,
-				constants::transceiver::dio0,
-				constants::transceiver::reset,
-				constants::transceiver::busy
+				constants::transceiver::lora::slaveSelect,
+				constants::transceiver::lora::dio0,
+				constants::transceiver::lora::reset,
+				constants::transceiver::lora::busy
 			);
 
-			TransceiverMode _mode = TransceiverMode::StartReceive;
+			LoRaTransceiverMode _mode = LoRaTransceiverMode::startReceive;
 			static DRAM_ATTR bool _canOperate;
 			static IRAM_ATTR void onDio1Action();
 			uint32_t _tickDeadline = 0;

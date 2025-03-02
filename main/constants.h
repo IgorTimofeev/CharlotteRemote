@@ -35,21 +35,28 @@ namespace pizda {
 		}
 
 		namespace transceiver {
-			constexpr static gpio_num_t slaveSelect = GPIO_NUM_14;
-			constexpr static gpio_num_t busy = GPIO_NUM_12;
-			constexpr static gpio_num_t dio0 = GPIO_NUM_13;
-			constexpr static uint32_t reset = RADIOLIB_NC;
-
-			// Something random, "CHRL" in this case
 			constexpr static uint32_t packetHeader = 0x4348524C;
-			constexpr static float frequency = 915;
-			constexpr static float bandwidth = 500;
-			constexpr static uint8_t spreadingFactor = 7;
-			constexpr static uint8_t codingRate = 5;
-			constexpr static uint16_t power = 22;
-			constexpr static uint16_t preambleLength = 8;
-
 			constexpr static uint32_t tickInterval = 1'000'000 / 30;
+
+			namespace lora {
+				constexpr static gpio_num_t slaveSelect = GPIO_NUM_14;
+				constexpr static gpio_num_t busy = GPIO_NUM_12;
+				constexpr static gpio_num_t dio0 = GPIO_NUM_13;
+				constexpr static uint32_t reset = RADIOLIB_NC;
+
+				// Something random, "CHRL" in this case
+				constexpr static float frequency = 915;
+				constexpr static float bandwidth = 500;
+				constexpr static uint8_t spreadingFactor = 7;
+				constexpr static uint8_t codingRate = 5;
+				constexpr static uint16_t power = 22;
+				constexpr static uint16_t preambleLength = 8;
+			}
+
+			namespace wifi {
+				constexpr static const char* ssid = "IT";
+				constexpr static const char* password = "SERGTIM64ST17";
+			}
 		}
 
 		namespace axis {

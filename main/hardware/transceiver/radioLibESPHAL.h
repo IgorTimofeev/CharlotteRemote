@@ -4,7 +4,7 @@
 #define ESP_HAL_H
 
 // include RadioLib
-#include <RadioLib.h>
+#include "src/RadioLib.h"
 
 // this example only works on ESP32 and is unlikely to work on ESP32S2/S3 etc.
 // if you need high portability, you should probably use Arduino anyway ...

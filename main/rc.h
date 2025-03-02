@@ -15,7 +15,7 @@
 #include "ui/navigation/tabBar.h"
 #include "ui/debugOverlay.h"
 
-#include "hardware/transceiver/transceiver.h"
+#include "hardware/transceiver/WiFiTransceiver.h"
 #include "hardware/speaker.h"
 #include "hardware/axis.h"
 #include "hardware/battery.h"
@@ -97,7 +97,7 @@ namespace pizda {
 			);
 
 			Speaker _speaker;
-			Transceiver _transceiver;
+			WiFiTransceiver _transceiver;
 
 			// Encoder
 			uint32_t _encoderRotationTime = 0;
@@ -203,5 +203,7 @@ namespace pizda {
 			void axisTick();
 
 			void encoderTick();
+
+			void NVSSetup();
 	};
 }

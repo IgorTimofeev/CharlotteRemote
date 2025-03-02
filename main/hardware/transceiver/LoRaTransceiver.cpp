@@ -1,26 +1,26 @@
-#include "transceiver.h"
+#include "LoRaTransceiver.h"
 #include "esp_log.h"
 #include "mbedtls/aes.h"
 #include "../../rc.h"
 
 namespace pizda {
-	bool Transceiver::_canOperate = true;
+	bool LoRaTransceiver::_canOperate = true;
 
-	void Transceiver::onDio1Action() {
+	void LoRaTransceiver::onDio1Action() {
 		_canOperate = true;
 	}
 
-	void Transceiver::setup() {
+	void LoRaTransceiver::setup() {
 		ESP_LOGI("Transceiver", "Initializing");
 
 		auto state = _sx1262.begin(
-			constants::transceiver::frequency,
-			constants::transceiver::bandwidth,
-			constants::transceiver::spreadingFactor,
-			constants::transceiver::codingRate,
+			constants::transceiver::lora::frequency,
+			constants::transceiver::lora::bandwidth,
+			constants::transceiver::lora::spreadingFactor,
+			constants::transceiver::lora::codingRate,
 			RADIOLIB_SX126X_SYNC_WORD_PRIVATE,
-			constants::transceiver::power,
-			constants::transceiver::preambleLength,
+			constants::transceiver::lora::power,
+			constants::transceiver::lora::preambleLength,
 			0,
 			false
 		);
@@ -34,15 +34,15 @@ namespace pizda {
 
 		_sx1262.setDio1Action(onDio1Action);
 
-		_mode = TransceiverMode::StartReceive;
+		_mode = LoRaTransceiverMode::startReceive;
 	}
 
-	void Transceiver::tick() {
+	void LoRaTransceiver::tick() {
 		if (!_canOperate || esp_timer_get_time() < _deadline)
 			return;
 
 		switch (_mode) {
-			case Transmit:
+			case LoRaTransceiverMode::transmit:
 				//		send(
 				//			PacketType::ControllerCommand,
 				//			ControllerCommandPacket{
@@ -56,11 +56,11 @@ namespace pizda {
 
 				break;
 
-			case StartReceive:
+			case LoRaTransceiverMode::startReceive:
 				startReceive();
 				break;
 
-			case Receive:
+			case LoRaTransceiverMode::receive:
 				receive();
 				break;
 		}
@@ -69,7 +69,7 @@ namespace pizda {
 	}
 
 	template<typename T>
-	void Transceiver::send(PacketType packetType, const T &packet) {
+	void LoRaTransceiver::send(PacketType packetType, const T &packet) {
 //		//			static_assert(sizeof(AHRSInPacket) <= 256, "Cyka paket balsoi");
 //
 ////		Serial.println("[Transceiver] Encrypting packet");
@@ -114,8 +114,8 @@ namespace pizda {
 //		}
 	}
 
-	void Transceiver::startReceive() {
-		_mode = TransceiverMode::Receive;
+	void LoRaTransceiver::startReceive() {
+		_mode = LoRaTransceiverMode::receive;
 		_canOperate = false;
 
 		auto state = _sx1262.startReceive();
@@ -125,8 +125,8 @@ namespace pizda {
 		}
 	}
 
-	void Transceiver::receive() {
-		_mode = TransceiverMode::StartReceive;
+	void LoRaTransceiver::receive() {
+		_mode = LoRaTransceiverMode::startReceive;
 
 		// Putting transceiver to standby mode while reading
 		auto state = _sx1262.standby();
@@ -194,7 +194,7 @@ namespace pizda {
 		}
 	}
 
-	void Transceiver::parsePacket(uint8_t *bufferPtr) {
+	void LoRaTransceiver::parsePacket(uint8_t *bufferPtr) {
 		auto& rc = RC::getInstance();
 		auto packetType = (PacketType) *bufferPtr;
 		bufferPtr += sizeof(PacketType);
@@ -227,11 +227,11 @@ namespace pizda {
 		}
 	}
 
-	float Transceiver::getRssi() const {
+	float LoRaTransceiver::getRssi() const {
 		return _rssi;
 	}
 
-	float Transceiver::getSnr() const {
+	float LoRaTransceiver::getSnr() const {
 		return _snr;
 	}
 }

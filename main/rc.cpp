@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <esp_timer.h>
+#include "nvs.h"
 #include "rc.h"
 #include "constants.h"
 #include "resources/sounds.h"
@@ -16,9 +17,9 @@ namespace pizda {
 	[[noreturn]] void RC::run() {
 		// -------------------------------- Main --------------------------------
 
-		// GPIO
-		SPIBusSetup();
+		NVSSetup();
 		ADCUnitsSetup();
+		SPIBusSetup();
 
 		// Settings
 		_settings.setup();
@@ -35,7 +36,7 @@ namespace pizda {
 		_application.addInputDevice(&_touchPanel);
 
 		// Transceiver
-//		_transceiver.setup();
+		_transceiver.setup();
 
 		// Axis
 		_leverLeft.setup();
@@ -84,6 +85,7 @@ namespace pizda {
 			_application.tick();
 
 			// Low priority tasks
+			_transceiver.tick();
 			_speaker.tick();
 			_settings.tick();
 
@@ -380,6 +382,20 @@ namespace pizda {
 		_yawInterpolator.setTargetValue(pizda);
 
 		_axisTickTime = esp_timer_get_time() + constants::axis::tickInterval;
+	}
+
+	void RC::NVSSetup() {
+		auto status = nvs_flash_init();
+
+		if (status == ESP_ERR_NVS_NO_FREE_PAGES || status == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+			// NVS partition was truncated and needs to be erased
+			ESP_ERROR_CHECK(nvs_flash_erase());
+			// Retry init
+			ESP_ERROR_CHECK(nvs_flash_init());
+		}
+		else {
+			ESP_ERROR_CHECK(status);
+		}
 	}
 
 	void RC::SPIBusSetup() {

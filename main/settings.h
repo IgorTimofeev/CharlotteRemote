@@ -40,25 +40,13 @@ namespace pizda {
 			SettingsAutopilot autopilot;
 
 			void setup() { // NOLINT(*-convert-member-functions-to-static)
-				auto status = nvs_flash_init();
-
-				if (status == ESP_ERR_NVS_NO_FREE_PAGES || status == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-					// NVS partition was truncated and needs to be erased
-					ESP_ERROR_CHECK(nvs_flash_erase());
-					// Retry init
-					ESP_ERROR_CHECK(nvs_flash_init());
-				}
-				else {
-					ESP_ERROR_CHECK(status);
-				}
-
 				// Opening
 				nvs_handle_t handle;
 				ESP_ERROR_CHECK(nvs_open("settings", NVS_READWRITE, &handle));
 
 				// Reading version
 				uint8_t readVersion = 0;
-				status = nvs_get_u8(handle, "version", &readVersion);
+				auto status = nvs_get_u8(handle, "version", &readVersion);
 				assert(status == ESP_OK || status == ESP_ERR_NVS_NOT_FOUND);
 
 				// Nothing to read || version has changed, need to use default settings
