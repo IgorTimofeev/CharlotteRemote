@@ -31,7 +31,7 @@ namespace pizda {
 		renderer->renderVerticalLine(
 			Point(fromX + fillWidth / 2, bounds.getY()),
 			bounds.getHeight(),
-			&Theme::bg4
+			&Theme::bg6
 		);
 
 		// Axis value thumb
@@ -48,18 +48,30 @@ namespace pizda {
 		);
 
 		// Pins
-		const auto renderPin = [renderer, &bounds](int32_t x, uint16_t settingsValue, bool to) {
+		const auto renderPin = [this, renderer, &bounds](int32_t x, uint16_t settingsValue, bool to) {
+			const Color* bg;
+			const Color* fg;
+
+			if ((_selectedPin == SelectedPin::to && to) || (_selectedPin == SelectedPin::from && !to)) {
+				bg = &Theme::fg1;
+				fg = &Theme::bg1;
+			}
+			else {
+				bg = &Theme::bg6;
+				fg = &Theme::fg1;
+			}
+
 			// Line
 			renderer->renderVerticalLine(
 				Point(x, bounds.getY()),
 				bounds.getHeight() - Theme::cornerRadius,
-				&Theme::fg1
+				bg
 			);
 
 			// Flag
 			const auto text = std::to_wstring(settingsValue * 100 / Axis::maxValue);
 			constexpr uint8_t textOffsetX = 4;
-			constexpr uint8_t textOffsetY = 0;
+			constexpr uint8_t textOffsetY = 1;
 
 			const auto flagSize = Size(
 				Theme::fontSmall.getWidth(text) + textOffsetX * 2,
@@ -74,12 +86,12 @@ namespace pizda {
 				flagSize
 			);
 
-			renderer->renderFilledRectangle(flagBounds, &Theme::fg1);
+			renderer->renderFilledRectangle(flagBounds, bg);
 
 			renderer->renderString(
 				Point(flagBounds.getX() + textOffsetX, flagBounds.getY() + textOffsetY),
 				&Theme::fontSmall,
-				&Theme::bg1,
+				fg,
 				text
 			);
 		};
@@ -118,7 +130,7 @@ namespace pizda {
 			const auto touchX = touchDownEvent->getPosition().getX();
 			const int32_t touchValue = (touchX - bounds.getX()) * Axis::maxValue / bounds.getWidth();
 
-			_touchedTo = std::abs(touchValue - editor->getAxis()->getSettings()->to) <= std::abs(touchValue - editor->getAxis()->getSettings()->from);
+			_selectedPin = std::abs(touchValue - editor->getAxis()->getSettings()->to) <= std::abs(touchValue - editor->getAxis()->getSettings()->from) ? SelectedPin::to : SelectedPin::from;
 
 			setCaptured(true);
 		}
@@ -135,7 +147,7 @@ namespace pizda {
 			// Updating settings
 			uint16_t value = clampedTouchX * Axis::maxValue / bounds.getWidth();
 
-			if (_touchedTo) {
+			if (_selectedPin == SelectedPin::to) {
 				settings->to = std::max(settings->from, value);
 			}
 			else {
@@ -143,6 +155,8 @@ namespace pizda {
 			}
 		}
 		else {
+			_selectedPin = SelectedPin::none;
+
 			// Saving changes
 			RC::getInstance().getSettings().enqueueWrite();
 

@@ -23,7 +23,7 @@ namespace pizda {
 			SettingsAxisData joystickHorizontal;
 			SettingsAxisData joystickVertical;
 			SettingsAxisData ring;
-			uint16_t lowPassFactor = 0xFFFF * 20 / 100;
+			uint16_t lowPassFactor = 0xFFFF * 70 / 100;
 	};
 
 	class SettingsAutopilot {

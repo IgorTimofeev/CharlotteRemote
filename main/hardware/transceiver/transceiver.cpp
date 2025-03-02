@@ -4,7 +4,7 @@
 #include "../../rc.h"
 
 namespace pizda {
-	volatile bool Transceiver::_canOperate = true;
+	bool Transceiver::_canOperate = true;
 
 	void Transceiver::onDio1Action() {
 		_canOperate = true;

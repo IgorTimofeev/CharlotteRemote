@@ -11,6 +11,12 @@ namespace pizda {
 
 	class AxisEditor;
 
+	enum class SelectedPin : uint8_t {
+		none,
+		from,
+		to
+	};
+
 	class AxisEditorTrack : public Element {
 		public:
 
@@ -19,7 +25,7 @@ namespace pizda {
 			void onEvent(Event* event) override;
 
 		private:
-			bool _touchedTo = false;
+			SelectedPin _selectedPin = SelectedPin::none;
 
 			AxisEditor* getEditor();
 	};

@@ -37,8 +37,8 @@ namespace pizda {
 			);
 
 			TransceiverMode _mode = TransceiverMode::StartReceive;
-			static volatile bool _canOperate;
-			IRAM_ATTR static void onDio1Action();
+			static DRAM_ATTR bool _canOperate;
+			static IRAM_ATTR void onDio1Action();
 			uint32_t _tickDeadline = 0;
 
 			uint8_t _sx1262Buffer[256] {};
