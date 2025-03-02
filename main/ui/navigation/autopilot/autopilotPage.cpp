@@ -14,45 +14,34 @@ namespace pizda {
 
 		auto govnoedstvo = [](
 			AutopilotSelector& selector,
-			const std::function<float()>& valueGetter,
-			const std::function<void(float, float)>& valueSetter
+			uint16_t* settingsValue,
+			const std::function<uint16_t(float, float)>& valueConverter
 		) {
-			selector.seven.setValue((uint32_t) valueGetter());
+			selector.seven.setValue(*settingsValue);
 
-			selector.knob.rotated += [&selector, valueGetter, valueSetter](float oldAngle, float newAngle) {
-				valueSetter(oldAngle, newAngle);
+			selector.knob.rotated += [&selector, settingsValue, valueConverter](float oldAngle, float newAngle) {
+				*settingsValue = valueConverter(oldAngle, newAngle);
+				RC::getInstance().getSettings().enqueueWrite();
 
-				selector.seven.setValue((uint32_t) valueGetter());
+				selector.seven.setValue(*settingsValue);
 			};
 		};
 
 		// Speed
 		govnoedstvo(
 			_spd,
-			[]() {
-				auto& rc = RC::getInstance();
-
-				return rc.getLocalData().getAutopilotSpeed();
-			},
+			&RC::getInstance().getSettings().autopilot.speed,
 			[](float oldAngle, float newAngle) {
-				auto& rc = RC::getInstance();
-
-				rc.getLocalData().setAutopilotSpeed(clamp(rc.getLocalData().getAutopilotSpeed() + (newAngle - oldAngle > 0 ? 1.0f : -1.0f), 0.0f, 999.0f));
+				return yoba::addSaturating(RC::getInstance().getSettings().autopilot.speed, newAngle > oldAngle ? 1 : -1);
 			}
 		);
 
 		// Heading
 		govnoedstvo(
 			_hdg,
-			[]() {
-				auto& rc = RC::getInstance();
-
-				return rc.getLocalData().getAutopilotHeading();
-			},
+			&RC::getInstance().getSettings().autopilot.heading,
 			[](float oldAngle, float newAngle) {
-				auto& rc = RC::getInstance();
-
-				auto newValue = (float) toDegrees(newAngle);
+				auto newValue = (float) yoba::toDegrees(newAngle);
 
 				if (newValue < 0) {
 					newValue += 360;
@@ -61,22 +50,19 @@ namespace pizda {
 					newValue -= 360;
 				}
 
-				rc.getLocalData().setAutopilotHeading(newValue);
+				return (uint16_t) newValue;
 			}
 		);
 
 		// Altitude
 		govnoedstvo(
 			_alt,
-			[]() {
-				auto& rc = RC::getInstance();
-
-				return rc.getLocalData().getAutopilotAltitude();
-			},
+			&RC::getInstance().getSettings().autopilot.altitude,
 			[](float oldAngle, float newAngle) {
-				auto& rc = RC::getInstance();
+				const auto deltaAngle = newAngle - oldAngle;
+				const uint8_t factor = std::abs(deltaAngle) > 5 ? 10 : 1;
 
-				rc.getLocalData().setAutopilotAltitude(clamp(rc.getLocalData().getAutopilotAltitude() + (newAngle - oldAngle > 0 ? 10.0f : -10.0f), 0.0f, 9999.0f));
+				return yoba::addSaturating(RC::getInstance().getSettings().autopilot.altitude, deltaAngle > 0 ? factor : -factor);
 			}
 		);
 	}

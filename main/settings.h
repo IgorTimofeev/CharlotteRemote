@@ -9,7 +9,7 @@
 namespace pizda {
 	#pragma pack(push, 1)
 
-	class AxisSettings {
+	class SettingsAxisData {
 		public:
 			uint16_t from = 0;
 			uint16_t to = 4096;
@@ -18,18 +18,26 @@ namespace pizda {
 
 	class SettingsAxis {
 		public:
-			AxisSettings leverLeft;
-			AxisSettings leverRight;
-			AxisSettings joystickHorizontal;
-			AxisSettings joystickVertical;
-			AxisSettings ring;
+			SettingsAxisData leverLeft;
+			SettingsAxisData leverRight;
+			SettingsAxisData joystickHorizontal;
+			SettingsAxisData joystickVertical;
+			SettingsAxisData ring;
 			uint16_t lowPassFactor = 0xFFFF * 20 / 100;
+	};
+
+	class SettingsAutopilot {
+		public:
+			uint16_t speed;
+			uint16_t heading;
+			uint16_t altitude;
 	};
 
 	class Settings {
 		public:
 			bool debugInfoVisible = false;
 			SettingsAxis axis;
+			SettingsAutopilot autopilot;
 
 			void setup() { // NOLINT(*-convert-member-functions-to-static)
 				auto status = nvs_flash_init();
@@ -98,7 +106,7 @@ namespace pizda {
 
 		private:
 			constexpr static uint32_t _writeDelay = 2500000;
-			constexpr static uint8_t _version = 1;
+			constexpr static uint8_t _version = 2;
 			uint32_t _timeToWrite = 0;
 	};
 

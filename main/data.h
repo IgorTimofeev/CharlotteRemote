@@ -33,15 +33,6 @@ namespace pizda {
 			bool getStrobeLights() const;
 			void setStrobeLights(bool strobeLights);
 
-			float getAutopilotSpeed() const;
-			void setAutopilotSpeed(float autopilotSpeed);
-
-			float getAutopilotAltitude() const;
-			void setAutopilotAltitude(float autopilotAltitude);
-
-			float getAutopilotHeading() const;
-			void setAutopilotHeading(float autopilotHeading);
-
 		private:
 			uint8_t _throttle = 0;
 			uint8_t _ailerons = 0;
@@ -52,10 +43,6 @@ namespace pizda {
 			float _altimeterPressure = 1013;
 
 			bool _strobeLights = false;
-
-			float _autopilotSpeed = 0;
-			float _autopilotHeading = 0;
-			float _autopilotAltitude = 0;
 	};
 
 	class RemoteData {

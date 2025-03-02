@@ -173,15 +173,15 @@ namespace pizda {
 		);
 	}
 
-	void PFD::renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, float autopilotValue, bool left) {
-		if (autopilotValue <= 0)
+	void PFD::renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, uint16_t autopilotValue, bool left) {
+		if (autopilotValue == 0)
 			return;
 
 		renderAutopilotValueIndicator(
 			renderer,
 			Point(
 				left ? bounds.getX2() + 1 - autopilotIndicatorWidth : bounds.getX(),
-				centerY + (int32_t) ((currentValue - autopilotValue) * (float) unitPixels / (float) unitStep) - autopilotIndicatorHeightHalf
+				centerY + (int32_t) ((currentValue - (float) autopilotValue) * (float) unitPixels / (float) unitStep) - autopilotIndicatorHeightHalf
 			),
 			left
 		);
@@ -377,7 +377,7 @@ namespace pizda {
 			speedStepUnits,
 			speedStepPixels,
 			speed,
-			rc.getLocalData().getAutopilotSpeed(),
+			rc.getSettings().autopilot.speed,
 			true
 		);
 
@@ -942,7 +942,7 @@ namespace pizda {
 			altitudeStepUnits,
 			altitudeUnitPixels,
 			rc.getAltitudeInterpolator().getValue(),
-			rc.getLocalData().getAutopilotAltitude(),
+			rc.getSettings().autopilot.altitude,
 			false
 		);
 
@@ -1041,22 +1041,13 @@ namespace pizda {
 		);
 	}
 
-	void PFD::renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, float autopilotValue, bool left) {
-		std::wstring text;
-
-		if (autopilotValue > 0) {
-			text = std::to_wstring((int32_t) autopilotValue);
-		}
-		else {
-			text = L"----";
-		}
-
+	void PFD::renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, uint16_t autopilotValue, bool left) {
 		renderMiniPanel(
 			renderer,
 			bounds,
 			bg,
 			fg,
-			text,
+			autopilotValue > 0 ? std::to_wstring(autopilotValue) : L"----",
 			(int8_t) (left ? -autopilotIndicatorTriangleWidth : autopilotIndicatorTriangleWidth)
 		);
 
@@ -1078,7 +1069,7 @@ namespace pizda {
 		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
-		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getLocalData().getAutopilotSpeed(), true);
+		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getSettings().autopilot.speed, true);
 	}
 
 	void PFD::renderAutopilotAltitude(Renderer* renderer, const Bounds& bounds) {
@@ -1087,7 +1078,7 @@ namespace pizda {
 		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
-		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getLocalData().getAutopilotAltitude(), false);
+		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getSettings().autopilot.altitude, false);
 	}
 
 	void PFD::renderPressure(Renderer* renderer, const Bounds& bounds) {

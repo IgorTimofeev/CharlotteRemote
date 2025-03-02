@@ -7,7 +7,7 @@
 #include "../rc.h"
 
 namespace pizda {
-	Axis::Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, AxisSettings* settings) : _channel(channel), _unitHandle(unitHandle), _settings(settings) {
+	Axis::Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, SettingsAxisData* settings) : _channel(channel), _unitHandle(unitHandle), _settings(settings) {
 
 	}
 
@@ -56,7 +56,7 @@ namespace pizda {
 		return (float) getProcessedValue() / (float) maxValue;
 	}
 
-	AxisSettings* Axis::getSettings() {
+	SettingsAxisData* Axis::getSettings() {
 		return _settings;
 	}
 }

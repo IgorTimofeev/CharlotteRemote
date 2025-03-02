@@ -10,6 +10,7 @@ namespace pizda {
 	};
 
 	#pragma pack(push, 1)
+
 	template<typename T>
 	struct PacketTypeWrapper {
 		explicit PacketTypeWrapper(PacketType type, T body) :
@@ -22,9 +23,7 @@ namespace pizda {
 		PacketType type;
 		T body;
 	};
-	#pragma pack(pop)
 
-	#pragma pack(push, 1)
 	struct AircraftAHRSPacket {
 		float pitch;
 		float roll;
@@ -45,9 +44,7 @@ namespace pizda {
 			ESP_LOGI("AHRSPacket", " Strobe lights: %d\n", strobeLights);
 		}
 	};
-	#pragma pack(pop)
 
-	#pragma pack(push, 1)
 	struct ControllerCommandPacket {
 		uint8_t throttle;
 		uint8_t ailerons;
@@ -59,5 +56,6 @@ namespace pizda {
 
 		bool strobeLights;
 	};
+
 	#pragma pack(pop)
 }

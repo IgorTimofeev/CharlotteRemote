@@ -129,30 +129,6 @@ namespace pizda {
 		_strobeLights = strobeLights;
 	}
 
-	float LocalData::getAutopilotSpeed() const {
-		return _autopilotSpeed;
-	}
-
-	void LocalData::setAutopilotSpeed(float autopilotSpeed) {
-		_autopilotSpeed = autopilotSpeed;
-	}
-
-	float LocalData::getAutopilotAltitude() const {
-		return _autopilotAltitude;
-	}
-
-	void LocalData::setAutopilotAltitude(float autopilotAltitude) {
-		_autopilotAltitude = autopilotAltitude;
-	}
-
-	float LocalData::getAutopilotHeading() const {
-		return _autopilotHeading;
-	}
-
-	void LocalData::setAutopilotHeading(float autopilotHeading) {
-		_autopilotHeading = autopilotHeading;
-	}
-
 	// -------------------------------- ComputedData --------------------------------
 
 	SinAndCos& ComputedData::getLatitudeSinAndCos() {
