@@ -35,7 +35,7 @@ namespace pizda {
 				}
 
 				// Text
-				constexpr static uint8_t textOffset = 1;
+				constexpr static const uint8_t textOffset = 1;
 
 				renderer->renderString(
 					Point(

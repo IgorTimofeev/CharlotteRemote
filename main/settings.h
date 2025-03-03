@@ -93,8 +93,8 @@ namespace pizda {
 			}
 
 		private:
-			constexpr static uint32_t _writeDelay = 2500000;
-			constexpr static uint8_t _version = 2;
+			constexpr static const uint32_t _writeDelay = 2500000;
+			constexpr static const uint8_t _version = 2;
 			uint32_t _timeToWrite = 0;
 	};
 

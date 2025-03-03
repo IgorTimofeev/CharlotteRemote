@@ -14,7 +14,7 @@ namespace pizda {
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
-			constexpr static uint8_t maxAngle = 45;
+			constexpr static const uint8_t maxAngle = 45;
 
 			PFDFCSImage _image {};
 	};

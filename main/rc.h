@@ -166,8 +166,8 @@ namespace pizda {
 			uint32_t _interpolationTickTime = 0;
 
 			uint16_t _throttles[2] = {
-				0,
-				0
+				0xFFFF,
+				0xFFFF
 			};
 
 			Interpolator _speedInterpolator;

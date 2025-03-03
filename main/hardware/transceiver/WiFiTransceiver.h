@@ -5,11 +5,9 @@
 #include "esp_event.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
-#include <netdb.h>
-#include <arpa/inet.h>
-#include "esp_netif.h"
 
 #include "packet.h"
+#include "TCPClient.h"
 #include "../../constants.h"
 
 namespace pizda {
@@ -21,25 +19,21 @@ namespace pizda {
 
 		private:
 			uint32_t _tickInterval = 0;
-
 			bool _WiFiConnected = false;
 
-			int _socket = -1;
-			struct sockaddr_in _socketAddress;
+			RemotePacket _remotePacket {};
+			AircraftPacket _aircraftPacket {};
+
+			TCPClient _tcp = TCPClient(
+				constants::transceiver::wifi::address,
+				constants::transceiver::wifi::port
+			);
 
 			static void WiFiEventHandler(void* arg, esp_event_base_t eventBase, int32_t eventID, void* eventData);
 
 			void WiFiSetup();
 
-			void TCPConnect();
-
-			void TCPTick();
-
-			void TCPSend();
-
-			RemotePacket createRemotePacket();
-
-			void TCPReceive();
+			void fillRemotePacket();
 
 			void handlePacket(AircraftPacket* packet);
 	};

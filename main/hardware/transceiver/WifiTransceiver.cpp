@@ -5,13 +5,38 @@
 namespace pizda {
 	void WiFiTransceiver::setup() {
 		WiFiSetup();
+
 	}
 
 	void WiFiTransceiver::tick() {
 		if (esp_timer_get_time() < _tickInterval)
 			return;
 
-		TCPTick();
+		if (!_WiFiConnected)
+			return;
+
+		if (_tcp.isConnected()) {
+			if (_tcp.isReadyToSendNext()) {
+				fillRemotePacket();
+
+				_tcp.setSendingBuffer((uint8_t*) &_remotePacket, sizeof(RemotePacket));
+			}
+
+			_tcp.send();
+
+			if (_tcp.isReadyToReceiveNext()) {
+				if (_tcp.isReceivingFinished()) {
+					handlePacket(&_aircraftPacket);
+				}
+
+				_tcp.setReceivingBuffer((uint8_t*) &_aircraftPacket, sizeof(AircraftPacket));
+			}
+
+			_tcp.receive();
+		}
+		else {
+			_tcp.connect();
+		}
 
 		_tickInterval = esp_timer_get_time() + constants::transceiver::tickInterval;
 	}
@@ -88,58 +113,24 @@ namespace pizda {
 
 			auto event = (ip_event_got_ip_t*) eventData;
 			ESP_LOGI("Transceiver (WiFi)", "Connected with ip " IPSTR, IP2STR(&event->ip_info.ip));
-
-			instance->TCPConnect();
 		}
 	}
 
-	void WiFiTransceiver::TCPConnect() {
-		ESP_LOGE("Transceiver (TCP)", "Creating socket");
-
-		inet_pton(AF_INET, constants::transceiver::wifi::address, &_socketAddress.sin_addr);
-		_socketAddress.sin_family = AF_INET;
-		_socketAddress.sin_port = htons(constants::transceiver::wifi::port);
-
-		_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
-
-		if (_socket < 0) {
-			ESP_LOGE("Transceiver (TCP)", "Unable to create socket: errno %d, %s", errno, strerror(errno));
-			return;
-		}
-
-		ESP_LOGE("Transceiver (TCP)", "Connecting to socket");
-
-		const auto err = connect(_socket, (struct sockaddr*) &_socketAddress, sizeof(_socketAddress));
-
-		if (err != 0) {
-			ESP_LOGE("Transceiver (TCP)", "Unable to connect: %d, %s", errno, strerror(errno));
-
-			shutdown(_socket, 0);
-			_socket = -1;
-
-			return;
-		}
-
-		ESP_LOGI("Transceiver (TCP)", "Connected");
-	}
-
-	RemotePacket WiFiTransceiver::createRemotePacket() {
+	void WiFiTransceiver::fillRemotePacket() {
 		auto& rc = RC::getInstance();
 
-		return RemotePacket {
-			.throttle1 = rc.getThrottles()[0],
-			.throttle2 = rc.getThrottles()[1],
+		_remotePacket.throttle1 = rc.getThrottles()[0];
+		_remotePacket.throttle2 = rc.getThrottles()[1];
 
-			.ailerons = rc.getJoystickHorizontal().getMappedUint16Value(),
-			.elevator = rc.getJoystickVertical().getMappedUint16Value(),
+		_remotePacket.ailerons = rc.getJoystickHorizontal().getMappedUint16Value();
+		_remotePacket.elevator = rc.getJoystickVertical().getMappedUint16Value();
 
-			.rudder = rc.getRing().getMappedUint16Value(),
-			.flaps = rc.getLeverRight().getMappedUint16Value(),
-			.spoilers = rc.getLeverLeft().getMappedUint16Value(),
+		_remotePacket.rudder = rc.getRing().getMappedUint16Value();
+		_remotePacket.flaps = rc.getLeverRight().getMappedUint16Value();
+		_remotePacket.spoilers = rc.getLeverLeft().getMappedUint16Value();
 
-			.landingGear = true,
-			.strobeLights = true
-		};
+		_remotePacket.landingGear = true;
+		_remotePacket.strobeLights = true;
 	}
 
 	void WiFiTransceiver::handlePacket(AircraftPacket* packet) {
@@ -153,41 +144,5 @@ namespace pizda {
 
 		rc.getAltitudeInterpolator().setTargetValue(packet->altitude);
 		rc.getSpeedInterpolator().setTargetValue(packet->speed);
-	}
-
-	void WiFiTransceiver::TCPSend() {
-		const auto packet = createRemotePacket();
-
-		const auto sendLength = send(_socket, &packet, sizeof(RemotePacket), 0);
-
-		if (sendLength < 0) {
-			ESP_LOGE("Transceiver (TCP)", "Error occurred during sending: %d, %s", errno, strerror(errno));
-		}
-	}
-
-	void WiFiTransceiver::TCPReceive() {
-		const size_t bufferLength = sizeof(AircraftPacket);
-		uint8_t buffer[bufferLength];
-
-		const auto receivedLength = recv(_socket, buffer, bufferLength, 0);
-
-		if (receivedLength < 0) {
-			ESP_LOGE("Transceiver (TCP)", "Receive failed: %d, %s", errno, strerror(errno));
-			return;
-		}
-		else if (receivedLength != bufferLength) {
-			ESP_LOGE("Transceiver (TCP)", "Received length %d != packet length %d", receivedLength, bufferLength);
-			return;
-		}
-
-		handlePacket((AircraftPacket*) buffer);
-	}
-
-	void WiFiTransceiver::TCPTick() {
-		if (!_WiFiConnected || _socket < 0)
-			return;
-
-		TCPSend();
-		TCPReceive();
 	}
 }

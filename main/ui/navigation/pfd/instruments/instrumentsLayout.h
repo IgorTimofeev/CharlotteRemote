@@ -16,7 +16,7 @@ namespace pizda {
 		public:
 			InstrumentsLayout();
 
-			constexpr static uint8_t panelSize = 52;
+			constexpr static const uint8_t panelSize = 52;
 
 		protected:
 			void onTick() override;

@@ -988,9 +988,9 @@ namespace pizda {
 					renderer->renderString(
 						Point(
 							bounds.getX() + lineSizeBig + verticalSpeedTextOffset,
-							y - Theme::fontNormal.getHeight() / 2
+							y - Theme::fontSmall.getHeight() / 2
 						),
-						&Theme::fontNormal,
+						&Theme::fontSmall,
 						lineColor,
 						std::to_wstring(lineValue / 100)
 					);

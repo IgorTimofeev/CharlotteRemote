@@ -28,10 +28,10 @@ namespace pizda {
 			void onEvent(Event* event) override;
 
 		private:
-//			constexpr static float _earthEquatorialRadius = 6378137;
-			constexpr static float _earthEquatorialRadius = 100;
-			constexpr static float _earthEquatorialLength = (float) M_PI * 2 * _earthEquatorialRadius;
-			constexpr static float _earthMetersPer1EquatorialDeg = _earthEquatorialLength / 360;
+//			constexpr static const float _earthEquatorialRadius = 6378137;
+			constexpr static const float _earthEquatorialRadius = 100;
+			constexpr static const float _earthEquatorialLength = (float) M_PI * 2 * _earthEquatorialRadius;
+			constexpr static const float _earthMetersPer1EquatorialDeg = _earthEquatorialLength / 360;
 
 			// Testing on Google Maps with scale 60px = 200m
 			// Kronshtadt runway length is ~500m long

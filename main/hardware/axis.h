@@ -8,7 +8,7 @@ namespace pizda {
 		public:
 			Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, SettingsAxisData* settings);
 
-			constexpr static uint16_t maxValue = 4096;
+			constexpr static const uint16_t maxValue = 4096;
 
 			void setup();
 			void tick();

@@ -89,7 +89,6 @@ namespace pizda {
 			_speaker.tick();
 			_settings.tick();
 
-
 			_tickDeltaTime = esp_timer_get_time() - time;
 
 			// Skipping remaining tick time if any
@@ -110,11 +109,24 @@ namespace pizda {
 		if (deltaTime < constants::application::remoteDataInterpolationTickInterval)
 			return;
 
-		constexpr static float interpolationTickInterval = 500 * 1000;
+		constexpr static const float interpolationTickInterval = 500 * 1000;
 		const float interpolationFactor = deltaTime / interpolationTickInterval;
 
 		const auto oldSpeed = _speedInterpolator.getTargetValue();
 		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
+
+		// Shows where spd/alt should target in 10 sec
+		const float trendValueDeltaTime = 10'000'000;
+		const auto trendValueFactor = trendValueDeltaTime / deltaTime;
+
+		const auto deltaSpeed = _speedInterpolator.getTargetValue() - oldSpeed;
+		_speedTrendInterpolator.setTargetValue(deltaSpeed * trendValueFactor);
+
+		const auto deltaAltitude = _altitudeInterpolator.getTargetValue() - oldAltitude;
+		_altitudeTrendInterpolator.setTargetValue(deltaAltitude * trendValueFactor);
+		_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60000000.0f / deltaTime);
+
+		_interpolationTickTime = esp_timer_get_time() + constants::application::remoteDataInterpolationTickInterval;
 
 		_speedInterpolator.tick(interpolationFactor);
 		_speedTrendInterpolator.tick(interpolationFactor);
@@ -135,22 +147,6 @@ namespace pizda {
 		_aileronsTrimInterpolator.tick(interpolationFactor);
 		_elevatorTrimInterpolator.tick(interpolationFactor);
 		_rudderTrimInterpolator.tick(interpolationFactor);
-
-		const auto newSpeed = _speedInterpolator.getTargetValue();
-		const auto newAltitude = _altitudeInterpolator.getTargetValue();
-
-		const auto deltaSpeed = newSpeed - oldSpeed;
-		const auto deltaAltitude = newAltitude - oldAltitude;
-
-		// Shows where spd/alt should target in 10 sec
-		const float trendValueDeltaTime = 10'000'000;
-		const auto trendValueFactor = trendValueDeltaTime / deltaTime;
-
-		_speedTrendInterpolator.setTargetValue(deltaSpeed * trendValueFactor);
-		_altitudeTrendInterpolator.setTargetValue(deltaAltitude * trendValueFactor);
-		_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60000000.0f / deltaTime);
-
-		_interpolationTickTime = esp_timer_get_time() + constants::application::remoteDataInterpolationTickInterval;
 	}
 
 	// ------------------------- Data -------------------------
