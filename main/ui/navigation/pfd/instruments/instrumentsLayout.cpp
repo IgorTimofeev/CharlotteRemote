@@ -70,7 +70,7 @@ namespace pizda {
 		_throttle2Indicator.setValue(rc.getThrottles()[1]);
 
 		// Trim
-		_elevatorTrimIndicator.setValue((uint16_t) (rc.getElevatorTrimInterpolator().getValue() * (float) 0xFFFF));
+		_elevatorTrimIndicator.setValue(rc.getElevator());
 
 		// Battery
 		_batteryIndicatorController.setVoltage(rc.getBattery().getVoltage());

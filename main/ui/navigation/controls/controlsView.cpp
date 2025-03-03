@@ -52,7 +52,7 @@ namespace pizda {
 				bounds.getY() + 58
 			),
 			30,
-			rc.getAileronsInterpolator().getValue()
+			rc.getAilerons()
 		);
 
 		horiz(
@@ -61,7 +61,7 @@ namespace pizda {
 				bounds.getY() + 58
 			),
 			30,
-			-rc.getAileronsInterpolator().getValue()
+			-rc.getAilerons()
 		);
 
 		// Flaps
@@ -90,7 +90,7 @@ namespace pizda {
 				bounds.getY() + 3
 			),
 			37,
-			rc.getElevatorInterpolator().getValue()
+			rc.getElevator()
 		);
 
 		horiz(
@@ -99,7 +99,7 @@ namespace pizda {
 				bounds.getY() + 3
 			),
 			37,
-			rc.getElevatorInterpolator().getValue()
+			rc.getElevator()
 		);
 
 		// Rudder
@@ -109,7 +109,7 @@ namespace pizda {
 				bounds.getY() + 8
 			),
 			36,
-			rc.getRudderInterpolator().getValue()
+			rc.getRudder()
 		);
 	}
 }

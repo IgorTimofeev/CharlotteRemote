@@ -44,8 +44,8 @@ namespace pizda {
 
 		auto uintValue = (uint32_t) value;
 
-		// Assuming 8 is "widest" digit
-		const uint8_t maxDigitWidth = Theme::fontNormal.getCharWidth(L'8');
+		// Assuming 4 is "widest" digit
+		const uint8_t maxDigitWidth = Theme::fontNormal.getCharWidth(L'4');
 		const uint16_t maxTextWidth = maxDigitWidth * getDigitCount(uintValue);
 
 		int32_t x =
@@ -188,16 +188,16 @@ namespace pizda {
 	}
 
 	void PFD::renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value) {
-		auto length = (int32_t) ((float) unitPixels * value / (float) unitStep);
+		const auto length = (int32_t) ((float) unitPixels * value / (float) unitStep);
 
 		if (abs(length) < 10)
 			return;
 
 		const uint8_t arrowSize = 3;
 
-		auto yArrow = y - length - arrowSize;
-		auto yMin = std::min(y, yArrow);
-		auto yMax = std::max(y, yArrow);
+		const auto yArrow = y - length - arrowSize;
+		const auto yMin = std::min(y, yArrow);
+		const auto yMax = std::max(y, yArrow);
 
 		renderer->renderVerticalLine(
 			Point(x, yMin),
@@ -229,7 +229,7 @@ namespace pizda {
 
 		renderer->renderFilledRectangle(bounds, &Theme::bg1);
 
-		float speed = rc.getSpeedInterpolator().getValue();
+		float speed = rc.getAirspeedInterpolator().getValue();
 
 		// Bars
 		const auto barX = bounds.getX2() + 1 - speedBarSize;
@@ -366,7 +366,7 @@ namespace pizda {
 			centerY,
 			speedStepUnits,
 			speedStepPixels,
-			rc.getSpeedTrendInterpolator().getValue()
+			rc.getAirspeedTrendInterpolator().getValue()
 		);
 
 		// Autopilot
@@ -392,33 +392,6 @@ namespace pizda {
 	}
 
 	void PFD::renderAircraftSymbol(Renderer* renderer, const Point& center) {
-//		const uint8_t sideWidth = 16;
-//		const uint8_t radius = 6;
-//
-//		renderer->renderCircle(
-//			center,
-//			radius,
-//			&Theme::fg1
-//		);
-//
-//		renderer->renderHorizontalLine(
-//			Point(
-//				center.getX() - radius - sideWidth,
-//				center.getY()
-//			),
-//			sideWidth,
-//			&Theme::fg1
-//		);
-//
-//		renderer->renderHorizontalLine(
-//			Point(
-//				center.getX() + radius,
-//				center.getY()
-//			),
-//			sideWidth,
-//			&Theme::fg1
-//		);
-
 		const uint8_t aircraftSymbolWidth = 30;
 		const uint8_t aircraftSymbolThickness = 2;
 		const uint8_t aircraftSymbolHeight = 6;
@@ -1089,9 +1062,9 @@ namespace pizda {
 
 		std::wstring text;
 
-		switch (rc.getLocalData().getAltimeterMode()) {
+		switch (rc.getAltimeterMode()) {
 			case AltimeterMode::QNH:
-				text = std::to_wstring((uint16_t) rc.getLocalData().getAltimeterPressure());
+				text = std::to_wstring((uint16_t) rc.getAltimeterPressure());
 				break;
 
 			case AltimeterMode::QNE:

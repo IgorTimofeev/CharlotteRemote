@@ -78,7 +78,6 @@ namespace pizda {
 			// High priority tasks
 			axisTick();
 			encoderTick();
-			updateComputedData();
 			interpolationTick();
 
 			// UI
@@ -109,27 +108,13 @@ namespace pizda {
 		if (deltaTime < constants::application::remoteDataInterpolationTickInterval)
 			return;
 
-		constexpr static const float interpolationTickInterval = 500 * 1000;
-		const float interpolationFactor = deltaTime / interpolationTickInterval;
-
-		const auto oldSpeed = _speedInterpolator.getTargetValue();
-		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
-
-		// Shows where spd/alt should target in 10 sec
-		const float trendValueDeltaTime = 10'000'000;
-		const auto trendValueFactor = trendValueDeltaTime / deltaTime;
-
-		const auto deltaSpeed = _speedInterpolator.getTargetValue() - oldSpeed;
-		_speedTrendInterpolator.setTargetValue(deltaSpeed * trendValueFactor);
-
-		const auto deltaAltitude = _altitudeInterpolator.getTargetValue() - oldAltitude;
-		_altitudeTrendInterpolator.setTargetValue(deltaAltitude * trendValueFactor);
-		_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60000000.0f / deltaTime);
+		// 200 ms
+		const float interpolationFactor = deltaTime / 200'000.f;
 
 		_interpolationTickTime = esp_timer_get_time() + constants::application::remoteDataInterpolationTickInterval;
 
-		_speedInterpolator.tick(interpolationFactor);
-		_speedTrendInterpolator.tick(interpolationFactor);
+		_airspeedInterpolator.tick(interpolationFactor);
+		_airspeedTrendInterpolator.tick(interpolationFactor);
 
 		_altitudeInterpolator.tick(interpolationFactor);
 		_altitudeTrendInterpolator.tick(interpolationFactor);
@@ -139,32 +124,12 @@ namespace pizda {
 		_pitchInterpolator.tick(interpolationFactor);
 		_rollInterpolator.tick(interpolationFactor);
 		_yawInterpolator.tick(interpolationFactor);
-
-		_aileronsInterpolator.tick(interpolationFactor);
-		_rudderInterpolator.tick(interpolationFactor);
-		_elevatorInterpolator.tick(interpolationFactor);
-
-		_aileronsTrimInterpolator.tick(interpolationFactor);
-		_elevatorTrimInterpolator.tick(interpolationFactor);
-		_rudderTrimInterpolator.tick(interpolationFactor);
 	}
 
 	// ------------------------- Data -------------------------
 
-	LocalData &RC::getLocalData() {
-		return _localData;
-	}
-
-	RemoteData &RC::getRemoteData() {
-		return _remoteData;
-	}
-
-	ComputedData& RC::getComputedData() {
-		return _computedData;
-	}
-
-	Interpolator &RC::getSpeedInterpolator() {
-		return _speedInterpolator;
+	Interpolator &RC::getAirspeedInterpolator() {
+		return _airspeedInterpolator;
 	}
 
 	Interpolator &RC::getAltitudeInterpolator() {
@@ -183,8 +148,8 @@ namespace pizda {
 		return _yawInterpolator;
 	}
 
-	Interpolator &RC::getSpeedTrendInterpolator() {
-		return _speedTrendInterpolator;
+	Interpolator &RC::getAirspeedTrendInterpolator() {
+		return _airspeedTrendInterpolator;
 	}
 
 	Interpolator &RC::getAltitudeTrendInterpolator() {
@@ -193,30 +158,6 @@ namespace pizda {
 
 	Interpolator &RC::getVerticalSpeedInterpolator() {
 		return _verticalSpeedInterpolator;
-	}
-
-	Interpolator& RC::getAileronsInterpolator() {
-		return _aileronsInterpolator;
-	}
-
-	Interpolator& RC::getRudderInterpolator() {
-		return _rudderInterpolator;
-	}
-
-	Interpolator& RC::getElevatorInterpolator() {
-		return _elevatorInterpolator;
-	}
-
-	Interpolator& RC::getAileronsTrimInterpolator() {
-		return _aileronsTrimInterpolator;
-	}
-
-	Interpolator& RC::getElevatorTrimInterpolator() {
-		return _elevatorTrimInterpolator;
-	}
-
-	Interpolator& RC::getRudderTrimInterpolator() {
-		return _rudderTrimInterpolator;
 	}
 
 	uint16_t* RC::getThrottles() {
@@ -271,13 +212,6 @@ namespace pizda {
 		return _battery;
 	}
 
-	void RC::updateComputedData() {
-		_computedData.getLatitudeSinAndCos().fromAngle(_remoteData.getLatitude());
-		_computedData.getLongitudeSinAndCos().fromAngle(_remoteData.getLongitude());
-		_computedData.getRollSinAndCos().fromAngle(_remoteData.getRoll());
-		_computedData.getPitchSinAndCos().fromAngle(_remoteData.getPitch());
-		_computedData.getYawSinAndCos().fromAngle(_remoteData.getYaw());
-	}
 
 	void RC::encoderTick() {
 		if (!_encoder.interrupted())
@@ -374,5 +308,135 @@ namespace pizda {
 		};
 
 		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &constants::adc::unit1));
+	}
+
+	void RC::handleAircraftPacket(AircraftPacket* packet) {
+		const auto time = esp_timer_get_time();
+		const auto deltaTime = time - _aircraftPacketTime;
+		_aircraftPacketTime = time;
+
+		const auto oldSpeed = _airspeedInterpolator.getTargetValue();
+		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
+
+		_pitchInterpolator.setTargetValue(packet->pitch);
+		_rollInterpolator.setTargetValue(packet->roll);
+		_yawInterpolator.setTargetValue(packet->yaw);
+
+		_altitudeInterpolator.setTargetValue(packet->altitude);
+		_airspeedInterpolator.setTargetValue(packet->speed);
+
+		// Trends
+		const auto deltaAltitude = _altitudeInterpolator.getTargetValue() - oldAltitude;
+
+		// Airspeed & altitude, 10 sec
+		_airspeedTrendInterpolator.setTargetValue((_airspeedInterpolator.getTargetValue() - oldSpeed) * 10'000'000 / deltaTime);
+		_altitudeTrendInterpolator.setTargetValue(deltaAltitude * 10'000'000 / deltaTime);
+
+		// Vertical speed, 1 min
+		_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60'000'000 / deltaTime);
+	}
+
+	uint16_t RC::getAilerons() const {
+		return _ailerons;
+	}
+
+	void RC::setAilerons(uint16_t ailerons) {
+		_ailerons = ailerons;
+	}
+
+	uint16_t RC::getElevator() const {
+		return _elevator;
+	}
+
+	void RC::setElevator(uint16_t elevator) {
+		_elevator = elevator;
+	}
+
+	uint16_t RC::getRudder() const {
+		return _rudder;
+	}
+
+	void RC::setRudder(uint16_t rudder) {
+		_rudder = rudder;
+	}
+
+	uint16_t RC::getAileronsTrim() const {
+		return _aileronsTrim;
+	}
+
+	void RC::setAileronsTrim(uint16_t aileronsTrim) {
+		_aileronsTrim = aileronsTrim;
+	}
+
+	uint16_t RC::getElevatorTrim() const {
+		return _elevatorTrim;
+	}
+
+	void RC::setElevatorTrim(uint16_t elevatorTrim) {
+		_elevatorTrim = elevatorTrim;
+	}
+
+	uint16_t RC::getRudderTrim() const {
+		return _rudderTrim;
+	}
+
+	void RC::setRudderTrim(uint16_t rudderTrim) {
+		_rudderTrim = rudderTrim;
+	}
+
+	uint16_t RC::getFlaps() const {
+		return _flaps;
+	}
+
+	void RC::setFlaps(uint16_t flaps) {
+		_flaps = flaps;
+	}
+
+	uint16_t RC::getSpoilers() const {
+		return _spoilers;
+	}
+
+	void RC::setSpoilers(uint16_t spoilers) {
+		_spoilers = spoilers;
+	}
+
+	bool RC::isStrobeLights() const {
+		return _strobeLights;
+	}
+
+	void RC::setStrobeLights(bool strobeLights) {
+		_strobeLights = strobeLights;
+	}
+
+	float RC::getAltimeterPressure() const {
+		return _altimeterPressure;
+	}
+
+	void RC::setAltimeterPressure(float altimeterPressure) {
+		_altimeterPressure = altimeterPressure;
+	}
+
+	AltimeterMode RC::getAltimeterMode() const {
+		return _altimeterMode;
+	}
+
+	void RC::setAltimeterMode(AltimeterMode altimeterMode) {
+		_altimeterMode = altimeterMode;
+	}
+
+	float RC::getLatitude() const {
+		return _latitude;
+	}
+
+	void RC::setLatitude(float latitude) {
+		_latitude = latitude;
+	}
+
+	float RC::getLongitude() const {
+		return _longitude;
+	}
+
+	void RC::setLongitude(float longitude) {
+		_longitude = longitude;
 	}
 }

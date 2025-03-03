@@ -56,14 +56,9 @@ namespace pizda {
 		SpatialView::onTick();
 
 		auto& rc = RC::getInstance();
-		auto& remoteData = rc.getRemoteData();
-		auto& computedData = rc.getComputedData();
 
-//		const auto rotationLatitude = _cameraOffset.getX();
-//		const auto rotationLongitude = _cameraOffset.getY();
-
-		const auto rotationLatitude = remoteData.getLatitude() + _cameraOffset.getX();
-		const auto rotationLongitude = remoteData.getLongitude() - _cameraOffset.getY();
+		const auto rotationLatitude = rc.getLatitude() + _cameraOffset.getX();
+		const auto rotationLongitude = rc.getLongitude() - _cameraOffset.getY();
 
 		getCamera().setPosition(geographicToCartesian(
 			SinAndCos(rotationLatitude),

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "cstdint"
-#include "../../data.h"
 
 namespace pizda {
 	enum class PacketType : uint8_t {
@@ -39,10 +38,10 @@ namespace pizda {
 		float temperature;
 
 		void log() const {
-			ESP_LOGI("AHRSPacket", "Latitude, longitude: %f, %f", latitude, longitude);
-			ESP_LOGI("AHRSPacket", "Pitch, roll, yaw: %f, %f, %f", pitch, roll, yaw);
-			ESP_LOGI("AHRSPacket", "Altitude, speed: %f, %f", altitude, speed);
-			ESP_LOGI("AHRSPacket", "Temperature, pressure: %f, %f", temperature, pressure);
+			ESP_LOGI("AircraftPacket", "Latitude, longitude: %f, %f", latitude, longitude);
+			ESP_LOGI("AircraftPacket", "Pitch, roll, yaw: %f, %f, %f", pitch, roll, yaw);
+			ESP_LOGI("AircraftPacket", "Altitude, speed: %f, %f", altitude, speed);
+			ESP_LOGI("AircraftPacket", "Temperature, pressure: %f, %f", temperature, pressure);
 		}
 	};
 

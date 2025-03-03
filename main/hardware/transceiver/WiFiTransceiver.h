@@ -34,7 +34,5 @@ namespace pizda {
 			void WiFiSetup();
 
 			void fillRemotePacket();
-
-			void handlePacket(AircraftPacket* packet);
 	};
 }

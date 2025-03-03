@@ -65,27 +65,27 @@ namespace pizda {
 			constexpr static const uint32_t tickInterval = 1'000'000 / 30;
 
 			namespace leverLeft {
-				constexpr static const adc_oneshot_unit_handle_t* unit = &adc::unit1;
+				constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 				constexpr static const adc_channel_t channel = ADC_CHANNEL_0;
 			}
 
 			namespace leverRight {
-				constexpr static const adc_oneshot_unit_handle_t* unit = &adc::unit1;
+				constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 				constexpr static const adc_channel_t channel = ADC_CHANNEL_3;
 			}
 
 			namespace joystickHorizontal {
-				constexpr static const adc_oneshot_unit_handle_t* unit = &adc::unit1;
+				constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 				constexpr static const adc_channel_t channel = ADC_CHANNEL_7;
 			}
 
 			namespace joystickVertical {
-				constexpr static const adc_oneshot_unit_handle_t* unit = &adc::unit1;
+				constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 				constexpr static const adc_channel_t channel = ADC_CHANNEL_5;
 			}
 
 			namespace ring {
-				constexpr static const adc_oneshot_unit_handle_t* unit = &adc::unit1;
+				constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 				constexpr static const adc_channel_t channel = ADC_CHANNEL_6;
 			}
 		}
@@ -111,7 +111,7 @@ namespace pizda {
 		giving final input range of [1,488; 2.084]V
 		*/
 		namespace battery {
-			constexpr static const adc_oneshot_unit_handle_t* unit = &adc::unit1;
+			constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 			constexpr static const adc_channel_t channel = ADC_CHANNEL_4;
 
 			constexpr static const uint32_t voltageMin = 6000;

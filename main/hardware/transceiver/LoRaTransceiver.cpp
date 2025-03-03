@@ -195,36 +195,36 @@ namespace pizda {
 	}
 
 	void LoRaTransceiver::parsePacket(uint8_t *bufferPtr) {
-		auto& rc = RC::getInstance();
-		auto packetType = (PacketType) *bufferPtr;
-		bufferPtr += sizeof(PacketType);
-
-		switch (packetType) {
-			case PacketType::aircraftAHRS:
-				{
-					auto ahrsPacket = (AircraftPacket*) bufferPtr;
-					auto& remoteData = rc.getRemoteData();
-
+//		auto& rc = RC::getInstance();
+//		auto packetType = (PacketType) *bufferPtr;
+//		bufferPtr += sizeof(PacketType);
+//
+//		switch (packetType) {
+//			case PacketType::aircraftAHRS:
+//				{
+//					auto ahrsPacket = (AircraftPacket*) bufferPtr;
+//					auto& remoteData = rc.getRemoteData();
+//
 //					ahrsPacket->print();
-
-					remoteData.setPitch(ahrsPacket->pitch);
-					remoteData.setRoll(ahrsPacket->roll);
-					remoteData.setYaw(ahrsPacket->yaw);
-
-					remoteData.setTemperature(ahrsPacket->temperature);
-					remoteData.setPressure(ahrsPacket->pressure);
-
-					remoteData.setAltitude(ahrsPacket->altitude);
-					remoteData.setSpeed(ahrsPacket->speed);
-				}
-
-				break;
-
-			default:
-				ESP_LOGE("Transceiver", "Unknown packet type: %d\n", (uint8_t) packetType);
-
-				break;
-		}
+//
+//					remoteData.setPitch(ahrsPacket->pitch);
+//					remoteData.setRoll(ahrsPacket->roll);
+//					remoteData.setYaw(ahrsPacket->yaw);
+//
+//					remoteData.setTemperature(ahrsPacket->temperature);
+//					remoteData.setPressure(ahrsPacket->pressure);
+//
+//					remoteData.setAltitude(ahrsPacket->altitude);
+//					remoteData.setSpeed(ahrsPacket->speed);
+//				}
+//
+//				break;
+//
+//			default:
+//				ESP_LOGE("Transceiver", "Unknown packet type: %d\n", (uint8_t) packetType);
+//
+//				break;
+//		}
 	}
 
 	float LoRaTransceiver::getRssi() const {

@@ -16,23 +16,23 @@ namespace pizda {
 			return;
 
 		if (_tcp.isConnected()) {
+			_tcp.send();
+
 			if (_tcp.isReadyToSendNext()) {
 				fillRemotePacket();
 
 				_tcp.setSendingBuffer((uint8_t*) &_remotePacket, sizeof(RemotePacket));
 			}
 
-			_tcp.send();
+			_tcp.receive();
 
 			if (_tcp.isReadyToReceiveNext()) {
 				if (_tcp.isReceivingFinished()) {
-					handlePacket(&_aircraftPacket);
+					RC::getInstance().handleAircraftPacket(&_aircraftPacket);
 				}
 
 				_tcp.setReceivingBuffer((uint8_t*) &_aircraftPacket, sizeof(AircraftPacket));
 			}
-
-			_tcp.receive();
 		}
 		else {
 			_tcp.connect();
@@ -131,18 +131,5 @@ namespace pizda {
 
 		_remotePacket.landingGear = true;
 		_remotePacket.strobeLights = true;
-	}
-
-	void WiFiTransceiver::handlePacket(AircraftPacket* packet) {
-//		packet.log();
-
-		auto& rc = RC::getInstance();
-
-		rc.getPitchInterpolator().setTargetValue(packet->pitch);
-		rc.getRollInterpolator().setTargetValue(packet->roll);
-		rc.getYawInterpolator().setTargetValue(packet->yaw);
-
-		rc.getAltitudeInterpolator().setTargetValue(packet->altitude);
-		rc.getSpeedInterpolator().setTargetValue(packet->speed);
 	}
 }

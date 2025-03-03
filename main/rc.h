@@ -8,13 +8,13 @@
 
 #include "settings.h"
 #include "constants.h"
-#include "data.h"
 #include "interpolator.h"
 
 #include "ui/theme.h"
 #include "ui/navigation/tabBar.h"
 #include "ui/debugOverlay.h"
 
+#include "hardware/transceiver/packet.h"
 #include "hardware/transceiver/WiFiTransceiver.h"
 #include "hardware/speaker.h"
 #include "hardware/axis.h"
@@ -26,6 +26,11 @@ namespace pizda {
 	using namespace yoba::hardware;
 	using namespace yoba::ui;
 
+	enum class AltimeterMode : uint8_t {
+		QNH,
+		QNE
+	};
+
 	class RC {
 		public:
 			static RC& getInstance();
@@ -34,25 +39,57 @@ namespace pizda {
 
 			Application& getApplication();
 
-			LocalData& getLocalData();
-			RemoteData& getRemoteData();
-			ComputedData& getComputedData();
-
-			Interpolator& getSpeedInterpolator();
+			Interpolator& getAirspeedInterpolator();
 			Interpolator& getAltitudeInterpolator();
 			Interpolator& getPitchInterpolator();
 			Interpolator& getRollInterpolator();
 			Interpolator& getYawInterpolator();
-			Interpolator& getSpeedTrendInterpolator();
+			Interpolator& getAirspeedTrendInterpolator();
 			Interpolator& getAltitudeTrendInterpolator();
 			Interpolator& getVerticalSpeedInterpolator();
-			Interpolator& getAileronsInterpolator();
-			Interpolator& getElevatorInterpolator();
-			Interpolator& getRudderInterpolator();
-			Interpolator& getAileronsTrimInterpolator();
-			Interpolator& getElevatorTrimInterpolator();
-			Interpolator& getRudderTrimInterpolator();
+
 			uint16_t* getThrottles();
+
+			uint16_t getAilerons() const;
+			void setAilerons(uint16_t ailerons);
+
+			uint16_t getElevator() const;
+			void setElevator(uint16_t elevator);
+
+			uint16_t getRudder() const;
+			void setRudder(uint16_t rudder);
+
+			uint16_t getAileronsTrim() const;
+			void setAileronsTrim(uint16_t aileronsTrim);
+
+			uint16_t getElevatorTrim() const;
+			void setElevatorTrim(uint16_t elevatorTrim);
+
+			uint16_t getRudderTrim() const;
+			void setRudderTrim(uint16_t rudderTrim);
+
+			uint16_t getFlaps() const;
+			void setFlaps(uint16_t flaps);
+
+			uint16_t getSpoilers() const;
+			void setSpoilers(uint16_t spoilers);
+
+			bool isStrobeLights() const;
+			void setStrobeLights(bool strobeLights);
+
+			float getAltimeterPressure() const;
+			void setAltimeterPressure(float altimeterPressure);
+
+			AltimeterMode getAltimeterMode() const;
+			void setAltimeterMode(AltimeterMode altimeterMode);
+
+			float getLatitude() const;
+
+			void setLatitude(float latitude);
+
+			float getLongitude() const;
+
+			void setLongitude(float longitude);
 
 			void updateDebugOverlayVisibility();
 			uint32_t getTickDeltaTime() const;
@@ -67,6 +104,8 @@ namespace pizda {
 			Axis& getJoystickVertical();
 			Axis& getRing();
 			Battery& getBattery();
+
+			void handleAircraftPacket(AircraftPacket* packet);
 
 		private:
 			RC() = default;
@@ -160,18 +199,43 @@ namespace pizda {
 			TabBar _tabBar;
 			DebugOverlay _debugOverlay;
 
-			// -------------------------------- Timings --------------------------------
-
-			uint32_t _tickDeltaTime = 0;
-			uint32_t _interpolationTickTime = 0;
+			// -------------------------------- Remote data --------------------------------
 
 			uint16_t _throttles[2] = {
 				0xFFFF,
 				0xFFFF
 			};
 
-			Interpolator _speedInterpolator;
-			Interpolator _speedTrendInterpolator;
+			uint16_t _ailerons = 0xFFFF / 2;
+			uint16_t _elevator = 0xFFFF / 2;
+			uint16_t _rudder = 0xFFFF / 2;
+
+			uint16_t _aileronsTrim = 0xFFFF / 2;
+			uint16_t _elevatorTrim = 0xFFFF / 2;
+			uint16_t _rudderTrim = 0xFFFF / 2;
+
+			uint16_t _flaps = 0;
+			uint16_t _spoilers = 0;
+
+			AltimeterMode _altimeterMode = AltimeterMode::QNH;
+
+			bool _strobeLights = false;
+
+			// -------------------------------- Aircraft data --------------------------------
+
+			// Kronshtadt airfield in Saint-Petersburg for UI testing
+			float _latitude = yoba::toRadians(60.01449883137194);
+			float _longitude = yoba::toRadians(29.702554658332105);
+			float _altimeterPressure = 1013;
+
+			// -------------------------------- Timings --------------------------------
+
+			uint32_t _tickDeltaTime = 0;
+			uint32_t _interpolationTickTime = 0;
+			uint32_t _aircraftPacketTime = 0;
+
+			Interpolator _airspeedInterpolator;
+			Interpolator _airspeedTrendInterpolator;
 
 			Interpolator _altitudeInterpolator;
 			Interpolator _altitudeTrendInterpolator;
@@ -182,21 +246,7 @@ namespace pizda {
 			Interpolator _rollInterpolator;
 			Interpolator _yawInterpolator;
 
-			Interpolator _aileronsInterpolator;
-			Interpolator _elevatorInterpolator;
-			Interpolator _rudderInterpolator;
-
-			Interpolator _aileronsTrimInterpolator;
-			Interpolator _elevatorTrimInterpolator;
-			Interpolator _rudderTrimInterpolator;
-
 			// -------------------------------- Other shit --------------------------------
-
-			LocalData _localData;
-			RemoteData _remoteData;
-			ComputedData _computedData;
-
-			void updateComputedData();
 
 			static void SPIBusSetup();
 			void ADCUnitsSetup();
