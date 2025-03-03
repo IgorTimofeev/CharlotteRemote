@@ -109,10 +109,10 @@ namespace pizda {
 
 		ESP_LOGE("Transceiver (TCP)", "Connecting to socket");
 
-		auto err = connect(_socket, (struct sockaddr*) &_socketAddress, sizeof(_socketAddress));
+		const auto err = connect(_socket, (struct sockaddr*) &_socketAddress, sizeof(_socketAddress));
 
 		if (err != 0) {
-			ESP_LOGE("Transceiver (TCP)", "Unable to connect: errno %d, %s", errno, strerror(errno));
+			ESP_LOGE("Transceiver (TCP)", "Unable to connect: %d, %s", errno, strerror(errno));
 
 			shutdown(_socket, 0);
 			_socket = -1;
@@ -123,12 +123,12 @@ namespace pizda {
 		ESP_LOGI("Transceiver (TCP)", "Connected");
 	}
 
-	RemotePacket WiFiTransceiver::newRemotePacket() {
+	RemotePacket WiFiTransceiver::createRemotePacket() {
 		auto& rc = RC::getInstance();
 
 		return RemotePacket {
 			.throttle1 = rc.getThrottles()[0],
-			.throttle2 = rc.getThrottles()[0],
+			.throttle2 = rc.getThrottles()[1],
 
 			.ailerons = rc.getJoystickHorizontal().getMappedUint16Value(),
 			.elevator = rc.getJoystickVertical().getMappedUint16Value(),
@@ -142,13 +142,26 @@ namespace pizda {
 		};
 	}
 
+	void WiFiTransceiver::handlePacket(AircraftPacket* packet) {
+//		packet.log();
+
+		auto& rc = RC::getInstance();
+
+		rc.getPitchInterpolator().setTargetValue(packet->pitch);
+		rc.getRollInterpolator().setTargetValue(packet->roll);
+		rc.getYawInterpolator().setTargetValue(packet->yaw);
+
+		rc.getAltitudeInterpolator().setTargetValue(packet->altitude);
+		rc.getSpeedInterpolator().setTargetValue(packet->speed);
+	}
+
 	void WiFiTransceiver::TCPSend() {
-		const auto packet = newRemotePacket();
+		const auto packet = createRemotePacket();
 
-		auto err = send(_socket, &packet, sizeof(RemotePacket), 0);
+		const auto sendLength = send(_socket, &packet, sizeof(RemotePacket), 0);
 
-		if (err < 0) {
-			ESP_LOGE("Transceiver (TCP)", "Error occurred during sending: errno %d, %s", errno, strerror(errno));
+		if (sendLength < 0) {
+			ESP_LOGE("Transceiver (TCP)", "Error occurred during sending: %d, %s", errno, strerror(errno));
 		}
 	}
 
@@ -156,10 +169,10 @@ namespace pizda {
 		const size_t bufferLength = sizeof(AircraftPacket);
 		uint8_t buffer[bufferLength];
 
-		auto receivedLength = recv(_socket, buffer, bufferLength, 0);
+		const auto receivedLength = recv(_socket, buffer, bufferLength, 0);
 
 		if (receivedLength < 0) {
-			ESP_LOGE("Transceiver (TCP)", "recv failed: errno %d", errno);
+			ESP_LOGE("Transceiver (TCP)", "Receive failed: %d, %s", errno, strerror(errno));
 			return;
 		}
 		else if (receivedLength != bufferLength) {
@@ -167,19 +180,7 @@ namespace pizda {
 			return;
 		}
 
-		AircraftPacket packet {};
-		memcpy(&packet, buffer, bufferLength);
-
-		auto& rc = RC::getInstance();
-
-		rc.getPitchInterpolator().setTargetValue(packet.pitch);
-		rc.getRollInterpolator().setTargetValue(packet.roll);
-		rc.getYawInterpolator().setTargetValue(packet.yaw);
-
-		rc.getAltitudeInterpolator().setTargetValue(packet.altitude);
-		rc.getSpeedInterpolator().setTargetValue(packet.speed);
-
-//		packet.log();
+		handlePacket((AircraftPacket*) buffer);
 	}
 
 	void WiFiTransceiver::TCPTick() {

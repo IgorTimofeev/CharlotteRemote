@@ -37,8 +37,10 @@ namespace pizda {
 
 			void TCPSend();
 
-			RemotePacket newRemotePacket();
+			RemotePacket createRemotePacket();
 
 			void TCPReceive();
+
+			void handlePacket(AircraftPacket* packet);
 	};
 }
