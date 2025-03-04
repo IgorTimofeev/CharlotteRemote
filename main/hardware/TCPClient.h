@@ -42,20 +42,26 @@ namespace pizda {
 					ESP_LOGI(_loggingTag, "Connecting");
 				}
 
-				if (::connect(_socket, (struct sockaddr*) &_socketAddress, sizeof(_socketAddress)) == 0) {
-					ESP_LOGI(_loggingTag, "connect() returned 0");
-				}
-				else {
-					// The socket is nonblocking and the connection cannot be completed immediately
-					if (errno == EINPROGRESS) {
-						ESP_LOGI(_loggingTag, "Connection in progress");
-					}
-					// The socket is nonblocking and a previous connection attempt has not yet been completed
-					else if (errno == EALREADY) {
-						ESP_LOGI(_loggingTag, "Previous connection attempt has not yet been completed");
-					}
-					// The socket is already connected
-					else if (errno == EISCONN) {
+				// Non-blocking connect() immediately tests for connection status.
+				// Here's some remarks about commonly returned values:
+				//
+				// EINPROGRESS (119) - not an error, meaning connection couldn't be completed right now,
+				// because of data layers initialization, crypto, etc. I.e. you have to wait a bit
+				// like ~10 ms and test for connect() again
+				//
+				// EALREADY (120) - not an error, meaning client side was initialized, but server
+				// side didn't respond yet. Usually first call to connect() reserves some significant
+				// time like 10s and every subsequent call returns EALREADY if server didn't respond.
+				// After that time, the ENOTCONN will be returned
+				//
+				// EISCONN (127) - not an error, meaning connection was successfully established,
+				// and you can safely transfer your data via send() / recv()
+				//
+				// ENOTCONN (128) - error, meaning server didn't respond even for some significant time after
+				// connection initialization. You should close socket, re-initialize it and connect again
+				if (::connect(_socket, (struct sockaddr*) &_socketAddress, sizeof(_socketAddress)) != 0) {
+					// Already connected
+					if (errno == EISCONN) {
 						ESP_LOGI(_loggingTag, "Connected");
 
 						socklen_t sockLen = (socklen_t) sizeof(int);
@@ -75,10 +81,10 @@ namespace pizda {
 
 						_state = TCPState::connected;
 					}
-					else {
+					// Some error
+					else if (errno != EINPROGRESS && errno != EALREADY) {
 						logErrorWithErrno("Unable to connect");
 						close();
-						return;
 					}
 				}
 			}
