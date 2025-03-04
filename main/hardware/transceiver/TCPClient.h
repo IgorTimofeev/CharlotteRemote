@@ -48,15 +48,18 @@ namespace pizda {
 						FD_SET(_socket, &fdset);
 
 						// Connection in progress -> have to wait until the connecting socket is marked as writable, i.e. connection completes
-						const auto selectResult = select(_socket + 1, NULL, &fdset, NULL, NULL);
+						timeval timeout {};
+						timeout.tv_usec = 1'000;
+
+						const auto selectResult = select(_socket + 1, NULL, &fdset, NULL, &timeout);
 
 						if (selectResult < 0) {
-							logErrorWithErrno("Error during connection, select for socket to be writable");
+							logErrorWithErrno("select() error");
 							close();
 							return;
 						}
 						else if (selectResult == 0) {
-							logErrorWithErrno("Connection timeout, select for socket to be writable");
+							logErrorWithErrno("select() timeout");
 							close();
 							return;
 						}
@@ -65,13 +68,13 @@ namespace pizda {
 							int sockError;
 
 							if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (void*) &sockError, &sockLen) < 0) {
-								logErrorWithErrno("Error when getting socket error using getsockopt()");
+								logErrorWithErrno("getsockopt() error");
 								close();
 								return;
 							}
 
 							if (sockError) {
-								logErrorWithErrno("Connection error: %d, %s", sockError);
+								logErrorWithErrno("Connection error", sockError);
 								close();
 								return;
 							}
