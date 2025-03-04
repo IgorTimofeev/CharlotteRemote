@@ -22,6 +22,12 @@ namespace pizda {
 			static adc_oneshot_unit_handle_t unit1 {};
 		}
 
+		namespace wifi {
+			constexpr static const char* ssid = "IT";
+			constexpr static const char* password = "SERGTIM64ST17";
+			constexpr static const uint32_t connectionInterval = 2'500'000;
+		}
+
 		namespace screen {
 			namespace touch {
 				constexpr static const gpio_num_t reset = GPIO_NUM_NC;
@@ -53,11 +59,10 @@ namespace pizda {
 				constexpr static const uint16_t preambleLength = 8;
 			}
 
-			namespace wifi {
-				constexpr static const char* ssid = "IT";
-				constexpr static const char* password = "SERGTIM64ST17";
+			namespace tcp {
 				constexpr static const char* address = "192.168.1.38";
 				constexpr static const uint16_t port = 25569;
+				constexpr static const uint32_t connectionInterval = 2'500'000;
 			}
 		}
 

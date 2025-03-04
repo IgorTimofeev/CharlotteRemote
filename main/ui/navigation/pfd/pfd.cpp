@@ -38,7 +38,7 @@ namespace pizda {
 		renderer->renderFilledRectangle(rectangleBounds, &Theme::bg2);
 
 		// Text
-		constexpr static const uint8_t textOffset = 3;
+		constexpr static const uint8_t textOffset = 0;
 
 		const auto oldViewport = renderer->pushViewport(rectangleBounds);
 

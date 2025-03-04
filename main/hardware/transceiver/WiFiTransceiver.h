@@ -1,37 +1,30 @@
 #pragma once
 
 #include "esp_system.h"
-#include "esp_wifi.h"
 #include "esp_event.h"
 #include "esp_log.h"
-#include "nvs_flash.h"
 
 #include "packet.h"
-#include "TCPClient.h"
+#include "../TCPClient.h"
+#include "../WiFi.h"
 #include "../../constants.h"
 
 namespace pizda {
 	class WiFiTransceiver {
 		public:
 			void setup();
-
 			void tick();
 
 		private:
-			uint32_t _tickInterval = 0;
-			bool _WiFiConnected = false;
+			uint32_t _tickTime = 0;
+			uint32_t _WiFiConnectTime = 0;
+			uint32_t _TCPConnectTime = 0;
 
-			RemotePacket _remotePacket {};
-			AircraftPacket _aircraftPacket {};
+			TCPClient _TCP;
+			WiFi _WiFi;
 
-			TCPClient _tcp = TCPClient(
-				constants::transceiver::wifi::address,
-				constants::transceiver::wifi::port
-			);
-
-			static void WiFiEventHandler(void* arg, esp_event_base_t eventBase, int32_t eventID, void* eventData);
-
-			void WiFiSetup();
+			RemotePacket _remotePacket;
+			AircraftPacket _aircraftPacket;
 
 			void fillRemotePacket();
 	};

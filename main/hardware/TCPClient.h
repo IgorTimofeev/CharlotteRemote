@@ -3,26 +3,29 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include "esp_netif.h"
+#include "esp_log.h"
 
 namespace pizda {
+	enum class TCPState : uint8_t {
+		disconnected,
+		connecting,
+		connected
+	};
+
 	class TCPClient {
 		public:
-			TCPClient(const char* address, const uint16_t port) : _address(address), _port(port) {
-
-			}
-
 			// -------------------------------- Connection --------------------------------
 
-			void connect() {
-				if (_socketConnected)
+			void connect(const char* address, const uint16_t port) {
+				if (_state == TCPState::connected)
 					return;
 
 				if (_socket < 0) {
 					ESP_LOGI(_loggingTag, "Creating socket");
 
-					inet_pton(AF_INET, _address, &_socketAddress.sin_addr);
+					inet_pton(AF_INET, address, &_socketAddress.sin_addr);
 					_socketAddress.sin_family = AF_INET;
-					_socketAddress.sin_port = htons(_port);
+					_socketAddress.sin_port = htons(port);
 
 					_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
 
@@ -70,7 +73,7 @@ namespace pizda {
 							return;
 						}
 
-						_socketConnected = true;
+						_state = TCPState::connected;
 					}
 					else {
 						logErrorWithErrno("Unable to connect");
@@ -80,18 +83,18 @@ namespace pizda {
 				}
 			}
 
-			bool isConnected() {
-				return _socketConnected;
+			TCPState getState() const {
+				return _state;
 			}
 
 			void disconnect() {
-				if (!_socketConnected)
+				if (_state != TCPState::connected)
 					return;
 
 				ESP_LOGI(_loggingTag, "Disconnected");
 
 				close();
-				_socketConnected = false;
+				_state = TCPState::disconnected;
 
 				clearSendingData();
 				_sendingBufferRemaining = -1;
@@ -110,7 +113,7 @@ namespace pizda {
 			}
 
 			bool isReadyToSendNext() {
-				return _socketConnected && _sendingBufferRemaining <= 0;
+				return _state == TCPState::connected && _sendingBufferRemaining <= 0;
 			}
 
 			bool isSendingFinished() {
@@ -118,7 +121,7 @@ namespace pizda {
 			}
 
 			void send() {
-				if (!_socketConnected || !_sendingBuffer || _sendingBufferRemaining <= 0)
+				if (_state != TCPState::connected || !_sendingBuffer || _sendingBufferRemaining <= 0)
 					return;
 
 				const auto written = ::send(_socket, _sendingBuffer + (_sendingBufferLength - _sendingBufferRemaining), _sendingBufferRemaining, 0);
@@ -148,7 +151,7 @@ namespace pizda {
 			}
 
 			bool isReadyToReceiveNext() {
-				return _socketConnected && _receivingBufferRemaining <= 0;
+				return _state == TCPState::connected && _receivingBufferRemaining <= 0;
 			}
 
 			bool isReceivingFinished() {
@@ -156,7 +159,7 @@ namespace pizda {
 			}
 
 			void receive() {
-				if (!_socketConnected || !_receivingBuffer || _receivingBufferRemaining <= 0)
+				if (_state != TCPState::connected || !_receivingBuffer || _receivingBufferRemaining <= 0)
 					return;
 
 				const auto received = recv(_socket, _receivingBuffer + (_receivingBufferLength - _receivingBufferRemaining), _receivingBufferRemaining, 0);
@@ -183,12 +186,10 @@ namespace pizda {
 		private:
 			constexpr static const char* _loggingTag = "TCP";
 
-			const char* _address;
-			const uint16_t _port;
-
 			struct sockaddr_in _socketAddress;
 			int _socket = -1;
-			bool _socketConnected = false;
+
+			TCPState _state = TCPState::disconnected;
 
 			uint8_t* _sendingBuffer = nullptr;
 			ssize_t _sendingBufferLength = -1;
