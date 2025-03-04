@@ -35,50 +35,42 @@ namespace pizda {
 						logErrorWithErrno("Unable to set socket non blocking");
 						return;
 					}
+
+					ESP_LOGI(_loggingTag, "Connecting");
 				}
 
-				ESP_LOGI(_loggingTag, "Connecting");
-
-				if (::connect(_socket, (struct sockaddr*) &_socketAddress, sizeof(_socketAddress)) != 0) {
+				if (::connect(_socket, (struct sockaddr*) &_socketAddress, sizeof(_socketAddress)) == 0) {
+					ESP_LOGI(_loggingTag, "connect() returned 0");
+				}
+				else {
+					// The socket is nonblocking and the connection cannot be completed immediately
 					if (errno == EINPROGRESS) {
 						ESP_LOGI(_loggingTag, "Connection in progress");
+					}
+					// The socket is nonblocking and a previous connection attempt has not yet been completed
+					else if (errno == EALREADY) {
+						ESP_LOGI(_loggingTag, "Previous connection attempt has not yet been completed");
+					}
+					// The socket is already connected
+					else if (errno == EISCONN) {
+						ESP_LOGI(_loggingTag, "Connected");
 
-						fd_set fdset;
-						FD_ZERO(&fdset);
-						FD_SET(_socket, &fdset);
+						socklen_t sockLen = (socklen_t) sizeof(int);
+						int sockError;
 
-						// Connection in progress -> have to wait until the connecting socket is marked as writable, i.e. connection completes
-						timeval timeout {};
-						timeout.tv_usec = 1'000;
-
-						const auto selectResult = select(_socket + 1, NULL, &fdset, NULL, &timeout);
-
-						if (selectResult < 0) {
-							logErrorWithErrno("select() error");
+						if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (void*) &sockError, &sockLen) < 0) {
+							logErrorWithErrno("getsockopt() error");
 							close();
 							return;
 						}
-						else if (selectResult == 0) {
-							logErrorWithErrno("select() timeout");
+
+						if (sockError) {
+							logErrorWithErrno("Connection error", sockError);
 							close();
 							return;
 						}
-						else {
-							socklen_t sockLen = (socklen_t) sizeof(int);
-							int sockError;
 
-							if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (void*) &sockError, &sockLen) < 0) {
-								logErrorWithErrno("getsockopt() error");
-								close();
-								return;
-							}
-
-							if (sockError) {
-								logErrorWithErrno("Connection error", sockError);
-								close();
-								return;
-							}
-						}
+						_socketConnected = true;
 					}
 					else {
 						logErrorWithErrno("Unable to connect");
@@ -86,10 +78,6 @@ namespace pizda {
 						return;
 					}
 				}
-
-				ESP_LOGI(_loggingTag, "Connected");
-
-				_socketConnected = true;
 			}
 
 			bool isConnected() {
@@ -99,6 +87,8 @@ namespace pizda {
 			void disconnect() {
 				if (!_socketConnected)
 					return;
+
+				ESP_LOGI(_loggingTag, "Disconnected");
 
 				close();
 				_socketConnected = false;
@@ -134,7 +124,7 @@ namespace pizda {
 				const auto written = ::send(_socket, _sendingBuffer + (_sendingBufferLength - _sendingBufferRemaining), _sendingBufferRemaining, 0);
 
 				if (written < 0 && errno != EINPROGRESS && errno != EAGAIN && errno != EWOULDBLOCK) {
-					logErrorWithErrno("Error occurred during sending");
+					logErrorWithErrno("send() error");
 					disconnect();
 					return;
 				}
@@ -171,28 +161,14 @@ namespace pizda {
 
 				const auto received = recv(_socket, _receivingBuffer + (_receivingBufferLength - _receivingBufferRemaining), _receivingBufferRemaining, 0);
 
-				if (received < 0) {
-					if (errno == EINPROGRESS || errno == EAGAIN || errno == EWOULDBLOCK) {
-						// Not an error
-						return;
-					}
-					else if (errno == ENOTCONN) {
-						logError("Connection closed");
-						disconnect();
-						return;
-					}
-					else {
-						logErrorWithErrno("Error occurred during receiving");
-						disconnect();
-						return;
-					}
-				}
-				// Nothing to read
-				else if (received == 0) {
-
+				// Error
+				if (received < 0 && errno != EINPROGRESS && errno != EAGAIN && errno != EWOULDBLOCK) {
+					logErrorWithErrno("receive() error");
+					disconnect();
+					return;
 				}
 				// Received something (maybe only part)
-				else {
+				else if (received > 0) {
 					_receivingBufferRemaining -= received;
 
 					// Receiving completed
@@ -203,6 +179,7 @@ namespace pizda {
 					}
 				}
 			}
+
 		private:
 			constexpr static const char* _loggingTag = "TCP";
 

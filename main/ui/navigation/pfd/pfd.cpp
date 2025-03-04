@@ -38,7 +38,7 @@ namespace pizda {
 		renderer->renderFilledRectangle(rectangleBounds, &Theme::bg2);
 
 		// Text
-		const uint8_t textOffset = 3;
+		constexpr static const uint8_t textOffset = 3;
 
 		const auto oldViewport = renderer->pushViewport(rectangleBounds);
 
@@ -46,12 +46,11 @@ namespace pizda {
 
 		// Assuming 4 is "widest" digit
 		const uint8_t maxDigitWidth = Theme::fontNormal.getCharWidth(L'4');
-		const uint16_t maxTextWidth = maxDigitWidth * getDigitCount(uintValue);
 
 		int32_t x =
 			left
 			? bounds.getX2() - currentValueTriangleSize - textOffset
-			: bounds.getX() + currentValueTriangleSize + textOffset + maxTextWidth;
+			: bounds.getX() + currentValueTriangleSize + textOffset;
 
 		y = y + currentValueHeight / 2 - Theme::fontNormal.getHeight() / 2;
 
@@ -59,19 +58,19 @@ namespace pizda {
 		const auto fractional = std::modf(value, &integer);
 		const int32_t scrolledY = y + (uint8_t) (fractional * (float) Theme::fontNormal.getHeight());
 
-		auto getNextDigit = [&](uint8_t digit, bool plus) {
+		const auto getAdjacentDigit = [&](uint8_t digit, bool plus) {
 			return
 				plus
 				? (digit < 9 ? digit + 1 : 0)
 				: (digit > 1 ? digit - 1 : 9);
 		};
 
-		auto renderDigit = [&](int32_t digitY, uint8_t digit) {
+		const auto renderDigit = [&](int32_t digitY, uint8_t digit) {
 			const wchar_t text = L'0' + digit;
 
 			renderer->renderChar(
 				Point(
-					x - Theme::fontNormal.getCharWidth(text),
+					left ? x - Theme::fontNormal.getCharWidth(text) : x,
 					digitY
 				),
 				&Theme::fontNormal,
@@ -87,16 +86,20 @@ namespace pizda {
 			digit = uintValue % 10;
 
 			if (shouldScroll) {
-				renderDigit(scrolledY - Theme::fontNormal.getHeight(), getNextDigit(digit, true));
+				renderDigit(scrolledY - Theme::fontNormal.getHeight(), getAdjacentDigit(digit, true));
 				renderDigit(scrolledY, digit);
-				renderDigit(scrolledY + Theme::fontNormal.getHeight(), getNextDigit(digit, false));
+				renderDigit(scrolledY + Theme::fontNormal.getHeight(), getAdjacentDigit(digit, false));
 			}
 			else {
 				renderDigit(y, digit);
 			}
 
-			x -= maxDigitWidth;
-
+			if (left) {
+				x -= maxDigitWidth;
+			}
+			else {
+				x += maxDigitWidth;
+			}
 			shouldScroll = digit == 9;
 			uintValue /= 10;
 		} while (uintValue > 0);
