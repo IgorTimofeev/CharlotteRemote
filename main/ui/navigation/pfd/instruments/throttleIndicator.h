@@ -55,10 +55,10 @@ namespace pizda {
 
 				renderer->renderString(
 					Point(
-						bounds.getX() + bounds.getWidth() / 2 - Theme::fontNormal.getWidth(text) / 2 + 1,
+						bounds.getX() + bounds.getWidth() / 2 - Theme::fontSmall.getWidth(text) / 2 + 1,
 						bounds.getY() + frameHeight + textOffset
 					),
-					&Theme::fontNormal,
+					&Theme::fontSmall,
 					&Theme::green,
 					text
 				);

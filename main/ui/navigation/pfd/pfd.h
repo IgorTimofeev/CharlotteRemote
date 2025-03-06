@@ -42,15 +42,15 @@ namespace pizda {
 
 			// Altitude
 			constexpr static const uint8_t altitudeWidth = 33;
-			constexpr static const uint8_t altitudeStepUnits = 2;
-			constexpr static const uint8_t altitudeStepUnitsBig = 10;
+			constexpr static const uint8_t altitudeStepUnits = 20;
+			constexpr static const uint8_t altitudeStepUnitsBig = 100;
 			constexpr static const uint8_t altitudeUnitPixels = 8;
 
 			// Vertical speed
 			constexpr static const uint8_t verticalSpeedWidth = 13;
-			constexpr static const uint16_t verticalSpeedStepUnits = 25;
-			constexpr static const uint16_t verticalSpeedStepUnitsLimit = 200;
-			constexpr static const uint16_t verticalSpeedStepUnitsBig = 100;
+			constexpr static const uint16_t verticalSpeedStepUnits = 250;
+			constexpr static const uint16_t verticalSpeedStepUnitsLimit = 2000;
+			constexpr static const uint16_t verticalSpeedStepUnitsBig = 1000;
 			constexpr static const uint16_t verticalSpeedStepPixels = 11;
 			constexpr static const uint16_t verticalSpeedStepPixelsRight = 2;
 			constexpr static const uint16_t verticalSpeedTextOffset = 3;

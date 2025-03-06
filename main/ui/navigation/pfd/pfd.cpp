@@ -968,7 +968,7 @@ namespace pizda {
 						),
 						&Theme::fontSmall,
 						lineColor,
-						std::to_wstring(lineValue / 100)
+						std::to_wstring(lineValue / 1000)
 					);
 				}
 				else {
