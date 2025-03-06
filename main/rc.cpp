@@ -400,7 +400,7 @@ namespace pizda {
 		_spoilers = spoilers;
 	}
 
-	bool RC::isStrobeLights() const {
+	bool RC::getStrobeLights() const {
 		return _strobeLights;
 	}
 
@@ -438,5 +438,13 @@ namespace pizda {
 
 	void RC::setLongitude(float longitude) {
 		_longitude = longitude;
+	}
+
+	bool RC::getLandingGear() const {
+		return _landingGear;
+	}
+
+	void RC::setLandingGear(bool landingGear) {
+		_landingGear = landingGear;
 	}
 }

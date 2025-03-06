@@ -5,8 +5,10 @@
 
 #include "trimIndicator.h"
 #include "throttleIndicator.h"
-#include "controlsIndicator.h"
+#include "flapsAndSpoilersIndicator.h"
 #include "batteryIndicator.h"
+#include "../../../../resources/images/PFDLandingGearExtendedImage.h"
+#include "../../../../resources/images/PFDLandingGearRetractedImage.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -35,8 +37,14 @@ namespace pizda {
 			StackLayout _throttleRow;
 			Titler _throttleTitle = Titler(L"THR", &_throttleRow);
 
-			ControlsIndicator _controlsIndicator;
-			Titler _controlsTitle = Titler(L"CTL", &_controlsIndicator);
+			// Controls
+			StackLayout _controlsRows;
+			FlapsAndSpoilersIndicator _flapsAndSpoilersIndicator;
+			ImageView _landingGearImageView;
+			Titler _controlsTitle = Titler(L"CTL", &_controlsRows);
+
+			static const PFDLandingGearExtendedImage _landingGearExtendedImage;
+			static const PFDLandingGearRetractedImage _landingGearRetractedImage;
 
 			TrimIndicator _elevatorTrimIndicator;
 			Titler _elevatorTrimTitle = Titler(L"TRM", &_elevatorTrimIndicator);

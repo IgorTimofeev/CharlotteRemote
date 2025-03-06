@@ -2,6 +2,9 @@
 #include "../../../../rc.h"
 
 namespace pizda {
+	const PFDLandingGearRetractedImage InstrumentsLayout::_landingGearRetractedImage = {};
+	const PFDLandingGearExtendedImage InstrumentsLayout::_landingGearExtendedImage = {};
+
 	InstrumentsLayout::InstrumentsLayout() {
 		_backgroundRect.setFillColor(&Theme::bg1);
 		*this += &_backgroundRect;
@@ -35,6 +38,10 @@ namespace pizda {
 		_row += &_throttleTitle;
 
 		// Controls
+		_controlsRows.setSpacing(5);
+		_controlsRows += &_flapsAndSpoilersIndicator;
+		_controlsRows += &_landingGearImageView;
+
 		Theme::apply(&_controlsTitle);
 		_row += &_controlsTitle;
 
@@ -69,6 +76,9 @@ namespace pizda {
 		_throttle1Indicator.setValue(rc.getThrottles()[0]);
 		_throttle2Indicator.setValue(rc.getThrottles()[1]);
 
+		// Controls
+		_landingGearImageView.setImage(rc.getLandingGear() ? reinterpret_cast<const Image*>(&_landingGearExtendedImage) : reinterpret_cast<const Image*>(&_landingGearRetractedImage));
+
 		// Trim
 		_elevatorTrimIndicator.setValue(rc.getElevator());
 
@@ -98,7 +108,13 @@ namespace pizda {
 		else if (event->getTypeID() == EncoderPushEvent::typeID) {
 			auto pushEvent = (EncoderPushEvent*) event;
 
-			ESP_LOGI("Encoder", "Push down: %d", pushEvent->isDown());
+			ESP_LOGI("Encoder", "Push: %d", pushEvent->isDown());
+
+			if (pushEvent->isDown()) {
+				auto& rc = RC::getInstance();
+
+				rc.setLandingGear(!rc.getLandingGear());
+			}
 
 			event->setHandled(true);
 		}

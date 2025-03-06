@@ -1,12 +1,12 @@
-#include "controlsIndicator.h"
+#include "flapsAndSpoilersIndicator.h"
 #include "../../../../rc.h"
 
 namespace pizda {
-	ControlsIndicator::ControlsIndicator() {
+	FlapsAndSpoilersIndicator::FlapsAndSpoilersIndicator() {
 		setImage(&_image);
 	}
 
-	void ControlsIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
+	void FlapsAndSpoilersIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
 		ImageView::onRender(renderer, bounds);
 
 		auto& rc = RC::getInstance();

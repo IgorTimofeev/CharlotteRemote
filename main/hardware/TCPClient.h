@@ -51,8 +51,8 @@ namespace pizda {
 				//
 				// EALREADY (120) - not an error, meaning client side was initialized, but server
 				// side didn't respond yet. Usually first call to connect() reserves some significant
-				// time like 10s and every subsequent call returns EALREADY if server didn't respond.
-				// After that time, the ENOTCONN will be returned
+				// time like 10s and any subsequent call will return EALREADY if server didn't respond.
+				// After that time, the ENOTCONN (127) will be returned
 				//
 				// EISCONN (127) - not an error, meaning connection was successfully established,
 				// and you can safely transfer your data via send() / recv()

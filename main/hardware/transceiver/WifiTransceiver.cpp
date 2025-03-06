@@ -89,7 +89,7 @@ namespace pizda {
 		_remotePacket.flaps = rc.getLeverRight().getMappedUint16Value();
 		_remotePacket.spoilers = rc.getLeverLeft().getMappedUint16Value();
 
-		_remotePacket.landingGear = true;
-		_remotePacket.strobeLights = true;
+		_remotePacket.landingGear = rc.getLandingGear();
+		_remotePacket.strobeLights = rc.getStrobeLights();
 	}
 }

@@ -74,8 +74,12 @@ namespace pizda {
 			uint16_t getSpoilers() const;
 			void setSpoilers(uint16_t spoilers);
 
-			bool isStrobeLights() const;
+			bool getStrobeLights() const;
 			void setStrobeLights(bool strobeLights);
+
+			bool getLandingGear() const;
+
+			void setLandingGear(bool landingGear);
 
 			float getAltimeterPressure() const;
 			void setAltimeterPressure(float altimeterPressure);
@@ -219,6 +223,7 @@ namespace pizda {
 
 			AltimeterMode _altimeterMode = AltimeterMode::QNH;
 
+			bool _landingGear = true;
 			bool _strobeLights = false;
 
 			// -------------------------------- Aircraft data --------------------------------
