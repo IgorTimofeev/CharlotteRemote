@@ -5,6 +5,7 @@
 #include <functional>
 #include "esp_wifi.h"
 #include "nvs_flash.h"
+#include <esp_timer.h>
 #include "esp_log.h"
 
 namespace pizda {
@@ -116,7 +117,26 @@ namespace pizda {
 				_onStateChanged = onStateChanged;
 			}
 
+			void scheduleConnection() {
+				ESP_LOGI("WiFi", "Scheduling reconnection in %lu ms", constants::wifi::connectionInterval / 1000);
+
+				_scheduledConnectionTime = esp_timer_get_time() + constants::wifi::connectionInterval;
+			}
+
+			void tick() {
+				if (_scheduledConnectionTime == 0 || esp_timer_get_time() < _scheduledConnectionTime)
+					return;
+
+				ESP_LOGI("WiFi", "Scheduled connection time reached");
+
+				_scheduledConnectionTime = 0;
+
+				connect();
+			}
+
 		private:
+			uint32_t _scheduledConnectionTime = 0;
+
 			WiFiState _state = WiFiState::notStarted;
 
 			std::function<void()> _onStateChanged;

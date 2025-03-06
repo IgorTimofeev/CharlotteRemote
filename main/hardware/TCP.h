@@ -4,7 +4,9 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include "esp_netif.h"
+#include <esp_timer.h>
 #include "esp_log.h"
+#include "../constants.h"
 
 namespace pizda {
 	enum class TCPState : uint8_t {
@@ -13,7 +15,7 @@ namespace pizda {
 		connected
 	};
 
-	class TCPClient {
+	class TCP {
 		public:
 			// -------------------------------- State / connection --------------------------------
 
@@ -70,7 +72,24 @@ namespace pizda {
 				setState(TCPState::disconnected);
 			}
 
+			void scheduleConnection() {
+				ESP_LOGI(_loggingTag, "Scheduling reconnection in %lu ms", constants::transceiver::tcp::connectionInterval / 1000);
+
+				_scheduledConnectionTime = esp_timer_get_time() + constants::wifi::connectionInterval;
+			}
+
 			void tick() {
+				if (_scheduledConnectionTime > 0 && esp_timer_get_time() >= _scheduledConnectionTime) {
+					ESP_LOGI(_loggingTag, "Scheduled connection time reached");
+
+					_scheduledConnectionTime = 0;
+
+					connect(
+						constants::transceiver::tcp::address,
+						constants::transceiver::tcp::port
+					);
+				}
+
 				switch (_state) {
 					case TCPState::connecting:
 						connect();
@@ -121,6 +140,8 @@ namespace pizda {
 			int _socket = -1;
 
 			TCPState _state = TCPState::disconnected;
+
+			uint32_t _scheduledConnectionTime = 0;
 
 			uint8_t* _sendingBuffer = nullptr;
 			ssize_t _sendingBufferLength = -1;

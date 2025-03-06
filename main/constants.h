@@ -28,6 +28,10 @@ namespace pizda {
 			constexpr static const uint32_t connectionInterval = 5'000'000;
 		}
 
+		namespace ota {
+			constexpr static const char* url = "https://github.com/IgorTimofeev/PullTick/releases/latest/download/Firmware.bin";
+		}
+
 		namespace screen {
 			namespace touch {
 				constexpr static const gpio_num_t reset = GPIO_NUM_NC;

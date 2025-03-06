@@ -5,7 +5,7 @@
 #include "esp_log.h"
 
 #include "packet.h"
-#include "../TCPClient.h"
+#include "../TCP.h"
 #include "../WiFi.h"
 #include "../../constants.h"
 
@@ -17,10 +17,8 @@ namespace pizda {
 
 		private:
 			uint32_t _tickTime = 0;
-			uint32_t _WiFiConnectTime = 0;
-			uint32_t _TCPConnectTime = 0;
 
-			TCPClient _TCP;
+			TCP _TCP;
 			WiFi _WiFi;
 
 			RemotePacket _remotePacket;

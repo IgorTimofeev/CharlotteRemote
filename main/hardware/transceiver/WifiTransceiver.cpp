@@ -1,7 +1,6 @@
 #include "WiFiTransceiver.h"
 #include <esp_timer.h>
 #include "../../rc.h"
-#include "../../constants.h"
 #include "../../resources/sounds.h"
 
 namespace pizda {
@@ -21,11 +20,8 @@ namespace pizda {
 					break;
 				}
 				case WiFiState::disconnected: {
-					ESP_LOGI("Transceiver", "WiFi reconnection scheduled for %lu s", constants::wifi::connectionInterval);
-
 					_TCP.disconnect();
-
-					_WiFiConnectTime = esp_timer_get_time() + constants::wifi::connectionInterval;
+					_WiFi.scheduleConnection();
 
 					break;
 				}
@@ -45,11 +41,9 @@ namespace pizda {
 					break;
 				}
 				case TCPState::disconnected: {
-					ESP_LOGI("Transceiver", "TCP reconnection scheduled for %lu s", constants::transceiver::tcp::connectionInterval);
-
 					RC::getInstance().getSpeaker().play(resources::sounds::transceiverDisconnect());
 
-					_TCPConnectTime = esp_timer_get_time() + constants::transceiver::tcp::connectionInterval;
+					_TCP.scheduleConnection();
 
 					break;
 				}
@@ -77,25 +71,7 @@ namespace pizda {
 		if (esp_timer_get_time() < _tickTime)
 			return;
 
-		if (_WiFiConnectTime > 0 && esp_timer_get_time() > _WiFiConnectTime) {
-			ESP_LOGI("Transceiver", "WiFi reconnection time reached");
-
-			_WiFiConnectTime = 0;
-
-			_WiFi.connect();
-		}
-
-		if (_TCPConnectTime > 0 && esp_timer_get_time() > _TCPConnectTime) {
-			ESP_LOGI("Transceiver", "TCP reconnection time reached");
-
-			_TCPConnectTime = 0;
-
-			_TCP.connect(
-				constants::transceiver::tcp::address,
-				constants::transceiver::tcp::port
-			);
-		}
-
+		_WiFi.tick();
 		_TCP.tick();
 
 		_tickTime = esp_timer_get_time() + constants::transceiver::tickInterval;
