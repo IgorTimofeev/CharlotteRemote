@@ -137,7 +137,7 @@ namespace pizda {
 			// 30 FPS are barely achievable on SPI displays, so let's take them for max tick rate
 			constexpr static const uint32_t mainTickInterval = 1'000'000 / 30;
 
-			constexpr static const uint32_t remoteDataInterpolationTickInterval = 1'000'000 / 30;
+			constexpr static const uint32_t interpolationTickInterval = 1'000'000 / 30;
 		}
 	}
 }

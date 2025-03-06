@@ -105,25 +105,27 @@ namespace pizda {
 	void RC::interpolationTick() {
 		const auto deltaTime = esp_timer_get_time() - _interpolationTickTime;
 
-		if (deltaTime < constants::application::remoteDataInterpolationTickInterval)
+		if (deltaTime < constants::application::interpolationTickInterval)
 			return;
 
-		// 200 ms
-		const float interpolationFactor = deltaTime / 200'000.f;
-
-		_interpolationTickTime = esp_timer_get_time() + constants::application::remoteDataInterpolationTickInterval;
-
-		_airspeedInterpolator.tick(interpolationFactor);
-		_airspeedTrendInterpolator.tick(interpolationFactor);
-
-		_altitudeInterpolator.tick(interpolationFactor);
-		_altitudeTrendInterpolator.tick(interpolationFactor);
-
-		_verticalSpeedInterpolator.tick(interpolationFactor);
-
+		// Roll/pitch/yaw, faster
+		float interpolationFactor = deltaTime / 500'000.f;
 		_pitchInterpolator.tick(interpolationFactor);
 		_rollInterpolator.tick(interpolationFactor);
 		_yawInterpolator.tick(interpolationFactor);
+
+		// Trends, slower
+		interpolationFactor = deltaTime / 1'000'000.f;
+		_airspeedTrendInterpolator.tick(interpolationFactor);
+		_altitudeTrendInterpolator.tick(interpolationFactor);
+		_verticalSpeedInterpolator.tick(interpolationFactor);
+
+		// Normal
+		interpolationFactor = deltaTime / 500'000.f;
+		_airspeedInterpolator.tick(interpolationFactor);
+		_altitudeInterpolator.tick(interpolationFactor);
+
+		_interpolationTickTime = esp_timer_get_time() + constants::application::interpolationTickInterval;
 	}
 
 	// ------------------------- Data -------------------------
@@ -158,10 +160,6 @@ namespace pizda {
 
 	Interpolator &RC::getVerticalSpeedInterpolator() {
 		return _verticalSpeedInterpolator;
-	}
-
-	uint16_t* RC::getThrottles() {
-		return _throttles;
 	}
 
 	Application& RC::getApplication() {
@@ -252,25 +250,6 @@ namespace pizda {
 		_ring.tick();
 		_battery.tick();
 
-//		ESP_LOGI("HID", "------------------------------------");
-//		ESP_LOGI("HID", "Lever left: %d", _leverLeft.getValue());
-//		ESP_LOGI("HID", "Encoder rotation: %ld", _encoder.getRotation());
-//		ESP_LOGI("HID", "Encoder pressed: %b", _encoder.isPressed());
-//		ESP_LOGI("HID", "Lever right: %d", _leverRight.getValue());
-//		ESP_LOGI("HID", "Joy horiz: %d", _joystickHorizontal.getValue());
-//		ESP_LOGI("HID", "Hoy vert: %d", _joystickVertical.getValue());
-//		ESP_LOGI("HID", "Ring: %d", _ring.getValue());
-//		ESP_LOGI("HID", "BChr: %d", _battery.getCharge());
-
-//		float pizda = yoba::toRadians(-90) + _joystickVertical.getMappedFloatValue() * yoba::toRadians(180);
-//		_pitchInterpolator.setTargetValue(pizda);
-//
-//		pizda = yoba::toRadians(-90) + _joystickHorizontal.getMappedFloatValue() * yoba::toRadians(180);
-//		_rollInterpolator.setTargetValue(pizda);
-//
-//		pizda = _ring.getMappedFloatValue() * yoba::toRadians(90);
-//		_yawInterpolator.setTargetValue(pizda);
-
 		_axisTickTime = esp_timer_get_time() + constants::axis::tickInterval;
 	}
 
@@ -336,92 +315,12 @@ namespace pizda {
 		_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60'000'000 / deltaTime);
 	}
 
-	uint16_t RC::getAilerons() const {
-		return _ailerons;
-	}
-
-	void RC::setAilerons(uint16_t ailerons) {
-		_ailerons = ailerons;
-	}
-
-	uint16_t RC::getElevator() const {
-		return _elevator;
-	}
-
-	void RC::setElevator(uint16_t elevator) {
-		_elevator = elevator;
-	}
-
-	uint16_t RC::getRudder() const {
-		return _rudder;
-	}
-
-	void RC::setRudder(uint16_t rudder) {
-		_rudder = rudder;
-	}
-
-	uint16_t RC::getAileronsTrim() const {
-		return _aileronsTrim;
-	}
-
-	void RC::setAileronsTrim(uint16_t aileronsTrim) {
-		_aileronsTrim = aileronsTrim;
-	}
-
-	uint16_t RC::getElevatorTrim() const {
-		return _elevatorTrim;
-	}
-
-	void RC::setElevatorTrim(uint16_t elevatorTrim) {
-		_elevatorTrim = elevatorTrim;
-	}
-
-	uint16_t RC::getRudderTrim() const {
-		return _rudderTrim;
-	}
-
-	void RC::setRudderTrim(uint16_t rudderTrim) {
-		_rudderTrim = rudderTrim;
-	}
-
-	uint16_t RC::getFlaps() const {
-		return _flaps;
-	}
-
-	void RC::setFlaps(uint16_t flaps) {
-		_flaps = flaps;
-	}
-
-	uint16_t RC::getSpoilers() const {
-		return _spoilers;
-	}
-
-	void RC::setSpoilers(uint16_t spoilers) {
-		_spoilers = spoilers;
-	}
-
-	bool RC::getStrobeLights() const {
-		return _strobeLights;
-	}
-
-	void RC::setStrobeLights(bool strobeLights) {
-		_strobeLights = strobeLights;
-	}
-
 	float RC::getAltimeterPressure() const {
 		return _altimeterPressure;
 	}
 
 	void RC::setAltimeterPressure(float altimeterPressure) {
 		_altimeterPressure = altimeterPressure;
-	}
-
-	AltimeterMode RC::getAltimeterMode() const {
-		return _altimeterMode;
-	}
-
-	void RC::setAltimeterMode(AltimeterMode altimeterMode) {
-		_altimeterMode = altimeterMode;
 	}
 
 	float RC::getLatitude() const {
@@ -438,13 +337,5 @@ namespace pizda {
 
 	void RC::setLongitude(float longitude) {
 		_longitude = longitude;
-	}
-
-	bool RC::getLandingGear() const {
-		return _landingGear;
-	}
-
-	void RC::setLandingGear(bool landingGear) {
-		_landingGear = landingGear;
 	}
 }

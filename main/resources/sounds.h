@@ -10,4 +10,10 @@ namespace pizda::resources::sounds {
 			Note(7500, 50'000)
 		});
 	}
+
+	static Sound transceiverConnect() {
+		return Sound({
+			Note(5500, 50'000)
+		});
+	}
 }

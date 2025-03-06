@@ -8,7 +8,7 @@
 #include "nd/ndPage.h"
 #include "autopilot/autopilotPage.h"
 #include "debug/debugPage.h"
-#include "controls/controlsPage.h"
+#include "axis/axisPage.h"
 
 namespace pizda {
 	class TabBar : public Selector {
@@ -37,8 +37,8 @@ namespace pizda {
 					return new AutopilotPage();
 				}),
 
-				_controlsTab = Tab(L"CTL", []() {
-					return new ControlsPage();
+				_axisPage = Tab(L"CTL", []() {
+					return new AxisPage();
 				}),
 
 				_debugTab = Tab(L"DBG", []() {

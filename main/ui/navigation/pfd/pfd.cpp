@@ -50,7 +50,7 @@ namespace pizda {
 		int32_t x =
 			left
 			? bounds.getX2() - currentValueTriangleSize - textOffset
-			: bounds.getX() + currentValueTriangleSize + textOffset;
+			: bounds.getX() + currentValueTriangleSize + textOffset + maxDigitWidth * getDigitCount(uintValue);
 
 		y = y + currentValueHeight / 2 - Theme::fontNormal.getHeight() / 2;
 
@@ -70,7 +70,7 @@ namespace pizda {
 
 			renderer->renderChar(
 				Point(
-					left ? x - Theme::fontNormal.getCharWidth(text) : x,
+					x - Theme::fontNormal.getCharWidth(text),
 					digitY
 				),
 				&Theme::fontNormal,
@@ -94,12 +94,7 @@ namespace pizda {
 				renderDigit(y, digit);
 			}
 
-			if (left) {
-				x -= maxDigitWidth;
-			}
-			else {
-				x += maxDigitWidth;
-			}
+			x -= maxDigitWidth;
 			shouldScroll = digit == 9;
 			uintValue /= 10;
 		} while (uintValue > 0);
@@ -1065,7 +1060,7 @@ namespace pizda {
 
 		std::wstring text;
 
-		switch (rc.getAltimeterMode()) {
+		switch (rc.getSettings().controls.altimeterMode) {
 			case AltimeterMode::QNH:
 				text = std::to_wstring((uint16_t) rc.getAltimeterPressure());
 				break;

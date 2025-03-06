@@ -10,9 +10,9 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class ControlsPage : public ScrollViewPage {
+	class AxisPage : public ScrollViewPage {
 		public:
-			explicit ControlsPage();
+			explicit AxisPage();
 
 		protected:
 			void onTick() override;
@@ -34,6 +34,10 @@ namespace pizda {
 			Titler _flapsAxisEditorTitle = Titler(L"Flaps", &_flapsAxisEditor);
 
 			Slider _lowPassFactorSlider;
-			Titler _lowPassFactorSliderTitle = Titler(L"Response speed", &_lowPassFactorSlider);
+			Titler _lowPassFactorSliderTitle = Titler(L"Low pass filter factor (0 - 100%)", &_lowPassFactorSlider);
+
+			constexpr static const uint16_t _jitteringCutoffMaxValue = 100;
+			Slider _jitteringCutoffFactorSlider;
+			Titler _jitteringValueSliderTitle = Titler(L"Jittering cutoff value (0 - 100)", &_jitteringCutoffFactorSlider);
 	};
 }

@@ -6,6 +6,7 @@
 #include "src/hardware/displays/ILI9341Display.h"
 #include "src/hardware/touchPanels/FT6336UTouchPanel.h"
 
+#include "types.h"
 #include "settings.h"
 #include "constants.h"
 #include "interpolator.h"
@@ -26,11 +27,6 @@ namespace pizda {
 	using namespace yoba::hardware;
 	using namespace yoba::ui;
 
-	enum class AltimeterMode : uint8_t {
-		QNH,
-		QNE
-	};
-
 	class RC {
 		public:
 			static RC& getInstance();
@@ -48,51 +44,13 @@ namespace pizda {
 			Interpolator& getAltitudeTrendInterpolator();
 			Interpolator& getVerticalSpeedInterpolator();
 
-			uint16_t* getThrottles();
-
-			uint16_t getAilerons() const;
-			void setAilerons(uint16_t ailerons);
-
-			uint16_t getElevator() const;
-			void setElevator(uint16_t elevator);
-
-			uint16_t getRudder() const;
-			void setRudder(uint16_t rudder);
-
-			uint16_t getAileronsTrim() const;
-			void setAileronsTrim(uint16_t aileronsTrim);
-
-			uint16_t getElevatorTrim() const;
-			void setElevatorTrim(uint16_t elevatorTrim);
-
-			uint16_t getRudderTrim() const;
-			void setRudderTrim(uint16_t rudderTrim);
-
-			uint16_t getFlaps() const;
-			void setFlaps(uint16_t flaps);
-
-			uint16_t getSpoilers() const;
-			void setSpoilers(uint16_t spoilers);
-
-			bool getStrobeLights() const;
-			void setStrobeLights(bool strobeLights);
-
-			bool getLandingGear() const;
-
-			void setLandingGear(bool landingGear);
-
 			float getAltimeterPressure() const;
 			void setAltimeterPressure(float altimeterPressure);
 
-			AltimeterMode getAltimeterMode() const;
-			void setAltimeterMode(AltimeterMode altimeterMode);
-
 			float getLatitude() const;
-
 			void setLatitude(float latitude);
 
 			float getLongitude() const;
-
 			void setLongitude(float longitude);
 
 			void updateDebugOverlayVisibility();
@@ -202,30 +160,6 @@ namespace pizda {
 			Application _application;
 			TabBar _tabBar;
 			DebugOverlay _debugOverlay;
-
-			// -------------------------------- Remote data --------------------------------
-
-			uint16_t _throttles[2] = {
-				0xFFFF,
-				0xFFFF
-			};
-
-			uint16_t _ailerons = 0xFFFF / 2;
-			uint16_t _elevator = 0xFFFF / 2;
-			uint16_t _rudder = 0xFFFF / 2;
-
-			uint16_t _aileronsTrim = 0xFFFF / 2;
-			uint16_t _elevatorTrim = 0xFFFF / 2;
-			uint16_t _rudderTrim = 0xFFFF / 2;
-
-			uint16_t _flaps = 0;
-			uint16_t _spoilers = 0;
-
-			AltimeterMode _altimeterMode = AltimeterMode::QNH;
-
-			bool _landingGear = true;
-			bool _strobeLights = false;
-
 			// -------------------------------- Aircraft data --------------------------------
 
 			// Kronshtadt airfield in Saint-Petersburg for UI testing

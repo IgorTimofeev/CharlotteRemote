@@ -43,7 +43,7 @@ namespace pizda {
 		addItem(&_PFDTab);
 		addItem(&_NDTab);
 		addItem(&_APTab);
-		addItem(&_controlsTab);
+		addItem(&_axisPage);
 		addItem(&_debugTab);
 	}
 }

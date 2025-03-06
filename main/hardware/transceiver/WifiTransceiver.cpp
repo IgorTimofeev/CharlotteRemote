@@ -78,9 +78,10 @@ namespace pizda {
 
 	void WiFiTransceiver::fillRemotePacket() {
 		auto& rc = RC::getInstance();
+		auto& settings = rc.getSettings();
 
-		_remotePacket.throttle1 = rc.getThrottles()[0];
-		_remotePacket.throttle2 = rc.getThrottles()[1];
+		_remotePacket.throttle1 = settings.controls.throttles[0];
+		_remotePacket.throttle2 = settings.controls.throttles[1];
 
 		_remotePacket.ailerons = rc.getJoystickHorizontal().getMappedUint16Value();
 		_remotePacket.elevator = rc.getJoystickVertical().getMappedUint16Value();
@@ -89,7 +90,7 @@ namespace pizda {
 		_remotePacket.flaps = rc.getLeverRight().getMappedUint16Value();
 		_remotePacket.spoilers = rc.getLeverLeft().getMappedUint16Value();
 
-		_remotePacket.landingGear = rc.getLandingGear();
-		_remotePacket.strobeLights = rc.getStrobeLights();
+		_remotePacket.landingGear = settings.controls.landingGear;
+		_remotePacket.strobeLights = settings.controls.strobeLights;
 	}
 }

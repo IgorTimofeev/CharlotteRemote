@@ -1,10 +1,10 @@
-#include "controlsPage.h"
+#include "axisPage.h"
 
 #include "../../../rc.h"
 #include "../../theme.h"
 
 namespace pizda {
-	ControlsPage::ControlsPage() :
+	AxisPage::AxisPage() :
 		_aileronsAxisEditor(AxisEditor(&RC::getInstance().getJoystickHorizontal())),
 		_elevatorAxisEditor(AxisEditor(&RC::getInstance().getJoystickVertical())),
 		_rudderAxisEditor(AxisEditor(&RC::getInstance().getRing())),
@@ -30,8 +30,25 @@ namespace pizda {
 		Theme::apply(&_flapsAxisEditorTitle);
 		rows += &_flapsAxisEditorTitle;
 
+		// Jittering slider
+		Theme::apply(&_jitteringCutoffFactorSlider);
+		_jitteringCutoffFactorSlider.setFillColor(&Theme::bad2);
+
+		_jitteringCutoffFactorSlider.setValue(RC::getInstance().getSettings().axis.jitteringCutoffValue * 0xFFFF / _jitteringCutoffMaxValue);
+
+		_jitteringCutoffFactorSlider.valueChanged += [this]() {
+			auto& settings = RC::getInstance().getSettings();
+
+			settings.axis.jitteringCutoffValue = _jitteringCutoffFactorSlider.getValue() * _jitteringCutoffMaxValue / 0xFFFF;
+			settings.enqueueWrite();
+		};
+
+		Theme::apply(&_jitteringValueSliderTitle);
+		rows += &_jitteringValueSliderTitle;
+
 		// Low pass slider
 		Theme::apply(&_lowPassFactorSlider);
+		_lowPassFactorSlider.setFillColor(&Theme::good2);
 
 		_lowPassFactorSlider.setValue(RC::getInstance().getSettings().axis.lowPassFactor);
 
@@ -46,7 +63,7 @@ namespace pizda {
 		rows += &_lowPassFactorSliderTitle;
 	}
 
-	void ControlsPage::onTick() {
+	void AxisPage::onTick() {
 		Layout::onTick();
 
 		invalidate();

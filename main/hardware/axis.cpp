@@ -28,14 +28,14 @@ namespace pizda {
 		if (_settings->inverted)
 			rawValue = maxValue - rawValue;
 
+		const auto& settings = RC::getInstance().getSettings();
+
 		// Skipping insignificant ADC oscillations
-		if (std::abs(rawValue - _rawValue) < 30)
+		if (std::abs(rawValue - _rawValue) < settings.axis.jitteringCutoffValue)
 			return;
 
 		// Applying low pass filter for buttery smooth landings
 		// old * (1 - a) + new * a
-		const auto& settings = RC::getInstance().getSettings();
-
 		_rawValue =
 			_rawValue == 0xFFFF
 			? rawValue

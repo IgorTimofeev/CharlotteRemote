@@ -71,16 +71,21 @@ namespace pizda {
 		Layout::onTick();
 
 		auto& rc = RC::getInstance();
+		auto& settings = rc.getSettings();
 
 		// Throttles
-		_throttle1Indicator.setValue(rc.getThrottles()[0]);
-		_throttle2Indicator.setValue(rc.getThrottles()[1]);
+		_throttle1Indicator.setValue(settings.controls.throttles[0]);
+		_throttle2Indicator.setValue(settings.controls.throttles[1]);
 
 		// Controls
-		_landingGearImageView.setImage(rc.getLandingGear() ? reinterpret_cast<const Image*>(&_landingGearExtendedImage) : reinterpret_cast<const Image*>(&_landingGearRetractedImage));
+		_landingGearImageView.setImage(
+			settings.controls.landingGear
+			? reinterpret_cast<const Image*>(&_landingGearExtendedImage)
+			: reinterpret_cast<const Image*>(&_landingGearRetractedImage)
+		);
 
 		// Trim
-		_elevatorTrimIndicator.setValue(rc.getElevator());
+		_elevatorTrimIndicator.setValue(settings.controls.elevatorTrim);
 
 		// Battery
 		_batteryIndicatorController.setVoltage(rc.getBattery().getVoltage());
@@ -95,13 +100,14 @@ namespace pizda {
 
 		if (event->getTypeID() == EncoderRotateEvent::typeID) {
 			auto rotateEvent = (EncoderRotateEvent*) event;
-			auto throttles = RC::getInstance().getThrottles();
 
-			// Throttle
 			ESP_LOGI("Encoder", "RPS: %ld", rotateEvent->getRPS());
 
-			throttles[0] = yoba::addSaturating(throttles[0], rotateEvent->getRPSFactor(60, 1, 10) * 0xFFFF / 100);
-			throttles[1] = throttles[0];
+			auto& settings = RC::getInstance().getSettings();
+
+			// Throttle
+			settings.controls.throttles[0] = yoba::addSaturating(settings.controls.throttles[0], rotateEvent->getRPSFactor(60, 1, 10) * 0xFFFF / 100);
+			settings.controls.throttles[1] = settings.controls.throttles[0];
 
 			event->setHandled(true);
 		}
@@ -111,9 +117,9 @@ namespace pizda {
 			ESP_LOGI("Encoder", "Push: %d", pushEvent->isDown());
 
 			if (pushEvent->isDown()) {
-				auto& rc = RC::getInstance();
+				auto& settings = RC::getInstance().getSettings();
 
-				rc.setLandingGear(!rc.getLandingGear());
+				settings.controls.landingGear = !settings.controls.landingGear;
 			}
 
 			event->setHandled(true);
