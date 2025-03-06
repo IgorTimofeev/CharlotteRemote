@@ -25,7 +25,7 @@ namespace pizda {
 		namespace wifi {
 			constexpr static const char* ssid = "IT";
 			constexpr static const char* password = "SERGTIM64ST17";
-			constexpr static const uint32_t connectionInterval = 2'500'000;
+			constexpr static const uint32_t connectionInterval = 5'000'000;
 		}
 
 		namespace screen {
@@ -62,7 +62,7 @@ namespace pizda {
 			namespace tcp {
 				constexpr static const char* address = "192.168.1.38";
 				constexpr static const uint16_t port = 25569;
-				constexpr static const uint32_t connectionInterval = 2'500'000;
+				constexpr static const uint32_t connectionInterval = 5'000'000;
 			}
 		}
 

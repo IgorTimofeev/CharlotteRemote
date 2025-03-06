@@ -64,11 +64,11 @@ namespace pizda {
 				_repeating = value;
 			}
 
-			const std::optional<std::function<void()>>& getOnFinish() const {
+			const std::function<void()>& getOnFinish() const {
 				return _onFinish;
 			}
 
-			void setOnFinish(const std::optional<std::function<void()>>& value) {
+			void setOnFinish(const std::function<void()>& value) {
 				_onFinish = value;
 			}
 
@@ -76,6 +76,6 @@ namespace pizda {
 			std::vector<Note> _notes;
 			size_t _noteIndex = 0;
 			bool _repeating = false;
-			std::optional<std::function<void()>> _onFinish = std::nullopt;
+			std::function<void()> _onFinish;
 	};
 }

@@ -16,4 +16,12 @@ namespace pizda::resources::sounds {
 			Note(5500, 50'000)
 		});
 	}
+
+	static Sound transceiverDisconnect() {
+		return Sound({
+			Note(900, 50'000),
+			Delay(50'000),
+			Note(900, 50'000)
+		});
+	}
 }

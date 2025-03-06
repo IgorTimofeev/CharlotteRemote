@@ -66,8 +66,7 @@ namespace pizda {
 //							ESP_LOGI("Speaker", "End of track");
 
 							// Calling onFinish callback
-							if (track.sound.getOnFinish().has_value())
-								track.sound.getOnFinish().value()();
+							track.sound.getOnFinish();
 
 							// If track repeating enabled
 							if (track.sound.isRepeating()) {

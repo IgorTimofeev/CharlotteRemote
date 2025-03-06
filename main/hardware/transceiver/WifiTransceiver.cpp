@@ -1,11 +1,72 @@
 #include "WiFiTransceiver.h"
 #include <esp_timer.h>
-#include "../../constants.h"
 #include "../../rc.h"
+#include "../../constants.h"
+#include "../../resources/sounds.h"
 
 namespace pizda {
 	void WiFiTransceiver::setup() {
-		_WiFi.setup(
+		_WiFi.setOnStateChanged([this]() {
+			switch (_WiFi.getState()) {
+				case WiFiState::started: {
+					_WiFi.connect();
+					break;
+				}
+				case WiFiState::connected: {
+					_TCP.connect(
+						constants::transceiver::tcp::address,
+						constants::transceiver::tcp::port
+					);
+
+					break;
+				}
+				case WiFiState::disconnected: {
+					ESP_LOGI("Transceiver", "WiFi reconnection scheduled for %lu s", constants::wifi::connectionInterval);
+
+					_TCP.disconnect();
+
+					_WiFiConnectTime = esp_timer_get_time() + constants::wifi::connectionInterval;
+
+					break;
+				}
+				default:
+					break;
+			}
+		});
+
+		_TCP.setOnStateChanged([this]() {
+			switch (_TCP.getState()) {
+				case TCPState::connected: {
+					RC::getInstance().getSpeaker().play(resources::sounds::transceiverConnect());
+
+					setTCPSendingBuffer();
+					setTCPReceivingBuffer();
+
+					break;
+				}
+				case TCPState::disconnected: {
+					ESP_LOGI("Transceiver", "TCP reconnection scheduled for %lu s", constants::transceiver::tcp::connectionInterval);
+
+					RC::getInstance().getSpeaker().play(resources::sounds::transceiverDisconnect());
+
+					_TCPConnectTime = esp_timer_get_time() + constants::transceiver::tcp::connectionInterval;
+
+					break;
+				}
+				default:
+					break;
+			}
+		});
+
+		_TCP.setOnSendingCompleted([this]() {
+			setTCPSendingBuffer();
+		});
+
+		_TCP.setOnReceivingCompleted([this]() {
+			setTCPReceivingBuffer();
+		});
+
+		_WiFi.start(
 			constants::wifi::ssid,
 			constants::wifi::password,
 			WIFI_AUTH_WPA2_PSK
@@ -16,62 +77,26 @@ namespace pizda {
 		if (esp_timer_get_time() < _tickTime)
 			return;
 
-		switch (_WiFi.getState()) {
-			case WiFiState::readyToConnect:
-			case WiFiState::disconnected: {
-				if (esp_timer_get_time() > _WiFiConnectTime) {
-					_WiFi.connect();
+		if (_WiFiConnectTime > 0 && esp_timer_get_time() > _WiFiConnectTime) {
+			ESP_LOGI("Transceiver", "WiFi reconnection time reached");
 
-					_WiFiConnectTime = esp_timer_get_time() + constants::wifi::connectionInterval;
-				}
+			_WiFiConnectTime = 0;
 
-				break;
-			}
-			case WiFiState::connected:
-				switch (_TCP.getState()) {
-					case TCPState::disconnected: {
-						if (esp_timer_get_time() > _TCPConnectTime) {
-							_TCP.connect(
-								constants::transceiver::tcp::address,
-								constants::transceiver::tcp::port
-							);
-
-							_TCPConnectTime = esp_timer_get_time() + constants::transceiver::tcp::connectionInterval;
-						}
-
-						break;
-					}
-					case TCPState::connecting:
-						break;
-
-					case TCPState::connected: {
-						_TCP.send();
-
-						if (_TCP.isReadyToSendNext()) {
-							fillRemotePacket();
-
-							_TCP.setSendingBuffer((uint8_t*) &_remotePacket, sizeof(RemotePacket));
-						}
-
-						_TCP.receive();
-
-						if (_TCP.isReadyToReceiveNext()) {
-							if (_TCP.isReceivingFinished()) {
-								RC::getInstance().handleAircraftPacket(&_aircraftPacket);
-							}
-
-							_TCP.setReceivingBuffer((uint8_t*) &_aircraftPacket, sizeof(AircraftPacket));
-						}
-
-						break;
-					}
-				}
-
-				break;
-
-			default:
-				break;
+			_WiFi.connect();
 		}
+
+		if (_TCPConnectTime > 0 && esp_timer_get_time() > _TCPConnectTime) {
+			ESP_LOGI("Transceiver", "TCP reconnection time reached");
+
+			_TCPConnectTime = 0;
+
+			_TCP.connect(
+				constants::transceiver::tcp::address,
+				constants::transceiver::tcp::port
+			);
+		}
+
+		_TCP.tick();
 
 		_tickTime = esp_timer_get_time() + constants::transceiver::tickInterval;
 	}
@@ -92,5 +117,17 @@ namespace pizda {
 
 		_remotePacket.landingGear = settings.controls.landingGear;
 		_remotePacket.strobeLights = settings.controls.strobeLights;
+	}
+
+	void WiFiTransceiver::setTCPSendingBuffer() {
+		fillRemotePacket();
+
+		_TCP.setSendingBuffer((uint8_t*) &_remotePacket, sizeof(RemotePacket));
+	}
+
+	void WiFiTransceiver::setTCPReceivingBuffer() {
+		RC::getInstance().handleAircraftPacket(&_aircraftPacket);
+
+		_TCP.setReceivingBuffer((uint8_t*) &_aircraftPacket, sizeof(AircraftPacket));
 	}
 }

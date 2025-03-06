@@ -27,5 +27,7 @@ namespace pizda {
 			AircraftPacket _aircraftPacket;
 
 			void fillRemotePacket();
+			void setTCPSendingBuffer();
+			void setTCPReceivingBuffer();
 	};
 }

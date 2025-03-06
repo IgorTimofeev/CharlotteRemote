@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <netdb.h>
 #include <arpa/inet.h>
 #include "esp_netif.h"
@@ -14,34 +15,157 @@ namespace pizda {
 
 	class TCPClient {
 		public:
-			// -------------------------------- Connection --------------------------------
+			// -------------------------------- State / connection --------------------------------
+
+			TCPState getState() const {
+				return _state;
+			}
+
+			void setOnStateChanged(const std::function<void()>& onStateChanged) {
+				_onStateChanged = onStateChanged;
+			}
 
 			void connect(const char* address, const uint16_t port) {
 				if (_state == TCPState::connected)
 					return;
 
+				ESP_LOGI(_loggingTag, "Creating socket");
+
+				inet_pton(AF_INET, address, &_socketAddress.sin_addr);
+				_socketAddress.sin_family = AF_INET;
+				_socketAddress.sin_port = htons(port);
+
+				_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
+
 				if (_socket < 0) {
-					ESP_LOGI(_loggingTag, "Creating socket");
-
-					inet_pton(AF_INET, address, &_socketAddress.sin_addr);
-					_socketAddress.sin_family = AF_INET;
-					_socketAddress.sin_port = htons(port);
-
-					_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
-
-					if (_socket < 0) {
-						logErrorWithErrno("Unable to create socket");
-						return;
-					}
-
-					if (fcntl(_socket, F_SETFL, fcntl(_socket, F_GETFL) | O_NONBLOCK) < 0) {
-						logErrorWithErrno("Unable to set socket non blocking");
-						return;
-					}
-
-					ESP_LOGI(_loggingTag, "Connecting");
+					logErrorWithErrno("Unable to create socket");
+					return;
 				}
 
+				if (fcntl(_socket, F_SETFL, fcntl(_socket, F_GETFL) | O_NONBLOCK) < 0) {
+					logErrorWithErrno("Unable to set socket non blocking");
+					return;
+				}
+
+				ESP_LOGI(_loggingTag, "Connecting");
+
+				setState(TCPState::connecting);
+			}
+
+			void disconnect() {
+				if (_state == TCPState::disconnected)
+					return;
+
+				ESP_LOGI(_loggingTag, "Disconnected");
+
+				::close(_socket);
+				_socket = -1;
+
+				clearSendingData();
+				_sendingBufferRemaining = -1;
+
+				clearReceivingData();
+				_receivingBufferRemaining = -1;
+
+				setState(TCPState::disconnected);
+			}
+
+			void tick() {
+				switch (_state) {
+					case TCPState::connecting:
+						connect();
+						break;
+
+					case TCPState::connected: {
+						if (_sendingBuffer && _sendingBufferRemaining > 0)
+							send();
+
+						if (_receivingBuffer && _receivingBufferRemaining > 0)
+							receive();
+
+						break;
+					}
+					default:
+						break;
+				}
+			}
+
+			// -------------------------------- Sending --------------------------------
+
+			void setSendingBuffer(uint8_t* buffer, ssize_t length) {
+				_sendingBuffer = buffer;
+				_sendingBufferLength = length;
+				_sendingBufferRemaining = _sendingBufferLength;
+			}
+
+			void setOnSendingCompleted(const std::function<void()>& onSendingCompleted) {
+				_onSendingCompleted = onSendingCompleted;
+			}
+			
+			// -------------------------------- Receiving --------------------------------
+
+			void setReceivingBuffer(uint8_t* buffer, ssize_t length) {
+				_receivingBuffer = buffer;
+				_receivingBufferLength = length;
+				_receivingBufferRemaining = _receivingBufferLength;
+			}
+
+			void setOnReceivingCompleted(const std::function<void()>& onReceivingCompleted) {
+				_onReceivingCompleted = onReceivingCompleted;
+			}
+
+		private:
+			constexpr static const char* _loggingTag = "TCP";
+
+			struct sockaddr_in _socketAddress;
+			int _socket = -1;
+
+			TCPState _state = TCPState::disconnected;
+
+			uint8_t* _sendingBuffer = nullptr;
+			ssize_t _sendingBufferLength = -1;
+			ssize_t _sendingBufferRemaining = -1;
+
+			uint8_t* _receivingBuffer = nullptr;
+			ssize_t _receivingBufferLength = -1;
+			ssize_t _receivingBufferRemaining = -1;
+
+			std::function<void()> _onStateChanged;
+			std::function<void()> _onSendingCompleted;
+			std::function<void()> _onReceivingCompleted;
+
+			void logError(const char* text) {
+				ESP_LOGE(_loggingTag, "%s", text);
+			}
+
+			void logErrorWithErrno(const char* text, int errorCode) {
+				ESP_LOGE(_loggingTag, "%s: %s, error code is %d", text, strerror(errorCode), errorCode);
+			}
+
+			void logErrorWithErrno(const char* text) {
+				logErrorWithErrno(text, errno);
+			}
+
+			void clearSendingData() {
+				_sendingBuffer = nullptr;
+				_sendingBufferLength = -1;
+			}
+
+			void clearReceivingData() {
+				_receivingBuffer = nullptr;
+				_receivingBufferLength = -1;
+			}
+
+			void setState(TCPState value) {
+				if (value == _state)
+					return;
+
+				_state = value;
+
+				_onStateChanged();
+			}
+
+			void connect() {
 				// Non-blocking connect() immediately tests for connection status.
 				// Here's some remarks about commonly returned values:
 				//
@@ -69,67 +193,28 @@ namespace pizda {
 
 						if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (void*) &sockError, &sockLen) < 0) {
 							logErrorWithErrno("getsockopt() error");
-							close();
+							disconnect();
 							return;
 						}
 
 						if (sockError) {
 							logErrorWithErrno("Connection error", sockError);
-							close();
+							disconnect();
 							return;
 						}
 
-						_state = TCPState::connected;
+						setState(TCPState::connected);
 					}
 					// Some error
 					else if (errno != EINPROGRESS && errno != EALREADY) {
 						logErrorWithErrno("Unable to connect");
-						close();
+						disconnect();
+						return;
 					}
 				}
 			}
 
-			TCPState getState() const {
-				return _state;
-			}
-
-			void disconnect() {
-				if (_state != TCPState::connected)
-					return;
-
-				ESP_LOGI(_loggingTag, "Disconnected");
-
-				close();
-				_state = TCPState::disconnected;
-
-				clearSendingData();
-				_sendingBufferRemaining = -1;
-
-				clearReceivingData();
-				_receivingBufferRemaining = -1;
-			}
-
-			// -------------------------------- Sending --------------------------------
-
-
-			void setSendingBuffer(uint8_t* buffer, ssize_t length) {
-				_sendingBuffer = buffer;
-				_sendingBufferLength = length;
-				_sendingBufferRemaining = _sendingBufferLength;
-			}
-
-			bool isReadyToSendNext() {
-				return _state == TCPState::connected && _sendingBufferRemaining <= 0;
-			}
-
-			bool isSendingFinished() {
-				return _sendingBufferLength == 0;
-			}
-
 			void send() {
-				if (_state != TCPState::connected || !_sendingBuffer || _sendingBufferRemaining <= 0)
-					return;
-
 				const auto written = ::send(_socket, _sendingBuffer + (_sendingBufferLength - _sendingBufferRemaining), _sendingBufferRemaining, 0);
 
 				if (written < 0 && errno != EINPROGRESS && errno != EAGAIN && errno != EWOULDBLOCK) {
@@ -145,29 +230,12 @@ namespace pizda {
 					_sendingBufferRemaining = 0;
 
 					clearSendingData();
+
+					_onSendingCompleted();
 				}
 			}
 
-			// -------------------------------- Receiving --------------------------------
-
-			void setReceivingBuffer(uint8_t* buffer, ssize_t length) {
-				_receivingBuffer = buffer;
-				_receivingBufferLength = length;
-				_receivingBufferRemaining = _receivingBufferLength;
-			}
-
-			bool isReadyToReceiveNext() {
-				return _state == TCPState::connected && _receivingBufferRemaining <= 0;
-			}
-
-			bool isReceivingFinished() {
-				return _receivingBufferRemaining == 0;
-			}
-
 			void receive() {
-				if (_state != TCPState::connected || !_receivingBuffer || _receivingBufferRemaining <= 0)
-					return;
-
 				const auto received = recv(_socket, _receivingBuffer + (_receivingBufferLength - _receivingBufferRemaining), _receivingBufferRemaining, 0);
 
 				// Error
@@ -176,7 +244,7 @@ namespace pizda {
 					disconnect();
 					return;
 				}
-				// Received something (maybe only part)
+				// Received something, maybe just a part of expected data
 				else if (received > 0) {
 					_receivingBufferRemaining -= received;
 
@@ -185,51 +253,10 @@ namespace pizda {
 						_receivingBufferRemaining = 0;
 
 						clearReceivingData();
+
+						_onReceivingCompleted();
 					}
 				}
-			}
-
-		private:
-			constexpr static const char* _loggingTag = "TCP";
-
-			struct sockaddr_in _socketAddress;
-			int _socket = -1;
-
-			TCPState _state = TCPState::disconnected;
-
-			uint8_t* _sendingBuffer = nullptr;
-			ssize_t _sendingBufferLength = -1;
-			ssize_t _sendingBufferRemaining = -1;
-
-			uint8_t* _receivingBuffer = nullptr;
-			ssize_t _receivingBufferLength = -1;
-			ssize_t _receivingBufferRemaining = -1;
-
-			void logError(const char* text) {
-				ESP_LOGE(_loggingTag, "%s", text);
-			}
-
-			void logErrorWithErrno(const char* text, int errorCode) {
-				ESP_LOGE(_loggingTag, "%s: %s, error code is %d", text, strerror(errorCode), errorCode);
-			}
-
-			void logErrorWithErrno(const char* text) {
-				logErrorWithErrno(text, errno);
-			}
-
-			void clearSendingData() {
-				_sendingBuffer = nullptr;
-				_sendingBufferLength = -1;
-			}
-
-			void clearReceivingData() {
-				_receivingBuffer = nullptr;
-				_receivingBufferLength = -1;
-			}
-
-			void close() {
-				::close(_socket);
-				_socket = -1;
 			}
 	};
 }
