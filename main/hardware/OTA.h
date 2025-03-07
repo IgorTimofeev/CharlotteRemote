@@ -40,7 +40,7 @@ namespace pizda {
 							ESP_LOGI("OTA", "Callback to decrypt function");
 							break;
 						case ESP_HTTPS_OTA_WRITE_FLASH:
-							ESP_LOGI("OTA", "Writing to flash: %d written", *(int *)event_data);
+//							ESP_LOGI("OTA", "Writing to flash: %d written", *(int *)event_data);
 							break;
 						case ESP_HTTPS_OTA_UPDATE_BOOT_PARTITION:
 							ESP_LOGI("OTA", "Boot partition updated. Next Partition: %d", *(esp_partition_subtype_t *)event_data);
@@ -94,31 +94,25 @@ namespace pizda {
 				httpClientConfig.url = constants::ota::url;
 				httpClientConfig.timeout_ms = 5'000;
 				httpClientConfig.disable_auto_redirect = false;
-				httpClientConfig.max_redirection_count = 8;
+				httpClientConfig.max_redirection_count = 4;
 				httpClientConfig.buffer_size = 2048;
 				httpClientConfig.buffer_size_tx = 2048;
 				httpClientConfig.crt_bundle_attach = esp_crt_bundle_attach;
 				httpClientConfig.keep_alive_enable = true;
 
-
-#ifdef CONFIG_EXAMPLE_SKIP_COMMON_NAME_CHECK
-				config.skip_cert_common_name_check = true;
-#endif
-
 				esp_https_ota_config_t httpsOTAConfig {};
 				httpsOTAConfig.http_config = &httpClientConfig;
-				// A callback to be invoked after esp_http_client is initialized
 				httpsOTAConfig.http_client_init_cb = http_client_init_cb;
 
-				esp_https_ota_handle_t otaHandle = NULL;
-				esp_err_t err = esp_https_ota_begin(&httpsOTAConfig, &otaHandle);
+				esp_https_ota_handle_t OTAHandle = NULL;
+				esp_err_t err = esp_https_ota_begin(&httpsOTAConfig, &OTAHandle);
 				if (err != ESP_OK) {
 					ESP_LOGE("OTA", "ESP HTTPS OTA Begin failed");
 					return;
 				}
 
 				esp_app_desc_t app_desc;
-				err = esp_https_ota_get_img_desc(otaHandle, &app_desc);
+				err = esp_https_ota_get_img_desc(OTAHandle, &app_desc);
 				if (err != ESP_OK) {
 					ESP_LOGE("OTA", "esp_https_ota_get_img_desc failed");
 					goto ota_end;
@@ -131,19 +125,26 @@ namespace pizda {
 				}
 
 				while (1) {
-					err = esp_https_ota_perform(otaHandle);
-					if (err != ESP_ERR_HTTPS_OTA_IN_PROGRESS) {
+					err = esp_https_ota_perform(OTAHandle);
+
+					if (err == ESP_ERR_HTTPS_OTA_IN_PROGRESS) {
+						// esp_https_ota_perform returns after every read operation which gives user the ability to
+						// monitor the status of OTA upgrade by calling esp_https_ota_get_image_len_read, which gives length of image
+						// data read so far.
+
+						const auto progress = esp_https_ota_get_image_len_read(OTAHandle) * 100 / esp_https_ota_get_image_size(OTAHandle);
+
+						if (progress % 5 == 0) {
+							ESP_LOGI("OTA", "Progress: %d",progress);
+						}
+					}
+					else {
 						break;
 					}
-
-					// esp_https_ota_perform returns after every read operation which gives user the ability to
-					// monitor the status of OTA upgrade by calling esp_https_ota_get_image_len_read, which gives length of image
-					// data read so far.
-					ESP_LOGI("OTA", "Image bytes read: %d", esp_https_ota_get_image_len_read(otaHandle));
 				}
 
-				if (esp_https_ota_is_complete_data_received(otaHandle)) {
-					ota_finish_err = esp_https_ota_finish(otaHandle);
+				if (esp_https_ota_is_complete_data_received(OTAHandle)) {
+					ota_finish_err = esp_https_ota_finish(OTAHandle);
 
 					if ((err == ESP_OK) && (ota_finish_err == ESP_OK)) {
 						ESP_LOGI("OTA", "ESP_HTTPS_OTA upgrade successful. Rebooting ...");
@@ -164,7 +165,7 @@ namespace pizda {
 				}
 
 				ota_end:
-				esp_https_ota_abort(otaHandle);
+				esp_https_ota_abort(OTAHandle);
 				ESP_LOGE("OTA", "ESP_HTTPS_OTA upgrade failed");
 			}
 

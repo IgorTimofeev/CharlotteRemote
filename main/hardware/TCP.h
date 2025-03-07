@@ -23,7 +23,7 @@ namespace pizda {
 				return _state;
 			}
 
-			void setOnStateChanged(const std::function<void()>& onStateChanged) {
+			void setOnStateChanged(const std::function<void(TCPState, TCPState)>& onStateChanged) {
 				_onStateChanged = onStateChanged;
 			}
 
@@ -151,7 +151,7 @@ namespace pizda {
 			ssize_t _receivingBufferLength = -1;
 			ssize_t _receivingBufferRemaining = -1;
 
-			std::function<void()> _onStateChanged;
+			std::function<void(TCPState, TCPState)> _onStateChanged;
 			std::function<void()> _onSendingCompleted;
 			std::function<void()> _onReceivingCompleted;
 
@@ -181,9 +181,10 @@ namespace pizda {
 				if (value == _state)
 					return;
 
+				const auto fromState = _state;
 				_state = value;
 
-				_onStateChanged();
+				_onStateChanged(fromState, _state);
 			}
 
 			void connect() {

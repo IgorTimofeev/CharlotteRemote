@@ -113,7 +113,7 @@ namespace pizda {
 				}
 			}
 
-			void setOnStateChanged(const std::function<void()>& onStateChanged) {
+			void setOnStateChanged(const std::function<void(WiFiState, WiFiState)>& onStateChanged) {
 				_onStateChanged = onStateChanged;
 			}
 
@@ -139,15 +139,16 @@ namespace pizda {
 
 			WiFiState _state = WiFiState::notStarted;
 
-			std::function<void()> _onStateChanged;
+			std::function<void(WiFiState, WiFiState)> _onStateChanged;
 
 			void setState(WiFiState value) {
 				if (value == _state)
 					return;
 
+				const auto fromState = _state;
 				_state = value;
 
-				_onStateChanged();
+				_onStateChanged(fromState, _state);
 			}
 	};
 }

@@ -29,7 +29,7 @@ namespace pizda {
 		}
 
 		namespace ota {
-			constexpr static const char* url = "https://github.com/IgorTimofeev/CharlotteDownloads/raw/refs/heads/dev/Firmware/Remote.bin";
+			constexpr static const char* url = "https://github.com/IgorTimofeev/CharlotteDownloads/raw/refs/heads/master/Firmware/Remote.bin";
 		}
 
 		namespace screen {

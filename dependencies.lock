@@ -2,7 +2,7 @@ dependencies:
   RadioLib:
     dependencies: []
     source:
-      path: C:\Users\Igor\Documents\Code\MCU\ESP32\PullTick\components\RadioLib
+      path: C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\RadioLib
       type: local
     version: 7.1.2
   idf:
@@ -12,7 +12,7 @@ dependencies:
   yoba:
     dependencies: []
     source:
-      path: C:\Users\Igor\Documents\Code\MCU\ESP32\PullTick\components\yoba
+      path: C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\yoba
       type: local
     version: 0.0.1
 direct_dependencies:

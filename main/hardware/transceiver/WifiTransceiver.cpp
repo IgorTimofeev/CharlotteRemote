@@ -5,8 +5,8 @@
 
 namespace pizda {
 	void WiFiTransceiver::setup() {
-		_WiFi.setOnStateChanged([this]() {
-			switch (_WiFi.getState()) {
+		_WiFi.setOnStateChanged([this](WiFiState fromState, WiFiState toState) {
+			switch (toState) {
 				case WiFiState::started: {
 					_WiFi.connect();
 					break;
@@ -30,8 +30,8 @@ namespace pizda {
 			}
 		});
 
-		_TCP.setOnStateChanged([this]() {
-			switch (_TCP.getState()) {
+		_TCP.setOnStateChanged([this](TCPState fromState, TCPState toState) {
+			switch (toState) {
 				case TCPState::connected: {
 					RC::getInstance().getSpeaker().play(resources::sounds::transceiverConnect());
 
@@ -41,7 +41,8 @@ namespace pizda {
 					break;
 				}
 				case TCPState::disconnected: {
-					RC::getInstance().getSpeaker().play(resources::sounds::transceiverDisconnect());
+					if (fromState == TCPState::connected)
+						RC::getInstance().getSpeaker().play(resources::sounds::transceiverDisconnect());
 
 					_TCP.scheduleConnection();
 
