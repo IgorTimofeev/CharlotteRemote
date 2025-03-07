@@ -1,11 +1,28 @@
 #include "debugPage.h"
 #include "../../theme.h"
 #include "../../../rc.h"
+#include "../../../hardware/OTA.h"
 
 namespace pizda {
 	DebugPage::DebugPage() {
 		// Page title
 		pageTitle.setText(L"Debug page");
+
+		// OTA button
+		Theme::apply(&_OTAButton);
+		_OTAButton.setText(L"OTA");
+
+		_OTAButton.pressedChanged += [this]() {
+			if (_OTAButton.isPressed())
+				return;
+
+			auto& rc = RC::getInstance();
+
+			OTA ota;
+			ota.update();
+		};
+
+		rows += &_OTAButton;
 
 		// Speaker frequency
 		Theme::apply(&_speakerFrequencySlider);
@@ -38,9 +55,9 @@ namespace pizda {
 
 			auto& rc = RC::getInstance();
 
-			const uint32_t frequency = (uint32_t) _speakerFrequencySlider.getValue() * 10'000ul / 0xFFFFul;
+			const uint32_t frequency = (uint32_t) _speakerFrequencySlider.getValue() * 15'000ul / 0xFFFFul;
 			const uint32_t duration = (uint64_t) _speakerDurationSlider.getValue() * 2'000'000ull / 0xFFFFull;
-			const auto count = (uint8_t) ((uint32_t)_speakerCountSlider.getValue() * 10ul / 0xFFFFul);
+			const auto count = (uint8_t) (1 + (uint32_t)_speakerCountSlider.getValue() * 10ul / 0xFFFFul);
 
 			ESP_LOGI("Debug", "Speaker test: %lu, %lu, %d", frequency, duration, count);
 
