@@ -67,25 +67,10 @@ namespace pizda {
 					ESP_LOGI("OTA", "Running firmware version: %s", running_app_info.version);
 				}
 
-#ifndef CONFIG_EXAMPLE_SKIP_VERSION_CHECK
-				if (memcmp(new_app_info->version, running_app_info.version, sizeof(new_app_info->version)) == 0) {
-					ESP_LOGI("OTA", "Current running version is the same as a new. We will not continue the update.");
-					return ESP_FAIL;
-				}
-#endif
-
-#ifdef CONFIG_BOOTLOADER_APP_ANTI_ROLLBACK
-				/**
-     * Secure version check from firmware image header prevents subsequent download and flash write of
-     * entire firmware image. However this is optional because it is also taken care in API
-     * esp_https_ota_finish at the end of OTA update procedure.
-     */
-    const uint32_t hw_sec_version = esp_efuse_read_secure_version();
-    if (new_app_info->secure_version < hw_sec_version) {
-        ESP_LOGW(TAG, "New firmware security version is less than eFuse programmed, %"PRIu32" < %"PRIu32, new_app_info->secure_version, hw_sec_version);
-        return ESP_FAIL;
-    }
-#endif
+//				if (memcmp(new_app_info->version, running_app_info.version, sizeof(new_app_info->version)) == 0) {
+//					ESP_LOGI("OTA", "Current running version is the same as a new. We will not continue the update.");
+//					return ESP_FAIL;
+//				}
 
 				return ESP_OK;
 			}
@@ -94,45 +79,46 @@ namespace pizda {
 			{
 				esp_err_t err = ESP_OK;
 
-				err = esp_http_client_set_header(http_client, "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36");
+//				err = esp_http_client_set_header(http_client, "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36");
 
 				return err;
 			}
 
-			static void advanced_ota_example_task(void *pvParameters)
+			static void advanced_ota_example_task()
 			{
 				ESP_LOGI("OTA", "Starting Advanced OTA example");
 
 				esp_err_t ota_finish_err = ESP_OK;
-				esp_http_client_config_t config = {
-					.url = constants::ota::url,
-					.timeout_ms = 5'000,
-					.buffer_size = 2048,
-					.buffer_size_tx = 2048,
-					.crt_bundle_attach = esp_crt_bundle_attach,
-					.keep_alive_enable = true,
-				};
+
+				esp_http_client_config_t httpClientConfig {};
+				httpClientConfig.url = constants::ota::url;
+				httpClientConfig.timeout_ms = 5'000;
+				httpClientConfig.disable_auto_redirect = false;
+				httpClientConfig.max_redirection_count = 8;
+				httpClientConfig.buffer_size = 2048;
+				httpClientConfig.buffer_size_tx = 2048;
+				httpClientConfig.crt_bundle_attach = esp_crt_bundle_attach;
+				httpClientConfig.keep_alive_enable = true;
 
 
 #ifdef CONFIG_EXAMPLE_SKIP_COMMON_NAME_CHECK
 				config.skip_cert_common_name_check = true;
 #endif
 
-				esp_https_ota_config_t ota_config = {
-					.http_config = &config,
-					// A callback to be invoked after esp_http_client is initialized
-					.http_client_init_cb = http_client_init_cb,
-				};
+				esp_https_ota_config_t httpsOTAConfig {};
+				httpsOTAConfig.http_config = &httpClientConfig;
+				// A callback to be invoked after esp_http_client is initialized
+				httpsOTAConfig.http_client_init_cb = http_client_init_cb;
 
-				esp_https_ota_handle_t https_ota_handle = NULL;
-				esp_err_t err = esp_https_ota_begin(&ota_config, &https_ota_handle);
+				esp_https_ota_handle_t otaHandle = NULL;
+				esp_err_t err = esp_https_ota_begin(&httpsOTAConfig, &otaHandle);
 				if (err != ESP_OK) {
 					ESP_LOGE("OTA", "ESP HTTPS OTA Begin failed");
-					vTaskDelete(NULL);
+					return;
 				}
 
 				esp_app_desc_t app_desc;
-				err = esp_https_ota_get_img_desc(https_ota_handle, &app_desc);
+				err = esp_https_ota_get_img_desc(otaHandle, &app_desc);
 				if (err != ESP_OK) {
 					ESP_LOGE("OTA", "esp_https_ota_get_img_desc failed");
 					goto ota_end;
@@ -145,7 +131,7 @@ namespace pizda {
 				}
 
 				while (1) {
-					err = esp_https_ota_perform(https_ota_handle);
+					err = esp_https_ota_perform(otaHandle);
 					if (err != ESP_ERR_HTTPS_OTA_IN_PROGRESS) {
 						break;
 					}
@@ -153,11 +139,11 @@ namespace pizda {
 					// esp_https_ota_perform returns after every read operation which gives user the ability to
 					// monitor the status of OTA upgrade by calling esp_https_ota_get_image_len_read, which gives length of image
 					// data read so far.
-					ESP_LOGI("OTA", "Image bytes read: %d", esp_https_ota_get_image_len_read(https_ota_handle));
+					ESP_LOGI("OTA", "Image bytes read: %d", esp_https_ota_get_image_len_read(otaHandle));
 				}
 
-				if (esp_https_ota_is_complete_data_received(https_ota_handle)) {
-					ota_finish_err = esp_https_ota_finish(https_ota_handle);
+				if (esp_https_ota_is_complete_data_received(otaHandle)) {
+					ota_finish_err = esp_https_ota_finish(otaHandle);
 
 					if ((err == ESP_OK) && (ota_finish_err == ESP_OK)) {
 						ESP_LOGI("OTA", "ESP_HTTPS_OTA upgrade successful. Rebooting ...");
@@ -169,7 +155,7 @@ namespace pizda {
 							ESP_LOGE("OTA", "Image validation failed, image is corrupted");
 						}
 						ESP_LOGE("OTA", "ESP_HTTPS_OTA upgrade failed 0x%x", ota_finish_err);
-						vTaskDelete(NULL);
+						return;
 					}
 				}
 				else {
@@ -178,17 +164,17 @@ namespace pizda {
 				}
 
 				ota_end:
-				esp_https_ota_abort(https_ota_handle);
+				esp_https_ota_abort(otaHandle);
 				ESP_LOGE("OTA", "ESP_HTTPS_OTA upgrade failed");
-				vTaskDelete(NULL);
 			}
 
 			void update() {
 				// WIFI HERE
 
+
 				ESP_ERROR_CHECK(esp_event_handler_register(ESP_HTTPS_OTA_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
 
-				xTaskCreate(advanced_ota_example_task, "advanced_ota_example_task", 1024 * 8, NULL, 5, NULL);
+				advanced_ota_example_task();
 			}
 
 		private:
