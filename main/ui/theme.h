@@ -60,9 +60,11 @@ namespace pizda {
 			static void apply(Slider* slider);
 			static void apply(TextField* textField);
 			static void apply(ScrollView* scrollView);
-			static void applyPageTitle(Text* text);
 			static void apply(Switch* sw);
 			static void apply(ProgressBar* progressBar);
+			static void apply(Text* text);
+			static void applyTitle(Text* text);
+			static void applyPageTitle(Text* text);
 			static void applyDescription(Text* text);
 	};
 }

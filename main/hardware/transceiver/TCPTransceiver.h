@@ -10,7 +10,7 @@
 #include "../../constants.h"
 
 namespace pizda {
-	class WiFiTransceiver {
+	class TCPTransceiver {
 		public:
 			void setup();
 			void tick();
@@ -19,7 +19,6 @@ namespace pizda {
 			uint32_t _tickTime = 0;
 
 			TCP _TCP;
-			WiFi _WiFi;
 
 			RemotePacket _remotePacket;
 			AircraftPacket _aircraftPacket;

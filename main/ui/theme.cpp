@@ -98,15 +98,25 @@ namespace pizda {
 		});
 	}
 
+	void Theme::apply(Text* text) {
+		text->setTextColor(&Theme::fg1);
+		text->setFont(&Theme::fontNormal);
+	}
+
 	void Theme::applyDescription(Text* text) {
 		text->setTextColor(&Theme::fg3);
 		text->setFont(&Theme::fontNormal);
 	}
 
-	void Theme::applyPageTitle(Text* text) {
+	void Theme::applyTitle(Text* text) {
 		text->setTextColor(&Theme::fg1);
 		text->setFont(&Theme::fontNormal);
 		text->setFontScale(2);
+	}
+
+	void Theme::applyPageTitle(Text* text) {
+		applyTitle(text);
+
 		text->setMargin(Margin(0, 0, 0, 5));
 	}
 

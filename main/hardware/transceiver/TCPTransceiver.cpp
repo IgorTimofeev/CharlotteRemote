@@ -1,16 +1,12 @@
-#include "WiFiTransceiver.h"
+#include "TCPTransceiver.h"
 #include <esp_timer.h>
 #include "../../rc.h"
 #include "../../resources/sounds.h"
 
 namespace pizda {
-	void WiFiTransceiver::setup() {
-		_WiFi.setOnStateChanged([this](WiFiState fromState, WiFiState toState) {
+	void TCPTransceiver::setup() {
+		WiFi::addOnStateChanged([this](WiFiState fromState, WiFiState toState) {
 			switch (toState) {
-				case WiFiState::started: {
-					_WiFi.connect();
-					break;
-				}
 				case WiFiState::connected: {
 					_TCP.connect(
 						constants::transceiver::tcp::address,
@@ -21,7 +17,6 @@ namespace pizda {
 				}
 				case WiFiState::disconnected: {
 					_TCP.disconnect();
-					_WiFi.scheduleConnection();
 
 					break;
 				}
@@ -61,24 +56,19 @@ namespace pizda {
 			setTCPReceivingBuffer();
 		});
 
-		_WiFi.start(
-			constants::wifi::ssid,
-			constants::wifi::password,
-			WIFI_AUTH_WPA2_PSK
-		);
+		WiFi::start();
 	}
 
-	void WiFiTransceiver::tick() {
+	void TCPTransceiver::tick() {
 		if (esp_timer_get_time() < _tickTime)
 			return;
 
-		_WiFi.tick();
 		_TCP.tick();
 
 		_tickTime = esp_timer_get_time() + constants::transceiver::tickInterval;
 	}
 
-	void WiFiTransceiver::fillRemotePacket() {
+	void TCPTransceiver::fillRemotePacket() {
 		auto& rc = RC::getInstance();
 		auto& settings = rc.getSettings();
 
@@ -96,13 +86,13 @@ namespace pizda {
 		_remotePacket.strobeLights = settings.controls.strobeLights;
 	}
 
-	void WiFiTransceiver::setTCPSendingBuffer() {
+	void TCPTransceiver::setTCPSendingBuffer() {
 		fillRemotePacket();
 
 		_TCP.setSendingBuffer((uint8_t*) &_remotePacket, sizeof(RemotePacket));
 	}
 
-	void WiFiTransceiver::setTCPReceivingBuffer() {
+	void TCPTransceiver::setTCPReceivingBuffer() {
 		RC::getInstance().handleAircraftPacket(&_aircraftPacket);
 
 		_TCP.setReceivingBuffer((uint8_t*) &_aircraftPacket, sizeof(AircraftPacket));

@@ -1,6 +1,7 @@
 #include "debugPage.h"
 #include "../../theme.h"
 #include "../../../rc.h"
+#include "../../dialog.h"
 #include "../../../hardware/OTA.h"
 
 namespace pizda {
@@ -18,8 +19,23 @@ namespace pizda {
 
 			auto& rc = RC::getInstance();
 
-			OTA ota;
-			ota.update();
+			auto dialog = new ProgressDialog();
+			dialog->title.setText(L"OTA in progress");
+			dialog->description.setText(L"Yoy");
+			dialog->setProgress(0);
+			dialog->show(&rc.getApplication());
+
+			auto ota = new OTA();
+
+			ota->onProgressChanged += [dialog](uint16_t progress) {
+				dialog->setProgress(progress);
+			};
+
+			ota->onFinished += []() {
+				esp_restart();
+			};
+
+			ota->start();
 		};
 
 		rows += &_OTAButton;

@@ -1974,11 +1974,11 @@ int16_t LR11x0::updateGnssAlmanac(uint8_t constellation) {
     this->mod->hal->yield();
     if(this->mod->hal->millis() - start > softTimeout) {
       this->gnssAbort();
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout waiting for almanac update");
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout waiting for almanac start");
     }
   }
 
-  RADIOLIB_DEBUG_BASIC_PRINTLN("GPS almanac update done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
+  RADIOLIB_DEBUG_BASIC_PRINTLN("GPS almanac start done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
 
   // distinguish between GNSS-done and GNSS-abort outcomes and clear the flags
   uint32_t irq = this->getIrqStatus();

@@ -1573,7 +1573,7 @@ class LR11x0: public PhysicalLayer {
 
     /*!
       \brief Blocking wait until the next subframe with almanac data is available.
-      Used to control timing during almanac update from satellite.
+      Used to control timing during almanac start from satellite.
       \param stat Pointer to structure containing the almanac status read by getGnssAlmanacStatus.
       This is not the actual almanac, just a structure providing information about it.
       \param constellation Constellation to wait for, one of RADIOLIB_LR11X0_GNSS_CONSTELLATION_*.
@@ -1583,8 +1583,8 @@ class LR11x0: public PhysicalLayer {
     int16_t gnssDelayUntilSubframe(LR11x0GnssAlmanacStatus_t *stat, uint8_t constellation);
 
     /*!
-      \brief Perform almanac update. Must be called immediately after gnssDelayUntilSubframe.
-      \param constellation Constellation to update, one of RADIOLIB_LR11X0_GNSS_CONSTELLATION_*.
+      \brief Perform almanac start. Must be called immediately after gnssDelayUntilSubframe.
+      \param constellation Constellation to start, one of RADIOLIB_LR11X0_GNSS_CONSTELLATION_*.
       Constellations cannot be updated at the same time, but rather must be updated sequentially!
       \returns \ref status_codes
     */

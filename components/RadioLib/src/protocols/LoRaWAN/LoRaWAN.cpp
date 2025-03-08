@@ -241,7 +241,7 @@ uint8_t* LoRaWANNode::getBufferNonces() {
 
 int16_t LoRaWANNode::setBufferNonces(const uint8_t* persistentBuffer) {
   if(this->isActivated()) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Did not update buffer: session already active");
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Did not start buffer: session already active");
     return(RADIOLIB_ERR_NONE);
   }
 
@@ -459,7 +459,7 @@ uint8_t* LoRaWANNode::getBufferSession() {
 
 int16_t LoRaWANNode::setBufferSession(const uint8_t* persistentBuffer) {
   if(this->isActivated()) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Did not update buffer: session already active");
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Did not start buffer: session already active");
     return(RADIOLIB_ERR_NONE);
   }
 
