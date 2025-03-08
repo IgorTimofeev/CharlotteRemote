@@ -210,6 +210,9 @@
 
 #define RADIOLIB_LORAWAN_MAX_DOWNLINK_SIZE                      (250)
 
+// threshold at which sleeping via user callback enabled, in ms
+#define RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD                  (50)
+
 /*!
   \struct LoRaWANMacCommand_t
   \brief MAC command specification structure.
@@ -432,7 +435,7 @@ extern const LoRaWANBand_t EU868;
 extern const LoRaWANBand_t US915;
 extern const LoRaWANBand_t EU433;
 extern const LoRaWANBand_t AU915;
-extern const LoRaWANBand_t CN500;
+extern const LoRaWANBand_t CN470;
 extern const LoRaWANBand_t AS923;
 extern const LoRaWANBand_t AS923_2;
 extern const LoRaWANBand_t AS923_3;
@@ -449,7 +452,7 @@ enum LoRaWANBandNum_t {
   BandUS915,
   BandEU433,
   BandAU915,
-  BandCN500,
+  BandCN470,
   BandAS923,
   BandAS923_2,
   BandAS923_3,
@@ -832,6 +835,18 @@ class LoRaWANNode {
     */
     uint8_t getMaxPayloadLen();
 
+    /*! \brief Callback to a user-provided sleep function. */
+    typedef void (*SleepCb_t)(RadioLibTime_t ms);
+
+    /*! 
+      \brief Set custom delay/sleep function callback. If set, LoRaWAN node will call
+      this function to wait for periods of time longer than RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD.
+      This can be used to lower the power consumption by putting the host microcontroller to sleep.
+      NOTE: Since this method will call a user-provided function, it is up to the user to ensure
+      that the time duration spent in that sleep function is accurate to at least 1 ms!
+    */
+    void setSleepFunction(SleepCb_t cb); 
+
     /*! 
       \brief TS009 Protocol Specification Verification switch
       (allows FPort 224 and cuts off uplink payload instead of rejecting if maximum length exceeded).
@@ -850,7 +865,7 @@ class LoRaWANNode {
       500 is the **maximum** value, but it is not a good idea to go anywhere near that.
       If you have to go above 50 you probably have a bug somewhere. Check your device timing.
     */
-    RadioLibTime_t scanGuard = 10;
+    RadioLibTime_t scanGuard = 5;
 
 #if !RADIOLIB_GODMODE
   protected:
@@ -973,6 +988,8 @@ class LoRaWANNode {
     // allow port 226 for devices implementing TS011
     bool TS011 = false;
 
+    SleepCb_t sleepCb = nullptr;
+
     // this will reset the device credentials, so the device starts completely new
     void clearNonces();
 
@@ -1030,7 +1047,8 @@ class LoRaWANNode {
 
     // get the length of a certain MAC command in a specific direction (up/down)
     // if inclusive is true, add one for the CID byte
-    int16_t getMacLen(uint8_t cid, uint8_t* len, uint8_t dir, bool inclusive = false);
+    // include payload in case the MAC command has a dynamic length
+    virtual int16_t getMacLen(uint8_t cid, uint8_t* len, uint8_t dir, bool inclusive = false, uint8_t* payload = NULL);
 
     // find out of a MAC command should persist destruction
     // in uplink direction, some commands must persist if no downlink is received
@@ -1100,6 +1118,9 @@ class LoRaWANNode {
 
     // function to encrypt and decrypt payloads (regular uplink/downlink)
     void processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter);
+
+    // function that allows sleeping via user-provided callback
+    void sleepDelay(RadioLibTime_t ms);
 
     // 16-bit checksum method that takes a uint8_t array of even length and calculates the checksum
     static uint16_t checkSum16(const uint8_t *key, uint16_t keyLen);

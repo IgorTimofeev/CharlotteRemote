@@ -31,6 +31,7 @@ namespace pizda {
 		addPageItem(&_APItem);
 
 		addTitleItem(&_settingsTitleItem);
+		addPageItem(&_WiFiItem);
 		addPageItem(&_axisItem);
 		addPageItem(&_debugItem);
 

@@ -17,6 +17,9 @@ namespace pizda {
 	class WiFiPage : public ScrollViewPage {
 		public:
 			WiFiPage() {
+				// Title
+				title.setText(L"Wi-Fi");
+
 				// State
 				switcher.getSwitch().setChecked(true);
 				rows += &switcher;
@@ -35,12 +38,12 @@ namespace pizda {
 				rows += &passwordTitle;
 			}
 
-			Switcher switcher = Switcher(L"Enable Wi-Fi:");
+			Switcher switcher = Switcher(L"Enable:");
 
 			TextField SSIDTextField;
 			Titler SSIDTitle = Titler(L"SSID", &SSIDTextField);
 
 			TextField passwordTextField;
-			Titler passwordTitle = Titler(L"SSID", &passwordTextField);
+			Titler passwordTitle = Titler(L"Password", &passwordTextField);
 	};
 }

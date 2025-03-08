@@ -19,19 +19,19 @@ namespace pizda {
 		public:
 			ScrollViewPage() {
 				rows.setSpacing(10);
-				rows.setMargin(Margin(20, 15));
+				rows.setMargin(Margin(15, 15));
 
 				// Upper row
-				upperRow.setMargin(Margin(-rows.getMargin().getLeft(), 0, 0, 0));
 				upperRow.setOrientation(Orientation::horizontal);
 				upperRow.setSpacing(10);
+				upperRow.setMargin(Margin(0, 0, 0, 5));
 
 				// Menu button
 				menuButton.setVerticalAlignment(Alignment::center);
 				upperRow += &menuButton;
 
 				// Title
-				Theme::applyPageTitle(&title);
+				Theme::applyTitle(&title);
 				title.setVerticalAlignment(Alignment::center);
 				upperRow += &title;
 

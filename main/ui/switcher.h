@@ -10,6 +10,7 @@ namespace pizda {
 	class Switcher : public EqualLayout {
 		public:
 			Switcher() {
+				setOrientation(Orientation::horizontal);
 				setSpacing(3);
 
 				_text.setFont(&Theme::fontNormal);

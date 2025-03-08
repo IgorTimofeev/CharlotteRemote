@@ -30,7 +30,6 @@ namespace pizda {
 		private:
 			StackLayout _row;
 
-			Rectangle _backgroundRect;
 			Rectangle _titlesRect;
 
 			MenuButton _menuButton;

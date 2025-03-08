@@ -7,6 +7,7 @@
 #include "autopilot/autopilotPage.h"
 #include "debug/debugPage.h"
 #include "axis/axisPage.h"
+#include "wifi/WiFiPage.h"
 
 namespace pizda {
 	class Route {
@@ -33,6 +34,7 @@ namespace pizda {
 			constexpr static const PageRoute<AutopilotPage> autopilot = {};
 
 			// Settings
+			constexpr static const PageRoute<WiFiPage> WiFi = {};
 			constexpr static const PageRoute<AxisPage> axis = {};
 			constexpr static const PageRoute<DebugPage> debug = {};
 	};

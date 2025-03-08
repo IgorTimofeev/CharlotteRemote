@@ -36,6 +36,7 @@ namespace pizda {
 			Slider _lowPassFactorSlider;
 			Titler _lowPassFactorSliderTitle = Titler(L"Low pass filter factor (0 - 100%)", &_lowPassFactorSlider);
 
+			constexpr static const uint8_t _jitteringCutoffMaxValue = 100;
 			Slider _jitteringCutoffFactorSlider;
 			Titler _jitteringValueSliderTitle = Titler(L"Jittering cutoff value (0 - 100)", &_jitteringCutoffFactorSlider);
 	};

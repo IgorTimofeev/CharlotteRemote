@@ -2,42 +2,11 @@
 #include "../../theme.h"
 #include "../../../rc.h"
 #include "../../dialog.h"
-#include "../../../hardware/OTA.h"
 
 namespace pizda {
 	DebugPage::DebugPage() {
 		// Page title
 		title.setText(L"Debug page");
-
-		// OTA button
-		Theme::apply(&_OTAButton);
-		_OTAButton.setText(L"OTA");
-
-		_OTAButton.pressedChanged += [this]() {
-			if (_OTAButton.isPressed())
-				return;
-
-			auto& rc = RC::getInstance();
-
-			auto dialog = new ProgressDialog();
-			dialog->title.setText(L"Updating firmware");
-			dialog->description.setText(L"Do not turn off your device and wait for the process to finish. Otherwise, you risk getting a fucking awesome but poorly functional brick.");
-			dialog->show(&rc.getApplication());
-
-			auto ota = new OTA();
-
-			ota->onProgressChanged += [dialog](uint16_t progress) {
-				dialog->setProgress(progress);
-			};
-
-			ota->onFinished += []() {
-				esp_restart();
-			};
-
-			ota->start();
-		};
-
-		rows += &_OTAButton;
 
 		// Speaker frequency
 		Theme::apply(&_speakerFrequencySlider);

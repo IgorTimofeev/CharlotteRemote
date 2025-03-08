@@ -26,7 +26,7 @@ uint32_t rlb_reflect(uint32_t in, uint8_t bits);
 
 /*!
   \brief Function to dump data as hex into the debug port.
-  \param level RadioLib debug level, set to NULL to not log.
+  \param level RadioLib debug level, set to NULL to not print.
   \param data Data to dump.
   \param len Number of bytes to dump.
   \param offset Address offset to add when printing the data.
@@ -35,8 +35,8 @@ uint32_t rlb_reflect(uint32_t in, uint8_t bits);
 */
 void rlb_hexdump(const char* level, const uint8_t* data, size_t len, uint32_t offset = 0, uint8_t width = 1, bool be = false);
 
-#if RADIOLIB_DEBUG && defined(RADIOLIB_BUILD_ARDUINO)
-size_t rlb_printf(const char* format, ...);
+#if RADIOLIB_DEBUG
+size_t rlb_printf(bool ts, const char* format, ...);
 #endif
 
 #endif

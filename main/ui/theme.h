@@ -63,7 +63,6 @@ namespace pizda {
 			static void apply(ProgressBar* progressBar);
 			static void apply(Text* text);
 			static void applyTitle(Text* text);
-			static void applyPageTitle(Text* text);
 			static void applyDescription(Text* text);
 	};
 }

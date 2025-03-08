@@ -114,12 +114,6 @@ namespace pizda {
 		text->setFontScale(2);
 	}
 
-	void Theme::applyPageTitle(Text* text) {
-		applyTitle(text);
-
-		text->setMargin(Margin(0, 0, 0, 5));
-	}
-
 	void Theme::apply(Button* button) {
 		button->setHeight(elementHeight);
 		button->setCornerRadius(cornerRadius);
@@ -134,7 +128,7 @@ namespace pizda {
 	}
 
 	void Theme::apply(Switch* sw) {
-		sw->setSize(Size(48, 18));
+		sw->setSize(Size(45, 18));
 		sw->setCornerRadius(9);
 
 		sw->setTrackColor(&Theme::bg3);

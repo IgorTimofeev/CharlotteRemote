@@ -14,8 +14,6 @@ namespace pizda {
 			explicit DebugPage();
 
 		private:
-			Button _OTAButton;
-
 			Slider _speakerFrequencySlider;
 			Titler _speakerFrequencySliderTitle = Titler(L"Speaker frequency", &_speakerFrequencySlider);
 

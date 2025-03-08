@@ -45,8 +45,9 @@ namespace pizda {
 				_PFDItem = PageMenuItem(L"PFD", &Routes::PFD),
 				_NDItem = PageMenuItem(L"NAV", &Routes::ND),
 				_APItem = PageMenuItem(L"Autopilot", &Routes::autopilot),
-				_axisItem = PageMenuItem(L"Axis", &Routes::axis),
-				_debugItem = PageMenuItem(L"Debug", &Routes::debug);
+				_WiFiItem = PageMenuItem(L"Wi-Fi", &Routes::WiFi),
+				_axisItem = PageMenuItem(L"Axis calibration", &Routes::axis),
+				_debugItem = PageMenuItem(L"Developer", &Routes::debug);
 
 			void addItem(MenuItem* item);
 

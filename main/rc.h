@@ -173,8 +173,6 @@ namespace pizda {
 			Menu* _menu = nullptr;
 			DebugOverlay* _debugOverlay = nullptr;
 
-			// -------------------------------- Routing --------------------------------
-
 			const Route* _route = nullptr;
 
 			// -------------------------------- Aircraft data --------------------------------

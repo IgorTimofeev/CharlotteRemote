@@ -10,7 +10,7 @@ namespace pizda {
 
 	TitleMenuItem::TitleMenuItem(std::wstring_view text) : MenuItem(text) {
 		setEnabled(false);
-		setHeight(25);
+		setHeight(28);
 	}
 
 	void TitleMenuItem::onRender(Renderer* renderer, const Bounds& bounds) {
@@ -19,17 +19,16 @@ namespace pizda {
 		renderer->renderString(
 			Point(
 				bounds.getX() + textOffset,
-				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2
+				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
 			),
-			&Theme::fontSmall,
+			&Theme::fontNormal,
 			&Theme::fg1,
-			getText(),
-			2
+			getText()
 		);
 	}
 
 	PageMenuItem::PageMenuItem(std::wstring_view text, const Route* route) : MenuItem(text), _route(route) {
-		setHeight(30);
+		setHeight(28);
 	}
 
 	void PageMenuItem::onRender(Renderer* renderer, const Bounds& bounds) {
@@ -41,7 +40,7 @@ namespace pizda {
 			renderer->renderVerticalLine(
 				bounds.getTopLeft(),
 				bounds.getHeight(),
-				&Theme::fg1
+				&Theme::accent1
 			);
 		}
 

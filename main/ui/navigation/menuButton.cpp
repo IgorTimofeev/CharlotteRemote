@@ -7,7 +7,7 @@ namespace pizda {
 	MenuButton::MenuButton() {
 		Theme::apply(this);
 
-		setSize(Size(20));
+		setSize(Size(22));
 		setCornerRadius(getSize().getHeight() / 2);
 
 		setDefaultBackgroundColor(&Theme::bg3);
@@ -16,6 +16,7 @@ namespace pizda {
 		setPressedBackgroundColor(&Theme::bg1);
 		setPressedTextColor(&Theme::fg1);
 
+		setFontScale(2);
 		setText(L"<");
 	}
 

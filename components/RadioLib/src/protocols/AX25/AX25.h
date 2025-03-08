@@ -259,7 +259,7 @@ class AX25Client {
 
     /*!
       \brief Set AFSK tone correction offset. On some platforms, this is required to get the audio produced
-      by the setAxis to match the expected 1200/2200 Hz tones.
+      by the setup to match the expected 1200/2200 Hz tones.
       \param mark Positive or negative correction offset for mark audio frequency in Hz.
       \param space Positive or negative correction offset for space audio frequency in Hz.
       \param length Audio tone length modifier, defaults to 1.0.

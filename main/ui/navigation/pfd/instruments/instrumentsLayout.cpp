@@ -6,9 +6,6 @@ namespace pizda {
 	const PFDLandingGearExtendedImage InstrumentsLayout::_landingGearExtendedImage = {};
 
 	InstrumentsLayout::InstrumentsLayout() {
-		_backgroundRect.setFillColor(&Theme::bg1);
-		*this += &_backgroundRect;
-
 		// Titles
 		_titlesRect.setFillColor(&Theme::bg2);
 		_titlesRect.setHeight(12);
@@ -20,6 +17,11 @@ namespace pizda {
 		_row.setSpacing(15);
 		_row.setHorizontalAlignment(Alignment::center);
 		_row.setMargin(Margin(8, 1, 8, 0));
+
+		// Menu button
+		_menuButton.setVerticalAlignment(Alignment::center);
+		_menuButton.setMargin(Margin(0, 5, 0, 0));
+		_row += &_menuButton;
 
 		// Throttle
 		const uint8_t contentHeight = InstrumentsLayout::panelSize - _row.getMargin().getTop() - _throttleTitle.getSpacing() - _throttleTitle.getTitle().getFont()->getHeight();
@@ -59,11 +61,6 @@ namespace pizda {
 		_row += &_batteryIndicatorTitle;
 
 		*this += &_row;
-
-		// Menu button
-		_menuButton.setAlignment(Alignment::start, Alignment::end);
-		_menuButton.setMargin(Margin(10, 0, 0, 10));
-		*this += &_menuButton;
 	}
 
 	void InstrumentsLayout::onTick() {
