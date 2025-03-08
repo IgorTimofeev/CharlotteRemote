@@ -1,16 +1,11 @@
 #pragma once
 
+#include "../../../components/yoba/src/main.h"
 #include "../../../components/yoba/src/ui.h"
 #include "../theme.h"
 
 #include "menuItem.h"
 #include "routing.h"
-
-#include "pfd/pfdPage.h"
-#include "nd/ndPage.h"
-#include "autopilot/autopilotPage.h"
-#include "debug/debugPage.h"
-#include "axis/axisPage.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -34,20 +29,24 @@ namespace pizda {
 
 			Layout _slideLayout;
 			Rectangle _slideBackground;
-			StackLayout _slideRows;
 			StackLayout _slideItemsLayout;
 
 			TitleMenuItem
 				_mainTitleItem = TitleMenuItem(L"Main"),
-				_settingsTitleItem = TitleMenuItem(L"Settings");
+				_settingsTitleItem = TitleMenuItem(L"Settings"),
+				_developerTitleItem = TitleMenuItem(L"Developer");
 
 			PageMenuItem
-				_PFDItem = PageMenuItem(L"PFD", &Routes::PFD),
-				_NDItem = PageMenuItem(L"NAV", &Routes::ND),
-				_APItem = PageMenuItem(L"Autopilot", &Routes::autopilot),
-				_WiFiItem = PageMenuItem(L"Wi-Fi", &Routes::WiFi),
-				_axisItem = PageMenuItem(L"Axis calibration", &Routes::axis),
-				_debugItem = PageMenuItem(L"Developer", &Routes::debug);
+				_mainPFDItem = PageMenuItem(L"PFD", &Routes::PFD),
+				_mainNDItem = PageMenuItem(L"NAV", &Routes::ND),
+				_mainAPItem = PageMenuItem(L"Autopilot", &Routes::autopilot),
+
+				_settingsAxisItem = PageMenuItem(L"Axis calibration", &Routes::settingsAxis),
+				_settingsWiFiItem = PageMenuItem(L"Wi-Fi", &Routes::settingsWiFi),
+				_settingsUpdatesItem = PageMenuItem(L"Updates", &Routes::settingsUpdates),
+
+				_developerSpeakerItem = PageMenuItem(L"Speaker", &Routes::developerSpeaker),
+				_developerUITestItem = PageMenuItem(L"UI test", &Routes::developerUITest);
 
 			void addItem(MenuItem* item);
 

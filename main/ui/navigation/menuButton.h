@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../../components/yoba/src/main.h"
 #include "../../../components/yoba/src/ui.h"
 
 namespace pizda {

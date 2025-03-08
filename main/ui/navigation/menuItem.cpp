@@ -10,25 +10,40 @@ namespace pizda {
 
 	TitleMenuItem::TitleMenuItem(std::wstring_view text) : MenuItem(text) {
 		setEnabled(false);
-		setHeight(28);
+		setHeight(25);
 	}
 
 	void TitleMenuItem::onRender(Renderer* renderer, const Bounds& bounds) {
-		constexpr static const uint8_t textOffset = 10;
+		constexpr static const uint8_t textOffset = 12;
+
+		const auto textPosition = Point(
+			bounds.getX() + textOffset,
+			bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
+		);
 
 		renderer->renderString(
-			Point(
-				bounds.getX() + textOffset,
-				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
-			),
+			textPosition,
 			&Theme::fontNormal,
-			&Theme::fg1,
+			&Theme::fg7,
 			getText()
 		);
+
+		constexpr static const uint8_t spacing = 8;
+
+		const int32_t lineX = textPosition.getX() + Theme::fontNormal.getWidth(getText()) + spacing;
+		const int32_t lineWidth = bounds.getX2() - lineX - spacing;
+
+		if (lineWidth > 0) {
+			renderer->renderHorizontalLine(
+				Point(lineX, bounds.getYCenter()),
+				lineWidth,
+				&Theme::fg7
+			);
+		}
 	}
 
 	PageMenuItem::PageMenuItem(std::wstring_view text, const Route* route) : MenuItem(text), _route(route) {
-		setHeight(28);
+		setHeight(25);
 	}
 
 	void PageMenuItem::onRender(Renderer* renderer, const Bounds& bounds) {
@@ -37,15 +52,19 @@ namespace pizda {
 			renderer->renderFilledRectangle(bounds, &Theme::bg3);
 
 			// Line
-			renderer->renderVerticalLine(
-				bounds.getTopLeft(),
-				bounds.getHeight(),
+			renderer->renderFilledRectangle(
+				Bounds(
+					bounds.getX(),
+					bounds.getY(),
+					2,
+					bounds.getHeight()
+				),
 				&Theme::accent1
 			);
 		}
 
 		// Text
-		constexpr static const uint8_t textOffset = 15;
+		constexpr static const uint8_t textOffset = 20;
 
 		renderer->renderString(
 			Point(
@@ -68,7 +87,7 @@ namespace pizda {
 		if (event->getTypeID() != TouchDownEvent::typeID)
 			return;
 
-		auto menu = reinterpret_cast<Menu*>(getParent()->getParent()->getParent()->getParent());
+		auto menu = reinterpret_cast<Menu*>(getParent()->getParent()->getParent());
 		auto& rc = RC::getInstance();
 
 		rc.setRoute(_route);
@@ -78,5 +97,9 @@ namespace pizda {
 		event->setHandled(true);
 
 		rc.setMenuVisibility(false);
+	}
+
+	void PageMenuItem::updateSelection() {
+		setSelected(RC::getInstance().getRoute() == _route);
 	}
 }

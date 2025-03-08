@@ -16,7 +16,7 @@ namespace pizda {
 		setPressedBackgroundColor(&Theme::bg1);
 		setPressedTextColor(&Theme::fg1);
 
-		setFontScale(2);
+//		setFontScale(2);
 		setText(L"<");
 	}
 

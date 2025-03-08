@@ -27,12 +27,11 @@ namespace pizda {
 	class PageMenuItem : public MenuItem, public SelectableElement {
 		public:
 			PageMenuItem(std::wstring_view text, const Route* route);
-
 			const Route* getRoute() const;
+			void updateSelection();
 
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
-
 			void onEvent(Event* event) override;
 
 		private:

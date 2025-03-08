@@ -53,12 +53,12 @@ namespace pizda {
 
 			// Foreground
 			Rgb888Color(0xF0F0F0),
-			Rgb888Color(0xDDDDDD),
+			Rgb888Color(0xCCCCCC),
 			Rgb888Color(0x999999),
-			Rgb888Color(0x777777),
 			Rgb888Color(0x888888),
-			Rgb888Color(0x999999),
-			Rgb888Color(0xAAAAAA),
+			Rgb888Color(0x777777),
+			Rgb888Color(0x666666),
+			Rgb888Color(0x555555),
 
 			// Accent 1
 			Rgb888Color(0xffd200),

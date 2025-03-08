@@ -26,18 +26,21 @@ namespace pizda {
 
 		// Items selector
 		addTitleItem(&_mainTitleItem);
-		addPageItem(&_PFDItem);
-		addPageItem(&_NDItem);
-		addPageItem(&_APItem);
+		addPageItem(&_mainPFDItem);
+		addPageItem(&_mainNDItem);
+		addPageItem(&_mainAPItem);
 
 		addTitleItem(&_settingsTitleItem);
-		addPageItem(&_WiFiItem);
-		addPageItem(&_axisItem);
-		addPageItem(&_debugItem);
+		addPageItem(&_settingsWiFiItem);
+		addPageItem(&_settingsAxisItem);
+		addPageItem(&_settingsUpdatesItem);
 
-		_slideRows += &_slideItemsLayout;
+		addTitleItem(&_developerTitleItem);
+		addPageItem(&_developerSpeakerItem);
+		addPageItem(&_developerUITestItem);
 
-		_slideLayout += &_slideRows;
+		_slideItemsLayout.setMargin(Margin(0, 5, 0, 0));
+		_slideLayout += &_slideItemsLayout;
 
 		*this += &_slideLayout;
 	}
@@ -51,7 +54,7 @@ namespace pizda {
 	}
 
 	void Menu::addPageItem(PageMenuItem* item) {
-		item->setSelected(RC::getInstance().getRoute() == item->getRoute());
+		item->updateSelection();
 
 		addItem(item);
 	}
@@ -61,9 +64,7 @@ namespace pizda {
 			if (!element->isEnabled())
 				continue;
 
-			auto item = dynamic_cast<PageMenuItem*>(element);
-
-			item->setSelected(RC::getInstance().getRoute() == item->getRoute());
+			dynamic_cast<PageMenuItem*>(element)->updateSelection();
 		}
 	}
 }

@@ -13,8 +13,7 @@ namespace pizda {
 				setOrientation(Orientation::horizontal);
 				setSpacing(3);
 
-				_text.setFont(&Theme::fontNormal);
-				_text.setTextColor(&Theme::fg1);
+				Theme::applyDescription(&_text);
 				*this += &_text;
 
 				Theme::apply(&_switch);
