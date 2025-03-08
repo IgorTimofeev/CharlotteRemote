@@ -4,6 +4,8 @@
 #include "../theme.h"
 
 #include "menuItem.h"
+#include "routing.h"
+
 #include "pfd/pfdPage.h"
 #include "nd/ndPage.h"
 #include "autopilot/autopilotPage.h"
@@ -19,43 +21,37 @@ namespace pizda {
 			void onEvent(Event* event) override;
 	};
 
-	class Menu : public Selector {
+	class Menu : public Layout {
 		public:
 			explicit Menu();
 
+			void updateItemsSelection();
+
 		private:
-			constexpr static const uint16_t _menuWidth = 100;
+			constexpr static const uint16_t _menuWidth = 140;
 
 			MenuOverlayBackground overlayBackground;
 
 			Layout _slideLayout;
 			Rectangle _slideBackground;
 			StackLayout _slideRows;
-			Text _slideTitle;
 			StackLayout _slideItemsLayout;
 
-			TitleMenuItem _mainTitleItem = TitleMenuItem(L"Main");
+			TitleMenuItem
+				_mainTitleItem = TitleMenuItem(L"Main"),
+				_settingsTitleItem = TitleMenuItem(L"Settings");
 
-			PageMenuItem _PFDItem = PageMenuItem(L"PFD", []() {
-				return new PFDPage();
-			});
+			PageMenuItem
+				_PFDItem = PageMenuItem(L"PFD", &Routes::PFD),
+				_NDItem = PageMenuItem(L"NAV", &Routes::ND),
+				_APItem = PageMenuItem(L"Autopilot", &Routes::autopilot),
+				_axisItem = PageMenuItem(L"Axis", &Routes::axis),
+				_debugItem = PageMenuItem(L"Debug", &Routes::debug);
 
-			PageMenuItem _NDItem = PageMenuItem(L"N/D", []() {
-				return new NDPage();
-			});
+			void addItem(MenuItem* item);
 
-			PageMenuItem _APItem = PageMenuItem(L"A/P", []() {
-				return new AutopilotPage();
-			});
+			void addTitleItem(TitleMenuItem* item);
 
-			TitleMenuItem _settingsTitleItem = TitleMenuItem(L"Settings");
-
-			PageMenuItem _axisItem = PageMenuItem(L"CTL", []() {
-				return new AxisPage();
-			});
-
-			PageMenuItem _debugItem = PageMenuItem(L"DBG", []() {
-				return new DebugPage();
-			});
+			void addPageItem(PageMenuItem* item);
 	};
 }

@@ -15,19 +15,10 @@ namespace pizda {
 		title.setText(L"Axis calibration");
 
 		// Axis
-		Theme::apply(&_aileronsAxisEditorTitle);
 		rows += &_aileronsAxisEditorTitle;
-
-		Theme::apply(&_elevatorAxisEditorTitle);
 		rows += &_elevatorAxisEditorTitle;
-
-		Theme::apply(&_rudderAxisEditorTitle);
 		rows += &_rudderAxisEditorTitle;
-
-		Theme::apply(&_spoilersAxisEditorTitle);
 		rows += &_spoilersAxisEditorTitle;
-
-		Theme::apply(&_flapsAxisEditorTitle);
 		rows += &_flapsAxisEditorTitle;
 
 		// Jittering slider
@@ -43,7 +34,6 @@ namespace pizda {
 			settings.enqueueWrite();
 		};
 
-		Theme::apply(&_jitteringValueSliderTitle);
 		rows += &_jitteringValueSliderTitle;
 
 		// Low pass slider
@@ -59,7 +49,6 @@ namespace pizda {
 			settings.enqueueWrite();
 		};
 
-		Theme::apply(&_lowPassFactorSliderTitle);
 		rows += &_lowPassFactorSliderTitle;
 	}
 

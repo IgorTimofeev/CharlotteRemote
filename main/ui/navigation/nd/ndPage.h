@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../page.h"
+#include "../menuButton.h"
+
 #include "nd.h"
 
 namespace pizda {
@@ -17,5 +19,6 @@ namespace pizda {
 			StackLayout _slidersLayout;
 			Slider _projectionSlider;
 			Slider _clipSlider;
+			MenuButton _menuButton;
 	};
 }

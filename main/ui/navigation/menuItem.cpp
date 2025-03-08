@@ -10,27 +10,26 @@ namespace pizda {
 
 	TitleMenuItem::TitleMenuItem(std::wstring_view text) : MenuItem(text) {
 		setEnabled(false);
-		setHeight(10);
+		setHeight(25);
 	}
 
 	void TitleMenuItem::onRender(Renderer* renderer, const Bounds& bounds) {
+		constexpr static const uint8_t textOffset = 10;
+
 		renderer->renderString(
 			Point(
-				bounds.getX(),
-				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
+				bounds.getX() + textOffset,
+				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2
 			),
-			&Theme::fontNormal,
-			&Theme::fg4,
-			getText()
+			&Theme::fontSmall,
+			&Theme::fg1,
+			getText(),
+			2
 		);
 	}
 
-	PageMenuItem::PageMenuItem(std::wstring_view text, const std::function<Page*()>& pageBuilder) : MenuItem(text), _pageBuilder(pageBuilder) {
+	PageMenuItem::PageMenuItem(std::wstring_view text, const Route* route) : MenuItem(text), _route(route) {
 		setHeight(30);
-	}
-
-	const std::function<Page*()>& PageMenuItem::getPageBuilder() const {
-		return _pageBuilder;
 	}
 
 	void PageMenuItem::onRender(Renderer* renderer, const Bounds& bounds) {
@@ -47,7 +46,7 @@ namespace pizda {
 		}
 
 		// Text
-		constexpr static const uint8_t textOffset = 10;
+		constexpr static const uint8_t textOffset = 15;
 
 		renderer->renderString(
 			Point(
@@ -55,8 +54,30 @@ namespace pizda {
 				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
 			),
 			&Theme::fontNormal,
-			isSelected() ? &Theme::fg1 : &Theme::fg4,
+			isSelected() ? &Theme::fg1 : &Theme::fg3,
 			getText()
 		);
+	}
+
+	const Route* PageMenuItem::getRoute() const {
+		return _route;
+	}
+
+	void PageMenuItem::onEvent(Event* event) {
+		Element::onEvent(event);
+
+		if (event->getTypeID() != TouchDownEvent::typeID)
+			return;
+
+		auto menu = reinterpret_cast<Menu*>(getParent()->getParent()->getParent()->getParent());
+		auto& rc = RC::getInstance();
+
+		rc.setRoute(_route);
+
+		menu->updateItemsSelection();
+
+		event->setHandled(true);
+
+		rc.setMenuVisibility(false);
 	}
 }

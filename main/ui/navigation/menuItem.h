@@ -5,12 +5,13 @@
 
 #include "../theme.h"
 #include "page.h"
+#include "routing.h"
 
 namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class MenuItem : public SelectorItem, public TextElement {
+	class MenuItem : public TextElement {
 		public:
 			MenuItem(std::wstring_view text);
 	};
@@ -23,16 +24,18 @@ namespace pizda {
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 	};
 
-	class PageMenuItem : public MenuItem {
+	class PageMenuItem : public MenuItem, public SelectableElement {
 		public:
-			PageMenuItem(std::wstring_view text, const std::function<Page*()>& pageBuilder);
+			PageMenuItem(std::wstring_view text, const Route* route);
 
-			const std::function<Page*()>& getPageBuilder() const;
+			const Route* getRoute() const;
 
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
+			void onEvent(Event* event) override;
+
 		private:
-			std::function<Page*()> _pageBuilder;
+			const Route* _route;
 	};
 }

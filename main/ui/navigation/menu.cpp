@@ -5,8 +5,10 @@ namespace pizda {
 	void MenuOverlayBackground::onEvent(Event* event) {
 		Element::onEvent(event);
 
-		if (event->getTypeID() != TouchDownEvent::typeID)
+		if (!ScreenEvent::isScreen(event))
 			return;
+
+		event->setHandled(true);
 
 		RC::getInstance().setMenuVisibility(false);
 	}
@@ -22,27 +24,45 @@ namespace pizda {
 		_slideBackground.setFillColor(&Theme::bg2);
 		_slideLayout += &_slideBackground;
 
-		// Title
-		Theme::applyPageTitle(&_slideTitle);
-		_slideTitle.setText(L"Menu");
-		_slideLayout += &_slideTitle;
-
 		// Items selector
-		setItemsLayout(&_slideItemsLayout);
+		addTitleItem(&_mainTitleItem);
+		addPageItem(&_PFDItem);
+		addPageItem(&_NDItem);
+		addPageItem(&_APItem);
 
-		addItem(&_mainTitleItem);
-		addItem(&_PFDItem);
-		addItem(&_NDItem);
-		addItem(&_APItem);
-
-		addItem(&_settingsTitleItem);
-		addItem(&_axisItem);
-		addItem(&_debugItem);
+		addTitleItem(&_settingsTitleItem);
+		addPageItem(&_axisItem);
+		addPageItem(&_debugItem);
 
 		_slideRows += &_slideItemsLayout;
 
 		_slideLayout += &_slideRows;
 
 		*this += &_slideLayout;
+	}
+
+	void Menu::addItem(MenuItem* item) {
+		_slideItemsLayout += item;
+	}
+
+	void Menu::addTitleItem(TitleMenuItem* item) {
+		addItem(item);
+	}
+
+	void Menu::addPageItem(PageMenuItem* item) {
+		item->setSelected(RC::getInstance().getRoute() == item->getRoute());
+
+		addItem(item);
+	}
+
+	void Menu::updateItemsSelection() {
+		for (auto element : _slideItemsLayout) {
+			if (!element->isEnabled())
+				continue;
+
+			auto item = dynamic_cast<PageMenuItem*>(element);
+
+			item->setSelected(RC::getInstance().getRoute() == item->getRoute());
+		}
 	}
 }

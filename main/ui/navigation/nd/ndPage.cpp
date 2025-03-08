@@ -31,5 +31,10 @@ namespace pizda {
 		_slidersLayout.setVerticalAlignment(Alignment::end);
 		_slidersLayout.setMargin(Margin(10, 0, 10, 10));
 		*this += &_slidersLayout;
+
+		// Menu button
+		_menuButton.setAlignment(Alignment::start, Alignment::start);
+		_menuButton.setMargin(Margin(10, 10, 0, 0));
+		*this += &_menuButton;
 	}
 }

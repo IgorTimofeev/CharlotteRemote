@@ -63,7 +63,7 @@ namespace pizda {
 		// Page layout
 		_application += &_pageLayout;
 
-		setRoute(&_PFDRoute);
+		setRoute(&Routes::PFD);
 
 		// -------------------------------- Take off --------------------------------
 
@@ -332,54 +332,55 @@ namespace pizda {
 		_longitude = longitude;
 	}
 
+	bool RC::isMenuVisible() {
+		return _menu != nullptr;
+	}
+
 	void RC::setMenuVisibility(bool state) {
 		if (state) {
-			if (_menu != nullptr)
+			if (isMenuVisible())
 				return;
 
 			_menu = new Menu();
-
-			_menu->selectionChanged += [this]() {
-				_selectedPageIndex = _menu->getSelectedIndex();
-
-				const auto menuItem = dynamic_cast<PageMenuItem*>(_menu->getItemAt(_selectedPageIndex));
-
-				showPage(menuItem->getPageBuilder()());
-				setMenuVisibility(false);
-			};
-
-			_menu->setSelectedIndex(_selectedPageIndex);
-
 			_application += _menu;
 		}
 		else {
-			if (_menu == nullptr)
+			if (!isMenuVisible())
 				return;
 
-			// Removing menu
 			_application -= _menu;
 			delete _menu;
+			_menu = nullptr;
 		}
+	}
+
+	bool RC::isDebugOverlayVisible() {
+		return _debugOverlay != nullptr;
 	}
 
 	void RC::setDebugOverlayVisibility(bool state) {
 		if (state) {
-			if (_debugOverlay != nullptr)
+			if (isDebugOverlayVisible())
 				return;
 
 			_debugOverlay = new DebugOverlay();
 			_application += _debugOverlay;
 		}
 		else {
-			if (_debugOverlay == nullptr)
+			if (!isDebugOverlayVisible())
 				return;
 
 			_application -= _debugOverlay;
 			delete _debugOverlay;
+			_debugOverlay = nullptr;
 		}
 	}
 
-	void RC::setRoute(Route* route) {
+	const Route* RC::getRoute() {
+		return _route;
+	}
+
+	void RC::setRoute(const Route* route) {
 		_route = route;
 
 		// Removing old page

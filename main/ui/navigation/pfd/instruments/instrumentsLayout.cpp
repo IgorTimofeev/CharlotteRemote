@@ -21,12 +21,7 @@ namespace pizda {
 		_row.setHorizontalAlignment(Alignment::center);
 		_row.setMargin(Margin(8, 1, 8, 0));
 
-		// Menu button
-		_row += &_menuButton;
-
 		// Throttle
-		Theme::apply(&_throttleTitle);
-
 		const uint8_t contentHeight = InstrumentsLayout::panelSize - _row.getMargin().getTop() - _throttleTitle.getSpacing() - _throttleTitle.getTitle().getFont()->getHeight();
 
 		_throttleRow.setOrientation(Orientation::horizontal);
@@ -45,19 +40,15 @@ namespace pizda {
 		_controlsRows += &_flapsAndSpoilersIndicator;
 		_controlsRows += &_landingGearImageView;
 
-		Theme::apply(&_controlsTitle);
 		_row += &_controlsTitle;
 
 		// Elevator trim
-		Theme::apply(&_elevatorTrimTitle);
 		_elevatorTrimIndicator.setSize(Size(5, contentHeight - 4));
 		_elevatorTrimIndicator.setSuggestedMinimum(0xFFFF * 40 / 100);
 		_elevatorTrimIndicator.setSuggestedMaximum(0xFFFF * 60 / 100);
 		_row += &_elevatorTrimTitle;
 
 		// Battery
-		Theme::apply(&_batteryIndicatorTitle);
-
 		_batteryIndicatorController.setSize(Size(32, 12));
 		_batteryIndicatorAircraft.setSize(_batteryIndicatorController.getSize());
 
@@ -68,6 +59,11 @@ namespace pizda {
 		_row += &_batteryIndicatorTitle;
 
 		*this += &_row;
+
+		// Menu button
+		_menuButton.setAlignment(Alignment::start, Alignment::end);
+		_menuButton.setMargin(Margin(10, 0, 0, 10));
+		*this += &_menuButton;
 	}
 
 	void InstrumentsLayout::onTick() {

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "src/main.h"
-#include "src/ui.h"
+#include "../../components/yoba/src/main.h"
+#include "../../components/yoba/src/ui.h"
 #include "../page.h"
+#include "../../titler.h"
 
 namespace pizda {
 	using namespace yoba;

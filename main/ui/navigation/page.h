@@ -21,15 +21,20 @@ namespace pizda {
 				rows.setSpacing(10);
 				rows.setMargin(Margin(20, 15));
 
+				// Upper row
+				upperRow.setMargin(Margin(-rows.getMargin().getLeft(), 0, 0, 0));
+				upperRow.setOrientation(Orientation::horizontal);
+				upperRow.setSpacing(10);
+
 				// Menu button
+				menuButton.setVerticalAlignment(Alignment::center);
 				upperRow += &menuButton;
 
-				// Page title
+				// Title
 				Theme::applyPageTitle(&title);
+				title.setVerticalAlignment(Alignment::center);
 				upperRow += &title;
 
-				// Upper row
-				upperRow.setSpacing(10);
 				rows += &upperRow;
 
 				scrollView += &rows;

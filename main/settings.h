@@ -61,7 +61,6 @@ namespace pizda {
 
 	class Settings {
 		public:
-			bool debugInfoVisible = false;
 			SettingsAxis axis;
 			SettingsControls controls;
 			SettingsAutopilot autopilot;
@@ -121,7 +120,7 @@ namespace pizda {
 
 		private:
 			constexpr static const uint32_t _writeDelay = 2500000;
-			constexpr static const uint8_t _version = 2;
+			constexpr static const uint8_t _version = 3;
 			uint32_t _timeToWrite = 0;
 	};
 

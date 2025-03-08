@@ -11,12 +11,7 @@ firmwarePath = currentPath / 'build' / firmwareName
 downloadsPath = currentPath.parent / 'Downloads'
 downloadsFirmwarePath = downloadsPath / 'Firmware' / firmwareName
 downloadsBranch = 'master'
-downloadsCommitMessage = f'Auto-deployed via blazingly fast zaebashit.py CI/CD tool'
-
-# Building
-print('Building')
-
-subprocess.run('idf.py build', shell = True)
+downloadsCommitMessage = f'Auto-deployed via blazingly fast zaebashit.py CI/CD tool at {datetime.utcnow():%d.%m.%Y %H:%M:%S)}'
 
 # Copying firmware file
 print(f'Copying firmware from {firmwarePath} to {downloadsFirmwarePath}')

@@ -43,21 +43,18 @@ namespace pizda {
 		Theme::apply(&_speakerFrequencySlider);
 		_speakerFrequencySlider.setValue(0xFFFF * 50 / 100);
 
-		Theme::apply(&_speakerFrequencySliderTitle);
 		rows += &_speakerFrequencySliderTitle;
 
 		// Speaker duration
 		Theme::apply(&_speakerDurationSlider);
 		_speakerDurationSlider.setValue(0xFFFF * 50 / 100);
 
-		Theme::apply(&_speakerDurationSliderTitle);
 		rows += &_speakerDurationSliderTitle;
 
 		// Speaker
 		Theme::apply(&_speakerCountSlider);
 		_speakerCountSlider.setValue(0xFFFF * 20 / 100);
 
-		Theme::apply(&_speakerCountSliderTitle);
 		rows += &_speakerCountSliderTitle;
 
 		// Speaker button
@@ -96,7 +93,6 @@ namespace pizda {
 			_text.setFontScale(1 + (uint8_t) std::round(_textFontSizeSlider.getValue() * 8 / 0xFFFF));
 		};
 
-		Theme::apply(&_textSliderTitle);
 		rows += &_textSliderTitle;
 
 		// Text margin slider
@@ -110,7 +106,6 @@ namespace pizda {
 			rows.setMargin(Margin(value, rows.getMargin().getTop(), value, rows.getMargin().getTop()));
 		};
 
-		Theme::apply(&_textMarginSliderTitle);
 		rows += &_textMarginSliderTitle;
 
 		// Text
@@ -132,19 +127,12 @@ furnished to do so, subject to the following conditions)"
 		// Switch
 		Theme::apply(&_switch);
 		_switch.setCheckedColor(&Theme::sky);
-		_switch.setChecked(RC::getInstance().getSettings().debugInfoVisible);
+		_switch.setChecked(RC::getInstance().isDebugOverlayVisible());
 
 		_switch.isCheckedChanged += [this]() {
-			auto& rc = RC::getInstance();
-
-			auto& settings = rc.getSettings();
-			settings.debugInfoVisible = _switch.isChecked();
-			settings.enqueueWrite();
-
-			rc.setDebugOverlayVisibility(settings.debugInfoVisible);
+			RC::getInstance().setDebugOverlayVisibility(_switch.isChecked());
 		};
 
-		Theme::apply(&_switchTitle);
 		rows += &_switchTitle;
 
 		// Progress bar
@@ -152,7 +140,6 @@ furnished to do so, subject to the following conditions)"
 		_progressBar.setValue(0xFFFF * 80 / 100);
 		_progressBar.setFillColor(&Theme::bad2);
 
-		Theme::apply(&_progressBarTitle);
 		rows += &_progressBarTitle;
 
 		// TextField
@@ -160,7 +147,6 @@ furnished to do so, subject to the following conditions)"
 		_textField.setText(L"Hello world pizda eblo ssanina penis chlen vagina");
 		_textField.setCursorToEnd();
 
-		Theme::apply(&textFieldTitle);
 		rows += &textFieldTitle;
 	}
 }

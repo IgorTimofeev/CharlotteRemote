@@ -1,10 +1,10 @@
 #pragma once
 
 
-#include "src/main.h"
-#include "src/ui.h"
-#include "src/hardware/displays/ILI9341Display.h"
-#include "src/hardware/touchPanels/FT6336UTouchPanel.h"
+#include "../../components/yoba/src/main.h"
+#include "../../components/yoba/src/ui.h"
+#include "../../components/yoba/src/hardware/displays/ILI9341Display.h"
+#include "../../components/yoba/src/hardware/touchPanels/FT6336UTouchPanel.h"
 
 #include "types.h"
 #include "settings.h"
@@ -69,8 +69,15 @@ namespace pizda {
 
 			void handleAircraftPacket(AircraftPacket* packet);
 
+			bool isMenuVisible();
+
 			void setMenuVisibility(bool state);
+
+			bool isDebugOverlayVisible();
 			void setDebugOverlayVisibility(bool state);
+
+			const Route* getRoute();
+			void setRoute(const Route* route);
 
 		private:
 			RC() = default;
@@ -168,10 +175,7 @@ namespace pizda {
 
 			// -------------------------------- Routing --------------------------------
 
-			Route* _route = nullptr;
-			PageRoute<PFDPage> _PFDRoute;
-
-			void setRoute(Route* route);
+			const Route* _route = nullptr;
 
 			// -------------------------------- Aircraft data --------------------------------
 

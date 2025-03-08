@@ -10,6 +10,7 @@
 #include "../../../../resources/images/PFDLandingGearExtendedImage.h"
 #include "../../../../resources/images/PFDLandingGearRetractedImage.h"
 #include "../../menuButton.h"
+#include "../../../titler.h"
 
 namespace pizda {
 	using namespace yoba;

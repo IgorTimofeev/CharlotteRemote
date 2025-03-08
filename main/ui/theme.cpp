@@ -120,11 +120,6 @@ namespace pizda {
 		text->setMargin(Margin(0, 0, 0, 5));
 	}
 
-	void Theme::apply(Titler* titler) {
-		titler->getTitle().setTextColor(&Theme::fg3);
-		titler->getTitle().setFont(&Theme::fontNormal);
-	}
-
 	void Theme::apply(Button* button) {
 		button->setHeight(elementHeight);
 		button->setCornerRadius(cornerRadius);

@@ -3,14 +3,11 @@
 
 namespace pizda {
 	AutopilotPage::AutopilotPage() {
-		rows.setMargin(Margin(20));
-		rows.setSpacing(20);
+		title.setText(L"Autopilot");
 
 		rows += &_spd;
 		rows += &_hdg;
 		rows += &_alt;
-
-		*this += &rows;
 
 		auto govnoedstvo = [](
 			AutopilotSelector& selector,
