@@ -20,9 +20,8 @@ namespace pizda {
 			auto& rc = RC::getInstance();
 
 			auto dialog = new ProgressDialog();
-			dialog->title.setText(L"OTA in progress");
-			dialog->description.setText(L"Yoy");
-			dialog->setProgress(0);
+			dialog->title.setText(L"Updating firmware");
+			dialog->description.setText(L"Do not turn off your device and wait for the process to finish. Otherwise, you risk getting a fucking awesome but poorly functional brick.");
 			dialog->show(&rc.getApplication());
 
 			auto ota = new OTA();

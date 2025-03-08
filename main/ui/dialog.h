@@ -16,11 +16,11 @@ namespace pizda {
 				// Working area rect
 				workingAreaRectangle.setCornerRadius(5);
 				workingAreaRectangle.setFillColor(&Theme::bg2);
-//				workingAreaRectangle.setBorderColor(&Theme::bg4);
+				workingAreaRectangle.setBorderColor(&Theme::bg4);
 				workingAreaLayout += &workingAreaRectangle;
 
 				// Title
-				Theme::applyTitle(&title);
+				Theme::apply(&title);
 				rows += &title;
 
 				// Description text
@@ -29,13 +29,13 @@ namespace pizda {
 				rows += &description;
 
 				// Rows
-				rows.setMargin(Margin(10, 10));
+				rows.setMargin(Margin(15, 15));
 				rows.setSpacing(10);
 				workingAreaLayout += &rows;
 
 				// Working area layout
 				workingAreaLayout.setVerticalAlignment(Alignment::center);
-//				workingAreaLayout.setMargin(Margin(20, 0));
+				workingAreaLayout.setMargin(Margin(20, 0));
 				*this += &workingAreaLayout;
 			}
 
