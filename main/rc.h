@@ -12,7 +12,8 @@
 #include "interpolator.h"
 
 #include "ui/theme.h"
-#include "ui/navigation/tabBar.h"
+#include "ui/navigation/routing.h"
+#include "ui/navigation/menu.h"
 #include "ui/debugOverlay.h"
 
 #include "hardware/transceiver/packet.h"
@@ -53,7 +54,6 @@ namespace pizda {
 			float getLongitude() const;
 			void setLongitude(float longitude);
 
-			void updateDebugOverlayVisibility();
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
 
@@ -68,6 +68,9 @@ namespace pizda {
 			Battery& getBattery();
 
 			void handleAircraftPacket(AircraftPacket* packet);
+
+			void setMenuVisibility(bool state);
+			void setDebugOverlayVisibility(bool state);
 
 		private:
 			RC() = default;
@@ -158,8 +161,18 @@ namespace pizda {
 			// -------------------------------- UI --------------------------------
 
 			Application _application;
-			TabBar _tabBar;
-			DebugOverlay _debugOverlay;
+			Layout _pageLayout;
+
+			Menu* _menu = nullptr;
+			DebugOverlay* _debugOverlay = nullptr;
+
+			// -------------------------------- Routing --------------------------------
+
+			Route* _route = nullptr;
+			PageRoute<PFDPage> _PFDRoute;
+
+			void setRoute(Route* route);
+
 			// -------------------------------- Aircraft data --------------------------------
 
 			// Kronshtadt airfield in Saint-Petersburg for UI testing

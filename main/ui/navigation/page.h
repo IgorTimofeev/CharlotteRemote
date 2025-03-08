@@ -4,6 +4,8 @@
 #include "../../../components/yoba/src/ui.h"
 #include "../theme.h"
 
+#include "menuButton.h"
+
 namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
@@ -19,9 +21,16 @@ namespace pizda {
 				rows.setSpacing(10);
 				rows.setMargin(Margin(20, 15));
 
+				// Menu button
+				upperRow += &menuButton;
+
 				// Page title
-				Theme::applyPageTitle(&pageTitle);
-				rows += &pageTitle;
+				Theme::applyPageTitle(&title);
+				upperRow += &title;
+
+				// Upper row
+				upperRow.setSpacing(10);
+				rows += &upperRow;
 
 				scrollView += &rows;
 
@@ -31,6 +40,9 @@ namespace pizda {
 
 			ScrollView scrollView;
 			StackLayout rows;
-			Text pageTitle;
+
+			StackLayout upperRow;
+			MenuButton menuButton;
+			Text title;
 	};
 }

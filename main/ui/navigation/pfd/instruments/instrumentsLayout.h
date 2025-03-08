@@ -9,6 +9,7 @@
 #include "batteryIndicator.h"
 #include "../../../../resources/images/PFDLandingGearExtendedImage.h"
 #include "../../../../resources/images/PFDLandingGearRetractedImage.h"
+#include "../../menuButton.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -31,13 +32,14 @@ namespace pizda {
 			Rectangle _backgroundRect;
 			Rectangle _titlesRect;
 
+			MenuButton _menuButton;
+
 			ThrottleIndicator _throttle1Indicator;
 			ThrottleIndicator _throttle2Indicator;
 
 			StackLayout _throttleRow;
 			Titler _throttleTitle = Titler(L"THR", &_throttleRow);
 
-			// Controls
 			StackLayout _controlsRows;
 			FlapsAndSpoilersIndicator _flapsAndSpoilersIndicator;
 			ImageView _landingGearImageView;

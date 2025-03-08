@@ -7,7 +7,7 @@
 namespace pizda {
 	DebugPage::DebugPage() {
 		// Page title
-		pageTitle.setText(L"Debug page");
+		title.setText(L"Debug page");
 
 		// OTA button
 		Theme::apply(&_OTAButton);
@@ -141,7 +141,7 @@ furnished to do so, subject to the following conditions)"
 			settings.debugInfoVisible = _switch.isChecked();
 			settings.enqueueWrite();
 
-			rc.updateDebugOverlayVisibility();
+			rc.setDebugOverlayVisibility(settings.debugInfoVisible);
 		};
 
 		Theme::apply(&_switchTitle);

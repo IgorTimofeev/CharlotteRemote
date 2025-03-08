@@ -60,13 +60,10 @@ namespace pizda {
 		Theme::setup(&_renderer);
 		_application.setBackgroundColor(&Theme::bg1);
 
-		// Tab bar
-		_tabBar.setSelectedIndex(0);
-		_application += &_tabBar;
+		// Page layout
+		_application += &_pageLayout;
 
-		// Debug overlay
-		updateDebugOverlayVisibility();
-		_application += &_debugOverlay;
+		setRoute(&_PFDRoute);
 
 		// -------------------------------- Take off --------------------------------
 
@@ -172,10 +169,6 @@ namespace pizda {
 
 	Settings& RC::getSettings() {
 		return _settings;
-	}
-
-	void RC::updateDebugOverlayVisibility() {
-		_debugOverlay.setVisible(_settings.debugInfoVisible);
 	}
 
 	Speaker& RC::getSpeaker() {
@@ -337,5 +330,68 @@ namespace pizda {
 
 	void RC::setLongitude(float longitude) {
 		_longitude = longitude;
+	}
+
+	void RC::setMenuVisibility(bool state) {
+		if (state) {
+			if (_menu != nullptr)
+				return;
+
+			_menu = new Menu();
+
+			_menu->selectionChanged += [this]() {
+				_selectedPageIndex = _menu->getSelectedIndex();
+
+				const auto menuItem = dynamic_cast<PageMenuItem*>(_menu->getItemAt(_selectedPageIndex));
+
+				showPage(menuItem->getPageBuilder()());
+				setMenuVisibility(false);
+			};
+
+			_menu->setSelectedIndex(_selectedPageIndex);
+
+			_application += _menu;
+		}
+		else {
+			if (_menu == nullptr)
+				return;
+
+			// Removing menu
+			_application -= _menu;
+			delete _menu;
+		}
+	}
+
+	void RC::setDebugOverlayVisibility(bool state) {
+		if (state) {
+			if (_debugOverlay != nullptr)
+				return;
+
+			_debugOverlay = new DebugOverlay();
+			_application += _debugOverlay;
+		}
+		else {
+			if (_debugOverlay == nullptr)
+				return;
+
+			_application -= _debugOverlay;
+			delete _debugOverlay;
+		}
+	}
+
+	void RC::setRoute(Route* route) {
+		_route = route;
+
+		// Removing old page
+		if (_pageLayout.getChildrenCount() > 0) {
+			auto oldPage = _pageLayout[0];
+
+			_pageLayout.removeChildAt(0);
+
+			delete oldPage;
+		}
+
+		// Adding new page
+		_pageLayout += _route->newPage();
 	}
 }

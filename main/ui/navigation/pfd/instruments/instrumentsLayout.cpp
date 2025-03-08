@@ -21,6 +21,9 @@ namespace pizda {
 		_row.setHorizontalAlignment(Alignment::center);
 		_row.setMargin(Margin(8, 1, 8, 0));
 
+		// Menu button
+		_row += &_menuButton;
+
 		// Throttle
 		Theme::apply(&_throttleTitle);
 
