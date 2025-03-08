@@ -29,7 +29,7 @@ namespace pizda {
 				rows += &description;
 
 				// Rows
-				rows.setMargin(Margin(15, 15));
+				rows.setMargin(Margin(13));
 				rows.setSpacing(10);
 				workingAreaLayout += &rows;
 
