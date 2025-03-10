@@ -105,57 +105,69 @@ namespace pizda {
 		if (deltaTime < constants::application::interpolationTickInterval)
 			return;
 
-		// Roll/pitch/yaw, faster
-		float interpolationFactor = deltaTime / 500'000.f;
+		// Principle of calculating the interpolation factor:
+		//
+		// factorPerSecond -> 1'000'000 us
+		// factorPerTick -> tickInterval us
+		//
+		// factorPerTick = factorPerSecond * tickInterval / 1'000'000
+
+		// Roll / pitch / yaw / slip&skid, faster
+		float interpolationFactor = 10.0f * (float) constants::application::interpolationTickInterval / 1'000'000.f;
 		_pitchInterpolator.tick(interpolationFactor);
 		_rollInterpolator.tick(interpolationFactor);
 		_yawInterpolator.tick(interpolationFactor);
+		_slipAndSkidInterpolator.tick(interpolationFactor);
+
+		// Airspeed / altitude, normal
+		interpolationFactor = 8.0f * (float) constants::application::interpolationTickInterval / 1'000'000.f;
+		_airspeedInterpolator.tick(interpolationFactor);
+		_altitudeInterpolator.tick(interpolationFactor);
 
 		// Trends, slower
-		interpolationFactor = deltaTime / 1'000'000.f;
+		interpolationFactor = 1.0f * (float) constants::application::interpolationTickInterval / 1'000'000.f;
 		_airspeedTrendInterpolator.tick(interpolationFactor);
 		_altitudeTrendInterpolator.tick(interpolationFactor);
 		_verticalSpeedInterpolator.tick(interpolationFactor);
-
-		// Normal
-		interpolationFactor = deltaTime / 500'000.f;
-		_airspeedInterpolator.tick(interpolationFactor);
-		_altitudeInterpolator.tick(interpolationFactor);
 
 		_interpolationTickTime = esp_timer_get_time() + constants::application::interpolationTickInterval;
 	}
 
 	// ------------------------- Data -------------------------
 
-	Interpolator &RC::getAirspeedInterpolator() {
+	LowPassInterpolator& RC::getAirspeedInterpolator() {
 		return _airspeedInterpolator;
 	}
 
-	Interpolator &RC::getAltitudeInterpolator() {
+	LowPassInterpolator& RC::getAltitudeInterpolator() {
 		return _altitudeInterpolator;
 	}
 
-	Interpolator &RC::getPitchInterpolator() {
+	LowPassInterpolator& RC::getPitchInterpolator() {
 		return _pitchInterpolator;
 	}
 
-	Interpolator &RC::getRollInterpolator() {
+	LowPassInterpolator& RC::getRollInterpolator() {
 		return _rollInterpolator;
 	}
 
-	Interpolator &RC::getYawInterpolator() {
+	LowPassInterpolator& RC::getYawInterpolator() {
 		return _yawInterpolator;
 	}
 
-	Interpolator &RC::getAirspeedTrendInterpolator() {
+	LowPassInterpolator& RC::getSlipAndSkidInterpolator() {
+		return _slipAndSkidInterpolator;
+	}
+
+	LowPassInterpolator& RC::getAirspeedTrendInterpolator() {
 		return _airspeedTrendInterpolator;
 	}
 
-	Interpolator &RC::getAltitudeTrendInterpolator() {
+	LowPassInterpolator& RC::getAltitudeTrendInterpolator() {
 		return _altitudeTrendInterpolator;
 	}
 
-	Interpolator &RC::getVerticalSpeedInterpolator() {
+	LowPassInterpolator& RC::getVerticalSpeedInterpolator() {
 		return _verticalSpeedInterpolator;
 	}
 
@@ -293,6 +305,7 @@ namespace pizda {
 		_pitchInterpolator.setTargetValue(packet->pitch);
 		_rollInterpolator.setTargetValue(packet->roll);
 		_yawInterpolator.setTargetValue(packet->yaw);
+		_slipAndSkidInterpolator.setTargetValue(packet->slipAndSkid);
 
 		_altitudeInterpolator.setTargetValue(packet->altitude);
 		_airspeedInterpolator.setTargetValue(packet->speed);

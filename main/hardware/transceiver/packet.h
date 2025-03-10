@@ -30,6 +30,7 @@ namespace pizda {
 		float pitch;
 		float yaw;
 		float roll;
+		float slipAndSkid;
 
 		float altitude;
 		float speed;
@@ -39,7 +40,7 @@ namespace pizda {
 
 		void log() const {
 			ESP_LOGI("AircraftPacket", "Latitude, longitude: %f, %f", latitude, longitude);
-			ESP_LOGI("AircraftPacket", "Pitch, roll, yaw: %f, %f, %f", pitch, roll, yaw);
+			ESP_LOGI("AircraftPacket", "Pitch, roll, yaw, slip&skid: %f, %f, %f, %f", pitch, roll, yaw, slipAndSkid);
 			ESP_LOGI("AircraftPacket", "Altitude, speed: %f, %f", altitude, speed);
 			ESP_LOGI("AircraftPacket", "Temperature, pressure: %f, %f", temperature, pressure);
 		}

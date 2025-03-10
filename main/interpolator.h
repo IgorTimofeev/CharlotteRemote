@@ -5,10 +5,6 @@
 
 class Interpolator {
 	public:
-		void tick(float factor) {
-			_value = std::isnan(_value) ? _targetValue : _value + (_targetValue - _value) * factor;
-		}
-
 		float getValue() const {
 			return _value;
 		}
@@ -25,7 +21,14 @@ class Interpolator {
 			_targetValue = targetValue;
 		}
 
-	private:
+	protected:
 		float _targetValue = 0;
-		float _value = NAN;
+		float _value = 0;
+};
+
+class LowPassInterpolator : public Interpolator {
+	public:
+		void tick(float factor) {
+			_value = _value * (1 - factor) + _targetValue * factor;
+		}
 };

@@ -584,48 +584,66 @@ namespace pizda {
 		renderer->popViewport(viewport);
 	}
 
-	void PFD::renderRollOverlay(
+	void PFD::renderTurnCoordinatorOverlay(
 		Renderer* renderer,
 		const Bounds& bounds,
 		float roll
 	) {
-		const auto radius = ((float) bounds.getWidth() - rollOverlayHorizontalMargin * 2.f) / 2.f;
-
 		const auto& center = Point(
 			bounds.getXCenter(),
-			bounds.getY() + ((uint16_t) radius)
+			bounds.getY() + turnCoordinatorOverlayRollIndicatorRadius
 		);
 
-		const auto& renderLine = [renderer, &roll, &radius, &center](int8_t angle, bool isBig) {
-			const auto& vec = Vector2F(0, radius).rotate(toRadians(angle) - roll);
-			const auto& lineTo = center - (Point) vec;
-			const auto& lineFrom = lineTo + (Point) (vec.normalize() * (isBig ? rollOverlayLineBigLength : rollOverlayLineSmallLength));
+		const auto& renderLine = [renderer, &roll, &center](int8_t angle, bool isBig) {
+			const auto vec = Vector2F(0, turnCoordinatorOverlayRollIndicatorRadius).rotate(toRadians(angle) - roll);
+			const auto lineFrom = center - (Point) vec;
 
 			renderer->renderLine(
-				lineTo,
 				lineFrom,
-				rollOverlayColor
+				lineFrom + (Point) (vec.normalize() * (isBig ? turnCoordinatorOverlayRollIndicatorLineBigLength : turnCoordinatorOverlayRollIndicatorLineSmallLength)),
+				turnCoordinatorOverlayColor
 			);
 		};
 
 		renderLine(-60, true);
-		renderLine(-45, true);
-		renderLine(-30, false);
+		renderLine(-45, false);
+		renderLine(-30, true);
 		renderLine(-20, false);
 		renderLine(-10, false);
-		renderLine(0, true);
+
 		renderLine(10, false);
 		renderLine(20, false);
-		renderLine(30, false);
-		renderLine(45, true);
+		renderLine(30, true);
+		renderLine(45, false);
 		renderLine(60, true);
 
-		// Small triangle representing current roll
+		// Upper triangle
 		renderer->renderFilledTriangle(
-			Point(center.getX() - rollOverlayTriangleSize, bounds.getY()),
-			Point(center.getX() + rollOverlayTriangleSize, bounds.getY()),
-			Point(center.getX(), bounds.getY() + rollOverlayTriangleSize),
-			rollOverlayColor
+			center + (Point) Vector2F(-turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, -turnCoordinatorOverlayRollIndicatorRadius).rotate(-roll),
+			center + (Point) Vector2F(turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, -turnCoordinatorOverlayRollIndicatorRadius).rotate(-roll),
+			center + (Point) Vector2F(0, -turnCoordinatorOverlayRollIndicatorRadius + turnCoordinatorOverlayRollIndicatorTriangleHeight).rotate(-roll),
+			turnCoordinatorOverlayColor
+		);
+
+		// Lower triangle
+		const int32_t rollTriangleY = bounds.getY() + turnCoordinatorOverlayRollIndicatorTriangleHeight + turnCoordinatorOverlayRollIndicatorTriangleOffset;
+
+		renderer->renderFilledTriangle(
+			Point(center.getX(), rollTriangleY),
+			Point(center.getX() - turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, rollTriangleY + turnCoordinatorOverlayRollIndicatorTriangleHeight),
+			Point(center.getX() + turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, rollTriangleY + turnCoordinatorOverlayRollIndicatorTriangleHeight),
+			turnCoordinatorOverlayColor
+		);
+
+		// Slip/skid indicator
+		renderer->renderFilledRectangle(
+			Bounds(
+				center.getX() + (int32_t) ((float) turnCoordinatorOverlaySlipAndSkidIndicatorMaxValuePixels * RC::getInstance().getSlipAndSkidInterpolator().getValue()) - turnCoordinatorOverlaySlipAndSkidIndicatorWidth / 2,
+				rollTriangleY + turnCoordinatorOverlayRollIndicatorTriangleHeight + turnCoordinatorOverlaySlipAndSkidIndicatorOffset,
+				turnCoordinatorOverlaySlipAndSkidIndicatorWidth,
+				turnCoordinatorOverlaySlipAndSkidIndicatorHeight
+			),
+			turnCoordinatorOverlayColor
 		);
 	}
 
@@ -637,6 +655,7 @@ namespace pizda {
 		const auto viewport = renderer->pushViewport(bounds);
 
 		const auto centerX = bounds.getXCenter();
+		const auto y2 = bounds.getY2();
 
 		float closestInteger;
 		float closestFractional = modff(toDegrees(yaw) / yawOverlayAngleStepUnits, &closestInteger);
@@ -651,7 +670,6 @@ namespace pizda {
 
 		bool isBig;
 		uint8_t lineLength;
-
 		int32_t lineY;
 
 		while (x <= bounds.getX2()) {
@@ -659,7 +677,7 @@ namespace pizda {
 			lineLength = isBig ? yawOverlayLineBigLength : yawOverlayLineSmallLength;
 
 			// Line
-			lineY = bounds.getY2() - lineLength + 1;
+			lineY = y2 - lineLength + 1;
 
 			renderer->renderVerticalLine(
 				Point(
@@ -716,9 +734,9 @@ namespace pizda {
 
 		// Small triangle representing current heading
 		renderer->renderFilledTriangle(
-			Point(centerX - yawOverlayTriangleSize, bounds.getY2()),
-			Point(centerX + yawOverlayTriangleSize, bounds.getY2()),
-			Point(centerX, bounds.getY2() - yawOverlayTriangleSize),
+			Point(centerX, y2 - yawOverlayTriangleHeight),
+			Point(centerX - yawOverlayTriangleWidth / 2, y2),
+			Point(centerX + yawOverlayTriangleWidth / 2, y2),
 			yawOverlayColor
 		);
 
@@ -735,8 +753,8 @@ namespace pizda {
 		const auto yaw = rc.getYawInterpolator().getValue();
 
 		// value = [180 deg of unfolded full range view] / [FOV deg of camera viewport] * [viewport size in pixels]
-		const float unfoldedFovWidth = (float) M_PI / _horizontalFov / 2 * (float) bounds.getWidth();
-		const float unfoldedFovHeight = (float) M_PI / _verticalFov / 2 * (float) bounds.getHeight();
+		const float unfoldedFovWidth = (float) M_PI / _horizontalFOV / 2 * (float) bounds.getWidth();
+		const float unfoldedFovHeight = (float) M_PI / _verticalFOV / 2 * (float) bounds.getHeight();
 
 		const auto& horizonRollRotated = (Point) Vector2F(unfoldedFovWidth, 0).rotate(-roll);
 		const auto& horizonPitchRotated = (Point) Vector2F(unfoldedFovHeight, 0).rotate(pitch);
@@ -760,7 +778,7 @@ namespace pizda {
 		);
 
 		// Roll overlay
-		renderRollOverlay(
+		renderTurnCoordinatorOverlay(
 			renderer,
 			bounds,
 			roll

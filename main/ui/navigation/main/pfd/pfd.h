@@ -84,18 +84,29 @@ namespace pizda {
 			constexpr static const uint8_t yawOverlayLineSmallLength = 2;
 			constexpr static const uint8_t yawOverlayLineBigLength = 4;
 			constexpr static const uint8_t yawOverlayTextOffset = 0;
-			constexpr static const uint8_t yawOverlayTriangleSize = yawOverlayLineBigLength;
 
-			// Roll overlay
-			constexpr static const Color* rollOverlayColor = &Theme::sky2;
-			constexpr static const uint8_t rollOverlayHorizontalMargin = 3;
-			constexpr static const uint8_t rollOverlayLineSmallLength = 3;
-			constexpr static const uint8_t rollOverlayLineBigLength = 7;
-			constexpr static const uint8_t rollOverlayTriangleSize = yawOverlayLineBigLength;
+			constexpr static const uint8_t yawOverlayTriangleWidth = 8;
+			constexpr static const uint8_t yawOverlayTriangleHeight = yawOverlayLineBigLength;
+
+			// Turn coordinator overlay
+			constexpr static const Color* turnCoordinatorOverlayColor = &Theme::sky2;
+			constexpr static const uint8_t turnCoordinatorOverlayRollIndicatorRadius = 100;
+
+			constexpr static const uint8_t turnCoordinatorOverlayRollIndicatorLineSmallLength = 3;
+			constexpr static const uint8_t turnCoordinatorOverlayRollIndicatorLineBigLength = 7;
+
+			constexpr static const uint8_t turnCoordinatorOverlayRollIndicatorTriangleOffset = 2;
+			constexpr static const uint8_t turnCoordinatorOverlayRollIndicatorTriangleWidth = 9;
+			constexpr static const uint8_t turnCoordinatorOverlayRollIndicatorTriangleHeight = 5;
+
+			constexpr static const uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorOffset = 3;
+			constexpr static const uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorWidth = turnCoordinatorOverlayRollIndicatorTriangleWidth;
+			constexpr static const uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorHeight = 2;
+			constexpr static const uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorMaxValuePixels = 45;
 
 			// 3D
-			float _horizontalFov = toRadians(120);
-			float _verticalFov = toRadians(70);
+			float _horizontalFOV = toRadians(120);
+			float _verticalFOV = toRadians(80);
 
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
 
@@ -129,7 +140,7 @@ namespace pizda {
 
 			static void renderSyntheticVisionBackground(Renderer* renderer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight);
 
-			static void renderRollOverlay(Renderer* renderer, const Bounds& bounds, float roll);
+			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds, float roll);
 
 			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, float yaw);
 	};

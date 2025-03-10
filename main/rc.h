@@ -36,14 +36,15 @@ namespace pizda {
 
 			Application& getApplication();
 
-			Interpolator& getAirspeedInterpolator();
-			Interpolator& getAltitudeInterpolator();
-			Interpolator& getPitchInterpolator();
-			Interpolator& getRollInterpolator();
-			Interpolator& getYawInterpolator();
-			Interpolator& getAirspeedTrendInterpolator();
-			Interpolator& getAltitudeTrendInterpolator();
-			Interpolator& getVerticalSpeedInterpolator();
+			LowPassInterpolator& getAirspeedInterpolator();
+			LowPassInterpolator& getAltitudeInterpolator();
+			LowPassInterpolator& getPitchInterpolator();
+			LowPassInterpolator& getRollInterpolator();
+			LowPassInterpolator& getYawInterpolator();
+			LowPassInterpolator& getAirspeedTrendInterpolator();
+			LowPassInterpolator& getAltitudeTrendInterpolator();
+			LowPassInterpolator& getVerticalSpeedInterpolator();
+			LowPassInterpolator& getSlipAndSkidInterpolator();
 
 			float getAltimeterPressure() const;
 			void setAltimeterPressure(float altimeterPressure);
@@ -188,17 +189,18 @@ namespace pizda {
 			uint32_t _interpolationTickTime = 0;
 			uint32_t _aircraftPacketTime = 0;
 
-			Interpolator _airspeedInterpolator;
-			Interpolator _airspeedTrendInterpolator;
+			LowPassInterpolator _airspeedInterpolator;
+			LowPassInterpolator _airspeedTrendInterpolator;
 
-			Interpolator _altitudeInterpolator;
-			Interpolator _altitudeTrendInterpolator;
+			LowPassInterpolator _altitudeInterpolator;
+			LowPassInterpolator _altitudeTrendInterpolator;
 
-			Interpolator _verticalSpeedInterpolator;
+			LowPassInterpolator _verticalSpeedInterpolator;
 
-			Interpolator _pitchInterpolator;
-			Interpolator _rollInterpolator;
-			Interpolator _yawInterpolator;
+			LowPassInterpolator _pitchInterpolator;
+			LowPassInterpolator _rollInterpolator;
+			LowPassInterpolator _yawInterpolator;
+			LowPassInterpolator _slipAndSkidInterpolator;
 
 			// -------------------------------- Other shit --------------------------------
 
@@ -212,5 +214,6 @@ namespace pizda {
 			void NVSSetup();
 
 			void interpolationTick();
+
 	};
 }
