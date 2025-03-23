@@ -18,6 +18,7 @@ namespace pizda {
 
 //		setFontScale(2);
 		setText(L"<");
+		setVisible(false);
 	}
 
 	void MenuButton::onPressedChanged() {
