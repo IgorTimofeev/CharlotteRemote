@@ -63,7 +63,7 @@ namespace pizda {
 		// Page layout
 		_application += &_pageLayout;
 
-		setRoute(&Routes::settingsUpdates);
+		setRoute(&Routes::PFD);
 
 		// -------------------------------- Take off --------------------------------
 

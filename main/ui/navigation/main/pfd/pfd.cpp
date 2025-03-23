@@ -45,7 +45,7 @@ namespace pizda {
 		auto uintValue = (uint32_t) value;
 
 		// Assuming 4 is "widest" digit
-		const uint8_t maxDigitWidth = Theme::fontNormal.getCharWidth(L'4');
+		const uint8_t maxDigitWidth = Theme::fontNormal.getWidth(L'4');
 
 		int32_t x =
 			left
@@ -70,7 +70,7 @@ namespace pizda {
 
 			renderer->renderChar(
 				Point(
-					x - Theme::fontNormal.getCharWidth(text),
+					x - Theme::fontNormal.getWidth(text),
 					digitY
 				),
 				&Theme::fontNormal,
