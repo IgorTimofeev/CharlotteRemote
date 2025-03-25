@@ -27,18 +27,22 @@ namespace pizda {
 			// Speed
 			constexpr static const uint8_t speedWidth = 31;
 			constexpr static const uint8_t speedStepPixels = 8;
-			constexpr static const uint8_t speedStepUnits = 1;
-			constexpr static const uint8_t speedStepUnitsBig = 5;
+			constexpr static const uint8_t speedStepUnits = 2;
+			constexpr static const uint8_t speedStepUnitsBig = 10;
 
 			constexpr static const uint16_t speedBarSize = 4;
 
-			constexpr static const uint16_t speedFlapsMin = 5;
-			constexpr static const uint16_t speedFlapsMax = 30;
+			constexpr static const uint16_t speedFlapsMin = 40;
+			constexpr static const uint16_t speedFlapsMax = 85;
 
-			constexpr static const uint16_t speedTurbulentMin = 10;
-			constexpr static const uint16_t speedTurbulentMax = 80;
+			constexpr static const uint16_t speedSmoothMin = 47;
+			constexpr static const uint16_t speedSmoothMax = 128;
 
-			constexpr static const uint16_t speedSmoothMax = 100;
+			constexpr static const uint16_t speedTurbulentMin = speedSmoothMax;
+			constexpr static const uint16_t speedTurbulentMax = 163;
+
+			constexpr static const uint16_t speedStructuralMin = speedTurbulentMax;
+			constexpr static const uint16_t speedStructuralMax = speedStructuralMin * 4;
 
 			// Altitude
 			constexpr static const uint8_t altitudeWidth = 33;

@@ -247,6 +247,7 @@ namespace pizda {
 			);
 		};
 
+		// Not enough lift in any case
 		renderBar(
 			barX,
 			speedBarSize,
@@ -255,51 +256,57 @@ namespace pizda {
 			&Theme::red
 		);
 
+		// Flaps only
 		renderBar(
 			barX,
 			speedBarSize,
 			speedFlapsMin,
-			speedTurbulentMin,
+			speedSmoothMin,
 			&Theme::fg1
 		);
 
+		// Flaps (& smooth)
 		renderBar(
 			barX,
 			speedBarSize / 2,
-			speedTurbulentMin,
+			speedSmoothMin,
 			speedFlapsMax,
 			&Theme::fg1
 		);
 
+		// Smooth (& flaps)
 		renderBar(
 			barX + speedBarSize / 2,
 			speedBarSize / 2,
-			speedTurbulentMin,
+			speedSmoothMin,
 			speedFlapsMax,
 			&Theme::greenSpeed
 		);
 
+		// Smooth (no flaps)
 		renderBar(
 			barX,
 			speedBarSize,
 			speedFlapsMax,
-			speedTurbulentMax,
-			&Theme::greenSpeed
-		);
-
-		renderBar(
-			barX,
-			speedBarSize,
-			speedTurbulentMax,
 			speedSmoothMax,
+			&Theme::greenSpeed
+		);
+
+		// Turbulent
+		renderBar(
+			barX,
+			speedBarSize,
+			speedTurbulentMin,
+			speedTurbulentMax,
 			&Theme::yellow
 		);
 
+		// Structural
 		renderBar(
 			barX,
 			speedBarSize,
-			speedSmoothMax,
-			speedSmoothMax * 2,
+			speedStructuralMin,
+			speedStructuralMax,
 			&Theme::red
 		);
 
@@ -528,7 +535,7 @@ namespace pizda {
 
 		const float lineAngleStepRad = toRadians(pitchOverlayAngleStep);
 		const float linesInTotal = std::floorf(((float) M_PI_2) / lineAngleStepRad);
-		const float linePixelStep = (float) unfoldedFOVHeight / linesInTotal;
+		const float linePixelStep = (float) unfoldedFOVHeight / 2 / linesInTotal;
 
 		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);
 		const auto& horizonCenter = (Vector2F) horizonLeft + horizonVec / 2.0f;
@@ -758,12 +765,14 @@ namespace pizda {
 		const auto roll = rc.getRollInterpolator().getValue();
 		const auto yaw = rc.getYawInterpolator().getValue();
 
-		// value = [180 deg of unfolded full range view] / [FOV deg of camera viewport] * [viewport size in pixels]
-		const auto unfoldedFovWidth = (float) M_PI / _horizontalFOV * (float) bounds.getWidth() / 2;
-		const auto unfoldedFovHeight = (float) M_PI / _verticalFOV * (float) bounds.getHeight() / 2;
+		// FOV deg - Screen px
+		// 180 deg - x px
+		// x = 180 * screen / FOV
+		const auto unfoldedFOVWidth = (float) M_PI * (float) bounds.getWidth() / _horizontalFOV;
+		const auto unfoldedFOVHeight = (float) M_PI * (float) bounds.getHeight() / _verticalFOV;
 
-		const auto& horizonRollRotated = (Point) Vector2F(unfoldedFovWidth, 0).rotate(-roll);
-		const auto& horizonPitchRotated = (Point) Vector2F(unfoldedFovHeight, 0).rotate(pitch);
+		const auto& horizonRollRotated = (Point) Vector2F(unfoldedFOVWidth / 2, 0).rotate(-roll);
+		const auto& horizonPitchRotated = (Point) Vector2F(unfoldedFOVHeight / 2, 0).rotate(-pitch);
 
 		const auto& horizonLeft = Point(
 			center.getX() - horizonRollRotated.getX(),
@@ -799,7 +808,7 @@ namespace pizda {
 				bounds.getWidth(),
 				bounds.getHeight() - pitchOverlayMarginTop - yawOverlayHeight
 			),
-			unfoldedFovHeight,
+			unfoldedFOVHeight,
 			horizonLeft,
 			horizonRight
 		);
@@ -820,9 +829,11 @@ namespace pizda {
 		auto fpv = rc.getFlightPathAngles();
 
 		auto pos = Point(
-			center.getX() + unfoldedFovWidth * fpv.getX() / (float) M_PI_2,
-			center.getY() + unfoldedFovHeight * fpv.getY() / (float) M_PI_2
+			(int32_t) (center.getX() + unfoldedFOVWidth / 2 * fpv.getY()),
+			(int32_t) (center.getY() + unfoldedFOVHeight / 2 * fpv.getX())
 		);
+
+		ESP_LOGI("PFD", "FPV screen pos: %ld, %ld", pos.getX(), pos.getY());
 
 		const uint8_t radius = 6;
 		const uint8_t lineLength = 6;
@@ -831,21 +842,21 @@ namespace pizda {
 		renderer->renderCircle(
 		   pos,
 		   radius,
-		   &Theme::bg1
+		   &Theme::fg1
 		);
 
 		// Left line
 		renderer->renderHorizontalLine(
-			Point(pos.getX() - radius, pos.getY()),
+			Point(pos.getX() - radius - lineLength, pos.getY()),
 			lineLength,
-			&Theme::bg1
+			&Theme::fg1
 		);
 
 		// Right line
 		renderer->renderHorizontalLine(
 			Point(pos.getX() + radius, pos.getY()),
 			lineLength,
-			&Theme::bg1
+			&Theme::fg1
 		);
 
 //		renderFlightPathVector(renderer, bounds, center);

@@ -194,7 +194,7 @@ namespace pizda {
 
 			// -------------------------------- Flight path vector -------------------------------
 
-			constexpr static const uint32_t _flightPathVectorInterval = 1'000'000;
+			constexpr static const uint32_t _flightPathVectorInterval = 2'000'000;
 
 			Vector3F _flightPathVectorCartesianCoordinates {};
 			uint32_t _flightPathVectorTime = 0;

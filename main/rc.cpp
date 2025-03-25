@@ -313,15 +313,14 @@ namespace pizda {
 
 			ESP_LOGI("FPA", "PYR: %f, %f, %f", toDegrees(packet->pitch), toDegrees(packet->yaw), toDegrees(packet->roll));
 
-			const auto delta = _cartesianCoordinates - _flightPathVectorCartesianCoordinates;
+			auto delta = _cartesianCoordinates - _flightPathVectorCartesianCoordinates;
 			_flightPathVectorCartesianCoordinates = _cartesianCoordinates;
-
 
 			ESP_LOGI("FPA", "Delta: %f, %f, %f", delta.getX(), delta.getY(), delta.getZ());
 
 			// Transforming earth-based coordinate system to aircraft-based
-			delta.rotateAroundVerticalAxis(-packet->yaw);
-			delta.rotateAroundHorizontalAxis(-packet->pitch);
+			delta = delta.rotateAroundVerticalAxis(-packet->longitude);
+			delta = delta.rotateAroundHorizontalAxis(-packet->latitude);
 
 			ESP_LOGI("FPA", "Rotated: %f, %f, %f", delta.getX(), delta.getY(), delta.getZ());
 
