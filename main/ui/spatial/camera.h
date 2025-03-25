@@ -3,7 +3,7 @@
 #include "../../../components/yoba/src/main.h"
 #include "../../../components/yoba/src/ui.h"
 
-#include "vector3.h"
+#include "../../vector3.h"
 
 namespace pizda {
 	using namespace yoba;

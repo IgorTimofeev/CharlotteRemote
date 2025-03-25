@@ -302,11 +302,47 @@ namespace pizda {
 		const auto oldSpeed = _airspeedInterpolator.getTargetValue();
 		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
+		_geocentricCoordinates.setLatitude(packet->latitude);
+		_geocentricCoordinates.setLongitude(packet->longitude);
+		_geocentricCoordinates.setAltitude(packet->altitude);
+
+		_cartesianCoordinates = _geocentricCoordinates.toCartesian();
+
+		if (time > _flightPathVectorTime) {
+			ESP_LOGI("FPA", "-------------------------");
+
+			ESP_LOGI("FPA", "PYR: %f, %f, %f", toDegrees(packet->pitch), toDegrees(packet->yaw), toDegrees(packet->roll));
+
+			const auto delta = _cartesianCoordinates - _flightPathVectorCartesianCoordinates;
+			_flightPathVectorCartesianCoordinates = _cartesianCoordinates;
+
+
+			ESP_LOGI("FPA", "Delta: %f, %f, %f", delta.getX(), delta.getY(), delta.getZ());
+
+			// Transforming earth-based coordinate system to aircraft-based
+			delta.rotateAroundVerticalAxis(-packet->yaw);
+			delta.rotateAroundHorizontalAxis(-packet->pitch);
+
+			ESP_LOGI("FPA", "Rotated: %f, %f, %f", delta.getX(), delta.getY(), delta.getZ());
+
+			_flightPathVector = delta;
+
+			const auto length = _flightPathVector.getLength();
+
+			_flightPathAngles = Vector2F(
+				std::asinf(_flightPathVector.getZ() / length),
+				std::atan2f(_flightPathVector.getY(), _flightPathVector.getX())
+			);
+
+			ESP_LOGI("FPA", "Angles: %f, %f", toDegrees(_flightPathAngles.getX()), toDegrees(_flightPathAngles.getY()));
+
+			_flightPathVectorTime = time + _flightPathVectorInterval;
+		}
+
 		_pitchInterpolator.setTargetValue(packet->pitch);
 		_rollInterpolator.setTargetValue(packet->roll);
 		_yawInterpolator.setTargetValue(packet->yaw);
 		_slipAndSkidInterpolator.setTargetValue(packet->slipAndSkid);
-
 		_altitudeInterpolator.setTargetValue(packet->altitude);
 		_airspeedInterpolator.setTargetValue(packet->speed);
 
@@ -329,20 +365,8 @@ namespace pizda {
 		_altimeterPressure = altimeterPressure;
 	}
 
-	float RC::getLatitude() const {
-		return _latitude;
-	}
-
-	void RC::setLatitude(float latitude) {
-		_latitude = latitude;
-	}
-
-	float RC::getLongitude() const {
-		return _longitude;
-	}
-
-	void RC::setLongitude(float longitude) {
-		_longitude = longitude;
+	const GeocentricCoordinates& RC::getGeocentricCoordinates() const {
+		return _geocentricCoordinates;
 	}
 
 	bool RC::isMenuVisible() {
@@ -407,5 +431,13 @@ namespace pizda {
 
 		// Adding new page
 		_pageLayout += _route->newPage();
+	}
+
+	const Vector3F& RC::getFlightPathVector() const {
+		return _flightPathVector;
+	}
+
+	const Vector2F& RC::getFlightPathAngles() const {
+		return _flightPathAngles;
 	}
 }

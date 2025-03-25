@@ -743,6 +743,12 @@ namespace pizda {
 		renderer->popViewport(viewport);
 	}
 
+	void PFD::renderFlightPathVector(Renderer* renderer, const Bounds& bounds, const Point& center) const {
+		auto& rc = RC::getInstance();
+
+
+	}
+
 	void PFD::renderSyntheticVision(Renderer* renderer, const Bounds& bounds) const {
 		auto& rc = RC::getInstance();
 
@@ -753,8 +759,8 @@ namespace pizda {
 		const auto yaw = rc.getYawInterpolator().getValue();
 
 		// value = [180 deg of unfolded full range view] / [FOV deg of camera viewport] * [viewport size in pixels]
-		const float unfoldedFovWidth = (float) M_PI / _horizontalFOV / 2 * (float) bounds.getWidth();
-		const float unfoldedFovHeight = (float) M_PI / _verticalFOV / 2 * (float) bounds.getHeight();
+		const auto unfoldedFovWidth = (float) M_PI / _horizontalFOV * (float) bounds.getWidth() / 2;
+		const auto unfoldedFovHeight = (float) M_PI / _verticalFOV * (float) bounds.getHeight() / 2;
 
 		const auto& horizonRollRotated = (Point) Vector2F(unfoldedFovWidth, 0).rotate(-roll);
 		const auto& horizonPitchRotated = (Point) Vector2F(unfoldedFovHeight, 0).rotate(pitch);
@@ -810,8 +816,43 @@ namespace pizda {
 			yaw
 		);
 
+		// Flight path vector
+		auto fpv = rc.getFlightPathAngles();
+
+		auto pos = Point(
+			center.getX() + unfoldedFovWidth * fpv.getX() / (float) M_PI_2,
+			center.getY() + unfoldedFovHeight * fpv.getY() / (float) M_PI_2
+		);
+
+		const uint8_t radius = 6;
+		const uint8_t lineLength = 6;
+
+		// Circle
+		renderer->renderCircle(
+		   pos,
+		   radius,
+		   &Theme::bg1
+		);
+
+		// Left line
+		renderer->renderHorizontalLine(
+			Point(pos.getX() - radius, pos.getY()),
+			lineLength,
+			&Theme::bg1
+		);
+
+		// Right line
+		renderer->renderHorizontalLine(
+			Point(pos.getX() + radius, pos.getY()),
+			lineLength,
+			&Theme::bg1
+		);
+
+//		renderFlightPathVector(renderer, bounds, center);
+
 		// Bird
 		renderAircraftSymbol(renderer, center);
+
 
 //		// Temp blyad radio
 //

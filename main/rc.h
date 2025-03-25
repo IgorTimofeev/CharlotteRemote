@@ -6,15 +6,17 @@
 #include "../../components/yoba/src/hardware/displays/ILI9341Display.h"
 #include "../../components/yoba/src/hardware/touchPanels/FT6336UTouchPanel.h"
 
-#include "types.h"
-#include "settings.h"
-#include "constants.h"
-#include "interpolator.h"
-
 #include "ui/theme.h"
 #include "ui/navigation/routing.h"
 #include "ui/navigation/menu.h"
 #include "ui/debugOverlay.h"
+
+#include "types.h"
+#include "settings.h"
+#include "constants.h"
+#include "interpolator.h"
+#include "vector3.h"
+#include "geocentricCoordinates.h"
 
 #include "hardware/transceiver/packet.h"
 #include "hardware/transceiver/TCPTransceiver.h"
@@ -49,12 +51,6 @@ namespace pizda {
 			float getAltimeterPressure() const;
 			void setAltimeterPressure(float altimeterPressure);
 
-			float getLatitude() const;
-			void setLatitude(float latitude);
-
-			float getLongitude() const;
-			void setLongitude(float longitude);
-
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
 
@@ -79,6 +75,12 @@ namespace pizda {
 
 			const Route* getRoute();
 			void setRoute(const Route* route);
+
+			const GeocentricCoordinates& getGeocentricCoordinates() const;
+
+			const Vector3F& getFlightPathVector() const;
+
+			const Vector2F& getFlightPathAngles() const;
 
 		private:
 			RC() = default;
@@ -176,12 +178,28 @@ namespace pizda {
 
 			const Route* _route = nullptr;
 
-			// -------------------------------- Aircraft data --------------------------------
+			// -------------------------------- Aircraft data -------------------------------
 
 			// Kronshtadt airfield in Saint-Petersburg for UI testing
-			float _latitude = yoba::toRadians(60.01449883137194);
-			float _longitude = yoba::toRadians(29.702554658332105);
+			// ПРИВЕТУЛИ ФЕДИНОЙ ДАМЕ СЕРДЦА
+			GeocentricCoordinates _geocentricCoordinates = GeocentricCoordinates(
+				yoba::toRadians(60.01449883137194),
+				yoba::toRadians(29.702554658332105),
+				1000
+			);
+
+			Vector3F _cartesianCoordinates {};
+
 			float _altimeterPressure = 1013;
+
+			// -------------------------------- Flight path vector -------------------------------
+
+			constexpr static const uint32_t _flightPathVectorInterval = 1'000'000;
+
+			Vector3F _flightPathVectorCartesianCoordinates {};
+			uint32_t _flightPathVectorTime = 0;
+			Vector3F _flightPathVector {};
+			Vector2F _flightPathAngles {};
 
 			// -------------------------------- Timings --------------------------------
 

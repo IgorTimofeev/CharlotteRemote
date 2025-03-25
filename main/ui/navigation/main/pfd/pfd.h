@@ -104,7 +104,6 @@ namespace pizda {
 			constexpr static const uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorHeight = 2;
 			constexpr static const uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorMaxValuePixels = 45;
 
-			// 3D
 			float _horizontalFOV = toRadians(120);
 			float _verticalFOV = toRadians(80);
 
@@ -143,5 +142,7 @@ namespace pizda {
 			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds, float roll);
 
 			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, float yaw);
+
+			void renderFlightPathVector(Renderer* renderer, const Bounds& bounds, const Point& center) const;
 	};
 }

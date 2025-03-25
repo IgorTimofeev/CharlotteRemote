@@ -57,8 +57,8 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 
-		const auto rotationLatitude = rc.getLatitude() + _cameraOffset.getX();
-		const auto rotationLongitude = rc.getLongitude() - _cameraOffset.getY();
+		const auto rotationLatitude = rc.getGeocentricCoordinates().getLatitude() + _cameraOffset.getX();
+		const auto rotationLongitude = rc.getGeocentricCoordinates().getLongitude() - _cameraOffset.getY();
 
 		getCamera().setPosition(geographicToCartesian(
 			SinAndCos(rotationLatitude),

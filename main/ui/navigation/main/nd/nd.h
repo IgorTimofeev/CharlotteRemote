@@ -4,13 +4,14 @@
 #include "../../components/yoba/src/ui.h"
 
 #include "../../../theme.h"
-#include "../../../spatial/vector3.h"
+#include "../../../../vector3.h"
 #include "../../../../sinAndCos.h"
+#include "../../../../geocentricCoordinates.h"
 
 #include "../../../spatial/spatialView.h"
 #include "../../../spatial/camera.h"
 #include "../../../spatial/object.h"
-#include "../../../spatial/vector3.h"
+#include "../../../../vector3.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -28,7 +29,6 @@ namespace pizda {
 			void onEvent(Event* event) override;
 
 		private:
-//			constexpr static const float _earthEquatorialRadius = 6378137;
 			constexpr static const float _earthEquatorialRadius = 100;
 			constexpr static const float _earthEquatorialLength = (float) M_PI * 2 * _earthEquatorialRadius;
 			constexpr static const float _earthMetersPer1EquatorialDeg = _earthEquatorialLength / 360;
