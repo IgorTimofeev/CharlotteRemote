@@ -26,24 +26,25 @@ namespace pizda {
 	struct AircraftPacket {
 		float latitude;
 		float longitude;
+		float altitude;
+
+		float x;
+		float y;
+		float z;
 
 		float pitch;
 		float yaw;
 		float roll;
-		float slipAndSkid;
 
-		float altitude;
 		float speed;
+
+		float flightPathPitch;
+		float flightPathYaw;
+
+		float slipAndSkid;
 
 		float pressure;
 		float temperature;
-
-		void log() const {
-			ESP_LOGI("AircraftPacket", "Latitude, longitude: %f, %f", latitude, longitude);
-			ESP_LOGI("AircraftPacket", "Pitch, roll, yaw, slip&skid: %f, %f, %f, %f", pitch, roll, yaw, slipAndSkid);
-			ESP_LOGI("AircraftPacket", "Altitude, speed: %f, %f", altitude, speed);
-			ESP_LOGI("AircraftPacket", "Temperature, pressure: %f, %f", temperature, pressure);
-		}
 	};
 
 	struct RemotePacket {

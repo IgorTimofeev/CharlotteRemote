@@ -826,14 +826,15 @@ namespace pizda {
 		);
 
 		// Flight path vector
-		auto fpv = rc.getFlightPathAngles();
+		auto FPVPitch = rc.getFlightPathVectorPitchInterpolator().getValue();
+		auto FPVYaw = rc.getFlightPathVectorYawInterpolator().getValue();
 
 		auto pos = Point(
-			(int32_t) (center.getX() + unfoldedFOVWidth / 2 * fpv.getY()),
-			(int32_t) (center.getY() + unfoldedFOVHeight / 2 * fpv.getX())
+			(int32_t) (center.getX() + unfoldedFOVWidth * FPVYaw / (float) M_PI),
+			(int32_t) (center.getY() + unfoldedFOVHeight * FPVPitch / (float) M_PI)
 		);
 
-		ESP_LOGI("PFD", "FPV screen pos: %ld, %ld", pos.getX(), pos.getY());
+//		ESP_LOGI("PFD", "FPV screen pos: %ld, %ld", pos.getX(), pos.getY());
 
 		const uint8_t radius = 6;
 		const uint8_t lineLength = 6;

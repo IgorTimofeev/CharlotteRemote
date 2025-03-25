@@ -118,6 +118,8 @@ namespace pizda {
 		_rollInterpolator.tick(interpolationFactor);
 		_yawInterpolator.tick(interpolationFactor);
 		_slipAndSkidInterpolator.tick(interpolationFactor);
+		_flightPathVectorPitchInterpolator.tick(interpolationFactor);
+		_flightPathVectorYawInterpolator.tick(interpolationFactor);
 
 		// Airspeed / altitude, normal
 		interpolationFactor = 8.0f * (float) constants::application::interpolationTickInterval / 1'000'000.f;
@@ -157,6 +159,14 @@ namespace pizda {
 
 	LowPassInterpolator& RC::getSlipAndSkidInterpolator() {
 		return _slipAndSkidInterpolator;
+	}
+
+	LowPassInterpolator& RC::getFlightPathVectorPitchInterpolator() {
+		return _flightPathVectorPitchInterpolator;
+	}
+
+	LowPassInterpolator& RC::getFlightPathVectorYawInterpolator() {
+		return _flightPathVectorYawInterpolator;
 	}
 
 	LowPassInterpolator& RC::getAirspeedTrendInterpolator() {
@@ -214,7 +224,6 @@ namespace pizda {
 	Battery& RC::getBattery() {
 		return _battery;
 	}
-
 
 	void RC::encoderTick() {
 		if (!_encoder.interrupted())
@@ -306,37 +315,12 @@ namespace pizda {
 		_geocentricCoordinates.setLongitude(packet->longitude);
 		_geocentricCoordinates.setAltitude(packet->altitude);
 
-		_cartesianCoordinates = _geocentricCoordinates.toCartesian();
+		_cartesianCoordinates.setX(packet->x);
+		_cartesianCoordinates.setY(packet->y);
+		_cartesianCoordinates.setZ(packet->z);
 
-		if (time > _flightPathVectorTime) {
-			ESP_LOGI("FPA", "-------------------------");
-
-			ESP_LOGI("FPA", "PYR: %f, %f, %f", toDegrees(packet->pitch), toDegrees(packet->yaw), toDegrees(packet->roll));
-
-			auto delta = _cartesianCoordinates - _flightPathVectorCartesianCoordinates;
-			_flightPathVectorCartesianCoordinates = _cartesianCoordinates;
-
-			ESP_LOGI("FPA", "Delta: %f, %f, %f", delta.getX(), delta.getY(), delta.getZ());
-
-			// Transforming earth-based coordinate system to aircraft-based
-			delta = delta.rotateAroundVerticalAxis(-packet->longitude);
-			delta = delta.rotateAroundHorizontalAxis(-packet->latitude);
-
-			ESP_LOGI("FPA", "Rotated: %f, %f, %f", delta.getX(), delta.getY(), delta.getZ());
-
-			_flightPathVector = delta;
-
-			const auto length = _flightPathVector.getLength();
-
-			_flightPathAngles = Vector2F(
-				std::asinf(_flightPathVector.getZ() / length),
-				std::atan2f(_flightPathVector.getY(), _flightPathVector.getX())
-			);
-
-			ESP_LOGI("FPA", "Angles: %f, %f", toDegrees(_flightPathAngles.getX()), toDegrees(_flightPathAngles.getY()));
-
-			_flightPathVectorTime = time + _flightPathVectorInterval;
-		}
+		_flightPathVectorPitchInterpolator.setTargetValue(packet->flightPathPitch);
+		_flightPathVectorYawInterpolator.setTargetValue(packet->flightPathYaw);
 
 		_pitchInterpolator.setTargetValue(packet->pitch);
 		_rollInterpolator.setTargetValue(packet->roll);
@@ -430,13 +414,5 @@ namespace pizda {
 
 		// Adding new page
 		_pageLayout += _route->newPage();
-	}
-
-	const Vector3F& RC::getFlightPathVector() const {
-		return _flightPathVector;
-	}
-
-	const Vector2F& RC::getFlightPathAngles() const {
-		return _flightPathAngles;
 	}
 }

@@ -47,6 +47,8 @@ namespace pizda {
 			LowPassInterpolator& getAltitudeTrendInterpolator();
 			LowPassInterpolator& getVerticalSpeedInterpolator();
 			LowPassInterpolator& getSlipAndSkidInterpolator();
+			LowPassInterpolator& getFlightPathVectorPitchInterpolator();
+			LowPassInterpolator& getFlightPathVectorYawInterpolator();
 
 			float getAltimeterPressure() const;
 			void setAltimeterPressure(float altimeterPressure);
@@ -78,9 +80,7 @@ namespace pizda {
 
 			const GeocentricCoordinates& getGeocentricCoordinates() const;
 
-			const Vector3F& getFlightPathVector() const;
-
-			const Vector2F& getFlightPathAngles() const;
+			const Vector2F& getFlightPathVector() const;
 
 		private:
 			RC() = default;
@@ -192,15 +192,6 @@ namespace pizda {
 
 			float _altimeterPressure = 1013;
 
-			// -------------------------------- Flight path vector -------------------------------
-
-			constexpr static const uint32_t _flightPathVectorInterval = 2'000'000;
-
-			Vector3F _flightPathVectorCartesianCoordinates {};
-			uint32_t _flightPathVectorTime = 0;
-			Vector3F _flightPathVector {};
-			Vector2F _flightPathAngles {};
-
 			// -------------------------------- Timings --------------------------------
 
 			uint32_t _tickDeltaTime = 0;
@@ -219,6 +210,8 @@ namespace pizda {
 			LowPassInterpolator _rollInterpolator;
 			LowPassInterpolator _yawInterpolator;
 			LowPassInterpolator _slipAndSkidInterpolator;
+			LowPassInterpolator _flightPathVectorPitchInterpolator;
+			LowPassInterpolator _flightPathVectorYawInterpolator;
 
 			// -------------------------------- Other shit --------------------------------
 
