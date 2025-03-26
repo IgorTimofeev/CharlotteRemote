@@ -147,6 +147,6 @@ namespace pizda {
 
 			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, float yaw);
 
-			void renderFlightPathVector(Renderer* renderer, const Bounds& bounds, const Point& center) const;
+			void renderFlightPathVector(Renderer* renderer, const Point& center, uint16_t unfoldedFOVWidth, uint16_t unfoldedFOVHeight, float pitch, float yaw) const;
 	};
 }

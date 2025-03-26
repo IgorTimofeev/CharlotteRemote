@@ -750,7 +750,7 @@ namespace pizda {
 		renderer->popViewport(viewport);
 	}
 
-	void PFD::renderFlightPathVector(Renderer* renderer, const Bounds& bounds, const Point& center) const {
+	void PFD::renderFlightPathVector(Renderer* renderer, const Point& center, uint16_t unfoldedFOVWidth, uint16_t unfoldedFOVHeight, float pitch, float yaw) const {
 		auto& rc = RC::getInstance();
 
 
@@ -825,25 +825,33 @@ namespace pizda {
 			yaw
 		);
 
-		// Flight path vector
-		auto FPVPitch = rc.getFlightPathVectorPitchInterpolator().getValue();
-		auto FPVYaw = rc.getFlightPathVectorYawInterpolator().getValue();
+		// FPV
+//		renderFlightPathVector(renderer, center, unfoldedFOVWidth, unfoldedFOVHeight, pitch, yaw);
+
+		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);
+		const auto& horizonCenter = (Vector2F) horizonLeft + horizonVec / 2.0f;
 
 		auto pos = Point(
-			(int32_t) (center.getX() + unfoldedFOVWidth * FPVYaw / (float) M_PI),
-			(int32_t) (center.getY() + unfoldedFOVHeight * FPVPitch / (float) M_PI)
+			(int32_t) (horizonCenter.getX() + (float) unfoldedFOVWidth * (rc.getFlightPathVectorYawInterpolator().getValue()) / (float) M_PI),
+			(int32_t) (horizonCenter.getY() - (float) unfoldedFOVHeight * (rc.getFlightPathVectorPitchInterpolator().getValue()) / (float) M_PI)
 		);
 
-//		ESP_LOGI("PFD", "FPV screen pos: %ld, %ld", pos.getX(), pos.getY());
+//		static uint32_t time = 0;
+//
+//		if (esp_timer_get_time() > time) {
+//			ESP_LOGI("FPV", "Pitch: %f, delta: %f", toDegrees(rc.getFlightPathVectorPitchInterpolator().getValue()), toDegrees(rc.getFlightPathVectorPitchInterpolator().getValue() - pitch));
+//
+//			time = esp_timer_get_time() + 1'000'000;
+//		}
 
-		const uint8_t radius = 6;
+		const uint8_t radius = 5;
 		const uint8_t lineLength = 6;
 
 		// Circle
 		renderer->renderCircle(
-		   pos,
-		   radius,
-		   &Theme::fg1
+			pos,
+			radius,
+			&Theme::fg1
 		);
 
 		// Left line
@@ -860,9 +868,7 @@ namespace pizda {
 			&Theme::fg1
 		);
 
-//		renderFlightPathVector(renderer, bounds, center);
-
-		// Bird
+		// Aircraft symbol
 		renderAircraftSymbol(renderer, center);
 
 
