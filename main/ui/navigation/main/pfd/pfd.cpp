@@ -529,7 +529,11 @@ namespace pizda {
 		const Bounds& bounds,
 		float unfoldedFOVHeight,
 		const Point& horizonLeft,
-		const Point& horizonRight
+		const Point& horizonRight,
+		const Vector2F& horizonVec,
+		const Vector2F& horizonVecNorm,
+		const Vector2F& horizonVecPerp,
+		const Vector2F& horizonVecCenter
 	) {
 		const auto viewport = renderer->pushViewport(bounds);
 
@@ -537,10 +541,7 @@ namespace pizda {
 		const float linesInTotal = std::floorf(((float) M_PI_2) / lineAngleStepRad);
 		const float linePixelStep = (float) unfoldedFOVHeight / 2 / linesInTotal;
 
-		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);
-		const auto& horizonCenter = (Vector2F) horizonLeft + horizonVec / 2.0f;
-		const auto& horizonVecNorm = horizonVec.normalize();
-		const auto& horizonVecPerp = horizonVecNorm.perpendicular();
+
 
 		Vector2F
 			lineCenterVerticalPerp,
@@ -554,7 +555,7 @@ namespace pizda {
 
 		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += pitchOverlayAngleStep) {
 			color = lineAngleDeg >= 0 ? pitchOverlayColorGround : pitchOverlayColorSky;
-			lineCenterVerticalPerp = horizonCenter + horizonVecPerp * ((float) lineAngleDeg / (float) pitchOverlayAngleStep * linePixelStep);
+			lineCenterVerticalPerp = horizonVecCenter + horizonVecPerp * ((float) lineAngleDeg / (float) pitchOverlayAngleStep * linePixelStep);
 
 			lineVec = horizonVecNorm * (
 				lineAngleDeg == 0
@@ -750,10 +751,54 @@ namespace pizda {
 		renderer->popViewport(viewport);
 	}
 
-	void PFD::renderFlightPathVector(Renderer* renderer, const Point& center, uint16_t unfoldedFOVWidth, uint16_t unfoldedFOVHeight, float pitch, float yaw) const {
+	void PFD::renderFlightPathVector(
+		Renderer* renderer,
+		const Point& center,
+		uint16_t unfoldedFOVWidth,
+		uint16_t unfoldedFOVHeight,
+		const Vector2F& horizonVecCenter
+	) const {
 		auto& rc = RC::getInstance();
 
+		auto pos = Point(
+			(int32_t) (horizonVecCenter.getX() + (float) unfoldedFOVWidth * (rc.getFlightPathVectorYawInterpolator().getValue()) / (float) M_PI),
+			(int32_t) (horizonVecCenter.getY() - (float) unfoldedFOVHeight * (rc.getFlightPathVectorPitchInterpolator().getValue()) / (float) M_PI)
+		);
 
+//		static uint32_t time = 0;
+//
+//		if (esp_timer_get_time() > time) {
+//			ESP_LOGI("FPV", "Pitch: %f, delta: %f", toDegrees(rc.getFlightPathVectorPitchInterpolator().getValue()), toDegrees(rc.getFlightPathVectorPitchInterpolator().getValue() - pitch));
+//
+//			time = esp_timer_get_time() + 1'000'000;
+//		}
+
+		const uint8_t radius = 5;
+		const uint8_t lineLength = 6;
+
+		// Circle
+		renderer->renderCircle(
+			pos,
+			radius,
+			&Theme::bg1
+		);
+
+		// Left line
+		renderer->renderHorizontalLine(
+			Point(pos.getX() - radius - lineLength, pos.getY()),
+			lineLength,
+			&Theme::bg1
+		);
+
+		// Right line
+		renderer->renderHorizontalLine(
+			Point(pos.getX() + radius, pos.getY()),
+			lineLength,
+			&Theme::bg1
+		);
+
+		// Aircraft symbol
+		renderAircraftSymbol(renderer, center);
 	}
 
 	void PFD::renderSyntheticVision(Renderer* renderer, const Bounds& bounds) const {
@@ -784,6 +829,11 @@ namespace pizda {
 			center.getY() - horizonPitchRotated.getY() + horizonRollRotated.getY()
 		);
 
+		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);
+		const auto& horizonVecNorm = horizonVec.normalize();
+		const auto& horizonVecPerp = horizonVecNorm.perpendicular();
+		const auto& horizonVecCenter = (Vector2F) horizonLeft + horizonVec / 2.0f;
+
 		// Background
 		renderSyntheticVisionBackground(
 			renderer,
@@ -810,7 +860,11 @@ namespace pizda {
 			),
 			unfoldedFOVHeight,
 			horizonLeft,
-			horizonRight
+			horizonRight,
+			horizonVec,
+			horizonVecNorm,
+			horizonVecPerp,
+			horizonVecCenter
 		);
 
 		// Yaw overlay
@@ -826,51 +880,13 @@ namespace pizda {
 		);
 
 		// FPV
-//		renderFlightPathVector(renderer, center, unfoldedFOVWidth, unfoldedFOVHeight, pitch, yaw);
-
-		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);
-		const auto& horizonCenter = (Vector2F) horizonLeft + horizonVec / 2.0f;
-
-		auto pos = Point(
-			(int32_t) (horizonCenter.getX() + (float) unfoldedFOVWidth * (rc.getFlightPathVectorYawInterpolator().getValue()) / (float) M_PI),
-			(int32_t) (horizonCenter.getY() - (float) unfoldedFOVHeight * (rc.getFlightPathVectorPitchInterpolator().getValue()) / (float) M_PI)
+		renderFlightPathVector(
+			renderer,
+			center,
+			unfoldedFOVWidth,
+			unfoldedFOVHeight,
+			horizonVecCenter
 		);
-
-//		static uint32_t time = 0;
-//
-//		if (esp_timer_get_time() > time) {
-//			ESP_LOGI("FPV", "Pitch: %f, delta: %f", toDegrees(rc.getFlightPathVectorPitchInterpolator().getValue()), toDegrees(rc.getFlightPathVectorPitchInterpolator().getValue() - pitch));
-//
-//			time = esp_timer_get_time() + 1'000'000;
-//		}
-
-		const uint8_t radius = 5;
-		const uint8_t lineLength = 6;
-
-		// Circle
-		renderer->renderCircle(
-			pos,
-			radius,
-			&Theme::fg1
-		);
-
-		// Left line
-		renderer->renderHorizontalLine(
-			Point(pos.getX() - radius - lineLength, pos.getY()),
-			lineLength,
-			&Theme::fg1
-		);
-
-		// Right line
-		renderer->renderHorizontalLine(
-			Point(pos.getX() + radius, pos.getY()),
-			lineLength,
-			&Theme::fg1
-		);
-
-		// Aircraft symbol
-		renderAircraftSymbol(renderer, center);
-
 
 //		// Temp blyad radio
 //

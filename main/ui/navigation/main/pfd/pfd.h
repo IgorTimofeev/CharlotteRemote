@@ -139,7 +139,18 @@ namespace pizda {
 
 			static void renderAircraftSymbol(Renderer* renderer, const Point& center);
 
-			static void renderPitchOverlay(Renderer* renderer, const Bounds& bounds, float unfoldedFOVHeight, const Point& horizonLeft, const Point& horizonRight);
+			static void renderPitchOverlay(
+				Renderer* renderer,
+				const Bounds& bounds,
+				float unfoldedFOVHeight,
+				const Point& horizonLeft,
+				const Point& horizonRight,
+
+				const Vector2F& horizonVec,
+				const Vector2F& horizonVecNorm,
+				const Vector2F& horizonVecPerp,
+				const Vector2F& horizonVecCenter
+			);
 
 			static void renderSyntheticVisionBackground(Renderer* renderer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight);
 
@@ -147,6 +158,12 @@ namespace pizda {
 
 			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, float yaw);
 
-			void renderFlightPathVector(Renderer* renderer, const Point& center, uint16_t unfoldedFOVWidth, uint16_t unfoldedFOVHeight, float pitch, float yaw) const;
+			void renderFlightPathVector(
+				Renderer* renderer,
+				const Point& center,
+				uint16_t unfoldedFOVWidth,
+				uint16_t unfoldedFOVHeight,
+				const Vector2F& horizonVecCenter
+			) const;
 	};
 }
