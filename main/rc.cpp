@@ -123,12 +123,15 @@ namespace pizda {
 
 		// Airspeed / altitude, normal
 		interpolationFactor = 8.0f * (float) constants::application::interpolationTickInterval / 1'000'000.f;
-		_airspeedInterpolator.tick(interpolationFactor);
+		_airSpeedInterpolator.tick(interpolationFactor);
 		_altitudeInterpolator.tick(interpolationFactor);
+		_groundSpeedInterpolator.tick(interpolationFactor);
+		_windDirectionInterpolator.tick(interpolationFactor);
+		_windSpeedInterpolator.tick(interpolationFactor);
 
 		// Trends, slower
 		interpolationFactor = 1.0f * (float) constants::application::interpolationTickInterval / 1'000'000.f;
-		_airspeedTrendInterpolator.tick(interpolationFactor);
+		_airSpeedTrendInterpolator.tick(interpolationFactor);
 		_altitudeTrendInterpolator.tick(interpolationFactor);
 		_verticalSpeedInterpolator.tick(interpolationFactor);
 
@@ -137,8 +140,12 @@ namespace pizda {
 
 	// ------------------------- Data -------------------------
 
-	LowPassInterpolator& RC::getAirspeedInterpolator() {
-		return _airspeedInterpolator;
+	LowPassInterpolator& RC::getAirSpeedInterpolator() {
+		return _airSpeedInterpolator;
+	}
+
+	LowPassInterpolator& RC::getGroundSpeedInterpolator() {
+		return _groundSpeedInterpolator;
 	}
 
 	LowPassInterpolator& RC::getAltitudeInterpolator() {
@@ -170,7 +177,7 @@ namespace pizda {
 	}
 
 	LowPassInterpolator& RC::getAirspeedTrendInterpolator() {
-		return _airspeedTrendInterpolator;
+		return _airSpeedTrendInterpolator;
 	}
 
 	LowPassInterpolator& RC::getAltitudeTrendInterpolator() {
@@ -179,6 +186,14 @@ namespace pizda {
 
 	LowPassInterpolator& RC::getVerticalSpeedInterpolator() {
 		return _verticalSpeedInterpolator;
+	}
+
+	LowPassInterpolator& RC::getWindDirectionInterpolator() {
+		return _windDirectionInterpolator;
+	}
+
+	LowPassInterpolator& RC::getWindSpeedInterpolator() {
+		return _windSpeedInterpolator;
 	}
 
 	Application& RC::getApplication() {
@@ -308,9 +323,10 @@ namespace pizda {
 		const auto deltaTime = time - _aircraftPacketTime;
 		_aircraftPacketTime = time;
 
-		const auto oldSpeed = _airspeedInterpolator.getTargetValue();
+		const auto oldSpeed = _airSpeedInterpolator.getTargetValue();
 		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
+		// Direct
 		_geocentricCoordinates.setLatitude(packet->latitude);
 		_geocentricCoordinates.setLongitude(packet->longitude);
 		_geocentricCoordinates.setAltitude(packet->altitude);
@@ -319,21 +335,31 @@ namespace pizda {
 		_cartesianCoordinates.setY(packet->y);
 		_cartesianCoordinates.setZ(packet->z);
 
-		_flightPathVectorPitchInterpolator.setTargetValue(packet->flightPathPitch);
-		_flightPathVectorYawInterpolator.setTargetValue(packet->flightPathYaw);
+		_altimeterPressure = packet->pressure;
+
+		// Interpolators
+		_altitudeInterpolator.setTargetValue(packet->altitude);
 
 		_pitchInterpolator.setTargetValue(packet->pitch);
 		_rollInterpolator.setTargetValue(packet->roll);
 		_yawInterpolator.setTargetValue(packet->yaw);
+
+		_airSpeedInterpolator.setTargetValue(packet->airSpeed);
+		_groundSpeedInterpolator.setTargetValue(packet->groundSpeed);
+
+		_flightPathVectorPitchInterpolator.setTargetValue(packet->flightPathPitch);
+		_flightPathVectorYawInterpolator.setTargetValue(packet->flightPathYaw);
+
 		_slipAndSkidInterpolator.setTargetValue(packet->slipAndSkid);
-		_altitudeInterpolator.setTargetValue(packet->altitude);
-		_airspeedInterpolator.setTargetValue(packet->speed);
+
+		_windDirectionInterpolator.setTargetValue(packet->windDirection);
+		_windSpeedInterpolator.setTargetValue(packet->windSpeed);
 
 		// Trends
 		const auto deltaAltitude = _altitudeInterpolator.getTargetValue() - oldAltitude;
 
 		// Airspeed & altitude, 10 sec
-		_airspeedTrendInterpolator.setTargetValue((_airspeedInterpolator.getTargetValue() - oldSpeed) * 10'000'000 / deltaTime);
+		_airSpeedTrendInterpolator.setTargetValue((_airSpeedInterpolator.getTargetValue() - oldSpeed) * 10'000'000 / deltaTime);
 		_altitudeTrendInterpolator.setTargetValue(deltaAltitude * 10'000'000 / deltaTime);
 
 		// Vertical speed, 1 min

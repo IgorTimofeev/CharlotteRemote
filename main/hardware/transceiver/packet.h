@@ -36,12 +36,16 @@ namespace pizda {
 		float yaw;
 		float roll;
 
-		float speed;
+		float airSpeed;
+		float groundSpeed;
 
 		float flightPathPitch;
 		float flightPathYaw;
 
 		float slipAndSkid;
+
+		float windDirection;
+		float windSpeed;
 
 		float pressure;
 		float temperature;

@@ -38,7 +38,8 @@ namespace pizda {
 
 			Application& getApplication();
 
-			LowPassInterpolator& getAirspeedInterpolator();
+			LowPassInterpolator& getAirSpeedInterpolator();
+			LowPassInterpolator& getGroundSpeedInterpolator();
 			LowPassInterpolator& getAltitudeInterpolator();
 			LowPassInterpolator& getPitchInterpolator();
 			LowPassInterpolator& getRollInterpolator();
@@ -49,6 +50,8 @@ namespace pizda {
 			LowPassInterpolator& getSlipAndSkidInterpolator();
 			LowPassInterpolator& getFlightPathVectorPitchInterpolator();
 			LowPassInterpolator& getFlightPathVectorYawInterpolator();
+			LowPassInterpolator& getWindDirectionInterpolator();
+			LowPassInterpolator& getWindSpeedInterpolator();
 
 			float getAltimeterPressure() const;
 			void setAltimeterPressure(float altimeterPressure);
@@ -79,8 +82,6 @@ namespace pizda {
 			void setRoute(const Route* route);
 
 			const GeocentricCoordinates& getGeocentricCoordinates() const;
-
-			const Vector2F& getFlightPathVector() const;
 
 		private:
 			RC() = default;
@@ -198,20 +199,24 @@ namespace pizda {
 			uint32_t _interpolationTickTime = 0;
 			uint32_t _aircraftPacketTime = 0;
 
-			LowPassInterpolator _airspeedInterpolator;
-			LowPassInterpolator _airspeedTrendInterpolator;
+			LowPassInterpolator _airSpeedInterpolator {};
+			LowPassInterpolator _airSpeedTrendInterpolator {};
+			LowPassInterpolator _groundSpeedInterpolator {};
 
-			LowPassInterpolator _altitudeInterpolator;
-			LowPassInterpolator _altitudeTrendInterpolator;
+			LowPassInterpolator _altitudeInterpolator {};
+			LowPassInterpolator _altitudeTrendInterpolator {};
 
-			LowPassInterpolator _verticalSpeedInterpolator;
+			LowPassInterpolator _verticalSpeedInterpolator {};
 
-			LowPassInterpolator _pitchInterpolator;
-			LowPassInterpolator _rollInterpolator;
-			LowPassInterpolator _yawInterpolator;
-			LowPassInterpolator _slipAndSkidInterpolator;
-			LowPassInterpolator _flightPathVectorPitchInterpolator;
-			LowPassInterpolator _flightPathVectorYawInterpolator;
+			LowPassInterpolator _pitchInterpolator {};
+			LowPassInterpolator _rollInterpolator {};
+			LowPassInterpolator _yawInterpolator {};
+			LowPassInterpolator _slipAndSkidInterpolator {};
+			LowPassInterpolator _flightPathVectorPitchInterpolator {};
+			LowPassInterpolator _flightPathVectorYawInterpolator {};
+
+			LowPassInterpolator _windDirectionInterpolator {};
+			LowPassInterpolator _windSpeedInterpolator {};
 
 			// -------------------------------- Other shit --------------------------------
 

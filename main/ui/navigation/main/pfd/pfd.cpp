@@ -45,18 +45,18 @@ namespace pizda {
 		auto uintValue = (uint32_t) value;
 
 		// Assuming 4 is "widest" digit
-		const uint8_t maxDigitWidth = Theme::fontNormal.getWidth(L'4');
+		const uint8_t maxDigitWidth = currentValueFont->getWidth(L'4');
 
 		int32_t x =
 			left
 			? bounds.getX2() - currentValueTriangleSize - textOffset
 			: bounds.getX() + currentValueTriangleSize + textOffset + maxDigitWidth * getDigitCount(uintValue);
 
-		y = y + currentValueHeight / 2 - Theme::fontNormal.getHeight() / 2;
+		y = y + currentValueHeight / 2 - currentValueFont->getHeight() / 2;
 
 		float integer;
 		const auto fractional = std::modf(value, &integer);
-		const int32_t scrolledY = y + (uint8_t) (fractional * (float) Theme::fontNormal.getHeight());
+		const int32_t scrolledY = y + (uint8_t) (fractional * (float) currentValueFont->getHeight());
 
 		const auto getAdjacentDigit = [&](uint8_t digit, bool plus) {
 			return
@@ -70,10 +70,10 @@ namespace pizda {
 
 			renderer->renderChar(
 				Point(
-					x - Theme::fontNormal.getWidth(text),
+					x - currentValueFont->getWidth(text),
 					digitY
 				),
-				&Theme::fontNormal,
+				currentValueFont,
 				&Theme::fg1,
 				text
 			);
@@ -86,9 +86,9 @@ namespace pizda {
 			digit = uintValue % 10;
 
 			if (shouldScroll) {
-				renderDigit(scrolledY - Theme::fontNormal.getHeight(), getAdjacentDigit(digit, true));
+				renderDigit(scrolledY - currentValueFont->getHeight(), getAdjacentDigit(digit, true));
 				renderDigit(scrolledY, digit);
-				renderDigit(scrolledY + Theme::fontNormal.getHeight(), getAdjacentDigit(digit, false));
+				renderDigit(scrolledY + currentValueFont->getHeight(), getAdjacentDigit(digit, false));
 			}
 			else {
 				renderDigit(y, digit);
@@ -227,7 +227,7 @@ namespace pizda {
 
 		renderer->renderFilledRectangle(bounds, &Theme::bg1);
 
-		float speed = rc.getAirspeedInterpolator().getValue();
+		float speed = rc.getAirSpeedInterpolator().getValue();
 
 		// Bars
 		const auto barX = bounds.getX2() + 1 - speedBarSize;
@@ -343,10 +343,10 @@ namespace pizda {
 
 				renderer->renderString(
 					Point(
-						bounds.getX2() + 1 - speedBarSize - lineSizeBig - lineSizeTextOffset - Theme::fontNormal.getWidth(text),
-						y - Theme::fontNormal.getHeight() / 2
+						bounds.getX2() + 1 - speedBarSize - lineSizeBig - lineSizeTextOffset - currentValueFont->getWidth(text),
+						y - currentValueFont->getHeight() / 2
 					),
-					&Theme::fontNormal,
+					currentValueFont,
 					lineColor,
 					text
 				);
@@ -399,20 +399,9 @@ namespace pizda {
 	void PFD::renderAircraftSymbol(Renderer* renderer, const Point& center) {
 		const uint8_t aircraftSymbolWidth = 30;
 		const uint8_t aircraftSymbolThickness = 2;
-		const uint8_t aircraftSymbolHeight = 6;
-		const uint8_t aircraftSymbolCenterOffset = 16;
+		const uint8_t aircraftSymbolCenterOffset = 20;
 
 		// Left
-		renderer->renderFilledRectangle(
-			Bounds(
-				center.getX() - aircraftSymbolCenterOffset - aircraftSymbolThickness,
-				center.getY() - aircraftSymbolThickness / 2,
-				aircraftSymbolThickness,
-				aircraftSymbolHeight
-			),
-			&Theme::bg1
-		);
-
 		renderer->renderFilledRectangle(
 			Bounds(
 				center.getX() - aircraftSymbolCenterOffset - aircraftSymbolThickness - aircraftSymbolWidth,
@@ -426,30 +415,9 @@ namespace pizda {
 		// Right
 		renderer->renderFilledRectangle(
 			Bounds(
-				center.getX() + aircraftSymbolCenterOffset,
-				center.getY() - aircraftSymbolThickness / 2,
-				aircraftSymbolThickness,
-				aircraftSymbolHeight
-			),
-			&Theme::bg1
-		);
-
-		renderer->renderFilledRectangle(
-			Bounds(
 				center.getX() + aircraftSymbolCenterOffset + aircraftSymbolThickness,
 				center.getY() - aircraftSymbolThickness / 2,
 				aircraftSymbolWidth,
-				aircraftSymbolThickness
-			),
-			&Theme::bg1
-		);
-
-		// Dot
-		renderer->renderFilledRectangle(
-			Bounds(
-				center.getX() + aircraftSymbolThickness / 2 - aircraftSymbolThickness / 2,
-				center.getY() - aircraftSymbolThickness / 2,
-				aircraftSymbolThickness,
 				aircraftSymbolThickness
 			),
 			&Theme::bg1
@@ -541,8 +509,6 @@ namespace pizda {
 		const float linesInTotal = std::floorf(((float) M_PI_2) / lineAngleStepRad);
 		const float linePixelStep = (float) unfoldedFOVHeight / 2 / linesInTotal;
 
-
-
 		Vector2F
 			lineCenterVerticalPerp,
 			lineVec;
@@ -580,9 +546,9 @@ namespace pizda {
 				renderer->renderString(
 					Point(
 						lineRight.getX() + pitchOverlayTextOffset,
-						lineRight.getY() - Theme::fontSmall.getHeight() / 2
+						lineRight.getY() - pitchOverlayFont->getHeight() / 2
 					),
-					&Theme::fontSmall,
+					pitchOverlayFont,
 					color,
 					std::to_wstring(abs(lineAngleDeg))
 				);
@@ -724,10 +690,10 @@ namespace pizda {
 
 				renderer->renderString(
 					Point(
-						x - Theme::fontSmall.getWidth(text) / 2,
-						lineY - yawOverlayTextOffset - Theme::fontSmall.getHeight()
+						x - yawOverlayFont->getWidth(text) / 2,
+						lineY - yawOverlayTextOffset - yawOverlayFont->getHeight()
 					),
-					&Theme::fontSmall,
+					yawOverlayFont,
 					yawOverlayColor,
 					text
 				);
@@ -773,8 +739,9 @@ namespace pizda {
 //			time = esp_timer_get_time() + 1'000'000;
 //		}
 
-		const uint8_t radius = 5;
+		const uint8_t radius = 4;
 		const uint8_t lineLength = 6;
+		const uint8_t lineThickness = 2;
 
 		// Circle
 		renderer->renderCircle(
@@ -783,22 +750,33 @@ namespace pizda {
 			&Theme::bg1
 		);
 
+		renderer->renderCircle(
+			pos,
+			radius - 1,
+			&Theme::bg1
+		);
+
 		// Left line
-		renderer->renderHorizontalLine(
-			Point(pos.getX() - radius - lineLength, pos.getY()),
-			lineLength,
+		renderer->renderFilledRectangle(
+			Bounds(
+				pos.getX() - radius - lineLength,
+				pos.getY() - lineThickness / 2,
+				lineLength,
+				lineThickness
+			),
 			&Theme::bg1
 		);
 
 		// Right line
-		renderer->renderHorizontalLine(
-			Point(pos.getX() + radius, pos.getY()),
-			lineLength,
+		renderer->renderFilledRectangle(
+			Bounds(
+				pos.getX() + radius,
+				pos.getY() - lineThickness / 2,
+				lineLength,
+				lineThickness
+			),
 			&Theme::bg1
 		);
-
-		// Aircraft symbol
-		renderAircraftSymbol(renderer, center);
 	}
 
 	void PFD::renderSyntheticVision(Renderer* renderer, const Bounds& bounds) const {
@@ -888,23 +866,8 @@ namespace pizda {
 			horizonVecCenter
 		);
 
-//		// Temp blyad radio
-//
-//		swprintf(text, 255, L"RSSI: %.2f dBm", app.getTransceiver().getRssi());
-//		renderer->renderText(
-//			Point(bounds.getX() + 10, bounds.getY() + 10),
-//			&Theme::font,
-//			&Theme::fg1,
-//			text
-//		);
-//
-//		swprintf(text, 255, L"SNR: %.2f dB", app.getTransceiver().getSnr());
-//		renderer->renderText(
-//			Point(bounds.getX() + 10, bounds.getY() + 20),
-//			&Theme::font,
-//			&Theme::fg1,
-//			text
-//		);
+		// Aircraft symbol
+		renderAircraftSymbol(renderer, center);
 	}
 
 	void PFD::renderAltitude(Renderer* renderer, const Bounds& bounds) {
@@ -942,8 +905,8 @@ namespace pizda {
 
 				// Text
 				renderer->renderString(
-					Point(x + lineSizeBig + lineSizeTextOffset, y - Theme::fontNormal.getHeight() / 2),
-					&Theme::fontNormal,
+					Point(x + lineSizeBig + lineSizeTextOffset, y - currentValueFont->getHeight() / 2),
+					currentValueFont,
 					lineColor,
 					std::to_wstring(lineValue)
 				);
@@ -1055,9 +1018,9 @@ namespace pizda {
 					renderer->renderString(
 						Point(
 							bounds.getX() + lineSizeBig + verticalSpeedTextOffset,
-							y - Theme::fontSmall.getHeight() / 2
+							y - verticalSpeedFont->getHeight() / 2
 						),
-						&Theme::fontSmall,
+						verticalSpeedFont,
 						lineColor,
 						std::to_wstring(lineValue / 1000)
 					);
@@ -1099,10 +1062,10 @@ namespace pizda {
 		// Text
 		renderer->renderString(
 			Point(
-				bounds.getX() + textXOffset + (bounds.getWidth() - textXOffset) / 2 - Theme::fontSmall.getWidth(text) / 2,
-				bounds.getY() + miniHeight / 2 - Theme::fontSmall.getHeight() / 2
+				bounds.getX() + textXOffset + (bounds.getWidth() - textXOffset) / 2 - miniFont->getWidth(text) / 2,
+				bounds.getY() + miniHeight / 2 - miniFont->getHeight() / 2
 			),
-			&Theme::fontSmall,
+			miniFont,
 			fg,
 			text
 		);
@@ -1172,6 +1135,57 @@ namespace pizda {
 		renderMiniPanel(renderer, bounds, bg, fg, text, 0);
 	}
 
+	void PFD::renderGroundSpeed(Renderer* renderer, const Bounds& bounds) {
+		auto& rc = RC::getInstance();
+
+		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::purple, std::to_wstring((uint16_t) rc.getGroundSpeedInterpolator().getValue()), 0);
+	}
+
+	void PFD::renderWind(Renderer* renderer, const Point& bottomLeft) {
+		auto& rc = RC::getInstance();
+
+		const uint8_t textOffset = 4;
+		const auto text = std::to_wstring((uint16_t) rc.getWindSpeedInterpolator().getValue());
+		const uint8_t arrowSize = 18;
+
+		const auto arrowVec = Vector2F(0, arrowSize).rotate(rc.getWindDirectionInterpolator().getValue() + (float) M_PI - rc.getYawInterpolator().getValue());
+		const auto arrowVecNorm = arrowVec.normalize();
+		const auto arrowVecPerp = arrowVecNorm.perpendicular();
+
+		const auto arrowCenter = Vector2F (
+			bottomLeft.getX() + arrowSize / 2,
+			bottomLeft.getY() - Theme::fontSmall.getHeight() - textOffset - arrowSize / 2
+		);
+
+		const auto arrowToVec = (Vector2F) arrowCenter - arrowVec / 2.f;
+
+		renderer->renderLine(
+			(Point) (arrowCenter + arrowVec / 2.f),
+			(Point) arrowToVec,
+			&Theme::ground2
+		);
+
+		const uint8_t triangleWidth = 3;
+		const uint8_t triangleHeight = 4;
+
+		renderer->renderFilledTriangle(
+			(Point) arrowToVec,
+			(Point) (arrowToVec + arrowVecNorm * triangleHeight - arrowVecPerp * triangleWidth),
+			(Point) (arrowToVec + arrowVecNorm * triangleHeight + arrowVecPerp * triangleWidth),
+			&Theme::ground2
+		);
+
+		renderer->renderString(
+			Point(
+				arrowCenter.getX() - Theme::fontSmall.getWidth(text) / 2,
+				bottomLeft.getY() - Theme::fontSmall.getHeight()
+			),
+			&Theme::fontSmall,
+			&Theme::ground2,
+			text
+		);
+	}
+
 	void PFD::onRender(Renderer* renderer, const Bounds& bounds) {
 		renderSyntheticVision(renderer, Bounds(
 			bounds.getX() + speedWidth,
@@ -1184,8 +1198,23 @@ namespace pizda {
 			bounds.getX(),
 			bounds.getY() + miniHeight,
 			speedWidth,
-			bounds.getHeight() - miniHeight
+			bounds.getHeight() - miniHeight * 2
 		));
+
+		renderGroundSpeed(renderer, Bounds(
+			bounds.getX(),
+			bounds.getY2() + 1 - miniHeight,
+			speedWidth,
+			miniHeight
+		));
+
+		renderWind(
+			renderer,
+			Point(
+				bounds.getX() + speedWidth + 6,
+				bounds.getY2() - 20
+			)
+		);
 
 		renderAutopilotSpeed(renderer, Bounds(
 			bounds.getX(),

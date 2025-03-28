@@ -20,12 +20,14 @@ namespace pizda {
 			constexpr static const uint16_t lineSizeTextOffset = 4;
 
 			constexpr static const uint8_t miniHeight = 16;
+			constexpr static const Font* miniFont = &Theme::fontSmall;
 
 			constexpr static const uint16_t currentValueHeight = 20;
 			constexpr static const uint8_t currentValueTriangleSize = 8;
+			constexpr static const Font* currentValueFont = &Theme::fontSmall;
 
 			// Speed
-			constexpr static const uint8_t speedWidth = 31;
+			constexpr static const uint8_t speedWidth = 29;
 			constexpr static const uint8_t speedStepPixels = 8;
 			constexpr static const uint8_t speedStepUnits = 2;
 			constexpr static const uint8_t speedStepUnitsBig = 10;
@@ -45,7 +47,7 @@ namespace pizda {
 			constexpr static const uint16_t speedStructuralMax = speedStructuralMin * 4;
 
 			// Altitude
-			constexpr static const uint8_t altitudeWidth = 33;
+			constexpr static const uint8_t altitudeWidth = 30;
 			constexpr static const uint8_t altitudeStepUnits = 20;
 			constexpr static const uint8_t altitudeStepUnitsBig = 100;
 			constexpr static const uint8_t altitudeUnitPixels = 8;
@@ -59,6 +61,8 @@ namespace pizda {
 			constexpr static const uint16_t verticalSpeedStepPixelsRight = 2;
 			constexpr static const uint16_t verticalSpeedTextOffset = 3;
 
+			constexpr static const Font* verticalSpeedFont = &Theme::fontSmall;
+
 			// Autopilot indicator
 			constexpr static const uint8_t autopilotIndicatorWidth = 4;
 			constexpr static const uint8_t autopilotIndicatorHeight = miniHeight;
@@ -71,8 +75,6 @@ namespace pizda {
 			constexpr static const uint8_t autopilotIndicatorRectangleWidth = autopilotIndicatorWidth - autopilotIndicatorTriangleWidth;
 
 			// Pitch overlay
-			constexpr static const Color* pitchOverlayColorSky = &Theme::sky2;
-			constexpr static const Color* pitchOverlayColorGround = &Theme::ground2;
 			constexpr static const uint8_t pitchOverlayMarginTop = 30;
 			constexpr static const uint8_t pitchOverlayAngleStep = 5;
 			constexpr static const uint8_t pitchOverlayLineSmall = 5;
@@ -80,8 +82,11 @@ namespace pizda {
 			constexpr static const uint8_t pitchOverlayLineMiddle = 15;
 			constexpr static const uint8_t pitchOverlayTextOffset = 5;
 
+			constexpr static const Font* pitchOverlayFont = &Theme::fontSmall;
+			constexpr static const Color* pitchOverlayColorSky = &Theme::sky2;
+			constexpr static const Color* pitchOverlayColorGround = &Theme::ground2;
+
 			// Yaw overlay
-			constexpr static const Color* yawOverlayColor = &Theme::ground2;
 			constexpr static const uint8_t yawOverlayHeight = 20;
 			constexpr static const uint8_t yawOverlayAngleStepUnits = 2;
 			constexpr static const uint8_t yawOverlayAngleStepPixels = 9;
@@ -91,6 +96,9 @@ namespace pizda {
 
 			constexpr static const uint8_t yawOverlayTriangleWidth = 8;
 			constexpr static const uint8_t yawOverlayTriangleHeight = yawOverlayLineBigLength;
+
+			constexpr static const Font* yawOverlayFont = &Theme::fontSmall;
+			constexpr static const Color* yawOverlayColor = &Theme::ground2;
 
 			// Turn coordinator overlay
 			constexpr static const Color* turnCoordinatorOverlayColor = &Theme::sky2;
@@ -165,5 +173,9 @@ namespace pizda {
 				uint16_t unfoldedFOVHeight,
 				const Vector2F& horizonVecCenter
 			) const;
+
+			void renderGroundSpeed(Renderer* renderer, const Bounds& bounds);
+
+			void renderWind(Renderer* renderer, const Point& bottomLeft);
 	};
 }
