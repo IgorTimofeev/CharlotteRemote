@@ -6,10 +6,30 @@
 #include "nvs_flash.h"
 #include "nvs.h"
 
-#include "types.h"
+#include "units.h"
 
 namespace pizda {
 	#pragma pack(push, 1)
+
+	class SettingsControls {
+		public:
+			uint16_t throttles[2] = {
+				0xFFFF,
+				0xFFFF
+			};
+
+			uint16_t aileronsTrim = 0xFFFF / 2;
+			uint16_t elevatorTrim = 0xFFFF / 2;
+			uint16_t rudderTrim = 0xFFFF / 2;
+
+			uint32_t referencePressurePa = 101325;
+			AltimeterMode altimeterMode = AltimeterMode::QNH;
+
+			uint32_t minimumAltitude = 0;
+
+			bool landingGear = true;
+			bool strobeLights = false;
+	};
 
 	class SettingsAxisData {
 		public:
@@ -41,29 +61,19 @@ namespace pizda {
 			bool levelChange = false;
 	};
 
-	class SettingsControls {
+	class SettingsUnits {
 		public:
-			uint16_t throttles[2] = {
-				0xFFFF,
-				0xFFFF
-			};
-
-			uint16_t aileronsTrim = 0xFFFF / 2;
-			uint16_t elevatorTrim = 0xFFFF / 2;
-			uint16_t rudderTrim = 0xFFFF / 2;
-
-			uint32_t referencePressure = 101325;
-			AltimeterMode altimeterMode = AltimeterMode::QNH;
-
-			bool landingGear = true;
-			bool strobeLights = false;
+			SpeedUnit speed = SpeedUnit::knot;
+			DistanceUnit distance = DistanceUnit::foot;
+			PressureUnit pressure = PressureUnit::hectopascal;
 	};
 
 	class Settings {
 		public:
-			SettingsAxis axis;
 			SettingsControls controls;
+			SettingsAxis axis;
 			SettingsAutopilot autopilot;
+			SettingsUnits units;
 
 			void setup() { // NOLINT(*-convert-member-functions-to-static)
 				// Opening
@@ -120,7 +130,7 @@ namespace pizda {
 
 		private:
 			constexpr static const uint32_t _writeDelay = 2500000;
-			constexpr static const uint8_t _version = 3;
+			constexpr static const uint8_t _version = 5;
 			uint32_t _timeToWrite = 0;
 	};
 

@@ -8,7 +8,7 @@ namespace pizda {
 	InstrumentsLayout::InstrumentsLayout() {
 		// Titles
 		_titlesRect.setFillColor(&Theme::bg2);
-		_titlesRect.setHeight(12);
+		_titlesRect.setHeight(11);
 		_titlesRect.setVerticalAlignment(Alignment::start);
 		*this += &_titlesRect;
 
@@ -24,6 +24,8 @@ namespace pizda {
 		_row += &_menuButton;
 
 		// Throttle
+		_throttleTitle.getTitle().setFont(&Theme::fontSmall);
+
 		const uint8_t contentHeight = InstrumentsLayout::panelSize - _row.getMargin().getTop() - _throttleTitle.getSpacing() - _throttleTitle.getTitle().getFont()->getHeight();
 
 		_throttleRow.setOrientation(Orientation::horizontal);
@@ -42,12 +44,15 @@ namespace pizda {
 		_controlsRows += &_flapsAndSpoilersIndicator;
 		_controlsRows += &_landingGearImageView;
 
+		_controlsTitle.getTitle().setFont(&Theme::fontSmall);
 		_row += &_controlsTitle;
 
 		// Elevator trim
 		_elevatorTrimIndicator.setSize(Size(5, contentHeight - 4));
 		_elevatorTrimIndicator.setSuggestedMinimum(0xFFFF * 40 / 100);
 		_elevatorTrimIndicator.setSuggestedMaximum(0xFFFF * 60 / 100);
+
+		_elevatorTrimTitle.getTitle().setFont(&Theme::fontSmall);
 		_row += &_elevatorTrimTitle;
 
 		// Battery
@@ -58,6 +63,7 @@ namespace pizda {
 		_batteryIndicatorRows += &_batteryIndicatorController;
 		_batteryIndicatorRows += &_batteryIndicatorAircraft;
 
+		_batteryIndicatorTitle.getTitle().setFont(&Theme::fontSmall);
 		_row += &_batteryIndicatorTitle;
 
 		*this += &_row;

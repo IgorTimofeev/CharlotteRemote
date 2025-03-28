@@ -11,7 +11,7 @@
 #include "ui/navigation/menu.h"
 #include "ui/debugOverlay.h"
 
-#include "types.h"
+#include "units.h"
 #include "settings.h"
 #include "constants.h"
 #include "interpolator.h"
@@ -39,7 +39,6 @@ namespace pizda {
 			Application& getApplication();
 
 			LowPassInterpolator& getAirSpeedInterpolator();
-			LowPassInterpolator& getGroundSpeedInterpolator();
 			LowPassInterpolator& getAltitudeInterpolator();
 			LowPassInterpolator& getPitchInterpolator();
 			LowPassInterpolator& getRollInterpolator();
@@ -51,10 +50,6 @@ namespace pizda {
 			LowPassInterpolator& getFlightPathVectorPitchInterpolator();
 			LowPassInterpolator& getFlightPathVectorYawInterpolator();
 			LowPassInterpolator& getWindDirectionInterpolator();
-			LowPassInterpolator& getWindSpeedInterpolator();
-
-			float getAltimeterPressure() const;
-			void setAltimeterPressure(float altimeterPressure);
 
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
@@ -82,6 +77,10 @@ namespace pizda {
 			void setRoute(const Route* route);
 
 			const GeocentricCoordinates& getGeocentricCoordinates() const;
+
+			float getWindSpeed() const;
+
+			float getGroundSpeed() const;
 
 		private:
 			RC() = default;
@@ -191,17 +190,11 @@ namespace pizda {
 
 			Vector3F _cartesianCoordinates {};
 
-			float _altimeterPressure = 1013;
-
-			// -------------------------------- Timings --------------------------------
-
-			uint32_t _tickDeltaTime = 0;
-			uint32_t _interpolationTickTime = 0;
-			uint32_t _aircraftPacketTime = 0;
+			float _groundSpeed = 0;
+			float _windSpeed = 0;
 
 			LowPassInterpolator _airSpeedInterpolator {};
 			LowPassInterpolator _airSpeedTrendInterpolator {};
-			LowPassInterpolator _groundSpeedInterpolator {};
 
 			LowPassInterpolator _altitudeInterpolator {};
 			LowPassInterpolator _altitudeTrendInterpolator {};
@@ -216,7 +209,13 @@ namespace pizda {
 			LowPassInterpolator _flightPathVectorYawInterpolator {};
 
 			LowPassInterpolator _windDirectionInterpolator {};
-			LowPassInterpolator _windSpeedInterpolator {};
+
+
+			// -------------------------------- Timings --------------------------------
+
+			uint32_t _tickDeltaTime = 0;
+			uint32_t _interpolationTickTime = 0;
+			uint32_t _aircraftPacketTime = 0;
 
 			// -------------------------------- Other shit --------------------------------
 

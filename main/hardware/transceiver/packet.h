@@ -24,31 +24,24 @@ namespace pizda {
 	};
 
 	struct AircraftPacket {
-		float latitude;
-		float longitude;
-		float altitude;
+		float latitudeRad;
+		float longitudeRad;
+		float altitudeM;
 
-		float x;
-		float y;
-		float z;
+		float pitchRad;
+		float yawRad;
+		float rollRad;
 
-		float pitch;
-		float yaw;
-		float roll;
+		float airSpeedMs;
+		float groundSpeedMs;
 
-		float airSpeed;
-		float groundSpeed;
+		float flightPathPitchRad;
+		float flightPathYawRad;
 
-		float flightPathPitch;
-		float flightPathYaw;
+		int16_t slipAndSkid;
 
-		float slipAndSkid;
-
-		float windDirection;
-		float windSpeed;
-
-		float pressure;
-		float temperature;
+		float windDirectionRad;
+		float windSpeedMs;
 	};
 
 	struct RemotePacket {

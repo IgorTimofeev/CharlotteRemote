@@ -125,9 +125,7 @@ namespace pizda {
 		interpolationFactor = 8.0f * (float) constants::application::interpolationTickInterval / 1'000'000.f;
 		_airSpeedInterpolator.tick(interpolationFactor);
 		_altitudeInterpolator.tick(interpolationFactor);
-		_groundSpeedInterpolator.tick(interpolationFactor);
 		_windDirectionInterpolator.tick(interpolationFactor);
-		_windSpeedInterpolator.tick(interpolationFactor);
 
 		// Trends, slower
 		interpolationFactor = 1.0f * (float) constants::application::interpolationTickInterval / 1'000'000.f;
@@ -142,10 +140,6 @@ namespace pizda {
 
 	LowPassInterpolator& RC::getAirSpeedInterpolator() {
 		return _airSpeedInterpolator;
-	}
-
-	LowPassInterpolator& RC::getGroundSpeedInterpolator() {
-		return _groundSpeedInterpolator;
 	}
 
 	LowPassInterpolator& RC::getAltitudeInterpolator() {
@@ -192,8 +186,12 @@ namespace pizda {
 		return _windDirectionInterpolator;
 	}
 
-	LowPassInterpolator& RC::getWindSpeedInterpolator() {
-		return _windSpeedInterpolator;
+	float RC::getWindSpeed() const {
+		return _windSpeed;
+	}
+
+	float RC::getGroundSpeed() const {
+		return _groundSpeed;
 	}
 
 	Application& RC::getApplication() {
@@ -327,33 +325,27 @@ namespace pizda {
 		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
 		// Direct
-		_geocentricCoordinates.setLatitude(packet->latitude);
-		_geocentricCoordinates.setLongitude(packet->longitude);
-		_geocentricCoordinates.setAltitude(packet->altitude);
-
-		_cartesianCoordinates.setX(packet->x);
-		_cartesianCoordinates.setY(packet->y);
-		_cartesianCoordinates.setZ(packet->z);
-
-		_altimeterPressure = packet->pressure;
+		_geocentricCoordinates.setLatitude(packet->latitudeRad);
+		_geocentricCoordinates.setLongitude(packet->longitudeRad);
+		_geocentricCoordinates.setAltitude(packet->altitudeM);
 
 		// Interpolators
-		_altitudeInterpolator.setTargetValue(packet->altitude);
+		_altitudeInterpolator.setTargetValue(convertDistance(packet->altitudeM, DistanceUnit::meter, DistanceUnit::foot));
 
-		_pitchInterpolator.setTargetValue(packet->pitch);
-		_rollInterpolator.setTargetValue(packet->roll);
-		_yawInterpolator.setTargetValue(packet->yaw);
+		_pitchInterpolator.setTargetValue(packet->pitchRad);
+		_rollInterpolator.setTargetValue(packet->rollRad);
+		_yawInterpolator.setTargetValue(packet->yawRad);
 
-		_airSpeedInterpolator.setTargetValue(packet->airSpeed);
-		_groundSpeedInterpolator.setTargetValue(packet->groundSpeed);
+		_airSpeedInterpolator.setTargetValue(convertSpeed(packet->airSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot));
+		_groundSpeed = convertSpeed(packet->groundSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 
-		_flightPathVectorPitchInterpolator.setTargetValue(packet->flightPathPitch);
-		_flightPathVectorYawInterpolator.setTargetValue(packet->flightPathYaw);
+		_flightPathVectorPitchInterpolator.setTargetValue(packet->flightPathPitchRad);
+		_flightPathVectorYawInterpolator.setTargetValue(packet->flightPathYawRad);
 
-		_slipAndSkidInterpolator.setTargetValue(packet->slipAndSkid);
+		_slipAndSkidInterpolator.setTargetValue((float) packet->slipAndSkid / ((float) 0xFFFF / 2.f));
 
-		_windDirectionInterpolator.setTargetValue(packet->windDirection);
-		_windSpeedInterpolator.setTargetValue(packet->windSpeed);
+		_windDirectionInterpolator.setTargetValue(packet->windDirectionRad);
+		_windSpeed = convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 
 		// Trends
 		const auto deltaAltitude = _altitudeInterpolator.getTargetValue() - oldAltitude;
@@ -364,14 +356,6 @@ namespace pizda {
 
 		// Vertical speed, 1 min
 		_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60'000'000 / deltaTime);
-	}
-
-	float RC::getAltimeterPressure() const {
-		return _altimeterPressure;
-	}
-
-	void RC::setAltimeterPressure(float altimeterPressure) {
-		_altimeterPressure = altimeterPressure;
 	}
 
 	const GeocentricCoordinates& RC::getGeocentricCoordinates() const {

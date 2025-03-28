@@ -1,6 +1,7 @@
 #include "pfd.h"
 #include "../../../../rc.h"
 #include "../../../theme.h"
+#include "../../../../units.h"
 
 namespace pizda {
 	PFD::PFD() {
@@ -689,7 +690,7 @@ namespace pizda {
 		renderer->popViewport(viewport);
 	}
 
-	void PFD::renderAircraftAndFPVOverlay(
+	void PFD::renderAircraftSymbolAndFPVOverlay(
 		Renderer* renderer,
 		const Point& center,
 		uint16_t unfoldedFOVWidth,
@@ -723,7 +724,7 @@ namespace pizda {
 		);
 
 		// Flight path vector
-		if (rc.getGroundSpeedInterpolator().getValue() > flightPathVectorVisibilityGroundSpeed) {
+		if (rc.getGroundSpeed() > flightPathVectorVisibilityGroundSpeed) {
 			auto FPVPosition = Point(
 				(int32_t) (horizonVecCenter.getX() + (float) unfoldedFOVWidth * (rc.getFlightPathVectorYawInterpolator().getValue()) / (float) M_PI),
 				(int32_t) (horizonVecCenter.getY() - (float) unfoldedFOVHeight * (rc.getFlightPathVectorPitchInterpolator().getValue()) / (float) M_PI)
@@ -853,25 +854,24 @@ namespace pizda {
 		);
 
 		// Wind
-		renderWind(
-			renderer,
-			Point(
-				bounds.getX() + 6,
-				bounds.getY2() - 18
-			)
-		);
+		if (rc.getGroundSpeed() > windVisibilityGroundSpeed) {
+			renderWind(
+				renderer,
+				Point(
+					bounds.getX() + 6,
+					bounds.getY2() - 18
+				)
+			);
+		}
 
 		// FPV
-		renderAircraftAndFPVOverlay(
+		renderAircraftSymbolAndFPVOverlay(
 			renderer,
 			center,
 			unfoldedFOVWidth,
 			unfoldedFOVHeight,
 			horizonVecCenter
 		);
-
-		// Aircraft symbol
-		renderAircraftAndFPVOverla1(renderer, center);
 	}
 
 	void PFD::renderAltitude(Renderer* renderer, const Bounds& bounds) {
@@ -1119,13 +1119,13 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		auto bg = &Theme::bg2;
-		auto fg = &Theme::blue;
+		auto fg = &Theme::yellow;
 
 		std::wstring text;
 
 		switch (rc.getSettings().controls.altimeterMode) {
 			case AltimeterMode::QNH:
-				text = std::to_wstring((uint16_t) rc.getAltimeterPressure());
+				text = std::to_wstring((uint32_t) convertPressure(rc.getSettings().controls.referencePressurePa, PressureUnit::pascal, PressureUnit::hectopascal));
 				break;
 
 			case AltimeterMode::QNE:
@@ -1142,14 +1142,14 @@ namespace pizda {
 	void PFD::renderGroundSpeed(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 
-		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::purple, std::to_wstring((uint16_t) rc.getGroundSpeedInterpolator().getValue()), 0);
+		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::purple, std::to_wstring((uint16_t) rc.getGroundSpeed()), 0);
 	}
 
 	void PFD::renderWind(Renderer* renderer, const Point& bottomLeft) const {
 		auto& rc = RC::getInstance();
 
 		const uint8_t textOffset = 4;
-		const auto text = std::to_wstring((uint16_t) rc.getWindSpeedInterpolator().getValue());
+		const auto text = std::to_wstring((uint16_t) rc.getWindSpeed());
 		const uint8_t arrowSize = 16;
 
 		const auto arrowVec = Vector2F(0, arrowSize).rotate(rc.getWindDirectionInterpolator().getValue() + (float) M_PI - rc.getYawInterpolator().getValue());
