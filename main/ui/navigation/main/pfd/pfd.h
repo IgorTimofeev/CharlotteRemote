@@ -116,6 +116,17 @@ namespace pizda {
 			constexpr static const uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorHeight = 2;
 			constexpr static const uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorMaxValuePixels = 45;
 
+			// Aircraft symbol
+			constexpr static const uint8_t aircraftSymbolWidth = 30;
+			constexpr static const uint8_t aircraftSymbolThickness = 2;
+			constexpr static const uint8_t aircraftSymbolCenterOffset = 20;
+
+			// Flight path vector
+			constexpr static const uint8_t flightPathVectorRadius = 4;
+			constexpr static const uint8_t flightPathVectorLineLength = 6;
+			constexpr static const uint8_t flightPathVectorLineThickness = 2;
+			constexpr static const uint8_t flightPathVectorVisibilityGroundSpeed = 10;
+
 			float _horizontalFOV = toRadians(120);
 			float _verticalFOV = toRadians(80);
 
@@ -145,8 +156,6 @@ namespace pizda {
 
 			static void renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, uint16_t autopilotValue, bool left) ;
 
-			static void renderAircraftSymbol(Renderer* renderer, const Point& center);
-
 			static void renderPitchOverlay(
 				Renderer* renderer,
 				const Bounds& bounds,
@@ -166,7 +175,7 @@ namespace pizda {
 
 			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, float yaw);
 
-			void renderFlightPathVector(
+			void renderAircraftAndFPVOverlay(
 				Renderer* renderer,
 				const Point& center,
 				uint16_t unfoldedFOVWidth,
@@ -176,6 +185,6 @@ namespace pizda {
 
 			void renderGroundSpeed(Renderer* renderer, const Bounds& bounds);
 
-			void renderWind(Renderer* renderer, const Point& bottomLeft);
+			void renderWind(Renderer* renderer, const Point& bottomLeft) const;
 	};
 }

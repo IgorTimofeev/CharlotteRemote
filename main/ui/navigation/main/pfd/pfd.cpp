@@ -396,34 +396,6 @@ namespace pizda {
 		);
 	}
 
-	void PFD::renderAircraftSymbol(Renderer* renderer, const Point& center) {
-		const uint8_t aircraftSymbolWidth = 30;
-		const uint8_t aircraftSymbolThickness = 2;
-		const uint8_t aircraftSymbolCenterOffset = 20;
-
-		// Left
-		renderer->renderFilledRectangle(
-			Bounds(
-				center.getX() - aircraftSymbolCenterOffset - aircraftSymbolThickness - aircraftSymbolWidth,
-				center.getY() - aircraftSymbolThickness / 2,
-				aircraftSymbolWidth,
-				aircraftSymbolThickness
-			),
-			&Theme::bg1
-		);
-
-		// Right
-		renderer->renderFilledRectangle(
-			Bounds(
-				center.getX() + aircraftSymbolCenterOffset + aircraftSymbolThickness,
-				center.getY() - aircraftSymbolThickness / 2,
-				aircraftSymbolWidth,
-				aircraftSymbolThickness
-			),
-			&Theme::bg1
-		);
-	}
-
 	void PFD::renderSyntheticVisionBackground(
 		Renderer* renderer,
 		const Bounds& bounds,
@@ -717,7 +689,7 @@ namespace pizda {
 		renderer->popViewport(viewport);
 	}
 
-	void PFD::renderFlightPathVector(
+	void PFD::renderAircraftAndFPVOverlay(
 		Renderer* renderer,
 		const Point& center,
 		uint16_t unfoldedFOVWidth,
@@ -726,57 +698,80 @@ namespace pizda {
 	) const {
 		auto& rc = RC::getInstance();
 
-		auto pos = Point(
-			(int32_t) (horizonVecCenter.getX() + (float) unfoldedFOVWidth * (rc.getFlightPathVectorYawInterpolator().getValue()) / (float) M_PI),
-			(int32_t) (horizonVecCenter.getY() - (float) unfoldedFOVHeight * (rc.getFlightPathVectorPitchInterpolator().getValue()) / (float) M_PI)
-		);
+		// Aircraft symbol
 
-//		static uint32_t time = 0;
-//
-//		if (esp_timer_get_time() > time) {
-//			ESP_LOGI("FPV", "Pitch: %f, delta: %f", toDegrees(rc.getFlightPathVectorPitchInterpolator().getValue()), toDegrees(rc.getFlightPathVectorPitchInterpolator().getValue() - pitch));
-//
-//			time = esp_timer_get_time() + 1'000'000;
-//		}
-
-		const uint8_t radius = 4;
-		const uint8_t lineLength = 6;
-		const uint8_t lineThickness = 2;
-
-		// Circle
-		renderer->renderCircle(
-			pos,
-			radius,
-			&Theme::bg1
-		);
-
-		renderer->renderCircle(
-			pos,
-			radius - 1,
-			&Theme::bg1
-		);
-
-		// Left line
+		// Left
 		renderer->renderFilledRectangle(
 			Bounds(
-				pos.getX() - radius - lineLength,
-				pos.getY() - lineThickness / 2,
-				lineLength,
-				lineThickness
+				center.getX() - aircraftSymbolCenterOffset - aircraftSymbolThickness - aircraftSymbolWidth,
+				center.getY() - aircraftSymbolThickness / 2,
+				aircraftSymbolWidth,
+				aircraftSymbolThickness
 			),
 			&Theme::bg1
 		);
 
-		// Right line
+		// Right
 		renderer->renderFilledRectangle(
 			Bounds(
-				pos.getX() + radius,
-				pos.getY() - lineThickness / 2,
-				lineLength,
-				lineThickness
+				center.getX() + aircraftSymbolCenterOffset + aircraftSymbolThickness,
+				center.getY() - aircraftSymbolThickness / 2,
+				aircraftSymbolWidth,
+				aircraftSymbolThickness
 			),
 			&Theme::bg1
 		);
+
+		// Flight path vector
+		if (rc.getGroundSpeedInterpolator().getValue() > flightPathVectorVisibilityGroundSpeed) {
+			auto FPVPosition = Point(
+				(int32_t) (horizonVecCenter.getX() + (float) unfoldedFOVWidth * (rc.getFlightPathVectorYawInterpolator().getValue()) / (float) M_PI),
+				(int32_t) (horizonVecCenter.getY() - (float) unfoldedFOVHeight * (rc.getFlightPathVectorPitchInterpolator().getValue()) / (float) M_PI)
+			);
+
+			// Circle
+			for (uint8_t i = 0; i < flightPathVectorLineThickness; i++) {
+				renderer->renderCircle(
+					FPVPosition,
+					flightPathVectorRadius - i,
+					&Theme::bg1
+				);
+			}
+
+			// Left line
+			renderer->renderFilledRectangle(
+				Bounds(
+					FPVPosition.getX() - flightPathVectorRadius - flightPathVectorLineLength,
+					FPVPosition.getY() - flightPathVectorLineThickness / 2,
+					flightPathVectorLineLength,
+					flightPathVectorLineThickness
+				),
+				&Theme::bg1
+			);
+
+			// Right line
+			renderer->renderFilledRectangle(
+				Bounds(
+					FPVPosition.getX() + flightPathVectorRadius,
+					FPVPosition.getY() - flightPathVectorLineThickness / 2,
+					flightPathVectorLineLength,
+					flightPathVectorLineThickness
+				),
+				&Theme::bg1
+			);
+		}
+		// Dot
+		else {
+			renderer->renderFilledRectangle(
+				Bounds(
+					center.getX() + aircraftSymbolThickness / 2,
+					center.getY() - aircraftSymbolThickness / 2,
+					aircraftSymbolThickness,
+					aircraftSymbolThickness
+				),
+				&Theme::bg1
+			);
+		}
 	}
 
 	void PFD::renderSyntheticVision(Renderer* renderer, const Bounds& bounds) const {
@@ -857,8 +852,17 @@ namespace pizda {
 			yaw
 		);
 
+		// Wind
+		renderWind(
+			renderer,
+			Point(
+				bounds.getX() + 6,
+				bounds.getY2() - 18
+			)
+		);
+
 		// FPV
-		renderFlightPathVector(
+		renderAircraftAndFPVOverlay(
 			renderer,
 			center,
 			unfoldedFOVWidth,
@@ -867,7 +871,7 @@ namespace pizda {
 		);
 
 		// Aircraft symbol
-		renderAircraftSymbol(renderer, center);
+		renderAircraftAndFPVOverla1(renderer, center);
 	}
 
 	void PFD::renderAltitude(Renderer* renderer, const Bounds& bounds) {
@@ -1141,12 +1145,12 @@ namespace pizda {
 		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::purple, std::to_wstring((uint16_t) rc.getGroundSpeedInterpolator().getValue()), 0);
 	}
 
-	void PFD::renderWind(Renderer* renderer, const Point& bottomLeft) {
+	void PFD::renderWind(Renderer* renderer, const Point& bottomLeft) const {
 		auto& rc = RC::getInstance();
 
 		const uint8_t textOffset = 4;
 		const auto text = std::to_wstring((uint16_t) rc.getWindSpeedInterpolator().getValue());
-		const uint8_t arrowSize = 18;
+		const uint8_t arrowSize = 16;
 
 		const auto arrowVec = Vector2F(0, arrowSize).rotate(rc.getWindDirectionInterpolator().getValue() + (float) M_PI - rc.getYawInterpolator().getValue());
 		const auto arrowVecNorm = arrowVec.normalize();
@@ -1165,8 +1169,8 @@ namespace pizda {
 			&Theme::ground2
 		);
 
-		const uint8_t triangleWidth = 3;
-		const uint8_t triangleHeight = 4;
+		const uint8_t triangleWidth = 2;
+		const uint8_t triangleHeight = 3;
 
 		renderer->renderFilledTriangle(
 			(Point) arrowToVec,
@@ -1207,14 +1211,6 @@ namespace pizda {
 			speedWidth,
 			miniHeight
 		));
-
-		renderWind(
-			renderer,
-			Point(
-				bounds.getX() + speedWidth + 6,
-				bounds.getY2() - 20
-			)
-		);
 
 		renderAutopilotSpeed(renderer, Bounds(
 			bounds.getX(),
