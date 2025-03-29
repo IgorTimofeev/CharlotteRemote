@@ -23,9 +23,10 @@ namespace pizda {
 			uint16_t rudderTrim = 0xFFFF / 2;
 
 			uint32_t referencePressurePa = 101325;
-			AltimeterMode altimeterMode = AltimeterMode::QNH;
+			bool referencePressureSTD = false;
 
-			uint32_t minimumAltitude = 0;
+			uint32_t minimumAltitudeFt = 100;
+			bool minimumAltitudeEnabled = false;
 
 			bool landingGear = true;
 			bool strobeLights = false;
@@ -130,7 +131,7 @@ namespace pizda {
 
 		private:
 			constexpr static const uint32_t _writeDelay = 2500000;
-			constexpr static const uint8_t _version = 5;
+			constexpr static const uint8_t _version = 7;
 			uint32_t _timeToWrite = 0;
 	};
 

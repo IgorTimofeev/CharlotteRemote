@@ -17,10 +17,10 @@ namespace pizda {
 			Callback<Event*> gotEvent {};
 
 			void onRender(Renderer* renderer, const Bounds& bounds) override {
+				renderer->renderFilledRectangle(bounds, isSelected() ? &Theme::bg3 : &Theme::bg2);
+
 				if (isSelected())
 					renderer->renderHorizontalLine(bounds.getBottomLeft(), bounds.getWidth(), &Theme::fg1);
-
-				renderer->renderFilledRectangle(bounds, isSelected() ? &Theme::bg3 : &Theme::bg2);
 
 				renderer->renderString(
 					Point(

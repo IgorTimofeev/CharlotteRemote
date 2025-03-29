@@ -9,23 +9,32 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
+	template<uint8_t digitCount, uint32_t minimum, uint32_t maximum, uint16_t smallChange, uint16_t bigChange>
 	class RotaryControl : public Layout, public FocusableElement {
 		public:
-			RotaryControl(uint8_t digitCount, uint32_t minimum, uint32_t maximum, uint16_t smallChange, uint16_t bigChange) {
+			RotaryControl() {
+				setHeight(30);
 
+				// Background
+				backgroundRectangle.setCornerRadius(2);
+				backgroundRectangle.setFillColor(&Theme::bg2);
+				*this += &backgroundRectangle;
+
+				// Seven segment
+				seven.setVerticalAlignment(Alignment::center);
+				seven.setDigitCount(digitCount);
+				seven.setPrimaryColor(&Theme::bg4);
+				seven.setSecondaryColor(&Theme::fg1);
+				seven.setSegmentThickness(1);
+				seven.setSegmentLength(8);
+				seven.setDigitCount(digitCount);
 			}
 
-			Callback<bool, bool> rotated {};
+			Callback<> rotated {};
 
 			Rectangle backgroundRectangle {};
 			SevenSegment seven {};
 
-			uint32_t minimum;
-			uint32_t maximum;
-			uint32_t smallChange;
-			uint32_t bigChange;
-
-		protected:
 			void onFocusChanged() override {
 				Element::onFocusChanged();
 
@@ -44,27 +53,32 @@ namespace pizda {
 
 					auto rotateEvent = (EncoderRotateEvent*) event;
 					auto rps = rotateEvent->getRPS();
-					rotated(rps > 0, abs(rps) > 60);
+
+					seven.setValue(std::clamp(seven.getValue() + (std::abs(rps) > 60 ? bigChange : smallChange) * (rps >= 0 ? 1 : -1), minimum, maximum));
+
+					rotated();
 				}
 			}
 	};
 
-	class SingleRotaryControl : public RotaryControl {
+	template<uint8_t digitCount, uint32_t minimum, uint32_t maximum, uint16_t smallChange, uint16_t bigChange>
+	class SingleRotaryControl : public RotaryControl<digitCount, minimum, maximum, smallChange, bigChange> {
 		public:
-			SingleRotaryControl(uint8_t digitCount) : RotaryControl(digitCount) {
-				seven.setMargin(Margin(5));
-				*this += &seven;
+			SingleRotaryControl() {
+				this->seven.setMargin(Margin(5));
+				*this += &this->seven;
 			}
 
 			Button button {};
 	};
 
-	class LeftButtonRotaryControl : public RotaryControl {
+	template<uint8_t digitCount, uint32_t minimum, uint32_t maximum, uint16_t smallChange, uint16_t bigChange>
+	class LeftButtonRotaryControl : public RotaryControl<digitCount, minimum, maximum, smallChange, bigChange> {
 		public:
-			LeftButtonRotaryControl(const std::wstring_view& text, uint8_t digitCount) : RotaryControl(digitCount) {
+			LeftButtonRotaryControl(const std::wstring_view& text) {
 				// Button
 				button.setToggle(true);
-				button.setWidth(30);
+				button.setWidth(28);
 				button.setCornerRadius(2);
 
 				button.setDefaultBackgroundColor(&Theme::bg3);
@@ -79,9 +93,10 @@ namespace pizda {
 				row += &button;
 
 				// Seven
-				seven.setMargin(Margin(5));
-				row += &seven;
+				this->seven.setMargin(Margin(5));
+				row += &this->seven;
 
+				// Row
 				row.setOrientation(Orientation::horizontal);
 				*this += &row;
 			}
@@ -89,5 +104,8 @@ namespace pizda {
 			StackLayout row {};
 
 			Button button {};
+
+			template<typename TValue>
+			void addSettingsCallbacks(TValue* numericValue, bool* boolValue);
 	};
 }

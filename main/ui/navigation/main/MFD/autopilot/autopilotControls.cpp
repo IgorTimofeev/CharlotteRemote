@@ -11,30 +11,19 @@ namespace pizda {
 		row.setOrientation(Orientation::horizontal);
 		row.setSpacing(10);
 
-		speed.rotated += [this](bool positive, bool big) {
-			auto& settings = RC::getInstance().getSettings();
+		auto& settings = RC::getInstance().getSettings();
 
-			settings.autopilot.speed = addSaturating(settings.autopilot.speed, (big ? 10 : 1) * (positive ? 1 : -1));
-			settings.enqueueWrite();
-
-			speed.seven.setValue(settings.autopilot.speed);
-			invalidate();
-		};
-
-		speed.button.isCheckedChanged += [this]() {
-			auto& settings = RC::getInstance().getSettings();
-
-			settings.autopilot.autoThrottle = speed.button.isChecked();
-			settings.enqueueWrite();
-		};
-
-		row += &speedTitle;
-
+		// Speed
+		speed.addSettingsCallbacks(&settings.autopilot.speed, &settings.autopilot.autoThrottle);
 		row += &headingTitle;
 
-		row += &altitudeTitle;
+		// Heading
+		heading.addSettingsCallbacks(&settings.autopilot.heading, &settings.autopilot.headingHold);
+		row += &headingTitle;
 
-		row += &pressureTitle;
+		// Altitude
+		heading.addSettingsCallbacks(&settings.autopilot.altitude, &settings.autopilot.levelChange);
+		row += &altitudeTitle;
 
 		*this += &row;
 	}

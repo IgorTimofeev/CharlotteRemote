@@ -1,2 +1,2 @@
-buildElement/
-cmake-buildElement-debug/
+build/
+cmake-build-debug/

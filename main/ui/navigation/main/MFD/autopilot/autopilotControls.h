@@ -17,16 +17,16 @@ namespace pizda {
 
 			StackLayout row {};
 
-			LeftButtonRotaryControl speed = LeftButtonRotaryControl(L"A/T", 3);
-			Titler speedTitle = Titler(L"SPD", &speed);
+			LeftButtonRotaryControl<3, 0, 400, 1, 10> speed = { L"A/T" };
+			Titler speedTitle = Titler(L"Speed", &speed);
 
-			LeftButtonRotaryControl heading = LeftButtonRotaryControl(L"HLD", 3);
-			Titler headingTitle = Titler(L"HDG", &heading);
+			LeftButtonRotaryControl<3, 0, 360, 1, 10> heading = { L"HLD" };
+			Titler headingTitle = Titler(L"Heading", &heading);
 
-			LeftButtonRotaryControl altitude = LeftButtonRotaryControl(L"FLC", 4);
-			Titler altitudeTitle = Titler(L"ALT", &altitude);
+			LeftButtonRotaryControl<4, 0, 15000, 100, 1000> altitude = { L"FLC" };
+			Titler altitudeTitle = Titler(L"Altitude", &altitude);
 
-			LeftButtonRotaryControl pressure = LeftButtonRotaryControl(L"STD", 4);
-			Titler pressureTitle = Titler(L"BARO", &pressure);
+		private:
+
 	};
 }

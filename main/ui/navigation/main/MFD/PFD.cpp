@@ -1066,13 +1066,13 @@ namespace pizda {
 		);
 
 		// Minimums
-		rc.getSettings().controls.minimumAltitude = 500;
+		rc.getSettings().controls.minimumAltitudeFt = 500;
 
-		if (rc.getSettings().controls.minimumAltitude > 0) {
-			y = centerY - (int32_t) (((float) rc.getSettings().controls.minimumAltitude - altitude) * (float) altitudeStepPixels / (float) altitudeStepUnits);
+		if (rc.getSettings().controls.minimumAltitudeFt > 0) {
+			y = centerY - (int32_t) (((float) rc.getSettings().controls.minimumAltitudeFt - altitude) * (float) altitudeStepPixels / (float) altitudeStepUnits);
 
 			const auto& linePosition = Point(bounds.getX() - altitudeMinimumHorizontalOffset + altitudeMinimumTriangleWidth, y);
-			const int32_t delta = rc.getAltitudeInterpolator().getValue() - rc.getSettings().controls.minimumAltitude;
+			const int32_t delta = rc.getAltitudeInterpolator().getValue() - rc.getSettings().controls.minimumAltitudeFt;
 
 			const Color* color;
 
@@ -1257,17 +1257,13 @@ namespace pizda {
 
 		std::wstring text;
 
-		switch (rc.getSettings().controls.altimeterMode) {
-			case AltimeterMode::QNH:
-				text = std::to_wstring((uint32_t) convertPressure(rc.getSettings().controls.referencePressurePa, PressureUnit::pascal, PressureUnit::hectopascal));
-				break;
-
-			case AltimeterMode::QNE:
-				text = L"STD";
-				bg = &Theme::yellow;
-				fg = &Theme::bg1;
-
-				break;
+		if (rc.getSettings().controls.referencePressureSTD) {
+			text = L"STD";
+			bg = &Theme::yellow;
+			fg = &Theme::bg1;
+		}
+		else {
+			text = std::to_wstring((uint32_t) convertPressure(rc.getSettings().controls.referencePressurePa, PressureUnit::pascal, PressureUnit::hectopascal));
 		}
 
 		renderMiniPanel(renderer, bounds, bg, fg, text, 0);
