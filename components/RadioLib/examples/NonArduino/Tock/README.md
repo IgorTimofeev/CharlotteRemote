@@ -14,7 +14,7 @@ but will work on any LoRa compatible Tock board (currently only the
 expLoRaBLE board).
 
 libtock-c by default is bulit for RISC-V and ARM. RadioLib is also built
-for both architectures by default. You can skip the RISC-V RadioLib build
+for both architectures by default. You can skip the RISC-V RadioLib buildElement
 by setting the `SKIP_RISCV` varaible.
 
 The RadioLib example can be built with:
@@ -24,11 +24,11 @@ $ git clone https://github.com/jgromes/RadioLib.git
 $ cd RadioLib/examples/NonArduino/Tock/
 $ git clone https://github.com/tock/libtock-c.git
 $ cd libtock-c; git checkout c0202f9ab78da4a6e95f136cf5250701e3778f63; cd ../
-$ LIBTOCK_C_DIRECTORY="$(pwd)/libtock-c" ./build.sh
+$ LIBTOCK_C_DIRECTORY="$(pwd)/libtock-c" ./buildElement.sh
 ```
 
 Then in the Tock repo you can flash the kernel and app with:
 
 ```shell
-$ make flash; APP=RadioLib/examples/NonArduino/Tock/build-arm/tock-sx1261.tbf make flash-app
+$ make flash; APP=RadioLib/examples/NonArduino/Tock/buildElement-arm/tock-sx1261.tbf make flash-app
 ```

@@ -22,7 +22,7 @@ This sketch isn't particularly aimed at The Things Stack (TTS) but you can get a
 
 Why no screen shots? TTS is a web based app, one that you will need to become familiar with and we will need to direct you to some of the less obvious parts. So much better that you learn the layouts in concept than slavishly follow screen shots that can & will go stale.
 
-There will be some instructions that you have to take on face value. You didn't learn to run before you walked and it's so much more encouraging to get started and build on success than get bogged down in endless details. Once you are up & running more of the details start to slot in to place.
+There will be some instructions that you have to take on face value. You didn't learn to run before you walked and it's so much more encouraging to get started and buildElement on success than get bogged down in endless details. Once you are up & running more of the details start to slot in to place.
 
 ### Register on TTN
 

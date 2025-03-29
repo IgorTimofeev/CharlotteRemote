@@ -189,10 +189,10 @@ namespace pizda {
 		_invertButton.setFont(&Theme::fontSmall);
 		_invertButton.setText(L"INV");
 
-		_invertButton.setPressed(_axis->getSettings()->inverted);
+		_invertButton.setChecked(_axis->getSettings()->inverted);
 
-		_invertButton.pressedChanged += [this]() {
-			_axis->getSettings()->inverted = _invertButton.isPressed();
+		_invertButton.isCheckedChanged += [this]() {
+			_axis->getSettings()->inverted = _invertButton.isChecked();
 
 			RC::getInstance().getSettings().enqueueWrite();
 		};

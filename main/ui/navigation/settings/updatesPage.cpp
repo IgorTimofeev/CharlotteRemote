@@ -22,8 +22,8 @@ namespace pizda {
 		Theme::apply(&_button);
 		_button.setText(L"Begin");
 
-		_button.pressedChanged += [this]() {
-			if (_button.isPressed())
+		_button.isCheckedChanged += [this]() {
+			if (_button.isChecked())
 				return;
 
 			auto& rc = RC::getInstance();

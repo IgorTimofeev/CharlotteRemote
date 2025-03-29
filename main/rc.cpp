@@ -63,7 +63,7 @@ namespace pizda {
 		// Page layout
 		_application += &_pageLayout;
 
-		setRoute(&Routes::PFD);
+		setRoute(&Routes::MFD);
 
 		// -------------------------------- Take off --------------------------------
 
@@ -423,6 +423,6 @@ namespace pizda {
 		}
 
 		// Adding new page
-		_pageLayout += _route->newPage();
+		_pageLayout += _route->buildElement();
 	}
 }

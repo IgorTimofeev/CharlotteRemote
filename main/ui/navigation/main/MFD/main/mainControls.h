@@ -9,16 +9,15 @@
 #include "batteryIndicator.h"
 #include "../../../../../resources/images/PFDLandingGearExtendedImage.h"
 #include "../../../../../resources/images/PFDLandingGearRetractedImage.h"
-#include "../../../menuButton.h"
 #include "../../../../titler.h"
 
 namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class InstrumentsLayout : public Layout {
+	class MainControls : public Layout {
 		public:
-			InstrumentsLayout();
+			MainControls();
 
 			constexpr static const uint8_t panelSize = 48;
 			constexpr static const uint8_t titleVerticalOffset = 1;
@@ -34,8 +33,6 @@ namespace pizda {
 			StackLayout _row;
 
 			Rectangle _titlesRect;
-
-			MenuButton _menuButton;
 
 			ThrottleIndicator _throttle1Indicator;
 			ThrottleIndicator _throttle2Indicator;

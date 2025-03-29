@@ -1,7 +1,8 @@
 #pragma once
 
-#include "src/main.h"
-#include "src/ui.h"
+#include "../../../../../components/yoba/src/main.h"
+#include "../../../../../components/yoba/src/ui.h"
+
 #include "../../../theme.h"
 #include "../../../../units.h"
 
@@ -14,6 +15,9 @@ namespace pizda {
 			PFD();
 
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
+
+		protected:
+			void onTick() override;
 
 		private:
 			constexpr static const uint16_t lineSizeBig = 4;

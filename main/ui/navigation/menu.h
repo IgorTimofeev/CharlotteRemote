@@ -5,7 +5,7 @@
 #include "../theme.h"
 
 #include "menuItem.h"
-#include "routing.h"
+#include "routes.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -37,9 +37,8 @@ namespace pizda {
 				_developerTitleItem = TitleMenuItem(L"Developer");
 
 			PageMenuItem
-				_mainPFDItem = PageMenuItem(L"PFD", &Routes::PFD),
+				_mainPFDItem = PageMenuItem(L"PFD", &Routes::MFD),
 				_mainNDItem = PageMenuItem(L"NAV", &Routes::ND),
-				_mainAPItem = PageMenuItem(L"Autopilot", &Routes::autopilot),
 
 				_settingsAxisItem = PageMenuItem(L"Axis calibration", &Routes::settingsAxis),
 				_settingsWiFiItem = PageMenuItem(L"Wi-Fi", &Routes::settingsWiFi),

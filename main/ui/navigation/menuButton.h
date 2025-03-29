@@ -12,6 +12,6 @@ namespace pizda {
 			MenuButton();
 
 		protected:
-			void onPressedChanged() override;
+			void onIsCheckedChanged() override;
 	};
 }

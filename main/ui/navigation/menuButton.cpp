@@ -20,10 +20,10 @@ namespace pizda {
 		setText(L"<");
 	}
 
-	void MenuButton::onPressedChanged() {
-		Button::onPressedChanged();
+	void MenuButton::onIsCheckedChanged() {
+		Button::onIsCheckedChanged();
 
-		if (!isPressed())
+		if (!isChecked())
 			return;
 
 		RC::getInstance().setMenuVisibility(true);

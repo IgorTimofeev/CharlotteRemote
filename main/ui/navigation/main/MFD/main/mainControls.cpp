@@ -1,11 +1,11 @@
-#include "instrumentsLayout.h"
+#include "mainControls.h"
 #include "../../../../../rc.h"
 
 namespace pizda {
-	const PFDLandingGearRetractedImage InstrumentsLayout::_landingGearRetractedImage = {};
-	const PFDLandingGearExtendedImage InstrumentsLayout::_landingGearExtendedImage = {};
+	const PFDLandingGearRetractedImage MainControls::_landingGearRetractedImage = {};
+	const PFDLandingGearExtendedImage MainControls::_landingGearExtendedImage = {};
 
-	InstrumentsLayout::InstrumentsLayout() {
+	MainControls::MainControls() {
 		const uint16_t titleHeight = Theme::fontSmall.getHeight() + titleVerticalOffset * 2;
 		const uint16_t contentHeight = panelSize - titleHeight - contentVerticalOffset * 2;
 
@@ -20,11 +20,6 @@ namespace pizda {
 		_row.setSpacing(15);
 		_row.setHorizontalAlignment(Alignment::center);
 		_row.setMargin(Margin(8, titleVerticalOffset, 8, 0));
-
-		// Menu button
-		_menuButton.setVerticalAlignment(Alignment::center);
-		_menuButton.setMargin(Margin(0, 5, 0, 0));
-		_row += &_menuButton;
 
 		// Throttle
 		_throttleRow.setOrientation(Orientation::horizontal);
@@ -69,7 +64,7 @@ namespace pizda {
 		*this += &_row;
 	}
 
-	void InstrumentsLayout::onTick() {
+	void MainControls::onTick() {
 		Layout::onTick();
 
 		auto& rc = RC::getInstance();
@@ -97,7 +92,7 @@ namespace pizda {
 		_batteryIndicatorAircraft.setCharge(0xFF);
 	}
 
-	void InstrumentsLayout::onEvent(Event* event) {
+	void MainControls::onEvent(Event* event) {
 		Layout::onEvent(event);
 
 		if (event->getTypeID() == EncoderRotateEvent::typeID) {
@@ -128,7 +123,7 @@ namespace pizda {
 		}
 	}
 
-	void InstrumentsLayout::setTitlerStyle(Titler& titler) {
+	void MainControls::setTitlerStyle(Titler& titler) {
 		titler.setSpacing(titleSpacing);
 		titler.getTitle().setFont(&Theme::fontSmall);
 	}
