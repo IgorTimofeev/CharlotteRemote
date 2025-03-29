@@ -20,7 +20,10 @@ namespace pizda {
 		public:
 			InstrumentsLayout();
 
-			constexpr static const uint8_t panelSize = 52;
+			constexpr static const uint8_t panelSize = 48;
+			constexpr static const uint8_t titleVerticalOffset = 1;
+			constexpr static const uint8_t contentVerticalOffset = 4;
+			constexpr static const uint16_t titleSpacing = titleVerticalOffset + contentVerticalOffset;
 
 		protected:
 			void onTick() override;
@@ -55,5 +58,7 @@ namespace pizda {
 			BatteryIndicator _batteryIndicatorAircraft;
 			StackLayout _batteryIndicatorRows;
 			Titler _batteryIndicatorTitle = Titler(L"BAT", &_batteryIndicatorRows);
+
+			void setTitlerStyle(Titler& titler);
 	};
 }

@@ -11,9 +11,8 @@ namespace pizda {
 		public:
 			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				const uint8_t lineOffset = 2;
-				const uint8_t textOffset = 2;
-				const auto textHeight = Theme::fontNormal.getHeight();
-				const uint16_t frameHeight = bounds.getHeight() - textHeight - textOffset;
+				const uint8_t textOffset = 3;
+				const uint16_t frameHeight = bounds.getHeight() - Theme::fontSmall.getHeight() - textOffset;
 
 				// Frame
 				renderer->renderRectangle(

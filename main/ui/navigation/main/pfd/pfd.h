@@ -3,6 +3,7 @@
 #include "src/main.h"
 #include "src/ui.h"
 #include "../../../theme.h"
+#include "../../../../units.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -46,11 +47,27 @@ namespace pizda {
 			constexpr static const uint16_t speedStructuralMin = speedTurbulentMax;
 			constexpr static const uint16_t speedStructuralMax = speedStructuralMin * 4;
 
+			// V-speeds
+			constexpr static const uint8_t VSpeedMargin = 4;
+			constexpr static const uint8_t VSpeedTextOffset = 2;
+			constexpr static const uint8_t VSpeedTriangleWidth = 4;
+
+			constexpr static const VSpeed VSpeeds[] = {
+				VSpeed(L"Y", 74),
+				VSpeed(L"G", 68),
+				VSpeed(L"R", 55)
+			};
+
 			// Altitude
 			constexpr static const uint8_t altitudeWidth = 30;
 			constexpr static const uint8_t altitudeStepUnits = 20;
 			constexpr static const uint8_t altitudeStepUnitsBig = 100;
-			constexpr static const uint8_t altitudeUnitPixels = 8;
+			constexpr static const uint8_t altitudeStepPixels = 8;
+
+			constexpr static const uint8_t altitudeMinimumHorizontalOffset = 5;
+			constexpr static const uint8_t altitudeMinimumTriangleWidth = 3;
+			constexpr static const uint8_t altitudeMinimumTriangleHeight = 3;
+			constexpr static const uint8_t altitudeMinimumSafeUnitDelta = 50;
 
 			// Vertical speed
 			constexpr static const uint8_t verticalSpeedWidth = 13;
@@ -135,11 +152,11 @@ namespace pizda {
 
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
 
-			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, uint16_t autopilotValue, bool left) ;
+			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left) ;
 
 			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, float value, bool left) ;
 
-			static void renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value);
+			static void renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value);
 
 			static void renderSpeed(Renderer* renderer, const Bounds& bounds) ;
 

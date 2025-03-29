@@ -172,7 +172,7 @@ namespace pizda {
 		);
 	}
 
-	void PFD::renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t unitPixels, float currentValue, uint16_t autopilotValue, bool left) {
+	void PFD::renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left) {
 		if (autopilotValue == 0)
 			return;
 
@@ -180,14 +180,14 @@ namespace pizda {
 			renderer,
 			Point(
 				left ? bounds.getX2() + 1 - autopilotIndicatorWidth : bounds.getX(),
-				centerY + (int32_t) ((currentValue - (float) autopilotValue) * (float) unitPixels / (float) unitStep) - autopilotIndicatorHeightHalf
+				centerY + (int32_t) ((currentValue - (float) autopilotValue) * (float) stepPixels / (float) unitStep) - autopilotIndicatorHeightHalf
 			),
 			left
 		);
 	}
 
-	void PFD::renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t unitPixels, float value) {
-		const auto length = (int32_t) ((float) unitPixels * value / (float) unitStep);
+	void PFD::renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value) {
+		const auto length = (int32_t) ((float) stepPixels * value / (float) unitStep);
 
 		if (abs(length) < 10)
 			return;
@@ -228,7 +228,7 @@ namespace pizda {
 
 		renderer->renderFilledRectangle(bounds, &Theme::bg1);
 
-		float speed = rc.getAirSpeedInterpolator().getValue();
+		const float speed = rc.getAirSpeedInterpolator().getValue();
 
 		// Bars
 		const auto barX = bounds.getX2() + 1 - speedBarSize;
@@ -374,6 +374,39 @@ namespace pizda {
 			speedStepPixels,
 			rc.getAirspeedTrendInterpolator().getValue()
 		);
+
+		// V-speeds
+		for (const auto& VSpeed : VSpeeds) {
+			const auto& VSpeedBounds = Bounds(
+				bounds.getX2() + VSpeedMargin + VSpeedTriangleWidth,
+				centerY - (int32_t) (((float) VSpeed.getValue() - speed) * (float) speedStepPixels / (float) speedStepUnits),
+				Theme::fontSmall.getWidth(VSpeed.getName()) + VSpeedTextOffset * 2,
+				Theme::fontSmall.getHeight() + VSpeedTextOffset * 2
+			);
+
+			// Rect
+			renderer->renderFilledRectangle(
+				VSpeedBounds,
+				1,
+				&Theme::bg2
+			);
+
+			// Triangle
+			renderer->renderFilledTriangle(
+				VSpeedBounds.getTopLeft(),
+				VSpeedBounds.getBottomLeft(),
+				Point(VSpeedBounds.getX() - VSpeedTriangleWidth, VSpeedBounds.getYCenter()),
+				&Theme::bg2
+			);
+
+			// Text
+			renderer->renderString(
+				Point(VSpeedBounds.getX() + VSpeedTextOffset, VSpeedBounds.getY() + VSpeedTextOffset),
+				&Theme::fontSmall,
+				&Theme::green,
+				VSpeed.getName()
+			);
+		}
 
 		// Autopilot
 		renderAutopilotValueIndicator(
@@ -882,14 +915,14 @@ namespace pizda {
 
 		renderer->renderFilledRectangle(bounds, &Theme::bg1);
 
-		float altitude = rc.getAltitudeInterpolator().getValue();
+		const float altitude = rc.getAltitudeInterpolator().getValue();
 		float snapped = altitude / (float) altitudeStepUnits;
 		float snappedInteger = std::floorf(snapped);
 		float snappedFractional = snapped - snappedInteger;
 
-		int32_t y = centerY - (uint16_t) ((1.0f - snappedFractional) * (float) altitudeUnitPixels);
-		auto yFullLines = (int32_t) std::ceilf((float) y / (float) altitudeUnitPixels);
-		y = y - yFullLines * altitudeUnitPixels;
+		int32_t y = centerY - (uint16_t) ((1.0f - snappedFractional) * (float) altitudeStepPixels);
+		auto yFullLines = (int32_t) std::ceilf((float) y / (float) altitudeStepPixels);
+		y = y - yFullLines * altitudeStepPixels;
 
 		int32_t lineValue = (int32_t) (snappedInteger + 1) * altitudeStepUnits + yFullLines * altitudeStepUnits;
 
@@ -924,7 +957,7 @@ namespace pizda {
 			}
 
 			lineValue -= altitudeStepUnits;
-			y += altitudeUnitPixels;
+			y += altitudeStepPixels;
 		} while (y < bounds.getY2() && lineValue >= 0);
 
 		// Ground
@@ -964,9 +997,46 @@ namespace pizda {
 			bounds.getX() + lineSizeBig,
 			centerY,
 			altitudeStepUnits,
-			altitudeUnitPixels,
+			altitudeStepPixels,
 			rc.getAltitudeTrendInterpolator().getValue()
 		);
+
+		// Minimums
+		rc.getSettings().controls.minimumAltitude = 500;
+
+		if (rc.getSettings().controls.minimumAltitude > 0) {
+			y = centerY - (int32_t) (((float) rc.getSettings().controls.minimumAltitude - altitude) * (float) altitudeStepPixels / (float) altitudeStepUnits);
+
+			const auto& linePosition = Point(bounds.getX() - altitudeMinimumHorizontalOffset + altitudeMinimumTriangleWidth, y);
+			const int32_t delta = rc.getAltitudeInterpolator().getValue() - rc.getSettings().controls.minimumAltitude;
+
+			const Color* color;
+
+			if (std::abs(delta) <= altitudeMinimumSafeUnitDelta) {
+				color = &Theme::fg1;
+			}
+			else if (delta > 0) {
+				color = &Theme::green;
+			}
+			else{
+				color = &Theme::yellow;
+			}
+
+			// Line
+			renderer->renderHorizontalLine(
+				linePosition,
+				bounds.getWidth() + altitudeMinimumHorizontalOffset - altitudeMinimumTriangleWidth,
+				color
+			);
+
+			// Triangle
+			renderer->renderFilledTriangle(
+				linePosition,
+				Point(linePosition.getX() - altitudeMinimumTriangleWidth, linePosition.getY() - altitudeMinimumTriangleHeight),
+				Point(linePosition.getX() - altitudeMinimumTriangleWidth, linePosition.getY() + altitudeMinimumTriangleHeight),
+				color
+			);
+		}
 
 		// Autopilot
 		renderAutopilotValueIndicator(
@@ -974,7 +1044,7 @@ namespace pizda {
 			bounds,
 			centerY,
 			altitudeStepUnits,
-			altitudeUnitPixels,
+			altitudeStepPixels,
 			rc.getAltitudeInterpolator().getValue(),
 			rc.getSettings().autopilot.altitude,
 			false

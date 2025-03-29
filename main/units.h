@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string_view>
+
 namespace pizda {
 	enum class AltimeterMode : uint8_t {
 		QNH,
@@ -20,6 +22,25 @@ namespace pizda {
 		pascal,
 		hectopascal,
 		inHg
+	};
+
+	class VSpeed {
+		public:
+			constexpr VSpeed(const std::wstring_view& name, const uint32_t value) : _name(name), _value(value) {
+
+			}
+
+			const std::wstring_view& getName() const {
+				return _name;
+			}
+
+			uint32_t getValue() const {
+				return _value;
+			}
+
+		private:
+			const std::wstring_view _name;
+			const uint32_t _value;
 	};
 
 	constexpr float convertSpeed(float value, SpeedUnit fromUnit, SpeedUnit toUnit) {
