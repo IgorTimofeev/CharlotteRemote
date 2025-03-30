@@ -6,7 +6,7 @@ namespace pizda {
 	using namespace yoba::ui;
 
 	AutopilotControls::AutopilotControls() {
-		setHeight(48);
+		setHeight(56);
 
 		auto& settings = RC::getInstance().getSettings();
 

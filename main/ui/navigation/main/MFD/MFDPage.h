@@ -48,6 +48,6 @@ namespace pizda {
 
 			Element* getSelectedControls();
 
-			void selectControls(const std::pair<MFDModeButton*, Route*>& pair);
+			void selectControls(const std::pair<MFDModeButton*, Route*>* buttonAndRoute);
 	};
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <esp_log.h>
 #include "src/main.h"
 #include "src/ui.h"
 #include "../../../theme.h"
@@ -15,30 +16,33 @@ namespace pizda {
 	class RotaryControl : public Layout, public FocusableElement {
 		public:
 			RotaryControl(const std::wstring_view& text) {
-				// Background
-				backgroundRectangle.setFillColor(&Theme::bg2);
-				backgroundRectangle.setCornerRadius(2);
-				*this += &backgroundRectangle;
-
 				// Button
+				button.setVerticalAlignment(Alignment::end);
+				button.setHeight(12);
+				button.setCornerRadius(2);
+				button.setContentMargin(Margin(0, 3, 0, 0));
+
 				button.setToggle(true);
-				button.setWidth(24);
-				button.setCornerRadius(backgroundRectangle.getCornerRadius());
 
 				button.setDefaultBackgroundColor(&Theme::bg3);
 				button.setPressedBackgroundColor(&Theme::fg1);
 
-				button.setDefaultTextColor(&Theme::fg1);
-				button.setPressedTextColor(&Theme::bg2);
+				button.setDefaultTextColor(&Theme::fg5);
+				button.setPressedTextColor(&Theme::bg1);
 
-				button.setFont(&Theme::fontNormal);
+				button.setFont(&Theme::fontSmall);
 				button.setText(text);
 
 				button.isCheckedChanged += [this]() {
 					switched();
 				};
 
-				row += &button;
+				*this += &button;
+
+				// Background rect
+				backgroundRectangle.setFillColor(&Theme::bg2);
+				backgroundRectangle.setCornerRadius(button.getCornerRadius());
+				backgroundAndSevenLayout += &backgroundRectangle;
 
 				// Seven segment
 				seven.setVerticalAlignment(Alignment::center);
@@ -48,18 +52,18 @@ namespace pizda {
 				seven.setSegmentLength(5);
 				seven.setDigitCount(digitCount);
 				seven.setSecondaryColor(&Theme::fg1);
-				seven.setPrimaryColor(&Theme::bg4);
-				row += &seven;
+				seven.setPrimaryColor(&Theme::bg5);
+				backgroundAndSevenLayout += &seven;
 
-				// Row
-				row.setOrientation(Orientation::horizontal);
-				*this += &row;
+				backgroundAndSevenLayout.setMargin(Margin(0, 0, 0, button.getSize().getHeight() - button.getCornerRadius() * 2));
+				*this += &backgroundAndSevenLayout;
 
 				updateColors();
 			}
 
+			Layout backgroundAndSevenLayout {};
+
 			Rectangle backgroundRectangle {};
-			StackLayout row {};
 
 			SevenSegment seven {};
 			Button button {};
@@ -91,22 +95,22 @@ namespace pizda {
 
 					const auto rotateEvent = (EncoderRotateEvent*) event;
 					const auto rps = rotateEvent->getRPS();
-					const auto change = (std::abs(rps) > 60 ? bigChange : smallChange) * (rps >= 0 ? 1 : -1);
+					const int32_t change = (std::abs(rps) < 70 ? smallChange : bigChange) * (rps >= 0 ? 1 : -1);
+
+					int64_t newValue = (int64_t) seven.getValue() + change;
 
 					if (cycling) {
-						auto newValue = (int32_t) seven.getValue() + change;
-
-						if (newValue > maximum) {
-							newValue = minimum;
+						if (newValue > (int64_t) maximum) {
+							newValue = (int64_t) minimum;
 						}
-						else if (newValue < minimum) {
-							newValue = maximum;
+						else if (newValue < (int64_t) minimum) {
+							newValue = (int64_t) maximum;
 						}
 
 						seven.setValue(newValue);
 					}
 					else {
-						seven.setValue(std::clamp((int32_t) seven.getValue() + change, (int32_t) minimum, (int32_t) maximum));
+						seven.setValue(std::clamp(newValue, (int64_t) minimum, (int64_t) maximum));
 					}
 
 					rotated();
