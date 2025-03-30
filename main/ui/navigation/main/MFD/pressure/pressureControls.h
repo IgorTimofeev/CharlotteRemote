@@ -17,10 +17,10 @@ namespace pizda {
 
 			StackLayout row {};
 
-			LeftButtonRotaryControl<4, 500, 9999, 1, 10> pressure = { L"STD" };
+			RotaryControl<4, 800, 1090, false, 1, 10> pressure = { L"STD" };
 			Titler pressureTitle = Titler(L"Baro", &pressure);
 
-			LeftButtonRotaryControl<4, 0, 15000, 1, 10> minimums = { L"ON" };
+			RotaryControl<4, 0, 15000, false, 10, 100> minimums = { L"ON" };
 			Titler minimumsTitle = Titler(L"Minimums", &minimums);
 	};
 }

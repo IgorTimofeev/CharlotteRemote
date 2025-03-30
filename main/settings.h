@@ -52,13 +52,13 @@ namespace pizda {
 
 	class SettingsAutopilot {
 		public:
-			uint16_t speed = 0;
+			uint16_t speedKt = 0;
 			bool autoThrottle = false;
 
-			uint16_t heading = 0;
+			uint16_t headingDeg = 0;
 			bool headingHold = false;
 
-			uint16_t altitude = 0;
+			uint16_t altitudeFt = 0;
 			bool levelChange = false;
 	};
 

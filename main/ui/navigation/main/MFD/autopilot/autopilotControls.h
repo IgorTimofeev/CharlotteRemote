@@ -17,13 +17,13 @@ namespace pizda {
 
 			StackLayout row {};
 
-			LeftButtonRotaryControl<3, 0, 400, 1, 10> speed = { L"A/T" };
+			RotaryControl<3, 0, 400, false, 1, 10> speed = { L"A/T" };
 			Titler speedTitle = Titler(L"Speed", &speed);
 
-			LeftButtonRotaryControl<3, 0, 360, 1, 10> heading = { L"HLD" };
+			RotaryControl<3, 0, 360, true, 1, 10> heading = { L"HLD" };
 			Titler headingTitle = Titler(L"Heading", &heading);
 
-			LeftButtonRotaryControl<4, 0, 15000, 100, 1000> altitude = { L"FLC" };
+			RotaryControl<4, 0, 15000, false, 100, 1000> altitude = { L"FLC" };
 			Titler altitudeTitle = Titler(L"Altitude", &altitude);
 
 		private:

@@ -107,6 +107,9 @@ namespace pizda {
 
 		const auto oldViewport = renderer->pushViewport(rectangleBounds);
 
+		if (value < 0)
+			value = 0;
+
 		auto uintValue = (uint32_t) value;
 
 		// Assuming 4 is "widest" digit
@@ -480,7 +483,7 @@ namespace pizda {
 			speedStepUnits,
 			speedStepPixels,
 			speed,
-			rc.getSettings().autopilot.speed,
+			rc.getSettings().autopilot.speedKt,
 			true
 		);
 
@@ -1066,9 +1069,7 @@ namespace pizda {
 		);
 
 		// Minimums
-		rc.getSettings().controls.minimumAltitudeFt = 500;
-
-		if (rc.getSettings().controls.minimumAltitudeFt > 0) {
+		if (rc.getSettings().controls.minimumAltitudeEnabled) {
 			y = centerY - (int32_t) (((float) rc.getSettings().controls.minimumAltitudeFt - altitude) * (float) altitudeStepPixels / (float) altitudeStepUnits);
 
 			const auto& linePosition = Point(bounds.getX() - altitudeMinimumHorizontalOffset + altitudeMinimumTriangleWidth, y);
@@ -1110,7 +1111,7 @@ namespace pizda {
 			altitudeStepUnits,
 			altitudeStepPixels,
 			rc.getAltitudeInterpolator().getValue(),
-			rc.getSettings().autopilot.altitude,
+			rc.getSettings().autopilot.altitudeFt,
 			false
 		);
 
@@ -1209,17 +1210,17 @@ namespace pizda {
 		);
 	}
 
-	void PFD::renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, uint16_t autopilotValue, bool left) {
+	void PFD::renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, uint16_t autopilotValue, bool autopilotValueEnabled, bool left) {
 		renderMiniPanel(
 			renderer,
 			bounds,
 			bg,
 			fg,
-			autopilotValue > 0 ? std::to_wstring(autopilotValue) : L"----",
+			autopilotValueEnabled ? std::to_wstring(autopilotValue) : L"----",
 			(int8_t) (left ? -autopilotIndicatorTriangleWidth : autopilotIndicatorTriangleWidth)
 		);
 
-		if (autopilotValue > 0) {
+		if (autopilotValueEnabled) {
 			renderAutopilotValueIndicator(
 				renderer,
 				Point(
@@ -1237,7 +1238,7 @@ namespace pizda {
 		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
-		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getSettings().autopilot.speed, true);
+		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getSettings().autopilot.speedKt, rc.getSettings().autopilot.speedKt > 0, true);
 	}
 
 	void PFD::renderAutopilotAltitude(Renderer* renderer, const Bounds& bounds) {
@@ -1246,7 +1247,7 @@ namespace pizda {
 		auto bg = &Theme::bg2;
 		auto fg = &Theme::blue;
 
-		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getSettings().autopilot.altitude, false);
+		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getSettings().autopilot.altitudeFt, rc.getSettings().autopilot.altitudeFt > 0, false);
 	}
 
 	void PFD::renderPressure(Renderer* renderer, const Bounds& bounds) {

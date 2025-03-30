@@ -40,7 +40,7 @@ namespace pizda {
 
 		int16_t slipAndSkid;
 
-		float windDirectionRad;
+		uint16_t windDirectionDeg;
 		float windSpeedMs;
 	};
 
@@ -54,6 +54,17 @@ namespace pizda {
 
 		uint16_t flaps;
 		uint16_t spoilers;
+
+		uint32_t altimeterPressurePa;
+
+		uint16_t autopilotAirspeedMs;
+		bool autopilotAutoThrottle;
+
+		uint16_t autopilotHeadingDeg;
+		bool autopilotHeadingHold;
+
+		uint16_t autopilotAltitudeM;
+		bool autopilotLevelChange;
 
 		bool landingGear;
 		bool strobeLights;

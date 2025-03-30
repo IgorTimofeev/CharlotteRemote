@@ -344,7 +344,7 @@ namespace pizda {
 
 		_slipAndSkidInterpolator.setTargetValue((float) packet->slipAndSkid / ((float) 0xFFFF / 2.f));
 
-		_windDirectionInterpolator.setTargetValue(packet->windDirectionRad);
+		_windDirectionInterpolator.setTargetValue(toRadians(packet->windDirectionDeg));
 		_windSpeed = convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 
 		// Trends

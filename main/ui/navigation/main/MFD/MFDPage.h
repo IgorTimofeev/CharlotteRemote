@@ -10,7 +10,7 @@
 #include "main/mainControls.h"
 #include "ND/NDControls.h"
 #include "autopilot/autopilotControls.h"
-#include "radio/radioControls.h"
+#include "pressure/pressureControls.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -31,19 +31,19 @@ namespace pizda {
 				_mainButton = MFDModeButton(L"INS"),
 				_NDButton = MFDModeButton(L"N/D"),
 				_autopilotButton = MFDModeButton(L"A/P"),
-				_radioButton = MFDModeButton(L"COM"),
+				_pressureButton = MFDModeButton(L"BARO"),
 				_menuButton = MFDModeButton(L"...");
 
 			ElementRoute<MainControls> _mainRoute {};
 			ElementRoute<NDControls> _NDRoute {};
 			ElementRoute<AutopilotControls> _autopilotRoute {};
-			ElementRoute<RadioControls> _radioRoute {};
+			ElementRoute<PressureControls> _pressureRoute {};
 
 			std::pair<MFDModeButton*, Route*> _buttonsAndRoutes[4] = {
 				{ &_mainButton, &_mainRoute },
 				{ &_NDButton, &_NDRoute },
 				{ &_autopilotButton, &_autopilotRoute },
-				{ &_radioButton, &_radioRoute }
+				{ &_pressureButton, &_pressureRoute }
 			};
 
 			Element* getSelectedControls();

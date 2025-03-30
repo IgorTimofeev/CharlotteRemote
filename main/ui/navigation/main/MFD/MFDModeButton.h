@@ -24,10 +24,10 @@ namespace pizda {
 
 				renderer->renderString(
 					Point(
-						bounds.getXCenter() - Theme::fontSmall.getWidth(getText()) / 2,
-						bounds.getYCenter() - Theme::fontSmall.getHeight() / 2
+						bounds.getXCenter() - Theme::fontNormal.getWidth(getText()) / 2,
+						bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
 					),
-					&Theme::fontSmall,
+					&Theme::fontNormal,
 					isSelected() ? &Theme::fg1 : &Theme::fg6,
 					getText()
 				);

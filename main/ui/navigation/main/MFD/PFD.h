@@ -178,7 +178,7 @@ namespace pizda {
 
 			static void renderAutopilotAltitude(Renderer* renderer, const Bounds& bounds) ;
 
-			static void renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, uint16_t autopilotValue, bool left) ;
+			static void renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, uint16_t autopilotValue, bool autopilotValueEnabled, bool left);
 
 			static void renderPitchOverlay(
 				Renderer* renderer,
