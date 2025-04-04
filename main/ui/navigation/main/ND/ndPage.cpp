@@ -5,27 +5,29 @@ namespace pizda {
 	NDPage::NDPage() {
 		*this += &_nd;
 
-		// Projection
-		Theme::apply(&_projectionSlider);
+		// FOV
+		Theme::apply(&_FOVSlider);
 
-		_projectionSlider.valueChanged += [this]() {
-			_nd.getCamera().setProjectionPlaneDistance(0.1f + _projectionSlider.getValue() * 1000 / 0xFFFF);
+		_FOVSlider.valueChanged += [this]() {
+			auto fov = (float) _FOVSlider.getValue() / (float) 0xFFFF * toRadians(180.f);
 
-			ESP_LOGI("ND", "Proj: %d", _projectionSlider.getValue() / 0xFFFF);
+			ESP_LOGI("ND", "FOV deg: %f", toDegrees(fov));
+
+			_nd.getCamera().setFOV(fov);
 		};
 
-		_slidersLayout += &_projectionSlider;
+		_slidersLayout += &_FOVSlider;
 
 		// CLip
-		Theme::apply(&_clipSlider);
+		Theme::apply(&_nearSlider);
 
-		_clipSlider.valueChanged += [this]() {
-			_nd.getCamera().setNearPlaneDistance(0.1f + _clipSlider.getValue() * 100 / 0xFFFF);
+		_nearSlider.valueChanged += [this]() {
+			_nd.getCamera().setNearPlaneDistance(0.1f + _nearSlider.getValue() * 100 / 0xFFFF);
 
-			ESP_LOGI("ND", "Near: %d", _clipSlider.getValue() / 0xFFFF);
+			ESP_LOGI("ND", "Clip: %d", _nearSlider.getValue() / 0xFFFF);
 		};
 
-		_slidersLayout += &_clipSlider;
+		_slidersLayout += &_nearSlider;
 
 		_slidersLayout.setSpacing(5);
 		_slidersLayout.setVerticalAlignment(Alignment::end);

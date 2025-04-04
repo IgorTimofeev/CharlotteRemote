@@ -20,8 +20,8 @@ namespace pizda {
 			ND _nd;
 
 			StackLayout _slidersLayout;
-			Slider _projectionSlider;
-			Slider _clipSlider;
+			Slider _FOVSlider;
+			Slider _nearSlider;
 			MenuButton _menuButton;
 	};
 }

@@ -218,18 +218,18 @@ namespace pizda {
 			const Color* _color = nullptr;
 	};
 
-	// |    /
+	// z   y
 	// |  /
-	// y z
-	// x -----
+	// | /
+	// * ----x
 	//
 	// FRONT     LEFT      BACK      RIGHT     TOP       BOTTOM
 	// 1######2  2######5  5######6  6######1  6######5  7######4
 	// ########  ########  ########  ########  ########  ########
 	// 0######3  3######4  4######7  7######0  1######2  0######3
-	class LinearCubeMesh : public LinearMesh {
+	class CubeLinearMesh : public LinearMesh {
 		public:
-			LinearCubeMesh(float size, const Color* color) :
+			CubeLinearMesh(float size, const Color* color) :
 				LinearMesh(
 					_vertices,
 					8,
@@ -238,7 +238,7 @@ namespace pizda {
 					color
 				)
 			{
-				const auto sizeHalf = size / 2;
+				const auto sizeHalf = size / 2.f;
 
 				_vertices[0] = Vector3F(-sizeHalf, -sizeHalf, -sizeHalf);
 				_vertices[1] = Vector3F(-sizeHalf, sizeHalf, -sizeHalf);
@@ -249,50 +249,31 @@ namespace pizda {
 				_vertices[5] = Vector3F(sizeHalf, sizeHalf, sizeHalf);
 				_vertices[6] = Vector3F(-sizeHalf, sizeHalf, sizeHalf);
 				_vertices[7] = Vector3F(-sizeHalf, -sizeHalf, sizeHalf);
-
-				// Front
-				_lineVertexIndices[0] = 0;
-				_lineVertexIndices[1] = 1;
-
-				_lineVertexIndices[2] = 1;
-				_lineVertexIndices[3] = 2;
-
-				_lineVertexIndices[4] = 2;
-				_lineVertexIndices[5] = 3;
-
-				_lineVertexIndices[6] = 0;
-				_lineVertexIndices[7] = 3;
-
-				// Back
-				_lineVertexIndices[8] = 4;
-				_lineVertexIndices[9] = 5;
-
-				_lineVertexIndices[10] = 5;
-				_lineVertexIndices[11] = 6;
-
-				_lineVertexIndices[12] = 6;
-				_lineVertexIndices[13] = 7;
-
-				_lineVertexIndices[14] = 4;
-				_lineVertexIndices[15] = 7;
-
-				// Left
-				_lineVertexIndices[16] = 2;
-				_lineVertexIndices[17] = 5;
-
-				_lineVertexIndices[18] = 3;
-				_lineVertexIndices[19] = 4;
-
-				// Right
-				_lineVertexIndices[20] = 1;
-				_lineVertexIndices[21] = 6;
-
-				_lineVertexIndices[22] = 0;
-				_lineVertexIndices[23] = 7;
 			}
 
 		private:
 			Vector3F _vertices[8] {};
-			uint16_t _lineVertexIndices[24] {};
+
+			uint16_t _lineVertexIndices[24] {
+				// Front
+				0, 1,
+				1, 2,
+				2, 3,
+				0, 3,
+
+				// Back
+				4,5,
+				5,6,
+				6,7,
+				4,7,
+
+				// Left
+				2, 5,
+				3, 4,
+
+				// Right
+				1, 6,
+				0, 7
+			};
 	};
 }

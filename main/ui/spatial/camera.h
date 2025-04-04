@@ -31,31 +31,31 @@ namespace pizda {
 				return _nearPlaneDistance;
 			}
 
-			void setNearPlaneDistance(float nearPlaneDistance) {
-				_nearPlaneDistance = nearPlaneDistance;
+			void setNearPlaneDistance(float value) {
+				_nearPlaneDistance = value;
 			}
 
 			float getFarPlaneDistance() const {
 				return _farPlaneDistance;
 			}
 
-			void setFarPlaneDistance(float farPlaneDistance) {
-				_farPlaneDistance = farPlaneDistance;
+			void setFarPlaneDistance(float value) {
+				_farPlaneDistance = value;
 			}
 
-			float getProjectionPlaneDistance() const {
-				return _projectionPlaneDistance;
+			float getFOV() const {
+				return _FOV;
 			}
 
-			void setProjectionPlaneDistance(float projectionPlaneDistance) {
-				_projectionPlaneDistance = projectionPlaneDistance;
+			void setFOV(float value) {
+				_FOV = value;
 			}
 
 		private:
 			Vector3F _position;
 			Vector3F _rotation;
+			float _FOV = toRadians(90);
 
-			float _projectionPlaneDistance = 360.f;
 			float _nearPlaneDistance = 0.1f;
 			float _farPlaneDistance = 1000.f;
 	};

@@ -3,6 +3,8 @@
 
 namespace pizda {
 	void SpatialView::onRender(Renderer* renderer, const Bounds& bounds) {
+		const auto projectionPlaneZ = (float) bounds.getWidth() / 2 / std::tanf(_camera.getFOV() / 2.f);
+
 		for (auto object : _objects) {
 			const auto vertices = object->getVertices();
 			const auto verticesCount = object->getVertexCount();
@@ -29,14 +31,11 @@ namespace pizda {
 				// Applying perspective projection
 				// From WebGL wiki:
 				// https://learnwebgl.brown37.net/08_projections/projections_perspective.html
-				// x' = (x*near)/z
-				// y' = (y*near)/z
-
-				const auto perspectiveFactor = _camera.getProjectionPlaneDistance() / vertex.getZ();
-
+				// x' = (x * near) / z
+				// y' = (y * near) / z
 				screenPositions[i] = Vector3F(
-					(float) bounds.getXCenter() + vertex.getX() * perspectiveFactor,
-					(float) bounds.getYCenter() - vertex.getY() * perspectiveFactor,
+					(float) bounds.getXCenter() + (vertex.getX() * projectionPlaneZ / vertex.getZ()),
+					(float) bounds.getYCenter() - (vertex.getY() * projectionPlaneZ / vertex.getZ()),
 					vertex.getZ()
 				);
 			}
