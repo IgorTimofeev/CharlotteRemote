@@ -578,9 +578,9 @@ namespace pizda {
 	) {
 		const auto viewport = renderer->pushViewport(bounds);
 
-		const float lineAngleStepRad = toRadians(pitchOverlayAngleStep);
+		const float lineAngleStepRad = toRadians(pitchOverlayAngleStepDeg);
 		const float linesInTotal = std::floorf(((float) M_PI_2) / lineAngleStepRad);
-		const float linePixelStep = (float) unfoldedFOVHeight / 2 / linesInTotal;
+		const float linePixelStep = unfoldedFOVHeight / 2.f / linesInTotal;
 
 		Vector2F
 			lineCenterVerticalPerp,
@@ -592,9 +592,9 @@ namespace pizda {
 
 		const Color* color;
 
-		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += pitchOverlayAngleStep) {
+		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += pitchOverlayAngleStepDeg) {
 			color = lineAngleDeg >= 0 ? pitchOverlayColorGround : pitchOverlayColorSky;
-			lineCenterVerticalPerp = horizonVecCenter + horizonVecPerp * ((float) lineAngleDeg / (float) pitchOverlayAngleStep * linePixelStep);
+			lineCenterVerticalPerp = horizonVecCenter + horizonVecPerp * ((float) lineAngleDeg / (float) pitchOverlayAngleStepDeg * linePixelStep);
 
 			lineVec = horizonVecNorm * (
 				lineAngleDeg == 0
@@ -793,8 +793,8 @@ namespace pizda {
 	void PFD::renderAircraftSymbolAndFPVOverlay(
 		Renderer* renderer,
 		const Point& center,
-		uint16_t unfoldedFOVWidth,
-		uint16_t unfoldedFOVHeight,
+		float unfoldedFOVWidth,
+		float unfoldedFOVHeight,
 		const Vector2F& horizonVecCenter
 	) const {
 		auto& rc = RC::getInstance();
@@ -824,10 +824,10 @@ namespace pizda {
 		);
 
 		// Flight path vector
-		if (rc.getGroundSpeed() > flightPathVectorVisibilityGroundSpeed) {
+		if (rc.getGroundSpeed() > speedFlapsMin) {
 			auto FPVPosition = Point(
-				(int32_t) (horizonVecCenter.getX() + (float) unfoldedFOVWidth * (rc.getFlightPathVectorYawInterpolator().getValue()) / (float) M_PI),
-				(int32_t) (horizonVecCenter.getY() - (float) unfoldedFOVHeight * (rc.getFlightPathVectorPitchInterpolator().getValue()) / (float) M_PI)
+				(int32_t) (horizonVecCenter.getX() + unfoldedFOVWidth * rc.getFlightPathVectorYawInterpolator().getValue() / (float) M_PI),
+				(int32_t) (horizonVecCenter.getY() - unfoldedFOVHeight * rc.getFlightPathVectorPitchInterpolator().getValue() / (float) M_PI)
 			);
 
 			// Circle
@@ -891,16 +891,16 @@ namespace pizda {
 		const auto unfoldedFOVHeight = (float) M_PI * (float) bounds.getHeight() / _verticalFOV;
 
 		const auto& horizonRollRotated = (Point) Vector2F(unfoldedFOVWidth / 2, 0).rotate(-roll);
-		const auto& horizonPitchRotated = (Point) Vector2F(unfoldedFOVHeight / 2, 0).rotate(-pitch);
+		const auto horizonPitchOffset = pitch / (float) M_PI *  unfoldedFOVHeight;
 
 		const auto& horizonLeft = Point(
 			center.getX() - horizonRollRotated.getX(),
-			center.getY() - horizonPitchRotated.getY() - horizonRollRotated.getY()
+			center.getY() + horizonPitchOffset - horizonRollRotated.getY()
 		);
 
 		const auto& horizonRight = Point(
 			center.getX() + horizonRollRotated.getX(),
-			center.getY() - horizonPitchRotated.getY() + horizonRollRotated.getY()
+			center.getY() + horizonPitchOffset + horizonRollRotated.getY()
 		);
 
 		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);

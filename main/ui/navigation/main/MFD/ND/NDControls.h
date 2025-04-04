@@ -9,7 +9,7 @@ namespace pizda {
 	class NDControls : public Layout {
 		public:
 			NDControls() {
-				setHeight(100);
+				setHeight(140);
 			}
 	};
 }

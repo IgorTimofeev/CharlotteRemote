@@ -82,7 +82,7 @@ namespace pizda {
 		_remotePacket.flaps = rc.getLeverRight().getMappedUint16Value();
 		_remotePacket.spoilers = rc.getLeverLeft().getMappedUint16Value();
 
-		_remotePacket.altimeterPressurePa = settings.controls.referencePressurePa;
+		_remotePacket.altimeterPressurePa = settings.controls.referencePressureSTD ? 101325 : settings.controls.referencePressurePa;
 
 		_remotePacket.autopilotAirspeedMs = convertSpeed(settings.autopilot.speedKt, SpeedUnit::knot, SpeedUnit::meterPerSecond);
 		_remotePacket.autopilotAutoThrottle = settings.autopilot.autoThrottle;

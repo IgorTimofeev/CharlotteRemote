@@ -97,7 +97,7 @@ namespace pizda {
 
 			// Pitch overlay
 			constexpr static const uint8_t pitchOverlayMarginTop = 30;
-			constexpr static const uint8_t pitchOverlayAngleStep = 5;
+			constexpr static const uint8_t pitchOverlayAngleStepDeg = 5;
 			constexpr static const uint8_t pitchOverlayLineSmall = 5;
 			constexpr static const uint8_t pitchOverlayLineBig = 10;
 			constexpr static const uint8_t pitchOverlayLineMiddle = 15;
@@ -146,7 +146,6 @@ namespace pizda {
 			constexpr static const uint8_t flightPathVectorRadius = 4;
 			constexpr static const uint8_t flightPathVectorLineLength = 6;
 			constexpr static const uint8_t flightPathVectorLineThickness = 2;
-			constexpr static const uint8_t flightPathVectorVisibilityGroundSpeed = 10;
 
 			// Wind
 			constexpr static const uint8_t windVisibilityGroundSpeed = 10;
@@ -202,8 +201,8 @@ namespace pizda {
 			void renderAircraftSymbolAndFPVOverlay(
 				Renderer* renderer,
 				const Point& center,
-				uint16_t unfoldedFOVWidth,
-				uint16_t unfoldedFOVHeight,
+				float unfoldedFOVWidth,
+				float unfoldedFOVHeight,
 				const Vector2F& horizonVecCenter
 			) const;
 
