@@ -26,7 +26,7 @@ namespace pizda {
 
 		// Items selector
 		addTitleItem(&_mainTitleItem);
-		addPageItem(&_mainPFDItem);
+		addPageItem(&_mainMFDItem);
 		addPageItem(&_mainNDItem);
 
 		addTitleItem(&_settingsTitleItem);
@@ -58,7 +58,7 @@ namespace pizda {
 		addItem(item);
 	}
 
-	void Menu::updateItemsSelection() {
+	void Menu::updatePageItemsSelection() {
 		for (auto element : _slideItemsLayout) {
 			if (!element->isEnabled())
 				continue;

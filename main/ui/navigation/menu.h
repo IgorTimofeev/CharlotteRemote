@@ -20,7 +20,7 @@ namespace pizda {
 		public:
 			explicit Menu();
 
-			void updateItemsSelection();
+			void updatePageItemsSelection();
 
 		private:
 			constexpr static const uint16_t _menuWidth = 140;
@@ -37,15 +37,15 @@ namespace pizda {
 				_developerTitleItem = TitleMenuItem(L"Developer");
 
 			PageMenuItem
-				_mainPFDItem = PageMenuItem(L"PFD", &Routes::MFD),
-				_mainNDItem = PageMenuItem(L"NAV", &Routes::ND),
+				_mainMFDItem = PageMenuItem(L"MFD", &routes::MFD),
+				_mainNDItem = PageMenuItem(L"NAV", &routes::ND),
 
-				_settingsAxisItem = PageMenuItem(L"Axis calibration", &Routes::settingsAxis),
-				_settingsWiFiItem = PageMenuItem(L"Wi-Fi", &Routes::settingsWiFi),
-				_settingsUpdatesItem = PageMenuItem(L"Updates", &Routes::settingsUpdates),
+				_settingsAxisItem = PageMenuItem(L"Axis calibration", &routes::settingsAxis),
+				_settingsWiFiItem = PageMenuItem(L"Wi-Fi", &routes::settingsWiFi),
+				_settingsUpdatesItem = PageMenuItem(L"Updates", &routes::settingsUpdates),
 
-				_developerSpeakerItem = PageMenuItem(L"Speaker", &Routes::developerSpeaker),
-				_developerUITestItem = PageMenuItem(L"UI test", &Routes::developerUITest);
+				_developerSpeakerItem = PageMenuItem(L"Speaker", &routes::developerSpeaker),
+				_developerUITestItem = PageMenuItem(L"UI test", &routes::developerUITest);
 
 			void addItem(MenuItem* item);
 

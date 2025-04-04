@@ -10,7 +10,7 @@
 #include "developer/speakerPage.h"
 #include "developer/UITestPage.h"
 
-namespace pizda::Routes {
+namespace pizda::routes {
 	// Main
 	constexpr static const ElementRoute<MFDPage> MFD = {};
 	constexpr static const ElementRoute<NDPage> ND = {};

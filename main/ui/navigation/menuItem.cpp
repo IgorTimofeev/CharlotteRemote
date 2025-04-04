@@ -87,19 +87,21 @@ namespace pizda {
 		if (event->getTypeID() != TouchDownEvent::typeID)
 			return;
 
-		auto menu = reinterpret_cast<Menu*>(getParent()->getParent()->getParent());
 		auto& rc = RC::getInstance();
 
 		rc.setRoute(_route);
 
-		menu->updateItemsSelection();
-
-		event->setHandled(true);
+		auto menu = reinterpret_cast<Menu*>(getParent()->getParent()->getParent());
+		menu->updatePageItemsSelection();
 
 		rc.setMenuVisibility(false);
+
+		event->setHandled(true);
 	}
 
 	void PageMenuItem::updateSelection() {
+		ESP_LOGI("Menu item", "Ptrs: %p, %p", RC::getInstance().getRoute(), _route);
+
 		setSelected(RC::getInstance().getRoute() == _route);
 	}
 }
