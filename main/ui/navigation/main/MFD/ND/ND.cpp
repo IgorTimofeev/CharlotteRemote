@@ -1,6 +1,7 @@
-#include "nd.h"
-#include "../../../../rc.h"
+#include "ND.h"
+#include "../../../../../rc.h"
 #include <format>
+#include <esp_log.h>
 
 namespace pizda {
 	ND::ND() {
@@ -9,43 +10,47 @@ namespace pizda {
 		// Axis
 		addObject(new Line(
 			Vector3F(0, 0, 0),
-			Vector3F(_earthEquatorialRadius, 0, 0),
+			Vector3F(GeographicCoordinates::equatorialRadiusMeters, 0, 0),
 			&Theme::red
 		));
 
 		addObject(new Line(
 			Vector3F(0, 0, 0),
-			Vector3F(0, _earthEquatorialRadius, 0),
+			Vector3F(0, GeographicCoordinates::equatorialRadiusMeters, 0),
 			&Theme::green
 		));
 
 		addObject(new Line(
 			Vector3F(0, 0, 0),
-			Vector3F(0, 0, _earthEquatorialRadius),
+			Vector3F(0, 0, GeographicCoordinates::equatorialRadiusMeters),
 			&Theme::blue
 		));
 
 		// Cube
-		addObject(new CubeLinearMesh(_earthEquatorialRadius * 2, &Theme::fg1));
+		addObject(new CubeLinearMesh(GeographicCoordinates::equatorialRadiusMeters * 2, &Theme::fg1));
+
+		const auto& airfield1 = GeographicCoordinates(
+			yoba::toRadians(60.01483325540486f),
+			yoba::toRadians(29.69835915766679f),
+			GeographicCoordinates::equatorialRadiusMeters
+		).toCartesian();
+
+		const auto& airfield2 = GeographicCoordinates(
+			yoba::toRadians(60.014390616612474f),
+			yoba::toRadians(29.706975357970624f),
+			GeographicCoordinates::equatorialRadiusMeters
+		).toCartesian();
 
 		// Labels
 		addObject(new Label(
-			geographicToCartesian(
-				SinAndCos(yoba::toRadians(60.01483325540486f)),
-				SinAndCos(yoba::toRadians(29.69835915766679f)),
-				_earthEquatorialRadius
-			),
+			airfield1,
 			&Theme::fontNormal,
 			&Theme::yellow,
 			L"Left"
 		));
 
 		addObject(new Label(
-			geographicToCartesian(
-				SinAndCos(yoba::toRadians(60.014390616612474f)),
-				SinAndCos(yoba::toRadians(29.706975357970624f)),
-				_earthEquatorialRadius
-			),
+			airfield2,
 			&Theme::fontNormal,
 			&Theme::yellow,
 			L"Right"
@@ -57,19 +62,22 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 
-		const auto rotationLatitude = rc.getGeocentricCoordinates().getLatitude() + _cameraOffset.getX();
-		const auto rotationLongitude = rc.getGeocentricCoordinates().getLongitude() - _cameraOffset.getY();
+		const auto rotationLatitude = rc.getGeographicCoordinates().getLatitude() + _cameraOffset.getX();
+		const auto rotationLongitude = rc.getGeographicCoordinates().getLongitude() - _cameraOffset.getY();
 
-		getCamera().setPosition(geographicToCartesian(
-			SinAndCos(rotationLatitude),
-			SinAndCos(rotationLongitude),
-			_earthEquatorialRadius + _cameraOffset.getZ()
-		));
+		getCamera().setPosition(
+			GeographicCoordinates(
+				rotationLatitude,
+				rotationLongitude,
+				GeographicCoordinates::equatorialRadiusMeters + _cameraOffset.getZ()
+			)
+			.toCartesian()
+		);
 
 		getCamera().setRotation(Vector3F(
 			rotationLatitude,
 			0,
-			// Longitude uses X axis for Y rotation, but camera uses Z, so...
+			// Longitude uses "X axis - value" for Y rotation, but camera uses "Y + value", so...
 			// 90 - rotation + 180 or 270 - rotation
 			yoba::toRadians(270) - rotationLongitude
 		));
@@ -93,16 +101,6 @@ namespace pizda {
 
 		position += spacing;
 
-		// Pos
-		renderer->renderString(
-			position,
-			&Theme::fontNormal,
-			&Theme::purple,
-			std::format(L"Camera pos: {} x {} x {}", yoba::round(yoba::toDegrees(getCamera().getPosition().getX()), 2), yoba::round(yoba::toDegrees(getCamera().getPosition().getY()), 2), yoba::round(yoba::toDegrees(getCamera().getPosition().getZ()), 2))
-		);
-
-		position += spacing;
-
 		// Rot
 		renderer->renderString(
 			position,
@@ -117,29 +115,7 @@ namespace pizda {
 	void ND::onEvent(Event* event) {
 		SpatialView::onEvent(event);
 
-		if (event->getTypeID() == PinchDownEvent::typeID) {
-			auto pinchDownEvent = (PinchDownEvent*) event;
-
-			_pinchDownPixelsPerMeter = _metersPerPixel;
-			_pinchDownLength = (pinchDownEvent->getPosition2() - pinchDownEvent->getPosition1()).getLength();
-
-			event->setHandled(true);
-		}
-		else if (event->getTypeID() == PinchDragEvent::typeID) {
-			auto pinchDragEvent = (PinchDragEvent*) event;
-
-			const auto pinchLength = (pinchDragEvent->getPosition2() - pinchDragEvent->getPosition1()).getLength();
-
-			const auto pinchFactor = (float) pinchLength / (float) _pinchDownLength;
-			_pinchDownLength = pinchLength;
-
-			_metersPerPixel = _pinchDownPixelsPerMeter * pinchFactor;
-
-			_cameraOffset.setZ(_cameraOffset.getZ() + (pinchFactor > 1 ? -10.f : 10.f));
-
-			event->setHandled(true);
-		}
-		else if (event->getTypeID() == TouchDownEvent::typeID) {
+		if (event->getTypeID() == TouchDownEvent::typeID) {
 			auto touchDownEvent = (TouchDownEvent*) event;
 
 			setCaptured(true);
@@ -154,7 +130,7 @@ namespace pizda {
 			const auto position = touchDragEventEvent->getPosition();
 
 			auto deltaPixels= position - _touchDownPosition;
-			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
+//			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
 
 //			auto deltaMeters= (Vector2F) deltaPixels * _metersPerPixel;
 //			ESP_LOGI("ND", "deltaMeters: %f, %f", deltaMeters.getX(), deltaMeters.getY());
@@ -185,13 +161,32 @@ namespace pizda {
 
 			event->setHandled(true);
 		}
+		else if (event->getTypeID() == PinchDownEvent::typeID) {
+			auto pinchDownEvent = (PinchDownEvent*) event;
+
+			_pinchLength = (pinchDownEvent->getPosition2() - pinchDownEvent->getPosition1()).getLength();
+
+			event->setHandled(true);
+		}
+		else if (event->getTypeID() == PinchDragEvent::typeID) {
+			auto pinchDragEvent = (PinchDragEvent*) event;
+
+			const auto pinchLength = (pinchDragEvent->getPosition2() - pinchDragEvent->getPosition1()).getLength();
+
+			const auto pinchFactor = (float) pinchLength / (float) _pinchLength;
+			_pinchLength = pinchLength;
+
+			_cameraOffset.setZ(std::max(_cameraOffset.getZ() + (pinchFactor > 1 ? -100.f : 100.f), 0.f));
+
+			event->setHandled(true);
+		}
 	}
 
-	Vector3F ND::geographicToCartesian(const SinAndCos& latitude, const SinAndCos& longitude, float distanceToEarthCenter) {
-		return {
-			distanceToEarthCenter * latitude.getCos() * longitude.getCos(),
-			distanceToEarthCenter * latitude.getCos() * longitude.getSin(),
-			distanceToEarthCenter * latitude.getSin()
-		};
+	const Vector3F& ND::getCameraOffset() const {
+		return _cameraOffset;
+	}
+
+	void ND::setCameraOffset(const Vector3F& value) {
+		_cameraOffset = value;
 	}
 }

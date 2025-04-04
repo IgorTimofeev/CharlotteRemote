@@ -16,7 +16,7 @@
 #include "constants.h"
 #include "interpolator.h"
 #include "vector3.h"
-#include "geocentricCoordinates.h"
+#include "geographicCoordinates.h"
 
 #include "hardware/transceiver/packet.h"
 #include "hardware/transceiver/TCPTransceiver.h"
@@ -76,7 +76,7 @@ namespace pizda {
 			const Route* getRoute();
 			void setRoute(const Route* route);
 
-			const GeocentricCoordinates& getGeocentricCoordinates() const;
+			const GeographicCoordinates& getGeographicCoordinates() const;
 
 			float getWindSpeed() const;
 
@@ -182,7 +182,7 @@ namespace pizda {
 
 			// Kronshtadt airfield in Saint-Petersburg for UI testing
 			// ПРИВЕТУЛИ ФЕДИНОЙ ДАМЕ СЕРДЦА
-			GeocentricCoordinates _geocentricCoordinates = GeocentricCoordinates(
+			GeographicCoordinates _geographicCoordinates = GeographicCoordinates(
 				yoba::toRadians(60.01449883137194),
 				yoba::toRadians(29.702554658332105),
 				1000

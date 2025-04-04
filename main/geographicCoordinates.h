@@ -5,22 +5,24 @@
 #include "vector3.h"
 
 namespace pizda {
-	class GeocentricCoordinates {
+	class GeographicCoordinates {
 		public:
-			GeocentricCoordinates(float latitude, float longitude, float altitude) : _latitude(latitude), _longitude(longitude), _altitude(altitude) {
+			GeographicCoordinates(float latitude, float longitude, float altitude) : _latitude(latitude), _longitude(longitude), _altitude(altitude) {
 
 			}
 
-			explicit GeocentricCoordinates(const Vector3F& cartesian) {
-				_altitude = std::min(0.f, cartesian.getLength() - equatorialRadiusMeters);
-				_latitude = std::asinf(cartesian.getZ() / _altitude);
+			explicit GeographicCoordinates(const Vector3F& cartesian) {
+				const float length = cartesian.getLength();
+
+				_latitude = std::asinf(cartesian.getZ() / length);
 				_longitude = std::atan2f(cartesian.getY(), cartesian.getX());
+				_altitude = length - equatorialRadiusMeters;
 			}
 
 			constexpr static const uint32_t equatorialRadiusMeters = 6378137;
 
 			Vector3F toCartesian() {
-				const float radius = equatorialRadiusMeters + _altitude;
+				const float radius = (float) equatorialRadiusMeters + _altitude;
 				const float latCos = std::cosf(_latitude);
 
 				return Vector3F(

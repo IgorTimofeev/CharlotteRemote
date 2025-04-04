@@ -27,7 +27,6 @@ namespace pizda {
 		// Items selector
 		addTitleItem(&_mainTitleItem);
 		addPageItem(&_mainMFDItem);
-		addPageItem(&_mainNDItem);
 
 		addTitleItem(&_settingsTitleItem);
 		addPageItem(&_settingsWiFiItem);

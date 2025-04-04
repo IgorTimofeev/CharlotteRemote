@@ -12,9 +12,9 @@ namespace pizda {
 
 	class Object {
 		public:
-			virtual Vector3F* getVertices() = 0;
+			virtual const Vector3F* getVertices() = 0;
 			virtual uint16_t getVertexCount() = 0;
-			virtual void onRender(Renderer* renderer, Camera* camera, Vector3F* vertices) = 0;
+			virtual void onRender(Renderer* renderer, Camera* camera, const Vector3F* vertices) = 0;
 	};
 
 	class Line : public Object {
@@ -32,7 +32,7 @@ namespace pizda {
 				return 2;
 			}
 
-			void onRender(Renderer* renderer, Camera* camera, Vector3F* vertices) override {
+			void onRender(Renderer* renderer, Camera* camera, const Vector3F* vertices) override {
 				const auto nearPlane = camera->getNearPlaneDistance();
 
 				if (
@@ -97,7 +97,7 @@ namespace pizda {
 				return 1;
 			}
 
-			void onRender(Renderer* renderer, Camera* camera, Vector3F* vertices) override {
+			void onRender(Renderer* renderer, Camera* camera, const Vector3F* vertices) override {
 				const auto nearPlane = camera->getNearPlaneDistance();
 
 				if (vertices[0].getZ() < nearPlane)
@@ -156,9 +156,9 @@ namespace pizda {
 
 	class Mesh : public Object {
 		public:
-			Mesh(Vector3F* vertices, uint16_t vertexCount) : _vertices(vertices), _vertexCount(vertexCount) {}
+			Mesh(const Vector3F* vertices, uint16_t vertexCount) : _vertices(vertices), _vertexCount(vertexCount) {}
 
-			Vector3F* getVertices() override {
+			const Vector3F* getVertices() override {
 				return _vertices;
 			}
 
@@ -167,13 +167,13 @@ namespace pizda {
 			}
 
 		private:
-			Vector3F* _vertices = nullptr;
+			const Vector3F* _vertices = nullptr;
 			uint16_t _vertexCount = 0;
 	};
 
 	class LinearMesh : public Mesh {
 		public:
-			LinearMesh(Vector3F* vertices, uint16_t vertexCount, uint16_t* lineVertexIndices, uint16_t lineVertexIndicesCount, const Color* color) :
+			LinearMesh(const Vector3F* vertices, uint16_t vertexCount, const uint16_t* lineVertexIndices, uint16_t lineVertexIndicesCount, const Color* color) :
 				Mesh(vertices, vertexCount),
 				_lineVertexIndices(lineVertexIndices),
 				_lineVertexIndicesCount(lineVertexIndicesCount),
@@ -182,10 +182,10 @@ namespace pizda {
 
 			}
 
-			void onRender(Renderer* renderer, Camera* camera, Vector3F* vertices) override {
+			void onRender(Renderer* renderer, Camera* camera, const Vector3F* vertices) override {
 				const auto nearPlane = camera->getNearPlaneDistance();
-				Vector3F* vertex0;
-				Vector3F* vertex1;
+				const Vector3F* vertex0;
+				const Vector3F* vertex1;
 
 				for (uint16_t i = 0; i < _lineVertexIndicesCount; i += 2) {
 					vertex0 = &vertices[_lineVertexIndices[i]];
@@ -212,7 +212,7 @@ namespace pizda {
 			}
 
 		private:
-			uint16_t* _lineVertexIndices = nullptr;
+			const uint16_t* _lineVertexIndices = nullptr;
 			uint16_t _lineVertexIndicesCount = 0;
 
 			const Color* _color = nullptr;
@@ -254,7 +254,7 @@ namespace pizda {
 		private:
 			Vector3F _vertices[8] {};
 
-			uint16_t _lineVertexIndices[24] {
+			constexpr static const uint16_t _lineVertexIndices[] {
 				// Front
 				0, 1,
 				1, 2,
@@ -274,6 +274,29 @@ namespace pizda {
 				// Right
 				1, 6,
 				0, 7
+			};
+	};
+
+	class PlaneLinearMesh : public LinearMesh {
+		public:
+			PlaneLinearMesh(const Vector3F* vertices, const Color* color) :
+				LinearMesh(
+					vertices,
+					4,
+					_lineVertexIndices,
+					8,
+					color
+				)
+			{
+
+			}
+
+		private:
+			constexpr static const uint16_t _lineVertexIndices[] = {
+				0, 1,
+				1, 2,
+				2, 3,
+				0, 3
 			};
 	};
 }

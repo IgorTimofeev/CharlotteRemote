@@ -64,7 +64,7 @@ namespace pizda {
 		// Page layout
 		_application += &_pageLayout;
 
-		setRoute(&Routes::ND);
+		setRoute(&Routes::MFD);
 
 		// -------------------------------- Take off --------------------------------
 
@@ -326,9 +326,9 @@ namespace pizda {
 		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
 		// Direct
-		_geocentricCoordinates.setLatitude(packet->latitudeRad);
-		_geocentricCoordinates.setLongitude(packet->longitudeRad);
-		_geocentricCoordinates.setAltitude(packet->altitudeM);
+		_geographicCoordinates.setLatitude(packet->latitudeRad);
+		_geographicCoordinates.setLongitude(packet->longitudeRad);
+		_geographicCoordinates.setAltitude(packet->altitudeM);
 
 		// Interpolators
 		_altitudeInterpolator.setTargetValue(convertDistance(packet->altitudeM, DistanceUnit::meter, DistanceUnit::foot));
@@ -359,8 +359,8 @@ namespace pizda {
 		_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60'000'000 / deltaTime);
 	}
 
-	const GeocentricCoordinates& RC::getGeocentricCoordinates() const {
-		return _geocentricCoordinates;
+	const GeographicCoordinates& RC::getGeographicCoordinates() const {
+		return _geographicCoordinates;
 	}
 
 	bool RC::isMenuVisible() {

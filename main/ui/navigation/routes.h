@@ -3,7 +3,6 @@
 #include "route.h"
 
 #include "main/MFD/MFDPage.h"
-#include "main/ND/ndPage.h"
 #include "settings/axis/axisPage.h"
 #include "settings/WiFiPage.h"
 #include "settings/updatesPage.h"
@@ -14,7 +13,6 @@ namespace pizda {
 	class Routes {
 		public:
 			constexpr static const ElementRoute<MFDPage> MFD = {};
-			constexpr static const ElementRoute<NDPage> ND = {};
 
 			// Settings
 			constexpr static const ElementRoute<WiFiPage> settingsWiFi = {};

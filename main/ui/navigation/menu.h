@@ -38,7 +38,6 @@ namespace pizda {
 
 			PageMenuItem
 				_mainMFDItem = PageMenuItem(L"MFD", &Routes::MFD),
-				_mainNDItem = PageMenuItem(L"NAV", &Routes::ND),
 
 				_settingsAxisItem = PageMenuItem(L"Axis calibration", &Routes::settingsAxis),
 				_settingsWiFiItem = PageMenuItem(L"Wi-Fi", &Routes::settingsWiFi),

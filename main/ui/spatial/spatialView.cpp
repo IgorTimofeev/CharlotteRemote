@@ -3,7 +3,7 @@
 
 namespace pizda {
 	void SpatialView::onRender(Renderer* renderer, const Bounds& bounds) {
-		const auto projectionPlaneZ = (float) bounds.getWidth() / 2 / std::tanf(_camera.getFOV() / 2.f);
+		const auto projectionPlaneDistance = (float) bounds.getWidth() / 2 / std::tanf(_camera.getFOV() / 2.f);
 
 		for (auto object : _objects) {
 			const auto vertices = object->getVertices();
@@ -34,8 +34,8 @@ namespace pizda {
 				// x' = (x * near) / z
 				// y' = (y * near) / z
 				screenPositions[i] = Vector3F(
-					(float) bounds.getXCenter() + (vertex.getX() * projectionPlaneZ / vertex.getZ()),
-					(float) bounds.getYCenter() - (vertex.getY() * projectionPlaneZ / vertex.getZ()),
+					(float) bounds.getXCenter() + (vertex.getX() * projectionPlaneDistance / vertex.getZ()),
+					(float) bounds.getYCenter() - (vertex.getY() * projectionPlaneDistance / vertex.getZ()),
 					vertex.getZ()
 				);
 			}
