@@ -7,7 +7,7 @@
 #include "../../components/yoba/src/hardware/touchPanels/FT6336UTouchPanel.h"
 
 #include "ui/theme.h"
-#include "ui/navigation/routes.h"
+#include "ui/navigation/route.h"
 #include "ui/navigation/menu.h"
 #include "ui/debugOverlay.h"
 

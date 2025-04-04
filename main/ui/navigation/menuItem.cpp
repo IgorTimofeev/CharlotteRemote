@@ -100,8 +100,6 @@ namespace pizda {
 	}
 
 	void PageMenuItem::updateSelection() {
-		ESP_LOGI("Menu item", "Ptrs: %p, %p", RC::getInstance().getRoute(), _route);
-
 		setSelected(RC::getInstance().getRoute() == _route);
 	}
 }

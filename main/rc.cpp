@@ -4,6 +4,7 @@
 #include "rc.h"
 #include "constants.h"
 #include "resources/sounds.h"
+#include "ui/navigation/routes.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -63,7 +64,7 @@ namespace pizda {
 		// Page layout
 		_application += &_pageLayout;
 
-		setRoute(&routes::MFD);
+		setRoute(&Routes::MFD);
 
 		// -------------------------------- Take off --------------------------------
 
