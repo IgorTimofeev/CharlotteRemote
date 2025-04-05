@@ -20,28 +20,17 @@ namespace pizda {
 				// Right rows
 				_rightRows.setSpacing(10);
 				_rightRows.setAlignment(Alignment::end, Alignment::start);
-				_rightRows.setMargin(Margin(0, 10, 10, 0));
+				_rightRows.setMargin(Margin(0, 5, 5, 0));
 				*this += &_rightRows;
 
 				// Center button
-				Theme::apply(&_centerButton);
+				addGovnoButton(&_latLongButton, L"L", [this]() {
+					_ND.setCameraOffset(GeographicCoordinates(0, 0, _ND.getCameraOffset().getAltitude()));
+				});
 
-				_centerButton.setSize(Size(20));
-
-				_centerButton.setDefaultBackgroundColor(&Theme::bg2);
-				_centerButton.setPressedBackgroundColor(&Theme::fg1);
-
-				_centerButton.setDefaultTextColor(&Theme::fg1);
-				_centerButton.setPressedTextColor(&Theme::bg2);
-
-				_centerButton.setText(L"C");
-
-				_centerButton.click += [this]() {
-					_ND.setCameraOffset(Vector3F(0, 0, _ND.getCameraOffset().getZ()));
-				};
-
-				_rightRows += &_centerButton;
-
+				addGovnoButton(&_altButton, L"A", [this]() {
+					_ND.setCameraOffset(GeographicCoordinates(_ND.getCameraOffset().getLatitude(), _ND.getCameraOffset().getLongitude(), ND::cameraOffsetMinimum));
+				});
 
 //				// Slider
 //				Theme::apply(&_slider);
@@ -60,11 +49,32 @@ namespace pizda {
 //				*this += &_slider;
 			}
 
+		private:
 			ND _ND {};
 
 			StackLayout _rightRows {};
-			Button _centerButton {};
+			Button _latLongButton {};
+			Button _altButton {};
 
 //			Slider _slider {};
+
+			void addGovnoButton(Button* button, const std::wstring_view& text, const std::function<void()>& onClick) {
+				Theme::apply(button);
+
+				button->setSize(Size(20));
+
+				button->setDefaultBackgroundColor(&Theme::bg2);
+				button->setDefaultTextColor(&Theme::fg5);
+
+				button->setPressedBackgroundColor(&Theme::fg1);
+				button->setPressedTextColor(&Theme::bg1);
+
+				button->setFont(&Theme::fontSmall);
+				button->setText(text);
+
+				button->click += onClick;
+
+				_rightRows += button;
+			}
 	};
 }

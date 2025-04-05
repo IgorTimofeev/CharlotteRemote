@@ -229,7 +229,7 @@ namespace pizda {
 	// 0######3  3######4  4######7  7######0  1######2  0######3
 	class CubeLinearMesh : public LinearMesh {
 		public:
-			CubeLinearMesh(float size, const Color* color) :
+			CubeLinearMesh(const Vector3F& center, float size, const Color* color) :
 				LinearMesh(
 					_vertices,
 					8,
@@ -240,15 +240,15 @@ namespace pizda {
 			{
 				const auto sizeHalf = size / 2.f;
 
-				_vertices[0] = Vector3F(-sizeHalf, -sizeHalf, -sizeHalf);
-				_vertices[1] = Vector3F(-sizeHalf, sizeHalf, -sizeHalf);
-				_vertices[2] = Vector3F(sizeHalf, sizeHalf, -sizeHalf);
-				_vertices[3] = Vector3F(sizeHalf, -sizeHalf, -sizeHalf);
-
-				_vertices[4] = Vector3F(sizeHalf, -sizeHalf, sizeHalf);
-				_vertices[5] = Vector3F(sizeHalf, sizeHalf, sizeHalf);
-				_vertices[6] = Vector3F(-sizeHalf, sizeHalf, sizeHalf);
-				_vertices[7] = Vector3F(-sizeHalf, -sizeHalf, sizeHalf);
+				_vertices[0] = Vector3F(center.getX() - sizeHalf, center.getY() - sizeHalf, center.getZ() - sizeHalf);
+				_vertices[1] = Vector3F(center.getX() - sizeHalf, center.getY() + sizeHalf, center.getZ() - sizeHalf);
+				_vertices[2] = Vector3F(center.getX() + sizeHalf, center.getY() + sizeHalf, center.getZ() - sizeHalf);
+				_vertices[3] = Vector3F(center.getX() + sizeHalf, center.getY() - sizeHalf, center.getZ() - sizeHalf);
+			
+				_vertices[4] = Vector3F(center.getX() + sizeHalf, center.getY() - sizeHalf, center.getZ() + sizeHalf);
+				_vertices[5] = Vector3F(center.getX() + sizeHalf, center.getY() + sizeHalf, center.getZ() + sizeHalf);
+				_vertices[6] = Vector3F(center.getX() - sizeHalf, center.getY() + sizeHalf, center.getZ() + sizeHalf);
+				_vertices[7] = Vector3F(center.getX() - sizeHalf, center.getY() - sizeHalf, center.getZ() + sizeHalf);
 			}
 
 		private:

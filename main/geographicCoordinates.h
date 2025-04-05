@@ -11,18 +11,24 @@ namespace pizda {
 
 			}
 
-			explicit GeographicCoordinates(const Vector3F& cartesian) {
+			explicit GeographicCoordinates(const Vector3F& cartesian, float radius) {
 				const float length = cartesian.getLength();
 
 				_latitude = std::asinf(cartesian.getZ() / length);
 				_longitude = std::atan2f(cartesian.getY(), cartesian.getX());
-				_altitude = length - equatorialRadiusMeters;
+				_altitude = length - radius;
 			}
 
-			constexpr static const uint32_t equatorialRadiusMeters = 6378137;
+			explicit GeographicCoordinates(const Vector3F& cartesian) : GeographicCoordinates(cartesian, equatorialRadiusMeters) {
 
-			Vector3F toCartesian() {
-				const float radius = (float) equatorialRadiusMeters + _altitude;
+			}
+
+			constexpr static const float equatorialRadiusMeters = 6378137.f;
+			constexpr static const float equatorialLengthMeters = 2.f * (float) M_PI * equatorialRadiusMeters;
+
+			Vector3F toCartesian(float radius) {
+				radius += _altitude;
+
 				const float latCos = std::cosf(_latitude);
 
 				return Vector3F(
@@ -30,6 +36,10 @@ namespace pizda {
 					radius * latCos * std::sinf(_longitude),
 					radius * std::sinf(_latitude)
 				);
+			}
+
+			Vector3F toCartesian() {
+				return toCartesian(equatorialRadiusMeters);
 			}
 
 			float getLatitude() const {

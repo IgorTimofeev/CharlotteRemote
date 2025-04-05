@@ -21,13 +21,14 @@ namespace pizda {
 		public:
 			ND();
 
-			const Vector3F& getCameraOffset() const;
-			void setCameraOffset(const Vector3F& value);
+			constexpr static const uint32_t cameraOffsetMinimum = 100;
+			constexpr static const uint32_t cameraOffsetMaximum = GeographicCoordinates::equatorialRadiusMeters;
+
+			const GeographicCoordinates& getCameraOffset() const;
+			void setCameraOffset(const GeographicCoordinates& value);
 
 		protected:
 			void onTick() override;
-
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 			void onEvent(Event* event) override;
 
@@ -35,10 +36,22 @@ namespace pizda {
 			int32_t _pinchLength = 0;
 			Point _touchDownPosition;
 
-			Vector3F _cameraOffset {
+			GeographicCoordinates _cameraOffset {
 				0,
 				0,
-				100
+				500
 			};
+
+			Label _planeObject = Label(
+				GeographicCoordinates(
+					yoba::toRadians(60.01449883137194),
+					yoba::toRadians(29.702554658332105),
+					1000
+				)
+				.toCartesian(),
+				&Theme::fontNormal,
+				&Theme::yellow,
+				L"Me"
+			);
 	};
 }

@@ -27,34 +27,22 @@ namespace pizda {
 		));
 
 		// Cube
-		addObject(new CubeLinearMesh(GeographicCoordinates::equatorialRadiusMeters * 2, &Theme::fg1));
+		addObject(new CubeLinearMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters * 2, &Theme::fg1));
 
-		const auto& airfield1 = GeographicCoordinates(
-			yoba::toRadians(60.01483325540486f),
-			yoba::toRadians(29.69835915766679f),
-			GeographicCoordinates::equatorialRadiusMeters
-		).toCartesian();
+		const Vector3F* pizda = new Vector3F[]{
+			GeographicCoordinates(toRadians(60.014907051555966f), toRadians(29.69815561737486f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
+			GeographicCoordinates(toRadians(60.0145197943842f), toRadians(29.707064330304686f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
+			GeographicCoordinates(toRadians(60.01425827484923f), toRadians(29.707021476564208f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
+			GeographicCoordinates(toRadians(60.0146386127534f), toRadians(29.698106061255945f), GeographicCoordinates::equatorialRadiusMeters).toCartesian()
+		};
 
-		const auto& airfield2 = GeographicCoordinates(
-			yoba::toRadians(60.014390616612474f),
-			yoba::toRadians(29.706975357970624f),
-			GeographicCoordinates::equatorialRadiusMeters
-		).toCartesian();
+		addObject(new PlaneLinearMesh(
+			pizda,
+			&Theme::fg3
+		));
 
 		// Labels
-		addObject(new Label(
-			airfield1,
-			&Theme::fontNormal,
-			&Theme::yellow,
-			L"Left"
-		));
-
-		addObject(new Label(
-			airfield2,
-			&Theme::fontNormal,
-			&Theme::yellow,
-			L"Right"
-		));
+		addObject(&_planeObject);
 	}
 
 	void ND::onTick() {
@@ -62,14 +50,23 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 
-		const auto rotationLatitude = rc.getGeographicCoordinates().getLatitude() + _cameraOffset.getX();
-		const auto rotationLongitude = rc.getGeographicCoordinates().getLongitude() - _cameraOffset.getY();
+		const auto rotationLatitude = rc.getGeographicCoordinates().getLatitude();
+		const auto rotationLongitude = rc.getGeographicCoordinates().getLongitude();
 
-		getCamera().setPosition(
+		_planeObject.setPosition(
 			GeographicCoordinates(
 				rotationLatitude,
 				rotationLongitude,
-				GeographicCoordinates::equatorialRadiusMeters + _cameraOffset.getZ()
+				GeographicCoordinates::equatorialRadiusMeters
+			)
+			.toCartesian()
+		);
+
+		getCamera().setPosition(
+			GeographicCoordinates(
+				rotationLatitude + _cameraOffset.getLatitude(),
+				rotationLongitude - _cameraOffset.getLongitude(),
+				GeographicCoordinates::equatorialRadiusMeters + _cameraOffset.getAltitude()
 			)
 			.toCartesian()
 		);
@@ -83,33 +80,6 @@ namespace pizda {
 		));
 
 		invalidate();
-	}
-
-	void ND::onRender(Renderer* renderer, const Bounds& bounds) {
-		SpatialView::onRender(renderer, bounds);
-
-		auto position = bounds.getTopLeft() + Point(5, 5);
-		auto spacing = Point(0, Theme::fontNormal.getHeight() + 1);
-
-		// Offset
-		renderer->renderString(
-			position,
-			&Theme::fontNormal,
-			&Theme::yellow,
-			std::format(L"Camera off: {} x {} x {}", yoba::round(yoba::toDegrees(_cameraOffset.getX()), 2), yoba::round(yoba::toDegrees(_cameraOffset.getY()), 2), yoba::round(_cameraOffset.getZ(), 2))
-		);
-
-		position += spacing;
-
-		// Rot
-		renderer->renderString(
-			position,
-			&Theme::fontNormal,
-			&Theme::green,
-			std::format(L"Camera rot: {} x {} x {}", yoba::round(yoba::toDegrees(getCamera().getRotation().getX()), 2), yoba::round(yoba::toDegrees(getCamera().getRotation().getY()), 2), yoba::round(yoba::toDegrees(getCamera().getRotation().getZ()), 2))
-		);
-
-		position += spacing;
 	}
 
 	void ND::onEvent(Event* event) {
@@ -129,30 +99,38 @@ namespace pizda {
 
 			const auto position = touchDragEventEvent->getPosition();
 
-			auto deltaPixels= position - _touchDownPosition;
-//			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
-
-//			auto deltaMeters= (Vector2F) deltaPixels * _metersPerPixel;
-//			ESP_LOGI("ND", "deltaMeters: %f, %f", deltaMeters.getX(), deltaMeters.getY());
-//
-//			auto deltaAngles = Vector2F(
-//				yoba::toRadians(deltaMeters.getX() / _earthMetersPer1EquatorialDeg),
-//				yoba::toRadians(deltaMeters.getY() / _earthMetersPer1EquatorialDeg)
-//			);
-
-			auto deltaAngles = Vector2F(
-				yoba::toRadians((float) deltaPixels.getX() * 0.2f),
-				yoba::toRadians((float) deltaPixels.getY() * 0.2f)
-			);
-
-			ESP_LOGI("ND", "deltaAngles: %f, %f", deltaAngles.getX(), deltaAngles.getY());
-
-			// Lat
-			_cameraOffset.setX(_cameraOffset.getX() + (float) deltaAngles.getY());
-			// Long
-			_cameraOffset.setY(_cameraOffset.getY() + (float) deltaAngles.getX());
-
+			const auto deltaPixels= position - _touchDownPosition;
 			_touchDownPosition = position;
+
+			ESP_LOGI("ND", "----------------------------");
+
+			ESP_LOGI("ND", "deltaPixels: %ld x , %ld y", deltaPixels.getX(), deltaPixels.getY());
+
+			// Assuming that camera is placed in the center of circle, so camera altitude defines circle radius
+			const auto radiusFactor = _cameraOffset.getAltitude() / GeographicCoordinates::equatorialRadiusMeters;
+			ESP_LOGI("ND", "radiusFactor: %f", radiusFactor);
+
+			const auto viewportRad = getCamera().getFOV() * radiusFactor;
+			ESP_LOGI("ND", "viewportDeg: %f", toDegrees(viewportRad));
+
+			// viewport rad - height px
+			// x rad - 1 px
+			const auto aspectRatio = (float) getBounds().getWidth() / (float) getBounds().getHeight();
+
+			const auto radPerPixelX = viewportRad / (float) getBounds().getWidth();
+			const auto radPerPixelY = radPerPixelX / aspectRatio;
+			ESP_LOGI("ND", "degPerPixel: %f x, %f y", toDegrees(radPerPixelX), toDegrees(radPerPixelY));
+
+			const auto deltaRadLat = (float) deltaPixels.getY() * radPerPixelY;
+			const auto deltaRadLon = (float) deltaPixels.getX() * radPerPixelX;
+
+			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
+
+			setCameraOffset(GeographicCoordinates(
+				_cameraOffset.getLatitude() + deltaRadLat,
+				_cameraOffset.getLongitude() + deltaRadLon,
+				_cameraOffset.getAltitude()
+			));
 
 			event->setHandled(true);
 		}
@@ -176,17 +154,23 @@ namespace pizda {
 			const auto pinchFactor = (float) pinchLength / (float) _pinchLength;
 			_pinchLength = pinchLength;
 
-			_cameraOffset.setZ(std::max(_cameraOffset.getZ() + (pinchFactor > 1 ? -100.f : 100.f), 0.f));
+			setCameraOffset(GeographicCoordinates(
+				_cameraOffset.getLatitude(),
+				_cameraOffset.getLongitude(),
+				std::clamp(_cameraOffset.getAltitude() + (pinchFactor > 1 ? -100.f : 100.f), (float) cameraOffsetMinimum, (float) cameraOffsetMaximum)
+			));
 
 			event->setHandled(true);
 		}
 	}
 
-	const Vector3F& ND::getCameraOffset() const {
+	const GeographicCoordinates& ND::getCameraOffset() const {
 		return _cameraOffset;
 	}
 
-	void ND::setCameraOffset(const Vector3F& value) {
+	void ND::setCameraOffset(const GeographicCoordinates& value) {
 		_cameraOffset = value;
+
+		invalidate();
 	}
 }
