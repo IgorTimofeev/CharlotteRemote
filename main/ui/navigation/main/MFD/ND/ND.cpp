@@ -73,8 +73,8 @@ namespace pizda {
 
 		getCamera().setRotation(Vector3F(
 			coordinates.getLatitude(),
-			0,
-			// Longitude uses "X axis - value" for vertical axis rotation, but camera uses "Y + value", so...
+			toRadians(-90),
+			// Geographic longitude uses "X axis - value" for rotation around Z axis, but camera uses "Y + value", so...
 			// 90 - rotation + 180 or 270 - rotation
 			toRadians(90 + 180) - coordinates.getLongitude()
 		));

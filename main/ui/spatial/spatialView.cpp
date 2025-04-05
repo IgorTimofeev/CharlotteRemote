@@ -31,8 +31,8 @@ namespace pizda {
 				if (_camera.getRotation().getX() != 0)
 					vertex = vertex.rotateAroundXAxis(-_camera.getRotation().getX());
 
-//				if (_camera.getRotation().getY() != 0)
-//					vertex = vertex.rotateAroundYAxis(-_camera.getRotation().getY());
+				if (_camera.getRotation().getY() != 0)
+					vertex = vertex.rotateAroundYAxis(-_camera.getRotation().getY());
 
 				// Applying perspective projection
 				// From WebGL wiki:
