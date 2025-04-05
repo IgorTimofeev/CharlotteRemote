@@ -10,8 +10,8 @@ namespace pizda {
 
 			}
 
-			explicit SinAndCos(float angle) : SinAndCos() {
-				fromAngle(angle);
+			explicit SinAndCos(float angle) : _sin(std::sinf(angle)), _cos(std::cosf(angle)) {
+
 			}
 
 			float getSin() const {
@@ -28,11 +28,6 @@ namespace pizda {
 
 			void setCos(float cos) {
 				_cos = cos;
-			}
-
-			void fromAngle(float angle) {
-				_sin = std::sinf(angle);
-				_cos = std::cosf(angle);
 			}
 
 		private:

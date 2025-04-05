@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <cmath>
+#include "sinAndCos.h"
 
 namespace pizda {
 	template<typename T>
@@ -24,10 +25,12 @@ namespace pizda {
 
 			T getLength() const;
 			Vector3 normalize() const;
-			Vector3 rotateAroundHorizontalAxis(float angleSin, float angleCos) const;
-			Vector3 rotateAroundHorizontalAxis(float angle) const;
-			Vector3 rotateAroundVerticalAxis(float angleSin, float angleCos) const;
-			Vector3 rotateAroundVerticalAxis(float angle) const;
+			Vector3 rotateAroundXAxis(const SinAndCos& sinAndCos) const;
+			Vector3 rotateAroundXAxis(float angle) const;
+			Vector3 rotateAroundYAxis(const SinAndCos& sinAndCos) const;
+			Vector3 rotateAroundYAxis(float angle) const;
+			Vector3 rotateAroundZAxis(const SinAndCos& sinAndCos) const;
+			Vector3 rotateAroundZAxis(float angle) const;
 
 			Vector3 operator+(const Vector3& right) const;
 			Vector3& operator+=(const Vector3& right);
@@ -114,31 +117,45 @@ namespace pizda {
 	}
 
 	template<typename T>
-	Vector3<T> Vector3<T>::rotateAroundHorizontalAxis(float angleSin, float angleCos) const {
+	Vector3<T> Vector3<T>::rotateAroundXAxis(const SinAndCos& sinAndCos) const {
 		return {
 			(T) _x,
-			(T) (angleCos * (float) _z - angleSin * (float) _y),
-			(T) (angleSin * (float) _z + angleCos * (float) _y)
+			(T) (sinAndCos.getCos() * (float) _z - sinAndCos.getSin() * (float) _y),
+			(T) (sinAndCos.getSin() * (float) _z + sinAndCos.getCos() * (float) _y)
 		};
 	}
 
 	template<typename T>
-	Vector3<T> Vector3<T>::rotateAroundHorizontalAxis(float angle) const {
-		return rotateAroundHorizontalAxis(std::sin(angle), std::cos(angle));
+	Vector3<T> Vector3<T>::rotateAroundXAxis(float angle) const {
+		return rotateAroundXAxis(SinAndCos(angle));
 	}
 
 	template<typename T>
-	Vector3<T> Vector3<T>::rotateAroundVerticalAxis(float angleSin, float angleCos) const {
+	Vector3<T> Vector3<T>::rotateAroundYAxis(const SinAndCos& sinAndCos) const {
 		return {
-			(T) (angleCos * (float) _x + angleSin * (float) _y),
-			(T) (angleCos * (float) _y - angleSin * (float) _x),
+			(T) (sinAndCos.getCos() * (float) _x - sinAndCos.getSin() * (float) _z),
+			(T) _y,
+			(T) (sinAndCos.getSin() * (float) _x + sinAndCos.getCos() * (float) _z)
+		};
+	}
+
+	template<typename T>
+	Vector3<T> Vector3<T>::rotateAroundYAxis(float angle) const {
+		return rotateAroundYAxis(SinAndCos(angle));
+	}
+
+	template<typename T>
+	Vector3<T> Vector3<T>::rotateAroundZAxis(const SinAndCos& sinAndCos) const {
+		return {
+			(T) (sinAndCos.getCos() * (float) _x + sinAndCos.getSin() * (float) _y),
+			(T) (-sinAndCos.getSin() * (float) _x + sinAndCos.getCos() * (float) _y),
 			_z
 		};
 	}
 
 	template<typename T>
-	Vector3<T> Vector3<T>::rotateAroundVerticalAxis(float angle) const {
-		return rotateAroundVerticalAxis(std::sin(angle), std::cos(angle));
+	Vector3<T> Vector3<T>::rotateAroundZAxis(float angle) const {
+		return rotateAroundZAxis(SinAndCos(angle));
 	}
 
 	template<typename T>
