@@ -104,7 +104,7 @@ namespace pizda {
 
 		getCamera().setRotation(Vector3F(
 			-cameraCoordinates.getLatitude(),
-			0,
+			rc.getYawInterpolator().getValue(),
 			toRadians(-90 + 180) + cameraCoordinates.getLongitude()
 		));
 
