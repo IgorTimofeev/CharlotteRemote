@@ -126,8 +126,8 @@ namespace pizda {
 	Vector3<T> Vector3<T>::rotateAroundXAxis(const SinAndCos& sinAndCos) const {
 		return {
 			(T) _x,
-			(T) (sinAndCos.getSin() * (float) _y + sinAndCos.getCos() * (float) _z),
-			(T) (sinAndCos.getCos() * (float) _y - sinAndCos.getSin() * (float) _z)
+			(T) (sinAndCos.getCos() * (float) _y - sinAndCos.getSin() * (float) _z),
+			(T) (sinAndCos.getSin() * (float) _y + sinAndCos.getCos() * (float) _z)
 		};
 	}
 

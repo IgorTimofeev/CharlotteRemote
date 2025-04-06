@@ -19,7 +19,7 @@ namespace pizda {
 
 	class Runway : public LinearMesh {
 		public:
-			Runway(const Vector3F* vertices, const std::wstring_view& code, const Color* color) : _code(code) {
+			Runway(const Vector3F* vertices, const Color* color, const std::wstring_view& code) : _code(code) {
 				setVertices(vertices);
 				setVertexCount(4);
 

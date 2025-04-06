@@ -24,7 +24,7 @@ namespace pizda {
 			ND();
 
 			constexpr static const uint32_t cameraOffsetMinimum = 100;
-			constexpr static const uint32_t cameraOffsetMaximum = GeographicCoordinates::equatorialRadiusMeters;
+			constexpr static const uint32_t cameraOffsetMaximum = GeographicCoordinates::equatorialRadiusMeters * 2;
 
 			const GeographicCoordinates& getCameraOffset() const;
 			void setCameraOffset(const GeographicCoordinates& value);
@@ -40,8 +40,8 @@ namespace pizda {
 
 			GeographicCoordinates _cameraOffset {
 				0,
-				-21500000,
-				0
+				0,
+				500
 			};
 
 			Aircraft _aircraftObject {};
