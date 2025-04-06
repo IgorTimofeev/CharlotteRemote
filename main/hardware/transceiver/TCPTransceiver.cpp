@@ -30,7 +30,9 @@ namespace pizda {
 				case TCPState::connected: {
 					RC::getInstance().getSpeaker().play(resources::sounds::transceiverConnect());
 
+					fillRemotePacket();
 					setTCPSendingBuffer();
+
 					setTCPReceivingBuffer();
 
 					break;
@@ -49,10 +51,12 @@ namespace pizda {
 		});
 
 		_TCP.setOnSendingCompleted([this]() {
+			fillRemotePacket();
 			setTCPSendingBuffer();
 		});
 
 		_TCP.setOnReceivingCompleted([this]() {
+			RC::getInstance().handleAircraftPacket(&_aircraftPacket);
 			setTCPReceivingBuffer();
 		});
 
@@ -98,14 +102,10 @@ namespace pizda {
 	}
 
 	void TCPTransceiver::setTCPSendingBuffer() {
-		fillRemotePacket();
-
 		_TCP.setSendingBuffer((uint8_t*) &_remotePacket, sizeof(RemotePacket));
 	}
 
 	void TCPTransceiver::setTCPReceivingBuffer() {
-		RC::getInstance().handleAircraftPacket(&_aircraftPacket);
-
 		_TCP.setReceivingBuffer((uint8_t*) &_aircraftPacket, sizeof(AircraftPacket));
 	}
 }

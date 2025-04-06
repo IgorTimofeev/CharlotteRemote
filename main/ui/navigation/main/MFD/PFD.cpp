@@ -1070,10 +1070,11 @@ namespace pizda {
 
 		// Minimums
 		if (rc.getSettings().controls.minimumAltitudeEnabled) {
-			y = centerY - (int32_t) (((float) rc.getSettings().controls.minimumAltitudeFt - altitude) * (float) altitudeStepPixels / (float) altitudeStepUnits);
+			const int32_t delta = altitude - (float) rc.getSettings().controls.minimumAltitudeFt;
+
+			y = centerY + (int32_t) (delta * (float) altitudeStepPixels / (float) altitudeStepUnits);
 
 			const auto& linePosition = Point(bounds.getX() - altitudeMinimumHorizontalOffset + altitudeMinimumTriangleWidth, y);
-			const int32_t delta = rc.getAltitudeInterpolator().getValue() - rc.getSettings().controls.minimumAltitudeFt;
 
 			const Color* color;
 
@@ -1110,12 +1111,12 @@ namespace pizda {
 			centerY,
 			altitudeStepUnits,
 			altitudeStepPixels,
-			rc.getAltitudeInterpolator().getValue(),
+			altitude,
 			rc.getSettings().autopilot.altitudeFt,
 			false
 		);
 
-		// Current speed
+		// Current value
 		renderCurrentValue(
 			renderer,
 			bounds,

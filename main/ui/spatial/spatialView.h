@@ -15,13 +15,13 @@ namespace pizda {
 		public:
 			Camera& getCamera();
 
-			void addObject(Object* object);
+			void addObject(SpatialObject* object);
 
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
 			Camera _camera;
-			std::vector<Object*> _objects;
+			std::vector<SpatialObject*> _objects;
 	};
 }

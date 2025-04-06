@@ -1,5 +1,6 @@
 #include "ND.h"
 #include "../../../../../rc.h"
+#include "objects/runway.h"
 #include <format>
 #include <esp_log.h>
 
@@ -29,17 +30,38 @@ namespace pizda {
 		// Cube
 		addObject(new CubeLinearMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters * 2, &Theme::fg1));
 
-		// Airfield
-		const Vector3F* pizda = new Vector3F[]{
-			GeographicCoordinates(toRadians(60.014907051555966f), toRadians(29.69815561737486f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
-			GeographicCoordinates(toRadians(60.0145197943842f), toRadians(29.707064330304686f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
-			GeographicCoordinates(toRadians(60.01425827484923f), toRadians(29.707021476564208f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
-			GeographicCoordinates(toRadians(60.0146386127534f), toRadians(29.698106061255945f), GeographicCoordinates::equatorialRadiusMeters).toCartesian()
-		};
+		// Airfields
+		addObject(new Runway(
+			new Vector3F[] {
+				GeographicCoordinates(toRadians(60.014907051555966f), toRadians(29.69815561737486f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
+				GeographicCoordinates(toRadians(60.0145197943842f), toRadians(29.707064330304686f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
+				GeographicCoordinates(toRadians(60.01425827484923f), toRadians(29.707021476564208f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
+				GeographicCoordinates(toRadians(60.0146386127534f), toRadians(29.698106061255945f), GeographicCoordinates::equatorialRadiusMeters).toCartesian()
+			},
+			L"ULLY",
+			&Theme::fg2
+		));
 
-		addObject(new PlaneLinearMesh(
-			pizda,
-			&Theme::fg3
+		addObject(new Runway(
+			new Vector3F[] {
+				GeographicCoordinates(toRadians(59.81000515459139f), toRadians(30.245549866082925f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
+				GeographicCoordinates(toRadians(59.801365049765245f), toRadians(30.303604969331097f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
+				GeographicCoordinates(toRadians(59.80086133025612f), toRadians(30.303302737716518f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
+				GeographicCoordinates(toRadians(59.80948999001452f), toRadians(30.245252504683034f), GeographicCoordinates::equatorialRadiusMeters).toCartesian()
+			},
+			L"ULLI10L",
+			&Theme::fg2
+		));
+
+		addObject(new Runway(
+			new Vector3F[] {
+				GeographicCoordinates(toRadians(59.80017069061603f), toRadians(30.218472732217464f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
+				GeographicCoordinates(toRadians(59.79058757720595f), toRadians(30.283053765300696f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
+				GeographicCoordinates(toRadians(59.7900828284425f), toRadians(30.282753357896627f), GeographicCoordinates::equatorialRadiusMeters).toCartesian(),
+				GeographicCoordinates(toRadians(59.79966144346482f), toRadians(30.218174663302346f), GeographicCoordinates::equatorialRadiusMeters).toCartesian()
+			},
+			L"ULLI10R",
+			&Theme::fg2
 		));
 
 		// Aircraft
@@ -51,32 +73,31 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 
-		const auto& coordinates = rc.getGeographicCoordinates();
+		const auto& aircraftCoordinates = rc.getGeographicCoordinates();
 
 		_aircraftObject.setPosition(
 			GeographicCoordinates(
-				coordinates.getLatitude(),
-				coordinates.getLongitude(),
+				aircraftCoordinates.getLatitude(),
+				aircraftCoordinates.getLongitude(),
 				GeographicCoordinates::equatorialRadiusMeters
 			)
 			.toCartesian()
 		);
 
-		getCamera().setPosition(
-			GeographicCoordinates(
-				coordinates.getLatitude() + _cameraOffset.getLatitude(),
-				coordinates.getLongitude() + _cameraOffset.getLongitude(),
-				GeographicCoordinates::equatorialRadiusMeters + _cameraOffset.getAltitude()
-			)
-			.toCartesian()
+		const auto& cameraCoordinates = GeographicCoordinates(
+			aircraftCoordinates.getLatitude() + _cameraOffset.getLatitude(),
+			aircraftCoordinates.getLongitude() + _cameraOffset.getLongitude(),
+			GeographicCoordinates::equatorialRadiusMeters + _cameraOffset.getAltitude()
 		);
 
+		getCamera().setPosition(cameraCoordinates.toCartesian());
+
 		getCamera().setRotation(Vector3F(
-			coordinates.getLatitude(),
+			-cameraCoordinates.getLatitude(),
 			0,
 			// Geographic longitude uses "X axis - value" for rotation around Z axis, but camera uses "Y + value", so...
 			// 90 - rotation + 180 or 270 - rotation
-			toRadians(90 + 180) - coordinates.getLongitude()
+			toRadians(-90 + 180) + cameraCoordinates.getLongitude()
 		));
 
 		invalidate();
@@ -124,8 +145,8 @@ namespace pizda {
 			const auto deltaRadLat = (float) deltaPixels.getY() * radPerPixelY;
 			const auto deltaRadLon = (float) deltaPixels.getX() * radPerPixelX;
 
-//			const auto deltaRadLat = toRadians(deltaPixels.getY() >= 0 ? 10 : -10);
-//			const auto deltaRadLon = toRadians(deltaPixels.getX() >= 0 ? 10 : -10);
+//			const auto deltaRadLat = toRadians(deltaPixels.getY() >= 0 ? 5 : -5);
+//			const auto deltaRadLon = toRadians(deltaPixels.getX() >= 0 ? 5 : -5);
 
 			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
 
@@ -134,6 +155,8 @@ namespace pizda {
 				_cameraOffset.getLongitude() - deltaRadLon,
 				_cameraOffset.getAltitude()
 			));
+
+			ESP_LOGI("ND", "cameraOffset: %f lat, %f lon", toDegrees(_cameraOffset.getLatitude()), toDegrees(_cameraOffset.getLongitude()));
 
 			event->setHandled(true);
 		}

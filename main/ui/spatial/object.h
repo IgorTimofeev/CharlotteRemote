@@ -10,14 +10,14 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class Object {
+	class SpatialObject {
 		public:
 			virtual const Vector3F* getVertices() = 0;
 			virtual uint16_t getVertexCount() = 0;
 			virtual void onRender(Renderer* renderer, Camera* camera, const Vector3F* vertices) = 0;
 	};
 
-	class Line : public Object {
+	class Line : public SpatialObject {
 		public:
 			Line(const Vector3F& from, const Vector3F& to, const Color* color) : _color(color) {
 				_vertices[0] = from;
@@ -83,7 +83,7 @@ namespace pizda {
 			const Color* _color = nullptr;
 	};
 
-	class Label : public Object {
+	class Label : public SpatialObject {
 		public:
 			Label(const Vector3F& position, const Font* font, const Color* color, std::wstring_view text) : _position(position), _font(font), _color(color), _text(text) {
 
@@ -154,16 +154,22 @@ namespace pizda {
 			std::wstring_view _text;
 	};
 
-	class Mesh : public Object {
+	class Mesh : public SpatialObject {
 		public:
-			Mesh(const Vector3F* vertices, uint16_t vertexCount) : _vertices(vertices), _vertexCount(vertexCount) {}
-
 			const Vector3F* getVertices() override {
 				return _vertices;
 			}
 
+			void setVertices(const Vector3F* vertices) {
+				_vertices = vertices;
+			}
+
 			uint16_t getVertexCount() override {
 				return _vertexCount;
+			}
+
+			void setVertexCount(uint16_t vertexCount) {
+				_vertexCount = vertexCount;
 			}
 
 		private:
@@ -173,15 +179,6 @@ namespace pizda {
 
 	class LinearMesh : public Mesh {
 		public:
-			LinearMesh(const Vector3F* vertices, uint16_t vertexCount, const uint16_t* lineVertexIndices, uint16_t lineVertexIndicesCount, const Color* color) :
-				Mesh(vertices, vertexCount),
-				_lineVertexIndices(lineVertexIndices),
-				_lineVertexIndicesCount(lineVertexIndicesCount),
-				_color(color)
-			{
-
-			}
-
 			void onRender(Renderer* renderer, Camera* camera, const Vector3F* vertices) override {
 				const auto nearPlane = camera->getNearPlaneDistance();
 				const Vector3F* vertex0;
@@ -211,6 +208,30 @@ namespace pizda {
 				}
 			}
 
+			const uint16_t* getLineVertexIndices() const {
+				return _lineVertexIndices;
+			}
+
+			void setLineVertexIndices(const uint16_t* lineVertexIndices) {
+				_lineVertexIndices = lineVertexIndices;
+			}
+
+			uint16_t getLineVertexIndicesCount() const {
+				return _lineVertexIndicesCount;
+			}
+
+			void setLineVertexIndicesCount(uint16_t lineVertexIndicesCount) {
+				_lineVertexIndicesCount = lineVertexIndicesCount;
+			}
+
+			const Color* getColor() const {
+				return _color;
+			}
+
+			void setColor(const Color* color) {
+				_color = color;
+			}
+
 		private:
 			const uint16_t* _lineVertexIndices = nullptr;
 			uint16_t _lineVertexIndicesCount = 0;
@@ -218,26 +239,13 @@ namespace pizda {
 			const Color* _color = nullptr;
 	};
 
-	// z   y
-	// |  /
-	// | /
-	// * ----x
-	//
 	// FRONT     LEFT      BACK      RIGHT     TOP       BOTTOM
 	// 1######2  2######5  5######6  6######1  6######5  7######4
 	// ########  ########  ########  ########  ########  ########
 	// 0######3  3######4  4######7  7######0  1######2  0######3
 	class CubeLinearMesh : public LinearMesh {
 		public:
-			CubeLinearMesh(const Vector3F& center, float size, const Color* color) :
-				LinearMesh(
-					_vertices,
-					8,
-					_lineVertexIndices,
-					24,
-					color
-				)
-			{
+			CubeLinearMesh(const Vector3F& center, float size, const Color* color) {
 				const auto sizeHalf = size / 2.f;
 
 				_vertices[0] = Vector3F(center.getX() - sizeHalf, center.getY() - sizeHalf, center.getZ() - sizeHalf);
@@ -249,6 +257,14 @@ namespace pizda {
 				_vertices[5] = Vector3F(center.getX() + sizeHalf, center.getY() + sizeHalf, center.getZ() + sizeHalf);
 				_vertices[6] = Vector3F(center.getX() - sizeHalf, center.getY() + sizeHalf, center.getZ() + sizeHalf);
 				_vertices[7] = Vector3F(center.getX() - sizeHalf, center.getY() - sizeHalf, center.getZ() + sizeHalf);
+
+				setVertices(_vertices);
+				setVertexCount(8);
+
+				setLineVertexIndices(_lineVertexIndices);
+				setLineVertexIndicesCount(24);
+
+				setColor(color);
 			}
 
 		private:
@@ -277,26 +293,20 @@ namespace pizda {
 			};
 	};
 
-	class PlaneLinearMesh : public LinearMesh {
+	class SphereLinearMesh : public LinearMesh {
 		public:
-			PlaneLinearMesh(const Vector3F* vertices, const Color* color) :
-				LinearMesh(
-					vertices,
-					4,
-					_lineVertexIndices,
-					8,
-					color
-				)
-			{
+			SphereLinearMesh(const Vector3F& center, float radius, const uint16_t stacks, uint16_t slices, const Color* color) {
+				setVertices(_vertices.data());
+				setVertexCount(_vertices.size());
 
+				setLineVertexIndices(_lineVertexIndices.data());
+				setLineVertexIndicesCount(_lineVertexIndices.size());
+
+				setColor(color);
 			}
 
 		private:
-			constexpr static const uint16_t _lineVertexIndices[] = {
-				0, 1,
-				1, 2,
-				2, 3,
-				0, 3
-			};
+			std::vector<Vector3F> _vertices {};
+			std::vector<uint16_t> _lineVertexIndices {};
 	};
 }

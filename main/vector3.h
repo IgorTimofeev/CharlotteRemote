@@ -5,6 +5,12 @@
 #include "sinAndCos.h"
 
 namespace pizda {
+	// Z-up, right-handed coordinate system
+	//
+	// z   y
+	// |  /
+	// | /
+	// * ----x
 	template<typename T>
 	class Vector3 {
 		public:
@@ -120,8 +126,8 @@ namespace pizda {
 	Vector3<T> Vector3<T>::rotateAroundXAxis(const SinAndCos& sinAndCos) const {
 		return {
 			(T) _x,
-			(T) (-sinAndCos.getSin() * (float) _y + sinAndCos.getCos() * (float) _z),
-			(T) (sinAndCos.getCos() * (float) _y + sinAndCos.getSin() * (float) _z)
+			(T) (sinAndCos.getSin() * (float) _y + sinAndCos.getCos() * (float) _z),
+			(T) (sinAndCos.getCos() * (float) _y - sinAndCos.getSin() * (float) _z)
 		};
 	}
 
@@ -133,9 +139,9 @@ namespace pizda {
 	template<typename T>
 	Vector3<T> Vector3<T>::rotateAroundYAxis(const SinAndCos& sinAndCos) const {
 		return {
-			(T) (sinAndCos.getCos() * (float) _x - sinAndCos.getSin() * (float) _z),
+			(T) (sinAndCos.getCos() * (float) _x + sinAndCos.getSin() * (float) _z),
 			(T) _y,
-			(T) (sinAndCos.getSin() * (float) _x + sinAndCos.getCos() * (float) _z)
+			(T) (-sinAndCos.getSin() * (float) _x + sinAndCos.getCos() * (float) _z)
 		};
 	}
 
@@ -147,8 +153,8 @@ namespace pizda {
 	template<typename T>
 	Vector3<T> Vector3<T>::rotateAroundZAxis(const SinAndCos& sinAndCos) const {
 		return {
-			(T) (sinAndCos.getCos() * (float) _x + sinAndCos.getSin() * (float) _y),
-			(T) (-sinAndCos.getSin() * (float) _x + sinAndCos.getCos() * (float) _y),
+			(T) (sinAndCos.getCos() * (float) _x - sinAndCos.getSin() * (float) _y),
+			(T) (sinAndCos.getSin() * (float) _x + sinAndCos.getCos() * (float) _y),
 			_z
 		};
 	}

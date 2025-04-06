@@ -56,7 +56,7 @@ namespace pizda {
 		return _camera;
 	}
 
-	void SpatialView::addObject(Object* object) {
+	void SpatialView::addObject(SpatialObject* object) {
 		_objects.push_back(object);
 	}
 }

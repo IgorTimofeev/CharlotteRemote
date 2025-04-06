@@ -26,7 +26,7 @@ namespace pizda {
 			constexpr static const float equatorialRadiusMeters = 6378137.f;
 			constexpr static const float equatorialLengthMeters = 2.f * (float) M_PI * equatorialRadiusMeters;
 
-			Vector3F toCartesian(float radius) {
+			Vector3F toCartesian(float radius) const {
 				radius += _altitude;
 
 				const float latCos = std::cosf(_latitude);
@@ -38,7 +38,7 @@ namespace pizda {
 				);
 			}
 
-			Vector3F toCartesian() {
+			Vector3F toCartesian() const {
 				return toCartesian(equatorialRadiusMeters);
 			}
 

@@ -109,12 +109,12 @@ namespace pizda {
 		// Principle of calculating the interpolation factor:
 		//
 		// factorPerSecond -> 1'000'000 us
-		// factorPerTick -> tickInterval us
+		// factorPerTick -> deltaTime us
 		//
-		// factorPerTick = factorPerSecond * tickInterval / 1'000'000
+		// factorPerTick = factorPerSecond * deltaTime / 1'000'000
 
-		// Roll / pitch / yaw / slip&skid, faster
-		float interpolationFactor = 10.0f * (float) constants::application::interpolationTickInterval / 1'000'000.f;
+		// Roll / pitch / yaw / slip & skid, faster
+		float interpolationFactor = 10.0f * (float) deltaTime / 1'000'000.f;
 		_pitchInterpolator.tick(interpolationFactor);
 		_rollInterpolator.tick(interpolationFactor);
 		_yawInterpolator.tick(interpolationFactor);
@@ -123,13 +123,13 @@ namespace pizda {
 		_flightPathVectorYawInterpolator.tick(interpolationFactor);
 
 		// Airspeed / altitude, normal
-		interpolationFactor = 8.0f * (float) constants::application::interpolationTickInterval / 1'000'000.f;
+		interpolationFactor = 8.0f * (float) deltaTime / 1'000'000.f;
 		_airSpeedInterpolator.tick(interpolationFactor);
 		_altitudeInterpolator.tick(interpolationFactor);
 		_windDirectionInterpolator.tick(interpolationFactor);
 
 		// Trends, slower
-		interpolationFactor = 1.0f * (float) constants::application::interpolationTickInterval / 1'000'000.f;
+		interpolationFactor = 1.0f * (float) deltaTime / 1'000'000.f;
 		_airSpeedTrendInterpolator.tick(interpolationFactor);
 		_altitudeTrendInterpolator.tick(interpolationFactor);
 		_verticalSpeedInterpolator.tick(interpolationFactor);
@@ -332,7 +332,6 @@ namespace pizda {
 
 		// Interpolators
 		_altitudeInterpolator.setTargetValue(convertDistance(packet->altitudeM, DistanceUnit::meter, DistanceUnit::foot));
-
 		_pitchInterpolator.setTargetValue(packet->pitchRad);
 		_rollInterpolator.setTargetValue(packet->rollRad);
 		_yawInterpolator.setTargetValue(packet->yawRad);
