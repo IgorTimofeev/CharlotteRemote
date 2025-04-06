@@ -85,19 +85,19 @@ namespace pizda {
 		);
 
 		const auto& cameraCoordinates = GeographicCoordinates(
-			aircraftCoordinates.getLatitude() + _cameraOffset.getLatitude(),
-			aircraftCoordinates.getLongitude() + _cameraOffset.getLongitude(),
+			0,
+			0,
 			GeographicCoordinates::equatorialRadiusMeters + _cameraOffset.getAltitude()
 		);
 
 		getCamera().setPosition(cameraCoordinates.toCartesian());
 
 		getCamera().setRotation(Vector3F(
-			-cameraCoordinates.getLatitude(),
+			0,
 			0,
 			// Geographic longitude uses "X axis - value" for rotation around Z axis, but camera uses "Y + value", so...
 			// 90 - rotation + 180 or 270 - rotation
-			toRadians(-90 + 180) + cameraCoordinates.getLongitude()
+			toRadians(-90 + 180) + _cameraOffset.getLongitude()
 		));
 
 		invalidate();
@@ -150,13 +150,21 @@ namespace pizda {
 
 			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
 
+//			setCameraOffset(GeographicCoordinates(
+//				_cameraOffset.getLatitude() + deltaRadLat,
+//				_cameraOffset.getLongitude() - deltaRadLon,
+//				_cameraOffset.getAltitude()
+//			));
+//
+//			ESP_LOGI("ND", "cameraOffset: %f deg, %f deg, %f m", toDegrees(_cameraOffset.getLatitude()), toDegrees(_cameraOffset.getLongitude()), _cameraOffset.getAltitude());
+
 			setCameraOffset(GeographicCoordinates(
-				_cameraOffset.getLatitude() + deltaRadLat,
-				_cameraOffset.getLongitude() - deltaRadLon,
+				_cameraOffset.getLatitude() + toRadians(deltaPixels.getX() >= 0 ? -5 : 5),
+				_cameraOffset.getLongitude() + toRadians(deltaPixels.getY() >= 0 ? -5 : 5),
 				_cameraOffset.getAltitude()
 			));
 
-			ESP_LOGI("ND", "cameraOffset: %f lat, %f lon", toDegrees(_cameraOffset.getLatitude()), toDegrees(_cameraOffset.getLongitude()));
+			ESP_LOGI("ND", "cameraOffset: %f, %f, %f", _cameraOffset.getLatitude(), _cameraOffset.getLongitude(), _cameraOffset.getAltitude());
 
 			event->setHandled(true);
 		}
@@ -180,19 +188,21 @@ namespace pizda {
 			const auto pinchFactor = (float) pinchLength / (float) _pinchLength;
 			_pinchLength = pinchLength;
 
-			setCameraOffset(GeographicCoordinates(
-				_cameraOffset.getLatitude(),
-				_cameraOffset.getLongitude(),
-				std::clamp(_cameraOffset.getAltitude() + (pinchFactor > 1 ? -100.f : 100.f), (float) cameraOffsetMinimum, (float) cameraOffsetMaximum)
-			));
-
 //			setCameraOffset(GeographicCoordinates(
 //				_cameraOffset.getLatitude(),
 //				_cameraOffset.getLongitude(),
-//				std::clamp(_cameraOffset.getAltitude() + (pinchFactor > 1 ? -500000.f : 500000.f), (float) cameraOffsetMinimum, (float) cameraOffsetMaximum)
+//				std::clamp(_cameraOffset.getAltitude() + (pinchFactor > 1 ? -100.f : 100.f), (float) cameraOffsetMinimum, (float) cameraOffsetMaximum)
 //			));
+//
+//			ESP_LOGI("ND", "cameraOffset: %f deg, %f deg, %f m", toDegrees(_cameraOffset.getLatitude()), toDegrees(_cameraOffset.getLongitude()), _cameraOffset.getAltitude());
 
-			ESP_LOGI("ND", "camera offset: %f", _cameraOffset.getAltitude());
+			setCameraOffset(GeographicCoordinates(
+				_cameraOffset.getLatitude(),
+				_cameraOffset.getLongitude(),
+				_cameraOffset.getAltitude() + (pinchFactor > 1 ? 500000.f : -500000.f)
+			));
+
+			ESP_LOGI("ND", "cameraOffset: %f, %f, %f", _cameraOffset.getLatitude(), _cameraOffset.getLongitude(), _cameraOffset.getAltitude());
 
 			event->setHandled(true);
 		}

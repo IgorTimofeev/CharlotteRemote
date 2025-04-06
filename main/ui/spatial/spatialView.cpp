@@ -5,26 +5,22 @@ namespace pizda {
 	void SpatialView::onRender(Renderer* renderer, const Bounds& bounds) {
 		const auto projectionPlaneDistance = (float) bounds.getWidth() / 2.f / std::tanf(_camera.getFOV() / 2.f);
 
+		std::vector<Vector3F> _screenSpaceVertices {};
+
 		for (auto object : _objects) {
 			const auto vertices = object->getVertices();
 			const auto verticesCount = object->getVertexCount();
 
-			auto screenPositions = new Vector3F[verticesCount];
+			_screenSpaceVertices.reserve(verticesCount);
+			_screenSpaceVertices.clear();
 
 			for (uint32_t i = 0; i < verticesCount; i++) {
 				auto vertex = vertices[i];
 
-//				ESP_LOGI("ND", "Point: %f, %f, %f", vertex.getX(), vertex.getY(), vertex.getZ());
-
-				// Пиздим кодыч с майноси. КАКОВА ПРАВА!1 ГОВОРИЛА ОНА...........
-				// OCGL.translate(-scene.camera.position[1], -scene.camera.position[2], -scene.camera.position[3])
-				// OCGL.rotate(OCGL.rotateVectorRelativeToYAxis, -scene.camera.rotation[2])
-				// OCGL.rotate(OCGL.rotateVectorRelativeToXAxis, -scene.camera.rotation[1])
-
-				// Translating point to camera
+				// Translating vertex to camera
 				vertex -= _camera.getPosition();
 
-				// Rotating point around camera
+				// Rotating vertex around camera
 				if (_camera.getRotation().getZ() != 0)
 					vertex = vertex.rotateAroundZAxis(-_camera.getRotation().getZ());
 
@@ -34,21 +30,65 @@ namespace pizda {
 				if (_camera.getRotation().getY() != 0)
 					vertex = vertex.rotateAroundYAxis(-_camera.getRotation().getY());
 
-				// Applying perspective projection
-				// From WebGL wiki:
-				// https://learnwebgl.brown37.net/08_projections/projections_perspective.html
-				// x' = (x * near) / z
-				// y' = (y * near) / z
-				screenPositions[i] = Vector3F(
-					(float) bounds.getXCenter() + (vertex.getX() * projectionPlaneDistance / vertex.getZ()),
-					(float) bounds.getYCenter() - (vertex.getY() * projectionPlaneDistance / vertex.getZ()),
-					vertex.getZ()
-				);
+				// 1) Moving from world space coordinates to screen space. Since our world coordinate system is Z-up,
+				// and the screen coordinate system is Y-up, we simply need to swap them to display the pixels correctly.
+				//
+				// 2) Applying perspective projection. The basic concept is very simple: the farther an object is from the
+				// camera, the smaller it will be on the screen. For example, if a 3D penis 0.3 m high is located 2 meters
+				// away from the camera, its projected height will be only 0.15 cm, i.e. 2 times smaller:
+				//
+				// x' = x / z
+				//
+				// However, this does not take into account such a thing as the camera's field of view. After all,
+				// even the human eye has ~60 degrees of central vision, not to mention > 120 degrees of peripheral
+				// vision. Therefore, any 3D renderer that implements a camera allows to customize this parameter.
+				//
+				// The concept is still simple: the closer the FOV to 180 degrees - the more things you will see
+				// on screen, and the smaller the projected objects will be. The central point when object retain its
+				// original dimensions will be 90 degrees. This may not seem obvious, but the dependence here is
+				// sinusoidal, not linear. So wee need to figure out how exactly the field of view will affect the
+				// coordinate when projected.
+				//
+				// To do this, we'll define the term "projection plane" - a screen located at a distance from the camera.
+				// To clarify: the camera is your eyes, and the projection plane is the physical screen on which the pixels
+				// are displayed. But the basic principle remains the same: the further the object is from the projection
+				// plane, the smaller it will be when projected. That's it, no magic.
+				//
+				// x' = x * projectionPlaneZ / z
+				//
+				// The only thing we need to do is determine where the projection plane itself is located relative to the
+				// camera. Trigonometry will help us:
+				//
+				// X
+				// │         ╱│ } screenWidth - projection plane width
+				// │       ╱  │
+				// │     ╱    │        * x - original x
+				// │   ╱      * x' - projected x
+				// │ ╱ )      │
+				// ├ ─ ) ──── screenZ ───────────────────────── Z
+				// │ ╲ ) FOV  │
+				// │   ╲      │
+				// │     ╲    │
+				// │       ╲  │
+				// │         ╲│
+				//
+				// Wee can see that
+				// tan(FOV / 2) = (screenWidth / 2) / screenZ
+				//
+				// Then
+				// screenZ = (screenWidth / 2) / tan(FOV / 2)
+				//
+				// So the final formula will be
+				// x' = x * screenZ / 2 / tan(FOV / 2) / z
+				//
+				_screenSpaceVertices.push_back(Vector3F(
+					(float) bounds.getXCenter() + (vertex.getX() * projectionPlaneDistance / vertex.getY()),
+					(float) bounds.getYCenter() - (vertex.getZ() * projectionPlaneDistance / vertex.getY()),
+					vertex.getY()
+				));
 			}
 
-			object->onRender(renderer, &_camera, screenPositions);
-
-			delete[] screenPositions;
+			object->onRender(renderer, &_camera, _screenSpaceVertices.data());
 		}
 	}
 

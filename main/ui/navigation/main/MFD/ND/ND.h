@@ -40,8 +40,8 @@ namespace pizda {
 
 			GeographicCoordinates _cameraOffset {
 				0,
-				0,
-				500
+				-21500000,
+				0
 			};
 
 			Aircraft _aircraftObject {};
