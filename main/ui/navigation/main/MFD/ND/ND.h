@@ -23,7 +23,7 @@ namespace pizda {
 		public:
 			ND();
 
-			constexpr static const uint32_t cameraAltitudeMinimum = 100;
+			constexpr static const uint32_t cameraAltitudeMinimum = 1;
 			constexpr static const uint32_t cameraAltitudeMaximum = GeographicCoordinates::equatorialRadiusMeters * 2;
 
 			const GeographicCoordinates& getCameraCoordinates() const;

@@ -88,7 +88,7 @@ namespace pizda {
 				));
 			}
 
-			object->onRender(renderer, &_camera, _screenSpaceVertices.data());
+			object->onRender(renderer, bounds, &_camera, _screenSpaceVertices.data());
 		}
 	}
 

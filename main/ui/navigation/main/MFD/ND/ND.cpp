@@ -131,7 +131,7 @@ namespace pizda {
 
 			const auto& bounds = getBounds();
 			const auto& position = touchDragEventEvent->getPosition();
-			const auto& deltaPixels= position - _touchDownPosition;
+			const auto& deltaPixels = ((Vector2F) (position - _touchDownPosition)).rotate(RC::getInstance().getYawInterpolator().getValue());
 			_touchDownPosition = position;
 
 			// viewport rad - height px
@@ -141,14 +141,14 @@ namespace pizda {
 			const auto radPerPixelX = getRadiansPerPixelX();
 			const auto radPerPixelY = radPerPixelX / aspectRatio;
 
-			const auto deltaRadLat = (float) deltaPixels.getY() * radPerPixelY;
-			const auto deltaRadLon = (float) deltaPixels.getX() * radPerPixelX;
+			const auto deltaRadX = deltaPixels.getX() * radPerPixelX;
+			const auto deltaRadY = deltaPixels.getY() * radPerPixelY;
 
 //			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
 
 			setCameraCoordinates(GeographicCoordinates(
-				_cameraCoordinates.getLatitude() + deltaRadLat,
-				_cameraCoordinates.getLongitude() - deltaRadLon,
+				_cameraCoordinates.getLatitude() + deltaRadY,
+				_cameraCoordinates.getLongitude() - deltaRadX,
 				_cameraCoordinates.getAltitude()
 			));
 

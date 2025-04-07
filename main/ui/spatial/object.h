@@ -15,7 +15,7 @@ namespace pizda {
 		public:
 			virtual const Vector3F* getVertices() = 0;
 			virtual uint16_t getVertexCount() = 0;
-			virtual void onRender(Renderer* renderer, Camera* camera, const Vector3F* vertices) = 0;
+			virtual void onRender(Renderer* renderer, const Bounds& bounds, Camera* camera, const Vector3F* vertices) = 0;
 	};
 
 	class Line : public SpatialObject {
@@ -33,7 +33,7 @@ namespace pizda {
 				return 2;
 			}
 
-			void onRender(Renderer* renderer, Camera* camera, const Vector3F* vertices) override {
+			void onRender(Renderer* renderer, const Bounds& bounds, Camera* camera, const Vector3F* vertices) override {
 				const auto nearPlane = camera->getNearPlaneDistance();
 
 				if (
@@ -98,7 +98,7 @@ namespace pizda {
 				return 1;
 			}
 
-			void onRender(Renderer* renderer, Camera* camera, const Vector3F* vertices) override {
+			void onRender(Renderer* renderer, const Bounds& bounds, Camera* camera, const Vector3F* vertices) override {
 				if (vertices[0].getZ() < camera->getNearPlaneDistance())
 					return;
 
@@ -178,7 +178,7 @@ namespace pizda {
 
 	class LinearMesh : public Mesh {
 		public:
-			void onRender(Renderer* renderer, Camera* camera, const Vector3F* vertices) override {
+			void onRender(Renderer* renderer, const Bounds& bounds, Camera* camera, const Vector3F* vertices) override {
 				const auto nearPlane = camera->getNearPlaneDistance();
 				const Vector3F* vertex0;
 				const Vector3F* vertex1;

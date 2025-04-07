@@ -27,19 +27,25 @@ namespace pizda {
 				return 1;
 			}
 
-			void onRender(Renderer* renderer, Camera* camera, const Vector3F* vertices) override {
+			void onRender(Renderer* renderer, const Bounds& bounds, Camera* camera, const Vector3F* vertices) override {
 				if (vertices[0].getZ() < camera->getNearPlaneDistance())
 					return;
 
-				constexpr static const uint8_t triangleWidth = 6;
-				constexpr static const uint8_t triangleHeight = 3;
+				constexpr static const uint8_t triangleWidth = 8;
+				constexpr static const uint8_t triangleHeight = 6;
 
 				const auto position = Point(
 					(int32_t) vertices[0].getX(),
 					(int32_t) vertices[0].getY()
 				);
 
-				renderer->renderFilledTriangle(
+				renderer->renderLine(
+					position,
+					Point(position.getX(), bounds.getY()),
+					&Theme::purple
+				);
+
+				renderer->renderTriangle(
 					position,
 					Point(position.getX() - triangleWidth / 2, position.getY() + triangleHeight),
 					Point(position.getX() + triangleWidth / 2, position.getY() + triangleHeight),
