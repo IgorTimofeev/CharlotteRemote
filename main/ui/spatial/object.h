@@ -310,10 +310,10 @@ namespace pizda {
 
 				// Middle vertices
 				for (uint16_t latitudeSegment = 0; latitudeSegment < latitudeSegments; latitudeSegment++) {
-					const auto latitude = (float) latitudeSegment / (float) latitudeSegments * (float) M_PI;
+					const auto latitude = (float) latitudeSegment / (float) latitudeSegments * std::numbers::pi_v<float>;
 
 					for (uint16_t longitudeSegment = 0; longitudeSegment < longitudeSegments; longitudeSegment++) {
-						const auto longitude = (float) longitudeSegment / (float) longitudeSegments * (float) M_PI * 2.f;
+						const auto longitude = (float) longitudeSegment / (float) longitudeSegments * std::numbers::pi_v<float> * 2.f;
 
 						_vertices.push_back(center + Vector3F(
 							radius * std::sin(latitude) * std::cos(longitude),

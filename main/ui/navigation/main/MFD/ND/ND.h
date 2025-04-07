@@ -23,11 +23,11 @@ namespace pizda {
 		public:
 			ND();
 
-			constexpr static const uint32_t cameraOffsetMinimum = 100;
-			constexpr static const uint32_t cameraOffsetMaximum = GeographicCoordinates::equatorialRadiusMeters * 2;
+			constexpr static const uint32_t cameraAltitudeMinimum = 100;
+			constexpr static const uint32_t cameraAltitudeMaximum = GeographicCoordinates::equatorialRadiusMeters * 2;
 
-			const GeographicCoordinates& getCameraOffset() const;
-			void setCameraOffset(const GeographicCoordinates& value);
+			const GeographicCoordinates& getCameraCoordinates() const;
+			void setCameraCoordinates(const GeographicCoordinates& value);
 
 		protected:
 			void onTick() override;
@@ -35,15 +35,19 @@ namespace pizda {
 			void onEvent(Event* event) override;
 
 		private:
-			int32_t _pinchLength = 0;
+			float _pinchLength = 0;
 			Point _touchDownPosition;
 
-			GeographicCoordinates _cameraOffset {
+			GeographicCoordinates _cameraCoordinates {
 				0,
 				0,
 				500
 			};
 
 			Aircraft _aircraftObject {};
+
+			float getRadiansPerPixelX();
+
+			float getMetersPerPixelX();
 	};
 }

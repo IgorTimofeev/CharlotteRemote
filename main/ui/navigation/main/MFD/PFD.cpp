@@ -1,4 +1,6 @@
 #include "PFD.h"
+#include <numbers>
+
 #include "../../../../rc.h"
 #include "../../../theme.h"
 #include "../../../../units.h"
@@ -579,7 +581,7 @@ namespace pizda {
 		const auto viewport = renderer->pushViewport(bounds);
 
 		const float lineAngleStepRad = toRadians(pitchOverlayAngleStepDeg);
-		const float linesInTotal = std::floorf(((float) M_PI_2) / lineAngleStepRad);
+		const float linesInTotal = std::floorf(std::numbers::pi_v<float> / 2.f / lineAngleStepRad);
 		const float linePixelStep = unfoldedFOVHeight / 2.f / linesInTotal;
 
 		Vector2F
@@ -826,8 +828,8 @@ namespace pizda {
 		// Flight path vector
 		if (rc.getGroundSpeed() > speedFlapsMin) {
 			auto FPVPosition = Point(
-				(int32_t) (horizonVecCenter.getX() + unfoldedFOVWidth * rc.getFlightPathVectorYawInterpolator().getValue() / (float) M_PI),
-				(int32_t) (horizonVecCenter.getY() - unfoldedFOVHeight * rc.getFlightPathVectorPitchInterpolator().getValue() / (float) M_PI)
+				(int32_t) (horizonVecCenter.getX() + unfoldedFOVWidth * rc.getFlightPathVectorYawInterpolator().getValue() / std::numbers::pi_v<float>),
+				(int32_t) (horizonVecCenter.getY() - unfoldedFOVHeight * rc.getFlightPathVectorPitchInterpolator().getValue() / std::numbers::pi_v<float>)
 			);
 
 			// Circle
@@ -887,11 +889,11 @@ namespace pizda {
 		// FOV deg - Screen px
 		// 180 deg - x px
 		// x = 180 * screen / FOV
-		const auto unfoldedFOVWidth = (float) M_PI * (float) bounds.getWidth() / _horizontalFOV;
-		const auto unfoldedFOVHeight = (float) M_PI * (float) bounds.getHeight() / _verticalFOV;
+		const auto unfoldedFOVWidth = std::numbers::pi_v<float> * (float) bounds.getWidth() / _horizontalFOV;
+		const auto unfoldedFOVHeight = std::numbers::pi_v<float> * (float) bounds.getHeight() / _verticalFOV;
 
 		const auto& horizonRollRotated = (Point) Vector2F(unfoldedFOVWidth / 2, 0).rotate(-roll);
-		const auto horizonPitchOffset = pitch / (float) M_PI *  unfoldedFOVHeight;
+		const auto horizonPitchOffset = pitch / std::numbers::pi_v<float> * unfoldedFOVHeight;
 
 		const auto& horizonLeft = Point(
 			center.getX() - horizonRollRotated.getX(),
@@ -1284,7 +1286,7 @@ namespace pizda {
 		const auto text = std::to_wstring((uint16_t) rc.getWindSpeed());
 		const uint8_t arrowSize = 16;
 
-		const auto arrowVec = Vector2F(0, arrowSize).rotate(rc.getWindDirectionInterpolator().getValue() + (float) M_PI - rc.getYawInterpolator().getValue());
+		const auto arrowVec = Vector2F(0, arrowSize).rotate(rc.getWindDirectionInterpolator().getValue() + std::numbers::pi_v<float> - rc.getYawInterpolator().getValue());
 		const auto arrowVecNorm = arrowVec.normalize();
 		const auto arrowVecPerp = arrowVecNorm.perpendicular();
 

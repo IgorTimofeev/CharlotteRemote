@@ -1,6 +1,7 @@
 #include "ND.h"
 #include "../../../../../rc.h"
 #include "objects/runway.h"
+#include <numbers>
 #include <format>
 #include <esp_log.h>
 
@@ -95,9 +96,9 @@ namespace pizda {
 		);
 
 		const auto& cameraCoordinates = GeographicCoordinates(
-			aircraftCoordinates.getLatitude() + _cameraOffset.getLatitude(),
-			aircraftCoordinates.getLongitude() + _cameraOffset.getLongitude(),
-			_cameraOffset.getAltitude()
+			aircraftCoordinates.getLatitude() + _cameraCoordinates.getLatitude(),
+			aircraftCoordinates.getLongitude() + _cameraCoordinates.getLongitude(),
+			_cameraCoordinates.getAltitude()
 		);
 
 		getCamera().setPosition(cameraCoordinates.toCartesian());
@@ -126,42 +127,32 @@ namespace pizda {
 		else if (event->getTypeID() == TouchDragEvent::typeID) {
 			auto touchDragEventEvent = (TouchDragEvent*) event;
 
-			const auto position = touchDragEventEvent->getPosition();
+//			ESP_LOGI("ND", "------------- Drag -------------");
 
-			const auto deltaPixels= position - _touchDownPosition;
+			const auto& bounds = getBounds();
+			const auto& position = touchDragEventEvent->getPosition();
+			const auto& deltaPixels= position - _touchDownPosition;
 			_touchDownPosition = position;
-
-			ESP_LOGI("ND", "----------------------------");
-
-			ESP_LOGI("ND", "deltaPixels: %ld x , %ld y", deltaPixels.getX(), deltaPixels.getY());
-
-			// Assuming that camera is placed in the center of circle, so camera altitude defines circle radius
-			const auto radiusFactor = _cameraOffset.getAltitude() / GeographicCoordinates::equatorialRadiusMeters;
-			ESP_LOGI("ND", "radiusFactor: %f", radiusFactor);
-
-			const auto viewportRad = getCamera().getFOV() * radiusFactor;
-			ESP_LOGI("ND", "viewportDeg: %f", toDegrees(viewportRad));
 
 			// viewport rad - height px
 			// x rad - 1 px
-			const auto aspectRatio = (float) getBounds().getWidth() / (float) getBounds().getHeight();
+			const auto aspectRatio = (float) bounds.getWidth() / (float) bounds.getHeight();
 
-			const auto radPerPixelX = viewportRad / (float) getBounds().getWidth();
+			const auto radPerPixelX = getRadiansPerPixelX();
 			const auto radPerPixelY = radPerPixelX / aspectRatio;
-			ESP_LOGI("ND", "degPerPixel: %f x, %f y", toDegrees(radPerPixelX), toDegrees(radPerPixelY));
 
 			const auto deltaRadLat = (float) deltaPixels.getY() * radPerPixelY;
 			const auto deltaRadLon = (float) deltaPixels.getX() * radPerPixelX;
 
-			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
+//			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
 
-			setCameraOffset(GeographicCoordinates(
-				_cameraOffset.getLatitude() + deltaRadLat,
-				_cameraOffset.getLongitude() - deltaRadLon,
-				_cameraOffset.getAltitude()
+			setCameraCoordinates(GeographicCoordinates(
+				_cameraCoordinates.getLatitude() + deltaRadLat,
+				_cameraCoordinates.getLongitude() - deltaRadLon,
+				_cameraCoordinates.getAltitude()
 			));
 
-			ESP_LOGI("ND", "cameraOffset: %f deg, %f deg, %f m", toDegrees(_cameraOffset.getLatitude()), toDegrees(_cameraOffset.getLongitude()), _cameraOffset.getAltitude());
+//			ESP_LOGI("ND", "cameraOffset: %f deg, %f deg, %f m", toDegrees(_cameraCoordinates.getLatitude()), toDegrees(_cameraCoordinates.getLongitude()), _cameraCoordinates.getAltitude());
 
 //			setCameraOffset(GeographicCoordinates(
 //				_cameraOffset.getLatitude() + toRadians(deltaPixels.getX() >= 0 ? -5 : 5),
@@ -188,19 +179,36 @@ namespace pizda {
 		else if (event->getTypeID() == PinchDragEvent::typeID) {
 			auto pinchDragEvent = (PinchDragEvent*) event;
 
+//			ESP_LOGI("ND", "------------- Pinch -------------");
+
 			const auto pinchLength = (pinchDragEvent->getPosition2() - pinchDragEvent->getPosition1()).getLength();
-			const auto pinchFactor = (float) pinchLength / (float) _pinchLength;
+			const auto pinchDelta = pinchLength - _pinchLength;
 			_pinchLength = pinchLength;
 
-			const float altitudeChange = 100;
+//			ESP_LOGI("ND", "pinchDelta: %f px", pinchDelta);
 
-			setCameraOffset(GeographicCoordinates(
-				_cameraOffset.getLatitude(),
-				_cameraOffset.getLongitude(),
-				std::clamp(_cameraOffset.getAltitude() + (pinchFactor > 1 ? -altitudeChange : altitudeChange), (float) cameraOffsetMinimum, (float) cameraOffsetMaximum)
+			const auto metersPerPixelX = getMetersPerPixelX();
+//			ESP_LOGI("ND", "metersPerPixelX: %f m", metersPerPixelX);
+
+			const auto pinchDeltaMeters = metersPerPixelX * -pinchDelta;
+//			ESP_LOGI("ND", "pinchDeltaMeters: %f m", pinchDeltaMeters);
+
+			const auto newEquatorialLength = GeographicCoordinates::equatorialLengthMeters + pinchDeltaMeters;
+//			ESP_LOGI("ND", "newEquatorialLength: %f m", newEquatorialLength);
+
+			const auto equatorialLengthFactor = newEquatorialLength / GeographicCoordinates::equatorialLengthMeters;
+//			ESP_LOGI("ND", "equatorialLengthFactor: %f", equatorialLengthFactor);
+
+			const auto newAltitude = _cameraCoordinates.getAltitude() + GeographicCoordinates::equatorialRadiusMeters * equatorialLengthFactor - GeographicCoordinates::equatorialRadiusMeters;
+//			ESP_LOGI("ND", "newAltitude: %f m", newAltitude);
+
+			setCameraCoordinates(GeographicCoordinates(
+				_cameraCoordinates.getLatitude(),
+				_cameraCoordinates.getLongitude(),
+				std::clamp(newAltitude, (float) cameraAltitudeMinimum, (float) cameraAltitudeMaximum)
 			));
 
-			ESP_LOGI("ND", "cameraOffset: %f deg, %f deg, %f m", toDegrees(_cameraOffset.getLatitude()), toDegrees(_cameraOffset.getLongitude()), _cameraOffset.getAltitude());
+//			ESP_LOGI("ND", "cameraOffset: %f deg, %f deg, %f m", toDegrees(_cameraCoordinates.getLatitude()), toDegrees(_cameraCoordinates.getLongitude()), _cameraCoordinates.getAltitude());
 
 //			setCameraOffset(GeographicCoordinates(
 //				_cameraOffset.getLatitude(),
@@ -210,16 +218,36 @@ namespace pizda {
 //
 //			ESP_LOGI("ND", "cameraOffset: %f, %f, %f", _cameraOffset.getLatitude(), _cameraOffset.getLongitude(), _cameraOffset.getAltitude());
 
+
 			event->setHandled(true);
 		}
 	}
 
-	const GeographicCoordinates& ND::getCameraOffset() const {
-		return _cameraOffset;
+	float ND::getRadiansPerPixelX() {
+		// Assuming that camera is placed in the center of circle, so camera altitude defines circle radius
+		const auto radiusFactor = _cameraCoordinates.getAltitude() / GeographicCoordinates::equatorialRadiusMeters;
+//		ESP_LOGI("ND", "radiusFactor: %f", radiusFactor);
+
+		const auto viewportRad = getCamera().getFOV() * radiusFactor;
+//		ESP_LOGI("ND", "viewportDeg: %f", toDegrees(viewportRad));
+
+		// viewport rad - width px
+		// x rad - 1 px
+		return viewportRad / (float) getBounds().getWidth();
 	}
 
-	void ND::setCameraOffset(const GeographicCoordinates& value) {
-		_cameraOffset = value;
+	float ND::getMetersPerPixelX() {
+		const auto radPerPixelX = getRadiansPerPixelX();
+
+		return GeographicCoordinates::equatorialLengthMeters * radPerPixelX / std::numbers::pi_v<float> * 2.f;
+	}
+
+	const GeographicCoordinates& ND::getCameraCoordinates() const {
+		return _cameraCoordinates;
+	}
+
+	void ND::setCameraCoordinates(const GeographicCoordinates& value) {
+		_cameraCoordinates = value;
 
 		invalidate();
 	}

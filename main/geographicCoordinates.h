@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <cmath>
+#include <numbers>
 #include "vector3.h"
 
 namespace pizda {
@@ -24,7 +25,7 @@ namespace pizda {
 			}
 
 			constexpr static const float equatorialRadiusMeters = 6378137.f;
-			constexpr static const float equatorialLengthMeters = 2.f * (float) M_PI * equatorialRadiusMeters;
+			constexpr static const float equatorialLengthMeters = 2.f * std::numbers::pi_v<float> * equatorialRadiusMeters;
 
 			Vector3F toCartesian(float radius) const {
 				radius += _altitude;
