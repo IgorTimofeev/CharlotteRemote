@@ -252,7 +252,12 @@ namespace pizda {
 			_encoderRotationTime = time;
 
 			// No cast = sign lost
-			auto event = EncoderRotateEvent(_encoder.getRotation() * 1'000'000 / (int32_t) deltaTime);
+//			ESP_LOGI("Encoder", "rotation: %ld", _encoder.getRotation());
+
+			const auto rps = _encoder.getRotation() * (int32_t) 1'000'000 / (int32_t) deltaTime;
+//			ESP_LOGI("Encoder", "rps: %ld", rps);
+
+			auto event = EncoderRotateEvent(rps);
 			_application.handleEvent(&event);
 
 			_encoder.setRotation(0);

@@ -25,7 +25,7 @@ namespace pizda {
 
 				// Center button
 				addGovnoButton(&_latLongButton, L"L", [this]() {
-					_ND.setCameraCoordinates(GeographicCoordinates(0, 0, _ND.getCameraCoordinates().getAltitude()));
+					_ND.resetCameraLatLon();
 				});
 
 				addGovnoButton(&_altButton, L"A", [this]() {

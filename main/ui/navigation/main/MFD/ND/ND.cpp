@@ -32,13 +32,13 @@ namespace pizda {
 //		addObject(new CubeLinearMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters * 2, &Theme::fg1));
 
 		// Sphere
-		addObject(new SphereLinearMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 10, 10, &Theme::bg5));
+		addObject(new SphereLinearMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg4));
 
 		// Airfields
 		addObject(new Label(
 			GeographicCoordinates(toRadians(60.014907051555966f), toRadians(29.69815561737486f), 0).toCartesian(),
 			&Theme::fontSmall,
-			&Theme::fg2,
+			&Theme::fg1,
 			L"ULLY"
 		));
 
@@ -49,7 +49,7 @@ namespace pizda {
 				GeographicCoordinates(toRadians(60.01425827484923f), toRadians(29.707021476564208f), 0).toCartesian(),
 				GeographicCoordinates(toRadians(60.0146386127534f), toRadians(29.698106061255945f), 0).toCartesian()
 			},
-			&Theme::fg2,
+			&Theme::fg1,
 			L"ULLY"
 		));
 
@@ -60,7 +60,7 @@ namespace pizda {
 				GeographicCoordinates(toRadians(59.80086133025612f), toRadians(30.303302737716518f), 0).toCartesian(),
 				GeographicCoordinates(toRadians(59.80948999001452f), toRadians(30.245252504683034f), 0).toCartesian()
 			},
-			&Theme::fg2,
+			&Theme::fg1,
 			L"ULLI10L"
 		));
 
@@ -71,7 +71,7 @@ namespace pizda {
 				GeographicCoordinates(toRadians(59.7900828284425f), toRadians(30.282753357896627f), 0).toCartesian(),
 				GeographicCoordinates(toRadians(59.79966144346482f), toRadians(30.218174663302346f), 0).toCartesian()
 			},
-			&Theme::fg2,
+			&Theme::fg1,
 			L"ULLI10R"
 		));
 
@@ -187,28 +187,7 @@ namespace pizda {
 
 //			ESP_LOGI("ND", "pinchDelta: %f px", pinchDelta);
 
-			const auto metersPerPixelX = getMetersPerPixelX();
-//			ESP_LOGI("ND", "metersPerPixelX: %f m", metersPerPixelX);
-
-			const auto pinchDeltaMeters = metersPerPixelX * -pinchDelta;
-//			ESP_LOGI("ND", "pinchDeltaMeters: %f m", pinchDeltaMeters);
-
-			const auto newEquatorialLength = GeographicCoordinates::equatorialLengthMeters + pinchDeltaMeters;
-//			ESP_LOGI("ND", "newEquatorialLength: %f m", newEquatorialLength);
-
-			const auto equatorialLengthFactor = newEquatorialLength / GeographicCoordinates::equatorialLengthMeters;
-//			ESP_LOGI("ND", "equatorialLengthFactor: %f", equatorialLengthFactor);
-
-			const auto newAltitude = _cameraCoordinates.getAltitude() + GeographicCoordinates::equatorialRadiusMeters * equatorialLengthFactor - GeographicCoordinates::equatorialRadiusMeters;
-//			ESP_LOGI("ND", "newAltitude: %f m", newAltitude);
-
-			setCameraCoordinates(GeographicCoordinates(
-				_cameraCoordinates.getLatitude(),
-				_cameraCoordinates.getLongitude(),
-				std::clamp(newAltitude, (float) cameraAltitudeMinimum, (float) cameraAltitudeMaximum)
-			));
-
-//			ESP_LOGI("ND", "cameraOffset: %f deg, %f deg, %f m", toDegrees(_cameraCoordinates.getLatitude()), toDegrees(_cameraCoordinates.getLongitude()), _cameraCoordinates.getAltitude());
+			setAltitudeFromDeltaPixels(-pinchDelta);
 
 //			setCameraOffset(GeographicCoordinates(
 //				_cameraOffset.getLatitude(),
@@ -218,6 +197,20 @@ namespace pizda {
 //
 //			ESP_LOGI("ND", "cameraOffset: %f, %f, %f", _cameraOffset.getLatitude(), _cameraOffset.getLongitude(), _cameraOffset.getAltitude());
 
+			event->setHandled(true);
+		}
+		else if (event->getTypeID() == EncoderRotateEvent::typeID) {
+			const auto rotateEvent = (EncoderRotateEvent*) event;
+
+			setAltitudeFromDeltaPixels(rotateEvent->getRPSFactor(60, -50, -200));
+
+			event->setHandled(true);
+		}
+		else if (event->getTypeID() == EncoderPushEvent::typeID) {
+			const auto pushEvent = (EncoderPushEvent&) event;
+
+			if (pushEvent.isDown())
+				resetCameraLatLon();
 
 			event->setHandled(true);
 		}
@@ -242,6 +235,29 @@ namespace pizda {
 		return GeographicCoordinates::equatorialLengthMeters * radPerPixelX / std::numbers::pi_v<float> * 2.f;
 	}
 
+	void ND::setAltitudeFromDeltaPixels(float deltaPixels) {
+		const auto metersPerPixelX = getMetersPerPixelX();
+//			ESP_LOGI("ND", "metersPerPixelX: %f m", metersPerPixelX);
+
+		const auto meters = metersPerPixelX * deltaPixels;
+			ESP_LOGI("ND", "meters: %f m", meters);
+
+		const auto newEquatorialLength = GeographicCoordinates::equatorialLengthMeters + meters;
+//			ESP_LOGI("ND", "newEquatorialLength: %f m", newEquatorialLength);
+
+		const auto equatorialLengthFactor = newEquatorialLength / GeographicCoordinates::equatorialLengthMeters;
+//			ESP_LOGI("ND", "equatorialLengthFactor: %f", equatorialLengthFactor);
+
+		const auto newAltitude = _cameraCoordinates.getAltitude() + GeographicCoordinates::equatorialRadiusMeters * equatorialLengthFactor - GeographicCoordinates::equatorialRadiusMeters;
+//			ESP_LOGI("ND", "newAltitude: %f m", newAltitude);
+
+		setCameraCoordinates(GeographicCoordinates(
+			_cameraCoordinates.getLatitude(),
+			_cameraCoordinates.getLongitude(),
+			std::clamp(newAltitude, (float) cameraAltitudeMinimum, (float) cameraAltitudeMaximum)
+		));
+	}
+
 	const GeographicCoordinates& ND::getCameraCoordinates() const {
 		return _cameraCoordinates;
 	}
@@ -250,5 +266,9 @@ namespace pizda {
 		_cameraCoordinates = value;
 
 		invalidate();
+	}
+
+	void ND::resetCameraLatLon() {
+		setCameraCoordinates(GeographicCoordinates(0, 0, _cameraCoordinates.getAltitude()));
 	}
 }

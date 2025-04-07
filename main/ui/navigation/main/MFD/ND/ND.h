@@ -23,11 +23,12 @@ namespace pizda {
 		public:
 			ND();
 
-			constexpr static const uint32_t cameraAltitudeMinimum = 1;
+			constexpr static const uint32_t cameraAltitudeMinimum = 50;
 			constexpr static const uint32_t cameraAltitudeMaximum = GeographicCoordinates::equatorialRadiusMeters * 2;
 
 			const GeographicCoordinates& getCameraCoordinates() const;
 			void setCameraCoordinates(const GeographicCoordinates& value);
+			void resetCameraLatLon();
 
 		protected:
 			void onTick() override;
@@ -47,7 +48,7 @@ namespace pizda {
 			Aircraft _aircraftObject {};
 
 			float getRadiansPerPixelX();
-
 			float getMetersPerPixelX();
+			void setAltitudeFromDeltaPixels(float deltaPixels);
 	};
 }
