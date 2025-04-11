@@ -1,6 +1,6 @@
 #include "ND.h"
 #include "../../../../../rc.h"
-#include "objects/runway.h"
+#include "elements/runway.h"
 #include <numbers>
 #include <format>
 #include <esp_log.h>
@@ -10,19 +10,19 @@ namespace pizda {
 		setClipToBounds(true);
 
 		// Axis
-		addObject(new Line(
+		addElement(new Line(
 			Vector3F(0, 0, 0),
 			Vector3F(GeographicCoordinates::equatorialRadiusMeters, 0, 0),
 			&Theme::red
 		));
 
-		addObject(new Line(
+		addElement(new Line(
 			Vector3F(0, 0, 0),
 			Vector3F(0, GeographicCoordinates::equatorialRadiusMeters, 0),
 			&Theme::green
 		));
 
-		addObject(new Line(
+		addElement(new Line(
 			Vector3F(0, 0, 0),
 			Vector3F(0, 0, GeographicCoordinates::equatorialRadiusMeters),
 			&Theme::blue
@@ -32,51 +32,62 @@ namespace pizda {
 //		addObject(new CubeLinearMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters * 2, &Theme::fg1));
 
 		// Sphere
-		addObject(new SphereLinearMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg4));
+		addElement(new SphereLinearMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg4));
 
 		// Airfields
-		addObject(new Label(
+		addElement(new Label(
 			GeographicCoordinates(toRadians(60.014907051555966f), toRadians(29.69815561737486f), 0).toCartesian(),
 			&Theme::fontSmall,
 			&Theme::fg1,
 			L"ULLY"
 		));
 
-		addObject(new Runway(
-			new Vector3F[] {
-				GeographicCoordinates(toRadians(60.014907051555966f), toRadians(29.69815561737486f), 0).toCartesian(),
-				GeographicCoordinates(toRadians(60.0145197943842f), toRadians(29.707064330304686f), 0).toCartesian(),
-				GeographicCoordinates(toRadians(60.01425827484923f), toRadians(29.707021476564208f), 0).toCartesian(),
-				GeographicCoordinates(toRadians(60.0146386127534f), toRadians(29.698106061255945f), 0).toCartesian()
-			},
-			&Theme::fg1,
-			L"ULLY"
+		addElement(new RunwayElement(
+			Runway(
+				GeographicCoordinates(toRadians(60.014581566191914f), toRadians(29.70258579817704f), 0),
+				20,
+				500,
+				30,
+				L"ULLY"
+			),
+			&Theme::fg1
 		));
 
-		addObject(new Runway(
-			new Vector3F[] {
-				GeographicCoordinates(toRadians(59.81000515459139f), toRadians(30.245549866082925f), 0).toCartesian(),
-				GeographicCoordinates(toRadians(59.801365049765245f), toRadians(30.303604969331097f), 0).toCartesian(),
-				GeographicCoordinates(toRadians(59.80086133025612f), toRadians(30.303302737716518f), 0).toCartesian(),
-				GeographicCoordinates(toRadians(59.80948999001452f), toRadians(30.245252504683034f), 0).toCartesian()
-			},
-			&Theme::fg1,
-			L"ULLI10L"
+		addElement(new RunwayElement(
+			Runway(
+				GeographicCoordinates(toRadians(59.79507652101131f), toRadians(30.250945449842572), 0),
+				100,
+				3780,
+				60,
+				L"ULLI"
+			),
+			&Theme::fg1
 		));
 
-		addObject(new Runway(
-			new Vector3F[] {
-				GeographicCoordinates(toRadians(59.80017069061603f), toRadians(30.218472732217464f), 0).toCartesian(),
-				GeographicCoordinates(toRadians(59.79058757720595f), toRadians(30.283053765300696f), 0).toCartesian(),
-				GeographicCoordinates(toRadians(59.7900828284425f), toRadians(30.282753357896627f), 0).toCartesian(),
-				GeographicCoordinates(toRadians(59.79966144346482f), toRadians(30.218174663302346f), 0).toCartesian()
-			},
-			&Theme::fg1,
-			L"ULLI10R"
-		));
+//		addElement(new RunwayElement(
+//			new Vector3F[]{
+//				GeographicCoordinates(toRadians(59.81000515459139f), toRadians(30.245549866082925f), 0).toCartesian(),
+//				GeographicCoordinates(toRadians(59.801365049765245f), toRadians(30.303604969331097f), 0).toCartesian(),
+//				GeographicCoordinates(toRadians(59.80086133025612f), toRadians(30.303302737716518f), 0).toCartesian(),
+//				GeographicCoordinates(toRadians(59.80948999001452f), toRadians(30.245252504683034f), 0).toCartesian()
+//			},
+//			&Theme::fg1,
+//			L"ULLI10L"
+//		));
+//
+//		addElement(new RunwayElement(
+//			new Vector3F[]{
+//				GeographicCoordinates(toRadians(59.80017069061603f), toRadians(30.218472732217464f), 0).toCartesian(),
+//				GeographicCoordinates(toRadians(59.79058757720595f), toRadians(30.283053765300696f), 0).toCartesian(),
+//				GeographicCoordinates(toRadians(59.7900828284425f), toRadians(30.282753357896627f), 0).toCartesian(),
+//				GeographicCoordinates(toRadians(59.79966144346482f), toRadians(30.218174663302346f), 0).toCartesian()
+//			},
+//			&Theme::fg1,
+//			L"ULLI10R"
+//		));
 
 		// Aircraft
-		addObject(&_aircraftObject);
+		addElement(&_aircraftElement);
 	}
 
 	void ND::onTick() {
@@ -86,7 +97,7 @@ namespace pizda {
 
 		const auto& aircraftCoordinates = rc.getGeographicCoordinates();
 
-		_aircraftObject.setPosition(
+		_aircraftElement.setPosition(
 			GeographicCoordinates(
 				aircraftCoordinates.getLatitude(),
 				aircraftCoordinates.getLongitude(),
@@ -207,9 +218,9 @@ namespace pizda {
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == EncoderPushEvent::typeID) {
-			const auto pushEvent = (EncoderPushEvent&) event;
+			const auto pushEvent = (EncoderPushEvent*) event;
 
-			if (pushEvent.isDown())
+			if (pushEvent->isDown())
 				resetCameraLatLon();
 
 			event->setHandled(true);

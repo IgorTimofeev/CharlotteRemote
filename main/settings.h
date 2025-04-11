@@ -5,8 +5,8 @@
 #include <esp_log.h>
 #include "nvs_flash.h"
 #include "nvs.h"
-
 #include "units.h"
+#include "geographicCoordinates.h"
 
 namespace pizda {
 	#pragma pack(push, 1)

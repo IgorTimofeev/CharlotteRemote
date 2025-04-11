@@ -96,7 +96,11 @@ namespace pizda {
 		return _camera;
 	}
 
-	void SpatialView::addObject(SpatialObject* object) {
-		_objects.push_back(object);
+	void SpatialView::addElement(SpatialElement* element) {
+		_objects.push_back(element);
+	}
+
+	void SpatialView::operator+=(SpatialElement* element) {
+		addElement(element);
 	}
 }

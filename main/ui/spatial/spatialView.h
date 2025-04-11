@@ -4,7 +4,7 @@
 #include "../../../components/yoba/src/ui.h"
 
 #include "../../vector3.h"
-#include "object.h"
+#include "element.h"
 #include "camera.h"
 
 namespace pizda {
@@ -14,14 +14,14 @@ namespace pizda {
 	class SpatialView : public Element {
 		public:
 			Camera& getCamera();
-
-			void addObject(SpatialObject* object);
+			void addElement(SpatialElement* element);
+			void operator+=(SpatialElement* element);
 
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
 			Camera _camera;
-			std::vector<SpatialObject*> _objects;
+			std::vector<SpatialElement*> _objects;
 	};
 }

@@ -7,13 +7,13 @@
 #include "../../../../../sinAndCos.h"
 #include "../../../../../geographicCoordinates.h"
 
-#include "../../../../spatial/object.h"
+#include "../../../../spatial/element.h"
 #include "../../../../spatial/spatialView.h"
 #include "../../../../spatial/camera.h"
 
 #include "../../../../theme.h"
 
-#include "objects/aircraft.h"
+#include "elements/aircraft.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -45,7 +45,7 @@ namespace pizda {
 				500
 			};
 
-			Aircraft _aircraftObject {};
+			AircraftElement _aircraftElement {};
 
 			float getRadiansPerPixelX();
 			float getMetersPerPixelX();

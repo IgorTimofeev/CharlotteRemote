@@ -7,7 +7,7 @@
 #include "../../../../../../sinAndCos.h"
 #include "../../../../../../geographicCoordinates.h"
 
-#include "../../../../../spatial/object.h"
+#include "../../../../../spatial/element.h"
 #include "../../../../../spatial/spatialView.h"
 #include "../../../../../spatial/camera.h"
 
@@ -17,7 +17,7 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class Aircraft : public SpatialObject {
+	class AircraftElement : public SpatialElement {
 		public:
 			Vector3F* getVertices() override {
 				return &_position;

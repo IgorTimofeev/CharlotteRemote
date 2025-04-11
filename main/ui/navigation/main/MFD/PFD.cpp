@@ -907,7 +907,7 @@ namespace pizda {
 
 		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);
 		const auto& horizonVecNorm = horizonVec.normalize();
-		const auto& horizonVecPerp = horizonVecNorm.perpendicular();
+		const auto& horizonVecPerp = horizonVecNorm.counterClockwisePerpendicular();
 		const auto& horizonVecCenter = (Vector2F) horizonLeft + horizonVec / 2.0f;
 
 		// Background
@@ -1288,7 +1288,7 @@ namespace pizda {
 
 		const auto arrowVec = Vector2F(0, arrowSize).rotate(rc.getWindDirectionInterpolator().getValue() + std::numbers::pi_v<float> - rc.getYawInterpolator().getValue());
 		const auto arrowVecNorm = arrowVec.normalize();
-		const auto arrowVecPerp = arrowVecNorm.perpendicular();
+		const auto arrowVecPerp = arrowVecNorm.counterClockwisePerpendicular();
 
 		const auto arrowCenter = Vector2F (
 			bottomLeft.getX() + arrowSize / 2,

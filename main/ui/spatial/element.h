@@ -11,14 +11,14 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class SpatialObject {
+	class SpatialElement {
 		public:
 			virtual const Vector3F* getVertices() = 0;
 			virtual uint16_t getVertexCount() = 0;
 			virtual void onRender(Renderer* renderer, const Bounds& bounds, Camera* camera, const Vector3F* vertices) = 0;
 	};
 
-	class Line : public SpatialObject {
+	class Line : public SpatialElement {
 		public:
 			Line(const Vector3F& from, const Vector3F& to, const Color* color) : _color(color) {
 				_vertices[0] = from;
@@ -84,7 +84,7 @@ namespace pizda {
 			const Color* _color = nullptr;
 	};
 
-	class Label : public SpatialObject {
+	class Label : public SpatialElement {
 		public:
 			Label(const Vector3F& position, const Font* font, const Color* color, std::wstring_view text) : _position(position), _font(font), _color(color), _text(text) {
 
@@ -153,7 +153,7 @@ namespace pizda {
 			std::wstring_view _text;
 	};
 
-	class Mesh : public SpatialObject {
+	class Mesh : public SpatialElement {
 		public:
 			const Vector3F* getVertices() override {
 				return _vertices;
