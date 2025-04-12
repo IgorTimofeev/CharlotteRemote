@@ -12,10 +12,9 @@ namespace pizda {
 	}
 
 	int16_t EncoderRotateEvent::getRPSFactor(uint16_t check1, int16_t value1, int16_t valueElse) {
-		const auto absRPS = std::abs(_RPS);
 		int16_t value;
 
-		if (absRPS < check1) {
+		if (std::abs(_RPS) < check1) {
 			value = value1;
 		}
 		else {

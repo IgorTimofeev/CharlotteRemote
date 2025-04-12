@@ -1,6 +1,7 @@
 #pragma once
 
 #include <numbers>
+#include <esp_log.h>
 
 #include "src/main.h"
 #include "src/ui.h"
@@ -32,18 +33,26 @@ namespace pizda {
 				// |--|--|                       |--|--|
 				// |--|--|                      |--|--|
 				// |--|--|                     |--|--|
-				// 2     3                     3     2
+				// 3     2                     3     2
 				const auto headingRadians = toRadians((float) _runway.getHeadingDegrees());
 				const auto& headingVectorNorm = Vector2F(std::sinf(headingRadians), std::cosf(headingRadians));
-				const auto center01Meters = headingVectorNorm * ((float) runway.getLength() / 2.f);
-				const auto corner1OffsetMeters = headingVectorNorm.clockwisePerpendicular() * ((float) runway.getWidth() / 2.f);
-				const auto corner0Radians = (center01Meters - corner1OffsetMeters) * GeographicCoordinates::radiansPerMeter;
-				const auto corner1Radians = (center01Meters + corner1OffsetMeters) * GeographicCoordinates::radiansPerMeter;
+				const auto center01Meters = headingVectorNorm * ((float) _runway.getLength() / 2.f);
+				const auto corner0OffsetMeters = headingVectorNorm.counterClockwisePerpendicular() * ((float) _runway.getWidth() / 2.f);
+				const auto corner0Radians = (center01Meters + corner0OffsetMeters) * GeographicCoordinates::radiansPerMeter;
+				const auto corner1Radians = (center01Meters - corner0OffsetMeters) * GeographicCoordinates::radiansPerMeter;
 
-				_vertices[0] = radialCornerToVertex(corner0Radians);
-				_vertices[1] = radialCornerToVertex(corner1Radians);
-				_vertices[2] = radialCornerToVertex(-corner0Radians);
-				_vertices[3] = radialCornerToVertex(-corner1Radians);
+//				ESP_LOGI("Runway", "---------------------");
+//				ESP_LOGI("Runway", "heading (deg): %d", _runway.getHeadingDegrees());
+//				ESP_LOGI("Runway", "headingVectorNorm: %f, %f", headingVectorNorm.getX(), headingVectorNorm.getY());
+//				ESP_LOGI("Runway", "center01Meters: %f, %f", center01Meters.getX(), center01Meters.getY());
+//				ESP_LOGI("Runway", "corner0OffsetMeters: %f, %f", corner0OffsetMeters.getX(), corner0OffsetMeters.getY());
+//				ESP_LOGI("Runway", "corner0Radians: %f, %f", corner0Radians.getX(), corner0Radians.getY());
+//				ESP_LOGI("Runway", "corner1Radians: %f, %f", corner1Radians.getX(), corner1Radians.getY());
+
+				_vertices[0] = cornerToVertex(corner0Radians);
+				_vertices[1] = cornerToVertex(corner1Radians);
+				_vertices[2] = cornerToVertex(-corner0Radians);
+				_vertices[3] = cornerToVertex(-corner1Radians);
 
 				setVertices(_vertices);
 				setVertexCount(4);
@@ -66,10 +75,12 @@ namespace pizda {
 
 			Runway _runway;
 
-			Vector3F radialCornerToVertex(Vector2F corner) {
+			Vector3F cornerToVertex(const Vector2F& corner) {
+				const auto lat = _runway.getCenter().getLatitude() + corner.getY();
+
 				return GeographicCoordinates(
-					_runway.getCenter().getLatitude() + corner.getY(),
-					_runway.getCenter().getLongitude() + corner.getX(),
+					lat,
+					_runway.getCenter().getLongitude() + corner.getX() / std::cosf(lat),
 					_runway.getCenter().getAltitude()
 				).toCartesian();
 			}

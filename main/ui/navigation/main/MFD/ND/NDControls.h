@@ -25,11 +25,15 @@ namespace pizda {
 
 				// Center button
 				addGovnoButton(&_latLongButton, L"L", [this]() {
-					_ND.resetCameraLatLon();
+					_ND.resetCameraOffsetLatLon();
 				});
 
 				addGovnoButton(&_altButton, L"A", [this]() {
-					_ND.setCameraCoordinates(GeographicCoordinates(_ND.getCameraCoordinates().getLatitude(), _ND.getCameraCoordinates().getLongitude(), ND::cameraAltitudeMinimum));
+					_ND.setCameraOffset(GeographicCoordinates(
+						_ND.getCameraOffset().getLatitude(),
+						_ND.getCameraOffset().getLongitude(),
+						ND::cameraAltitudeMinimum
+					));
 				});
 
 //				// Slider

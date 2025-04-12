@@ -183,8 +183,8 @@ namespace pizda {
 			// Kronshtadt airfield in Saint-Petersburg for UI testing
 			// ПРИВЕТУЛИ ФЕДИНОЙ ДАМЕ СЕРДЦА
 			GeographicCoordinates _geographicCoordinates = GeographicCoordinates(
-				yoba::toRadians(60.01449883137194),
-				yoba::toRadians(29.702554658332105),
+				toRadians(60.014581566191914f),
+				toRadians(29.70258579817704f),
 				1000
 			);
 
