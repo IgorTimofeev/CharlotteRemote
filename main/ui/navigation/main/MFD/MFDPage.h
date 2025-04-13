@@ -23,7 +23,6 @@ namespace pizda {
 			MFDModeButton* button;
 			Route* route;
 			bool autoSize;
-			Element* element = nullptr;
 	};
 
 	class MFDPage : public Page {
@@ -51,11 +50,13 @@ namespace pizda {
 
 			MFDPageEbanina _ebaninas[4] {
 				{ &_instrumentsButton, &_instrumentsRoute, true },
+				{ &_NDButton, &_NDRoute, false },
 				{ &_autopilotButton, &_autopilotRoute, true },
 				{ &_pressureButton, &_pressureRoute, true },
-				{ &_NDButton, &_NDRoute, false },
 			};
 
-			void toggleEbanina(MFDPageEbanina* ebanina);
+			MFDPageEbanina* _selectedEbanina = nullptr;
+
+			void setEbanina(MFDPageEbanina* ebanina);
 	};
 }

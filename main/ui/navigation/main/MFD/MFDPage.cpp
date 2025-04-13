@@ -9,6 +9,8 @@ namespace pizda {
 	}
 
 	MFDPage::MFDPage() {
+		_rows += &_PFD;
+
 		// Controls
 		for (auto& ebanina : _ebaninas) {
 			ebanina.button->gotEvent += [this, &ebanina](Event* event) {
@@ -16,7 +18,7 @@ namespace pizda {
 					return;
 
 				getApplication()->enqueueOnTick([this, &ebanina]() {
-					toggleEbanina(&ebanina);
+					setEbanina(&ebanina);
 				});
 
 				event->setHandled(true);
@@ -45,50 +47,51 @@ namespace pizda {
 
 		_buttonsRow += &_menuButton;
 
+
+
+
 		// Buttons
 		_buttonsRow.setOrientation(Orientation::horizontal);
 		_buttonsRow.setHeight(19);
+		_rows.setAutoSize(&_buttonsRow);
+		_rows += &_buttonsRow;
 
 		*this += &_rows;
 
 		// Initialization
-		toggleEbanina(&_ebaninas[0]);
+		setEbanina(&_ebaninas[0]);
 	}
 
-	void MFDPage::toggleEbanina(MFDPageEbanina* ebanina) {
-		// Re-placing children from scratch
-		_rows.removeChildren();
+	void MFDPage::setEbanina(MFDPageEbanina* ebanina) {
+		if (ebanina == _selectedEbanina)
+			return;
 
-		_rows += &_PFD;
+		constexpr static const uint8_t ebaninaIndex = 1;
 
-		// Deleting old element
-		if (ebanina->button->isSelected()) {
-			if (ebanina->element != nullptr) {
-				delete ebanina->element;
-				ebanina->element = nullptr;
+		if (_selectedEbanina != nullptr) {
+			auto selectedElement = _rows[ebaninaIndex];
+
+			// Deleting old element
+			if (selectedElement != nullptr) {
+				_rows.removeChildAt(ebaninaIndex);
+				delete selectedElement;
 			}
 		}
+
 		// Building new element
-		else {
-			ebanina->element = ebanina->route->buildElement();
-		}
+		auto newElement = ebanina->route->buildElement();
 
-		// Adding elements in order
+		if (ebanina->autoSize)
+			_rows.setAutoSize(newElement);
+
+		_rows.insertChild(ebaninaIndex, newElement);
+
+		// Updating buttons selection
 		for (auto& ebanina2 : _ebaninas) {
-			if (ebanina2.element != nullptr) {
-				if (ebanina2.autoSize)
-					_rows.setAutoSize(ebanina2.element);
-
-				_rows.insertChild(1, ebanina2.element);
-			}
+			ebanina2.button->setSelected(&ebanina2 == ebanina);
 		}
 
-		// Filling children
-		_rows.setAutoSize(&_buttonsRow);
-		_rows += &_buttonsRow;
-
-		// Toggling button selection
-		ebanina->button->setSelected(!ebanina->button->isSelected());
+		_selectedEbanina = ebanina;
 
 		invalidate();
 	}
