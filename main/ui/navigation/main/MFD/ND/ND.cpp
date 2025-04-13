@@ -216,7 +216,7 @@ namespace pizda {
 
 			const auto& bounds = getBounds();
 
-			setAltitudeFromDeltaPixels(rotateEvent->getRPSFactor(60, -5, -10));
+			setAltitudeFromDeltaPixels(rotateEvent->getRPSFactor(60, (float) bounds.getWidth() * -0.2f, (float) bounds.getWidth() * -0.4f));
 
 			event->setHandled(true);
 		}
@@ -232,8 +232,7 @@ namespace pizda {
 
 	float ND::getEquatorialRadiansPerPixel() {
 		// Imagine that camera is placed in the center of small sphere with radius = camera altitude
-
-		const float maxViewportRads = 2.f * std::asinf(GeographicCoordinates::equatorialRadiusMeters / (GeographicCoordinates::equatorialRadiusMeters + cameraAltitudeMaximum));
+//		const float maxViewportRads = 2.f * std::asinf(GeographicCoordinates::equatorialRadiusMeters / (GeographicCoordinates::equatorialRadiusMeters + cameraAltitudeMaximum));
 
 		// First, we need to find out how many times the length of the equator of this sphere is
 		// greater than the length of the earth's equator
@@ -243,7 +242,7 @@ namespace pizda {
 		// Since the length of the equator is calculated using 2 * pi * r, the dependence here is linear.
 		// This allows us to easily determine how many equatorial radians of the earth our camera can see
 		// excluding of FOV limitations
-		const auto viewportRad = std::min(getCamera().getFOV() * radiusFactor, maxViewportRads);
+		const auto viewportRad = getCamera().getFOV() * radiusFactor;
 //		ESP_LOGI("ND", "viewportDeg: %f", toDegrees(viewportRad));
 
 		// And then we can calculate how many equatorial radians of the earth is in 1 pixel of the screen
@@ -259,29 +258,32 @@ namespace pizda {
 //		ESP_LOGI("ND", "radiansPerPixel: %f deg", toDegrees(radiansPerPixel));
 
 		const auto deltaRadians = radiansPerPixel * deltaPixels;
-//			ESP_LOGI("ND", "deltaRadians: %f deg", toDegrees(deltaRadians));
+//		ESP_LOGI("ND", "deltaRadians: %f deg", toDegrees(deltaRadians));
 
 		const auto deltaMeters = GeographicCoordinates::metersPerRadian * deltaRadians;
-//			ESP_LOGI("ND", "deltaMeters: %f m", deltaMeters);
+//		ESP_LOGI("ND", "deltaMeters: %f m", deltaMeters);
 
-		const auto pizdaFactor = GeographicCoordinates::equatorialLengthMeters / GeographicCoordinates::equatorialRadiusMeters / 2.f;
+//		const auto pizdaFactor = GeographicCoordinates::equatorialLengthMeters / GeographicCoordinates::equatorialRadiusMeters / 2.f;
+//		const auto pizdaFactor = 2.f;
+//
+//		const auto deltaAltitude = deltaMeters * pizdaFactor;
 
-		const auto deltaEquatorialRadius = deltaMeters * pizdaFactor;
-//
-//		const auto newEquatorialLength = GeographicCoordinates::equatorialLengthMeters + deltaMeters;
-//			ESP_LOGI("ND", "newEquatorialLength: %f m", newEquatorialLength);
-//
-//		const auto equatorialLengthFactor = newEquatorialLength / GeographicCoordinates::equatorialLengthMeters;
-//			ESP_LOGI("ND", "equatorialLengthFactor: %f", equatorialLengthFactor);
-//
-//		// 2x radius = 2x equatorial length, 2 * pi * r, linear dependence
-//		const auto deltaEquatorialRadius = GeographicCoordinates::equatorialRadiusMeters * equatorialLengthFactor - GeographicCoordinates::equatorialRadiusMeters;
-//			ESP_LOGI("ND", "deltaEquatorialRadius: %f", deltaEquatorialRadius);
+		const auto newEquatorialLength = GeographicCoordinates::equatorialLengthMeters + deltaMeters;
+		ESP_LOGI("ND", "newEquatorialLength: %lf m", newEquatorialLength);
+
+		const auto newEquatorialRadius = newEquatorialLength / (2.f * std::numbers::pi_v<float>);
+		ESP_LOGI("ND", "newEquatorialRadius: %lf", newEquatorialRadius);
+
+		const auto equatorialRadiusDelta = newEquatorialRadius - GeographicCoordinates::equatorialRadiusMeters;
+		ESP_LOGI("ND", "equatorialRadiusDelta: %lf", equatorialRadiusDelta);
+
+		const auto deltaAltitude = equatorialRadiusDelta * 2.f * std::numbers::pi_v<float>;
+		ESP_LOGI("ND", "deltaAltitude: %lf", deltaAltitude);
 
 		setCameraOffset(GeographicCoordinates(
 			_cameraOffset.getLatitude(),
 			_cameraOffset.getLongitude(),
-			std::clamp(_cameraOffset.getAltitude() + deltaEquatorialRadius, (float) cameraAltitudeMinimum, (float) cameraAltitudeMaximum)
+			std::clamp(_cameraOffset.getAltitude() + deltaAltitude, (float) cameraAltitudeMinimum, (float) cameraAltitudeMaximum)
 		));
 	}
 

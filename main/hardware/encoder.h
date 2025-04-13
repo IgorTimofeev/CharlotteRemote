@@ -15,12 +15,48 @@ namespace pizda {
 			static uint16_t typeID;
 
 			int32_t getRPS() const;
-			int16_t getRPSFactor(uint16_t check1, int16_t value1, int16_t valueElse);
-			int16_t getRPSFactor(uint16_t check1, int16_t check2, int16_t value1, int16_t value2, int16_t valueElse);
+
+			template<typename TValue>
+			int16_t getRPSFactor(uint16_t check1, TValue value1, TValue valueElse);
+
+			template<typename TValue>
+			TValue getRPSFactor(uint16_t check1, TValue check2, TValue value1, TValue value2, TValue valueElse);
 
 		private:
 			int32_t _RPS;
 	};
+
+	template<typename TValue>
+	int16_t EncoderRotateEvent::getRPSFactor(uint16_t check1, TValue value1, TValue valueElse) {
+		TValue value;
+
+		if (std::abs(_RPS) < check1) {
+			value = value1;
+		}
+		else {
+			value = valueElse;
+		}
+
+		return _RPS >= 0 ? value : -value;
+	}
+
+	template<typename TValue>
+	TValue EncoderRotateEvent::getRPSFactor(uint16_t check1, TValue check2, TValue value1, TValue value2, TValue valueElse) {
+		const auto absRPS = std::abs(_RPS);
+		TValue value;
+
+		if (absRPS < check1) {
+			value = value1;
+		}
+		else if (absRPS < check2) {
+			value = value2;
+		}
+		else {
+			value = valueElse;
+		}
+
+		return _RPS >= 0 ? value : -value;
+	}
 
 	class EncoderPushEvent : public Event {
 		public:

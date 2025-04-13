@@ -11,36 +11,6 @@ namespace pizda {
 		return _RPS;
 	}
 
-	int16_t EncoderRotateEvent::getRPSFactor(uint16_t check1, int16_t value1, int16_t valueElse) {
-		int16_t value;
-
-		if (std::abs(_RPS) < check1) {
-			value = value1;
-		}
-		else {
-			value = valueElse;
-		}
-
-		return _RPS >= 0 ? value : -value;
-	}
-
-	int16_t EncoderRotateEvent::getRPSFactor(uint16_t check1, int16_t check2, int16_t value1, int16_t value2, int16_t valueElse) {
-		const auto absRPS = std::abs(_RPS);
-		int16_t value;
-
-		if (absRPS < check1) {
-			value = value1;
-		}
-		else if (absRPS < check2) {
-			value = value2;
-		}
-		else {
-			value = valueElse;
-		}
-
-		return _RPS >= 0 ? value : -value;
-	}
-
 	uint16_t EncoderPushEvent::typeID = 0;
 
 	bool EncoderPushEvent::isDown() const {
