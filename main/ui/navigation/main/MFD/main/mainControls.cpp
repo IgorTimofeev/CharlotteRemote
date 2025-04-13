@@ -95,31 +95,39 @@ namespace pizda {
 	void MainControls::onEvent(Event* event) {
 		Layout::onEvent(event);
 
-		if (event->getTypeID() == EncoderRotateEvent::typeID) {
-			auto rotateEvent = (EncoderRotateEvent*) event;
-
-			ESP_LOGI("Encoder", "RPS: %ld", rotateEvent->getRPS());
-
-			auto& settings = RC::getInstance().getSettings();
-
-			// Throttle
-			settings.controls.throttles[0] = yoba::addSaturating(settings.controls.throttles[0], rotateEvent->getRPSFactor(60, 1, 10) * 0xFFFF / 100);
-			settings.controls.throttles[1] = settings.controls.throttles[0];
-
+		if (event->getTypeID() == TouchDownEvent::typeID) {
+			this->setFocused(true);
 			event->setHandled(true);
 		}
-		else if (event->getTypeID() == EncoderPushEvent::typeID) {
-			auto pushEvent = (EncoderPushEvent*) event;
+		else if (event->getTypeID() == EncoderRotateEvent::typeID) {
+			if (isFocused()) {
+				auto rotateEvent = (EncoderRotateEvent*) event;
 
-			ESP_LOGI("Encoder", "Push: %d", pushEvent->isDown());
+				ESP_LOGI("Encoder", "RPS: %ld", rotateEvent->getRPS());
 
-			if (pushEvent->isDown()) {
 				auto& settings = RC::getInstance().getSettings();
 
-				settings.controls.landingGear = !settings.controls.landingGear;
-			}
+				// Throttle
+				settings.controls.throttles[0] = yoba::addSaturating(settings.controls.throttles[0], rotateEvent->getRPSFactor(60, 1, 10) * 0xFFFF / 100);
+				settings.controls.throttles[1] = settings.controls.throttles[0];
 
-			event->setHandled(true);
+				event->setHandled(true);
+			}
+		}
+		else if (event->getTypeID() == EncoderPushEvent::typeID) {
+			if (isFocused()) {
+				auto pushEvent = (EncoderPushEvent*) event;
+
+				ESP_LOGI("Encoder", "Push: %d", pushEvent->isDown());
+
+				if (pushEvent->isDown()) {
+					auto& settings = RC::getInstance().getSettings();
+
+					settings.controls.landingGear = !settings.controls.landingGear;
+				}
+
+				event->setHandled(true);
+			}
 		}
 	}
 

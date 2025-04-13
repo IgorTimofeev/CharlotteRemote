@@ -16,6 +16,16 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
+	class MFDPageEbanina {
+		public:
+			MFDPageEbanina(MFDModeButton* button, Route* route, bool autoSize);
+
+			MFDModeButton* button;
+			Route* route;
+			bool autoSize;
+			Element* element = nullptr;
+	};
+
 	class MFDPage : public Page {
 		public:
 			explicit MFDPage();
@@ -28,26 +38,24 @@ namespace pizda {
 			RelativeStackLayout _buttonsRow {};
 
 			MFDModeButton
-				_mainButton = MFDModeButton(L"INS"),
+				_instrumentsButton = MFDModeButton(L"INS"),
 				_NDButton = MFDModeButton(L"N/D"),
 				_autopilotButton = MFDModeButton(L"A/P"),
 				_pressureButton = MFDModeButton(L"BARO"),
 				_menuButton = MFDModeButton(L"...");
 
-			ElementRoute<MainControls> _mainRoute {};
+			ElementRoute<MainControls> _instrumentsRoute {};
 			ElementRoute<NDControls> _NDRoute {};
 			ElementRoute<AutopilotControls> _autopilotRoute {};
 			ElementRoute<PressureControls> _pressureRoute {};
 
-			std::pair<MFDModeButton*, Route*> _buttonsAndRoutes[4] = {
-				{ &_mainButton, &_mainRoute },
-				{ &_NDButton, &_NDRoute },
-				{ &_autopilotButton, &_autopilotRoute },
-				{ &_pressureButton, &_pressureRoute }
+			MFDPageEbanina _ebaninas[4] {
+				{ &_instrumentsButton, &_instrumentsRoute, true },
+				{ &_autopilotButton, &_autopilotRoute, true },
+				{ &_pressureButton, &_pressureRoute, true },
+				{ &_NDButton, &_NDRoute, false },
 			};
 
-			Element* getSelectedControls();
-
-			void selectControls(const std::pair<MFDModeButton*, Route*>* buttonAndRoute);
+			void toggleEbanina(MFDPageEbanina* ebanina);
 	};
 }

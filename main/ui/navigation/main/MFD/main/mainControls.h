@@ -15,7 +15,7 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class MainControls : public Layout {
+	class MainControls : public Layout, public FocusableElement {
 		public:
 			MainControls();
 

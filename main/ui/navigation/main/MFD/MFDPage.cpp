@@ -4,23 +4,25 @@
 #include "../../../../rc.h"
 
 namespace pizda {
-	MFDPage::MFDPage() {
-		_rows += &_PFD;
+	MFDPageEbanina::MFDPageEbanina(MFDModeButton* button, Route* route, bool autoSize) : button(button), route(route), autoSize(autoSize) {
 
+	}
+
+	MFDPage::MFDPage() {
 		// Controls
-		for (const auto& pair : _buttonsAndRoutes) {
-			pair.first->gotEvent += [this, &pair](Event* event) {
+		for (auto& ebanina : _ebaninas) {
+			ebanina.button->gotEvent += [this, &ebanina](Event* event) {
 				if (event->getTypeID() != TouchDownEvent::typeID)
 					return;
 
-				getApplication()->enqueueOnTick([this, &pair]() {
-					selectControls(pair.first->isSelected() ? nullptr : &pair);
+				getApplication()->enqueueOnTick([this, &ebanina]() {
+					toggleEbanina(&ebanina);
 				});
 
 				event->setHandled(true);
 			};
 
-			_buttonsRow += pair.first;
+			_buttonsRow += ebanina.button;
 		}
 
 		// Menu
@@ -46,38 +48,47 @@ namespace pizda {
 		// Buttons
 		_buttonsRow.setOrientation(Orientation::horizontal);
 		_buttonsRow.setHeight(19);
-		_rows.setAutoSize(&_buttonsRow);
-		_rows += &_buttonsRow;
 
 		*this += &_rows;
 
 		// Initialization
-		selectControls(&_buttonsAndRoutes[0]);
+		toggleEbanina(&_ebaninas[0]);
 	}
 
-	Element* MFDPage::getSelectedControls() {
-		return _rows.getChildrenCount() == 3 ? _rows[1] : nullptr;
-	}
+	void MFDPage::toggleEbanina(MFDPageEbanina* ebanina) {
+		// Re-placing children from scratch
+		_rows.removeChildren();
 
-	void MFDPage::selectControls(const std::pair<MFDModeButton*, Route*>* buttonAndRoute) {
-		auto oldControls = getSelectedControls();
+		_rows += &_PFD;
 
-		// Removing old
-		if (oldControls != nullptr) {
-			_rows.removeChildAt(1);
-			delete oldControls;
+		// Deleting old element
+		if (ebanina->button->isSelected()) {
+			if (ebanina->element != nullptr) {
+				delete ebanina->element;
+				ebanina->element = nullptr;
+			}
+		}
+		// Building new element
+		else {
+			ebanina->element = ebanina->route->buildElement();
 		}
 
-		// Updating buttons selection
-		for (auto& otherButtonAndRoute : _buttonsAndRoutes)
-			otherButtonAndRoute.first->setSelected(buttonAndRoute != nullptr && otherButtonAndRoute.first == buttonAndRoute->first);
+		// Adding elements in order
+		for (auto& ebanina2 : _ebaninas) {
+			if (ebanina2.element != nullptr) {
+				if (ebanina2.autoSize)
+					_rows.setAutoSize(ebanina2.element);
 
-		// Building new control
-		if (buttonAndRoute != nullptr) {
-			auto newControls = buttonAndRoute->second->buildElement();
-			_rows.setAutoSize(newControls);
-			_rows.insertChild(1, newControls);
+				_rows.insertChild(1, ebanina2.element);
+			}
 		}
+
+		// Filling children
+		_rows.setAutoSize(&_buttonsRow);
+		_rows += &_buttonsRow;
+
+		// Toggling button selection
+		ebanina->button->setSelected(!ebanina->button->isSelected());
 
 		invalidate();
 	}

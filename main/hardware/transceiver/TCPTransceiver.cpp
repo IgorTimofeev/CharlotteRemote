@@ -28,7 +28,7 @@ namespace pizda {
 		_TCP.setOnStateChanged([this](TCPState fromState, TCPState toState) {
 			switch (toState) {
 				case TCPState::connected: {
-					RC::getInstance().getSpeaker().play(resources::sounds::transceiverConnect());
+					RC::getInstance().getSpeaker().play(resources::Sounds::transceiverConnect());
 
 					fillRemotePacket();
 					setTCPSendingBuffer();
@@ -39,7 +39,7 @@ namespace pizda {
 				}
 				case TCPState::disconnected: {
 					if (fromState == TCPState::connected)
-						RC::getInstance().getSpeaker().play(resources::sounds::transceiverDisconnect());
+						RC::getInstance().getSpeaker().play(resources::Sounds::transceiverDisconnect());
 
 					_TCP.scheduleConnection();
 

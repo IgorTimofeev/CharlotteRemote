@@ -19,7 +19,7 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class ND : public SpatialView {
+	class ND : public SpatialView, public FocusableElement {
 		public:
 			ND();
 
@@ -33,12 +33,13 @@ namespace pizda {
 
 		protected:
 			void onTick() override;
-
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
 			void onEvent(Event* event) override;
 
 		private:
 			float _pinchLength = 0;
-			Point _touchDownPosition;
+			Point _touchDownPosition {};
+			Point _cursorPosition {};
 
 			GeographicCoordinates _cameraOffset {
 				0,

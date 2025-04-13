@@ -68,7 +68,7 @@ namespace pizda {
 
 		// -------------------------------- Take off --------------------------------
 
-		_speaker.play(resources::sounds::boot());
+		_speaker.play(resources::Sounds::boot());
 
 		while (true) {
 			const auto time = esp_timer_get_time();

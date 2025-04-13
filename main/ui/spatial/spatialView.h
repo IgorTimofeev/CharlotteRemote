@@ -11,7 +11,7 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class SpatialView : public Element {
+	class SpatialView : public virtual Element {
 		public:
 			Camera& getCamera();
 			void addElement(SpatialElement* element);

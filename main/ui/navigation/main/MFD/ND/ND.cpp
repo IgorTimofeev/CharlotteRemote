@@ -119,15 +119,58 @@ namespace pizda {
 		invalidate();
 	}
 
+	void ND::onRender(Renderer* renderer, const Bounds& bounds) {
+		SpatialView::onRender(renderer, bounds);
+
+		if (!isFocused())
+			return;
+
+		constexpr const uint8_t lineAreaOffset = 5;
+		constexpr const uint8_t lineAreaSize = 8;
+
+		// Center
+		const auto& center = bounds.getPosition() + _cursorPosition;
+
+		renderer->renderPixel(center, &Theme::yellow);
+
+		// Upper
+		renderer->renderLine(
+			Point(center.getX(), center.getY() - lineAreaOffset),
+			Point(center.getX() - lineAreaSize, center.getY() - lineAreaOffset - lineAreaSize),
+			&Theme::yellow
+		);
+
+		renderer->renderLine(
+			Point(center.getX(), center.getY() - lineAreaOffset),
+			Point(center.getX() + lineAreaSize, center.getY() - lineAreaOffset - lineAreaSize),
+			&Theme::yellow
+		);
+
+		// Lower
+		renderer->renderLine(
+			Point(center.getX(), center.getY() + lineAreaOffset),
+			Point(center.getX() - lineAreaSize, center.getY() + lineAreaOffset + lineAreaSize),
+			&Theme::yellow
+		);
+
+		renderer->renderLine(
+			Point(center.getX(), center.getY() + lineAreaOffset),
+			Point(center.getX() + lineAreaSize, center.getY() + lineAreaOffset + lineAreaSize),
+			&Theme::yellow
+		);
+	}
+
 	void ND::onEvent(Event* event) {
 		SpatialView::onEvent(event);
 
 		if (event->getTypeID() == TouchDownEvent::typeID) {
 			auto touchDownEvent = (TouchDownEvent*) event;
 
+			setFocused(true);
 			setCaptured(true);
 
 			_touchDownPosition = touchDownEvent->getPosition();
+			_cursorPosition = touchDownEvent->getPosition() - getBounds().getPosition();
 
 			event->setHandled(true);
 		}
@@ -136,9 +179,9 @@ namespace pizda {
 
 			ESP_LOGI("ND", "------------- Drag -------------");
 
-			const auto& position = touchDragEventEvent->getPosition();
-			const auto& deltaPixels = (position - _touchDownPosition).rotate(RC::getInstance().getYawInterpolator().getValue());
-			_touchDownPosition = position;
+			const auto& deltaPixels = (touchDragEventEvent->getPosition() - _touchDownPosition).rotate(RC::getInstance().getYawInterpolator().getValue());
+			_touchDownPosition = touchDragEventEvent->getPosition();
+			_cursorPosition = touchDragEventEvent->getPosition() - getBounds().getPosition();
 
 			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
 
@@ -183,6 +226,7 @@ namespace pizda {
 			auto pinchDownEvent = (PinchDownEvent*) event;
 
 			_pinchLength = pinchDownEvent->getLength();
+			_cursorPosition = {};
 
 			event->setHandled(true);
 		}
@@ -216,31 +260,35 @@ namespace pizda {
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == EncoderRotateEvent::typeID) {
-			const auto rotateEvent = (EncoderRotateEvent*) event;
+			if (isFocused()) {
+				const auto rotateEvent = (EncoderRotateEvent*) event;
 
-			const auto scaleFactor = rotateEvent->getRPS() > 60 ? 1.5f : 2.f;
+				const auto scaleFactor = rotateEvent->getRPS() > 60 ? 1.5f : 2.f;
 
-			setCameraOffset(GeographicCoordinates(
-				_cameraOffset.getLatitude(),
-				_cameraOffset.getLongitude(),
-				std::clamp(
-					rotateEvent->getRPS() >= 0
+				setCameraOffset(GeographicCoordinates(
+					_cameraOffset.getLatitude(),
+					_cameraOffset.getLongitude(),
+					std::clamp(
+						rotateEvent->getRPS() >= 0
 						? _cameraOffset.getAltitude() / scaleFactor
 						: _cameraOffset.getAltitude() * scaleFactor,
-					(float) cameraAltitudeMinimum,
-					(float) cameraAltitudeMaximum
-				)
-			));
+						(float) cameraAltitudeMinimum,
+						(float) cameraAltitudeMaximum
+					)
+				));
 
-			event->setHandled(true);
+				event->setHandled(true);
+			}
 		}
 		else if (event->getTypeID() == EncoderPushEvent::typeID) {
-			const auto pushEvent = (EncoderPushEvent*) event;
+			if (isFocused()) {
+				const auto pushEvent = (EncoderPushEvent*) event;
 
-			if (pushEvent->isDown())
-				resetCameraOffsetLatLon();
+				if (pushEvent->isDown())
+					resetCameraOffsetLatLon();
 
-			event->setHandled(true);
+				event->setHandled(true);
+			}
 		}
 	}
 
