@@ -49,6 +49,5 @@ namespace pizda {
 			AircraftElement _aircraftElement {};
 
 			float getEquatorialRadiansPerPixel();
-			void setAltitudeFromDeltaPixels(float deltaPixels);
 	};
 }

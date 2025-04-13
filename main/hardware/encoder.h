@@ -17,7 +17,7 @@ namespace pizda {
 			int32_t getRPS() const;
 
 			template<typename TValue>
-			int16_t getRPSFactor(uint16_t check1, TValue value1, TValue valueElse);
+			TValue getRPSFactor(uint16_t check1, TValue value1, TValue valueElse);
 
 			template<typename TValue>
 			TValue getRPSFactor(uint16_t check1, TValue check2, TValue value1, TValue value2, TValue valueElse);
@@ -27,7 +27,7 @@ namespace pizda {
 	};
 
 	template<typename TValue>
-	int16_t EncoderRotateEvent::getRPSFactor(uint16_t check1, TValue value1, TValue valueElse) {
+	TValue EncoderRotateEvent::getRPSFactor(uint16_t check1, TValue value1, TValue valueElse) {
 		TValue value;
 
 		if (std::abs(_RPS) < check1) {

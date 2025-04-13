@@ -191,32 +191,42 @@ namespace pizda {
 
 //			ESP_LOGI("ND", "------------- Pinch -------------");
 
-			const auto pinchLength = pinchDragEvent->getLength();
-			const auto pinchDelta = pinchLength - _pinchLength;
-			_pinchLength = pinchLength;
-
-			ESP_LOGI("ND", "pinchDelta: %f px", pinchDelta);
-
-			setAltitudeFromDeltaPixels(-pinchDelta);
-
 //			const auto pinchLength = pinchDragEvent->getLength();
-//			const auto pinchFactor = _pinchLength / pinchLength;
+//			const auto pinchDelta = pinchLength - _pinchLength;
 //			_pinchLength = pinchLength;
 //
-//			setCameraOffset(GeographicCoordinates(
-//				_cameraOffset.getLatitude(),
-//				_cameraOffset.getLongitude(),
-//				std::clamp(_cameraOffset.getAltitude() * pinchFactor, (float) cameraAltitudeMinimum, (float) cameraAltitudeMaximum)
-//			));
+//			ESP_LOGI("ND", "pinchDelta: %f px", pinchDelta);
+//
+//			setAltitudeFromDeltaPixels(-pinchDelta);
+
+			const auto pinchLength = pinchDragEvent->getLength();
+			const auto pinchFactor = _pinchLength / pinchLength;
+			_pinchLength = pinchLength;
+
+			setCameraOffset(GeographicCoordinates(
+				_cameraOffset.getLatitude(),
+				_cameraOffset.getLongitude(),
+				std::clamp(
+					_cameraOffset.getAltitude() * pinchFactor,
+					(float) cameraAltitudeMinimum,
+					(float) cameraAltitudeMaximum
+				)
+			));
 
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == EncoderRotateEvent::typeID) {
 			const auto rotateEvent = (EncoderRotateEvent*) event;
 
-			const auto& bounds = getBounds();
-
-			setAltitudeFromDeltaPixels(rotateEvent->getRPSFactor(60, (float) bounds.getWidth() * -0.2f, (float) bounds.getWidth() * -0.4f));
+			setCameraOffset(GeographicCoordinates(
+				_cameraOffset.getLatitude(),
+				_cameraOffset.getLongitude(),
+				std::clamp(
+					_cameraOffset.getAltitude() * rotateEvent->getRPSFactor(60, -1.5f, -3.f),
+					(float) cameraAltitudeMinimum,
+					(float) cameraAltitudeMaximum
+				)
+			));
 
 			event->setHandled(true);
 		}
@@ -249,42 +259,6 @@ namespace pizda {
 		// viewport rad - width px
 		// x rad - 1 px
 		return viewportRad / (float) getBounds().getWidth();
-	}
-
-	void ND::setAltitudeFromDeltaPixels(float deltaPixels) {
-//		ESP_LOGI("ND", "------- Alt ---------");
-
-		const auto radiansPerPixel = getEquatorialRadiansPerPixel();
-//		ESP_LOGI("ND", "radiansPerPixel: %f deg", toDegrees(radiansPerPixel));
-
-		const auto deltaRadians = radiansPerPixel * deltaPixels;
-//		ESP_LOGI("ND", "deltaRadians: %f deg", toDegrees(deltaRadians));
-
-		const auto deltaMeters = GeographicCoordinates::metersPerRadian * deltaRadians;
-//		ESP_LOGI("ND", "deltaMeters: %f m", deltaMeters);
-
-//		const auto pizdaFactor = GeographicCoordinates::equatorialLengthMeters / GeographicCoordinates::equatorialRadiusMeters / 2.f;
-//		const auto pizdaFactor = 2.f;
-//
-//		const auto deltaAltitude = deltaMeters * pizdaFactor;
-
-		const auto newEquatorialLength = GeographicCoordinates::equatorialLengthMeters + deltaMeters;
-		ESP_LOGI("ND", "newEquatorialLength: %lf m", newEquatorialLength);
-
-		const auto newEquatorialRadius = newEquatorialLength / (2.f * std::numbers::pi_v<float>);
-		ESP_LOGI("ND", "newEquatorialRadius: %lf", newEquatorialRadius);
-
-		const auto equatorialRadiusDelta = newEquatorialRadius - GeographicCoordinates::equatorialRadiusMeters;
-		ESP_LOGI("ND", "equatorialRadiusDelta: %lf", equatorialRadiusDelta);
-
-		const auto deltaAltitude = equatorialRadiusDelta * 2.f * std::numbers::pi_v<float>;
-		ESP_LOGI("ND", "deltaAltitude: %lf", deltaAltitude);
-
-		setCameraOffset(GeographicCoordinates(
-			_cameraOffset.getLatitude(),
-			_cameraOffset.getLongitude(),
-			std::clamp(_cameraOffset.getAltitude() + deltaAltitude, (float) cameraAltitudeMinimum, (float) cameraAltitudeMaximum)
-		));
 	}
 
 	const GeographicCoordinates& ND::getCameraOffset() const {
