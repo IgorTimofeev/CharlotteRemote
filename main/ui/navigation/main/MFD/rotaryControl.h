@@ -13,7 +13,7 @@ namespace pizda {
 	class RC;
 
 	template<uint8_t digitCount, uint32_t minimum, uint32_t maximum, bool cycling, uint16_t smallChange, uint16_t bigChange>
-	class RotaryControl : public Layout, public FocusableElement {
+	class RotaryControl : public Layout {
 		public:
 			RotaryControl(const std::wstring_view& text) {
 				// Button

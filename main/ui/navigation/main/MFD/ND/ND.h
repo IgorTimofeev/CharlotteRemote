@@ -19,7 +19,7 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class ND : public SpatialView, public FocusableElement {
+	class ND : public SpatialView {
 		public:
 			ND();
 
