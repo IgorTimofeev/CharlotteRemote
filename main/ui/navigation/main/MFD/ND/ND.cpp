@@ -218,11 +218,15 @@ namespace pizda {
 		else if (event->getTypeID() == EncoderRotateEvent::typeID) {
 			const auto rotateEvent = (EncoderRotateEvent*) event;
 
+			const auto scaleFactor = rotateEvent->getRPS() > 60 ? 1.5f : 2.f;
+
 			setCameraOffset(GeographicCoordinates(
 				_cameraOffset.getLatitude(),
 				_cameraOffset.getLongitude(),
 				std::clamp(
-					_cameraOffset.getAltitude() * rotateEvent->getRPSFactor(60, -1.5f, -3.f),
+					rotateEvent->getRPS() >= 0
+						? _cameraOffset.getAltitude() / scaleFactor
+						: _cameraOffset.getAltitude() * scaleFactor,
 					(float) cameraAltitudeMinimum,
 					(float) cameraAltitudeMaximum
 				)

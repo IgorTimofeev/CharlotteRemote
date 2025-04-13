@@ -7,7 +7,7 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class Switcher : public EqualLayout {
+	class Switcher : public RelativeStackLayout {
 		public:
 			Switcher() {
 				setOrientation(Orientation::horizontal);
@@ -17,7 +17,7 @@ namespace pizda {
 				*this += &_text;
 
 				Theme::apply(&_switch);
-				setFit(&_switch);
+				setAutoSize(&_switch);
 				*this += &_switch;
 			}
 

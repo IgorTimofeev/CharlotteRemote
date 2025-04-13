@@ -23,9 +23,9 @@ namespace pizda {
 		private:
 			PFD _PFD {};
 
-			EqualLayout _rows {};
+			RelativeStackLayout _rows {};
 
-			EqualLayout _buttonsRow {};
+			RelativeStackLayout _buttonsRow {};
 
 			MFDModeButton
 				_mainButton = MFDModeButton(L"INS"),

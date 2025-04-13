@@ -46,7 +46,7 @@ namespace pizda {
 		// Buttons
 		_buttonsRow.setOrientation(Orientation::horizontal);
 		_buttonsRow.setHeight(19);
-		_rows.setFit(&_buttonsRow, true);
+		_rows.setAutoSize(&_buttonsRow);
 		_rows += &_buttonsRow;
 
 		*this += &_rows;
@@ -75,7 +75,7 @@ namespace pizda {
 		// Building new control
 		if (buttonAndRoute != nullptr) {
 			auto newControls = buttonAndRoute->second->buildElement();
-			_rows.setFit(newControls, true);
+			_rows.setAutoSize(newControls);
 			_rows.insertChild(1, newControls);
 		}
 
