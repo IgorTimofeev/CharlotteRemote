@@ -47,12 +47,9 @@ namespace pizda {
 
 		_buttonsRow += &_menuButton;
 
-
-
-
 		// Buttons
 		_buttonsRow.setOrientation(Orientation::horizontal);
-		_buttonsRow.setHeight(19);
+		_buttonsRow.setHeight(18);
 		_rows.setAutoSize(&_buttonsRow);
 		_rows += &_buttonsRow;
 
