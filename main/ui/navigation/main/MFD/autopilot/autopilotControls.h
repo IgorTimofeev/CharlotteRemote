@@ -3,6 +3,8 @@
 #include "../../../../../../components/yoba/src/main.h"
 #include "../../../../../../components/yoba/src/ui.h"
 #include "../../../../theme.h"
+
+#include "../instrumentsLayout.h"
 #include "../../../../titler.h"
 
 #include "../rotaryControl.h"
@@ -11,11 +13,9 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class AutopilotControls : public Layout {
+	class AutopilotControls : public InstrumentsLayout {
 		public:
 			explicit AutopilotControls();
-
-			StackLayout row {};
 
 			RotaryControl<3, 0, 400, false, 1, 10> speed = { L"A/T" };
 			Titler speedTitle = Titler(L"Speed", &speed);

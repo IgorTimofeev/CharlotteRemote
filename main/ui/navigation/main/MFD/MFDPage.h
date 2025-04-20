@@ -2,10 +2,8 @@
 
 #include <utility>
 #include "../../page.h"
-#include "../../route.h"
 
 #include "PFD.h"
-#include "MFDModeButton.h"
 
 #include "main/mainControls.h"
 #include "ND/NDControls.h"
@@ -16,47 +14,28 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class MFDPageEbanina {
-		public:
-			MFDPageEbanina(MFDModeButton* button, Route* route, bool autoSize);
-
-			MFDModeButton* button;
-			Route* route;
-			bool autoSize;
-	};
-
 	class MFDPage : public Page {
 		public:
 			explicit MFDPage();
 
+			~MFDPage();;
+
+			static void fromSettings();
+
 		private:
+			static MFDPage* _instance;
+
 			PFD _PFD {};
 
 			RelativeStackLayout _rows {};
 
-			RelativeStackLayout _buttonsRow {};
+			NDControls* _NDControls = nullptr;
+			MainControls* _mainControls = nullptr;
+			AutopilotControls* _autopilotControls = nullptr;
+			PressureControls* _pressureControls = nullptr;
 
-			MFDModeButton
-				_instrumentsButton = MFDModeButton(L"INS"),
-				_NDButton = MFDModeButton(L"N/D"),
-				_autopilotButton = MFDModeButton(L"A/P"),
-				_pressureButton = MFDModeButton(L"BARO"),
-				_menuButton = MFDModeButton(L"...");
+			void deleteControls();
 
-			ElementRoute<MainControls> _instrumentsRoute {};
-			ElementRoute<NDControls> _NDRoute {};
-			ElementRoute<AutopilotControls> _autopilotRoute {};
-			ElementRoute<PressureControls> _pressureRoute {};
-
-			MFDPageEbanina _ebaninas[4] {
-				{ &_instrumentsButton, &_instrumentsRoute, true },
-				{ &_NDButton, &_NDRoute, false },
-				{ &_autopilotButton, &_autopilotRoute, true },
-				{ &_pressureButton, &_pressureRoute, true },
-			};
-
-			MFDPageEbanina* _selectedEbanina = nullptr;
-
-			void setEbanina(MFDPageEbanina* ebanina);
+			void fromSettingsInstance();
 	};
 }

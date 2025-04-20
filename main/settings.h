@@ -41,11 +41,11 @@ namespace pizda {
 
 	class SettingsAxis {
 		public:
-			SettingsAxisData leverLeft;
-			SettingsAxisData leverRight;
-			SettingsAxisData joystickHorizontal;
-			SettingsAxisData joystickVertical;
-			SettingsAxisData ring;
+			SettingsAxisData leverLeft {0, 4096, false};
+			SettingsAxisData leverRight {0, 4096, false};
+			SettingsAxisData joystickHorizontal {778, 2744, true};
+			SettingsAxisData joystickVertical {1474, 3031, false};
+			SettingsAxisData ring {0, 3768, true};
 			uint16_t lowPassFactor = 0xFFFF * 75 / 100;
 			uint8_t jitteringCutoffValue = 30;
 	};
@@ -69,11 +69,24 @@ namespace pizda {
 			PressureUnit pressure = PressureUnit::hectopascal;
 	};
 
+	enum class SettingsInterfaceMFDInstrumentsMode : uint8_t {
+		main,
+		autopilot,
+		pressure
+	};
+
+	class SettingsInterface {
+		public:
+			bool MFDNavDisplay = false;
+			SettingsInterfaceMFDInstrumentsMode MFDInstrumentsMode = SettingsInterfaceMFDInstrumentsMode::main;
+	};
+
 	class Settings {
 		public:
 			SettingsControls controls;
 			SettingsAxis axis;
 			SettingsAutopilot autopilot;
+			SettingsInterface interface;
 			SettingsUnits units;
 
 			void setup() { // NOLINT(*-convert-member-functions-to-static)
@@ -131,7 +144,7 @@ namespace pizda {
 
 		private:
 			constexpr static const uint32_t _writeDelay = 2500000;
-			constexpr static const uint8_t _version = 7;
+			constexpr static const uint8_t _version = 8;
 			uint32_t _timeToWrite = 0;
 	};
 

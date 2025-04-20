@@ -3,6 +3,7 @@
 #include "../../../components/yoba/src/main.h"
 #include "../../../components/yoba/src/ui.h"
 #include "../theme.h"
+#include "../../settings.h"
 
 #include "menuButton.h"
 #include "routes.h"
@@ -24,6 +25,7 @@ namespace pizda {
 			explicit Menu();
 
 			void updateRouteButtonsSelection();
+			void updateMFDModeButtonsSelection();
 
 		private:
 			MenuOverlayBackground _overlayBackground = {};
@@ -42,15 +44,23 @@ namespace pizda {
 
 			RouteMenuButton
 				_mainMFDButton = RouteMenuButton(L"MFD", &Routes::MFD),
-
 				_settingsAxisButton = RouteMenuButton(L"Axis", &Routes::settingsAxis),
 				_settingsWiFiButton = RouteMenuButton(L"Wi-Fi", &Routes::settingsWiFi),
 				_developerUITestButton = RouteMenuButton(L"Test", &Routes::developerUITest);
 
 			OptionMenuButton
-				_mainNDButton = OptionMenuButton(L"N/D"),
-				_mainAutopilotButton = OptionMenuButton(L"A/P"),
-				_mainPressureButton = OptionMenuButton(L"Baro");
+				_mainNDButton = OptionMenuButton(L"N/D");
+
+			MFDModeMenuButton
+				_mainMainButton = MFDModeMenuButton(L"Main", SettingsInterfaceMFDInstrumentsMode::main),
+				_mainAutopilotButton = MFDModeMenuButton(L"A/P", SettingsInterfaceMFDInstrumentsMode::autopilot),
+				_mainPressureButton = MFDModeMenuButton(L"Baro", SettingsInterfaceMFDInstrumentsMode::pressure);
+
+			MFDModeMenuButton* _MFDInstrumentsModeButtons[3] {
+				&_mainMainButton,
+				&_mainAutopilotButton,
+				&_mainPressureButton
+			};
 
 			RouteMenuButton* _routeButtons[4] {
 				&_mainMFDButton,
@@ -63,5 +73,7 @@ namespace pizda {
 			void addRouteButton(WrapLayout* wrapLayout, RouteMenuButton* button);
 			void addOptionButton(WrapLayout* wrapLayout, OptionMenuButton* button);
 			void addWrapLayout(WrapLayout* wrapLayout);
+			void addMFDInstrumentsModeButton(MFDModeMenuButton* button);
+
 	};
 }

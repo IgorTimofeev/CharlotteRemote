@@ -26,7 +26,8 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		row += &pressureTitle;
+		applyTitlerStyle(pressureTitle);
+		_row += &pressureTitle;
 
 		// Minimums
 		minimums.seven.setValue(settings.controls.minimumAltitudeFt);
@@ -44,12 +45,7 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		row += &minimumsTitle;
-
-		row.setOrientation(Orientation::horizontal);
-		row.setSpacing(10);
-		row.setHorizontalAlignment(Alignment::center);
-		row.setMargin(Margin(0, 2, 0, 0));
-		*this += &row;
+		applyTitlerStyle(minimumsTitle);
+		_row += &minimumsTitle;
 	}
 }

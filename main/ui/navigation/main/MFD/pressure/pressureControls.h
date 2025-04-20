@@ -3,6 +3,8 @@
 #include "../../../../../../components/yoba/src/main.h"
 #include "../../../../../../components/yoba/src/ui.h"
 #include "../../../../theme.h"
+
+#include "../instrumentsLayout.h"
 #include "../../../../titler.h"
 
 #include "../rotaryControl.h"
@@ -11,11 +13,9 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class PressureControls : public Layout {
+	class PressureControls : public InstrumentsLayout {
 		public:
 			explicit PressureControls();
-
-			StackLayout row {};
 
 			RotaryControl<4, 800, 1090, false, 1, 10> pressure = { L"STD" };
 			Titler pressureTitle = Titler(L"Baro", &pressure);

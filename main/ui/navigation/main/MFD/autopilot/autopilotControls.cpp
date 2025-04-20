@@ -26,7 +26,8 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		row += &speedTitle;
+		applyTitlerStyle(speedTitle);
+		_row += &speedTitle;
 
 		// Heading
 		heading.seven.setValue(settings.autopilot.headingDeg);
@@ -44,7 +45,8 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		row += &headingTitle;
+		applyTitlerStyle(headingTitle);
+		_row += &headingTitle;
 
 		// Altitude
 		altitude.seven.setValue(settings.autopilot.altitudeFt);
@@ -62,12 +64,7 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		row += &altitudeTitle;
-
-		row.setOrientation(Orientation::horizontal);
-		row.setSpacing(10);
-		row.setHorizontalAlignment(Alignment::center);
-		row.setMargin(Margin(0, 2, 0, 0));
-		*this += &row;
+		applyTitlerStyle(altitudeTitle);
+		_row += &altitudeTitle;
 	}
 }

@@ -1,5 +1,6 @@
 #include "menu.h"
 #include "../../rc.h"
+#include "main/MFD/MFDPage.h"
 
 namespace pizda {
 	MenuOverlayBackground::MenuOverlayBackground() {
@@ -29,20 +30,35 @@ namespace pizda {
 		_slideLayout += &_slideBackground;
 
 		// Titles & buttons
+		const auto& settings = RC::getInstance().getSettings();
 
-		// Main
+		// MFD
 		addTitle(&_MFDTitle);
 
-		addRouteButton(&_mainWL, &_mainMFDButton);
+		// N/D
+		_mainNDButton.setPrimaryColor(&Theme::purple);
+		_mainNDButton.setChecked(settings.interface.MFDNavDisplay);
+
+		_mainNDButton.isCheckedChanged += [this]() {
+			auto& settings = RC::getInstance().getSettings();
+			settings.interface.MFDNavDisplay = _mainNDButton.isChecked();
+			settings.enqueueWrite();
+
+			MFDPage::fromSettings();
+		};
+
 		addOptionButton(&_mainWL, &_mainNDButton);
-		addOptionButton(&_mainWL, &_mainAutopilotButton);
-		addOptionButton(&_mainWL, &_mainPressureButton);
+
+		// Other
+		addMFDInstrumentsModeButton(&_mainMainButton);
+		addMFDInstrumentsModeButton(&_mainAutopilotButton);
+		addMFDInstrumentsModeButton(&_mainPressureButton);
 
 		addWrapLayout(&_mainWL);
 
 		// Settings
 		addTitle(&_settingsTitle);
-
+		addRouteButton(&_settingsWL, &_mainMFDButton);
 		addRouteButton(&_settingsWL, &_settingsAxisButton);
 		addRouteButton(&_settingsWL, &_settingsWiFiButton);
 		addRouteButton(&_settingsWL, &_developerUITestButton);
@@ -69,17 +85,29 @@ namespace pizda {
 	}
 
 	void Menu::addRouteButton(WrapLayout* wrapLayout, RouteMenuButton* button) {
-		*wrapLayout += button;
-
 		button->updateSelection();
+
+		*wrapLayout += button;
 	}
 
 	void Menu::addOptionButton(WrapLayout* wrapLayout, OptionMenuButton* button) {
 		*wrapLayout += button;
 	}
 
+	void Menu::addMFDInstrumentsModeButton(MFDModeMenuButton* button) {
+		button->updateSelection();
+
+		_mainWL += button;
+	}
+
 	void Menu::updateRouteButtonsSelection() {
 		for (auto button : _routeButtons) {
+			button->updateSelection();
+		}
+	}
+
+	void Menu::updateMFDModeButtonsSelection() {
+		for (auto button : _MFDInstrumentsModeButtons) {
 			button->updateSelection();
 		}
 	}

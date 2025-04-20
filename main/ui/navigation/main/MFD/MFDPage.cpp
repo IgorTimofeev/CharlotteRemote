@@ -4,91 +4,97 @@
 #include "../../../../rc.h"
 
 namespace pizda {
-	MFDPageEbanina::MFDPageEbanina(MFDModeButton* button, Route* route, bool autoSize) : button(button), route(route), autoSize(autoSize) {
-
-	}
+	MFDPage* MFDPage::_instance = nullptr;
 
 	MFDPage::MFDPage() {
-		_rows += &_PFD;
-
-		// Controls
-		for (auto& ebanina : _ebaninas) {
-			ebanina.button->gotEvent += [this, &ebanina](Event* event) {
-				if (event->getTypeID() != TouchDownEvent::typeID)
-					return;
-
-				getApplication()->enqueueOnTick([this, &ebanina]() {
-					setEbanina(&ebanina);
-				});
-
-				event->setHandled(true);
-			};
-
-			_buttonsRow += ebanina.button;
-		}
-
-		// Menu
-		_menuButton.gotEvent += [this](Event* event) {
-			if (event->getTypeID() == TouchDownEvent::typeID) {
-				_menuButton.setCaptured(true);
-				_menuButton.setSelected(true);
-
-				event->setHandled(true);
-			}
-			else if (event->getTypeID() == TouchUpEvent::typeID) {
-				_menuButton.setCaptured(false);
-				_menuButton.setSelected(false);
-
-				RC::getInstance().setMenuVisibility(true);
-
-				event->setHandled(true);
-			}
-		};
-
-		_buttonsRow += &_menuButton;
-
-		// Buttons
-		_buttonsRow.setOrientation(Orientation::horizontal);
-		_buttonsRow.setHeight(18);
-		_rows.setAutoSize(&_buttonsRow);
-		_rows += &_buttonsRow;
+		_instance = this;
 
 		*this += &_rows;
 
 		// Initialization
-		setEbanina(&_ebaninas[0]);
+		fromSettings();
 	}
 
-	void MFDPage::setEbanina(MFDPageEbanina* ebanina) {
-		if (ebanina == _selectedEbanina)
-			return;
+	MFDPage::~MFDPage() {
+		_instance = nullptr;
 
-		constexpr static const uint8_t ebaninaIndex = 1;
+		deleteControls();
+	}
 
-		if (_selectedEbanina != nullptr) {
-			auto selectedElement = _rows[ebaninaIndex];
+	void MFDPage::fromSettings() {
+		if (_instance)
+			_instance->fromSettingsInstance();
+	}
 
-			// Deleting old element
-			if (selectedElement != nullptr) {
-				_rows.removeChildAt(ebaninaIndex);
-				delete selectedElement;
+	void MFDPage::deleteControls() {
+		auto& settings = RC::getInstance().getSettings();
+
+		if (_NDControls && !settings.interface.MFDNavDisplay) {
+			delete _NDControls;
+			_NDControls = nullptr;
+		}
+
+		if (_mainControls && settings.interface.MFDInstrumentsMode != SettingsInterfaceMFDInstrumentsMode::main) {
+			delete _mainControls;
+			_mainControls = nullptr;
+		}
+
+		if (_autopilotControls && settings.interface.MFDInstrumentsMode != SettingsInterfaceMFDInstrumentsMode::autopilot) {
+			delete _autopilotControls;
+			_autopilotControls = nullptr;
+		}
+
+		if (_pressureControls && settings.interface.MFDInstrumentsMode != SettingsInterfaceMFDInstrumentsMode::pressure) {
+			delete _pressureControls;
+			_pressureControls = nullptr;
+		}
+	}
+
+	void MFDPage::fromSettingsInstance() {
+		_rows.removeChildren();
+		deleteControls();
+
+		_rows += &_PFD;
+
+		auto& settings = RC::getInstance().getSettings();
+
+		if (settings.interface.MFDNavDisplay) {
+			if (!_NDControls)
+				_NDControls = new NDControls();
+
+			_rows.setRelativeSize(_NDControls, 0.8f);
+			_rows += _NDControls;
+		}
+
+		switch (settings.interface.MFDInstrumentsMode) {
+			case SettingsInterfaceMFDInstrumentsMode::main: {
+				if (!_mainControls)
+					_mainControls = new MainControls();
+
+				_rows.setAutoSize(_mainControls, true);
+				_rows += _mainControls;
+
+				break;
+			}
+			case SettingsInterfaceMFDInstrumentsMode::autopilot: {
+				if (!_autopilotControls)
+					_autopilotControls = new AutopilotControls();
+
+				_rows.setAutoSize(_autopilotControls, true);
+				_rows += _autopilotControls;
+
+				break;
+			}
+			case SettingsInterfaceMFDInstrumentsMode::pressure: {
+				if (!_pressureControls)
+					_pressureControls = new PressureControls();
+
+				_rows.setAutoSize(_pressureControls, true);
+				_rows += _pressureControls;
+
+				break;
 			}
 		}
-
-		// Building new element
-		auto newElement = ebanina->route->buildElement();
-
-		if (ebanina->autoSize)
-			_rows.setAutoSize(newElement);
-
-		_rows.insertChild(ebaninaIndex, newElement);
-
-		// Updating buttons selection
-		for (auto& ebanina2 : _ebaninas) {
-			ebanina2.button->setSelected(&ebanina2 == ebanina);
-		}
-
-		_selectedEbanina = ebanina;
 
 		invalidate();
 	}
