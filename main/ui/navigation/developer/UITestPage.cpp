@@ -6,7 +6,59 @@
 namespace pizda {
 	UITestPage::UITestPage() {
 		// Page title
-		title.setText(L"Debug page");
+		title.setText(L"Test page");
+
+		// Speaker
+		// Title
+		title.setText(L"Speaker");
+
+		// Frequency
+		Theme::apply(&_speakerFrequencySlider);
+		_speakerFrequencySlider.setFillColor(&Theme::good2);
+		_speakerFrequencySlider.setValue(0xFFFF * 50 / 100);
+
+		rows += &_speakerFrequencySliderTitle;
+
+		// Duration
+		_speakerDurationSlider.setFillColor(&Theme::bad2);
+		Theme::apply(&_speakerDurationSlider);
+		_speakerDurationSlider.setValue(0xFFFF * 50 / 100);
+
+		rows += &_speakerDurationSliderTitle;
+
+		// Count
+		Theme::apply(&_speakerCountSlider);
+		_speakerCountSlider.setValue(0xFFFF * 20 / 100);
+
+		rows += &_speakerCountSliderTitle;
+
+		// Button
+		Theme::apply(&_speakerButton);
+		_speakerButton.setText(L"Play");
+
+		_speakerButton.isCheckedChanged += [this]() {
+			if (_speakerButton.isChecked())
+				return;
+
+			auto& rc = RC::getInstance();
+
+			const uint32_t frequency = (uint32_t) _speakerFrequencySlider.getValue() * 12'000ul / 0xFFFFul;
+			const uint32_t duration = (uint64_t) _speakerDurationSlider.getValue() * 1'000'000ull / 0xFFFFull;
+			const auto count = (uint8_t) (1 + (uint32_t)_speakerCountSlider.getValue() * 5ul / 0xFFFFul);
+
+			ESP_LOGI("Debug", "Speaker test: %lu, %lu, %d", frequency, duration, count);
+
+			std::vector<Note> notes {};
+
+			for (uint8_t i = 0; i < count; i++) {
+				notes.emplace_back(frequency, duration);
+				notes.push_back(Delay(duration));
+			}
+
+			rc.getSpeaker().play(Sound(notes));
+		};
+
+		rows += &_speakerButton;
 
 		// Text font size slider
 		Theme::apply(&_textFontSizeSlider);

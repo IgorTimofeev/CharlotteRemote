@@ -2,6 +2,10 @@
 #include "../../rc.h"
 
 namespace pizda {
+	MenuOverlayBackground::MenuOverlayBackground() {
+		setFillColor(&Theme::bg1);
+	}
+
 	void MenuOverlayBackground::onEvent(Event* event) {
 		Element::onEvent(event);
 
@@ -14,55 +18,69 @@ namespace pizda {
 	}
 
 	Menu::Menu() {
-		*this += &overlayBackground;
+		// Background
+		*this += &_overlayBackground;
 
 		// Holder
-		_slideLayout.setWidth(_menuWidth);
-		_slideLayout.setHorizontalAlignment(Alignment::start);
+		_slideLayout.setVerticalAlignment(Alignment::end);
 
 		// Items background
 		_slideBackground.setFillColor(&Theme::bg2);
 		_slideLayout += &_slideBackground;
 
-		// Items selector
-		addTitleItem(&_mainTitleItem);
-		addPageItem(&_mainMFDItem);
+		// Titles & buttons
 
-		addTitleItem(&_settingsTitleItem);
-		addPageItem(&_settingsWiFiItem);
-		addPageItem(&_settingsAxisItem);
-		addPageItem(&_settingsUpdatesItem);
+		// Main
+		addTitle(&_MFDTitle);
 
-		addTitleItem(&_developerTitleItem);
-		addPageItem(&_developerSpeakerItem);
-		addPageItem(&_developerUITestItem);
+		addRouteButton(&_mainWL, &_mainMFDButton);
+		addOptionButton(&_mainWL, &_mainNDButton);
+		addOptionButton(&_mainWL, &_mainAutopilotButton);
+		addOptionButton(&_mainWL, &_mainPressureButton);
 
-		_slideItemsLayout.setMargin(Margin(0, 5, 0, 0));
-		_slideLayout += &_slideItemsLayout;
+		addWrapLayout(&_mainWL);
 
+		// Settings
+		addTitle(&_settingsTitle);
+
+		addRouteButton(&_settingsWL, &_settingsAxisButton);
+		addRouteButton(&_settingsWL, &_settingsWiFiButton);
+		addRouteButton(&_settingsWL, &_developerUITestButton);
+
+		addWrapLayout(&_settingsWL);
+
+		_slideRows.setSpacing(10);
+		_slideRows.setMargin(Margin(15, 10, 15, 10));
+		_slideLayout += &_slideRows;
+
+		setAutoSize(&_slideLayout);
 		*this += &_slideLayout;
 	}
 
-	void Menu::addItem(MenuItem* item) {
-		_slideItemsLayout += item;
+	void Menu::addTitle(Text* text) {
+		Theme::apply(text);
+
+		_slideRows += text;
 	}
 
-	void Menu::addTitleItem(TitleMenuItem* item) {
-		addItem(item);
+	void Menu::addWrapLayout(WrapLayout* wrapLayout) {
+		wrapLayout->setSpacing(10);
+		_slideRows += wrapLayout;
 	}
 
-	void Menu::addPageItem(PageMenuItem* item) {
-		item->updateSelection();
+	void Menu::addRouteButton(WrapLayout* wrapLayout, RouteMenuButton* button) {
+		*wrapLayout += button;
 
-		addItem(item);
+		button->updateSelection();
 	}
 
-	void Menu::updatePageItemsSelection() {
-		for (auto element : _slideItemsLayout) {
-			if (!element->isEnabled())
-				continue;
+	void Menu::addOptionButton(WrapLayout* wrapLayout, OptionMenuButton* button) {
+		*wrapLayout += button;
+	}
 
-			dynamic_cast<PageMenuItem*>(element)->updateSelection();
+	void Menu::updateRouteButtonsSelection() {
+		for (auto button : _routeButtons) {
+			button->updateSelection();
 		}
 	}
 }

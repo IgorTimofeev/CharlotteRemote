@@ -22,5 +22,9 @@ namespace pizda {
 
 			TextField passwordTextField;
 			Titler passwordTitle = Titler(L"Password", &passwordTextField);
+
+			Text _updatesTitle {};
+			Text _updatesDescription {};
+			Button _updatesButton {};
 	};
 }

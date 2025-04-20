@@ -4,7 +4,7 @@
 #include "../../../components/yoba/src/ui.h"
 #include "../theme.h"
 
-#include "menuButton.h"
+#include "openMenuButton.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -47,7 +47,7 @@ namespace pizda {
 			StackLayout rows;
 
 			StackLayout upperRow;
-			MenuButton menuButton;
+			OpenMenuButton menuButton;
 			Text title;
 	};
 }

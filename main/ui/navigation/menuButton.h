@@ -3,15 +3,40 @@
 #include "../../../components/yoba/src/main.h"
 #include "../../../components/yoba/src/ui.h"
 
+#include "../theme.h"
+#include "page.h"
+#include "route.h"
+
 namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
-	class MenuButton : public Button {
+	class MenuButton : public TextElement, public CheckedElement {
 		public:
-			MenuButton();
+			explicit MenuButton(const std::wstring_view& text);
 
 		protected:
-			void onIsCheckedChanged() override;
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
+
+			void onEvent(Event* event) override;
+	};
+
+	class RouteMenuButton : public MenuButton {
+		public:
+			RouteMenuButton(const std::wstring_view&, const Route* route);
+
+			const Route* getRoute() const;
+			void updateSelection();
+
+		protected:
+			void onEvent(Event* event) override;
+
+		private:
+			const Route* _route;
+	};
+
+	class OptionMenuButton : public MenuButton {
+		public:
+			explicit OptionMenuButton(const std::wstring_view& text);
 	};
 }
