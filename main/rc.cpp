@@ -371,24 +371,6 @@ namespace pizda {
 		return _menu != nullptr;
 	}
 
-	void RC::setMenuVisibility(bool state) {
-		if (state) {
-			if (isMenuVisible())
-				return;
-
-			_menu = new Menu();
-			_application += _menu;
-		}
-		else {
-			if (!isMenuVisible())
-				return;
-
-			_application -= _menu;
-			delete _menu;
-			_menu = nullptr;
-		}
-	}
-
 	bool RC::isDebugOverlayVisible() {
 		return _debugOverlay != nullptr;
 	}
@@ -429,5 +411,22 @@ namespace pizda {
 
 		// Adding new page
 		_pageLayout += _route->buildElement();
+	}
+
+	void RC::showMenu(const Route* route) {
+		if (isMenuVisible())
+			return;
+
+		_menu = new Menu(route);
+		_application += _menu;
+	}
+
+	void RC::hideMenu() {
+		if (!isMenuVisible())
+			return;
+
+		_application -= _menu;
+		delete _menu;
+		_menu = nullptr;
 	}
 }

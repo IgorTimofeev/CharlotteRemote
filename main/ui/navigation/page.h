@@ -4,7 +4,7 @@
 #include "../../../components/yoba/src/ui.h"
 #include "../theme.h"
 
-#include "openMenuButton.h"
+#include "menu/openMenuButton.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -17,37 +17,13 @@ namespace pizda {
 
 	class ScrollViewPage : public Page {
 		public:
-			ScrollViewPage() {
-				rows.setSpacing(10);
-				rows.setMargin(Margin(15, 15));
-
-				// Upper row
-				upperRow.setOrientation(Orientation::horizontal);
-				upperRow.setSpacing(10);
-				upperRow.setMargin(Margin(0, 0, 0, 5));
-
-				// Menu button
-				menuButton.setVerticalAlignment(Alignment::center);
-				upperRow += &menuButton;
-
-				// Title
-				Theme::applyTitle(&title);
-				title.setVerticalAlignment(Alignment::center);
-				upperRow += &title;
-
-				rows += &upperRow;
-
-				scrollView += &rows;
-
-				Theme::apply(&scrollView);
-				*this += &scrollView;
-			}
+			ScrollViewPage();
 
 			ScrollView scrollView;
 			StackLayout rows;
 
-			StackLayout upperRow;
-			OpenMenuButton menuButton;
+			RelativeStackLayout upperRow;
+			OpenMenuButton menuButton {};
 			Text title;
 	};
 }

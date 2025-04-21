@@ -8,7 +8,7 @@
 
 #include "ui/theme.h"
 #include "ui/navigation/route.h"
-#include "ui/navigation/menu.h"
+#include "ui/navigation/menu/menu.h"
 #include "ui/debugOverlay.h"
 
 #include "units.h"
@@ -67,8 +67,8 @@ namespace pizda {
 			void handleAircraftPacket(AircraftPacket* packet);
 
 			bool isMenuVisible();
-
-			void setMenuVisibility(bool state);
+			void showMenu(const Route* route);
+			void hideMenu();
 
 			bool isDebugOverlayVisible();
 			void setDebugOverlayVisibility(bool state);
