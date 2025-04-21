@@ -33,10 +33,6 @@ namespace pizda {
 				button.setFont(&Theme::fontSmall);
 				button.setText(text);
 
-				button.click += [this]() {
-					switched();
-				};
-
 				*this += &button;
 
 				// Background rect

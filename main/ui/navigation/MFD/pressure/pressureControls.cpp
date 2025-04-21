@@ -20,7 +20,7 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		pressure.switched += [this]() {
+		pressure.button.isCheckedChanged += [this]() {
 			auto& settings = RC::getInstance().getSettings();
 			settings.controls.referencePressureSTD = pressure.button.isChecked();
 			RC::getInstance().getSettings().enqueueWrite();
@@ -39,7 +39,7 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		minimums.switched += [this]() {
+		minimums.button.isCheckedChanged += [this]() {
 			auto& settings = RC::getInstance().getSettings();
 			settings.controls.minimumAltitudeEnabled = minimums.button.isChecked();
 			RC::getInstance().getSettings().enqueueWrite();

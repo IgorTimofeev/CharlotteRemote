@@ -20,7 +20,7 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		speed.switched += [this]() {
+		speed.button.isCheckedChanged += [this]() {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.autoThrottle = speed.button.isChecked();
 			RC::getInstance().getSettings().enqueueWrite();
@@ -39,7 +39,7 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		heading.switched += [this]() {
+		heading.button.isCheckedChanged += [this]() {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.headingHold = heading.button.isChecked();
 			RC::getInstance().getSettings().enqueueWrite();
@@ -58,7 +58,7 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		altitude.switched += [this]() {
+		altitude.button.isCheckedChanged += [this]() {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.levelChange = altitude.button.isChecked();
 			RC::getInstance().getSettings().enqueueWrite();
