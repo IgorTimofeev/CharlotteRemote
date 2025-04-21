@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../resources/images/PFDFlapsAndSpoilersImage.h"
+#include "../../../../resources/images.h"
 #include "src/ui.h"
 
 namespace pizda {
@@ -15,7 +15,5 @@ namespace pizda {
 
 		private:
 			constexpr static const uint8_t maxAngle = 45;
-
-			PFDFlapsAndSpoilersImage _image {};
 	};
 }

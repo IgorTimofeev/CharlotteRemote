@@ -6,6 +6,7 @@
 #include "menuView.h"
 #include "menuButton.h"
 #include "../../../settings.h"
+#include "../../../resources/images.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -13,7 +14,7 @@ namespace pizda {
 
 	class MFDModeMenuButton : public MenuButton {
 		public:
-			explicit MFDModeMenuButton(const std::wstring_view& text, SettingsInterfaceMFDInstrumentsMode mode);
+			explicit MFDModeMenuButton(const Image* image, const std::wstring_view& text, SettingsInterfaceMFDInstrumentsMode mode);
 
 		protected:
 			void onClick() override;
@@ -27,12 +28,12 @@ namespace pizda {
 			explicit MFDMenuView();
 
 			MenuButton
-				NDButton = MenuButton(L"N/D");
+				NDButton = MenuButton(&resources::Images::menuIconMFDND, L"N/D");
 
 			MFDModeMenuButton
-				mainButton = MFDModeMenuButton(L"Main", SettingsInterfaceMFDInstrumentsMode::main),
-				autopilotButton = MFDModeMenuButton(L"A/P", SettingsInterfaceMFDInstrumentsMode::autopilot),
-				pressureButton = MFDModeMenuButton(L"Baro", SettingsInterfaceMFDInstrumentsMode::pressure);
+				mainButton = MFDModeMenuButton(&resources::Images::menuIconMFDMain, L"Main", SettingsInterfaceMFDInstrumentsMode::main),
+				autopilotButton = MFDModeMenuButton(&resources::Images::menuIconMFDAutopilot, L"A/P", SettingsInterfaceMFDInstrumentsMode::autopilot),
+				pressureButton = MFDModeMenuButton(&resources::Images::menuIconMFDPressure, L"Baro", SettingsInterfaceMFDInstrumentsMode::pressure);
 
 			MFDModeMenuButton* modeButtons[3] {
 				&mainButton,

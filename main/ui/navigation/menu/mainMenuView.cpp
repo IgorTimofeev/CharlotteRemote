@@ -7,7 +7,7 @@
 #include "menuRoutes.h"
 
 namespace pizda {
-	RouteMenuButton::RouteMenuButton(const std::wstring_view& text, const Route* route) : MenuButton(text), _route(route) {
+	RouteMenuButton::RouteMenuButton(const Image* image, const std::wstring_view& text, const Route* route) : MenuButton(image, text), _route(route) {
 		setChecked(RC::getInstance().getRoute() == route);
 	}
 

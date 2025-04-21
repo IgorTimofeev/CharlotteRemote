@@ -1,10 +1,8 @@
 #include "mainControls.h"
 #include "../../../../rc.h"
+#include "../../../../resources/images.h"
 
 namespace pizda {
-	const PFDLandingGearRetractedImage MainControls::_landingGearRetractedImage = {};
-	const PFDLandingGearExtendedImage MainControls::_landingGearExtendedImage = {};
-
 	MainControls::MainControls() {
 		const uint16_t titleHeight = Theme::fontSmall.getHeight() + titleVerticalOffset * 2;
 		const uint16_t contentHeight = panelSize - titleHeight - contentVerticalOffset * 2;
@@ -65,8 +63,8 @@ namespace pizda {
 		// Controls
 		_landingGearImageView.setImage(
 			settings.controls.landingGear
-			? reinterpret_cast<const Image*>(&_landingGearExtendedImage)
-			: reinterpret_cast<const Image*>(&_landingGearRetractedImage)
+			? reinterpret_cast<const Image*>(&resources::Images::MFDLandingGearExtended)
+			: reinterpret_cast<const Image*>(&resources::Images::MFDLandingGearRetracted)
 		);
 
 		// Trim

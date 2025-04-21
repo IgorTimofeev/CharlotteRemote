@@ -10,8 +10,6 @@
 
 #include "../instrumentsView.h"
 #include "../../menu/openMenuButton.h"
-#include "../../../../resources/images/PFDLandingGearExtendedImage.h"
-#include "../../../../resources/images/PFDLandingGearRetractedImage.h"
 #include "../../../titler.h"
 
 namespace pizda {
@@ -40,9 +38,6 @@ namespace pizda {
 			FlapsAndSpoilersIndicator _flapsAndSpoilersIndicator {};
 			ImageView _landingGearImageView {};
 			Titler _controlsTitle = Titler(L"CTL", &_controlsRows);
-
-			static const PFDLandingGearExtendedImage _landingGearExtendedImage;
-			static const PFDLandingGearRetractedImage _landingGearRetractedImage;
 
 			TrimIndicator _elevatorTrimIndicator {};
 			Titler _elevatorTrimTitle = Titler(L"TRM", &_elevatorTrimIndicator);

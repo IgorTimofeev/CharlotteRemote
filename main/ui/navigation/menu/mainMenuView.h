@@ -6,6 +6,7 @@
 #include "menuView.h"
 #include "menuButton.h"
 #include "../routes.h"
+#include "../../../resources/images.h"
 
 namespace pizda {
 	using namespace yoba;
@@ -13,7 +14,7 @@ namespace pizda {
 
 	class RouteMenuButton : public MenuButton {
 		public:
-			RouteMenuButton(const std::wstring_view&, const Route* route);
+			RouteMenuButton(const Image* image, const std::wstring_view&, const Route* route);
 
 		protected:
 			void onClick() override;
@@ -26,12 +27,12 @@ namespace pizda {
 		public:
 			explicit MainMenuView();
 
-			MenuButton MFDButton = MenuButton(L"MFD");
+			MenuButton MFDButton = MenuButton(&resources::Images::menuIconMFD, L"MFD");
 
 			RouteMenuButton
-				axisButton = RouteMenuButton(L"Axis", &Routes::settingsAxis),
-				WiFiButton = RouteMenuButton(L"Wi-Fi", &Routes::settingsWiFi),
-				UITestButton = RouteMenuButton(L"Test", &Routes::UITest);
+				axisButton = RouteMenuButton(&resources::Images::menuIconMFD, L"Axis", &Routes::settingsAxis),
+				WiFiButton = RouteMenuButton(&resources::Images::menuIconMFD, L"Wi-Fi", &Routes::settingsWiFi),
+				UITestButton = RouteMenuButton(&resources::Images::menuIconMFD, L"Test", &Routes::UITest);
 
 			RouteMenuButton* routeButtons[3] {
 				&axisButton,

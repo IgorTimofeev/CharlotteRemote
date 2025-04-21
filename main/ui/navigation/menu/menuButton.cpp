@@ -8,41 +8,44 @@
 namespace pizda {
 	// -------------------------------- Default --------------------------------
 
-	MenuButton::MenuButton(const std::wstring_view& text) {
+	MenuButton::MenuButton(const Image* image, const std::wstring_view& text) : _image(image) {
 		setSize(Size(45, 45));
 		setText(text);
 
-		setDefaultBorderColor(&Theme::bg4);
-		setPressedBorderColor(&Theme::accent1);
-
-		setDefaultTextColor(&Theme::fg3);
-		setPressedTextColor(&Theme::fg1);
+		setDefaultBackgroundColor(&Theme::fg5);
+		setPressedBackgroundColor(&Theme::fg1);
 	}
 
 	void MenuButton::onRender(Renderer* renderer, const Bounds& bounds) {
-		const Color* color;
+		constexpr static const uint8_t textHeight = 45 - 33;
+		constexpr static const uint8_t cornerRadius = 3;
+		constexpr static const uint8_t rectangleHeight = textHeight + cornerRadius;
 
-		if (isChecked()) {
-			color = getPressedBorderColor();
-		}
-		else if (isFocused()) {
-			color = &Theme::fg5;
-		}
-		else {
-			color = getDefaultBorderColor();
-		}
+		const int32_t y2 = bounds.getY2();
+		const int32_t rectangleY = y2 - rectangleHeight + 1;
+		const auto color = isChecked() ? getPressedBackgroundColor() : getDefaultBackgroundColor();
 
-		// Border
-		renderer->renderRectangle(bounds, 3, color);
+		renderer->renderRectangle(
+			Bounds(bounds.getX(), rectangleY, bounds.getWidth(), rectangleHeight),
+			cornerRadius,
+			color
+		);
+
+		// Image
+		renderer->renderImage(bounds.getTopLeft(), _image);
+
+		// Small lines over image
+		renderer->renderVerticalLine(Point(bounds.getX(), rectangleY), cornerRadius, color);
+		renderer->renderVerticalLine(Point(bounds.getX2(), rectangleY), cornerRadius, color);
 
 		// Text
 		renderer->renderString(
 			Point(
 				bounds.getXCenter() - Theme::fontSmall.getWidth(getText()) / 2,
-				bounds.getY2() - Theme::fontSmall.getHeight() - 2
+				y2 - textHeight + 1 + 2
 			),
 			&Theme::fontSmall,
-			isChecked() ? getPressedTextColor() : getDefaultTextColor(),
+			color,
 			getText()
 		);
 	}
@@ -53,7 +56,7 @@ namespace pizda {
 
 	// -------------------------------- View --------------------------------
 
-	ViewMenuButton::ViewMenuButton(const std::wstring_view& text, const Route* route) : MenuButton(text), _route(route) {
+	ViewMenuButton::ViewMenuButton(const Image* image, const std::wstring_view& text, const Route* route) : MenuButton(image, text), _route(route) {
 
 	}
 

@@ -17,17 +17,20 @@ namespace pizda {
 
 	class MenuButton : public Button {
 		public:
-			explicit MenuButton(const std::wstring_view& text);
+			explicit MenuButton(const Image* image, const std::wstring_view& text);
 
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 			MenuView* getMenuView();
+
+		private:
+			const Image* _image;
 	};
 
 	class ViewMenuButton : public MenuButton {
 		public:
-			ViewMenuButton(const std::wstring_view&, const Route* route);
+			ViewMenuButton(const Image* image, const std::wstring_view& text, const Route* route);
 
 		protected:
 			void onClick() override;

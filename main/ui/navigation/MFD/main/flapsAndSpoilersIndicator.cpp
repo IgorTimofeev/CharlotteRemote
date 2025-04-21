@@ -3,7 +3,7 @@
 
 namespace pizda {
 	FlapsAndSpoilersIndicator::FlapsAndSpoilersIndicator() {
-		setImage(&_image);
+		setImage(&resources::Images::MFDFlapsAndSpoilers);
 	}
 
 	void FlapsAndSpoilersIndicator::onRender(Renderer* renderer, const Bounds& bounds) {

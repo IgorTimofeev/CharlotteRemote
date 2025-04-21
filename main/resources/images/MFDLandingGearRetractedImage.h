@@ -1,20 +1,14 @@
-﻿#include "src/ui.h"
+﻿#pragma once
+
+#include "../../../components/yoba/src/main.h"
 
 namespace pizda {
-	using namespace yoba;
-
-	class PFDLandingGearRetractedImage : public Image {
+	class MFDLandingGearRetractedImage : public yoba::Image {
 		public:
-			PFDLandingGearRetractedImage() : Image(
-				Size(
-					18,
-					18
-				),
-				_bitmap
-			) {
-
+			MFDLandingGearRetractedImage() : yoba::Image(yoba::Size(18, 18), _bitmap) {
+				
 			}
-
+		
 		private:
 			constexpr static const uint8_t _bitmap[324] = {
 				0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x16, 0x16,

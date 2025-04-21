@@ -6,9 +6,8 @@
 #include "menuRoutes.h"
 
 namespace pizda {
-	MFDModeMenuButton::MFDModeMenuButton(const std::wstring_view& text, SettingsInterfaceMFDInstrumentsMode mode) : MenuButton(text), _mode(mode) {
+	MFDModeMenuButton::MFDModeMenuButton(const Image* image, const std::wstring_view& text, SettingsInterfaceMFDInstrumentsMode mode) : MenuButton(image, text), _mode(mode) {
 		setCheckMode(ButtonCheckMode::manual);
-		setPressedBorderColor(&Theme::fg1);
 		setChecked(RC::getInstance().getSettings().interface.MFDInstrumentsMode == mode);
 	}
 
@@ -30,13 +29,13 @@ namespace pizda {
 		});
 	}
 
-	MFDMenuView::MFDMenuView() : mainViewButton(ViewMenuButton(L"Settings", &MenuRoutes::main)) {
+	MFDMenuView::MFDMenuView() : mainViewButton(ViewMenuButton(&resources::Images::menuIconSettings, L"Settings", &MenuRoutes::main)) {
 		title.setText(L"MFD options");
 
 		const auto& settings = RC::getInstance().getSettings();
 
 		// N/D
-		NDButton.setPressedBorderColor(&Theme::purple);
+		NDButton.setPressedBackgroundColor(&Theme::purple);
 		NDButton.setCheckMode(ButtonCheckMode::manual);
 		NDButton.setChecked(settings.interface.MFDNavDisplay);
 
