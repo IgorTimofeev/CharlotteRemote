@@ -46,10 +46,7 @@ namespace pizda {
 		Theme::apply(&_updatesButton);
 		_updatesButton.setText(L"Begin");
 
-		_updatesButton.isCheckedChanged += [this]() {
-			if (_updatesButton.isChecked())
-				return;
-
+		_updatesButton.click += [this]() {
 			auto& rc = RC::getInstance();
 
 			auto dialog = new ProgressDialog();

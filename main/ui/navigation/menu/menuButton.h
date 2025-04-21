@@ -23,18 +23,6 @@ namespace pizda {
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 			MenuView* getMenuView();
-			Menu* getMenu();
-	};
-
-	class RouteMenuButton : public MenuButton {
-		public:
-			RouteMenuButton(const std::wstring_view&, const Route* route);
-
-		protected:
-			void onClick() override;
-
-		private:
-			const Route* _route;
 	};
 
 	class ViewMenuButton : public MenuButton {
@@ -46,11 +34,5 @@ namespace pizda {
 
 		private:
 			const Route* _route;
-	};
-
-	class OptionMenuButton : public MenuButton {
-		public:
-			explicit OptionMenuButton(const std::wstring_view& text);
-
 	};
 }

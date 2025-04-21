@@ -36,10 +36,7 @@ namespace pizda {
 		Theme::apply(&_speakerButton);
 		_speakerButton.setText(L"Play");
 
-		_speakerButton.isCheckedChanged += [this]() {
-			if (_speakerButton.isChecked())
-				return;
-
+		_speakerButton.click += [this]() {
 			auto& rc = RC::getInstance();
 
 			const uint32_t frequency = (uint32_t) _speakerFrequencySlider.getValue() * 12'000ul / 0xFFFFul;

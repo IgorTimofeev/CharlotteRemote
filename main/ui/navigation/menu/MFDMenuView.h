@@ -15,8 +15,6 @@ namespace pizda {
 		public:
 			explicit MFDModeMenuButton(const std::wstring_view& text, SettingsInterfaceMFDInstrumentsMode mode);
 
-			void updateSelection();
-
 		protected:
 			void onClick() override;
 
@@ -28,8 +26,8 @@ namespace pizda {
 		public:
 			explicit MFDMenuView();
 
-			OptionMenuButton
-				NDButton = OptionMenuButton(L"N/D");
+			MenuButton
+				NDButton = MenuButton(L"N/D");
 
 			MFDModeMenuButton
 				mainButton = MFDModeMenuButton(L"Main", SettingsInterfaceMFDInstrumentsMode::main),

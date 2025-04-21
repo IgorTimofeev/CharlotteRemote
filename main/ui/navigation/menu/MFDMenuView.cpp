@@ -7,13 +7,9 @@
 
 namespace pizda {
 	MFDModeMenuButton::MFDModeMenuButton(const std::wstring_view& text, SettingsInterfaceMFDInstrumentsMode mode) : MenuButton(text), _mode(mode) {
-		setToggle(true);
+		setCheckMode(ButtonCheckMode::manual);
 		setPressedBorderColor(&Theme::fg1);
 		setChecked(RC::getInstance().getSettings().interface.MFDInstrumentsMode == mode);
-	}
-
-	void MFDModeMenuButton::updateSelection() {
-		setChecked(RC::getInstance().getSettings().interface.MFDInstrumentsMode == _mode);
 	}
 
 	void MFDModeMenuButton::onClick() {
@@ -21,8 +17,8 @@ namespace pizda {
 
 		auto view = reinterpret_cast<MFDMenuView*>(getMenuView());
 
-		for (auto otherButton : view->modeButtons) {
-			otherButton->setChecked(otherButton == this);
+		for (auto modeButton : view->modeButtons) {
+			modeButton->setChecked(modeButton == this);
 		}
 
 		RC::getInstance().getApplication().enqueueOnTick([this]() {
@@ -41,11 +37,14 @@ namespace pizda {
 
 		// N/D
 		NDButton.setPressedBorderColor(&Theme::purple);
+		NDButton.setCheckMode(ButtonCheckMode::manual);
 		NDButton.setChecked(settings.interface.MFDNavDisplay);
 
-		NDButton.isCheckedChanged += [this]() {
+		NDButton.click += [this]() {
+			NDButton.setChecked(!NDButton.isChecked());
+
 			auto& settings = RC::getInstance().getSettings();
-			settings.interface.MFDNavDisplay = NDButton.isChecked();
+			settings.interface.MFDNavDisplay = !settings.interface.MFDNavDisplay;
 			settings.enqueueWrite();
 
 			MFDPage::fromSettings();

@@ -20,14 +20,20 @@ namespace pizda {
 	}
 
 	void MenuButton::onRender(Renderer* renderer, const Bounds& bounds) {
+		const Color* color;
+
 		if (isChecked()) {
-			// Background
-			renderer->renderRectangle(bounds, 3, getPressedBorderColor());
+			color = getPressedBorderColor();
+		}
+		else if (isFocused()) {
+			color = &Theme::fg5;
 		}
 		else {
-			// Background
-			renderer->renderRectangle(bounds, 3, getDefaultBorderColor());
+			color = getDefaultBorderColor();
 		}
+
+		// Border
+		renderer->renderRectangle(bounds, 3, color);
 
 		// Text
 		renderer->renderString(
@@ -42,27 +48,7 @@ namespace pizda {
 	}
 
 	MenuView* MenuButton::getMenuView() {
-		return dynamic_cast<MenuView*>(getParent()->getParent());
-	}
-
-	Menu* MenuButton::getMenu() {
-		return dynamic_cast<Menu*>(getMenuView()->getParent()->getParent());
-	}
-
-	// -------------------------------- Route --------------------------------
-
-	RouteMenuButton::RouteMenuButton(const std::wstring_view& text, const Route* route) : MenuButton(text), _route(route) {
-		setChecked(RC::getInstance().getRoute() == route);
-	}
-
-	void RouteMenuButton::onClick() {
-		Button::onClick();
-
-		RC::getInstance().getApplication().enqueueOnTick([this]() {
-			auto& rc = RC::getInstance();
-			rc.setRoute(_route);
-			rc.hideMenu();
-		});
+		return reinterpret_cast<MenuView*>(getParent()->getParent());
 	}
 
 	// -------------------------------- View --------------------------------
@@ -75,14 +61,7 @@ namespace pizda {
 		Button::onClick();
 
 		RC::getInstance().getApplication().enqueueOnTick([this]() {
-			getMenu()->setView(_route);
+			getMenuView()->getMenu()->setView(_route);
 		});
-	}
-
-	// -------------------------------- Option --------------------------------
-
-	OptionMenuButton::OptionMenuButton(const std::wstring_view& text) : MenuButton(text) {
-		setToggle(true);
-		setPressedBorderColor(&Theme::fg1);
 	}
 }

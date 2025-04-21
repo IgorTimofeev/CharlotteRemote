@@ -7,9 +7,13 @@ namespace pizda {
 	using namespace yoba;
 	using namespace yoba::ui;
 
+	class Menu;
+
 	class MenuView : public StackLayout {
 		public:
 			explicit MenuView();
+
+			Menu* getMenu();
 
 		protected:
 			Text title {};

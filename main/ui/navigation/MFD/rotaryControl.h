@@ -22,7 +22,7 @@ namespace pizda {
 				button.setCornerRadius(2);
 				button.setContentMargin(Margin(0, 3, 0, 0));
 
-				button.setToggle(true);
+				button.setCheckMode(ButtonCheckMode::toggle);
 
 				button.setDefaultBackgroundColor(&Theme::bg3);
 				button.setPressedBackgroundColor(&Theme::fg1);
@@ -33,7 +33,7 @@ namespace pizda {
 				button.setFont(&Theme::fontSmall);
 				button.setText(text);
 
-				button.isCheckedChanged += [this]() {
+				button.click += [this]() {
 					switched();
 				};
 
