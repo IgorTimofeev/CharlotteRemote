@@ -9,40 +9,33 @@ namespace pizda {
 	// -------------------------------- Default --------------------------------
 
 	MenuButton::MenuButton(const Image* image, const std::wstring_view& text) : _image(image) {
-		setSize(Size(45, 45));
+		setSize(Size(45, image->getSize().getHeight() + _textOffset + Theme::fontSmall.getHeight()));
 		setText(text);
 
-		setDefaultBackgroundColor(&Theme::fg5);
+		setDefaultBackgroundColor(&Theme::fg4);
 		setPressedBackgroundColor(&Theme::fg1);
 	}
 
 	void MenuButton::onRender(Renderer* renderer, const Bounds& bounds) {
-		constexpr static const uint8_t textHeight = 45 - 33;
-		constexpr static const uint8_t cornerRadius = 3;
-		constexpr static const uint8_t rectangleHeight = textHeight + cornerRadius;
-
-		const int32_t y2 = bounds.getY2();
-		const int32_t rectangleY = y2 - rectangleHeight + 1;
 		const auto color = isChecked() ? getPressedBackgroundColor() : getDefaultBackgroundColor();
-
-		renderer->renderRectangle(
-			Bounds(bounds.getX(), rectangleY, bounds.getWidth(), rectangleHeight),
-			cornerRadius,
-			color
-		);
 
 		// Image
 		renderer->renderImage(bounds.getTopLeft(), _image);
 
-		// Small lines over image
-		renderer->renderVerticalLine(Point(bounds.getX(), rectangleY), cornerRadius, color);
-		renderer->renderVerticalLine(Point(bounds.getX2(), rectangleY), cornerRadius, color);
+		// Border
+		if (isChecked()) {
+			renderer->renderRectangle(
+				Bounds(bounds.getX() - 1, bounds.getY() - 1, bounds.getWidth() + 2, _image->getSize().getHeight() + 2),
+				4,
+				color
+			);
+		}
 
 		// Text
 		renderer->renderString(
 			Point(
 				bounds.getXCenter() - Theme::fontSmall.getWidth(getText()) / 2,
-				y2 - textHeight + 1 + 2
+				bounds.getY() + _image->getSize().getHeight() + _textOffset
 			),
 			&Theme::fontSmall,
 			color,

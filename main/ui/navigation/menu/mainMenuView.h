@@ -30,9 +30,9 @@ namespace pizda {
 			MenuButton MFDButton = MenuButton(&resources::Images::menuIconMFD, L"MFD");
 
 			RouteMenuButton
-				axisButton = RouteMenuButton(&resources::Images::menuIconMFD, L"Axis", &Routes::settingsAxis),
-				WiFiButton = RouteMenuButton(&resources::Images::menuIconMFD, L"Wi-Fi", &Routes::settingsWiFi),
-				UITestButton = RouteMenuButton(&resources::Images::menuIconMFD, L"Test", &Routes::UITest);
+				axisButton = RouteMenuButton(&resources::Images::menuIconAxis, L"Axis", &Routes::settingsAxis),
+				WiFiButton = RouteMenuButton(&resources::Images::menuIconWiFi, L"Wi-Fi", &Routes::settingsWiFi),
+				UITestButton = RouteMenuButton(&resources::Images::menuIconDev, L"Test", &Routes::UITest);
 
 			RouteMenuButton* routeButtons[3] {
 				&axisButton,

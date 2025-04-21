@@ -7,6 +7,9 @@ namespace pizda::resources {
 	const MenuIconMFDAutopilotImage Images::menuIconMFDAutopilot = {};
 	const MenuIconMFDPressureImage Images::menuIconMFDPressure = {};
 	const MenuIconSettingsImage Images::menuIconSettings = {};
+	const MenuIconWiFiImage Images::menuIconWiFi = {};
+	const MenuIconAxisImage Images::menuIconAxis = {};
+	const MenuIconDevImage Images::menuIconDev = {};
 
 	const MFDFlapsAndSpoilersImage Images::MFDFlapsAndSpoilers = {};
 	const MFDLandingGearExtendedImage Images::MFDLandingGearExtended = {};

@@ -25,6 +25,8 @@ namespace pizda {
 			MenuView* getMenuView();
 
 		private:
+			constexpr static const uint8_t _textOffset = 4;
+
 			const Image* _image;
 	};
 
