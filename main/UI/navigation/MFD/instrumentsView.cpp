@@ -15,7 +15,7 @@ namespace pizda {
 
 		// Row
 		row.setOrientation(Orientation::horizontal);
-		row.setSpacing(15);
+		row.setSpacing(10);
 		row.setHorizontalAlignment(Alignment::center);
 		row.setMargin(Margin(5, titleVerticalOffset, 5, 0));
 		buttonAndRowLayout += &row;

@@ -9,6 +9,8 @@ namespace pizda {
 
 		setHeight(panelSize);
 
+		row.setSpacing(15);
+
 		// Throttle
 		_throttleRow.setOrientation(Orientation::horizontal);
 		_throttleRow.setSpacing(10);

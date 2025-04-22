@@ -13,7 +13,7 @@ namespace pizda {
 		setText(text);
 
 		setDefaultBackgroundColor(&Theme::bg3);
-		setPressedBackgroundColor(&Theme::bg4);
+		setPressedBackgroundColor(&Theme::bg3);
 
 		setPressedBorderColor(&Theme::fg1);
 
@@ -23,7 +23,6 @@ namespace pizda {
 
 	void MenuButton::onRender(Renderer* renderer, const Bounds& bounds) {
 		constexpr static const uint8_t cornerRadius = 4;
-		const auto borderAndTextColor = isChecked() ? getPressedTextColor() : getDefaultTextColor();
 
 		// Background
 		renderer->renderFilledRectangle(
