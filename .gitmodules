@@ -1,3 +1,3 @@
-[submodule "components/yoba"]
-	path = components/yoba
+[submodule "components/YOBA"]
+	path = components/YOBA
 	url = https://github.com/IgorTimofeev/YOBA.git

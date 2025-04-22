@@ -1,21 +1,19 @@
 #pragma once
 
+#include <YOBA/main.h>
+#include <YOBA/UI.h>
+#include <YOBA/hardware/displays/ILI9341Display.h>
+#include <YOBA/hardware/touchPanels/FT6336UTouchPanel.h>
 
-#include "../../components/yoba/src/main.h"
-#include "../../components/yoba/src/ui.h"
-#include "../../components/yoba/src/hardware/displays/ILI9341Display.h"
-#include "../../components/yoba/src/hardware/touchPanels/FT6336UTouchPanel.h"
-
-#include "ui/theme.h"
-#include "ui/navigation/route.h"
-#include "ui/navigation/menu/menu.h"
-#include "ui/debugOverlay.h"
+#include "UI/theme.h"
+#include "UI/navigation/route.h"
+#include "UI/navigation/menu/menu.h"
+#include "UI/debugOverlay.h"
 
 #include "units.h"
 #include "settings.h"
 #include "constants.h"
 #include "interpolator.h"
-#include "vector3.h"
 #include "geographicCoordinates.h"
 
 #include "hardware/transceiver/packet.h"
@@ -26,9 +24,7 @@
 #include "hardware/encoder.h"
 
 namespace pizda {
-	using namespace yoba;
-	using namespace yoba::hardware;
-	using namespace yoba::ui;
+	using namespace YOBA;
 
 	class RC {
 		public:

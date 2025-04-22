@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include "../../../components/yoba/src/main.h"
+#include <YOBA/main.h>
 
 namespace pizda {
-	class MFDFlapsAndSpoilersImage : public yoba::Image {
+	class MFDFlapsAndSpoilersImage : public YOBA::Image {
 		public:
-			MFDFlapsAndSpoilersImage() : yoba::Image(yoba::Size(41, 11), _bitmap) {
+			MFDFlapsAndSpoilersImage() : YOBA::Image(YOBA::Size(41, 11), _bitmap) {
 				
 			}
 		

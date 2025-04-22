@@ -1,12 +1,12 @@
 #pragma once
 
 #include "driver/gpio.h"
-#include "main/event.h"
+#include "YOBA/main/event.h"
 #include <esp_attr.h>
 #include <functional>
 
 namespace pizda {
-	using namespace yoba;
+	using namespace YOBA;
 
 	class EncoderRotateEvent : public Event {
 		public:

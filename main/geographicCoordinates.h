@@ -1,11 +1,13 @@
 #pragma once
 
+#include <YOBA/main.h>
 #include <cstdint>
 #include <cmath>
 #include <numbers>
-#include "vector3.h"
 
 namespace pizda {
+	using namespace YOBA;
+
 	class GeographicCoordinates {
 		public:
 			GeographicCoordinates(float latitude, float longitude, float altitude) : _latitude(latitude), _longitude(longitude), _altitude(altitude) {
@@ -26,8 +28,8 @@ namespace pizda {
 
 			constexpr static const float equatorialRadiusMeters = 6378137.f;
 			constexpr static const float equatorialLengthMeters = 2.f * std::numbers::pi_v<float> * equatorialRadiusMeters;
-			constexpr static const float radiansPerMeter = 2.f * std::numbers::pi_v<float> / equatorialLengthMeters;
-			constexpr static const float metersPerRadian = equatorialLengthMeters / (2.f * std::numbers::pi_v<float>);
+			constexpr static const float equatorialRadiansPerMeter = 2.f * std::numbers::pi_v<float> / equatorialLengthMeters;
+			constexpr static const float equatorialMetersPerRadian = equatorialLengthMeters / (2.f * std::numbers::pi_v<float>);
 
 			Vector3F toCartesian(float radius) const {
 				radius += _altitude;

@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include "../../../components/yoba/src/main.h"
+#include <YOBA/main.h>
 
 namespace pizda {
-	class MenuIconMFDMainImage : public yoba::Image {
+	class MenuIconMFDMainImage : public YOBA::Image {
 		public:
-			MenuIconMFDMainImage() : yoba::Image(yoba::Size(45, 33), _bitmap) {
+			MenuIconMFDMainImage() : YOBA::Image(YOBA::Size(45, 33), _bitmap) {
 				
 			}
 		

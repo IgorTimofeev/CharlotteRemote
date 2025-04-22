@@ -8,10 +8,10 @@
 #include <esp_timer.h>
 #include "esp_log.h"
 
-#include "../../components/yoba/src/main.h"
+#include <YOBA/main.h>
 
 namespace pizda {
-	using namespace yoba;
+	using namespace YOBA;
 
 	enum class WiFiState : uint8_t {
 		stopped,

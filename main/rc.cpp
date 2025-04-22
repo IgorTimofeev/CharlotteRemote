@@ -4,10 +4,10 @@
 #include "rc.h"
 #include "constants.h"
 #include "resources/sounds.h"
-#include "ui/navigation/routes.h"
+#include "UI/navigation/routes.h"
 
 namespace pizda {
-	using namespace yoba;
+	using namespace YOBA;
 
 	RC& RC::getInstance() {
 		static RC instance = RC();
