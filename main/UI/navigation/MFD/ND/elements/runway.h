@@ -5,19 +5,16 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
+#include <YOBA/UI/spatial.h>
 
 #include "../../../../../geographicCoordinates.h"
 #include "../../../../../runway.h"
-
-#include "../../../../spatial/element.h"
-#include "../../../../spatial/spatialView.h"
-#include "../../../../spatial/camera.h"
 
 #include "../../../../theme.h"
 
 namespace pizda {
 	using namespace YOBA;
-
+	using namespace YOBA::spatial;
 
 	class RunwayElement : public LinearMesh {
 		public:
