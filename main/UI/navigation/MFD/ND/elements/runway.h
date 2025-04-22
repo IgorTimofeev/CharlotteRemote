@@ -5,7 +5,6 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
-#include <YOBA/UI/spatial.h>
 
 #include "../../../../../runway.h"
 
