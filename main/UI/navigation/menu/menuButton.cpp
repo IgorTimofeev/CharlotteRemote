@@ -12,12 +12,25 @@ namespace pizda {
 		setSize(Size(45, image->getSize().getHeight() + _textOffset + Theme::fontSmall.getHeight()));
 		setText(text);
 
-		setDefaultBackgroundColor(&Theme::fg4);
-		setPressedBackgroundColor(&Theme::fg1);
+		setDefaultBackgroundColor(&Theme::bg3);
+		setPressedBackgroundColor(&Theme::bg4);
+
+		setPressedBorderColor(&Theme::fg1);
+
+		setDefaultTextColor(&Theme::fg4);
+		setPressedTextColor(&Theme::fg1);
 	}
 
 	void MenuButton::onRender(Renderer* renderer, const Bounds& bounds) {
-		const auto color = isChecked() ? getPressedBackgroundColor() : getDefaultBackgroundColor();
+		constexpr static const uint8_t cornerRadius = 4;
+		const auto borderAndTextColor = isChecked() ? getPressedTextColor() : getDefaultTextColor();
+
+		// Background
+		renderer->renderFilledRectangle(
+			Bounds(bounds.getX() - 1, bounds.getY() - 1, bounds.getWidth() + 2, _image->getSize().getHeight() + 2),
+			cornerRadius,
+			isChecked() ? getPressedBackgroundColor() : getDefaultBackgroundColor()
+		);
 
 		// Image
 		renderer->renderImage(bounds.getTopLeft(), _image);
@@ -26,8 +39,8 @@ namespace pizda {
 		if (isChecked()) {
 			renderer->renderRectangle(
 				Bounds(bounds.getX() - 1, bounds.getY() - 1, bounds.getWidth() + 2, _image->getSize().getHeight() + 2),
-				4,
-				color
+				cornerRadius,
+				getPressedBorderColor()
 			);
 		}
 
@@ -38,7 +51,7 @@ namespace pizda {
 				bounds.getY() + _image->getSize().getHeight() + _textOffset
 			),
 			&Theme::fontSmall,
-			color,
+			isChecked() ? getPressedTextColor() : getDefaultTextColor(),
 			getText()
 		);
 	}

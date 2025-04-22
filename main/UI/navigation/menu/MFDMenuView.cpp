@@ -35,7 +35,9 @@ namespace pizda {
 		const auto& settings = RC::getInstance().getSettings();
 
 		// N/D
-		NDButton.setPressedBackgroundColor(&Theme::purple);
+		NDButton.setPressedBorderColor(&Theme::purple);
+		NDButton.setPressedTextColor(&Theme::purple);
+
 		NDButton.setCheckMode(ButtonCheckMode::manual);
 		NDButton.setChecked(settings.interface.MFDNavDisplay);
 
