@@ -9,19 +9,19 @@ namespace pizda {
 		setClipToBounds(true);
 
 		// Axis
-		addElement(new Line(
+		addElement(new SpatialLine(
 			Vector3F(0, 0, 0),
 			Vector3F(GeographicCoordinates::equatorialRadiusMeters, 0, 0),
 			&Theme::red
 		));
 
-		addElement(new Line(
+		addElement(new SpatialLine(
 			Vector3F(0, 0, 0),
 			Vector3F(0, GeographicCoordinates::equatorialRadiusMeters, 0),
 			&Theme::green
 		));
 
-		addElement(new Line(
+		addElement(new SpatialLine(
 			Vector3F(0, 0, 0),
 			Vector3F(0, 0, GeographicCoordinates::equatorialRadiusMeters),
 			&Theme::blue
@@ -31,7 +31,7 @@ namespace pizda {
 //		addObject(new CubeLinearMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters * 2, &Theme::fg1));
 
 		// Sphere
-		addElement(new SphereLinearMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg4));
+		addElement(new SphereLinearSpatialMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg4));
 
 		// Airfields
 //		addElement(new Label(
@@ -176,27 +176,27 @@ namespace pizda {
 		else if (event->getTypeID() == TouchDragEvent::typeID) {
 			auto touchDragEventEvent = (TouchDragEvent*) event;
 
-			ESP_LOGI("ND", "------------- Drag -------------");
+//			ESP_LOGI("ND", "------------- Drag -------------");
 
 			const auto& deltaPixels = (touchDragEventEvent->getPosition() - _touchDownPosition).rotate(RC::getInstance().getYawInterpolator().getValue());
 			_touchDownPosition = touchDragEventEvent->getPosition();
 			_cursorPosition = touchDragEventEvent->getPosition() - getBounds().getPosition();
 
-			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
+//			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
 
 			// viewport rad - height px
 			// x rad - 1 px
 			const auto equatorialRadiansPerPixel = getEquatorialRadiansPerPixel();
 			const auto& cameraCoordinates = getCameraCoordinates();
 
-			ESP_LOGI("ND", "camera lat: %f", cameraCoordinates.getLatitude());
-			ESP_LOGI("ND", "camera lat cos: %f", std::cosf(cameraCoordinates.getLatitude()));
-			ESP_LOGI("ND", "deltaPixelsX with coorection: %f", (float) deltaPixels.getX() / std::cosf(cameraCoordinates.getLatitude()));
+//			ESP_LOGI("ND", "camera lat: %f", cameraCoordinates.getLatitude());
+//			ESP_LOGI("ND", "camera lat cos: %f", std::cosf(cameraCoordinates.getLatitude()));
+//			ESP_LOGI("ND", "deltaPixelsX with coorection: %f", (float) deltaPixels.getX() / std::cosf(cameraCoordinates.getLatitude()));
 
 			const auto deltaRadLon = (float) deltaPixels.getX() * equatorialRadiansPerPixel / std::cosf(cameraCoordinates.getLatitude());
 			const auto deltaRadLat = (float) deltaPixels.getY() * equatorialRadiansPerPixel;
 
-			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
+//			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
 
 			setCameraOffset(GeographicCoordinates(
 				_cameraOffset.getLatitude() + deltaRadLat,

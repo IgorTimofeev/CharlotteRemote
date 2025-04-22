@@ -1,6 +1,5 @@
 #pragma once
 
-#include "geographicCoordinates.h"
 #include <cstdint>
 #include <cmath>
 

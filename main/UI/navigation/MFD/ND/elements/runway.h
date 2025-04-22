@@ -7,16 +7,14 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
-#include "../../../../../geographicCoordinates.h"
 #include "../../../../../runway.h"
 
 #include "../../../../theme.h"
 
 namespace pizda {
 	using namespace YOBA;
-	using namespace YOBA::spatial;
 
-	class RunwayElement : public LinearMesh {
+	class RunwayElement : public LinearSpatialMesh {
 		public:
 			RunwayElement(const Runway& runway, const Color* color) : _runway(runway) {
 				// 0     1                           0     1

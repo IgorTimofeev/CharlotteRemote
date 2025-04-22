@@ -4,7 +4,6 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
-#include "../../../../geographicCoordinates.h"
 #include "../../../theme.h"
 
 #include "elements/aircraft.h"
@@ -12,7 +11,6 @@
 
 namespace pizda {
 	using namespace YOBA;
-	using namespace YOBA::spatial;
 
 	class ND : public SpatialView {
 		public:

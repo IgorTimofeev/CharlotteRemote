@@ -14,7 +14,6 @@
 #include "settings.h"
 #include "constants.h"
 #include "interpolator.h"
-#include "geographicCoordinates.h"
 
 #include "hardware/transceiver/packet.h"
 #include "hardware/transceiver/TCPTransceiver.h"
