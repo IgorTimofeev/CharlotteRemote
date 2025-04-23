@@ -3,12 +3,14 @@
 #include "YOBA/main.h"
 
 namespace pizda {
-	class MenuIconDevImage : public YOBA::Image {
+	using namespace YOBA;
+
+	class MenuIconDevImage : public Image {
 		public:
-			MenuIconDevImage() : YOBA::Image(
-				YOBA::Size(45, 33),
-				_bitmap,
-				YOBA::ImageFlags::palette8 | YOBA::ImageFlags::alpha
+			MenuIconDevImage() : Image(
+				ImageFlags::palette8Bit | ImageFlags::alpha1Bit,
+				Size(45, 33),
+				_bitmap
 			) {
 				
 			}

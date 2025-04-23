@@ -3,12 +3,14 @@
 #include "YOBA/main.h"
 
 namespace pizda {
-	class MFDLandingGearExtendedImage : public YOBA::Image {
+	using namespace YOBA;
+
+	class MFDLandingGearExtendedImage : public Image {
 		public:
-			MFDLandingGearExtendedImage() : YOBA::Image(
-				YOBA::Size(18, 18),
-				_bitmap,
-				YOBA::ImageFlags::palette8 | YOBA::ImageFlags::alpha
+			MFDLandingGearExtendedImage() : Image(
+				ImageFlags::palette8Bit | ImageFlags::alpha1Bit,
+				Size(18, 18),
+				_bitmap
 			) {
 				
 			}

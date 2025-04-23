@@ -3,12 +3,14 @@
 #include "YOBA/main.h"
 
 namespace pizda {
-	class MenuIconWiFiImage : public YOBA::Image {
+	using namespace YOBA;
+
+	class MenuIconWiFiImage : public Image {
 		public:
-			MenuIconWiFiImage() : YOBA::Image(
-				YOBA::Size(45, 33),
-				_bitmap,
-				YOBA::ImageFlags::palette8 | YOBA::ImageFlags::alpha
+			MenuIconWiFiImage() : Image(
+				ImageFlags::palette8Bit | ImageFlags::alpha1Bit,
+				Size(45, 33),
+				_bitmap
 			) {
 				
 			}

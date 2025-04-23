@@ -3,12 +3,14 @@
 #include "YOBA/main.h"
 
 namespace pizda {
-	class MFDFlapsAndSpoilersImage : public YOBA::Image {
+	using namespace YOBA;
+
+	class MFDFlapsAndSpoilersImage : public Image {
 		public:
-			MFDFlapsAndSpoilersImage() : YOBA::Image(
-				YOBA::Size(41, 11),
-				_bitmap,
-				YOBA::ImageFlags::palette8 | YOBA::ImageFlags::alpha
+			MFDFlapsAndSpoilersImage() : Image(
+				ImageFlags::palette8Bit | ImageFlags::alpha1Bit,
+				Size(41, 11),
+				_bitmap
 			) {
 				
 			}
