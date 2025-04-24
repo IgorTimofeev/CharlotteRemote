@@ -347,7 +347,7 @@ namespace pizda {
 		_flightPathVectorPitchInterpolator.setTargetValue(packet->flightPathPitchRad);
 		_flightPathVectorYawInterpolator.setTargetValue(packet->flightPathYawRad);
 
-		_slipAndSkidInterpolator.setTargetValue((float) packet->slipAndSkid / ((float) 0xFFFF / 2.f));
+		_slipAndSkidInterpolator.setTargetValue(-1.f + (float) packet->slipAndSkid / (float) 0xFFFF * 2.f);
 
 		_windDirectionInterpolator.setTargetValue(toRadians(packet->windDirectionDeg));
 		_windSpeed = convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
