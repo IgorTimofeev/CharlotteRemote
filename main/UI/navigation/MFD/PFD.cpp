@@ -553,7 +553,7 @@ namespace pizda {
 				&Theme::ground
 			);
 		}
-			// Right
+		// Right
 		else if (horizonRight.getY() < bounds.getY() && horizonRight.getX() < bounds.getX2()) {
 			renderer->renderFilledRectangle(
 				Bounds(
@@ -570,22 +570,30 @@ namespace pizda {
 	void PFD::renderPitchOverlay(
 		Renderer* renderer,
 		const Bounds& bounds,
-		float unfoldedFOVHeight,
+		float pixelsPerHorizontalFOV,
+		float pixelsPerVerticalFOV,
 		const Point& horizonLeft,
 		const Point& horizonRight,
 		const Vector2F& horizonVec,
 		const Vector2F& horizonVecNorm,
 		const Vector2F& horizonVecPerp,
-		const Vector2F& horizonVecCenter
+		const Vector2F& horizonCenter
 	) {
+		// Middle line
+		renderer->renderLine(
+			horizonLeft,
+			horizonRight,
+			pitchOverlayColorGround
+		);
+
 		const auto viewport = renderer->pushViewport(bounds);
 
 		const float lineAngleStepRad = toRadians(pitchOverlayAngleStepDeg);
 		const float linesInTotal = std::floorf(std::numbers::pi_v<float> / 2.f / lineAngleStepRad);
-		const float linePixelStep = unfoldedFOVHeight / 2.f / linesInTotal;
+		const float linePixelStep = std::numbers::pi_v<float> * pixelsPerVerticalFOV / 2.f / linesInTotal;
 
 		Vector2F
-			lineCenterVerticalPerp,
+			lineCenterPerp,
 			lineVec;
 
 		Point
@@ -593,23 +601,26 @@ namespace pizda {
 			lineRight;
 
 		const Color* color;
+		std::wstring_view text;
 
 		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += pitchOverlayAngleStepDeg) {
+			if (lineAngleDeg == 0)
+				continue;
+
 			color = lineAngleDeg >= 0 ? pitchOverlayColorGround : pitchOverlayColorSky;
-			lineCenterVerticalPerp = horizonVecCenter + horizonVecPerp * ((float) lineAngleDeg / (float) pitchOverlayAngleStepDeg * linePixelStep);
+			lineCenterPerp = horizonCenter + horizonVecPerp * ((float) lineAngleDeg / (float) pitchOverlayAngleStepDeg * linePixelStep);
 
 			lineVec = horizonVecNorm * (
-				lineAngleDeg == 0
-				? pitchOverlayLineMiddle
-				: (
+				(
 					lineAngleDeg % 10 == 0
 					? pitchOverlayLineBig
 					: pitchOverlayLineSmall
 				)
+				/ 2
 			);
 
-			lineLeft = (Point) (lineCenterVerticalPerp - lineVec);
-			lineRight = (Point) (lineCenterVerticalPerp + lineVec);
+			lineLeft = (Point) (lineCenterPerp - lineVec);
+			lineRight = (Point) (lineCenterPerp + lineVec);
 
 			renderer->renderLine(
 				lineLeft,
@@ -617,15 +628,20 @@ namespace pizda {
 				color
 			);
 
-			if (lineAngleDeg != 0 && lineAngleDeg % 10 == 0) {
+			if (lineAngleDeg % 10 == 0) {
+				text = std::to_wstring(abs(lineAngleDeg));
+
+				const auto& textCenterVec = Vector2F((float) pitchOverlayFont->getWidth(text) / 2.f, (float) pitchOverlayFont->getHeight() / 2.f);
+				const auto textCenterVecLengthWithOffset = (float) pitchOverlayTextOffset + textCenterVec.getLength();
+
 				renderer->renderString(
 					Point(
-						lineRight.getX() + pitchOverlayTextOffset,
-						lineRight.getY() - pitchOverlayFont->getHeight() / 2
+						lineRight.getX() + (int32_t) (horizonVecNorm.getX() * textCenterVecLengthWithOffset - textCenterVec.getX()),
+						lineRight.getY() + (int32_t) (horizonVecNorm.getY() * textCenterVecLengthWithOffset - textCenterVec.getY())
 					),
 					pitchOverlayFont,
 					color,
-					std::to_wstring(abs(lineAngleDeg))
+					text
 				);
 			}
 		}
@@ -795,9 +811,9 @@ namespace pizda {
 	void PFD::renderAircraftSymbolAndFPVOverlay(
 		Renderer* renderer,
 		const Point& center,
-		float unfoldedFOVWidth,
-		float unfoldedFOVHeight,
-		const Vector2F& horizonVecCenter
+		float pixelsPerHorizontalFOV,
+		float pixelsPerVerticalFOV,
+		const Vector2F& horizonCenter
 	) const {
 		auto& rc = RC::getInstance();
 
@@ -825,11 +841,22 @@ namespace pizda {
 			&Theme::bg1
 		);
 
+		// Dot
+		renderer->renderFilledRectangle(
+			Bounds(
+				center.getX() + aircraftSymbolThickness / 2,
+				center.getY() - aircraftSymbolThickness / 2,
+				aircraftSymbolThickness,
+				aircraftSymbolThickness
+			),
+			&Theme::bg1
+		);
+
 		// Flight path vector
 		if (rc.getGroundSpeed() > speedFlapsMin) {
-			auto FPVPosition = Point(
-				(int32_t) (horizonVecCenter.getX() + unfoldedFOVWidth * rc.getFlightPathVectorYawInterpolator().getValue() / std::numbers::pi_v<float>),
-				(int32_t) (horizonVecCenter.getY() - unfoldedFOVHeight * rc.getFlightPathVectorPitchInterpolator().getValue() / std::numbers::pi_v<float>)
+			const auto& FPVPosition = Point(
+				(int32_t) (horizonCenter.getX() + pixelsPerHorizontalFOV * rc.getFlightPathVectorYawInterpolator().getValue()),
+				(int32_t) (horizonCenter.getY() - pixelsPerVerticalFOV * rc.getFlightPathVectorPitchInterpolator().getValue())
 			);
 
 			// Circle
@@ -863,22 +890,13 @@ namespace pizda {
 				&Theme::bg1
 			);
 		}
-		// Dot
-		else {
-			renderer->renderFilledRectangle(
-				Bounds(
-					center.getX() + aircraftSymbolThickness / 2,
-					center.getY() - aircraftSymbolThickness / 2,
-					aircraftSymbolThickness,
-					aircraftSymbolThickness
-				),
-				&Theme::bg1
-			);
-		}
 	}
 
 	void PFD::renderSyntheticVision(Renderer* renderer, const Bounds& bounds) const {
 		auto& rc = RC::getInstance();
+
+		const auto aspectRatio = (float) bounds.getWidth() / (float) bounds.getHeight();
+		const auto verticalFOV = horizontalFOV / aspectRatio;
 
 		const auto& center = bounds.getCenter();
 
@@ -886,29 +904,27 @@ namespace pizda {
 		const auto roll = rc.getRollInterpolator().getValue();
 		const auto yaw = rc.getYawInterpolator().getValue();
 
-		// FOV deg - Screen px
-		// 180 deg - x px
-		// x = 180 * screen / FOV
-		const auto unfoldedFOVWidth = std::numbers::pi_v<float> * (float) bounds.getWidth() / _horizontalFOV;
-		const auto unfoldedFOVHeight = std::numbers::pi_v<float> * (float) bounds.getHeight() / _verticalFOV;
+		const auto pixelsPerHorizontalFOV = (float) bounds.getWidth() / horizontalFOV;
+		const auto pixelsPerVerticalFOV = (float) bounds.getHeight() / verticalFOV;
 
-		const auto& horizonRollRotated = (Point) Vector2F(unfoldedFOVWidth / 2, 0).rotate(-roll);
-		const auto horizonPitchOffset = pitch / std::numbers::pi_v<float> * unfoldedFOVHeight;
+		const auto horizonPitchPixelOffset = pitch * pixelsPerVerticalFOV;
+		const auto& horizonPitchRotated = Vector2F(0, horizonPitchPixelOffset).rotate(-roll);
+		const auto& horizonRollRotated = Vector2F(std::numbers::pi_v<float> * pixelsPerHorizontalFOV / 2, 0).rotate(-roll);
 
 		const auto& horizonLeft = Point(
-			center.getX() - horizonRollRotated.getX(),
-			center.getY() + horizonPitchOffset - horizonRollRotated.getY()
+			center.getX() + (int32_t) (-horizonRollRotated.getX() + horizonPitchRotated.getX()),
+			center.getY() + (int32_t) (-horizonRollRotated.getY() + horizonPitchRotated.getY())
 		);
 
 		const auto& horizonRight = Point(
-			center.getX() + horizonRollRotated.getX(),
-			center.getY() + horizonPitchOffset + horizonRollRotated.getY()
+			center.getX() + (int32_t) (horizonRollRotated.getX() + horizonPitchRotated.getX()),
+			center.getY() + (int32_t) (horizonRollRotated.getY() + horizonPitchRotated.getY())
 		);
 
 		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);
 		const auto& horizonVecNorm = horizonVec.normalize();
 		const auto& horizonVecPerp = horizonVecNorm.counterClockwisePerpendicular();
-		const auto& horizonVecCenter = (Vector2F) horizonLeft + horizonVec / 2.0f;
+		const auto& horizonCenter = (Vector2F) horizonLeft + horizonVec / 2.0f;
 
 		// Background
 		renderSyntheticVisionBackground(
@@ -934,13 +950,14 @@ namespace pizda {
 				bounds.getWidth(),
 				bounds.getHeight() - pitchOverlayMarginTop - yawOverlayHeight
 			),
-			unfoldedFOVHeight,
+			pixelsPerHorizontalFOV,
+			pixelsPerVerticalFOV,
 			horizonLeft,
 			horizonRight,
 			horizonVec,
 			horizonVecNorm,
 			horizonVecPerp,
-			horizonVecCenter
+			horizonCenter
 		);
 
 		// Yaw overlay
@@ -970,9 +987,9 @@ namespace pizda {
 		renderAircraftSymbolAndFPVOverlay(
 			renderer,
 			center,
-			unfoldedFOVWidth,
-			unfoldedFOVHeight,
-			horizonVecCenter
+			pixelsPerHorizontalFOV,
+			pixelsPerVerticalFOV,
+			horizonCenter
 		);
 	}
 

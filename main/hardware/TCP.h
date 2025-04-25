@@ -151,9 +151,9 @@ namespace pizda {
 			ssize_t _receivingBufferLength = -1;
 			ssize_t _receivingBufferRemaining = -1;
 
-			std::function<void(TCPState, TCPState)> _onStateChanged;
-			std::function<void()> _onSendingCompleted;
-			std::function<void()> _onReceivingCompleted;
+			std::function<void(TCPState, TCPState)> _onStateChanged {};
+			std::function<void()> _onSendingCompleted {};
+			std::function<void()> _onReceivingCompleted {};
 
 			void logError(const char* text) {
 				ESP_LOGE(_loggingTag, "%s", text);

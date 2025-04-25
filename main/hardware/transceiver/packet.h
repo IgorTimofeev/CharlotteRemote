@@ -38,7 +38,7 @@ namespace pizda {
 		float flightPathPitchRad = 0;
 		float flightPathYawRad = 0;
 
-		int16_t slipAndSkid = 0;
+		uint16_t slipAndSkid = 0;
 
 		uint16_t windDirectionDeg = 0;
 		float windSpeedMs = 0;

@@ -97,9 +97,8 @@ namespace pizda {
 			// Pitch overlay
 			constexpr static const uint8_t pitchOverlayMarginTop = 30;
 			constexpr static const uint8_t pitchOverlayAngleStepDeg = 5;
-			constexpr static const uint8_t pitchOverlayLineSmall = 5;
-			constexpr static const uint8_t pitchOverlayLineBig = 10;
-			constexpr static const uint8_t pitchOverlayLineMiddle = 15;
+			constexpr static const uint8_t pitchOverlayLineSmall = 10;
+			constexpr static const uint8_t pitchOverlayLineBig = 20;
 			constexpr static const uint8_t pitchOverlayTextOffset = 5;
 
 			constexpr static const Font* pitchOverlayFont = &Theme::fontSmall;
@@ -149,8 +148,7 @@ namespace pizda {
 			// Wind
 			constexpr static const uint8_t windVisibilityGroundSpeed = 10;
 
-			float _horizontalFOV = toRadians(70);
-			float _verticalFOV = toRadians(80);
+			float horizontalFOV = toRadians(60);
 
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
 
@@ -181,14 +179,15 @@ namespace pizda {
 			static void renderPitchOverlay(
 				Renderer* renderer,
 				const Bounds& bounds,
-				float unfoldedFOVHeight,
+				float pixelsPerHorizontalFOV,
+				float pixelsPerVerticalFOV,
 				const Point& horizonLeft,
 				const Point& horizonRight,
 
 				const Vector2F& horizonVec,
 				const Vector2F& horizonVecNorm,
 				const Vector2F& horizonVecPerp,
-				const Vector2F& horizonVecCenter
+				const Vector2F& horizonCenter
 			);
 
 			static void renderSyntheticVisionBackground(Renderer* renderer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight);
@@ -200,9 +199,9 @@ namespace pizda {
 			void renderAircraftSymbolAndFPVOverlay(
 				Renderer* renderer,
 				const Point& center,
-				float unfoldedFOVWidth,
-				float unfoldedFOVHeight,
-				const Vector2F& horizonVecCenter
+				float pixelsPerHorizontalFOV,
+				float pixelsPerVerticalFOV,
+				const Vector2F& horizonCenter
 			) const;
 
 			void renderGroundSpeed(Renderer* renderer, const Bounds& bounds);
