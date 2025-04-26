@@ -55,7 +55,10 @@ extern "C" void app_main(void) {
 
 		_renderer.clear(&color0);
 //		_renderer.renderFilledRectangle(Bounds(_display.getSize()), &color1);
-		_renderer.renderFilledRectangle(Bounds(10, 10, 30, 10), &color2);
+		_renderer.renderFilledRectangle(Bounds(10, 10, 30, 10), &color1);
+		_renderer.renderHorizontalLine(Point(10, 20), 130, &color2);
+		_renderer.renderVerticalLine(Point(10, 25), 130, &color3);
+
 		_renderer.renderString(Point(0, 0), &font, &color3, std::to_wstring(fps));
 		_renderer.renderString(Point(0, 300), &font, &color3, std::to_wstring(esp_get_free_heap_size() / 1024));
 		_renderer.flush();
