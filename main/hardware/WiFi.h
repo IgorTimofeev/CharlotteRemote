@@ -30,7 +30,6 @@ namespace pizda {
 			static void addOnStateChanged(const std::function<void(WiFiState, WiFiState)>& callback);
 
 		private:
-			static TaskHandle_t* _task;
 			static WiFiState _state;
 			static Callback<WiFiState, WiFiState> _onStateChanged;
 

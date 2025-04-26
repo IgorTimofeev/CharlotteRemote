@@ -74,7 +74,6 @@ namespace pizda {
 			const GeographicCoordinates& getGeographicCoordinates() const;
 
 			float getWindSpeed() const;
-
 			float getGroundSpeed() const;
 
 		private:
@@ -96,7 +95,7 @@ namespace pizda {
 				constants::screen::frequency
 			);
 
-			Bit8PaletteRenderer _renderer = Bit8PaletteRenderer(32);
+			RGB565PixelBufferRenderer _renderer {};
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
 				constants::i2c::sda,

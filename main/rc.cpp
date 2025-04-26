@@ -16,11 +16,13 @@ namespace pizda {
 	}
 
 	[[noreturn]] void RC::run() {
-		// -------------------------------- Main --------------------------------
+		// Should be done first, because display should allocate pixel buffer in
+		// one single piece, which may not be available after NVS, SPI, etc.
+		_renderer.setTarget(&_display);
 
-		NVSSetup();
-		ADCUnitsSetup();
 		SPIBusSetup();
+		ADCUnitsSetup();
+		NVSSetup();
 
 		// Settings
 		_settings.setup();
@@ -28,12 +30,11 @@ namespace pizda {
 		// Display
 		_display.setup();
 
-		// Renderer
-		_renderer.setTarget(&_display);
-		_application.setRenderer(&_renderer);
-
 		// Touch panel
 		_touchPanel.setup();
+
+		// Application
+		_application.setRenderer(&_renderer);
 		_application.addInputDevice(&_touchPanel);
 
 		// Transceiver
@@ -57,13 +58,8 @@ namespace pizda {
 
 		// -------------------------------- UI --------------------------------
 
-		// Theme
-		Theme::setup(&_renderer);
 		_application.setBackgroundColor(&Theme::bg1);
-
-		// Page layout
 		_application += &_pageLayout;
-
 		setRoute(&Routes::MFD);
 
 		// -------------------------------- Take off --------------------------------
