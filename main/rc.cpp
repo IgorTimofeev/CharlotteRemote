@@ -16,9 +16,9 @@ namespace pizda {
 	}
 
 	[[noreturn]] void RC::run() {
-
-		// Should be done first, because display should allocate pixel buffer in
-		// one single piece, which may not be available after NVS, SPI, etc.
+		// Should be done first, because display will try to allocate pixel buffer on heap in
+		// single block, which may not be available after NVS, SPI, WiFi, etc., beacuse of
+		// heap fragmentation. IDK how to
 		_renderer.setTarget(&_display);
 
 		SPIBusSetup();
