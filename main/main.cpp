@@ -32,12 +32,12 @@ extern "C" void app_main(void) {
 //	Size(240, 320)
 //);
 //
-//RGB565PixelBufferRenderer renderer {};
+//Bit8PaletteRenderer renderer {4};
 //
-//Rgb565Color color0 = Rgb888Color(0x444444).toRgb565();
-//Rgb565Color color1 = Rgb888Color(0x00FF00).toRgb565();
-//Rgb565Color color2 = Rgb888Color(0x0000FF).toRgb565();
-//Rgb565Color color3 = Rgb888Color(0x000000).toRgb565();
+//PaletteColor color0 = PaletteColor(0);
+//PaletteColor color1 = PaletteColor(1);
+//PaletteColor color2 = PaletteColor(2);
+//PaletteColor color3 = PaletteColor(3);
 //
 //unscii16Font font = unscii16Font();
 //
@@ -49,6 +49,13 @@ extern "C" void app_main(void) {
 //extern "C" void app_main(void) {
 //	display.setup();
 //	renderer.setTarget(&display);
+//
+//	renderer.setPaletteColors({
+//		0x444444,
+//		0x00FF00,
+//		0x0000FF,
+//		0xFF00FF
+//	});
 //
 //	while (true) {
 //		// 1 - deltaTime

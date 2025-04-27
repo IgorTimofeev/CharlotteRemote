@@ -59,7 +59,7 @@ namespace pizda {
 
 		// -------------------------------- UI --------------------------------
 
-//		Theme::setup(&_renderer);
+		Theme::setup(&_renderer);
 		_application.setBackgroundColor(&Theme::bg1);
 		_application += &_pageLayout;
 		setRoute(&Routes::MFD);
