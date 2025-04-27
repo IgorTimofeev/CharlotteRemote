@@ -17,7 +17,7 @@ namespace pizda {
 
 	[[noreturn]] void RC::run() {
 		// Should be done first, because display will try to allocate pixel buffer on heap in
-		// single block, which may not be available after NVS, SPI, WiFi, etc., beacuse of
+		// single block, which may not be available after NVS, SPI, WiFi, etc., because of
 		// heap fragmentation. IDK how to
 		_renderer.setTarget(&_display);
 
@@ -59,6 +59,7 @@ namespace pizda {
 
 		// -------------------------------- UI --------------------------------
 
+//		Theme::setup(&_renderer);
 		_application.setBackgroundColor(&Theme::bg1);
 		_application += &_pageLayout;
 		setRoute(&Routes::MFD);
@@ -304,7 +305,7 @@ namespace pizda {
 		busConfig.sclk_io_num = constants::spi::sck;
 		busConfig.quadwp_io_num = -1;
 		busConfig.quadhd_io_num = -1;
-		busConfig.max_transfer_sz = 0xFFFF;
+		busConfig.max_transfer_sz = 320 * 240 * 2;
 
 		ESP_ERROR_CHECK(spi_bus_initialize(SPI2_HOST, &busConfig, SPI_DMA_CH_AUTO));
 	}
