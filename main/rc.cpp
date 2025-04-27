@@ -16,6 +16,7 @@ namespace pizda {
 	}
 
 	[[noreturn]] void RC::run() {
+
 		// Should be done first, because display should allocate pixel buffer in
 		// one single piece, which may not be available after NVS, SPI, etc.
 		_renderer.setTarget(&_display);
@@ -37,8 +38,8 @@ namespace pizda {
 		_application.setRenderer(&_renderer);
 		_application.addInputDevice(&_touchPanel);
 
-		// Transceiver
-		_transceiver.setup();
+//		// Transceiver
+//		_transceiver.setup();
 
 		// Axis
 		_leverLeft.setup();
@@ -78,7 +79,7 @@ namespace pizda {
 			_application.tick();
 
 			// Low priority tasks
-			_transceiver.tick();
+//			_transceiver.tick();
 			_speaker.tick();
 			_settings.tick();
 

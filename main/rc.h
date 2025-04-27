@@ -16,7 +16,7 @@
 #include "interpolator.h"
 
 #include "hardware/transceiver/packet.h"
-#include "hardware/transceiver/TCPTransceiver.h"
+//#include "hardware/transceiver/TCPTransceiver.h"
 #include "hardware/speaker.h"
 #include "hardware/axis.h"
 #include "hardware/battery.h"
@@ -106,7 +106,7 @@ namespace pizda {
 			);
 
 			Speaker _speaker;
-			TCPTransceiver _transceiver;
+//			TCPTransceiver _transceiver;
 
 			// Encoder
 			uint32_t _encoderRotationTime = 0;

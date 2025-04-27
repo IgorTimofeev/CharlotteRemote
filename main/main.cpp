@@ -1,6 +1,8 @@
 #include "rc.h"
 
 extern "C" void app_main(void) {
+	ESP_LOGI("pizda", "heap_caps_get_largest_free_block: %d", heap_caps_get_largest_free_block(MALLOC_CAP_DMA));
+
 	pizda::RC::getInstance().run();
 }
 

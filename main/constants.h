@@ -25,13 +25,6 @@ namespace pizda {
 				public:
 					static adc_oneshot_unit_handle_t unit1;
 			};
-	
-			class wifi {
-				public:
-					constexpr static const char* ssid = "IT";
-					constexpr static const char* password = "SERGTIM64ST17";
-					constexpr static const uint32_t connectionInterval = 5'000'000;
-			};
 
 			class ota {
 				public:
