@@ -223,6 +223,5 @@ namespace pizda {
 			void NVSSetup();
 
 			void interpolationTick();
-
 	};
 }
