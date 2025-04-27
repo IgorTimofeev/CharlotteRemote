@@ -27,7 +27,7 @@ namespace pizda {
 			explicit MFDMenuView();
 
 			MenuButton
-				NDButton = MenuButton(&resources::Images::menuIconMFDND, L"N/D");
+				NDButton = MenuButton(&resources::Images::menuIconND, L"N/D");
 
 			MFDModeMenuButton
 				mainButton = MFDModeMenuButton(&resources::Images::menuIconMFDMain, L"Main", SettingsInterfaceMFDInstrumentsMode::main),

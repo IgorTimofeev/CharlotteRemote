@@ -16,11 +16,6 @@ namespace pizda {
 	}
 
 	[[noreturn]] void RC::run() {
-		// Should be done first, because display will try to allocate pixel buffer on heap in
-		// single block, which may not be available after NVS, SPI, WiFi, etc., because of
-		// heap fragmentation. IDK how to
-		_renderer.setTarget(&_display);
-
 		SPIBusSetup();
 		ADCUnitsSetup();
 		NVSSetup();
@@ -31,15 +26,18 @@ namespace pizda {
 		// Display
 		_display.setup();
 
-		// Touch panel
-		_touchPanel.setup();
+		// Renderer
+		_renderer.setTarget(&_display);
 
 		// Application
 		_application.setRenderer(&_renderer);
+
+		// Touch panel
+		_touchPanel.setup();
 		_application.addInputDevice(&_touchPanel);
 
 //		// Transceiver
-//		_transceiver.setup();
+		_transceiver.setup();
 
 		// Axis
 		_leverLeft.setup();
@@ -80,7 +78,7 @@ namespace pizda {
 			_application.tick();
 
 			// Low priority tasks
-//			_transceiver.tick();
+			_transceiver.tick();
 			_speaker.tick();
 			_settings.tick();
 

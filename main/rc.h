@@ -16,7 +16,7 @@
 #include "interpolator.h"
 
 #include "hardware/transceiver/packet.h"
-//#include "hardware/transceiver/TCPTransceiver.h"
+#include "hardware/transceiver/TCPTransceiver.h"
 #include "hardware/speaker.h"
 #include "hardware/axis.h"
 #include "hardware/battery.h"
@@ -105,8 +105,8 @@ namespace pizda {
 				constants::screen::touch::interrupt
 			);
 
-			Speaker _speaker;
-//			TCPTransceiver _transceiver;
+			Speaker _speaker {};
+			TCPTransceiver _transceiver {};
 
 			// Encoder
 			uint32_t _encoderRotationTime = 0;
@@ -164,8 +164,8 @@ namespace pizda {
 
 			// -------------------------------- UI --------------------------------
 
-			Application _application;
-			Layout _pageLayout;
+			Application _application {};
+			Layout _pageLayout {};
 
 			Menu* _menu = nullptr;
 			DebugOverlay* _debugOverlay = nullptr;

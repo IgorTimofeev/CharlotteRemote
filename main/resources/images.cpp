@@ -2,11 +2,12 @@
 
 namespace pizda::resources {
 	const MenuIconMFDImage Images::menuIconMFD = {};
-	const MenuIconMFDNDImage Images::menuIconMFDND = {};
+	const MenuIconNDImage Images::menuIconND = {};
 	const MenuIconMFDMainImage Images::menuIconMFDMain = {};
 	const MenuIconMFDAutopilotImage Images::menuIconMFDAutopilot = {};
 	const MenuIconMFDPressureImage Images::menuIconMFDPressure = {};
 	const MenuIconSettingsImage Images::menuIconSettings = {};
+	const MenuIconWiFiImage Images::menuIconWiFi = {};
 	const MenuIconAxisImage Images::menuIconAxis = {};
 	const MenuIconDevImage Images::menuIconDev = {};
 
