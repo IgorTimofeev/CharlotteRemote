@@ -147,13 +147,12 @@ namespace pizda {
 
 			// Flight director
 			constexpr static const uint8_t flightDirectorLengthFactor = 50;
-			constexpr static const uint8_t flightDirectorThickness = 1;
-			constexpr static const uint8_t flightDirectorBorder = 1;
+			constexpr static const uint8_t flightDirectorThickness = 2;
 
 			// Wind
 			constexpr static const uint8_t windVisibilityGroundSpeed = 10;
 
-			float horizontalFOV = toRadians(40);
+			float horizontalFOV = toRadians(50);
 
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
 

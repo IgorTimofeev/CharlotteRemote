@@ -899,6 +899,51 @@ namespace pizda {
 			);
 		}
 
+		// Flight director
+		if (rc.getSettings().autopilot.flightDirector) {
+			const uint16_t flightDirectorLength = (uint32_t) std::min(bounds.getWidth(), bounds.getHeight()) * flightDirectorLengthFactor / 100;
+			const auto flightDirectorLengthHalfF = (float) flightDirectorLength / 2.f;
+
+			// Horizontal
+			auto flightDirectorRectBounds = Bounds(
+				(int32_t) horizonCenter.getX() - flightDirectorLength / 2,
+				(int32_t) (
+					horizonCenter.getY()
+					- std::clamp(
+						rc.getFlightDirectorPitchInterpolator().getValue() * pixelsPerRadVertical,
+						-flightDirectorLengthHalfF,
+						flightDirectorLengthHalfF
+					)
+				)
+				- flightDirectorThickness / 2,
+				flightDirectorLength,
+				flightDirectorThickness
+			);
+
+			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::purple);
+//			renderer->renderHorizontalLine(Point(flightDirectorRectBounds.getX(), flightDirectorRectBounds.getY() + flightDirectorThickness), flightDirectorRectBounds.getWidth(), &Theme::bg1);
+
+			// Vertical
+			flightDirectorRectBounds.setX(
+				(int32_t) (
+					horizonCenter.getX()
+					+ std::clamp(
+						rc.getFlightDirectorYawInterpolator().getValue() * pixelsPerRadHorizontal,
+						-flightDirectorLengthHalfF,
+						flightDirectorLengthHalfF
+					)
+				)
+				- flightDirectorThickness / 2
+			);
+
+			flightDirectorRectBounds.setY((int32_t) horizonCenter.getY() - flightDirectorLength / 2);
+			flightDirectorRectBounds.setWidth(flightDirectorThickness);
+			flightDirectorRectBounds.setHeight(flightDirectorLength);
+
+			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::purple);
+//			renderer->renderVerticalLine(Point(flightDirectorRectBounds.getX() + flightDirectorThickness, flightDirectorRectBounds.getY()), flightDirectorRectBounds.getHeight(), &Theme::bg1);
+		}
+
 		// Flight path vector
 		if (rc.getAirSpeedInterpolator().getValue() > speedFlapsMin) {
 			const auto& FPVPosition = Point(
@@ -959,68 +1004,6 @@ namespace pizda {
 			),
 			&Theme::bg1
 		);
-
-		// Flight director
-		if (rc.getSettings().autopilot.flightDirector) {
-			const uint16_t flightDirectorLength = (uint32_t) std::min(bounds.getWidth(), bounds.getHeight()) * flightDirectorLengthFactor / 100;
-			const auto flightDirectorLengthHalfF = (float) flightDirectorLength / 2.f;
-
-			// Horizontal
-			auto flightDirectorRectBounds = Bounds(
-				(int32_t) horizonCenter.getX() - flightDirectorLength / 2 - flightDirectorBorder,
-				(int32_t) (
-					horizonCenter.getY()
-					- std::clamp(
-						rc.getFlightDirectorPitchInterpolator().getValue() * pixelsPerRadVertical,
-						-flightDirectorLengthHalfF,
-						flightDirectorLengthHalfF
-					)
-				)
-				- flightDirectorBorder
-				- flightDirectorThickness / 2,
-				flightDirectorLength + flightDirectorBorder * 2,
-				flightDirectorThickness + flightDirectorBorder * 2
-			);
-
-			const auto& renderFlightDirectorRects = [renderer, &flightDirectorRectBounds]() {
-				renderer->renderFilledRectangle(
-					flightDirectorRectBounds,
-					&Theme::bg1
-				);
-
-				flightDirectorRectBounds.setX(flightDirectorRectBounds.getX() + flightDirectorBorder);
-				flightDirectorRectBounds.setY(flightDirectorRectBounds.getY() + flightDirectorBorder);
-				flightDirectorRectBounds.setWidth(flightDirectorRectBounds.getWidth() - flightDirectorBorder * 2);
-				flightDirectorRectBounds.setHeight(flightDirectorRectBounds.getHeight() - flightDirectorBorder * 2);
-
-				renderer->renderFilledRectangle(
-					flightDirectorRectBounds,
-					&Theme::purple
-				);
-			};;
-
-			renderFlightDirectorRects();
-
-			// Vertical
-			flightDirectorRectBounds.setX(
-				(int32_t) (
-					horizonCenter.getX()
-					+ std::clamp(
-						rc.getFlightDirectorYawInterpolator().getValue() * pixelsPerRadHorizontal,
-						-flightDirectorLengthHalfF,
-						flightDirectorLengthHalfF
-					)
-				)
-				- flightDirectorBorder
-				- flightDirectorThickness / 2
-			);
-
-			flightDirectorRectBounds.setY((int32_t) horizonCenter.getY() - flightDirectorLength / 2 - flightDirectorBorder);
-			flightDirectorRectBounds.setWidth(flightDirectorThickness + flightDirectorBorder * 2);
-			flightDirectorRectBounds.setHeight(flightDirectorLength + flightDirectorBorder * 2);
-
-			renderFlightDirectorRects();
-		}
 
 		// Aircraft symbol dot
 		renderer->renderFilledRectangle(
