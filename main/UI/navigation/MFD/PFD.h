@@ -145,16 +145,21 @@ namespace pizda {
 			constexpr static const uint8_t flightPathVectorLineLength = 6;
 			constexpr static const uint8_t flightPathVectorLineThickness = 2;
 
+			// Flight director
+			constexpr static const uint8_t flightDirectorLengthFactor = 50;
+			constexpr static const uint8_t flightDirectorThickness = 1;
+			constexpr static const uint8_t flightDirectorBorder = 1;
+
 			// Wind
 			constexpr static const uint8_t windVisibilityGroundSpeed = 10;
 
-			float horizontalFOV = toRadians(60);
+			float horizontalFOV = toRadians(40);
 
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
 
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left) ;
 
-			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, float value, bool left) ;
+			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, float value, bool left);
 
 			static void renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value);
 
@@ -179,8 +184,8 @@ namespace pizda {
 			static void renderPitchOverlay(
 				Renderer* renderer,
 				const Bounds& bounds,
-				float pixelsPerHorizontalFOV,
-				float pixelsPerVerticalFOV,
+				float pixelsPerRadHorizontal,
+				float pixelsPerRadVertical,
 				const Point& horizonLeft,
 				const Point& horizonRight,
 
@@ -195,14 +200,6 @@ namespace pizda {
 			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds, float roll);
 
 			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, float yaw);
-
-			void renderAircraftSymbolAndFPVOverlay(
-				Renderer* renderer,
-				const Point& center,
-				float pixelsPerHorizontalFOV,
-				float pixelsPerVerticalFOV,
-				const Vector2F& horizonCenter
-			) const;
 
 			void renderGroundSpeed(Renderer* renderer, const Bounds& bounds);
 

@@ -10,9 +10,9 @@ namespace pizda {
 	class ThrottleIndicator : public Element {
 		public:
 			void onRender(Renderer* renderer, const Bounds& bounds) override {
-				const uint8_t lineOffset = 2;
 				const uint8_t textOffset = 3;
 				const uint16_t frameHeight = bounds.getHeight() - Theme::fontSmall.getHeight() - textOffset;
+				const auto frameY2 = bounds.getY() + frameHeight - 1;
 
 				// Frame
 				renderer->renderRectangle(
@@ -25,32 +25,36 @@ namespace pizda {
 					&Theme::bg5
 				);
 
-				// Value rect
-				const auto valueHeight = (uint16_t) (frameHeight * _value / 0xFFFF);
-				const uint16_t valueY = bounds.getY() + frameHeight - valueHeight + 1;
+				// Aircraft value fill
+				const auto aircraftValueFillHeight = (uint16_t) (frameHeight * _aircraftValue / 0xFF);
 
-				renderer->renderFilledRectangle(
-					Bounds(
-						bounds.getX(),
-						valueY,
-						bounds.getWidth(),
-						valueHeight
-					),
-					&Theme::fg1
-				);
+				if (aircraftValueFillHeight > 0) {
+					renderer->renderFilledRectangle(
+						Bounds(
+							bounds.getX(),
+							frameY2 - aircraftValueFillHeight,
+							bounds.getWidth(),
+							aircraftValueFillHeight
+						),
+						&Theme::fg1
+					);
+				}
 
-				// Line
+				// Remote value line
+				const uint8_t remoteValueLineOffsetX = 2;
+				const auto remoteValueLineHeight = (uint16_t) (frameHeight * _remoteValue / 0xFF);
+
 				renderer->renderHorizontalLine(
 					Point(
-						bounds.getX() - lineOffset,
-						valueY
+						bounds.getX() - remoteValueLineOffsetX,
+						frameY2 - remoteValueLineHeight
 					),
-					lineOffset + bounds.getWidth() + lineOffset,
+					remoteValueLineOffsetX + bounds.getWidth() + remoteValueLineOffsetX,
 					&Theme::green
 				);
 
-				// Text
-				const auto text = std::to_wstring((int32_t) (_value * 100 / 0xFFFF));
+				// Aircraft value text
+				const auto text = std::to_wstring((int32_t) (_aircraftValue * 100 / 0xFF));
 
 				renderer->renderString(
 					Point(
@@ -63,17 +67,26 @@ namespace pizda {
 				);
 			}
 
-			uint16_t getValue() const {
-				return _value;
+			uint8_t getRemoteValue() const {
+				return _remoteValue;
 			}
 
-			void setValue(uint16_t value) {
-				_value = value;
+			void setRemoteValue(uint8_t value) {
+				_remoteValue = value;
 
 				invalidate();
 			}
 
+			uint8_t getAircraftValue() const {
+				return _aircraftValue;
+			}
+
+			void setAircraftValue(uint8_t aircraftValue) {
+				_aircraftValue = aircraftValue;
+			}
+
 		private:
-			uint16_t _value = 0;
+			uint8_t _remoteValue = 0;
+			uint8_t _aircraftValue = 0;
 	};
 }

@@ -76,15 +76,14 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		auto& settings = rc.getSettings();
 
-		_remotePacket.throttle1 = settings.controls.throttles[0];
-		_remotePacket.throttle2 = settings.controls.throttles[1];
+		_remotePacket.throttle = settings.controls.throttle;
 
-		_remotePacket.ailerons = rc.getJoystickHorizontal().getMappedUint16Value();
-		_remotePacket.elevator = rc.getJoystickVertical().getMappedUint16Value();
+		_remotePacket.ailerons = rc.getJoystickHorizontal().getMappedUint8Value();
+		_remotePacket.elevator = rc.getJoystickVertical().getMappedUint8Value();
 
-		_remotePacket.rudder = rc.getRing().getMappedUint16Value();
-		_remotePacket.flaps = rc.getLeverRight().getMappedUint16Value();
-		_remotePacket.spoilers = rc.getLeverLeft().getMappedUint16Value();
+		_remotePacket.rudder = rc.getRing().getMappedUint8Value();
+		_remotePacket.flaps = rc.getLeverRight().getMappedUint8Value();
+		_remotePacket.spoilers = rc.getLeverLeft().getMappedUint8Value();
 
 		_remotePacket.altimeterPressurePa = settings.controls.referencePressureSTD ? 101325 : settings.controls.referencePressurePa;
 

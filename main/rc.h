@@ -45,6 +45,8 @@ namespace pizda {
 			LowPassInterpolator& getFlightPathVectorPitchInterpolator();
 			LowPassInterpolator& getFlightPathVectorYawInterpolator();
 			LowPassInterpolator& getWindDirectionInterpolator();
+			LowPassInterpolator& getFlightDirectorPitchInterpolator();
+			LowPassInterpolator& getFlightDirectorYawInterpolator();
 
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
@@ -75,6 +77,7 @@ namespace pizda {
 
 			float getWindSpeed() const;
 			float getGroundSpeed() const;
+			uint8_t getAircraftThrottle() const;
 
 		private:
 			RC() = default;
@@ -186,6 +189,7 @@ namespace pizda {
 
 			float _groundSpeed = 0;
 			float _windSpeed = 0;
+			uint8_t _aircraftThrottle = 0;
 
 			LowPassInterpolator _airSpeedInterpolator {};
 			LowPassInterpolator _airSpeedTrendInterpolator {};
@@ -199,11 +203,14 @@ namespace pizda {
 			LowPassInterpolator _rollInterpolator {};
 			LowPassInterpolator _yawInterpolator {};
 			LowPassInterpolator _slipAndSkidInterpolator {};
+
 			LowPassInterpolator _flightPathVectorPitchInterpolator {};
 			LowPassInterpolator _flightPathVectorYawInterpolator {};
 
-			LowPassInterpolator _windDirectionInterpolator {};
+			LowPassInterpolator _flightDirectorPitchInterpolator {};
+			LowPassInterpolator _flightDirectorYawInterpolator {};
 
+			LowPassInterpolator _windDirectionInterpolator {};
 
 			// -------------------------------- Timings --------------------------------
 

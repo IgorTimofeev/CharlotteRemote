@@ -59,8 +59,11 @@ namespace pizda {
 		auto& settings = rc.getSettings();
 
 		// Throttles
-		_throttle1Indicator.setValue(settings.controls.throttles[0]);
-		_throttle2Indicator.setValue(settings.controls.throttles[1]);
+		_throttle1Indicator.setRemoteValue(settings.controls.throttle);
+		_throttle1Indicator.setAircraftValue(rc.getAircraftThrottle());
+
+		_throttle2Indicator.setRemoteValue(_throttle1Indicator.getRemoteValue());
+		_throttle2Indicator.setAircraftValue(_throttle1Indicator.getAircraftValue());
 
 		// Controls
 		_landingGearImageView.setImage(
@@ -96,8 +99,7 @@ namespace pizda {
 				auto& settings = RC::getInstance().getSettings();
 
 				// Throttle
-				settings.controls.throttles[0] = YOBA::addSaturating(settings.controls.throttles[0], rotateEvent->getRPSFactor(60, 1, 10) * 0xFFFF / 100);
-				settings.controls.throttles[1] = settings.controls.throttles[0];
+				settings.controls.throttle = YOBA::addSaturating(settings.controls.throttle, rotateEvent->getRPSFactor(60, 1, 10) * 0xFF / 100);
 
 				event->setHandled(true);
 			}

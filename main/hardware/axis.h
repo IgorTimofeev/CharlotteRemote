@@ -18,6 +18,7 @@ namespace pizda {
 			uint16_t getRawValue();
 			uint16_t getProcessedValue();
 			float getMappedFloatValue();
+			uint8_t getMappedUint8Value();
 			uint16_t getMappedUint16Value();
 
 		private:

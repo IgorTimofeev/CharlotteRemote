@@ -24,6 +24,8 @@ namespace pizda {
 	};
 
 	struct AircraftPacket {
+		uint8_t throttle;
+
 		float latitudeRad = 0;
 		float longitudeRad = 0;
 		float altitudeM = 0;
@@ -38,6 +40,9 @@ namespace pizda {
 		float flightPathPitchRad = 0;
 		float flightPathYawRad = 0;
 
+		float flightDirectorPitchRad = 0;
+		float flightDirectorYawRad = 0;
+
 		uint16_t slipAndSkid = 0;
 
 		uint16_t windDirectionDeg = 0;
@@ -45,15 +50,14 @@ namespace pizda {
 	};
 
 	struct RemotePacket {
-		uint16_t throttle1 = 0;
-		uint16_t throttle2 = 0;
+		uint8_t throttle = 0;
 
-		uint16_t ailerons = 0;
-		uint16_t elevator = 0;
-		uint16_t rudder = 0;
+		uint8_t ailerons = 0;
+		uint8_t elevator = 0;
+		uint8_t rudder = 0;
 
-		uint16_t flaps = 0;
-		uint16_t spoilers = 0;
+		uint8_t flaps = 0;
+		uint8_t spoilers = 0;
 
 		uint32_t altimeterPressurePa = 0;
 

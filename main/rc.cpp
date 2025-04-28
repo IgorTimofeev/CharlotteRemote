@@ -114,9 +114,14 @@ namespace pizda {
 		_pitchInterpolator.tick(interpolationFactor);
 		_rollInterpolator.tick(interpolationFactor);
 		_yawInterpolator.tick(interpolationFactor);
+
 		_slipAndSkidInterpolator.tick(interpolationFactor);
+
 		_flightPathVectorPitchInterpolator.tick(interpolationFactor);
 		_flightPathVectorYawInterpolator.tick(interpolationFactor);
+
+		_flightDirectorPitchInterpolator.tick(interpolationFactor);
+		_flightDirectorYawInterpolator.tick(interpolationFactor);
 
 		// Airspeed / altitude, normal
 		interpolationFactor = 8.0f * (float) deltaTime / 1'000'000.f;
@@ -167,6 +172,14 @@ namespace pizda {
 		return _flightPathVectorYawInterpolator;
 	}
 
+	LowPassInterpolator& RC::getFlightDirectorPitchInterpolator() {
+		return _flightDirectorPitchInterpolator;
+	}
+
+	LowPassInterpolator& RC::getFlightDirectorYawInterpolator() {
+		return _flightDirectorYawInterpolator;
+	}
+
 	LowPassInterpolator& RC::getAirspeedTrendInterpolator() {
 		return _airSpeedTrendInterpolator;
 	}
@@ -189,6 +202,10 @@ namespace pizda {
 
 	float RC::getGroundSpeed() const {
 		return _groundSpeed;
+	}
+
+	uint8_t RC::getAircraftThrottle() const {
+		return _aircraftThrottle;
 	}
 
 	Application& RC::getApplication() {
@@ -327,9 +344,14 @@ namespace pizda {
 		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
 
 		// Direct
+		_aircraftThrottle = packet->throttle;
+
 		_geographicCoordinates.setLatitude(packet->latitudeRad);
 		_geographicCoordinates.setLongitude(packet->longitudeRad);
 		_geographicCoordinates.setAltitude(packet->altitudeM);
+
+		_windSpeed = convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+
 
 		// Interpolators
 		_altitudeInterpolator.setTargetValue(convertDistance(packet->altitudeM, DistanceUnit::meter, DistanceUnit::foot));
@@ -343,10 +365,12 @@ namespace pizda {
 		_flightPathVectorPitchInterpolator.setTargetValue(packet->flightPathPitchRad);
 		_flightPathVectorYawInterpolator.setTargetValue(packet->flightPathYawRad);
 
+		_flightDirectorPitchInterpolator.setTargetValue(packet->flightDirectorPitchRad);
+		_flightDirectorYawInterpolator.setTargetValue(packet->flightDirectorYawRad);
+
 		_slipAndSkidInterpolator.setTargetValue(-1.f + (float) packet->slipAndSkid / (float) 0xFFFF * 2.f);
 
 		_windDirectionInterpolator.setTargetValue(toRadians(packet->windDirectionDeg));
-		_windSpeed = convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 
 		// Trends
 		const auto deltaAltitude = _altitudeInterpolator.getTargetValue() - oldAltitude;

@@ -12,10 +12,7 @@ namespace pizda {
 
 	class SettingsControls {
 		public:
-			uint16_t throttles[2] = {
-				0xFFFF,
-				0xFFFF
-			};
+			uint8_t throttle = 0x0;
 
 			uint16_t aileronsTrim = 0xFFFF / 2;
 			uint16_t elevatorTrim = 0xFFFF / 2;
@@ -51,6 +48,8 @@ namespace pizda {
 
 	class SettingsAutopilot {
 		public:
+			bool flightDirector = true;
+
 			uint16_t speedKt = 0;
 			bool autoThrottle = false;
 
@@ -143,7 +142,7 @@ namespace pizda {
 
 		private:
 			constexpr static const uint32_t _writeDelay = 2500000;
-			constexpr static const uint8_t _version = 8;
+			constexpr static const uint8_t _version = 10;
 			uint32_t _timeToWrite = 0;
 	};
 

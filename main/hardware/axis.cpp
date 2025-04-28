@@ -56,6 +56,10 @@ namespace pizda {
 		return (float) getProcessedValue() / (float) maxValue;
 	}
 
+	uint8_t Axis::getMappedUint8Value() {
+		return getProcessedValue() * 0xFF / maxValue;
+	}
+
 	uint16_t Axis::getMappedUint16Value() {
 		return getProcessedValue() * 0xFFFF / maxValue;
 	}
