@@ -5,9 +5,11 @@ namespace pizda {
 	using namespace YOBA;
 
 	AutopilotControls::AutopilotControls() {
-		setHeight(56);
+		setHeight(48);
 
 		auto& settings = RC::getInstance().getSettings();
+
+		row.setSpacing(8);
 
 		// Speed
 		speed.seven.setValue(settings.autopilot.speedKt);
@@ -25,8 +27,8 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		applyTitlerStyle(speedTitle);
-		row += &speedTitle;
+		speedLayout.setFocusable(false);
+		row += &speedLayout;
 
 		// Heading
 		heading.seven.setValue(settings.autopilot.headingDeg);
@@ -44,8 +46,8 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		applyTitlerStyle(headingTitle);
-		row += &headingTitle;
+		headingLayout.setFocusable(false);
+		row += &headingLayout;
 
 		// Altitude
 		altitude.seven.setValue(settings.autopilot.altitudeFt);
@@ -63,7 +65,8 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		applyTitlerStyle(altitudeTitle);
-		row += &altitudeTitle;
+		altitudeLayout.setFocusable(false);
+
+		row += &altitudeLayout;
 	}
 }

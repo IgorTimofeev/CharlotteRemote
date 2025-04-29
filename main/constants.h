@@ -135,7 +135,7 @@ namespace pizda {
 			See: https://docs.espressif.com/projects/esp-idf/en/release-v4.3/esp32/api-reference/peripherals/adc.html
 	
 			Based on this shit & resistors I have, the voltage divider will be 1M / 330K,
-			giving final input range of [1,488; 2.084]V
+			giving final input range of [1.488; 2.084]V
 			*/
 			class battery {
 				public:

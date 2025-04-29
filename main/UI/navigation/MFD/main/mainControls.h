@@ -4,13 +4,13 @@
 #include <YOBA/UI.h>
 
 #include "trimIndicator.h"
-#include "throttleIndicator.h"
+#include "throttleIndicatorLayout.h"
 #include "flapsAndSpoilersIndicator.h"
 #include "batteryIndicator.h"
 
 #include "../instrumentsView.h"
+#include "../instrumentIndicatorLayout.h"
 #include "../../menu/openMenuButton.h"
-#include "../../../titler.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -19,31 +19,23 @@ namespace pizda {
 		public:
 			MainControls();
 
-			constexpr static const uint8_t panelSize = 48;
-
 		protected:
 			void onTick() override;
 
-			void onEvent(Event* event) override;
-
 		private:
-			ThrottleIndicator _throttle1Indicator {};
-			ThrottleIndicator _throttle2Indicator {};
-
-			StackLayout _throttleRow {};
-			Titler _throttleTitle = Titler(L"THR", &_throttleRow);
+			ThrottleIndicatorLayout _throttleIndicatorLayout {};
 
 			StackLayout _controlsRows {};
 			FlapsAndSpoilersIndicator _flapsAndSpoilersIndicator {};
 			ImageView _landingGearImageView {};
-			Titler _controlsTitle = Titler(L"CTL", &_controlsRows);
+			InstrumentIndicatorLayout _controlsLayout = { L"CTL", &_controlsRows, true };
 
 			TrimIndicator _elevatorTrimIndicator {};
-			Titler _elevatorTrimTitle = Titler(L"TRM", &_elevatorTrimIndicator);
+			InstrumentIndicatorLayout _elevatorTrimLayout = { L"TRM", &_elevatorTrimIndicator, true };
 
 			BatteryIndicator _batteryIndicatorController {};
 			BatteryIndicator _batteryIndicatorAircraft {};
 			StackLayout _batteryIndicatorRows {};
-			Titler _batteryIndicatorTitle = Titler(L"BAT", &_batteryIndicatorRows);
+			InstrumentIndicatorLayout _batteryLayout = { L"BAT", &_batteryIndicatorRows, true };
 	};
 }

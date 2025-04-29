@@ -5,7 +5,7 @@
 #include "../../../theme.h"
 
 #include "../instrumentsView.h"
-#include "../../../titler.h"
+#include "../instrumentIndicatorLayout.h"
 
 #include "../rotaryControl.h"
 
@@ -17,9 +17,9 @@ namespace pizda {
 			explicit PressureControls();
 
 			RotaryControl<4, 800, 1090, false, 1, 10> pressure = { L"STD" };
-			Titler pressureTitle = Titler(L"Baro", &pressure);
+			InstrumentIndicatorLayout pressureLayout = { L"Baro", &pressure, false };
 
 			RotaryControl<4, 0, 15000, false, 10, 100> minimums = { L"ON" };
-			Titler minimumsTitle = Titler(L"Minimums", &minimums);
+			InstrumentIndicatorLayout minimumsLayout = { L"Minimums", &minimums, false };
 	};
 }

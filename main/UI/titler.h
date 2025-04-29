@@ -29,6 +29,6 @@ namespace pizda {
 			}
 
 		private:
-			Text _title = Text();
+			Text _title {};
 	};
 }

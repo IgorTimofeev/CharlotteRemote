@@ -9,6 +9,8 @@ namespace pizda {
 
 		auto& settings = RC::getInstance().getSettings();
 
+		row.setSpacing(8);
+
 		// Pressure
 		pressure.seven.setValue(settings.controls.referencePressurePa / 100);
 		pressure.button.setChecked(settings.controls.referencePressureSTD);
@@ -25,8 +27,8 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		applyTitlerStyle(pressureTitle);
-		row += &pressureTitle;
+		pressureLayout.setFocusable(false);
+		row += &pressureLayout;
 
 		// Minimums
 		minimums.seven.setValue(settings.controls.minimumAltitudeFt);
@@ -44,7 +46,7 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		applyTitlerStyle(minimumsTitle);
-		row += &minimumsTitle;
+		pressureLayout.setFocusable(false);
+		row += &minimumsLayout;
 	}
 }

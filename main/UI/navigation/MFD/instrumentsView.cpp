@@ -3,21 +3,17 @@
 
 namespace pizda {
 	InstrumentsView::InstrumentsView() : menuButton(OpenMenuButton(&MenuRoutes::MFD)) {
-		const uint16_t titleHeight = Theme::fontSmall.getHeight() + titleVerticalOffset * 2;
-
 		// Titles
-		titlesRect.setFillColor(&Theme::bg2);
-		titlesRect.setHeight(titleHeight);
-		titlesRect.setVerticalAlignment(Alignment::start);
-		*this += &titlesRect;
+		topPanel.setHeight(InstrumentsView::topPanelHeight);
+		topPanel.setVerticalAlignment(Alignment::start);
+		topPanel.setFillColor(&Theme::bg2);
+		*this += &topPanel;
 
 		buttonAndRowLayout.setOrientation(Orientation::horizontal);
 
 		// Row
 		row.setOrientation(Orientation::horizontal);
-		row.setSpacing(10);
 		row.setHorizontalAlignment(Alignment::center);
-		row.setMargin(Margin(5, titleVerticalOffset, 5, 0));
 		buttonAndRowLayout += &row;
 
 		// Menu button
@@ -27,10 +23,5 @@ namespace pizda {
 		buttonAndRowLayout += &menuButton;
 
 		*this += &buttonAndRowLayout;
-	}
-
-	void InstrumentsView::applyTitlerStyle(Titler& titler) {
-		titler.setSpacing(titleSpacing);
-		titler.getTitle().setFont(&Theme::fontSmall);
 	}
 }

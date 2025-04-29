@@ -303,8 +303,8 @@ namespace pizda {
 		const auto barX = bounds.getX2() + 1 - speedBarSize;
 
 		const auto renderBar = [&](int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) {
-			int32_t fromY = centerY + (int32_t) std::ceilf(speed * (float) speedStepPixels - (float) fromSpeed * (float) speedStepPixels);
-			int32_t height = (toSpeed - fromSpeed) * speedStepPixels;
+			int32_t fromY = centerY - (int32_t) (((float) fromSpeed - speed) * (float) speedStepPixels / (float) speedStepUnits);
+			int32_t height = (toSpeed - fromSpeed) * speedStepPixels / speedStepUnits;
 
 			renderer->renderFilledRectangle(
 				Bounds(
@@ -983,37 +983,50 @@ namespace pizda {
 			);
 		}
 
-		// Aircraft symbol left
-		renderer->renderFilledRectangle(
-			Bounds(
+		// Aircraft symbol
+		const auto& renderAircraftSymbolRect = [renderer](const Point& position, uint16_t width) {
+			renderer->renderFilledRectangle(
+				Bounds(
+					position.getX(),
+					position.getY(),
+					width,
+					aircraftSymbolThickness
+				),
+				&Theme::bg1
+			);
+
+			renderer->renderHorizontalLine(Point(position.getX() - 1, position.getY() - 1), width + 2, &Theme::fg1);
+			renderer->renderHorizontalLine(Point(position.getX() - 1, position.getY() + aircraftSymbolThickness), width + 2, &Theme::fg1);
+
+			renderer->renderVerticalLine(Point(position.getX() - 1, position.getY()), aircraftSymbolThickness, &Theme::fg1);
+			renderer->renderVerticalLine(Point(position.getX() + width, position.getY()), aircraftSymbolThickness, &Theme::fg1);
+		};
+
+		// Left
+		renderAircraftSymbolRect(
+			Point(
 				center.getX() - aircraftSymbolCenterOffset - aircraftSymbolThickness - aircraftSymbolWidth,
-				center.getY() - aircraftSymbolThickness / 2,
-				aircraftSymbolWidth,
-				aircraftSymbolThickness
+				center.getY() - aircraftSymbolThickness / 2
 			),
-			&Theme::bg1
+			aircraftSymbolWidth
 		);
 
-		// Aircraft symbol right
-		renderer->renderFilledRectangle(
-			Bounds(
+		// Right
+		renderAircraftSymbolRect(
+			Point(
 				center.getX() + aircraftSymbolCenterOffset + aircraftSymbolThickness,
-				center.getY() - aircraftSymbolThickness / 2,
-				aircraftSymbolWidth,
-				aircraftSymbolThickness
+				center.getY() - aircraftSymbolThickness / 2
 			),
-			&Theme::bg1
+			aircraftSymbolWidth
 		);
 
-		// Aircraft symbol dot
-		renderer->renderFilledRectangle(
-			Bounds(
+		// Dot
+		renderAircraftSymbolRect(
+			Point(
 				center.getX() + aircraftSymbolThickness / 2,
-				center.getY() - aircraftSymbolThickness / 2,
-				aircraftSymbolThickness,
-				aircraftSymbolThickness
+				center.getY() - aircraftSymbolThickness / 2
 			),
-			&Theme::bg1
+			aircraftSymbolThickness
 		);
 	}
 
