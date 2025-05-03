@@ -49,7 +49,7 @@ namespace pizda {
 					constexpr static const gpio_num_t slaveSelect = GPIO_NUM_17;
 					constexpr static const gpio_num_t dataCommand = GPIO_NUM_16;
 					constexpr static const gpio_num_t reset = GPIO_NUM_NC;
-					constexpr static const uint32_t frequency = 60000000;
+					constexpr static const uint32_t frequency = 60'000'000;
 			};
 	
 			class transceiver {
@@ -142,11 +142,11 @@ namespace pizda {
 					constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 					constexpr static const adc_channel_t channel = ADC_CHANNEL_4;
 
-					constexpr static const uint32_t voltageMin = 6000;
-					constexpr static const uint32_t voltageMax = 7400;
+					constexpr static const uint32_t voltageMin = 6'000;
+					constexpr static const uint32_t voltageMax = 7'300;
 
-					constexpr static const uint32_t voltageDividerR1 = 1000000;
-					constexpr static const uint32_t voltageDividerR2 = 330000;
+					constexpr static const uint32_t voltageDividerR1 = 1000'000;
+					constexpr static const uint32_t voltageDividerR2 = 330'000;
 			};
 	
 			class speaker {

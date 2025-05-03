@@ -110,7 +110,7 @@ namespace pizda {
 		// factorPerTick = factorPerSecond * deltaTime / 1'000'000
 
 		// Roll / pitch / yaw / slip & skid, faster
-		float interpolationFactor = 10.0f * (float) deltaTime / 1'000'000.f;
+		float interpolationFactor = 5.0f * (float) deltaTime / 1'000'000.f;
 		_pitchInterpolator.tick(interpolationFactor);
 		_rollInterpolator.tick(interpolationFactor);
 		_yawInterpolator.tick(interpolationFactor);
@@ -121,10 +121,10 @@ namespace pizda {
 		_flightPathVectorYawInterpolator.tick(interpolationFactor);
 
 		_flightDirectorPitchInterpolator.tick(interpolationFactor);
-		_flightDirectorYawInterpolator.tick(interpolationFactor);
+		_flightDirectorRollInterpolator.tick(interpolationFactor);
 
 		// Airspeed / altitude, normal
-		interpolationFactor = 8.0f * (float) deltaTime / 1'000'000.f;
+		interpolationFactor = 3.0f * (float) deltaTime / 1'000'000.f;
 		_airSpeedInterpolator.tick(interpolationFactor);
 		_altitudeInterpolator.tick(interpolationFactor);
 		_windDirectionInterpolator.tick(interpolationFactor);
@@ -176,8 +176,8 @@ namespace pizda {
 		return _flightDirectorPitchInterpolator;
 	}
 
-	LowPassInterpolator& RC::getFlightDirectorYawInterpolator() {
-		return _flightDirectorYawInterpolator;
+	LowPassInterpolator& RC::getFlightDirectorRollInterpolator() {
+		return _flightDirectorRollInterpolator;
 	}
 
 	LowPassInterpolator& RC::getAirspeedTrendInterpolator() {
@@ -366,7 +366,7 @@ namespace pizda {
 		_flightPathVectorYawInterpolator.setTargetValue(packet->flightPathYawRad);
 
 		_flightDirectorPitchInterpolator.setTargetValue(packet->flightDirectorPitchRad);
-		_flightDirectorYawInterpolator.setTargetValue(packet->flightDirectorYawRad);
+		_flightDirectorRollInterpolator.setTargetValue(packet->flightDirectorYawRad);
 
 		_slipAndSkidInterpolator.setTargetValue(-1.f + (float) packet->slipAndSkid / (float) 0xFFFF * 2.f);
 

@@ -44,6 +44,7 @@ namespace pizda {
 		const auto primaryValue = settings.autopilot.autoThrottle ? _aircraftValue : _remoteValue;
 		const auto primaryValueHeight = std::max((uint16_t) (frameHeight * primaryValue / 0xFF), (uint16_t) 1);
 		const int32_t primaryValueY = frameY2 - primaryValueHeight + 1;
+		const auto primaryValueColor = settings.autopilot.autoThrottle ? &Theme::purple : &Theme::green;
 
 		if (primaryValueHeight > 1) {
 			renderer->renderFilledRectangle(
@@ -57,7 +58,7 @@ namespace pizda {
 			);
 		}
 
-		renderOffsetLine(primaryValueY, settings.autopilot.autoThrottle ? &Theme::purple : &Theme::green);
+		renderOffsetLine(primaryValueY, primaryValueColor);
 
 		// Aircraft value text
 		const auto text = std::to_wstring((int32_t) (primaryValue * 100 / 0xFF));
@@ -68,7 +69,8 @@ namespace pizda {
 				bounds.getY() + frameHeight + textOffset
 			),
 			&Theme::fontSmall,
-			&Theme::green
+			primaryValueColor,
+			text
 		);
 	}
 

@@ -46,7 +46,7 @@ namespace pizda {
 			LowPassInterpolator& getFlightPathVectorYawInterpolator();
 			LowPassInterpolator& getWindDirectionInterpolator();
 			LowPassInterpolator& getFlightDirectorPitchInterpolator();
-			LowPassInterpolator& getFlightDirectorYawInterpolator();
+			LowPassInterpolator& getFlightDirectorRollInterpolator();
 
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
@@ -208,7 +208,7 @@ namespace pizda {
 			LowPassInterpolator _flightPathVectorYawInterpolator {};
 
 			LowPassInterpolator _flightDirectorPitchInterpolator {};
-			LowPassInterpolator _flightDirectorYawInterpolator {};
+			LowPassInterpolator _flightDirectorRollInterpolator {};
 
 			LowPassInterpolator _windDirectionInterpolator {};
 

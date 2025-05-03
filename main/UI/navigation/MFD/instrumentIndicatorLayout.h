@@ -78,7 +78,7 @@ namespace pizda {
 					// Background
 					renderer->renderFilledRectangle(
 						Bounds(bounds.getX(), bounds.getY() + InstrumentsView::topPanelHeight, bounds.getWidth(), bounds.getHeight() - InstrumentsView::topPanelHeight),
-						&Theme::bg2
+						&Theme::bg3
 					);
 				}
 

@@ -906,42 +906,36 @@ namespace pizda {
 
 			// Horizontal
 			auto flightDirectorRectBounds = Bounds(
-				(int32_t) horizonCenter.getX() - flightDirectorLength / 2,
-				(int32_t) (
-					horizonCenter.getY()
-					- std::clamp(
-						rc.getFlightDirectorPitchInterpolator().getValue() * pixelsPerRadVertical,
+				center.getX() - flightDirectorLength / 2,
+				center.getY()
+					- (int32_t) std::clamp(
+					rc.getFlightDirectorPitchInterpolator().getValue() * pixelsPerRadVertical,
 						-flightDirectorLengthHalfF,
 						flightDirectorLengthHalfF
 					)
-				)
-				- flightDirectorThickness / 2,
+					- flightDirectorThickness / 2,
 				flightDirectorLength,
 				flightDirectorThickness
 			);
 
 			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::purple);
-//			renderer->renderHorizontalLine(Point(flightDirectorRectBounds.getX(), flightDirectorRectBounds.getY() + flightDirectorThickness), flightDirectorRectBounds.getWidth(), &Theme::bg1);
 
 			// Vertical
 			flightDirectorRectBounds.setX(
-				(int32_t) (
-					horizonCenter.getX()
-					+ std::clamp(
-						rc.getFlightDirectorYawInterpolator().getValue() * pixelsPerRadHorizontal,
-						-flightDirectorLengthHalfF,
-						flightDirectorLengthHalfF
-					)
+				center.getX()
+				+ (int32_t) std::clamp(
+					rc.getFlightDirectorRollInterpolator().getValue() * pixelsPerRadHorizontal,
+					-flightDirectorLengthHalfF,
+					flightDirectorLengthHalfF
 				)
 				- flightDirectorThickness / 2
 			);
 
-			flightDirectorRectBounds.setY((int32_t) horizonCenter.getY() - flightDirectorLength / 2);
+			flightDirectorRectBounds.setY(center.getY() - flightDirectorLength / 2);
 			flightDirectorRectBounds.setWidth(flightDirectorThickness);
 			flightDirectorRectBounds.setHeight(flightDirectorLength);
 
 			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::purple);
-//			renderer->renderVerticalLine(Point(flightDirectorRectBounds.getX() + flightDirectorThickness, flightDirectorRectBounds.getY()), flightDirectorRectBounds.getHeight(), &Theme::bg1);
 		}
 
 		// Flight path vector
@@ -1023,7 +1017,7 @@ namespace pizda {
 		// Dot
 		renderAircraftSymbolRect(
 			Point(
-				center.getX() + aircraftSymbolThickness / 2,
+				center.getX() - aircraftSymbolThickness / 2,
 				center.getY() - aircraftSymbolThickness / 2
 			),
 			aircraftSymbolThickness
