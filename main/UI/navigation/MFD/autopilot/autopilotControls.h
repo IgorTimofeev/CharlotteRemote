@@ -4,7 +4,7 @@
 #include <YOBA/UI.h>
 #include "../../../theme.h"
 
-#include "../instrumentsView.h"
+#include "../instrumentToolbar.h"
 #include "../instrumentIndicatorLayout.h"
 
 #include "../rotaryControl.h"
@@ -12,7 +12,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class AutopilotControls : public InstrumentsView {
+	class AutopilotControls : public InstrumentToolbar {
 		public:
 			explicit AutopilotControls();
 

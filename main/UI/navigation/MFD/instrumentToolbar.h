@@ -9,9 +9,9 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class InstrumentsView : public Layout {
+	class InstrumentToolbar : public Layout {
 		public:
-			InstrumentsView();
+			InstrumentToolbar();
 
 			constexpr static const uint8_t topPanelHeight = 8;
 			constexpr static const uint8_t contentHorizontalMargin = 7;

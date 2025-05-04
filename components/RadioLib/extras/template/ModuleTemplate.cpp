@@ -1,4 +1,4 @@
-#include "<module_name>
+#include "<module_name>.h"
 #if !defined(RADIOLIB_EXCLUDE_<module_name>)
 
 <module_name>::<module_name>(Module* mod) {

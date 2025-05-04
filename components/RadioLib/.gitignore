@@ -15,7 +15,7 @@
 .pio*
 
 # cmake
-buildElement/
+build/
 
 # Compote build output
 dist

@@ -3,19 +3,19 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "trimIndicator.h"
 #include "throttleIndicatorLayout.h"
 #include "flapsAndSpoilersIndicator.h"
 #include "batteryIndicator.h"
+#include "radioIndicator.h"
 
-#include "../instrumentsView.h"
+#include "../instrumentToolbar.h"
 #include "../instrumentIndicatorLayout.h"
 #include "../../menu/openMenuButton.h"
 
 namespace pizda {
 	using namespace YOBA;
 
-	class MainControls : public InstrumentsView {
+	class MainControls : public InstrumentToolbar {
 		public:
 			MainControls();
 
@@ -30,12 +30,12 @@ namespace pizda {
 			ImageView _landingGearImageView {};
 			InstrumentIndicatorLayout _controlsLayout = { L"CTL", &_controlsRows, true };
 
-			TrimIndicator _elevatorTrimIndicator {};
-			InstrumentIndicatorLayout _elevatorTrimLayout = { L"TRM", &_elevatorTrimIndicator, true };
-
 			BatteryIndicator _batteryIndicatorController {};
 			BatteryIndicator _batteryIndicatorAircraft {};
 			StackLayout _batteryIndicatorRows {};
 			InstrumentIndicatorLayout _batteryLayout = { L"BAT", &_batteryIndicatorRows, true };
+
+			RadioIndicator _radio {};
+			InstrumentIndicatorLayout _radioLayout = { L"SIG", &_radio, true };
 	};
 }

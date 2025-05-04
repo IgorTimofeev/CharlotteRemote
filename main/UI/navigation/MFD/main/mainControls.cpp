@@ -15,12 +15,6 @@ namespace pizda {
 		_controlsRows += &_landingGearImageView;
 		row += &_controlsLayout;
 
-		// Elevator trim
-		_elevatorTrimIndicator.setWidth(5);
-		_elevatorTrimIndicator.setSuggestedMinimum(0xFFFF * 40 / 100);
-		_elevatorTrimIndicator.setSuggestedMaximum(0xFFFF * 60 / 100);
-		row += &_elevatorTrimLayout;
-
 		// Battery
 		_batteryIndicatorController.setSize(Size(32, 12));
 		_batteryIndicatorAircraft.setSize(_batteryIndicatorController.getSize());
@@ -29,6 +23,9 @@ namespace pizda {
 		_batteryIndicatorRows += &_batteryIndicatorController;
 		_batteryIndicatorRows += &_batteryIndicatorAircraft;
 		row += &_batteryLayout;
+
+		// Radio
+		row += &_radioLayout;
 	}
 
 	void MainControls::onTick() {
@@ -43,9 +40,6 @@ namespace pizda {
 			? reinterpret_cast<const Image*>(&resources::Images::MFDLandingGearExtended)
 			: reinterpret_cast<const Image*>(&resources::Images::MFDLandingGearRetracted)
 		);
-
-		// Trim
-		_elevatorTrimIndicator.setValue(settings.controls.elevatorTrim);
 
 		// Battery
 		_batteryIndicatorController.setVoltage(rc.getBattery().getVoltage());

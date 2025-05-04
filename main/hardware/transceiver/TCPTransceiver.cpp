@@ -59,17 +59,37 @@ namespace pizda {
 			RC::getInstance().handleAircraftPacket(&_aircraftPacket);
 			setTCPReceivingBuffer();
 		});
-
-		WiFi::start();
 	}
 
-	void TCPTransceiver::tick() {
-		if (esp_timer_get_time() < _tickTime)
+	bool TCPTransceiver::isStarted() {
+		return _task != nullptr;
+	}
+
+	void TCPTransceiver::start() {
+		if (isStarted())
 			return;
 
-		_TCP.tick();
+		xTaskCreate(startTaskFunction, "Transceiver", 4096, this, 1, _task);
+	}
 
-		_tickTime = esp_timer_get_time() + constants::transceiver::tickInterval;
+	void TCPTransceiver::startTaskFunction(void* arg) {
+		auto instance = reinterpret_cast<TCPTransceiver*>(arg);
+
+		while (true) {
+			instance->_TCP.tick();
+
+			vTaskDelay(pdMS_TO_TICKS(constants::transceiver::tickInterval / 1000));
+		}
+	}
+
+	void TCPTransceiver::stop() {
+		if (!isStarted())
+			return;
+
+		ESP_LOGE("Transceiver", "Stopped");
+
+		vTaskDelete(*_task);
+		_task = nullptr;
 	}
 
 	void TCPTransceiver::fillRemotePacket() {

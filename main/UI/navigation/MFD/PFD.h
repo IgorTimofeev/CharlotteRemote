@@ -5,6 +5,7 @@
 
 #include "../../theme.h"
 #include "../../../units.h"
+#include "../../../aircraftData.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -196,9 +197,9 @@ namespace pizda {
 
 			static void renderSyntheticVisionBackground(Renderer* renderer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight);
 
-			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds, float roll);
+			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds, const AircraftData& aircraftData);
 
-			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, float yaw);
+			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, const AircraftData& aircraftData);
 
 			void renderGroundSpeed(Renderer* renderer, const Bounds& bounds);
 

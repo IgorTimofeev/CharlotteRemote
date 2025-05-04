@@ -38,7 +38,10 @@ namespace pizda {
 		// Secondary value
 		const auto secondaryValue = settings.autopilot.autoThrottle ? _remoteValue : _aircraftValue;
 
-		renderOffsetLine(frameY2 - std::max((uint16_t) (frameHeight * secondaryValue / 0xFF), (uint16_t) 1) + 1, &Theme::fg4);
+		renderOffsetLine(
+			frameY2 - std::max((uint16_t) (frameHeight * secondaryValue / 0xFF), (uint16_t) 1) + 1,
+			&Theme::fg5
+		);
 
 		// Primary value
 		const auto primaryValue = settings.autopilot.autoThrottle ? _aircraftValue : _remoteValue;

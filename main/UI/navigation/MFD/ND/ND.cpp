@@ -93,13 +93,12 @@ namespace pizda {
 		SpatialView::onTick();
 
 		auto& rc = RC::getInstance();
-
-		const auto& aircraftCoordinates = rc.getGeographicCoordinates();
+		const auto& ad = rc.getAircraftData();
 
 		_aircraftElement.setPosition(
 			GeographicCoordinates(
-				aircraftCoordinates.getLatitude(),
-				aircraftCoordinates.getLongitude(),
+				ad.geographicCoordinates.getLatitude(),
+				ad.geographicCoordinates.getLongitude(),
 				0
 			)
 			.toCartesian()
@@ -111,7 +110,7 @@ namespace pizda {
 
 		getCamera().setRotation(Vector3F(
 			-cameraCoordinates.getLatitude(),
-			rc.getYawInterpolator().getValue(),
+			ad.computed.yaw,
 			toRadians(-90 + 180) + cameraCoordinates.getLongitude()
 		));
 
@@ -178,7 +177,7 @@ namespace pizda {
 
 //			ESP_LOGI("ND", "------------- Drag -------------");
 
-			const auto& deltaPixels = (touchDragEventEvent->getPosition() - _touchDownPosition).rotate(RC::getInstance().getYawInterpolator().getValue());
+			const auto& deltaPixels = (touchDragEventEvent->getPosition() - _touchDownPosition).rotate(RC::getInstance().getAircraftData().computed.yaw);
 			_touchDownPosition = touchDragEventEvent->getPosition();
 			_cursorPosition = touchDragEventEvent->getPosition() - getBounds().getPosition();
 
@@ -327,7 +326,7 @@ namespace pizda {
 	}
 
 	GeographicCoordinates ND::getCameraCoordinates() {
-		const auto& aircraftCoordinates = RC::getInstance().getGeographicCoordinates();
+		const auto& aircraftCoordinates = RC::getInstance().getAircraftData().geographicCoordinates;
 
 		return GeographicCoordinates(
 			aircraftCoordinates.getLatitude() + _cameraOffset.getLatitude(),

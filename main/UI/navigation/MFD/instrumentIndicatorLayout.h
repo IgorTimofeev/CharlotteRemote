@@ -5,7 +5,7 @@
 
 #include "../../theme.h"
 
-#include "instrumentsView.h"
+#include "instrumentToolbar.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -14,9 +14,9 @@ namespace pizda {
 		public:
 			InstrumentIndicatorLayout(const std::wstring_view& text) {
 				_text.setMargin(Margin(
-					InstrumentsView::contentHorizontalMargin,
-					InstrumentsView::titleVerticalOffset,
-					InstrumentsView::contentHorizontalMargin,
+					InstrumentToolbar::contentHorizontalMargin,
+					InstrumentToolbar::titleVerticalOffset,
+					InstrumentToolbar::contentHorizontalMargin,
 					0
 				));
 
@@ -36,16 +36,16 @@ namespace pizda {
 				element->setMargin(
 					addHorizontalMargin
 					? Margin(
-						InstrumentsView::contentHorizontalMargin,
-						InstrumentsView::contentPanelMarginTop,
-						InstrumentsView::contentHorizontalMargin,
-						InstrumentsView::contentVerticalMargin
+						InstrumentToolbar::contentHorizontalMargin,
+						InstrumentToolbar::contentPanelMarginTop,
+						InstrumentToolbar::contentHorizontalMargin,
+						InstrumentToolbar::contentVerticalMargin
 					)
 					: Margin(
 						0,
-						InstrumentsView::contentPanelMarginTop,
+						InstrumentToolbar::contentPanelMarginTop,
 						0,
-						InstrumentsView::contentVerticalMargin
+						InstrumentToolbar::contentVerticalMargin
 					)
 				);
 
@@ -71,13 +71,13 @@ namespace pizda {
 				if (isFocused()) {
 					// Panel
 					renderer->renderFilledRectangle(
-						Bounds(bounds.getX(), bounds.getY(), bounds.getWidth(), InstrumentsView::topPanelHeight),
+						Bounds(bounds.getX(), bounds.getY(), bounds.getWidth(), InstrumentToolbar::topPanelHeight),
 						&Theme::bg4
 					);
 
 					// Background
 					renderer->renderFilledRectangle(
-						Bounds(bounds.getX(), bounds.getY() + InstrumentsView::topPanelHeight, bounds.getWidth(), bounds.getHeight() - InstrumentsView::topPanelHeight),
+						Bounds(bounds.getX(), bounds.getY() + InstrumentToolbar::topPanelHeight, bounds.getWidth(), bounds.getHeight() - InstrumentToolbar::topPanelHeight),
 						&Theme::bg3
 					);
 				}

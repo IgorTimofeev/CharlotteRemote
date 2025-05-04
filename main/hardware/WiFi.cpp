@@ -2,6 +2,10 @@
 #include "../constants.h"
 
 namespace pizda {
+	TaskHandle_t* WiFi::_task = nullptr;
+	WiFiState WiFi::_state = WiFiState::stopped;
+	Callback<WiFiState, WiFiState> WiFi::_onStateChanged = {};
+
 	void WiFi::start() {
 		if (getState() != WiFiState::stopped)
 			return;
@@ -112,8 +116,8 @@ namespace pizda {
 			scheduleReconnection();
 		}
 		else if (eventBase == IP_EVENT && eventID == IP_EVENT_STA_GOT_IP) {
-			auto event = (ip_event_got_ip_t*) eventData;
-			ESP_LOGI("WiFi", "Connected, local IP is " IPSTR, IP2STR(&event->ip_info.ip));
+//			auto event = (ip_event_got_ip_t*) eventData;
+			ESP_LOGI("WiFi", "Connected");
 
 			setState(WiFiState::connected);
 		}
@@ -139,10 +143,6 @@ namespace pizda {
 		xTaskCreate(reconnect, "WiFi reconnection task", 1024, NULL, 3, NULL);
 	}
 
-	TaskHandle_t* WiFi::_task = nullptr;
-	WiFiState WiFi::_state = WiFiState::stopped;
-	Callback<WiFiState, WiFiState> WiFi::_onStateChanged = {};
-
 	void WiFi::setState(WiFiState value) {
 		if (value == _state)
 			return;
@@ -151,5 +151,14 @@ namespace pizda {
 		_state = value;
 
 		_onStateChanged(fromState, _state);
+	}
+
+	int WiFi::getRSSI() {
+		int result = 0;
+
+		if (esp_wifi_sta_get_rssi(&result) != ESP_OK)
+			result = 0xFFFF;
+
+		return result;
 	}
 }

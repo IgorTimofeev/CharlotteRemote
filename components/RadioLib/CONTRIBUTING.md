@@ -49,7 +49,7 @@ foo(12345);
 It is very easy to write code that machine can read. It is much harder to write one that humans can read. That's why it's a great idea to split code into blocks - even if the block is just a single line!
 
 ```c++
-// buildElement a temporary buffer (first block)
+// build a temporary buffer (first block)
 uint8_t* data = new uint8_t[len + 1];
 if(!data) {
   return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
@@ -72,7 +72,7 @@ This is an Arduino library, so it needs to comply with the Arduino library speci
 Sometimes, RadioLib might be used in critical applications where dynamic memory allocation using `new` or `malloc` might cause issues. For such cases, RadioLib provides the option to compile using only static arrays. This means that every dynamically allocated array must have a sufficiently large static counterpart. Naturally, all dynamically allocated memory must be properly de-allocated using `delete` or `free`.
 
 ```c++
-// buildElement a temporary buffer
+// build a temporary buffer
 #if defined(RADIOLIB_STATIC_ONLY)
   uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
 #else

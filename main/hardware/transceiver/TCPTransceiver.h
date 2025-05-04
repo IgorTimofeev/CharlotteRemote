@@ -13,15 +13,19 @@ namespace pizda {
 	class TCPTransceiver {
 		public:
 			void setup();
-			void tick();
+			void start();
+			void stop();
+			bool isStarted();
 
 		private:
-			uint32_t _tickTime = 0;
+			TaskHandle_t* _task = nullptr;
 
 			TCP _TCP;
 
 			RemotePacket _remotePacket;
 			AircraftPacket _aircraftPacket;
+
+			static void startTaskFunction(void* arg);
 
 			void fillRemotePacket();
 			void setTCPSendingBuffer();

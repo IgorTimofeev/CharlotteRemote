@@ -1,10 +1,10 @@
-#include "instrumentsView.h"
+#include "instrumentToolbar.h"
 #include "../menu/menuRoutes.h"
 
 namespace pizda {
-	InstrumentsView::InstrumentsView() : menuButton(OpenMenuButton(&MenuRoutes::MFD)) {
+	InstrumentToolbar::InstrumentToolbar() : menuButton(OpenMenuButton(&MenuRoutes::MFD)) {
 		// Titles
-		topPanel.setHeight(InstrumentsView::topPanelHeight);
+		topPanel.setHeight(InstrumentToolbar::topPanelHeight);
 		topPanel.setVerticalAlignment(Alignment::start);
 		topPanel.setFillColor(&Theme::bg2);
 		*this += &topPanel;
@@ -17,8 +17,9 @@ namespace pizda {
 		buttonAndRowLayout += &row;
 
 		// Menu button
-		menuButton.setVerticalAlignment(Alignment::center);
-		menuButton.setMargin(Margin(0, 5, 5, 0));
+		menuButton.setSize(Size(20, Size::computed));
+		menuButton.setCornerRadius(0);
+
 		buttonAndRowLayout.setAutoSize(&menuButton);
 		buttonAndRowLayout += &menuButton;
 

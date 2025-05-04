@@ -37,7 +37,9 @@ namespace pizda {
 		_application.addInputDevice(&_touchPanel);
 
 //		// Transceiver
+		WiFi::start();
 		_transceiver.setup();
+		_transceiver.start();
 
 		// Axis
 		_leverLeft.setup();
@@ -66,8 +68,10 @@ namespace pizda {
 
 		_speaker.play(resources::Sounds::boot());
 
+		int64_t time;
+
 		while (true) {
-			const auto time = esp_timer_get_time();
+			time = esp_timer_get_time();
 
 			// High priority tasks
 			axisTick();
@@ -78,7 +82,6 @@ namespace pizda {
 			_application.tick();
 
 			// Low priority tasks
-			_transceiver.tick();
 			_speaker.tick();
 			_settings.tick();
 
@@ -87,7 +90,7 @@ namespace pizda {
 			// Skipping remaining tick time if any
 			if (_tickDeltaTime < constants::application::mainTickInterval) {
 				// FreeRTOS tasks can be only delayed by ms, so...
-				vTaskDelay((constants::application::mainTickInterval - _tickDeltaTime) / 1000 / portTICK_PERIOD_MS);
+				vTaskDelay(pdMS_TO_TICKS((constants::application::mainTickInterval - _tickDeltaTime) / 1000));
 
 //				ESP_LOGI("Main", "Skipping ticks for %lu ms", (constants::application::mainTickInterval - _tickDeltaTime) / 1000);
 			}
@@ -110,106 +113,45 @@ namespace pizda {
 		// factorPerTick = factorPerSecond * deltaTime / 1'000'000
 
 		// Roll / pitch / yaw / slip & skid, faster
-		float interpolationFactor = 5.0f * (float) deltaTime / 1'000'000.f;
-		_pitchInterpolator.tick(interpolationFactor);
-		_rollInterpolator.tick(interpolationFactor);
-		_yawInterpolator.tick(interpolationFactor);
+		float LPFFactor = 5.0f * (float) deltaTime / 1'000'000.f;
+		LowPassFilter::apply(_aircraftData.computed.pitch, _aircraftData.pitch, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.roll, _aircraftData.roll, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.yaw, _aircraftData.yaw, LPFFactor);
 
-		_slipAndSkidInterpolator.tick(interpolationFactor);
+		LowPassFilter::apply(_aircraftData.computed.slipAndSkid, _aircraftData.slipAndSkid, LPFFactor);
 
-		_flightPathVectorPitchInterpolator.tick(interpolationFactor);
-		_flightPathVectorYawInterpolator.tick(interpolationFactor);
+		LowPassFilter::apply(_aircraftData.computed.flightPathVectorPitch, _aircraftData.flightPathVectorPitch, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.flightPathVectorYaw, _aircraftData.flightPathVectorYaw, LPFFactor);
 
-		_flightDirectorPitchInterpolator.tick(interpolationFactor);
-		_flightDirectorRollInterpolator.tick(interpolationFactor);
+		LowPassFilter::apply(_aircraftData.computed.flightDirectorPitch, _aircraftData.flightDirectorPitch, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.flightDirectorRoll, _aircraftData.flightDirectorRoll, LPFFactor);
 
 		// Airspeed / altitude, normal
-		interpolationFactor = 3.0f * (float) deltaTime / 1'000'000.f;
-		_airSpeedInterpolator.tick(interpolationFactor);
-		_altitudeInterpolator.tick(interpolationFactor);
-		_windDirectionInterpolator.tick(interpolationFactor);
+		LPFFactor = 3.0f * (float) deltaTime / 1'000'000.f;
+		LowPassFilter::apply(_aircraftData.computed.airSpeed, _aircraftData.airSpeed, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.altitude, _aircraftData.altitude, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.windDirection, _aircraftData.windDirection, LPFFactor);
 
 		// Trends, slower
-		interpolationFactor = 1.0f * (float) deltaTime / 1'000'000.f;
-		_airSpeedTrendInterpolator.tick(interpolationFactor);
-		_altitudeTrendInterpolator.tick(interpolationFactor);
-		_verticalSpeedInterpolator.tick(interpolationFactor);
+		LPFFactor = 1.0f * (float) deltaTime / 1'000'000.f;
+		LowPassFilter::apply(_aircraftData.computed.airSpeedTrend, _aircraftData.airSpeedTrend, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.altitudeTrend, _aircraftData.altitudeTrend, LPFFactor);
+
+		// Smooth as fuck
+		LPFFactor = 0.5f * (float) deltaTime / 1'000'000.f;
+		LowPassFilter::apply(_aircraftData.computed.transceiverRSSI, (float) WiFi::getRSSI(), LPFFactor);
 
 		_interpolationTickTime = esp_timer_get_time() + constants::application::interpolationTickInterval;
 	}
 
 	// ------------------------- Data -------------------------
 
-	LowPassInterpolator& RC::getAirSpeedInterpolator() {
-		return _airSpeedInterpolator;
-	}
-
-	LowPassInterpolator& RC::getAltitudeInterpolator() {
-		return _altitudeInterpolator;
-	}
-
-	LowPassInterpolator& RC::getPitchInterpolator() {
-		return _pitchInterpolator;
-	}
-
-	LowPassInterpolator& RC::getRollInterpolator() {
-		return _rollInterpolator;
-	}
-
-	LowPassInterpolator& RC::getYawInterpolator() {
-		return _yawInterpolator;
-	}
-
-	LowPassInterpolator& RC::getSlipAndSkidInterpolator() {
-		return _slipAndSkidInterpolator;
-	}
-
-	LowPassInterpolator& RC::getFlightPathVectorPitchInterpolator() {
-		return _flightPathVectorPitchInterpolator;
-	}
-
-	LowPassInterpolator& RC::getFlightPathVectorYawInterpolator() {
-		return _flightPathVectorYawInterpolator;
-	}
-
-	LowPassInterpolator& RC::getFlightDirectorPitchInterpolator() {
-		return _flightDirectorPitchInterpolator;
-	}
-
-	LowPassInterpolator& RC::getFlightDirectorRollInterpolator() {
-		return _flightDirectorRollInterpolator;
-	}
-
-	LowPassInterpolator& RC::getAirspeedTrendInterpolator() {
-		return _airSpeedTrendInterpolator;
-	}
-
-	LowPassInterpolator& RC::getAltitudeTrendInterpolator() {
-		return _altitudeTrendInterpolator;
-	}
-
-	LowPassInterpolator& RC::getVerticalSpeedInterpolator() {
-		return _verticalSpeedInterpolator;
-	}
-
-	LowPassInterpolator& RC::getWindDirectionInterpolator() {
-		return _windDirectionInterpolator;
-	}
-
-	float RC::getWindSpeed() const {
-		return _windSpeed;
-	}
-
-	float RC::getGroundSpeed() const {
-		return _groundSpeed;
-	}
-
-	uint8_t RC::getAircraftThrottle() const {
-		return _aircraftThrottle;
-	}
-
 	Application& RC::getApplication() {
 		return _application;
+	}
+
+	const AircraftData& RC::getAircraftData() const {
+		return _aircraftData;
 	}
 
 	uint32_t RC::getTickDeltaTime() const {
@@ -340,51 +282,46 @@ namespace pizda {
 		const auto deltaTime = time - _aircraftPacketTime;
 		_aircraftPacketTime = time;
 
-		const auto oldSpeed = _airSpeedInterpolator.getTargetValue();
-		const auto oldAltitude = _altitudeInterpolator.getTargetValue();
+		const auto oldSpeed = _aircraftData.airSpeed;
+		const auto oldAltitude = _aircraftData.altitude;
 
 		// Direct
-		_aircraftThrottle = packet->throttle;
+		_aircraftData.throttle = packet->throttle;
 
-		_geographicCoordinates.setLatitude(packet->latitudeRad);
-		_geographicCoordinates.setLongitude(packet->longitudeRad);
-		_geographicCoordinates.setAltitude(packet->altitudeM);
+		_aircraftData.geographicCoordinates.setLatitude(packet->latitudeRad);
+		_aircraftData.geographicCoordinates.setLongitude(packet->longitudeRad);
+		_aircraftData.geographicCoordinates.setAltitude(packet->altitudeM);
 
-		_windSpeed = convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+		_aircraftData.windSpeed = convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 
+		// LowPassFilters
+		_aircraftData.altitude = convertDistance(packet->altitudeM, DistanceUnit::meter, DistanceUnit::foot);
+		_aircraftData.pitch = packet->pitchRad;
+		_aircraftData.roll = packet->rollRad;
+		_aircraftData.yaw = packet->yawRad;
 
-		// Interpolators
-		_altitudeInterpolator.setTargetValue(convertDistance(packet->altitudeM, DistanceUnit::meter, DistanceUnit::foot));
-		_pitchInterpolator.setTargetValue(packet->pitchRad);
-		_rollInterpolator.setTargetValue(packet->rollRad);
-		_yawInterpolator.setTargetValue(packet->yawRad);
+		_aircraftData.airSpeed = convertSpeed(packet->airSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+		_aircraftData.groundSpeed = convertSpeed(packet->groundSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 
-		_airSpeedInterpolator.setTargetValue(convertSpeed(packet->airSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot));
-		_groundSpeed = convertSpeed(packet->groundSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+		_aircraftData.flightPathVectorPitch = packet->flightPathPitchRad;
+		_aircraftData.flightPathVectorYaw = packet->flightPathYawRad;
 
-		_flightPathVectorPitchInterpolator.setTargetValue(packet->flightPathPitchRad);
-		_flightPathVectorYawInterpolator.setTargetValue(packet->flightPathYawRad);
+		_aircraftData.flightDirectorPitch = packet->flightDirectorPitchRad;
+		_aircraftData.flightDirectorRoll = packet->flightDirectorYawRad;
 
-		_flightDirectorPitchInterpolator.setTargetValue(packet->flightDirectorPitchRad);
-		_flightDirectorRollInterpolator.setTargetValue(packet->flightDirectorYawRad);
+		_aircraftData.slipAndSkid = -1.f + (float) packet->slipAndSkid / (float) 0xFFFF * 2.f;
 
-		_slipAndSkidInterpolator.setTargetValue(-1.f + (float) packet->slipAndSkid / (float) 0xFFFF * 2.f);
-
-		_windDirectionInterpolator.setTargetValue(toRadians(packet->windDirectionDeg));
+		_aircraftData.windDirection = toRadians(packet->windDirectionDeg);
 
 		// Trends
-		const auto deltaAltitude = _altitudeInterpolator.getTargetValue() - oldAltitude;
+		const auto deltaAltitude = _aircraftData.altitude - oldAltitude;
 
 		// Airspeed & altitude, 10 sec
-		_airSpeedTrendInterpolator.setTargetValue((_airSpeedInterpolator.getTargetValue() - oldSpeed) * 10'000'000 / deltaTime);
-		_altitudeTrendInterpolator.setTargetValue(deltaAltitude * 10'000'000 / deltaTime);
+		_aircraftData.airSpeedTrend = (_aircraftData.airSpeed - oldSpeed) * 10'000'000 / deltaTime;
+		_aircraftData.altitudeTrend = deltaAltitude * 10'000'000 / deltaTime;
 
 		// Vertical speed, 1 min
-		_verticalSpeedInterpolator.setTargetValue(deltaAltitude * 60'000'000 / deltaTime);
-	}
-
-	const GeographicCoordinates& RC::getGeographicCoordinates() const {
-		return _geographicCoordinates;
+		_aircraftData.verticalSpeed = deltaAltitude * 60'000'000 / deltaTime;
 	}
 
 	bool RC::isMenuVisible() {
@@ -448,5 +385,9 @@ namespace pizda {
 		_application -= _menu;
 		delete _menu;
 		_menu = nullptr;
+	}
+
+	TCPTransceiver& RC::getTransceiver() {
+		return _transceiver;
 	}
 }

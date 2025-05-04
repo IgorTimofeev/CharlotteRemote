@@ -20,11 +20,12 @@ namespace pizda {
 		Layout::onTick();
 
 		auto& rc = RC::getInstance();
+		const auto& rd = rc.getAircraftData();
 		auto& settings = rc.getSettings();
 
 		// Throttles
 		throttleIndicator1.setRemoteValue(settings.controls.throttle);
-		throttleIndicator1.setAircraftValue(rc.getAircraftThrottle());
+		throttleIndicator1.setAircraftValue(rd.throttle);
 
 		throttleIndicator2.setRemoteValue(throttleIndicator1.getRemoteValue());
 		throttleIndicator2.setAircraftValue(throttleIndicator1.getAircraftValue());

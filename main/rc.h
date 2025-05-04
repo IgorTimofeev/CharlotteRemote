@@ -13,14 +13,16 @@
 #include "units.h"
 #include "settings.h"
 #include "constants.h"
-#include "interpolator.h"
+#include "lowPassFilter.h"
 
+#include "hardware/WiFi.h"
 #include "hardware/transceiver/packet.h"
 #include "hardware/transceiver/TCPTransceiver.h"
 #include "hardware/speaker.h"
 #include "hardware/axis.h"
 #include "hardware/battery.h"
 #include "hardware/encoder.h"
+#include "aircraftData.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -33,20 +35,20 @@ namespace pizda {
 
 			Application& getApplication();
 
-			LowPassInterpolator& getAirSpeedInterpolator();
-			LowPassInterpolator& getAltitudeInterpolator();
-			LowPassInterpolator& getPitchInterpolator();
-			LowPassInterpolator& getRollInterpolator();
-			LowPassInterpolator& getYawInterpolator();
-			LowPassInterpolator& getAirspeedTrendInterpolator();
-			LowPassInterpolator& getAltitudeTrendInterpolator();
-			LowPassInterpolator& getVerticalSpeedInterpolator();
-			LowPassInterpolator& getSlipAndSkidInterpolator();
-			LowPassInterpolator& getFlightPathVectorPitchInterpolator();
-			LowPassInterpolator& getFlightPathVectorYawInterpolator();
-			LowPassInterpolator& getWindDirectionInterpolator();
-			LowPassInterpolator& getFlightDirectorPitchInterpolator();
-			LowPassInterpolator& getFlightDirectorRollInterpolator();
+			LowPassFilter& getAirSpeedFilter();
+			LowPassFilter& getAltitudeFilter();
+			LowPassFilter& getPitchFilter();
+			LowPassFilter& getRollFilter();
+			LowPassFilter& getYawFilter();
+			LowPassFilter& getAirspeedTrendFilter();
+			LowPassFilter& getAltitudeTrendFilter();
+			LowPassFilter& getVerticalSpeedFilter();
+			LowPassFilter& getSlipAndSkidFilter();
+			LowPassFilter& getFlightPathVectorPitchFilter();
+			LowPassFilter& getFlightPathVectorYawFilter();
+			LowPassFilter& getWindDirectionFilter();
+			LowPassFilter& getFlightDirectorPitchFilter();
+			LowPassFilter& getFlightDirectorRollFilter();
 
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
@@ -60,6 +62,7 @@ namespace pizda {
 			Axis& getJoystickVertical();
 			Axis& getRing();
 			Battery& getBattery();
+			TCPTransceiver& getTransceiver();
 
 			void handleAircraftPacket(AircraftPacket* packet);
 
@@ -73,11 +76,7 @@ namespace pizda {
 			const Route* getRoute();
 			void setRoute(const Route* route);
 
-			const GeographicCoordinates& getGeographicCoordinates() const;
-
-			float getWindSpeed() const;
-			float getGroundSpeed() const;
-			uint8_t getAircraftThrottle() const;
+			const AircraftData& getAircraftData() const;
 
 		private:
 			RC() = default;
@@ -175,42 +174,6 @@ namespace pizda {
 
 			const Route* _route = nullptr;
 
-			// -------------------------------- Aircraft data -------------------------------
-
-			// Kronshtadt airfield in Saint-Petersburg for UI testing
-			// ПРИВЕТУЛИ ФЕДИНОЙ ДАМЕ СЕРДЦА
-			GeographicCoordinates _geographicCoordinates = GeographicCoordinates(
-				toRadians(60.014581566191914f),
-				toRadians(29.70258579817704f),
-				1000
-			);
-
-			Vector3F _cartesianCoordinates {};
-
-			float _groundSpeed = 0;
-			float _windSpeed = 0;
-			uint8_t _aircraftThrottle = 0;
-
-			LowPassInterpolator _airSpeedInterpolator {};
-			LowPassInterpolator _airSpeedTrendInterpolator {};
-
-			LowPassInterpolator _altitudeInterpolator {};
-			LowPassInterpolator _altitudeTrendInterpolator {};
-
-			LowPassInterpolator _verticalSpeedInterpolator {};
-
-			LowPassInterpolator _pitchInterpolator {};
-			LowPassInterpolator _rollInterpolator {};
-			LowPassInterpolator _yawInterpolator {};
-			LowPassInterpolator _slipAndSkidInterpolator {};
-
-			LowPassInterpolator _flightPathVectorPitchInterpolator {};
-			LowPassInterpolator _flightPathVectorYawInterpolator {};
-
-			LowPassInterpolator _flightDirectorPitchInterpolator {};
-			LowPassInterpolator _flightDirectorRollInterpolator {};
-
-			LowPassInterpolator _windDirectionInterpolator {};
 
 			// -------------------------------- Timings --------------------------------
 
@@ -219,6 +182,8 @@ namespace pizda {
 			uint32_t _aircraftPacketTime = 0;
 
 			// -------------------------------- Other shit --------------------------------
+
+			AircraftData _aircraftData {};
 
 			static void SPIBusSetup();
 			void ADCUnitsSetup();

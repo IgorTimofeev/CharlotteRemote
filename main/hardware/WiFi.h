@@ -28,6 +28,7 @@ namespace pizda {
 			static void disconnect();
 			static WiFiState getState();
 			static void addOnStateChanged(const std::function<void(WiFiState, WiFiState)>& callback);
+			static int getRSSI();
 
 		private:
 			static TaskHandle_t* _task;

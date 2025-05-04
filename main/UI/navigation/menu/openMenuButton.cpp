@@ -17,7 +17,7 @@ namespace pizda {
 		setPressedBackgroundColor(&Theme::bg1);
 		setPressedTextColor(&Theme::fg1);
 
-		setText(L"=");
+		setText(L"...");
 	}
 
 	OpenMenuButton::OpenMenuButton() : OpenMenuButton(&MenuRoutes::main) {
