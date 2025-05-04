@@ -6,9 +6,7 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "../../../../../runway.h"
-
-#include "../../../../theme.h"
+#include "../../../runway.h"
 
 namespace pizda {
 	using namespace YOBA;

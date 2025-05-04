@@ -1,7 +1,7 @@
 #pragma once
 
 #include <YOBA/UI.h>
-#include "theme.h"
+#include "../theme.h"
 
 namespace pizda {
 	using namespace YOBA;

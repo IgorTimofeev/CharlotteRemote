@@ -8,7 +8,7 @@
 #include "UI/theme.h"
 #include "UI/navigation/route.h"
 #include "UI/navigation/menu/menu.h"
-#include "UI/debugOverlay.h"
+#include "UI/elements/debugOverlay.h"
 
 #include "units.h"
 #include "settings.h"
@@ -23,6 +23,7 @@
 #include "hardware/battery.h"
 #include "hardware/encoder.h"
 #include "aircraftData.h"
+#include "spatialData.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -34,21 +35,6 @@ namespace pizda {
 			[[noreturn]] void run();
 
 			Application& getApplication();
-
-			LowPassFilter& getAirSpeedFilter();
-			LowPassFilter& getAltitudeFilter();
-			LowPassFilter& getPitchFilter();
-			LowPassFilter& getRollFilter();
-			LowPassFilter& getYawFilter();
-			LowPassFilter& getAirspeedTrendFilter();
-			LowPassFilter& getAltitudeTrendFilter();
-			LowPassFilter& getVerticalSpeedFilter();
-			LowPassFilter& getSlipAndSkidFilter();
-			LowPassFilter& getFlightPathVectorPitchFilter();
-			LowPassFilter& getFlightPathVectorYawFilter();
-			LowPassFilter& getWindDirectionFilter();
-			LowPassFilter& getFlightDirectorPitchFilter();
-			LowPassFilter& getFlightDirectorRollFilter();
 
 			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
@@ -76,7 +62,8 @@ namespace pizda {
 			const Route* getRoute();
 			void setRoute(const Route* route);
 
-			const AircraftData& getAircraftData() const;
+			AircraftData& getAircraftData();
+			SpatialData& getSpatialData();
 
 		private:
 			RC() = default;
@@ -184,6 +171,7 @@ namespace pizda {
 			// -------------------------------- Other shit --------------------------------
 
 			AircraftData _aircraftData {};
+			SpatialData _spatialData {};
 
 			static void SPIBusSetup();
 			void ADCUnitsSetup();

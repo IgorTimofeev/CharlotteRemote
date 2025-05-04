@@ -1,7 +1,7 @@
 #include "UITestPage.h"
 #include "../../theme.h"
 #include "../../../rc.h"
-#include "../../dialog.h"
+#include "../../elements/dialog.h"
 
 namespace pizda {
 	UITestPage::UITestPage() {

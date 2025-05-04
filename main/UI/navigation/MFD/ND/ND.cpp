@@ -1,11 +1,17 @@
 #include "ND.h"
+
 #include "../../../../rc.h"
+
 #include <numbers>
 #include <format>
 #include <esp_log.h>
+#include "../../../elements/spatial/runwayElement.h"
 
 namespace pizda {
 	ND::ND() {
+		auto& rc = RC::getInstance();
+		const auto& sd = rc.getSpatialData();
+
 		setClipToBounds(true);
 
 		// Axis
@@ -27,66 +33,25 @@ namespace pizda {
 			&Theme::blue
 		));
 
-//		// Cube
-//		addObject(new CubeLinearMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters * 2, &Theme::fg1));
-
 		// Sphere
 		addElement(new SphereLinearSpatialMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg4));
 
-		// Airfields
-//		addElement(new Label(
-//			GeographicCoordinates(toRadians(60.014907051555966f), toRadians(29.69815561737486f), 0).toCartesian(),
-//			&Theme::fontSmall,
-//			&Theme::fg1,
-//			L"ULLY"
-//		));
-//
-		addElement(new RunwayElement(
-			Runway(
-				GeographicCoordinates(toRadians(60.014581566191914f), toRadians(29.70258579817704f), 0),
-				95,
-				500,
-				30,
-				L"ULLY"
-			),
-			&Theme::fg1
-		));
-
-		addElement(new RunwayElement(
-			Runway(
-				GeographicCoordinates(toRadians(59.79507652101131f), toRadians(30.250945449842572), 0),
-				100,
-				3780,
-				60,
-				L"ULLI"
-			),
-			&Theme::fg1
-		));
-
-//		addElement(new RunwayElement(
-//			new Vector3F[]{
-//				GeographicCoordinates(toRadians(59.81000515459139f), toRadians(30.245549866082925f), 0).toCartesian(),
-//				GeographicCoordinates(toRadians(59.801365049765245f), toRadians(30.303604969331097f), 0).toCartesian(),
-//				GeographicCoordinates(toRadians(59.80086133025612f), toRadians(30.303302737716518f), 0).toCartesian(),
-//				GeographicCoordinates(toRadians(59.80948999001452f), toRadians(30.245252504683034f), 0).toCartesian()
-//			},
-//			&Theme::fg1,
-//			L"ULLI10L"
-//		));
-//
-//		addElement(new RunwayElement(
-//			new Vector3F[]{
-//				GeographicCoordinates(toRadians(59.80017069061603f), toRadians(30.218472732217464f), 0).toCartesian(),
-//				GeographicCoordinates(toRadians(59.79058757720595f), toRadians(30.283053765300696f), 0).toCartesian(),
-//				GeographicCoordinates(toRadians(59.7900828284425f), toRadians(30.282753357896627f), 0).toCartesian(),
-//				GeographicCoordinates(toRadians(59.79966144346482f), toRadians(30.218174663302346f), 0).toCartesian()
-//			},
-//			&Theme::fg1,
-//			L"ULLI10R"
-//		));
+		// Runways
+		for (const auto& runway : sd.runways) {
+			addElement(new RunwayElement(
+				runway,
+				&Theme::fg1
+			));
+		}
 
 		// Aircraft
 		addElement(&_aircraftElement);
+	}
+
+	ND::~ND() {
+		for (auto element : getSpatialElements()) {
+			delete element;
+		}
 	}
 
 	void ND::onTick() {
@@ -94,7 +59,9 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
+		const auto& bounds = getBounds();
 
+		// Aircraft
 		_aircraftElement.setPosition(
 			GeographicCoordinates(
 				ad.geographicCoordinates.getLatitude(),
@@ -104,15 +71,19 @@ namespace pizda {
 			.toCartesian()
 		);
 
-		const auto& cameraCoordinates = getCameraCoordinates();
+		// Camera
+		auto& camera = getCamera();
 
-		getCamera().setPosition(cameraCoordinates.toCartesian());
+		camera.setFOV(toRadians(90));
 
-		getCamera().setRotation(Vector3F(
-			-cameraCoordinates.getLatitude(),
-			ad.computed.yaw,
-			toRadians(-90 + 180) + cameraCoordinates.getLongitude()
-		));
+		computeCameraCoordinates();
+
+		camera.setPosition(_cameraCoordinates.toCartesian());
+
+		auto& rotations = camera.getRotations();
+		rotations[0] = CameraRotation(CameraAxis::z, toRadians(90) + _cameraCoordinates.getLongitude());
+		rotations[1] = CameraRotation(CameraAxis::x, -_cameraCoordinates.getLatitude());
+		rotations[2] = CameraRotation(CameraAxis::y, ad.computed.yaw);
 
 		invalidate();
 	}
@@ -186,13 +157,12 @@ namespace pizda {
 			// viewport rad - height px
 			// x rad - 1 px
 			const auto equatorialRadiansPerPixel = getEquatorialRadiansPerPixel();
-			const auto& cameraCoordinates = getCameraCoordinates();
 
 //			ESP_LOGI("ND", "camera lat: %f", cameraCoordinates.getLatitude());
 //			ESP_LOGI("ND", "camera lat cos: %f", std::cosf(cameraCoordinates.getLatitude()));
 //			ESP_LOGI("ND", "deltaPixelsX with coorection: %f", (float) deltaPixels.getX() / std::cosf(cameraCoordinates.getLatitude()));
 
-			const auto deltaRadLon = (float) deltaPixels.getX() * equatorialRadiansPerPixel / std::cosf(cameraCoordinates.getLatitude());
+			const auto deltaRadLon = (float) deltaPixels.getX() * equatorialRadiansPerPixel / std::cosf(_cameraCoordinates.getLatitude());
 			const auto deltaRadLat = (float) deltaPixels.getY() * equatorialRadiansPerPixel;
 
 //			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
@@ -325,13 +295,11 @@ namespace pizda {
 		setCameraOffset(GeographicCoordinates(0, 0, _cameraOffset.getAltitude()));
 	}
 
-	GeographicCoordinates ND::getCameraCoordinates() {
+	void ND::computeCameraCoordinates() {
 		const auto& aircraftCoordinates = RC::getInstance().getAircraftData().geographicCoordinates;
 
-		return GeographicCoordinates(
-			aircraftCoordinates.getLatitude() + _cameraOffset.getLatitude(),
-			aircraftCoordinates.getLongitude() + _cameraOffset.getLongitude(),
-			_cameraOffset.getAltitude()
-		);
+		_cameraCoordinates.setLatitude(aircraftCoordinates.getLatitude() + _cameraOffset.getLatitude());
+		_cameraCoordinates.setLongitude(aircraftCoordinates.getLongitude() + _cameraOffset.getLongitude());
+		_cameraCoordinates.setAltitude(_cameraOffset.getAltitude());
 	}
 }

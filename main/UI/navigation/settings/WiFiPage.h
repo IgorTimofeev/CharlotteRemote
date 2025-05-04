@@ -4,8 +4,8 @@
 #include <YOBA/UI.h>
 
 #include "../page.h"
-#include "../../titler.h"
-#include "../../switcher.h"
+#include "../../elements/titler.h"
+#include "../../elements/switcher.h"
 
 namespace pizda {
 	using namespace YOBA;

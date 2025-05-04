@@ -150,8 +150,12 @@ namespace pizda {
 		return _application;
 	}
 
-	const AircraftData& RC::getAircraftData() const {
+	AircraftData& RC::getAircraftData() {
 		return _aircraftData;
+	}
+
+	SpatialData& RC::getSpatialData() {
+		return _spatialData;
 	}
 
 	uint32_t RC::getTickDeltaTime() const {

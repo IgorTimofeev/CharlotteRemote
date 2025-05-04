@@ -3,7 +3,7 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "../../../../theme.h"
+#include "../../../theme.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -53,11 +53,6 @@ namespace pizda {
 			}
 
 		private:
-			Vector3F _position = GeographicCoordinates(
-				YOBA::toRadians(60.01449883137194),
-				YOBA::toRadians(29.702554658332105),
-				GeographicCoordinates::equatorialRadiusMeters
-			)
-			.toCartesian();
+			Vector3F _position {};
 	};
 }

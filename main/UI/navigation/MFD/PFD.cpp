@@ -4,14 +4,63 @@
 #include "../../../rc.h"
 #include "../../theme.h"
 #include "../../../units.h"
+#include "../../elements/spatial/runwayElement.h"
 
 namespace pizda {
 	PFD::PFD() {
 		setClipToBounds(true);
+
+		auto& rc = RC::getInstance();
+		const auto& sd = rc.getSpatialData();
+
+		// Axis
+		addElement(new SpatialLine(
+			Vector3F(0, 0, 0),
+			Vector3F(GeographicCoordinates::equatorialRadiusMeters, 0, 0),
+			&Theme::red
+		));
+
+		addElement(new SpatialLine(
+			Vector3F(0, 0, 0),
+			Vector3F(0, GeographicCoordinates::equatorialRadiusMeters, 0),
+			&Theme::green
+		));
+
+		addElement(new SpatialLine(
+			Vector3F(0, 0, 0),
+			Vector3F(0, 0, GeographicCoordinates::equatorialRadiusMeters),
+			&Theme::blue
+		));
+
+		// Runways
+		for (const auto& runway : sd.runways) {
+			addElement(new RunwayElement(
+				runway,
+				&Theme::fg1
+			));
+		}
 	}
 
 	void PFD::onTick() {
 		Element::onTick();
+
+		auto& rc = RC::getInstance();
+		const auto& ad = rc.getAircraftData();
+
+		const auto& bounds = getBounds();
+		auto& camera = getCamera();
+//		auto aspectRatio = bounds.getWidth() > 0 && (float) bounds.getHeight() > 0 ? (float) bounds.getWidth() / (float) bounds.getHeight() : 1;
+
+		camera.setFOV(toRadians(60));
+
+		camera.setPosition(ad.geographicCoordinates.toCartesian());
+
+		auto& rotations = camera.getRotations();
+		rotations[0] = CameraRotation(CameraAxis::z, toRadians(90) + ad.geographicCoordinates.getLongitude());
+		rotations[1] = CameraRotation(CameraAxis::x, toRadians(90) - ad.geographicCoordinates.getLatitude());
+		rotations[2] = CameraRotation(CameraAxis::z, -ad.computed.yaw);
+		rotations[3] = CameraRotation(CameraAxis::x, ad.computed.pitch);
+		rotations[4] = CameraRotation(CameraAxis::y, ad.computed.roll);
 
 		invalidate();
 	}
@@ -23,6 +72,8 @@ namespace pizda {
 			bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,
 			bounds.getHeight()
 		));
+
+		SpatialView::onRender(renderer, bounds);
 
 		renderSpeed(renderer, Bounds(
 			bounds.getX(),
@@ -807,17 +858,16 @@ namespace pizda {
 		renderer->popViewport(viewport);
 	}
 
-	void PFD::renderSyntheticVision(Renderer* renderer, const Bounds& bounds) const {
+	void PFD::renderSyntheticVision(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
 
-		const auto aspectRatio = (float) bounds.getWidth() / (float) bounds.getHeight();
-		const auto verticalFOV = horizontalFOV / aspectRatio;
-
 		const auto& center = bounds.getCenter();
+		const auto& camera = getCamera();
 
-		const auto pixelsPerRadHorizontal = (float) bounds.getWidth() / horizontalFOV;
-		const auto pixelsPerRadVertical = (float) bounds.getHeight() / verticalFOV;
+//		const auto aspectRatio = (float) bounds.getWidth() / (float) bounds.getHeight();
+		const auto pixelsPerRadHorizontal = (float) bounds.getWidth() / camera.getFOV();
+		const auto pixelsPerRadVertical = pixelsPerRadHorizontal;
 
 		const auto horizonPitchPixelOffset = ad.computed.pitch * pixelsPerRadVertical;
 		const auto& horizonPitchRotated = Vector2F(0, horizonPitchPixelOffset).rotate(-ad.computed.roll);

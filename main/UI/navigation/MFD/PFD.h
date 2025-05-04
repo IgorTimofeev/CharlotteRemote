@@ -10,7 +10,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class PFD : public Element {
+	class PFD : public SpatialView {
 		public:
 			PFD();
 
@@ -153,8 +153,6 @@ namespace pizda {
 			// Wind
 			constexpr static const uint8_t windVisibilityGroundSpeed = 10;
 
-			float horizontalFOV = toRadians(50);
-
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
 
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left) ;
@@ -165,7 +163,7 @@ namespace pizda {
 
 			static void renderSpeed(Renderer* renderer, const Bounds& bounds) ;
 
-			void renderSyntheticVision(Renderer* renderer, const Bounds& bounds) const;
+			void renderSyntheticVision(Renderer* renderer, const Bounds& bounds);
 
 			static void renderAltitude(Renderer* renderer, const Bounds& bounds) ;
 

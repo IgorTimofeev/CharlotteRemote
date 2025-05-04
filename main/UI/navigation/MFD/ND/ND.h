@@ -4,9 +4,7 @@
 #include <YOBA/UI.h>
 
 #include "../../../theme.h"
-
-#include "elements/aircraft.h"
-#include "elements/runway.h"
+#include "aircraft.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -15,13 +13,14 @@ namespace pizda {
 		public:
 			ND();
 
+			~ND();
+
 			constexpr static const uint32_t cameraAltitudeMinimum = 50;
 			constexpr static const uint32_t cameraAltitudeMaximum = GeographicCoordinates::equatorialRadiusMeters * 2;
 
 			const GeographicCoordinates& getCameraOffset() const;
 			void setCameraOffset(const GeographicCoordinates& value);
 			void resetCameraOffsetLatLon();
-			GeographicCoordinates getCameraCoordinates();
 
 		protected:
 			void onTick() override;
@@ -39,8 +38,11 @@ namespace pizda {
 				500
 			};
 
+			GeographicCoordinates _cameraCoordinates {};
+
 			AircraftElement _aircraftElement {};
 
 			float getEquatorialRadiansPerPixel();
+			void computeCameraCoordinates();
 	};
 }
