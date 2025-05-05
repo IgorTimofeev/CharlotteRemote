@@ -1,10 +1,4 @@
 dependencies:
-  RadioLib:
-    dependencies: []
-    source:
-      path: C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\RadioLib
-      type: local
-    version: 7.1.2
   YOBA:
     dependencies: []
     source:
@@ -16,9 +10,7 @@ dependencies:
       type: idf
     version: 5.4.0
 direct_dependencies:
-- RadioLib
 - YOBA
-- idf
-manifest_hash: 0a4cdb6ca58c01b58e43b9ab3e37d01efea977db4bf2885e1480c50c26f3e725
+manifest_hash: c90253e225556174ecf17769a967ef844d4e1b037a057fe2e1d988275e535b8f
 target: esp32
 version: 2.0.0

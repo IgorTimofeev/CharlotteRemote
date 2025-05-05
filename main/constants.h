@@ -3,7 +3,7 @@
 #include "driver/ledc.h"
 #include "cstdint"
 #include "esp_adc/adc_oneshot.h"
-#include "RadioLib.h"
+//#include "RadioLib.h"
 
 namespace pizda {
 	class constants {
@@ -54,21 +54,21 @@ namespace pizda {
 	
 			class transceiver {
 				public:
-					class lora {
-						public:
-							constexpr static const gpio_num_t slaveSelect = GPIO_NUM_14;
-							constexpr static const gpio_num_t busy = GPIO_NUM_12;
-							constexpr static const gpio_num_t dio0 = GPIO_NUM_13;
-							constexpr static const uint32_t reset = RADIOLIB_NC;
-
-							// Something random, "CHRL" in this case
-							constexpr static const float frequency = 915;
-							constexpr static const float bandwidth = 500;
-							constexpr static const uint8_t spreadingFactor = 7;
-							constexpr static const uint8_t codingRate = 5;
-							constexpr static const uint16_t power = 22;
-							constexpr static const uint16_t preambleLength = 8;
-					};
+//					class lora {
+//						public:
+//							constexpr static const gpio_num_t slaveSelect = GPIO_NUM_14;
+//							constexpr static const gpio_num_t busy = GPIO_NUM_12;
+//							constexpr static const gpio_num_t dio0 = GPIO_NUM_13;
+//							constexpr static const uint32_t reset = RADIOLIB_NC;
+//
+//							// Something random, "CHRL" in this case
+//							constexpr static const float frequency = 915;
+//							constexpr static const float bandwidth = 500;
+//							constexpr static const uint8_t spreadingFactor = 7;
+//							constexpr static const uint8_t codingRate = 5;
+//							constexpr static const uint16_t power = 22;
+//							constexpr static const uint16_t preambleLength = 8;
+//					};
 
 					class tcp {
 						public:

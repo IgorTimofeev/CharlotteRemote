@@ -182,8 +182,7 @@ namespace pizda {
 			static void renderPitchOverlay(
 				Renderer* renderer,
 				const Bounds& bounds,
-				float pixelsPerRadHorizontal,
-				float pixelsPerRadVertical,
+				float projectionPlaneDistance,
 				const Point& horizonLeft,
 				const Point& horizonRight,
 

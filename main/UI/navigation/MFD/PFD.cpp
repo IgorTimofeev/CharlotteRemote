@@ -612,8 +612,7 @@ namespace pizda {
 	void PFD::renderPitchOverlay(
 		Renderer* renderer,
 		const Bounds& bounds,
-		float pixelsPerRadHorizontal,
-		float pixelsPerRadVertical,
+		float projectionPlaneDistance,
 		const Point& horizonLeft,
 		const Point& horizonRight,
 		const Vector2F& horizonVec,
@@ -629,10 +628,6 @@ namespace pizda {
 		);
 
 		const auto viewport = renderer->pushViewport(bounds);
-
-		const float lineAngleStepRad = toRadians(pitchOverlayAngleStepDeg);
-		const float linesInTotal = std::floorf(std::numbers::pi_v<float> / 2.f / lineAngleStepRad);
-		const float linePixelStep = std::numbers::pi_v<float> * pixelsPerRadVertical / 2.f / linesInTotal;
 
 		Vector2F
 			lineCenterPerp,
@@ -650,7 +645,7 @@ namespace pizda {
 				continue;
 
 			color = lineAngleDeg >= 0 ? pitchOverlayColorGround : pitchOverlayColorSky;
-			lineCenterPerp = horizonCenter + horizonVecPerp * ((float) lineAngleDeg / (float) pitchOverlayAngleStepDeg * linePixelStep);
+			lineCenterPerp = horizonCenter + horizonVecPerp * (std::tanf(toRadians(lineAngleDeg)) * projectionPlaneDistance);
 
 			lineVec = horizonVecNorm * (
 				(
@@ -859,12 +854,10 @@ namespace pizda {
 		const auto aspectRatio = (float) bounds.getWidth() / (float) bounds.getHeight();
 		const auto projectionPlaneDistance = getProjectionPlaneDistance();
 
-		const auto pixelsPerRadVertical = (float) bounds.getHeight() / getFOV();
-		const auto pixelsPerRadHorizontal = pixelsPerRadVertical * aspectRatio;
-
-		const auto horizonPitchPixelOffset = ad.computed.pitch * pixelsPerRadVertical;
+		const auto horizonPitchPixelOffset = std::tanf(ad.computed.pitch) * projectionPlaneDistance;
 		const auto& horizonPitchRotated = Vector2F(0, horizonPitchPixelOffset).rotate(-ad.computed.roll);
-		const auto& horizonRollRotated = Vector2F(std::numbers::pi_v<float> * pixelsPerRadHorizontal / 2, 0).rotate(-ad.computed.roll);
+		const auto diagonal = std::sqrtf(bounds.getWidth() * bounds.getWidth() + bounds.getHeight() * bounds.getHeight());
+		const auto& horizonRollRotated = Vector2F(diagonal / 2.f, 0).rotate(-ad.computed.roll);
 
 		const auto& horizonLeft = Point(
 			center.getX() + (int32_t) (-horizonRollRotated.getX() + horizonPitchRotated.getX()),
@@ -905,8 +898,7 @@ namespace pizda {
 				bounds.getWidth(),
 				bounds.getHeight() - pitchOverlayMarginTop - yawOverlayHeight
 			),
-			pixelsPerRadHorizontal,
-			pixelsPerRadVertical,
+			projectionPlaneDistance,
 			horizonLeft,
 			horizonRight,
 			horizonVec,
@@ -948,7 +940,7 @@ namespace pizda {
 				center.getX() - flightDirectorLength / 2,
 				center.getY()
 					- (int32_t) std::clamp(
-					ad.computed.flightDirectorPitch * pixelsPerRadVertical,
+						std::tanf(ad.computed.flightDirectorPitch) * projectionPlaneDistance,
 						-flightDirectorLengthHalfF,
 						flightDirectorLengthHalfF
 					)
@@ -963,7 +955,7 @@ namespace pizda {
 			flightDirectorRectBounds.setX(
 				center.getX()
 				+ (int32_t) std::clamp(
-					ad.computed.flightDirectorRoll * pixelsPerRadHorizontal,
+					std::tanf(ad.computed.flightDirectorRoll) * projectionPlaneDistance,
 					-flightDirectorLengthHalfF,
 					flightDirectorLengthHalfF
 				)
@@ -980,8 +972,8 @@ namespace pizda {
 		// Flight path vector
 		if (ad.computed.airSpeed > speedFlapsMin) {
 			const auto& FPVPosition = Point(
-				(int32_t) (horizonCenter.getX() + pixelsPerRadHorizontal * ad.computed.flightPathVectorYaw),
-				(int32_t) (horizonCenter.getY() - pixelsPerRadVertical * ad.computed.flightPathVectorPitch)
+				(int32_t) (horizonCenter.getX() + std::tanf(ad.computed.flightPathVectorYaw) * projectionPlaneDistance),
+				(int32_t) (horizonCenter.getY() - std::tanf(ad.computed.flightPathVectorPitch) * projectionPlaneDistance)
 			);
 
 			// Circle
