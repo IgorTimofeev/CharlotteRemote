@@ -17,7 +17,9 @@ namespace pizda {
 		auto menuView = reinterpret_cast<MainMenuView*>(getMenuView());
 		menuView->checkButton(this);
 
-		RC::getInstance().setRoute(_route);
+		RC::getInstance().getApplication().enqueueOnTick([this]() {
+			RC::getInstance().setRoute(_route);
+		});
 	}
 
 	MainMenuView::MainMenuView() {

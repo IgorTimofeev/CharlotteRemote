@@ -45,7 +45,8 @@ namespace pizda {
 		}
 
 		// Aircraft
-		addElement(&_aircraftElement);
+		_aircraftElement = new AircraftElement();
+		addElement(_aircraftElement);
 	}
 
 	ND::~ND() {
@@ -62,7 +63,7 @@ namespace pizda {
 		const auto& bounds = getBounds();
 
 		// Aircraft
-		_aircraftElement.setPosition(
+		_aircraftElement->setPosition(
 			GeographicCoordinates(
 				ad.geographicCoordinates.getLatitude(),
 				ad.geographicCoordinates.getLongitude(),
@@ -72,18 +73,21 @@ namespace pizda {
 		);
 
 		// Camera
-		auto& camera = getCamera();
-
-		camera.setFOV(toRadians(90));
+		setFOV(toRadians(90));
 
 		computeCameraCoordinates();
 
-		camera.setPosition(_cameraCoordinates.toCartesian());
+		setCameraPosition(_cameraCoordinates.toCartesian());
 
-		auto& rotations = camera.getRotations();
-		rotations[0] = CameraRotation(CameraAxis::z, toRadians(90) + _cameraCoordinates.getLongitude());
-		rotations[1] = CameraRotation(CameraAxis::x, -_cameraCoordinates.getLatitude());
-		rotations[2] = CameraRotation(CameraAxis::y, ad.computed.yaw);
+		setCameraRotation(Vector3F(
+			-_cameraCoordinates.getLatitude(),
+			ad.computed.yaw,
+			toRadians(90) + _cameraCoordinates.getLongitude()
+		));
+
+//		rotations[0] = CameraRotation(CameraAxis::z, toRadians(90) + _cameraCoordinates.getLongitude());
+//		rotations[1] = CameraRotation(CameraAxis::x, -_cameraCoordinates.getLatitude());
+//		rotations[2] = CameraRotation(CameraAxis::y, ad.computed.yaw);
 
 		invalidate();
 	}
@@ -272,7 +276,7 @@ namespace pizda {
 		// Since the length of the equator is calculated using 2 * pi * r, the dependence here is linear.
 		// This allows us to easily determine how many equatorial radians of the earth our camera can see
 		// excluding of FOV limitations
-		const auto viewportRad = getCamera().getFOV() * radiusFactor;
+		const auto viewportRad = getFOV() * radiusFactor;
 //		ESP_LOGI("ND", "viewportDeg: %f", toDegrees(viewportRad));
 
 		// And then we can calculate how many equatorial radians of the earth is in 1 pixel of the screen

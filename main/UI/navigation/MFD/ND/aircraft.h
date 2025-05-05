@@ -18,8 +18,8 @@ namespace pizda {
 				return 1;
 			}
 
-			void onRender(Renderer* renderer, const Bounds& bounds, Camera* camera, const Vector3F* vertices) override {
-				if (vertices[0].getZ() < camera->getNearPlaneDistance())
+			void onRender(Renderer* renderer, const SpatialView& spatialView, const Vector3F* vertices) override {
+				if (vertices[0].getZ() < spatialView.getNearPlaneDistance())
 					return;
 
 				constexpr static const uint8_t triangleWidth = 8;
@@ -32,7 +32,7 @@ namespace pizda {
 
 				renderer->renderLine(
 					position,
-					Point(position.getX(), bounds.getY()),
+					Point(position.getX(), spatialView.getBounds().getY()),
 					&Theme::purple
 				);
 

@@ -40,7 +40,7 @@ namespace pizda {
 
 			GeographicCoordinates _cameraCoordinates {};
 
-			AircraftElement _aircraftElement {};
+			AircraftElement* _aircraftElement = nullptr;
 
 			float getEquatorialRadiansPerPixel();
 			void computeCameraCoordinates();
