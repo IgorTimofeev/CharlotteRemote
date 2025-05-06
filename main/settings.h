@@ -48,8 +48,6 @@ namespace pizda {
 
 	class SettingsAutopilot {
 		public:
-			bool flightDirector = true;
-
 			uint16_t speedKt = 0;
 			bool autoThrottle = false;
 
@@ -67,25 +65,42 @@ namespace pizda {
 			PressureUnit pressure = PressureUnit::hectopascal;
 	};
 
+	class SettingsInterfaceMFDPFD {
+		public:
+			uint8_t FOV = 60;
+			bool flightDirectors = true;
+	};
+
+	class SettingsInterfaceMFDND {
+		public:
+			bool show = false;
+	};
+
 	enum class SettingsInterfaceMFDInstrumentsMode : uint8_t {
 		main,
 		autopilot,
 		pressure
 	};
 
+	class SettingsInterfaceMFD {
+		public:
+			SettingsInterfaceMFDPFD PFD {};
+			SettingsInterfaceMFDND ND {};
+			SettingsInterfaceMFDInstrumentsMode instrumentsMode = SettingsInterfaceMFDInstrumentsMode::main;
+	};
+
 	class SettingsInterface {
 		public:
-			bool MFDNavDisplay = false;
-			SettingsInterfaceMFDInstrumentsMode MFDInstrumentsMode = SettingsInterfaceMFDInstrumentsMode::main;
+			SettingsInterfaceMFD MFD {};
 	};
 
 	class Settings {
 		public:
-			SettingsControls controls;
-			SettingsAxis axis;
-			SettingsAutopilot autopilot;
-			SettingsInterface interface;
-			SettingsUnits units;
+			SettingsControls controls {};
+			SettingsAxis axis {};
+			SettingsAutopilot autopilot {};
+			SettingsInterface interface {};
+			SettingsUnits units {};
 
 			void setup() { // NOLINT(*-convert-member-functions-to-static)
 				// Opening
@@ -142,7 +157,7 @@ namespace pizda {
 
 		private:
 			constexpr static const uint32_t _writeDelay = 2500000;
-			constexpr static const uint8_t _version = 10;
+			constexpr static const uint8_t _version = 12;
 			uint32_t _timeToWrite = 0;
 	};
 

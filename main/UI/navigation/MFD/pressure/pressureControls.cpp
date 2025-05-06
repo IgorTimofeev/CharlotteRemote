@@ -46,7 +46,7 @@ namespace pizda {
 			RC::getInstance().getSettings().enqueueWrite();
 		};
 
-		pressureLayout.setFocusable(false);
+		minimumsLayout.setFocusable(false);
 		row += &minimumsLayout;
 	}
 }

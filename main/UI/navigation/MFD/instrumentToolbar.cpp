@@ -17,7 +17,7 @@ namespace pizda {
 		buttonAndRowLayout += &row;
 
 		// Menu button
-		menuButton.setSize(Size(14, Size::computed));
+		menuButton.setSize(Size(12, Size::computed));
 		menuButton.setCornerRadius(0);
 
 		menuButton.setPressedBackgroundColor(&Theme::fg1);

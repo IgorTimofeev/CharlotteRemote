@@ -34,29 +34,29 @@ namespace pizda {
 
 		auto& settings = RC::getInstance().getSettings();
 
-		if (_NDControls && !settings.interface.MFDNavDisplay) {
+		if (_NDControls && !settings.interface.MFD.ND.show) {
 			delete _NDControls;
 			_NDControls = nullptr;
 		}
 
-		if (_mainControls && settings.interface.MFDInstrumentsMode != SettingsInterfaceMFDInstrumentsMode::main) {
+		if (_mainControls && settings.interface.MFD.instrumentsMode != SettingsInterfaceMFDInstrumentsMode::main) {
 			delete _mainControls;
 			_mainControls = nullptr;
 		}
 
-		if (_autopilotControls && settings.interface.MFDInstrumentsMode != SettingsInterfaceMFDInstrumentsMode::autopilot) {
+		if (_autopilotControls && settings.interface.MFD.instrumentsMode != SettingsInterfaceMFDInstrumentsMode::autopilot) {
 			delete _autopilotControls;
 			_autopilotControls = nullptr;
 		}
 
-		if (_pressureControls && settings.interface.MFDInstrumentsMode != SettingsInterfaceMFDInstrumentsMode::pressure) {
+		if (_pressureControls && settings.interface.MFD.instrumentsMode != SettingsInterfaceMFDInstrumentsMode::pressure) {
 			delete _pressureControls;
 			_pressureControls = nullptr;
 		}
 
 		_rows += &_PFD;
 
-		if (settings.interface.MFDNavDisplay) {
+		if (settings.interface.MFD.ND.show) {
 			if (!_NDControls)
 				_NDControls = new NDControls();
 
@@ -64,7 +64,7 @@ namespace pizda {
 			_rows += _NDControls;
 		}
 
-		switch (settings.interface.MFDInstrumentsMode) {
+		switch (settings.interface.MFD.instrumentsMode) {
 			case SettingsInterfaceMFDInstrumentsMode::main: {
 				if (!_mainControls)
 					_mainControls = new MainControls();

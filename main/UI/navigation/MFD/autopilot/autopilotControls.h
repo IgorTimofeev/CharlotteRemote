@@ -8,6 +8,7 @@
 #include "../instrumentIndicatorLayout.h"
 
 #include "../rotaryControl.h"
+#include "../korryButton.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -15,6 +16,8 @@ namespace pizda {
 	class AutopilotControls : public InstrumentToolbar {
 		public:
 			explicit AutopilotControls();
+
+			KorryButton FDButton { L"FD" };
 
 			RotaryControl<3, 0, 400, false, 1, 10> speed = { L"A/T" };
 			InstrumentIndicatorLayout speedLayout = { L"Speed", &speed, false };

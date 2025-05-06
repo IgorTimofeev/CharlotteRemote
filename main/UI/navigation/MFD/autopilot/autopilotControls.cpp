@@ -5,11 +5,25 @@ namespace pizda {
 	using namespace YOBA;
 
 	AutopilotControls::AutopilotControls() {
-		setHeight(48);
+		setHeight(52);
 
 		auto& settings = RC::getInstance().getSettings();
 
 		row.setSpacing(8);
+
+		// FD
+		FDButton.setSize(Size(26, 20));
+		FDButton.setVerticalAlignment(Alignment::center);
+		FDButton.setCheckMode(ButtonCheckMode::toggle);
+		FDButton.setChecked(settings.interface.MFD.PFD.flightDirectors);
+
+		FDButton.isCheckedChanged += [this]() {
+			auto& settings = RC::getInstance().getSettings();
+			settings.interface.MFD.PFD.flightDirectors = FDButton.isChecked();
+			settings.enqueueWrite();
+		};
+		
+		row += &FDButton;
 
 		// Speed
 		speed.seven.setValue(settings.autopilot.speedKt);
@@ -18,13 +32,13 @@ namespace pizda {
 		speed.rotated += [this]() {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.speedKt = speed.seven.getValue();
-			RC::getInstance().getSettings().enqueueWrite();
+			settings.enqueueWrite();
 		};
 
 		speed.button.isCheckedChanged += [this]() {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.autoThrottle = speed.button.isChecked();
-			RC::getInstance().getSettings().enqueueWrite();
+			settings.enqueueWrite();
 		};
 
 		speedLayout.setFocusable(false);
@@ -37,13 +51,13 @@ namespace pizda {
 		heading.rotated += [this]() {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.headingDeg = heading.seven.getValue();
-			RC::getInstance().getSettings().enqueueWrite();
+			settings.enqueueWrite();
 		};
 
 		heading.button.isCheckedChanged += [this]() {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.headingHold = heading.button.isChecked();
-			RC::getInstance().getSettings().enqueueWrite();
+			settings.enqueueWrite();
 		};
 
 		headingLayout.setFocusable(false);
@@ -56,13 +70,13 @@ namespace pizda {
 		altitude.rotated += [this]() {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.altitudeFt = altitude.seven.getValue();
-			RC::getInstance().getSettings().enqueueWrite();
+			settings.enqueueWrite();
 		};
 
 		altitude.button.isCheckedChanged += [this]() {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.levelChange = altitude.button.isChecked();
-			RC::getInstance().getSettings().enqueueWrite();
+			settings.enqueueWrite();
 		};
 
 		altitudeLayout.setFocusable(false);

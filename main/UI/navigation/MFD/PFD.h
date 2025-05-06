@@ -182,6 +182,8 @@ namespace pizda {
 			static void renderPitchOverlay(
 				Renderer* renderer,
 				const Bounds& bounds,
+				const AircraftData& ad,
+				float pitchPixelOffsetProjected,
 				float projectionPlaneDistance,
 				const Point& horizonLeft,
 				const Point& horizonRight,

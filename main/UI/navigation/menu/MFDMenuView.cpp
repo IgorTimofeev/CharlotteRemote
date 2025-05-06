@@ -8,7 +8,7 @@
 namespace pizda {
 	MFDModeMenuButton::MFDModeMenuButton(const Image* image, const std::wstring_view& text, SettingsInterfaceMFDInstrumentsMode mode) : MenuButton(image, text), _mode(mode) {
 		setCheckMode(ButtonCheckMode::manual);
-		setChecked(RC::getInstance().getSettings().interface.MFDInstrumentsMode == mode);
+		setChecked(RC::getInstance().getSettings().interface.MFD.instrumentsMode == mode);
 	}
 
 	void MFDModeMenuButton::onClick() {
@@ -22,7 +22,7 @@ namespace pizda {
 
 		RC::getInstance().getApplication().enqueueOnTick([this]() {
 			auto& settings = RC::getInstance().getSettings();
-			settings.interface.MFDInstrumentsMode = _mode;
+			settings.interface.MFD.instrumentsMode = _mode;
 			settings.enqueueWrite();
 
 			MFDPage::fromSettings();
@@ -39,13 +39,13 @@ namespace pizda {
 		NDButton.setPressedTextColor(&Theme::purple);
 
 		NDButton.setCheckMode(ButtonCheckMode::manual);
-		NDButton.setChecked(settings.interface.MFDNavDisplay);
+		NDButton.setChecked(settings.interface.MFD.ND.show);
 
 		NDButton.click += [this]() {
 			NDButton.setChecked(!NDButton.isChecked());
 
 			auto& settings = RC::getInstance().getSettings();
-			settings.interface.MFDNavDisplay = !settings.interface.MFDNavDisplay;
+			settings.interface.MFD.ND.show = !settings.interface.MFD.ND.show;
 			settings.enqueueWrite();
 
 			MFDPage::fromSettings();

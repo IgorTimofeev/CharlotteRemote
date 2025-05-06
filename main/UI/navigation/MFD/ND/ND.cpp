@@ -15,23 +15,23 @@ namespace pizda {
 		setClipToBounds(true);
 
 		// Axis
-		addElement(new SpatialLine(
-			Vector3F(0, 0, 0),
-			Vector3F(GeographicCoordinates::equatorialRadiusMeters, 0, 0),
-			&Theme::red
-		));
-
-		addElement(new SpatialLine(
-			Vector3F(0, 0, 0),
-			Vector3F(0, GeographicCoordinates::equatorialRadiusMeters, 0),
-			&Theme::green
-		));
-
-		addElement(new SpatialLine(
-			Vector3F(0, 0, 0),
-			Vector3F(0, 0, GeographicCoordinates::equatorialRadiusMeters),
-			&Theme::blue
-		));
+//		addElement(new SpatialLine(
+//			Vector3F(0, 0, 0),
+//			Vector3F(GeographicCoordinates::equatorialRadiusMeters, 0, 0),
+//			&Theme::red
+//		));
+//
+//		addElement(new SpatialLine(
+//			Vector3F(0, 0, 0),
+//			Vector3F(0, GeographicCoordinates::equatorialRadiusMeters, 0),
+//			&Theme::green
+//		));
+//
+//		addElement(new SpatialLine(
+//			Vector3F(0, 0, 0),
+//			Vector3F(0, 0, GeographicCoordinates::equatorialRadiusMeters),
+//			&Theme::blue
+//		));
 
 		// Sphere
 		addElement(new SphereLinearSpatialMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg4));
@@ -55,12 +55,17 @@ namespace pizda {
 		}
 	}
 
+	GeographicCoordinates ND::_cameraOffset = {
+		0,
+		0,
+		500
+	};
+
 	void ND::onTick() {
 		SpatialView::onTick();
 
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
-		const auto& bounds = getBounds();
 
 		// Aircraft
 		_aircraftElement->setPosition(
@@ -75,7 +80,9 @@ namespace pizda {
 		// Camera
 		setFOV(toRadians(90));
 
-		computeCameraCoordinates();
+		_cameraCoordinates.setLatitude(ad.geographicCoordinates.getLatitude() + _cameraOffset.getLatitude());
+		_cameraCoordinates.setLongitude(ad.geographicCoordinates.getLongitude() + _cameraOffset.getLongitude());
+		_cameraCoordinates.setAltitude(_cameraOffset.getAltitude());
 
 		setCameraPosition(_cameraCoordinates.toCartesian());
 
@@ -85,52 +92,48 @@ namespace pizda {
 			toRadians(90) + _cameraCoordinates.getLongitude()
 		));
 
-//		rotations[0] = CameraRotation(CameraAxis::z, toRadians(90) + _cameraCoordinates.getLongitude());
-//		rotations[1] = CameraRotation(CameraAxis::x, -_cameraCoordinates.getLatitude());
-//		rotations[2] = CameraRotation(CameraAxis::y, ad.computed.yaw);
-
 		invalidate();
 	}
 
 	void ND::onRender(Renderer* renderer, const Bounds& bounds) {
 		SpatialView::onRender(renderer, bounds);
 
-		if (!isFocused())
-			return;
+		// Cursor
+		if (_cursorPosition.getX() >= 0 &&  _cursorPosition.getY() >= 0) {
+			constexpr const uint8_t lineAreaOffset = 5;
+			constexpr const uint8_t lineAreaSize = 8;
 
-		constexpr const uint8_t lineAreaOffset = 5;
-		constexpr const uint8_t lineAreaSize = 8;
+			// Center
+			const auto& center = bounds.getPosition() + _cursorPosition;
 
-		// Center
-		const auto& center = bounds.getPosition() + _cursorPosition;
+			renderer->renderPixel(center, &Theme::yellow);
 
-		renderer->renderPixel(center, &Theme::yellow);
+			// Upper
+			renderer->renderLine(
+				Point(center.getX(), center.getY() - lineAreaOffset),
+				Point(center.getX() - lineAreaSize, center.getY() - lineAreaOffset - lineAreaSize),
+				&Theme::yellow
+			);
 
-		// Upper
-		renderer->renderLine(
-			Point(center.getX(), center.getY() - lineAreaOffset),
-			Point(center.getX() - lineAreaSize, center.getY() - lineAreaOffset - lineAreaSize),
-			&Theme::yellow
-		);
+			renderer->renderLine(
+				Point(center.getX(), center.getY() - lineAreaOffset),
+				Point(center.getX() + lineAreaSize, center.getY() - lineAreaOffset - lineAreaSize),
+				&Theme::yellow
+			);
 
-		renderer->renderLine(
-			Point(center.getX(), center.getY() - lineAreaOffset),
-			Point(center.getX() + lineAreaSize, center.getY() - lineAreaOffset - lineAreaSize),
-			&Theme::yellow
-		);
+			// Lower
+			renderer->renderLine(
+				Point(center.getX(), center.getY() + lineAreaOffset),
+				Point(center.getX() - lineAreaSize, center.getY() + lineAreaOffset + lineAreaSize),
+				&Theme::yellow
+			);
 
-		// Lower
-		renderer->renderLine(
-			Point(center.getX(), center.getY() + lineAreaOffset),
-			Point(center.getX() - lineAreaSize, center.getY() + lineAreaOffset + lineAreaSize),
-			&Theme::yellow
-		);
-
-		renderer->renderLine(
-			Point(center.getX(), center.getY() + lineAreaOffset),
-			Point(center.getX() + lineAreaSize, center.getY() + lineAreaOffset + lineAreaSize),
-			&Theme::yellow
-		);
+			renderer->renderLine(
+				Point(center.getX(), center.getY() + lineAreaOffset),
+				Point(center.getX() + lineAreaSize, center.getY() + lineAreaOffset + lineAreaSize),
+				&Theme::yellow
+			);
+		}
 	}
 
 	void ND::onEvent(Event* event) {
@@ -198,7 +201,7 @@ namespace pizda {
 			auto pinchDownEvent = (PinchDownEvent*) event;
 
 			_pinchLength = pinchDownEvent->getLength();
-			_cursorPosition = {};
+			_cursorPosition = { -1, -1 };
 
 			event->setHandled(true);
 		}
@@ -297,13 +300,5 @@ namespace pizda {
 
 	void ND::resetCameraOffsetLatLon() {
 		setCameraOffset(GeographicCoordinates(0, 0, _cameraOffset.getAltitude()));
-	}
-
-	void ND::computeCameraCoordinates() {
-		const auto& aircraftCoordinates = RC::getInstance().getAircraftData().geographicCoordinates;
-
-		_cameraCoordinates.setLatitude(aircraftCoordinates.getLatitude() + _cameraOffset.getLatitude());
-		_cameraCoordinates.setLongitude(aircraftCoordinates.getLongitude() + _cameraOffset.getLongitude());
-		_cameraCoordinates.setAltitude(_cameraOffset.getAltitude());
 	}
 }

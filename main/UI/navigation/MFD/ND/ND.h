@@ -28,21 +28,15 @@ namespace pizda {
 			void onEvent(Event* event) override;
 
 		private:
+			static GeographicCoordinates _cameraOffset;
+			GeographicCoordinates _cameraCoordinates {};
+
 			float _pinchLength = 0;
 			Point _touchDownPosition {};
 			Point _cursorPosition {};
 
-			GeographicCoordinates _cameraOffset {
-				0,
-				0,
-				500
-			};
-
-			GeographicCoordinates _cameraCoordinates {};
-
 			AircraftElement* _aircraftElement = nullptr;
 
 			float getEquatorialRadiansPerPixel();
-			void computeCameraCoordinates();
 	};
 }

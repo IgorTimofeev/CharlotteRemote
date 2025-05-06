@@ -17,7 +17,7 @@ namespace pizda {
 		for (const auto& runway : sd.runways) {
 			addElement(new RunwayElement(
 				runway,
-				&Theme::fg1
+				&Theme::bg1
 			));
 		}
 	}
@@ -28,12 +28,7 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
 
-		const auto& bounds = getBounds();
-//		auto aspectRatio = bounds.getWidth() > 0 && (float) bounds.getHeight() > 0 ? (float) bounds.getWidth() / (float) bounds.getHeight() : 1;
-
-		setFOV(toRadians(90));
-		setFOVVertical(true);
-
+		setFOV(toRadians(rc.getSettings().interface.MFD.PFD.FOV));
 		setCameraPosition(ad.geographicCoordinates.toCartesian());
 
 		setWorldRotation(Vector3F(
@@ -48,12 +43,6 @@ namespace pizda {
 			-ad.computed.yaw
 		));
 
-//		rotations[0] = CameraRotation(CameraAxis::z, toRadians(90) + ad.geographicCoordinates.getLongitude());
-//		rotations[1] = CameraRotation(CameraAxis::x, toRadians(90) - ad.geographicCoordinates.getLatitude());
-//		rotations[2] = CameraRotation(CameraAxis::z, -ad.computed.yaw);
-//		rotations[3] = CameraRotation(CameraAxis::x, ad.computed.pitch);
-//		rotations[4] = CameraRotation(CameraAxis::y, ad.computed.roll);
-
 		invalidate();
 	}
 
@@ -64,8 +53,6 @@ namespace pizda {
 			bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,
 			bounds.getHeight()
 		));
-
-		SpatialView::onRender(renderer, bounds);
 
 		renderSpeed(renderer, Bounds(
 			bounds.getX(),
@@ -612,6 +599,8 @@ namespace pizda {
 	void PFD::renderPitchOverlay(
 		Renderer* renderer,
 		const Bounds& bounds,
+		const AircraftData& ad,
+		float pitchPixelOffsetProjected,
 		float projectionPlaneDistance,
 		const Point& horizonLeft,
 		const Point& horizonRight,
@@ -645,7 +634,10 @@ namespace pizda {
 				continue;
 
 			color = lineAngleDeg >= 0 ? pitchOverlayColorGround : pitchOverlayColorSky;
-			lineCenterPerp = horizonCenter + horizonVecPerp * (std::tanf(toRadians(lineAngleDeg)) * projectionPlaneDistance);
+
+			// Same as tan(lineAngleDeg) * projectionPlaneDistance, but with spherical correction
+			// This loop uses horizon as starting point, not aircraft pitch, so we just subtract it
+			lineCenterPerp = horizonCenter + horizonVecPerp * (std::tanf(ad.computed.pitch + toRadians(lineAngleDeg)) * projectionPlaneDistance - pitchPixelOffsetProjected);
 
 			lineVec = horizonVecNorm * (
 				(
@@ -851,22 +843,21 @@ namespace pizda {
 
 		const auto& center = bounds.getCenter();
 
-		const auto aspectRatio = (float) bounds.getWidth() / (float) bounds.getHeight();
 		const auto projectionPlaneDistance = getProjectionPlaneDistance();
 
-		const auto horizonPitchPixelOffset = std::tanf(ad.computed.pitch) * projectionPlaneDistance;
-		const auto& horizonPitchRotated = Vector2F(0, horizonPitchPixelOffset).rotate(-ad.computed.roll);
+		const auto pitchPixelOffsetProjected = std::tanf(ad.computed.pitch) * projectionPlaneDistance;
+		const auto& pitchPixelOffsetRotated = Vector2F(0, pitchPixelOffsetProjected).rotate(-ad.computed.roll);
 		const auto diagonal = std::sqrtf(bounds.getWidth() * bounds.getWidth() + bounds.getHeight() * bounds.getHeight());
 		const auto& horizonRollRotated = Vector2F(diagonal / 2.f, 0).rotate(-ad.computed.roll);
 
 		const auto& horizonLeft = Point(
-			center.getX() + (int32_t) (-horizonRollRotated.getX() + horizonPitchRotated.getX()),
-			center.getY() + (int32_t) (-horizonRollRotated.getY() + horizonPitchRotated.getY())
+			center.getX() + (int32_t) (-horizonRollRotated.getX() + pitchPixelOffsetRotated.getX()),
+			center.getY() + (int32_t) (-horizonRollRotated.getY() + pitchPixelOffsetRotated.getY())
 		);
 
 		const auto& horizonRight = Point(
-			center.getX() + (int32_t) (horizonRollRotated.getX() + horizonPitchRotated.getX()),
-			center.getY() + (int32_t) (horizonRollRotated.getY() + horizonPitchRotated.getY())
+			center.getX() + (int32_t) (horizonRollRotated.getX() + pitchPixelOffsetRotated.getX()),
+			center.getY() + (int32_t) (horizonRollRotated.getY() + pitchPixelOffsetRotated.getY())
 		);
 
 		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);
@@ -881,6 +872,8 @@ namespace pizda {
 			horizonLeft,
 			horizonRight
 		);
+
+		SpatialView::onRender(renderer, bounds);
 
 		// Roll overlay
 		renderTurnCoordinatorOverlay(
@@ -898,6 +891,8 @@ namespace pizda {
 				bounds.getWidth(),
 				bounds.getHeight() - pitchOverlayMarginTop - yawOverlayHeight
 			),
+			ad,
+			pitchPixelOffsetProjected,
 			projectionPlaneDistance,
 			horizonLeft,
 			horizonRight,
@@ -931,7 +926,7 @@ namespace pizda {
 		}
 
 		// Flight director
-		if (rc.getSettings().autopilot.flightDirector) {
+		if (rc.getSettings().interface.MFD.PFD.flightDirectors) {
 			const uint16_t flightDirectorLength = (uint32_t) std::min(bounds.getWidth(), bounds.getHeight()) * flightDirectorLengthFactor / 100;
 			const auto flightDirectorLengthHalfF = (float) flightDirectorLength / 2.f;
 

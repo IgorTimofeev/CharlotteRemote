@@ -41,10 +41,10 @@ namespace pizda {
 
 				// Seven segment
 				seven.setVerticalAlignment(Alignment::center);
-				seven.setMargin(Margin(7));
+				seven.setMargin(Margin(6));
 				seven.setDigitCount(digitCount);
 				seven.setSegmentThickness(1);
-				seven.setSegmentLength(5);
+				seven.setSegmentLength(6);
 				seven.setDigitCount(digitCount);
 				seven.setSecondaryColor(&Theme::fg1);
 				seven.setPrimaryColor(&Theme::bg5);
