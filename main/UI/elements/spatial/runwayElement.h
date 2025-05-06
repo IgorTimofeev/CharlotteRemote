@@ -5,13 +5,15 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
+#include <YOBA/UI/spatial.h>
 
 #include "../../../runway.h"
 
 namespace pizda {
 	using namespace YOBA;
+	using namespace YOBA::spatial;
 
-	class RunwayElement : public LinearSpatialMesh {
+	class RunwayElement : public LinearMesh {
 		public:
 			RunwayElement(const Runway& runway, const Color* color) : _runway(runway) {
 				// 0     1                           0     1

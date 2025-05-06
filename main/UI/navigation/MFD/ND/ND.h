@@ -2,14 +2,16 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
+#include <YOBA/UI/spatial.h>
 
 #include "../../../theme.h"
 #include "aircraft.h"
 
 namespace pizda {
 	using namespace YOBA;
+	using namespace YOBA::spatial;
 
-	class ND : public SpatialView {
+	class ND : public Scene {
 		public:
 			ND();
 

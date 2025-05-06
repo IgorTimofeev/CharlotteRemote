@@ -34,7 +34,7 @@ namespace pizda {
 //		));
 
 		// Sphere
-		addElement(new SphereLinearSpatialMesh(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg4));
+		addElement(new LinearSphere(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg4));
 
 		// Runways
 		for (const auto& runway : sd.runways) {
@@ -50,7 +50,7 @@ namespace pizda {
 	}
 
 	ND::~ND() {
-		for (auto element : getSpatialElements()) {
+		for (auto element : getSceneElements()) {
 			delete element;
 		}
 	}
@@ -62,7 +62,7 @@ namespace pizda {
 	};
 
 	void ND::onTick() {
-		SpatialView::onTick();
+		Scene::onTick();
 
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
@@ -96,7 +96,7 @@ namespace pizda {
 	}
 
 	void ND::onRender(Renderer* renderer, const Bounds& bounds) {
-		SpatialView::onRender(renderer, bounds);
+		Scene::onRender(renderer, bounds);
 
 		// Cursor
 		if (_cursorPosition.getX() >= 0 &&  _cursorPosition.getY() >= 0) {
@@ -137,7 +137,7 @@ namespace pizda {
 	}
 
 	void ND::onEvent(Event* event) {
-		SpatialView::onEvent(event);
+		Scene::onEvent(event);
 
 		if (event->getTypeID() == TouchDownEvent::typeID) {
 			auto touchDownEvent = (TouchDownEvent*) event;

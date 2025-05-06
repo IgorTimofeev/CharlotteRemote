@@ -7,7 +7,7 @@
 #include "../../elements/spatial/runwayElement.h"
 
 namespace pizda {
-	PFD::PFD() {
+	PFDScene::PFDScene() {
 		setClipToBounds(true);
 
 		auto& rc = RC::getInstance();
@@ -22,22 +22,589 @@ namespace pizda {
 		}
 	}
 
+	void PFDScene::onRender(Renderer* renderer, const Bounds& bounds) {
+		auto& rc = RC::getInstance();
+		const auto& ad = rc.getAircraftData();
+
+		const auto& center = bounds.getCenter();
+
+		const auto projectionPlaneDistance = getProjectionPlaneDistance();
+
+		const auto pitchPixelOffsetProjected = std::tanf(ad.computed.pitch) * projectionPlaneDistance;
+		const auto& pitchPixelOffsetRotated = Vector2F(0, pitchPixelOffsetProjected).rotate(-ad.computed.roll);
+		const auto diagonal = std::sqrtf(bounds.getWidth() * bounds.getWidth() + bounds.getHeight() * bounds.getHeight());
+		const auto& horizonRollRotated = Vector2F(diagonal / 2.f, 0).rotate(-ad.computed.roll);
+
+		const auto& horizonLeft = Point(
+			center.getX() + (int32_t) (-horizonRollRotated.getX() + pitchPixelOffsetRotated.getX()),
+			center.getY() + (int32_t) (-horizonRollRotated.getY() + pitchPixelOffsetRotated.getY())
+		);
+
+		const auto& horizonRight = Point(
+			center.getX() + (int32_t) (horizonRollRotated.getX() + pitchPixelOffsetRotated.getX()),
+			center.getY() + (int32_t) (horizonRollRotated.getY() + pitchPixelOffsetRotated.getY())
+		);
+
+		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);
+		const auto& horizonVecNorm = horizonVec.normalize();
+		const auto& horizonVecPerp = horizonVecNorm.counterClockwisePerpendicular();
+		const auto& horizonCenter = (Vector2F) horizonLeft + horizonVec / 2.0f;
+
+		// Background
+		renderSyntheticVisionBackground(
+			renderer,
+			bounds,
+			horizonLeft,
+			horizonRight
+		);
+
+		Scene::onRender(renderer, bounds);
+
+		// Roll overlay
+		renderTurnCoordinatorOverlay(
+			renderer,
+			bounds,
+			ad
+		);
+
+		// Pitch overlay
+		renderPitchOverlay(
+			renderer,
+			Bounds(
+				bounds.getX(),
+				bounds.getY() + PFD::pitchOverlayMarginTop,
+				bounds.getWidth(),
+				bounds.getHeight() - PFD::pitchOverlayMarginTop - PFD::yawOverlayHeight
+			),
+			ad,
+			pitchPixelOffsetProjected,
+			projectionPlaneDistance,
+			horizonLeft,
+			horizonRight,
+			horizonVec,
+			horizonVecNorm,
+			horizonVecPerp,
+			horizonCenter
+		);
+
+		// Yaw overlay
+		renderYawOverlay(
+			renderer,
+			Bounds(
+				bounds.getX(),
+				bounds.getY2() - PFD::yawOverlayHeight + 1,
+				bounds.getWidth(),
+				PFD::yawOverlayHeight
+			),
+			ad
+		);
+
+		// Wind
+		if (ad.groundSpeed > PFD::windVisibilityGroundSpeed) {
+			const auto& windPosition = Point(
+				bounds.getX() + 6,
+				bounds.getY2() - 18
+			);
+
+			const uint8_t textOffset = 4;
+			const auto text = std::to_wstring((uint16_t) ad.windSpeed);
+			const uint8_t arrowSize = 16;
+
+			const auto arrowVec = Vector2F(0, arrowSize).rotate(ad.computed.windDirection + std::numbers::pi_v<float> - ad.computed.yaw);
+			const auto arrowVecNorm = arrowVec.normalize();
+			const auto arrowVecPerp = arrowVecNorm.counterClockwisePerpendicular();
+
+			const auto arrowCenter = Vector2F (
+				windPosition.getX() + arrowSize / 2,
+				windPosition.getY() - Theme::fontSmall.getHeight() - textOffset - arrowSize / 2
+			);
+
+			const auto arrowToVec = (Vector2F) arrowCenter - arrowVec / 2.f;
+
+			renderer->renderLine(
+				(Point) (arrowCenter + arrowVec / 2.f),
+				(Point) arrowToVec,
+				&Theme::ground2
+			);
+
+			const uint8_t triangleWidth = 2;
+			const uint8_t triangleHeight = 3;
+
+			renderer->renderFilledTriangle(
+				(Point) arrowToVec,
+				(Point) (arrowToVec + arrowVecNorm * triangleHeight - arrowVecPerp * triangleWidth),
+				(Point) (arrowToVec + arrowVecNorm * triangleHeight + arrowVecPerp * triangleWidth),
+				&Theme::ground2
+			);
+
+			renderer->renderString(
+				Point(
+					arrowCenter.getX() - Theme::fontSmall.getWidth(text) / 2,
+					windPosition.getY() - Theme::fontSmall.getHeight()
+				),
+				&Theme::fontSmall,
+				&Theme::ground2,
+				text
+			);
+		}
+
+		// Flight director
+		if (rc.getSettings().interface.MFD.PFD.flightDirectors) {
+			const uint16_t flightDirectorLength = (uint32_t) std::min(bounds.getWidth(), bounds.getHeight()) * PFD::flightDirectorLengthFactor / 100;
+			const auto flightDirectorLengthHalfF = (float) flightDirectorLength / 2.f;
+
+			// Horizontal
+			auto flightDirectorRectBounds = Bounds(
+				center.getX() - flightDirectorLength / 2,
+				center.getY()
+				- (int32_t) std::clamp(
+					std::tanf(ad.computed.flightDirectorPitch) * projectionPlaneDistance,
+					-flightDirectorLengthHalfF,
+					flightDirectorLengthHalfF
+				)
+				- PFD::flightDirectorThickness / 2,
+				flightDirectorLength,
+				PFD::flightDirectorThickness
+			);
+
+			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::purple);
+
+			// Vertical
+			flightDirectorRectBounds.setX(
+				center.getX()
+				+ (int32_t) std::clamp(
+					std::tanf(ad.computed.flightDirectorRoll) * projectionPlaneDistance,
+					-flightDirectorLengthHalfF,
+					flightDirectorLengthHalfF
+				)
+				- PFD::flightDirectorThickness / 2
+			);
+
+			flightDirectorRectBounds.setY(center.getY() - flightDirectorLength / 2);
+			flightDirectorRectBounds.setWidth(PFD::flightDirectorThickness);
+			flightDirectorRectBounds.setHeight(flightDirectorLength);
+
+			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::purple);
+		}
+
+		// Flight path vector
+		if (ad.computed.airSpeed > PFD::speedFlapsMin) {
+			const auto& FPVPosition = Point(
+				(int32_t) (horizonCenter.getX() + std::tanf(ad.computed.flightPathVectorYaw) * projectionPlaneDistance),
+				(int32_t) (horizonCenter.getY() - std::tanf(ad.computed.flightPathVectorPitch) * projectionPlaneDistance)
+			);
+
+			// Circle
+			for (uint8_t i = 0; i < PFD::flightPathVectorLineThickness; i++) {
+				renderer->renderCircle(
+					FPVPosition,
+					PFD::flightPathVectorRadius - i,
+					&Theme::bg1
+				);
+			}
+
+			// Left line
+			renderer->renderFilledRectangle(
+				Bounds(
+					FPVPosition.getX() - PFD::flightPathVectorRadius - PFD::flightPathVectorLineLength,
+					FPVPosition.getY() - PFD::flightPathVectorLineThickness / 2,
+					PFD::flightPathVectorLineLength,
+					PFD::flightPathVectorLineThickness
+				),
+				&Theme::bg1
+			);
+
+			// Right line
+			renderer->renderFilledRectangle(
+				Bounds(
+					FPVPosition.getX() + PFD::flightPathVectorRadius,
+					FPVPosition.getY() - PFD::flightPathVectorLineThickness / 2,
+					PFD::flightPathVectorLineLength,
+					PFD::flightPathVectorLineThickness
+				),
+				&Theme::bg1
+			);
+		}
+
+		// Aircraft symbol
+		const auto& renderAircraftSymbolRect = [renderer](const Point& position, uint16_t width) {
+			renderer->renderFilledRectangle(
+				Bounds(
+					position.getX(),
+					position.getY(),
+					width,
+					PFD::aircraftSymbolThickness
+				),
+				&Theme::bg1
+			);
+
+			renderer->renderHorizontalLine(Point(position.getX() - 1, position.getY() - 1), width + 2, &Theme::fg1);
+			renderer->renderHorizontalLine(Point(position.getX() - 1, position.getY() + PFD::aircraftSymbolThickness), width + 2, &Theme::fg1);
+
+			renderer->renderVerticalLine(Point(position.getX() - 1, position.getY()), PFD::aircraftSymbolThickness, &Theme::fg1);
+			renderer->renderVerticalLine(Point(position.getX() + width, position.getY()), PFD::aircraftSymbolThickness, &Theme::fg1);
+		};
+
+		// Left
+		renderAircraftSymbolRect(
+			Point(
+				center.getX() - PFD::aircraftSymbolCenterOffset - PFD::aircraftSymbolThickness - PFD::aircraftSymbolWidth,
+				center.getY() - PFD::aircraftSymbolThickness / 2
+			),
+			PFD::aircraftSymbolWidth
+		);
+
+		// Right
+		renderAircraftSymbolRect(
+			Point(
+				center.getX() + PFD::aircraftSymbolCenterOffset + PFD::aircraftSymbolThickness,
+				center.getY() - PFD::aircraftSymbolThickness / 2
+			),
+			PFD::aircraftSymbolWidth
+		);
+
+		// Dot
+		renderAircraftSymbolRect(
+			Point(
+				center.getX() - PFD::aircraftSymbolThickness / 2,
+				center.getY() - PFD::aircraftSymbolThickness / 2
+			),
+			PFD::aircraftSymbolThickness
+		);
+	}
+
+	void PFDScene::renderSyntheticVisionBackground(
+		Renderer* renderer,
+		const Bounds& bounds,
+		const Point& horizonLeft,
+		const Point& horizonRight
+	) {
+		// Sky
+		renderer->renderFilledRectangle(bounds, &Theme::sky);
+
+		// Ground
+		const auto groundMaxY = std::max(horizonLeft.getY(), horizonRight.getY());
+
+		// Triangle
+		renderer->renderFilledTriangle(
+			horizonLeft.getY() < horizonRight.getY()
+			? horizonLeft
+			: horizonRight,
+			Point(
+				horizonLeft.getX(),
+				groundMaxY
+			),
+			Point(
+				horizonRight.getX(),
+				groundMaxY
+			),
+			&Theme::ground
+		);
+
+		// Rectangle
+
+		// Bottom
+		if (groundMaxY < bounds.getY2()) {
+			renderer->renderFilledRectangle(
+				Bounds(
+					bounds.getX(),
+					groundMaxY,
+					bounds.getWidth(),
+					bounds.getY2() - groundMaxY + 1
+				),
+				&Theme::ground
+			);
+		}
+		// Left
+		else if (horizonLeft.getY() < bounds.getY() && horizonLeft.getX() > bounds.getX()) {
+			renderer->renderFilledRectangle(
+				Bounds(
+					bounds.getX(),
+					bounds.getY(),
+					horizonLeft.getX() - bounds.getX(),
+					bounds.getHeight()
+				),
+				&Theme::ground
+			);
+		}
+		// Right
+		else if (horizonRight.getY() < bounds.getY() && horizonRight.getX() < bounds.getX2()) {
+			renderer->renderFilledRectangle(
+				Bounds(
+					horizonRight.getX(),
+					bounds.getY(),
+					bounds.getX2() - horizonRight.getX(),
+					bounds.getHeight()
+				),
+				&Theme::ground
+			);
+		}
+	}
+
+	void PFDScene::renderPitchOverlay(
+		Renderer* renderer,
+		const Bounds& bounds,
+		const AircraftData& ad,
+		float pitchPixelOffsetProjected,
+		float projectionPlaneDistance,
+		const Point& horizonLeft,
+		const Point& horizonRight,
+		const Vector2F& horizonVec,
+		const Vector2F& horizonVecNorm,
+		const Vector2F& horizonVecPerp,
+		const Vector2F& horizonCenter
+	) {
+		// Middle line
+		renderer->renderLine(
+			horizonLeft,
+			horizonRight,
+			PFD::pitchOverlayColorGround
+		);
+
+		const auto viewport = renderer->pushViewport(bounds);
+
+		Vector2F
+			lineCenterPerp,
+			lineVec;
+
+		Point
+			lineLeft,
+			lineRight;
+
+		const Color* color;
+		std::wstring_view text;
+
+		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += PFD::pitchOverlayAngleStepDeg) {
+			if (lineAngleDeg == 0)
+				continue;
+
+			color = lineAngleDeg >= 0 ? PFD::pitchOverlayColorGround : PFD::pitchOverlayColorSky;
+
+			// Same as tan(lineAngleDeg) * projectionPlaneDistance, but with spherical correction
+			// This loop uses horizon as starting point, not aircraft pitch, so we just subtract it
+			lineCenterPerp = horizonCenter + horizonVecPerp * (std::tanf(ad.computed.pitch + toRadians(lineAngleDeg)) * projectionPlaneDistance - pitchPixelOffsetProjected);
+
+			lineVec = horizonVecNorm * (
+				(
+					lineAngleDeg % 10 == 0
+					? PFD::pitchOverlayLineBig
+					: PFD::pitchOverlayLineSmall
+				)
+				/ 2
+			);
+
+			lineLeft = (Point) (lineCenterPerp - lineVec);
+			lineRight = (Point) (lineCenterPerp + lineVec);
+
+			renderer->renderLine(
+				lineLeft,
+				lineRight,
+				color
+			);
+
+			if (lineAngleDeg % 10 == 0) {
+				text = std::to_wstring(abs(lineAngleDeg));
+
+				const auto& textCenterVec = Vector2F((float) PFD::pitchOverlayFont->getWidth(text) / 2.f, (float) PFD::pitchOverlayFont->getHeight() / 2.f);
+				const auto textCenterVecLengthWithOffset = (float) PFD::pitchOverlayTextOffset + textCenterVec.getLength();
+
+				renderer->renderString(
+					Point(
+						lineRight.getX() + (int32_t) (horizonVecNorm.getX() * textCenterVecLengthWithOffset - textCenterVec.getX()),
+						lineRight.getY() + (int32_t) (horizonVecNorm.getY() * textCenterVecLengthWithOffset - textCenterVec.getY())
+					),
+					PFD::pitchOverlayFont,
+					color,
+					text
+				);
+			}
+		}
+
+		renderer->popViewport(viewport);
+	}
+
+	void PFDScene::renderTurnCoordinatorOverlay(
+		Renderer* renderer,
+		const Bounds& bounds,
+		const AircraftData& aircraftData
+	) {
+		const auto& center = Point(
+			bounds.getXCenter(),
+			bounds.getY() + PFD::turnCoordinatorOverlayRollIndicatorRadius
+		);
+
+		const auto& renderLine = [renderer, &center, &aircraftData](int8_t angle, bool isBig) {
+			const auto vec = Vector2F(0, PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(toRadians(angle) - aircraftData.computed.roll);
+			const auto lineFrom = center - (Point) vec;
+
+			renderer->renderLine(
+				lineFrom,
+				lineFrom + (Point) (vec.normalize() * (isBig ? PFD::turnCoordinatorOverlayRollIndicatorLineBigLength : PFD::turnCoordinatorOverlayRollIndicatorLineSmallLength)),
+				PFD::turnCoordinatorOverlayColor
+			);
+		};
+
+		renderLine(-60, true);
+		renderLine(-45, false);
+		renderLine(-30, true);
+		renderLine(-20, false);
+		renderLine(-10, false);
+
+		renderLine(10, false);
+		renderLine(20, false);
+		renderLine(30, true);
+		renderLine(45, false);
+		renderLine(60, true);
+
+		// Upper triangle
+		renderer->renderFilledTriangle(
+			center + (Point) Vector2F(-PFD::turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, -PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(-aircraftData.computed.roll),
+			center + (Point) Vector2F(PFD::turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, -PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(-aircraftData.computed.roll),
+			center + (Point) Vector2F(0, -PFD::turnCoordinatorOverlayRollIndicatorRadius + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight).rotate(-aircraftData.computed.roll),
+			PFD::turnCoordinatorOverlayColor
+		);
+
+		// Lower triangle
+		const int32_t rollTriangleY = bounds.getY() + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight + PFD::turnCoordinatorOverlayRollIndicatorTriangleOffset;
+
+		renderer->renderFilledTriangle(
+			Point(center.getX(), rollTriangleY),
+			Point(center.getX() - PFD::turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, rollTriangleY + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight),
+			Point(center.getX() + PFD::turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, rollTriangleY + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight),
+			PFD::turnCoordinatorOverlayColor
+		);
+
+		// Slip/skid indicator
+		renderer->renderFilledRectangle(
+			Bounds(
+				center.getX() + (int32_t) ((float) PFD::turnCoordinatorOverlaySlipAndSkidIndicatorMaxValuePixels * aircraftData.computed.slipAndSkid) - PFD::turnCoordinatorOverlaySlipAndSkidIndicatorWidth / 2,
+				rollTriangleY + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight + PFD::turnCoordinatorOverlaySlipAndSkidIndicatorOffset,
+				PFD::turnCoordinatorOverlaySlipAndSkidIndicatorWidth,
+				PFD::turnCoordinatorOverlaySlipAndSkidIndicatorHeight
+			),
+			PFD::turnCoordinatorOverlayColor
+		);
+	}
+
+	void PFDScene::renderYawOverlay(
+		Renderer* renderer,
+		const Bounds& bounds,
+		const AircraftData& aircraftData
+	) {
+		const auto viewport = renderer->pushViewport(bounds);
+
+		const auto centerX = bounds.getXCenter();
+		const auto y2 = bounds.getY2();
+
+		float closestInteger;
+		float closestFractional = modff(toDegrees(aircraftData.computed.yaw) / PFD::yawOverlayAngleStepUnits, &closestInteger);
+		closestInteger *= PFD::yawOverlayAngleStepUnits;
+
+		const uint8_t fullCount = (uint8_t) std::ceilf((float) (centerX - bounds.getX()) / PFD::yawOverlayAngleStepPixels) + 1;
+		int32_t x = centerX - fullCount * PFD::yawOverlayAngleStepPixels - (int32_t) (closestFractional * (float) PFD::yawOverlayAngleStepPixels);
+		auto angle = (int16_t) (closestInteger - (float) (fullCount * PFD::yawOverlayAngleStepUnits));
+
+		if (angle < 0)
+			angle += 360;
+
+		bool isBig;
+		uint8_t lineLength;
+		int32_t lineY;
+
+		while (x <= bounds.getX2()) {
+			isBig = angle % 10 == 0;
+			lineLength = isBig ? PFD::yawOverlayLineBigLength : PFD::yawOverlayLineSmallLength;
+
+			// Line
+			lineY = y2 - lineLength + 1;
+
+			renderer->renderVerticalLine(
+				Point(
+					x,
+					lineY
+				),
+				lineLength,
+				PFD::yawOverlayColor
+			);
+
+			// Text
+			if (isBig) {
+				std::wstring text;
+
+				switch (angle) {
+					case 0:
+						text = L'N';
+						break;
+
+					case 90:
+						text = L'E';
+						break;
+
+					case 180:
+						text = L'S';
+						break;
+
+					case 270:
+						text = L'W';
+						break;
+
+					default:
+						text = std::to_wstring(angle);
+						break;
+				}
+
+				renderer->renderString(
+					Point(
+						x - PFD::yawOverlayFont->getWidth(text) / 2,
+						lineY - PFD::yawOverlayTextOffset - PFD::yawOverlayFont->getHeight()
+					),
+					PFD::yawOverlayFont,
+					PFD::yawOverlayColor,
+					text
+				);
+			}
+
+			x += PFD::yawOverlayAngleStepPixels;
+			angle += PFD::yawOverlayAngleStepUnits;
+
+			if (angle >= 360)
+				angle -= 360;
+		}
+
+		// Small triangle representing current heading
+		renderer->renderFilledTriangle(
+			Point(centerX, y2 - PFD::yawOverlayTriangleHeight),
+			Point(centerX - PFD::yawOverlayTriangleWidth / 2, y2),
+			Point(centerX + PFD::yawOverlayTriangleWidth / 2, y2),
+			PFD::yawOverlayColor
+		);
+
+		renderer->popViewport(viewport);
+	}
+
+	PFD::PFD() {
+//		setClipToBounds(true);
+
+		_scene.setMargin(Margin(speedWidth, 0, altitudeWidth + verticalSpeedWidth, 0));
+		*this += &_scene;
+	}
+
 	void PFD::onTick() {
 		Element::onTick();
 
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
 
-		setFOV(toRadians(rc.getSettings().interface.MFD.PFD.FOV));
-		setCameraPosition(ad.geographicCoordinates.toCartesian());
+		_scene.setFOV(toRadians(rc.getSettings().interface.MFD.PFD.FOV));
+		_scene.setCameraPosition(ad.geographicCoordinates.toCartesian());
 
-		setWorldRotation(Vector3F(
+		_scene.setWorldRotation(Vector3F(
 			toRadians(90) - ad.geographicCoordinates.getLatitude(),
 			0,
 			toRadians(90) + ad.geographicCoordinates.getLongitude()
 		));
 
-		setCameraRotation(Vector3F(
+		_scene.setCameraRotation(Vector3F(
 			ad.computed.pitch,
 			ad.computed.roll,
 			-ad.computed.yaw
@@ -47,12 +614,7 @@ namespace pizda {
 	}
 
 	void PFD::onRender(Renderer* renderer, const Bounds& bounds) {
-		renderSyntheticVision(renderer, Bounds(
-			bounds.getX() + speedWidth,
-			bounds.getY(),
-			bounds.getWidth() - speedWidth - altitudeWidth - verticalSpeedWidth,
-			bounds.getHeight()
-		));
+		Element::onRender(renderer, bounds);
 
 		renderSpeed(renderer, Bounds(
 			bounds.getX(),
@@ -528,528 +1090,6 @@ namespace pizda {
 		);
 	}
 
-	void PFD::renderSyntheticVisionBackground(
-		Renderer* renderer,
-		const Bounds& bounds,
-		const Point& horizonLeft,
-		const Point& horizonRight
-	) {
-		// Sky
-		renderer->renderFilledRectangle(bounds, &Theme::sky);
-
-		// Ground
-		const auto groundMaxY = std::max(horizonLeft.getY(), horizonRight.getY());
-
-		// Triangle
-		renderer->renderFilledTriangle(
-			horizonLeft.getY() < horizonRight.getY()
-			? horizonLeft
-			: horizonRight,
-			Point(
-				horizonLeft.getX(),
-				groundMaxY
-			),
-			Point(
-				horizonRight.getX(),
-				groundMaxY
-			),
-			&Theme::ground
-		);
-
-		// Rectangle
-
-		// Bottom
-		if (groundMaxY < bounds.getY2()) {
-			renderer->renderFilledRectangle(
-				Bounds(
-					bounds.getX(),
-					groundMaxY,
-					bounds.getWidth(),
-					bounds.getY2() - groundMaxY + 1
-				),
-				&Theme::ground
-			);
-		}
-		// Left
-		else if (horizonLeft.getY() < bounds.getY() && horizonLeft.getX() > bounds.getX()) {
-			renderer->renderFilledRectangle(
-				Bounds(
-					bounds.getX(),
-					bounds.getY(),
-					horizonLeft.getX() - bounds.getX(),
-					bounds.getHeight()
-				),
-				&Theme::ground
-			);
-		}
-		// Right
-		else if (horizonRight.getY() < bounds.getY() && horizonRight.getX() < bounds.getX2()) {
-			renderer->renderFilledRectangle(
-				Bounds(
-					horizonRight.getX(),
-					bounds.getY(),
-					bounds.getX2() - horizonRight.getX(),
-					bounds.getHeight()
-				),
-				&Theme::ground
-			);
-		}
-	}
-
-	void PFD::renderPitchOverlay(
-		Renderer* renderer,
-		const Bounds& bounds,
-		const AircraftData& ad,
-		float pitchPixelOffsetProjected,
-		float projectionPlaneDistance,
-		const Point& horizonLeft,
-		const Point& horizonRight,
-		const Vector2F& horizonVec,
-		const Vector2F& horizonVecNorm,
-		const Vector2F& horizonVecPerp,
-		const Vector2F& horizonCenter
-	) {
-		// Middle line
-		renderer->renderLine(
-			horizonLeft,
-			horizonRight,
-			pitchOverlayColorGround
-		);
-
-		const auto viewport = renderer->pushViewport(bounds);
-
-		Vector2F
-			lineCenterPerp,
-			lineVec;
-
-		Point
-			lineLeft,
-			lineRight;
-
-		const Color* color;
-		std::wstring_view text;
-
-		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += pitchOverlayAngleStepDeg) {
-			if (lineAngleDeg == 0)
-				continue;
-
-			color = lineAngleDeg >= 0 ? pitchOverlayColorGround : pitchOverlayColorSky;
-
-			// Same as tan(lineAngleDeg) * projectionPlaneDistance, but with spherical correction
-			// This loop uses horizon as starting point, not aircraft pitch, so we just subtract it
-			lineCenterPerp = horizonCenter + horizonVecPerp * (std::tanf(ad.computed.pitch + toRadians(lineAngleDeg)) * projectionPlaneDistance - pitchPixelOffsetProjected);
-
-			lineVec = horizonVecNorm * (
-				(
-					lineAngleDeg % 10 == 0
-					? pitchOverlayLineBig
-					: pitchOverlayLineSmall
-				)
-				/ 2
-			);
-
-			lineLeft = (Point) (lineCenterPerp - lineVec);
-			lineRight = (Point) (lineCenterPerp + lineVec);
-
-			renderer->renderLine(
-				lineLeft,
-				lineRight,
-				color
-			);
-
-			if (lineAngleDeg % 10 == 0) {
-				text = std::to_wstring(abs(lineAngleDeg));
-
-				const auto& textCenterVec = Vector2F((float) pitchOverlayFont->getWidth(text) / 2.f, (float) pitchOverlayFont->getHeight() / 2.f);
-				const auto textCenterVecLengthWithOffset = (float) pitchOverlayTextOffset + textCenterVec.getLength();
-
-				renderer->renderString(
-					Point(
-						lineRight.getX() + (int32_t) (horizonVecNorm.getX() * textCenterVecLengthWithOffset - textCenterVec.getX()),
-						lineRight.getY() + (int32_t) (horizonVecNorm.getY() * textCenterVecLengthWithOffset - textCenterVec.getY())
-					),
-					pitchOverlayFont,
-					color,
-					text
-				);
-			}
-		}
-
-		renderer->popViewport(viewport);
-	}
-
-	void PFD::renderTurnCoordinatorOverlay(
-		Renderer* renderer,
-		const Bounds& bounds,
-		const AircraftData& aircraftData
-	) {
-		const auto& center = Point(
-			bounds.getXCenter(),
-			bounds.getY() + turnCoordinatorOverlayRollIndicatorRadius
-		);
-
-		const auto& renderLine = [renderer, &center, &aircraftData](int8_t angle, bool isBig) {
-			const auto vec = Vector2F(0, turnCoordinatorOverlayRollIndicatorRadius).rotate(toRadians(angle) - aircraftData.computed.roll);
-			const auto lineFrom = center - (Point) vec;
-
-			renderer->renderLine(
-				lineFrom,
-				lineFrom + (Point) (vec.normalize() * (isBig ? turnCoordinatorOverlayRollIndicatorLineBigLength : turnCoordinatorOverlayRollIndicatorLineSmallLength)),
-				turnCoordinatorOverlayColor
-			);
-		};
-
-		renderLine(-60, true);
-		renderLine(-45, false);
-		renderLine(-30, true);
-		renderLine(-20, false);
-		renderLine(-10, false);
-
-		renderLine(10, false);
-		renderLine(20, false);
-		renderLine(30, true);
-		renderLine(45, false);
-		renderLine(60, true);
-
-		// Upper triangle
-		renderer->renderFilledTriangle(
-			center + (Point) Vector2F(-turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, -turnCoordinatorOverlayRollIndicatorRadius).rotate(-aircraftData.computed.roll),
-			center + (Point) Vector2F(turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, -turnCoordinatorOverlayRollIndicatorRadius).rotate(-aircraftData.computed.roll),
-			center + (Point) Vector2F(0, -turnCoordinatorOverlayRollIndicatorRadius + turnCoordinatorOverlayRollIndicatorTriangleHeight).rotate(-aircraftData.computed.roll),
-			turnCoordinatorOverlayColor
-		);
-
-		// Lower triangle
-		const int32_t rollTriangleY = bounds.getY() + turnCoordinatorOverlayRollIndicatorTriangleHeight + turnCoordinatorOverlayRollIndicatorTriangleOffset;
-
-		renderer->renderFilledTriangle(
-			Point(center.getX(), rollTriangleY),
-			Point(center.getX() - turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, rollTriangleY + turnCoordinatorOverlayRollIndicatorTriangleHeight),
-			Point(center.getX() + turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, rollTriangleY + turnCoordinatorOverlayRollIndicatorTriangleHeight),
-			turnCoordinatorOverlayColor
-		);
-
-		// Slip/skid indicator
-		renderer->renderFilledRectangle(
-			Bounds(
-				center.getX() + (int32_t) ((float) turnCoordinatorOverlaySlipAndSkidIndicatorMaxValuePixels * aircraftData.computed.slipAndSkid) - turnCoordinatorOverlaySlipAndSkidIndicatorWidth / 2,
-				rollTriangleY + turnCoordinatorOverlayRollIndicatorTriangleHeight + turnCoordinatorOverlaySlipAndSkidIndicatorOffset,
-				turnCoordinatorOverlaySlipAndSkidIndicatorWidth,
-				turnCoordinatorOverlaySlipAndSkidIndicatorHeight
-			),
-			turnCoordinatorOverlayColor
-		);
-	}
-
-	void PFD::renderYawOverlay(
-		Renderer* renderer,
-		const Bounds& bounds,
-		const AircraftData& aircraftData
-	) {
-		const auto viewport = renderer->pushViewport(bounds);
-
-		const auto centerX = bounds.getXCenter();
-		const auto y2 = bounds.getY2();
-
-		float closestInteger;
-		float closestFractional = modff(toDegrees(aircraftData.computed.yaw) / yawOverlayAngleStepUnits, &closestInteger);
-		closestInteger *= yawOverlayAngleStepUnits;
-
-		const uint8_t fullCount = (uint8_t) std::ceilf((float) (centerX - bounds.getX()) / yawOverlayAngleStepPixels) + 1;
-		int32_t x = centerX - fullCount * yawOverlayAngleStepPixels - (int32_t) (closestFractional * (float) yawOverlayAngleStepPixels);
-		auto angle = (int16_t) (closestInteger - (float) (fullCount * yawOverlayAngleStepUnits));
-
-		if (angle < 0)
-			angle += 360;
-
-		bool isBig;
-		uint8_t lineLength;
-		int32_t lineY;
-
-		while (x <= bounds.getX2()) {
-			isBig = angle % 10 == 0;
-			lineLength = isBig ? yawOverlayLineBigLength : yawOverlayLineSmallLength;
-
-			// Line
-			lineY = y2 - lineLength + 1;
-
-			renderer->renderVerticalLine(
-				Point(
-					x,
-					lineY
-				),
-				lineLength,
-				yawOverlayColor
-			);
-
-			// Text
-			if (isBig) {
-				std::wstring text;
-
-				switch (angle) {
-					case 0:
-						text = L'N';
-						break;
-
-					case 90:
-						text = L'E';
-						break;
-
-					case 180:
-						text = L'S';
-						break;
-
-					case 270:
-						text = L'W';
-						break;
-
-					default:
-						text = std::to_wstring(angle);
-						break;
-				}
-
-				renderer->renderString(
-					Point(
-						x - yawOverlayFont->getWidth(text) / 2,
-						lineY - yawOverlayTextOffset - yawOverlayFont->getHeight()
-					),
-					yawOverlayFont,
-					yawOverlayColor,
-					text
-				);
-			}
-
-			x += yawOverlayAngleStepPixels;
-			angle += yawOverlayAngleStepUnits;
-
-			if (angle >= 360)
-				angle -= 360;
-		}
-
-		// Small triangle representing current heading
-		renderer->renderFilledTriangle(
-			Point(centerX, y2 - yawOverlayTriangleHeight),
-			Point(centerX - yawOverlayTriangleWidth / 2, y2),
-			Point(centerX + yawOverlayTriangleWidth / 2, y2),
-			yawOverlayColor
-		);
-
-		renderer->popViewport(viewport);
-	}
-
-	void PFD::renderSyntheticVision(Renderer* renderer, const Bounds& bounds) {
-		auto& rc = RC::getInstance();
-		const auto& ad = rc.getAircraftData();
-
-		const auto& center = bounds.getCenter();
-
-		const auto projectionPlaneDistance = getProjectionPlaneDistance();
-
-		const auto pitchPixelOffsetProjected = std::tanf(ad.computed.pitch) * projectionPlaneDistance;
-		const auto& pitchPixelOffsetRotated = Vector2F(0, pitchPixelOffsetProjected).rotate(-ad.computed.roll);
-		const auto diagonal = std::sqrtf(bounds.getWidth() * bounds.getWidth() + bounds.getHeight() * bounds.getHeight());
-		const auto& horizonRollRotated = Vector2F(diagonal / 2.f, 0).rotate(-ad.computed.roll);
-
-		const auto& horizonLeft = Point(
-			center.getX() + (int32_t) (-horizonRollRotated.getX() + pitchPixelOffsetRotated.getX()),
-			center.getY() + (int32_t) (-horizonRollRotated.getY() + pitchPixelOffsetRotated.getY())
-		);
-
-		const auto& horizonRight = Point(
-			center.getX() + (int32_t) (horizonRollRotated.getX() + pitchPixelOffsetRotated.getX()),
-			center.getY() + (int32_t) (horizonRollRotated.getY() + pitchPixelOffsetRotated.getY())
-		);
-
-		const auto& horizonVec = (Vector2F) (horizonRight - horizonLeft);
-		const auto& horizonVecNorm = horizonVec.normalize();
-		const auto& horizonVecPerp = horizonVecNorm.counterClockwisePerpendicular();
-		const auto& horizonCenter = (Vector2F) horizonLeft + horizonVec / 2.0f;
-
-		// Background
-		renderSyntheticVisionBackground(
-			renderer,
-			bounds,
-			horizonLeft,
-			horizonRight
-		);
-
-		SpatialView::onRender(renderer, bounds);
-
-		// Roll overlay
-		renderTurnCoordinatorOverlay(
-			renderer,
-			bounds,
-			ad
-		);
-
-		// Pitch overlay
-		renderPitchOverlay(
-			renderer,
-			Bounds(
-				bounds.getX(),
-				bounds.getY() + pitchOverlayMarginTop,
-				bounds.getWidth(),
-				bounds.getHeight() - pitchOverlayMarginTop - yawOverlayHeight
-			),
-			ad,
-			pitchPixelOffsetProjected,
-			projectionPlaneDistance,
-			horizonLeft,
-			horizonRight,
-			horizonVec,
-			horizonVecNorm,
-			horizonVecPerp,
-			horizonCenter
-		);
-
-		// Yaw overlay
-		renderYawOverlay(
-			renderer,
-			Bounds(
-				bounds.getX(),
-				bounds.getY2() - yawOverlayHeight + 1,
-				bounds.getWidth(),
-				yawOverlayHeight
-			),
-			ad
-		);
-
-		// Wind
-		if (ad.groundSpeed > windVisibilityGroundSpeed) {
-			renderWind(
-				renderer,
-				Point(
-					bounds.getX() + 6,
-					bounds.getY2() - 18
-				)
-			);
-		}
-
-		// Flight director
-		if (rc.getSettings().interface.MFD.PFD.flightDirectors) {
-			const uint16_t flightDirectorLength = (uint32_t) std::min(bounds.getWidth(), bounds.getHeight()) * flightDirectorLengthFactor / 100;
-			const auto flightDirectorLengthHalfF = (float) flightDirectorLength / 2.f;
-
-			// Horizontal
-			auto flightDirectorRectBounds = Bounds(
-				center.getX() - flightDirectorLength / 2,
-				center.getY()
-					- (int32_t) std::clamp(
-						std::tanf(ad.computed.flightDirectorPitch) * projectionPlaneDistance,
-						-flightDirectorLengthHalfF,
-						flightDirectorLengthHalfF
-					)
-					- flightDirectorThickness / 2,
-				flightDirectorLength,
-				flightDirectorThickness
-			);
-
-			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::purple);
-
-			// Vertical
-			flightDirectorRectBounds.setX(
-				center.getX()
-				+ (int32_t) std::clamp(
-					std::tanf(ad.computed.flightDirectorRoll) * projectionPlaneDistance,
-					-flightDirectorLengthHalfF,
-					flightDirectorLengthHalfF
-				)
-				- flightDirectorThickness / 2
-			);
-
-			flightDirectorRectBounds.setY(center.getY() - flightDirectorLength / 2);
-			flightDirectorRectBounds.setWidth(flightDirectorThickness);
-			flightDirectorRectBounds.setHeight(flightDirectorLength);
-
-			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::purple);
-		}
-
-		// Flight path vector
-		if (ad.computed.airSpeed > speedFlapsMin) {
-			const auto& FPVPosition = Point(
-				(int32_t) (horizonCenter.getX() + std::tanf(ad.computed.flightPathVectorYaw) * projectionPlaneDistance),
-				(int32_t) (horizonCenter.getY() - std::tanf(ad.computed.flightPathVectorPitch) * projectionPlaneDistance)
-			);
-
-			// Circle
-			for (uint8_t i = 0; i < flightPathVectorLineThickness; i++) {
-				renderer->renderCircle(
-					FPVPosition,
-					flightPathVectorRadius - i,
-					&Theme::bg1
-				);
-			}
-
-			// Left line
-			renderer->renderFilledRectangle(
-				Bounds(
-					FPVPosition.getX() - flightPathVectorRadius - flightPathVectorLineLength,
-					FPVPosition.getY() - flightPathVectorLineThickness / 2,
-					flightPathVectorLineLength,
-					flightPathVectorLineThickness
-				),
-				&Theme::bg1
-			);
-
-			// Right line
-			renderer->renderFilledRectangle(
-				Bounds(
-					FPVPosition.getX() + flightPathVectorRadius,
-					FPVPosition.getY() - flightPathVectorLineThickness / 2,
-					flightPathVectorLineLength,
-					flightPathVectorLineThickness
-				),
-				&Theme::bg1
-			);
-		}
-
-		// Aircraft symbol
-		const auto& renderAircraftSymbolRect = [renderer](const Point& position, uint16_t width) {
-			renderer->renderFilledRectangle(
-				Bounds(
-					position.getX(),
-					position.getY(),
-					width,
-					aircraftSymbolThickness
-				),
-				&Theme::bg1
-			);
-
-			renderer->renderHorizontalLine(Point(position.getX() - 1, position.getY() - 1), width + 2, &Theme::fg1);
-			renderer->renderHorizontalLine(Point(position.getX() - 1, position.getY() + aircraftSymbolThickness), width + 2, &Theme::fg1);
-
-			renderer->renderVerticalLine(Point(position.getX() - 1, position.getY()), aircraftSymbolThickness, &Theme::fg1);
-			renderer->renderVerticalLine(Point(position.getX() + width, position.getY()), aircraftSymbolThickness, &Theme::fg1);
-		};
-
-		// Left
-		renderAircraftSymbolRect(
-			Point(
-				center.getX() - aircraftSymbolCenterOffset - aircraftSymbolThickness - aircraftSymbolWidth,
-				center.getY() - aircraftSymbolThickness / 2
-			),
-			aircraftSymbolWidth
-		);
-
-		// Right
-		renderAircraftSymbolRect(
-			Point(
-				center.getX() + aircraftSymbolCenterOffset + aircraftSymbolThickness,
-				center.getY() - aircraftSymbolThickness / 2
-			),
-			aircraftSymbolWidth
-		);
-
-		// Dot
-		renderAircraftSymbolRect(
-			Point(
-				center.getX() - aircraftSymbolThickness / 2,
-				center.getY() - aircraftSymbolThickness / 2
-			),
-			aircraftSymbolThickness
-		);
-	}
-
 	void PFD::renderAltitude(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
@@ -1355,51 +1395,5 @@ namespace pizda {
 		const auto& ad = rc.getAircraftData();
 
 		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::purple, std::to_wstring((uint16_t) ad.groundSpeed), 0);
-	}
-
-	void PFD::renderWind(Renderer* renderer, const Point& bottomLeft) const {
-		auto& rc = RC::getInstance();
-		const auto& ad = rc.getAircraftData();
-
-		const uint8_t textOffset = 4;
-		const auto text = std::to_wstring((uint16_t) ad.windSpeed);
-		const uint8_t arrowSize = 16;
-
-		const auto arrowVec = Vector2F(0, arrowSize).rotate(ad.computed.windDirection + std::numbers::pi_v<float> - ad.computed.yaw);
-		const auto arrowVecNorm = arrowVec.normalize();
-		const auto arrowVecPerp = arrowVecNorm.counterClockwisePerpendicular();
-
-		const auto arrowCenter = Vector2F (
-			bottomLeft.getX() + arrowSize / 2,
-			bottomLeft.getY() - Theme::fontSmall.getHeight() - textOffset - arrowSize / 2
-		);
-
-		const auto arrowToVec = (Vector2F) arrowCenter - arrowVec / 2.f;
-
-		renderer->renderLine(
-			(Point) (arrowCenter + arrowVec / 2.f),
-			(Point) arrowToVec,
-			&Theme::ground2
-		);
-
-		const uint8_t triangleWidth = 2;
-		const uint8_t triangleHeight = 3;
-
-		renderer->renderFilledTriangle(
-			(Point) arrowToVec,
-			(Point) (arrowToVec + arrowVecNorm * triangleHeight - arrowVecPerp * triangleWidth),
-			(Point) (arrowToVec + arrowVecNorm * triangleHeight + arrowVecPerp * triangleWidth),
-			&Theme::ground2
-		);
-
-		renderer->renderString(
-			Point(
-				arrowCenter.getX() - Theme::fontSmall.getWidth(text) / 2,
-				bottomLeft.getY() - Theme::fontSmall.getHeight()
-			),
-			&Theme::fontSmall,
-			&Theme::ground2,
-			text
-		);
 	}
 }

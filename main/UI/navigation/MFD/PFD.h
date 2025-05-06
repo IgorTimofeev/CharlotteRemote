@@ -2,6 +2,7 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
+#include <YOBA/UI/spatial.h>
 
 #include "../../theme.h"
 #include "../../../units.h"
@@ -9,17 +10,40 @@
 
 namespace pizda {
 	using namespace YOBA;
+	using namespace YOBA::spatial;
 
-	class PFD : public SpatialView {
+	class PFDScene : public Scene {
+		public:
+			PFDScene();
+
+		protected:
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
+
+		private:
+			static void renderPitchOverlay(
+				Renderer* renderer,
+				const Bounds& bounds,
+				const AircraftData& ad,
+				float pitchPixelOffsetProjected,
+				float projectionPlaneDistance,
+				const Point& horizonLeft,
+				const Point& horizonRight,
+
+				const Vector2F& horizonVec,
+				const Vector2F& horizonVecNorm,
+				const Vector2F& horizonVecPerp,
+				const Vector2F& horizonCenter
+			);
+
+			static void renderSyntheticVisionBackground(Renderer* renderer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight);
+			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds, const AircraftData& aircraftData);
+			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, const AircraftData& aircraftData);
+	};
+
+	class PFD : public Layout {
 		public:
 			PFD();
 
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
-
-		protected:
-			void onTick() override;
-
-		private:
 			constexpr static const uint16_t lineSizeBig = 4;
 			constexpr static const uint16_t lineSizeSmall = 2;
 			constexpr static const uint16_t lineSizeTextOffset = 4;
@@ -153,55 +177,27 @@ namespace pizda {
 			// Wind
 			constexpr static const uint8_t windVisibilityGroundSpeed = 10;
 
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
+
+		protected:
+			void onTick() override;
+
+		private:
+
+			PFDScene _scene {};
+
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
-
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left) ;
-
 			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, float value, bool left);
-
 			static void renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value);
-
-			static void renderSpeed(Renderer* renderer, const Bounds& bounds) ;
-
-			void renderSyntheticVision(Renderer* renderer, const Bounds& bounds);
-
+			static void renderSpeed(Renderer* renderer, const Bounds& bounds);
 			static void renderAltitude(Renderer* renderer, const Bounds& bounds) ;
-
 			static void renderVerticalSpeed(Renderer* renderer, const Bounds& bounds) ;
-
 			static void renderMiniPanel(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, std::wstring_view text, int8_t textXOffset) ;
-
 			static void renderPressure(Renderer* renderer, const Bounds& bounds) ;
-
 			static void renderAutopilotSpeed(Renderer* renderer, const Bounds& bounds) ;
-
 			static void renderAutopilotAltitude(Renderer* renderer, const Bounds& bounds) ;
-
 			static void renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, uint16_t autopilotValue, bool autopilotValueEnabled, bool left);
-
-			static void renderPitchOverlay(
-				Renderer* renderer,
-				const Bounds& bounds,
-				const AircraftData& ad,
-				float pitchPixelOffsetProjected,
-				float projectionPlaneDistance,
-				const Point& horizonLeft,
-				const Point& horizonRight,
-
-				const Vector2F& horizonVec,
-				const Vector2F& horizonVecNorm,
-				const Vector2F& horizonVecPerp,
-				const Vector2F& horizonCenter
-			);
-
-			static void renderSyntheticVisionBackground(Renderer* renderer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight);
-
-			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds, const AircraftData& aircraftData);
-
-			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, const AircraftData& aircraftData);
-
-			void renderGroundSpeed(Renderer* renderer, const Bounds& bounds);
-
-			void renderWind(Renderer* renderer, const Point& bottomLeft) const;
+			static void renderGroundSpeed(Renderer* renderer, const Bounds& bounds);
 	};
 }
