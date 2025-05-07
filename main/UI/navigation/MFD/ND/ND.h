@@ -14,7 +14,7 @@ namespace pizda {
 	class ND : public Scene {
 		public:
 			ND();
-			~ND();
+			~ND() override;
 
 			constexpr static const uint32_t cameraAltitudeMinimum = 50;
 			constexpr static const uint32_t cameraAltitudeMaximum = GeographicCoordinates::equatorialRadiusMeters * 2;

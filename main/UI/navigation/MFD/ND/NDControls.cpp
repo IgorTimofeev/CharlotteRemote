@@ -2,7 +2,6 @@
 #include "../../../../rc.h"
 
 namespace pizda {
-
 	NDControls::NDControls() {
 		*this += &_ND;
 

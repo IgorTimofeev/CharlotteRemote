@@ -74,6 +74,7 @@ namespace pizda {
 	class SettingsInterfaceMFDND {
 		public:
 			bool show = false;
+			uint8_t heightPercent = 40;
 			bool northUp = false;
 	};
 
@@ -164,7 +165,7 @@ namespace pizda {
 
 		private:
 			constexpr static const uint32_t _writeDelay = 2500000;
-			constexpr static const uint8_t _version = 14;
+			constexpr static const uint8_t _version = 15;
 			uint32_t _timeToWrite = 0;
 	};
 

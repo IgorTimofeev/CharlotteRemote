@@ -32,7 +32,7 @@ namespace pizda {
 	void MFDPage::fromSettingsInstance() {
 		_rows.removeChildren();
 
-		auto& settings = RC::getInstance().getSettings();
+		const auto& settings = RC::getInstance().getSettings();
 
 		if (_NDControls && !settings.interface.MFD.ND.show) {
 			delete _NDControls;
@@ -60,7 +60,7 @@ namespace pizda {
 			if (!_NDControls)
 				_NDControls = new NDControls();
 
-			_rows.setRelativeSize(_NDControls, 0.7f);
+			_rows.setRelativeSize(_NDControls, static_cast<float>(settings.interface.MFD.ND.heightPercent) / 100.f * 2.f);
 			_rows += _NDControls;
 		}
 

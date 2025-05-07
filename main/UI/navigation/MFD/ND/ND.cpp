@@ -50,7 +50,7 @@ namespace pizda {
 	}
 
 	ND::~ND() {
-		for (auto element : getSceneElements()) {
+		for (const auto element : getSceneElements()) {
 			delete element;
 		}
 	}
@@ -65,7 +65,7 @@ namespace pizda {
 		Scene::onTick();
 
 		auto& rc = RC::getInstance();
-		auto& settings = rc.getSettings();
+		const auto& settings = rc.getSettings();
 		const auto& ad = rc.getAircraftData();
 
 		// Aircraft
@@ -141,7 +141,7 @@ namespace pizda {
 		Scene::onEvent(event);
 
 		if (event->getTypeID() == TouchDownEvent::typeID) {
-			auto touchDownEvent = (TouchDownEvent*) event;
+			const auto touchDownEvent = static_cast<TouchDownEvent*>(event);
 
 			setFocused(true);
 			setCaptured(true);
@@ -152,7 +152,7 @@ namespace pizda {
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == TouchDragEvent::typeID) {
-			auto touchDragEventEvent = (TouchDragEvent*) event;
+			const auto touchDragEventEvent = static_cast<TouchDragEvent*>(event);
 
 //			ESP_LOGI("ND", "------------- Drag -------------");
 
@@ -170,8 +170,8 @@ namespace pizda {
 //			ESP_LOGI("ND", "camera lat cos: %f", std::cosf(cameraCoordinates.getLatitude()));
 //			ESP_LOGI("ND", "deltaPixelsX with coorection: %f", (float) deltaPixels.getX() / std::cosf(cameraCoordinates.getLatitude()));
 
-			const auto deltaRadLon = (float) deltaPixels.getX() * equatorialRadiansPerPixel / std::cosf(_cameraCoordinates.getLatitude());
-			const auto deltaRadLat = (float) deltaPixels.getY() * equatorialRadiansPerPixel;
+			const auto deltaRadLon = static_cast<float>(deltaPixels.getX()) * equatorialRadiansPerPixel / std::cosf(_cameraCoordinates.getLatitude());
+			const auto deltaRadLat = static_cast<float>(deltaPixels.getY()) * equatorialRadiansPerPixel;
 
 //			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
 
@@ -199,7 +199,7 @@ namespace pizda {
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == PinchDownEvent::typeID) {
-			auto pinchDownEvent = (PinchDownEvent*) event;
+			const auto pinchDownEvent = static_cast<PinchDownEvent*>(event);
 
 			_pinchLength = pinchDownEvent->getLength();
 			_cursorPosition = { -1, -1 };
@@ -207,7 +207,7 @@ namespace pizda {
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == PinchDragEvent::typeID) {
-			auto pinchDragEvent = (PinchDragEvent*) event;
+			const auto pinchDragEvent = static_cast<PinchDragEvent*>(event);
 
 //			ESP_LOGI("ND", "------------- Pinch -------------");
 
@@ -228,8 +228,8 @@ namespace pizda {
 				_cameraOffset.getLongitude(),
 				std::clamp(
 					_cameraOffset.getAltitude() * pinchFactor,
-					(float) cameraAltitudeMinimum,
-					(float) cameraAltitudeMaximum
+					static_cast<float>(cameraAltitudeMinimum),
+					static_cast<float>(cameraAltitudeMaximum)
 				)
 			));
 
@@ -237,8 +237,7 @@ namespace pizda {
 		}
 		else if (event->getTypeID() == EncoderRotateEvent::typeID) {
 			if (isFocused()) {
-				const auto rotateEvent = (EncoderRotateEvent*) event;
-
+				const auto rotateEvent = static_cast<EncoderRotateEvent*>(event);
 				const auto scaleFactor = rotateEvent->getRPS() > 60 ? 1.5f : 2.f;
 
 				setCameraOffset(GeographicCoordinates(
@@ -248,8 +247,8 @@ namespace pizda {
 						rotateEvent->getRPS() >= 0
 						? _cameraOffset.getAltitude() / scaleFactor
 						: _cameraOffset.getAltitude() * scaleFactor,
-						(float) cameraAltitudeMinimum,
-						(float) cameraAltitudeMaximum
+						static_cast<float>(cameraAltitudeMinimum),
+						static_cast<float>(cameraAltitudeMaximum)
 					)
 				));
 
@@ -258,7 +257,7 @@ namespace pizda {
 		}
 		else if (event->getTypeID() == EncoderPushEvent::typeID) {
 			if (isFocused()) {
-				const auto pushEvent = (EncoderPushEvent*) event;
+				const auto pushEvent = static_cast<EncoderPushEvent*>(event);
 
 				if (pushEvent->isDown())
 					resetCameraOffsetLatLon();
@@ -286,7 +285,7 @@ namespace pizda {
 		// And then we can calculate how many equatorial radians of the earth is in 1 pixel of the screen
 		// viewport rad - width px
 		// x rad - 1 px
-		return viewportRad / (float) getBounds().getWidth();
+		return viewportRad / static_cast<float>(getBounds().getWidth());
 	}
 
 	const GeographicCoordinates& ND::getCameraOffset() const {

@@ -16,7 +16,7 @@ namespace pizda {
 		public:
 			explicit MFDPage();
 
-			~MFDPage();
+			~MFDPage() override;
 
 			static void fromSettings();
 

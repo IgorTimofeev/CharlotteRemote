@@ -12,12 +12,19 @@ namespace pizda {
 		rows.setMargin(Margin(15));
 		scrollView += &rows;
 
-		// Menu button
-		menuButton.setSize(Size(Size::computed, 12));
-		menuButton.setVerticalAlignment(Alignment::end);
+		// Scroll views
+		Theme::apply(&scrollView);
+		*this += &scrollView;
 
-		menuButton.setDefaultBackgroundColor(&Theme::bg2);
-		menuButton.setDefaultTextColor(&Theme::fg5);
+		// Menu button
+		menuButton.setSize(Size(36));
+		menuButton.setMargin(Margin(0, 0, 0, -menuButton.getSize().getWidth() / 2 - 3));
+		menuButton.setCornerRadius(menuButton.getSize().getWidth() / 2 - 1);
+		menuButton.setContentMargin(Margin(0, 0, 0, 7));
+		menuButton.setAlignment(Alignment::center, Alignment::end);
+
+		menuButton.setDefaultBackgroundColor(&Theme::bg3);
+		menuButton.setDefaultTextColor(&Theme::fg3);
 
 		menuButton.setPressedBackgroundColor(&Theme::fg1);
 		menuButton.setPressedTextColor(&Theme::bg1);
@@ -26,9 +33,5 @@ namespace pizda {
 		menuButton.setText(L"^");
 
 		*this += &menuButton;
-
-		Theme::apply(&scrollView);
-		scrollView.setMargin(Margin(0, 0, 0, menuButton.getSize().getHeight()));
-		*this += &scrollView;
 	}
 }
