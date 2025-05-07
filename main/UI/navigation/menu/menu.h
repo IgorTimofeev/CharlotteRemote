@@ -6,12 +6,9 @@
 #include "../../theme.h"
 #include "../../../settings.h"
 
-#include "menuSection.h"
-#include "menuButton.h"
-#include "routeMenuButton.h"
-#include "../routes.h"
-#include "../../../resources/images.h"
-#include "MFDMenuSection.h"
+#include "menuView.h"
+#include "menuTabButton.h"
+#include "menuRoutes.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -29,37 +26,28 @@ namespace pizda {
 			explicit Menu();
 			~Menu();
 
-			void setRoute(const Route* route);
+			void setTabRoute(const Route* route);
 
 		private:
+			static const Route* _tabRoute;
+
 			MenuOverlayBackground _overlayBackground = {};
 
 			Layout _slideLayout = {};
 			Rectangle _slideBackground = {};
 
-			StackLayout _rows {};
+			StackLayout _tabsAndContentRows {};
+			RelativeStackLayout _tabsRow {};
 
-			MenuSection _lowerSection {};
+			Element* _tabView = nullptr;
 
-			const Route* _upperSectionRoute = nullptr;
-			Element* _upperSectionElement = nullptr;
+			MenuTabButton
+				MFDTab { L"MFD", &MenuRoutes::MFD },
+				mainTab { L"OTHER", &MenuRoutes::main };
 
-			RouteMenuButton
-				_MFDButton = RouteMenuButton(&resources::Images::menuIconMFD, L"MFD", &Routes::MFD, &Routes::MFDMenuUpperSection),
-				_personalizationButton = RouteMenuButton(&resources::Images::menuIconPersonalization, L"Pers.", &Routes::personalization),
-				_axisButton = RouteMenuButton(&resources::Images::menuIconAxis, L"Axis", &Routes::axis),
-				_WiFiButton = RouteMenuButton(&resources::Images::menuIconWiFi, L"Wi-Fi", &Routes::WiFi),
-				_UITestButton = RouteMenuButton(&resources::Images::menuIconDev, L"Test", &Routes::UITest);
-
-			RouteMenuButton* _routeButtons[5] {
-				&_MFDButton,
-				&_personalizationButton,
-				&_axisButton,
-				&_WiFiButton,
-				&_UITestButton,
+			MenuTabButton* tabs[2] {
+				&MFDTab,
+				&mainTab
 			};
-
-			void removeUpperSectionRoute();
-			void addUpperSectionRoute(const Route* route);
 	};
 }

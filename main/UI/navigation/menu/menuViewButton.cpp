@@ -1,6 +1,6 @@
-#include "menuButton.h"
+#include "menuViewButton.h"
 
-#include "menuSection.h"
+#include "menuView.h"
 #include "menu.h"
 
 #include "../../../rc.h"
@@ -8,7 +8,7 @@
 namespace pizda {
 	// -------------------------------- Default --------------------------------
 
-	MenuButton::MenuButton(const Image* image, const std::wstring_view& text) : _image(image) {
+	MenuViewButton::MenuViewButton(const Image* image, const std::wstring_view& text) : _image(image) {
 		setSize(Size(45, image->getSize().getHeight() + _textOffset + Theme::fontSmall.getHeight()));
 		setText(text);
 
@@ -21,7 +21,7 @@ namespace pizda {
 		setPressedTextColor(&Theme::fg1);
 	}
 
-	void MenuButton::onRender(Renderer* renderer, const Bounds& bounds) {
+	void MenuViewButton::onRender(Renderer* renderer, const Bounds& bounds) {
 		constexpr static const uint8_t cornerRadius = 4;
 
 		// Background
@@ -55,7 +55,7 @@ namespace pizda {
 		);
 	}
 
-	MenuSection* MenuButton::getMenuSection() {
-		return reinterpret_cast<MenuSection*>(getParent()->getParent());
+	MenuView* MenuViewButton::getMenuView() {
+		return reinterpret_cast<MenuView*>(getParent());
 	}
 }

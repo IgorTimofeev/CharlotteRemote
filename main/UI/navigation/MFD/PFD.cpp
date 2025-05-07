@@ -13,6 +13,8 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		const auto& sd = rc.getSpatialData();
 
+		setFOV(toRadians(rc.getSettings().interface.MFD.PFD.FOV));
+
 		// Runways
 		for (const auto& runway : sd.runways) {
 			addElement(new RunwayElement(
@@ -595,7 +597,6 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
 
-		_scene.setFOV(toRadians(rc.getSettings().interface.MFD.PFD.FOV));
 		_scene.setCameraPosition(ad.geographicCoordinates.toCartesian());
 
 		_scene.setWorldRotation(Vector3F(

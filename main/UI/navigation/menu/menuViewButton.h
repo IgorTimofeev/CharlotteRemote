@@ -11,17 +11,16 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class Menu;
-	class MenuSection;
+	class MenuView;
 
-	class MenuButton : public Button {
+	class MenuViewButton : public Button {
 		public:
-			explicit MenuButton(const Image* image, const std::wstring_view& text);
+			explicit MenuViewButton(const Image* image, const std::wstring_view& text);
 
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
-			MenuSection* getMenuSection();
+			MenuView* getMenuView();
 
 		private:
 			constexpr static const uint8_t _textOffset = 4;

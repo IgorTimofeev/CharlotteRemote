@@ -35,66 +35,43 @@ namespace pizda {
 		*this += &_slideLayout;
 
 		// Rows
-		_rows.setSpacing(10);
-		_rows.setMargin(Margin(15, 10, 15, 10));
-		_slideLayout += &_rows;
+		_tabsRow.setOrientation(Orientation::horizontal);
 
-		// Lower section
-		_lowerSection.title.setText(L"Menu");
+		_tabsAndContentRows += &_tabsRow;
+		_slideLayout += &_tabsAndContentRows;
 
-		for (auto routeButton : _routeButtons) {
-			if (rc.getRoute() == routeButton->getMainRoute()) {
-				routeButton->setChecked(true);
+		for (auto tab : tabs)
+			_tabsRow += tab;
 
-				if (routeButton->getUpperSectionRoute() != nullptr)
-					addUpperSectionRoute(routeButton->getUpperSectionRoute());
-			}
-
-			_lowerSection.wrapLayout += routeButton;
-		}
-
-		_rows += &_lowerSection;
+		setTabRoute(_tabRoute);
 	}
 
 	Menu::~Menu() {
-		if (_upperSectionElement) {
-			delete _upperSectionElement;
+		if (_tabView) {
+			delete _tabView;
 		}
 	}
 
-	void Menu::removeUpperSectionRoute() {
-		_upperSectionRoute = nullptr;
+	const Route* Menu::_tabRoute = &MenuRoutes::MFD;
 
-		if (_upperSectionElement) {
-			_rows -= _upperSectionElement;
-			delete _upperSectionElement;
-			_upperSectionElement = nullptr;
+	void Menu::setTabRoute(const Route* route) {
+		_tabRoute = route;
+
+		for (auto tab : tabs) {
+			tab->setChecked(tab->getRoute() == route);
 		}
-	}
 
-	void Menu::addUpperSectionRoute(const Route* route) {
-		_upperSectionRoute = route;
+		if (_tabView) {
+			_tabsAndContentRows -= _tabView;
+			delete _tabView;
+		}
 
-		_upperSectionElement = _upperSectionRoute->buildElement();
-		_rows.insertChild(0, _upperSectionElement);
-	}
-
-	void Menu::setRoute(const Route* route) {
-		auto& rc = RC::getInstance();
-
-		rc.setRoute(route);
-		removeUpperSectionRoute();
-
-		for (auto routeButton : _routeButtons) {
-			if (routeButton->getMainRoute() == route) {
-				routeButton->setChecked(true);
-
-				if (routeButton->getUpperSectionRoute() != nullptr)
-					addUpperSectionRoute(routeButton->getUpperSectionRoute());
-			}
-			else {
-				routeButton->setChecked(false);
-			}
+		if (_tabRoute) {
+			_tabView = _tabRoute->buildElement();
+			_tabsAndContentRows += _tabView;
+		}
+		else {
+			_tabView = nullptr;
 		}
 	}
 }
