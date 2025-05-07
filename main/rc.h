@@ -50,16 +50,16 @@ namespace pizda {
 			Battery& getBattery();
 			TCPTransceiver& getTransceiver();
 
-			void handleAircraftPacket(AircraftPacket* packet);
+			void handleAircraftPacket(const AircraftPacket* packet);
 
-			bool isMenuVisible();
+			bool isMenuVisible() const;
 			void showMenu();
 			void hideMenu();
 
 			bool isDebugOverlayVisible();
-			void setDebugOverlayVisibility(bool state);
+			void updateDebugOverlayVisibility();
 
-			const Route* getRoute();
+			const Route* getRoute() const;
 			void setRoute(const Route* route);
 
 			AircraftData& getAircraftData();

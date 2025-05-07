@@ -21,7 +21,6 @@ namespace pizda {
 
 		protected:
 			OpenMenuButton menuButton {};
-			RelativeStackLayout buttonAndRowLayout {};
 			StackLayout row {};
 			Rectangle topPanel {};
 	};

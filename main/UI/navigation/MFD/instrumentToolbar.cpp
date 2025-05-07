@@ -8,15 +8,15 @@ namespace pizda {
 		topPanel.setFillColor(&Theme::bg2);
 		*this += &topPanel;
 
-		buttonAndRowLayout.setOrientation(Orientation::horizontal);
-
 		// Row
 		row.setOrientation(Orientation::horizontal);
 		row.setHorizontalAlignment(Alignment::center);
-		buttonAndRowLayout += &row;
+		*this += &row;
 
 		// Menu button
-		menuButton.setWidth(13);
+		menuButton.setWidth(11);
+		menuButton.setMargin(Margin(0, topPanelHeight, 0, 0));
+		menuButton.setHorizontalAlignment(Alignment::end);
 
 		menuButton.setDefaultBackgroundColor(&Theme::bg3);
 		menuButton.setDefaultTextColor(&Theme::fg5);
@@ -27,9 +27,6 @@ namespace pizda {
 		menuButton.setFont(&Theme::fontSmall);
 		menuButton.setText(L"^");
 
-		buttonAndRowLayout.setAutoSize(&menuButton);
-		buttonAndRowLayout += &menuButton;
-
-		*this += &buttonAndRowLayout;
+		*this += &menuButton;
 	}
 }

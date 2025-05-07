@@ -10,7 +10,7 @@ namespace pizda {
 		setDefaultBackgroundColor(&Theme::bg1);
 		setDefaultTextColor(&Theme::fg5);
 
-		setPressedBackgroundColor(&Theme::bg1);
+		setPressedBackgroundColor(&Theme::bg2);
 		setPressedTextColor(&Theme::fg1);
 
 		setFont(&Theme::fontSmall);
@@ -20,8 +20,8 @@ namespace pizda {
 	void MenuTabButton::onRender(Renderer* renderer, const Bounds& bounds) {
 		Button::onRender(renderer, bounds);
 
-		if (isChecked())
-			renderer->renderHorizontalLine(bounds.getBottomLeft(), bounds.getWidth(), &Theme::fg1);
+		// if (isChecked())
+		// 	renderer->renderHorizontalLine(bounds.getBottomLeft(), bounds.getWidth(), &Theme::fg1);
 	}
 
 	void MenuTabButton::onClick() {

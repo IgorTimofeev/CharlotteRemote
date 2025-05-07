@@ -23,23 +23,24 @@ namespace pizda {
 		*this += &_overlayBackground;
 
 		// Holder
-		_slideLayout.setVerticalAlignment(Alignment::end);
 
 		// Items background
 		_slideBackground.setFillColor(&Theme::bg2);
 		_slideLayout += &_slideBackground;
 
-		setAutoSize(&_slideLayout);
-		*this += &_slideLayout;
-
-		// Rows
+		// Tabs
 		_tabsRow.setOrientation(Orientation::horizontal);
 
+		for (const auto tab : tabs)
+			_tabsRow += tab;
+
+		// Tabs & content
 		_tabsAndContentRows += &_tabsRow;
 		_slideLayout += &_tabsAndContentRows;
 
-		for (auto tab : tabs)
-			_tabsRow += tab;
+		_slideLayout.setVerticalAlignment(Alignment::end);
+		setAutoSize(&_slideLayout);
+		*this += &_slideLayout;
 
 		setViewRoute(_viewRoute);
 	}
@@ -55,7 +56,7 @@ namespace pizda {
 	void Menu::setViewRoute(const Route* route) {
 		_viewRoute = route;
 
-		for (auto tab : tabs) {
+		for (const auto tab : tabs) {
 			tab->setChecked(tab->getRoute() == route);
 		}
 

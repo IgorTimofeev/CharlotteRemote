@@ -90,9 +90,15 @@ namespace pizda {
 			SettingsInterfaceMFDInstrumentsMode instrumentsMode = SettingsInterfaceMFDInstrumentsMode::main;
 	};
 
+	class SettingsInterfaceDeveloper {
+		public:
+			bool debugOverlay = false;
+	};
+
 	class SettingsInterface {
 		public:
 			SettingsInterfaceMFD MFD {};
+			SettingsInterfaceDeveloper developer {};
 	};
 
 	class Settings {
@@ -158,7 +164,7 @@ namespace pizda {
 
 		private:
 			constexpr static const uint32_t _writeDelay = 2500000;
-			constexpr static const uint8_t _version = 13;
+			constexpr static const uint8_t _version = 14;
 			uint32_t _timeToWrite = 0;
 	};
 

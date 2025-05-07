@@ -37,8 +37,8 @@ namespace pizda {
 			ProgressBar _progressBar;
 			Titler _progressBarTitle = Titler(L"Progress bar", &_progressBar);
 
-			Switch _switch;
-			Titler _switchTitle = Titler(L"Switch", &_switch);
+			Switch _debugOverlaySwitch;
+			Titler _debugOverlaySwitchTitle = Titler(L"Switch", &_debugOverlaySwitch);
 
 			TextField _textField;
 			Titler textFieldTitle = Titler(L"Text", &_textField);

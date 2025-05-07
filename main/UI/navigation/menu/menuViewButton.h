@@ -20,7 +20,7 @@ namespace pizda {
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
-			MenuView* getMenuView();
+			MenuView* getMenuView() const;
 
 		private:
 			constexpr static const uint8_t _textOffset = 4;

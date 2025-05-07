@@ -10,7 +10,7 @@ namespace pizda {
 	using namespace YOBA;
 
 	RC& RC::getInstance() {
-		static RC instance = RC();
+		static auto instance = RC();
 
 		return instance;
 	}
@@ -62,16 +62,16 @@ namespace pizda {
 		Theme::setup(&_renderer);
 		_application.setBackgroundColor(&Theme::bg1);
 		_application += &_pageLayout;
+
 		setRoute(&Routes::MFD);
+		updateDebugOverlayVisibility();
 
 		// -------------------------------- Take off --------------------------------
 
 		_speaker.play(resources::Sounds::boot());
 
-		int64_t time;
-
 		while (true) {
-			time = esp_timer_get_time();
+			const auto time = esp_timer_get_time();
 
 			// High priority tasks
 			axisTick();
@@ -246,7 +246,7 @@ namespace pizda {
 	}
 
 	void RC::NVSSetup() {
-		auto status = nvs_flash_init();
+		const auto status = nvs_flash_init();
 
 		if (status == ESP_ERR_NVS_NO_FREE_PAGES || status == ESP_ERR_NVS_NEW_VERSION_FOUND) {
 			// NVS partition was truncated and needs to be erased
@@ -272,7 +272,7 @@ namespace pizda {
 	}
 
 	void RC::ADCUnitsSetup() {
-		adc_oneshot_unit_init_cfg_t ADC1UnitConfig = {
+		const adc_oneshot_unit_init_cfg_t ADC1UnitConfig = {
 			.unit_id = ADC_UNIT_1,
 			.clk_src = ADC_RTC_CLK_SRC_DEFAULT,
 			.ulp_mode = ADC_ULP_MODE_DISABLE
@@ -281,7 +281,7 @@ namespace pizda {
 		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &constants::adc::unit1));
 	}
 
-	void RC::handleAircraftPacket(AircraftPacket* packet) {
+	void RC::handleAircraftPacket(const AircraftPacket* packet) {
 		const auto time = esp_timer_get_time();
 		const auto deltaTime = time - _aircraftPacketTime;
 		_aircraftPacketTime = time;
@@ -313,7 +313,7 @@ namespace pizda {
 		_aircraftData.flightDirectorPitch = packet->flightDirectorPitchRad;
 		_aircraftData.flightDirectorRoll = packet->flightDirectorYawRad;
 
-		_aircraftData.slipAndSkid = -1.f + (float) packet->slipAndSkid / (float) 0xFFFF * 2.f;
+		_aircraftData.slipAndSkid = -1.f + static_cast<float>(packet->slipAndSkid) / static_cast<float>(0xFFFF) * 2.f;
 
 		_aircraftData.windDirection = toRadians(packet->windDirectionDeg);
 
@@ -328,24 +328,20 @@ namespace pizda {
 		_aircraftData.verticalSpeed = deltaAltitude * 60'000'000 / deltaTime;
 	}
 
-	bool RC::isMenuVisible() {
+	bool RC::isMenuVisible() const {
 		return _menu != nullptr;
 	}
 
-	bool RC::isDebugOverlayVisible() {
-		return _debugOverlay != nullptr;
-	}
-
-	void RC::setDebugOverlayVisibility(bool state) {
-		if (state) {
-			if (isDebugOverlayVisible())
+	void RC::updateDebugOverlayVisibility() {
+		if (_settings.interface.developer.debugOverlay) {
+			if (_debugOverlay != nullptr)
 				return;
 
 			_debugOverlay = new DebugOverlay();
 			_application += _debugOverlay;
 		}
 		else {
-			if (!isDebugOverlayVisible())
+			if (_debugOverlay == nullptr)
 				return;
 
 			_application -= _debugOverlay;
@@ -354,7 +350,7 @@ namespace pizda {
 		}
 	}
 
-	const Route* RC::getRoute() {
+	const Route* RC::getRoute() const {
 		return _route;
 	}
 

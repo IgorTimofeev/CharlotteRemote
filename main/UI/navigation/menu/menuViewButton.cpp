@@ -13,11 +13,10 @@ namespace pizda {
 		setText(text);
 
 		setDefaultBackgroundColor(&Theme::bg3);
-		setPressedBackgroundColor(&Theme::bg3);
-
-		setPressedBorderColor(&Theme::fg1);
-
 		setDefaultTextColor(&Theme::fg4);
+
+		setPressedBackgroundColor(&Theme::bg3);
+		setPressedBorderColor(&Theme::fg1);
 		setPressedTextColor(&Theme::fg1);
 	}
 
@@ -55,7 +54,7 @@ namespace pizda {
 		);
 	}
 
-	MenuView* MenuViewButton::getMenuView() {
+	MenuView* MenuViewButton::getMenuView() const {
 		return reinterpret_cast<MenuView*>(getParent());
 	}
 }

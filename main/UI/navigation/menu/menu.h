@@ -24,7 +24,7 @@ namespace pizda {
 	class Menu : public RelativeStackLayout {
 		public:
 			explicit Menu();
-			~Menu();
+			~Menu() override;
 
 			void setViewRoute(const Route* route);
 

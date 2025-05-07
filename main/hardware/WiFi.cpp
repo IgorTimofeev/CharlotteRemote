@@ -157,7 +157,7 @@ namespace pizda {
 		int result = 0;
 
 		if (esp_wifi_sta_get_rssi(&result) != ESP_OK)
-			result = 0xFFFF;
+			result = 0;
 
 		return result;
 	}
