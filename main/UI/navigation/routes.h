@@ -3,18 +3,22 @@
 #include "route.h"
 
 #include "MFD/MFDPage.h"
-#include "axis/axisPage.h"
-#include "WiFi/WiFiPage.h"
-#include "personalization/personalizationPage.h"
-#include "developer/UITestPage.h"
+
+#include "settings/MFD/MFDSettingsPage.h"
+#include "settings/personalization/personalizationSettingsPage.h"
+#include "settings/axis/axisSettingsPage.h"
+#include "settings/WiFi/WiFiSettingsPage.h"
+#include "settings/developer/developerSettingsPage.h"
 
 namespace pizda {
 	class Routes {
 		public:
 			constexpr static const ElementRoute<MFDPage> MFD = {};
-			constexpr static const ElementRoute<PersonalizationPage> personalization = {};
-			constexpr static const ElementRoute<WiFiPage> WiFi = {};
-			constexpr static const ElementRoute<AxisPage> axis = {};
-			constexpr static const ElementRoute<UITestPage> UITest = {};
+
+			constexpr static const ElementRoute<MFDSettingsPage> settingsMFD = {};
+			constexpr static const ElementRoute<PersonalizationSettingsPage> settingsPersonalization = {};
+			constexpr static const ElementRoute<WiFiSettingsPage> settingsWiFi = {};
+			constexpr static const ElementRoute<AxisSettingsPage> settingsAxis = {};
+			constexpr static const ElementRoute<DeveloperSettingsPage> settingsDeveloper = {};
 	};
 }

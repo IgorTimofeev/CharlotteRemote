@@ -21,7 +21,6 @@ namespace pizda {
 			ScrollView scrollView {};
 			StackLayout rows {};
 
-			RelativeStackLayout upperRow {};
 			OpenMenuButton menuButton {};
 			Text title {};
 	};

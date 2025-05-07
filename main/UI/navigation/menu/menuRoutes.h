@@ -6,7 +6,7 @@
 namespace pizda {
 	class MenuRoutes {
 		public:
-			constexpr static const ElementRoute<PagesMenuView> main = {};
 			constexpr static const ElementRoute<MFDMenuView> MFD = {};
+			constexpr static const ElementRoute<PagesMenuView> settings = {};
 	};
 }

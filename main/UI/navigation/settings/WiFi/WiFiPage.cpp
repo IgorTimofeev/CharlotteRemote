@@ -1,14 +1,14 @@
-#include "WiFiPage.h"
+#include "WiFiSettingsPage.h"
 
-#include "../../theme.h"
-#include "../../../constants.h"
-#include "../../../hardware/WiFi.h"
-//#include "../../../hardware/OTA.h"
-#include "../../../rc.h"
-#include "../../elements/dialog.h"
+#include "../../../theme.h"
+#include "../../../../constants.h"
+#include "../../../../hardware/WiFi.h"
+//#include "../../../../hardware/OTA.h"
+#include "../../../../rc.h"
+#include "../../../elements/dialog.h"
 
 namespace pizda {
-	WiFiPage::WiFiPage() {
+	WiFiSettingsPage::WiFiSettingsPage() {
 		// Title
 		title.setText(L"Wi-Fi");
 

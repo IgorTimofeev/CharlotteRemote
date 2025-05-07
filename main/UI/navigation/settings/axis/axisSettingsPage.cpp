@@ -1,10 +1,10 @@
-#include "axisPage.h"
+#include "axisSettingsPage.h"
 
-#include "../../../rc.h"
-#include "../../theme.h"
+#include "../../../../rc.h"
+#include "../../../theme.h"
 
 namespace pizda {
-	AxisPage::AxisPage() :
+	AxisSettingsPage::AxisSettingsPage() :
 		_aileronsAxisEditor(AxisEditor(&RC::getInstance().getJoystickHorizontal())),
 		_elevatorAxisEditor(AxisEditor(&RC::getInstance().getJoystickVertical())),
 		_rudderAxisEditor(AxisEditor(&RC::getInstance().getRing())),
@@ -52,7 +52,7 @@ namespace pizda {
 		rows += &_lowPassFactorSliderTitle;
 	}
 
-	void AxisPage::onTick() {
+	void AxisSettingsPage::onTick() {
 		Layout::onTick();
 
 		invalidate();

@@ -3,16 +3,16 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "../page.h"
-#include "../../elements/titler.h"
-#include "../../elements/switcher.h"
+#include "../../page.h"
+#include "../../../elements/titler.h"
+#include "../../../elements/switcher.h"
 
 namespace pizda {
 	using namespace YOBA;
 
-	class WiFiPage : public ScrollViewPage {
+	class WiFiSettingsPage : public ScrollViewPage {
 		public:
-			WiFiPage();
+			WiFiSettingsPage();
 
 			Switcher switcher = Switcher(L"Enable:");
 

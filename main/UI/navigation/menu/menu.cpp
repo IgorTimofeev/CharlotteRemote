@@ -19,8 +19,6 @@ namespace pizda {
 	}
 
 	Menu::Menu() {
-		auto& rc = RC::getInstance();
-
 		// Background
 		*this += &_overlayBackground;
 
@@ -43,35 +41,35 @@ namespace pizda {
 		for (auto tab : tabs)
 			_tabsRow += tab;
 
-		setTabRoute(_tabRoute);
+		setViewRoute(_viewRoute);
 	}
 
 	Menu::~Menu() {
-		if (_tabView) {
-			delete _tabView;
+		if (_view) {
+			delete _view;
 		}
 	}
 
-	const Route* Menu::_tabRoute = &MenuRoutes::MFD;
+	const Route* Menu::_viewRoute = &MenuRoutes::MFD;
 
-	void Menu::setTabRoute(const Route* route) {
-		_tabRoute = route;
+	void Menu::setViewRoute(const Route* route) {
+		_viewRoute = route;
 
 		for (auto tab : tabs) {
 			tab->setChecked(tab->getRoute() == route);
 		}
 
-		if (_tabView) {
-			_tabsAndContentRows -= _tabView;
-			delete _tabView;
+		if (_view) {
+			_tabsAndContentRows -= _view;
+			delete _view;
 		}
 
-		if (_tabRoute) {
-			_tabView = _tabRoute->buildElement();
-			_tabsAndContentRows += _tabView;
-		}
-		else {
-			_tabView = nullptr;
-		}
+		_view = dynamic_cast<MenuView*>(_viewRoute->buildElement());
+		_tabsAndContentRows.insertChild(0, _view);
+
+		auto& rc = RC::getInstance();
+
+		if (_view->getRoute() != rc.getRoute())
+			rc.setRoute(_view->getRoute());
 	}
 }

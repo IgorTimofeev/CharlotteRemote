@@ -65,6 +65,7 @@ namespace pizda {
 		Scene::onTick();
 
 		auto& rc = RC::getInstance();
+		auto& settings = rc.getSettings();
 		const auto& ad = rc.getAircraftData();
 
 		// Aircraft
@@ -88,7 +89,7 @@ namespace pizda {
 
 		setCameraRotation(Vector3F(
 			-_cameraCoordinates.getLatitude(),
-			ad.computed.yaw,
+			settings.interface.MFD.ND.northUp ? 0 : ad.computed.yaw,
 			toRadians(90) + _cameraCoordinates.getLongitude()
 		));
 

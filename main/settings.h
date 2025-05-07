@@ -74,6 +74,7 @@ namespace pizda {
 	class SettingsInterfaceMFDND {
 		public:
 			bool show = false;
+			bool northUp = false;
 	};
 
 	enum class SettingsInterfaceMFDInstrumentsMode : uint8_t {
@@ -157,7 +158,7 @@ namespace pizda {
 
 		private:
 			constexpr static const uint32_t _writeDelay = 2500000;
-			constexpr static const uint8_t _version = 12;
+			constexpr static const uint8_t _version = 13;
 			uint32_t _timeToWrite = 0;
 	};
 

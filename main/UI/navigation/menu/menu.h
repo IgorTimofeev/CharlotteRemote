@@ -26,10 +26,10 @@ namespace pizda {
 			explicit Menu();
 			~Menu();
 
-			void setTabRoute(const Route* route);
+			void setViewRoute(const Route* route);
 
 		private:
-			static const Route* _tabRoute;
+			static const Route* _viewRoute;
 
 			MenuOverlayBackground _overlayBackground = {};
 
@@ -39,15 +39,15 @@ namespace pizda {
 			StackLayout _tabsAndContentRows {};
 			RelativeStackLayout _tabsRow {};
 
-			Element* _tabView = nullptr;
+			MenuView* _view = nullptr;
 
 			MenuTabButton
 				MFDTab { L"MFD", &MenuRoutes::MFD },
-				mainTab { L"OTHER", &MenuRoutes::main };
+				settingsTab {L"CONF", &MenuRoutes::settings };
 
 			MenuTabButton* tabs[2] {
 				&MFDTab,
-				&mainTab
+				&settingsTab
 			};
 	};
 }

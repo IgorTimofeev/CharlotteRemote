@@ -1,10 +1,10 @@
-#include "UITestPage.h"
-#include "../../theme.h"
-#include "../../../rc.h"
-#include "../../elements/dialog.h"
+#include "developerSettingsPage.h"
+#include "../../../theme.h"
+#include "../../../../rc.h"
+#include "../../../elements/dialog.h"
 
 namespace pizda {
-	UITestPage::UITestPage() {
+	DeveloperSettingsPage::DeveloperSettingsPage() {
 		// Page title
 		title.setText(L"Test page");
 

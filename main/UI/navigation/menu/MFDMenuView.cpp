@@ -2,6 +2,9 @@
 
 #include "../../theme.h"
 #include "../../../rc.h"
+#include "../../../settings.h"
+
+#include "../routes.h"
 #include "../MFD/MFDPage.h"
 
 namespace pizda {
@@ -24,10 +27,6 @@ namespace pizda {
 		settings.enqueueWrite();
 
 		MFDPage::fromSettings();
-
-//		RC::getInstance().getApplication().enqueueOnTick([this]() {
-//
-//		});
 	}
 
 	MFDMenuView::MFDMenuView() {
@@ -56,5 +55,9 @@ namespace pizda {
 		for (auto modeButton : modeButtons) {
 			*this += modeButton;
 		}
+	}
+
+	const Route* MFDMenuView::getRoute() {
+		return &Routes::MFD;
 	}
 }

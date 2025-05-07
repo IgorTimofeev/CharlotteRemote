@@ -16,11 +16,16 @@ namespace pizda {
 		buttonAndRowLayout += &row;
 
 		// Menu button
-		menuButton.setSize(Size(12, Size::computed));
-		menuButton.setCornerRadius(0);
+		menuButton.setWidth(13);
+
+		menuButton.setDefaultBackgroundColor(&Theme::bg3);
+		menuButton.setDefaultTextColor(&Theme::fg5);
 
 		menuButton.setPressedBackgroundColor(&Theme::fg1);
 		menuButton.setPressedTextColor(&Theme::bg1);
+
+		menuButton.setFont(&Theme::fontSmall);
+		menuButton.setText(L"^");
 
 		buttonAndRowLayout.setAutoSize(&menuButton);
 		buttonAndRowLayout += &menuButton;

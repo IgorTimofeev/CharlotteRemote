@@ -2,6 +2,7 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
+#include "../route.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -13,5 +14,7 @@ namespace pizda {
 			explicit MenuView();
 
 			Menu* getMenu();
+
+			virtual const Route* getRoute() = 0;
 	};
 }

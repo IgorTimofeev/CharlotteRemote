@@ -5,7 +5,6 @@
 
 #include "menuView.h"
 #include "menuViewButton.h"
-#include "../../../settings.h"
 #include "../../../resources/images.h"
 
 namespace pizda {
@@ -27,7 +26,7 @@ namespace pizda {
 			explicit MFDMenuView();
 
 			MenuViewButton
-				NDButton = MenuViewButton(&resources::Images::menuIconND, L"N/D");
+				NDButton = MenuViewButton(&resources::Images::menuIconND, L"ND");
 
 			MFDModeMenuViewButton
 				mainButton = MFDModeMenuViewButton(&resources::Images::menuIconMFDMain, L"ECAM", SettingsInterfaceMFDInstrumentsMode::main),
@@ -39,5 +38,7 @@ namespace pizda {
 				&autopilotButton,
 				&pressureButton
 			};
+
+			const Route* getRoute() override;
 	};
 }

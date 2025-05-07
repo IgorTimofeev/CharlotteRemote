@@ -359,6 +359,9 @@ namespace pizda {
 	}
 
 	void RC::setRoute(const Route* route) {
+		if (route == _route)
+			return;
+
 		_route = route;
 
 		// Removing old page
@@ -371,7 +374,8 @@ namespace pizda {
 		}
 
 		// Adding new page
-		_pageLayout += _route->buildElement();
+		if (_route)
+			_pageLayout += _route->buildElement();
 	}
 
 	void RC::showMenu() {

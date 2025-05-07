@@ -2,29 +2,33 @@
 
 namespace pizda {
 	ScrollViewPage::ScrollViewPage() {
-		rows.setSpacing(10);
-		rows.setMargin(Margin(15, 15));
-
-		// Upper row
-		upperRow.setOrientation(Orientation::horizontal);
-		upperRow.setSpacing(10);
-		upperRow.setMargin(Margin(0, 0, 0, 5));
-
 		// Title
 		Theme::applyTitle(&title);
 		title.setVerticalAlignment(Alignment::center);
-		upperRow += &title;
+		rows += &title;
 
-		// Menu button
-		menuButton.setVerticalAlignment(Alignment::center);
-		upperRow.setAutoSize(&menuButton);
-		upperRow += &menuButton;
-
-		rows += &upperRow;
-
+		// Rows
+		rows.setSpacing(10);
+		rows.setMargin(Margin(15));
 		scrollView += &rows;
 
+		// Menu button
+		menuButton.setSize(Size(Size::computed, 12));
+		menuButton.setVerticalAlignment(Alignment::end);
+
+		menuButton.setDefaultBackgroundColor(&Theme::bg2);
+		menuButton.setDefaultTextColor(&Theme::fg5);
+
+		menuButton.setPressedBackgroundColor(&Theme::fg1);
+		menuButton.setPressedTextColor(&Theme::bg1);
+
+		menuButton.setFont(&Theme::fontSmall);
+		menuButton.setText(L"^");
+
+		*this += &menuButton;
+
 		Theme::apply(&scrollView);
+		scrollView.setMargin(Margin(0, 0, 0, menuButton.getSize().getHeight()));
 		*this += &scrollView;
 	}
 }

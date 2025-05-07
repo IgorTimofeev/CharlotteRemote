@@ -15,17 +15,20 @@ namespace pizda {
 		public:
 			explicit PagesMenuView();
 
+			const Route* getRoute() override;
 			void setRoute(const Route* route);
 
 		private:
-			PageMenuViewButton
-				_MFDButton = PageMenuViewButton(&resources::Images::menuIconMFD, L"MFD", &Routes::MFD),
-				_personalizationButton = PageMenuViewButton(&resources::Images::menuIconPersonalization, L"Pers.", &Routes::personalization),
-				_axisButton = PageMenuViewButton(&resources::Images::menuIconAxis, L"Axis", &Routes::axis),
-				_WiFiButton = PageMenuViewButton(&resources::Images::menuIconWiFi, L"Wi-Fi", &Routes::WiFi),
-				_UITestButton = PageMenuViewButton(&resources::Images::menuIconDev, L"Test", &Routes::UITest);
+			static const Route* _route;
 
-			PageMenuViewButton* _buttons[5] {
+			PageMenuViewButton
+				_MFDButton = PageMenuViewButton(&resources::Images::menuIconMFD, L"MFD", &Routes::settingsMFD),
+				_personalizationButton = PageMenuViewButton(&resources::Images::menuIconPersonalization, L"Person.", &Routes::settingsPersonalization),
+				_axisButton = PageMenuViewButton(&resources::Images::menuIconAxis, L"Axis", &Routes::settingsAxis),
+				_WiFiButton = PageMenuViewButton(&resources::Images::menuIconWiFi, L"Wi-Fi", &Routes::settingsWiFi),
+				_UITestButton = PageMenuViewButton(&resources::Images::menuIconDev, L"Dev", &Routes::settingsDeveloper);
+
+			PageMenuViewButton* _buttons[5] = {
 				&_MFDButton,
 				&_personalizationButton,
 				&_axisButton,

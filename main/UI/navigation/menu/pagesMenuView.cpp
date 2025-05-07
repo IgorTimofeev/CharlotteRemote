@@ -1,4 +1,4 @@
-#include "MFDMenuView.h"
+#include "pagesMenuView.h"
 
 #include "../../theme.h"
 #include "../../../rc.h"
@@ -7,8 +7,11 @@ namespace pizda {
 	PagesMenuView::PagesMenuView() {
 		auto& rc = RC::getInstance();
 
-		for (auto button : _buttons) {
-			if (button->getRoute() == rc.getRoute()) {
+		if (_route == nullptr)
+			_route = _buttons[0]->getRoute();
+
+		for (const auto button : _buttons) {
+			if (button->getRoute() == _route) {
 				button->setChecked(true);
 			}
 
@@ -16,12 +19,19 @@ namespace pizda {
 		}
 	}
 
-	void PagesMenuView::setRoute(const Route* route) {
-		auto& rc = RC::getInstance();
-		rc.setRoute(route);
+	const Route* PagesMenuView::_route = nullptr;
 
-		for (auto button : _buttons) {
-			button->setChecked(button->getRoute() == route);
+	const Route* PagesMenuView::getRoute() {
+		return _route;
+	}
+
+	void PagesMenuView::setRoute(const Route* route) {
+		_route = route;
+
+		for (const auto button : _buttons) {
+			button->setChecked(button->getRoute() == _route);
 		}
+
+		RC::getInstance().setRoute(_route);
 	}
 }

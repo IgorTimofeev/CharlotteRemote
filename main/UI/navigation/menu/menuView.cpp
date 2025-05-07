@@ -6,7 +6,7 @@
 namespace pizda {
 	MenuView::MenuView() {
 		setSpacing(10);
-//		setMargin(Margin(15, 10, 15, 10));
+		setMargin(Margin(15, 15, 15, 10));
 	}
 
 	Menu* MenuView::getMenu() {

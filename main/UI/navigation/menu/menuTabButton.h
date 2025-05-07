@@ -23,7 +23,6 @@ namespace pizda {
 		protected:
 			void onClick() override;
 
-		public:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
