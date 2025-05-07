@@ -122,7 +122,7 @@ namespace pizda {
 			return;
 
 		if (isTouchDown) {
-			const auto touchDownEvent = (TouchDownEvent*) event;
+			const auto touchDownEvent = static_cast<TouchDownEvent*>(event);
 
 			auto editor = getEditor();
 			const auto& bounds = getBounds();
@@ -135,14 +135,14 @@ namespace pizda {
 			setCaptured(true);
 		}
 		else if (isTouchDrag) {
-			const auto touchDragEvent = (TouchDragEvent*) event;
+			const auto touchDragEvent = static_cast<TouchDragEvent*>(event);
 
 			auto editor = getEditor();
 			auto settings = editor->getAxis()->getSettings();
 			const auto touchX = touchDragEvent->getPosition().getX();
 
 			const auto& bounds = getBounds();
-			const int32_t clampedTouchX = std::clamp((int32_t) (touchX - bounds.getX()), (int32_t) 0, (int32_t) bounds.getWidth());
+			const int32_t clampedTouchX = std::clamp(touchX - bounds.getX(), static_cast<int32_t>(0), static_cast<int32_t>(bounds.getWidth()));
 
 			// Updating settings
 			uint16_t value = clampedTouchX * Axis::maxValue / bounds.getWidth();
@@ -192,7 +192,7 @@ namespace pizda {
 		_invertButton.setCheckMode(ButtonCheckMode::toggle);
 		_invertButton.setChecked(_axis->getSettings()->inverted);
 
-		_invertButton.click += [this]() {
+		_invertButton.click += [this] {
 			_axis->getSettings()->inverted = _invertButton.isChecked();
 
 			RC::getInstance().getSettings().enqueueWrite();

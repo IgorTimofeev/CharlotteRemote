@@ -54,6 +54,6 @@ namespace pizda {
 	}
 
 	void MFDSettingsPage::updateMFDHeightTitle() {
-		_MFDHeightTitle.getTitle().setText(std::format(L"Height ({} %)", RC::getInstance().getSettings().interface.MFD.ND.heightPercent));
+		_MFDHeightTitle.getTitle().setText(std::format(L"Height ({}%)", RC::getInstance().getSettings().interface.MFD.ND.heightPercent));
 	}
 }

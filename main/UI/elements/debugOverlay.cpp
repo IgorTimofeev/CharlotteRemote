@@ -27,18 +27,18 @@ namespace pizda {
 
 		// Big fucking FPS counter
 		renderLine(
-			[&totalDeltaTime, &text]() {
+			[&totalDeltaTime, &text] {
 				text = std::to_wstring(totalDeltaTime > 0 ? 1000 / totalDeltaTime : 0);
 			},
 			&Theme::yellow,
 			3
 		);
 
-		renderLine([&text]() {
-			text = std::format(L"CPU clock: {} MHz", ((uint32_t) esp_clk_cpu_freq() / 1000000UL));
+		renderLine([&text] {
+			text = std::format(L"CPU clock: {} MHz", (static_cast<uint32_t>(esp_clk_cpu_freq()) / 1000000UL));
 		});
 
-		renderLine([&text]() {
+		renderLine([&text] {
 //			multi_heap_info_t info;
 //			heap_caps_get_info(&info, MALLOC_CAP_INTERNAL);
 //			const auto totalHeap = info.total_free_bytes + info.total_allocated_bytes;
@@ -56,7 +56,7 @@ namespace pizda {
 		});
 
 		const auto renderTimeLine = [&renderLine, &totalDeltaTime, &text](std::wstring_view key, uint32_t time) {
-			renderLine([time, &key, &totalDeltaTime, &text]() {
+			renderLine([time, &key, &totalDeltaTime, &text] {
 				text = std::format(L"{}: {} ms, {}%", key, time, totalDeltaTime > 0 ? time * 100 / totalDeltaTime : 0);
 			});
 		};
@@ -67,7 +67,7 @@ namespace pizda {
 		renderTimeLine(L"Render", rc.getApplication().getRenderDeltaTime());
 		renderTimeLine(L"Flush", rc.getApplication().getFlushDeltaTime());
 
-		renderLine([&totalDeltaTime, &text]() {
+		renderLine([&totalDeltaTime, &text] {
 			text = std::format(L"Total: {} ms", totalDeltaTime);
 		});
 	}

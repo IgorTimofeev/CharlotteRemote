@@ -196,12 +196,12 @@ namespace pizda {
 			keyboard->setActionKeyBackgroundColor(&Theme::bg3);
 			keyboard->setActionKeySecondaryColor(&Theme::fg1);
 
-			keyboard->setCharactersLayoutBuilder([]() {
+			keyboard->setCharactersLayoutBuilder([] {
 				return new CharactersKeyboardLayout();
 			});
 
 			keyboard->setCyclicLayoutBuilders({
-				[]() {
+				[] {
 					return new EnglishKeyboardLayout();
 				},
 //			[]() {

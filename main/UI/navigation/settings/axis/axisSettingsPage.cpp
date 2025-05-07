@@ -27,7 +27,7 @@ namespace pizda {
 
 		_jitteringCutoffFactorSlider.setValue(RC::getInstance().getSettings().axis.jitteringCutoffValue * 0xFFFF / _jitteringCutoffMaxValue);
 
-		_jitteringCutoffFactorSlider.valueChanged += [this]() {
+		_jitteringCutoffFactorSlider.valueChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 
 			settings.axis.jitteringCutoffValue = _jitteringCutoffFactorSlider.getValue() * _jitteringCutoffMaxValue / 0xFFFF;
@@ -42,7 +42,7 @@ namespace pizda {
 
 		_lowPassFactorSlider.setValue(RC::getInstance().getSettings().axis.lowPassFactor);
 
-		_lowPassFactorSlider.valueChanged += [this]() {
+		_lowPassFactorSlider.valueChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 
 			settings.axis.lowPassFactor = _lowPassFactorSlider.getValue();

@@ -7,7 +7,7 @@ namespace pizda {
 	}
 
 	void RadioIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
-		const auto rssi = (int) RC::getInstance().getAircraftData().computed.transceiverRSSI;
+		const auto rssi = static_cast<int>(RC::getInstance().getAircraftData().computed.transceiverRSSI);
 
 		uint8_t sexuality = 0;
 		const Color* color;

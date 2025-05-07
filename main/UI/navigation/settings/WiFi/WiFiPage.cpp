@@ -46,7 +46,7 @@ namespace pizda {
 		Theme::apply(&_updatesButton);
 		_updatesButton.setText(L"Begin");
 
-		_updatesButton.click += []() {
+		_updatesButton.click += [] {
 			auto& rc = RC::getInstance();
 
 			auto dialog = new ProgressDialog();

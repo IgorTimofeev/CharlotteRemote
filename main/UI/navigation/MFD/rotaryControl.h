@@ -88,24 +88,24 @@ namespace pizda {
 					if (!isFocused())
 						return;
 
-					const auto rotateEvent = (EncoderRotateEvent*) event;
+					const auto rotateEvent = static_cast<EncoderRotateEvent*>(event);
 					const auto rps = rotateEvent->getRPS();
 					const int32_t change = (std::abs(rps) < 70 ? smallChange : bigChange) * (rps >= 0 ? 1 : -1);
 
-					int64_t newValue = (int64_t) seven.getValue() + change;
+					int64_t newValue = static_cast<int64_t>(seven.getValue()) + change;
 
 					if (cycling) {
-						if (newValue > (int64_t) maximum) {
-							newValue = (int64_t) minimum;
+						if (newValue > static_cast<int64_t>(maximum)) {
+							newValue = static_cast<int64_t>(minimum);
 						}
-						else if (newValue < (int64_t) minimum) {
-							newValue = (int64_t) maximum;
+						else if (newValue < static_cast<int64_t>(minimum)) {
+							newValue = static_cast<int64_t>(maximum);
 						}
 
 						seven.setValue(newValue);
 					}
 					else {
-						seven.setValue(std::clamp(newValue, (int64_t) minimum, (int64_t) maximum));
+						seven.setValue(std::clamp(newValue, static_cast<int64_t>(minimum), static_cast<int64_t>(maximum)));
 					}
 
 					rotated();
@@ -116,7 +116,7 @@ namespace pizda {
 					if (!isFocused())
 						return;
 
-					const auto pushEvent = (EncoderPushEvent*) event;
+					const auto pushEvent = static_cast<EncoderPushEvent*>(event);
 
 					if (!pushEvent->isDown())
 						return;

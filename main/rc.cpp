@@ -113,7 +113,7 @@ namespace pizda {
 		// factorPerTick = factorPerSecond * deltaTime / 1'000'000
 
 		// Roll / pitch / yaw / slip & skid, faster
-		float LPFFactor = 5.0f * (float) deltaTime / 1'000'000.f;
+		float LPFFactor = 5.0f * static_cast<float>(deltaTime) / 1'000'000.f;
 		LowPassFilter::apply(_aircraftData.computed.pitch, _aircraftData.pitch, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.roll, _aircraftData.roll, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.yaw, _aircraftData.yaw, LPFFactor);
@@ -127,19 +127,19 @@ namespace pizda {
 		LowPassFilter::apply(_aircraftData.computed.flightDirectorRoll, _aircraftData.flightDirectorRoll, LPFFactor);
 
 		// Airspeed / altitude, normal
-		LPFFactor = 3.0f * (float) deltaTime / 1'000'000.f;
+		LPFFactor = 3.0f * static_cast<float>(deltaTime) / 1'000'000.f;
 		LowPassFilter::apply(_aircraftData.computed.airSpeed, _aircraftData.airSpeed, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.altitude, _aircraftData.altitude, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.windDirection, _aircraftData.windDirection, LPFFactor);
 
 		// Trends, slower
-		LPFFactor = 1.0f * (float) deltaTime / 1'000'000.f;
+		LPFFactor = 1.0f * static_cast<float>(deltaTime) / 1'000'000.f;
 		LowPassFilter::apply(_aircraftData.computed.airSpeedTrend, _aircraftData.airSpeedTrend, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.altitudeTrend, _aircraftData.altitudeTrend, LPFFactor);
 
 		// Smooth as fuck
-		LPFFactor = 0.5f * (float) deltaTime / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.transceiverRSSI, (float) WiFi::getRSSI(), LPFFactor);
+		LPFFactor = 0.5f * static_cast<float>(deltaTime) / 1'000'000.f;
+		LowPassFilter::apply(_aircraftData.computed.transceiverRSSI, static_cast<float>(WiFi::getRSSI()), LPFFactor);
 
 		_interpolationTickTime = esp_timer_get_time() + constants::application::interpolationTickInterval;
 	}
@@ -213,7 +213,7 @@ namespace pizda {
 			// No cast = sign lost
 //			ESP_LOGI("Encoder", "rotation: %ld", _encoder.getRotation());
 
-			const auto rps = _encoder.getRotation() * (int32_t) 1'000'000 / (int32_t) deltaTime;
+			const auto rps = _encoder.getRotation() * static_cast<int32_t>(1'000'000) / static_cast<int32_t>(deltaTime);
 //			ESP_LOGI("Encoder", "rps: %ld", rps);
 
 			auto event = EncoderRotateEvent(rps);

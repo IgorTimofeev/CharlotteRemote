@@ -168,7 +168,7 @@ namespace pizda {
 
 //			ESP_LOGI("ND", "camera lat: %f", cameraCoordinates.getLatitude());
 //			ESP_LOGI("ND", "camera lat cos: %f", std::cosf(cameraCoordinates.getLatitude()));
-//			ESP_LOGI("ND", "deltaPixelsX with coorection: %f", (float) deltaPixels.getX() / std::cosf(cameraCoordinates.getLatitude()));
+//			ESP_LOGI("ND", "deltaPixelsX with coorection: %f", static_cast<float>(deltaPixels.getX()) / std::cosf(cameraCoordinates.getLatitude()));
 
 			const auto deltaRadLon = static_cast<float>(deltaPixels.getX()) * equatorialRadiansPerPixel / std::cosf(_cameraCoordinates.getLatitude());
 			const auto deltaRadLat = static_cast<float>(deltaPixels.getY()) * equatorialRadiansPerPixel;

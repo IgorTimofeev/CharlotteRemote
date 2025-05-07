@@ -50,12 +50,12 @@ namespace pizda {
 			}
 		});
 
-		_TCP.setOnSendingCompleted([this]() {
+		_TCP.setOnSendingCompleted([this] {
 			fillRemotePacket();
 			setTCPSendingBuffer();
 		});
 
-		_TCP.setOnReceivingCompleted([this]() {
+		_TCP.setOnReceivingCompleted([this] {
 			RC::getInstance().handleAircraftPacket(&_aircraftPacket);
 			setTCPReceivingBuffer();
 		});

@@ -28,8 +28,8 @@ namespace pizda {
 				constexpr static const uint8_t triangleHeight = 6;
 
 				const auto position = Point(
-					(int32_t) vertices[0].getX(),
-					(int32_t) vertices[0].getY()
+					static_cast<int32_t>(vertices[0].getX()),
+					static_cast<int32_t>(vertices[0].getY())
 				);
 
 				renderer->renderLine(

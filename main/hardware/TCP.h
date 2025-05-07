@@ -134,9 +134,9 @@ namespace pizda {
 			}
 
 		private:
-			constexpr static const char* _loggingTag = "TCP";
+			constexpr static auto _loggingTag = "TCP";
 
-			struct sockaddr_in _socketAddress;
+			sockaddr_in _socketAddress = {};
 			int _socket = -1;
 
 			TCPState _state = TCPState::disconnected;
@@ -205,12 +205,12 @@ namespace pizda {
 				//
 				// ENOTCONN (128) - error, meaning server didn't respond even for some significant time after
 				// connection initialization. You should close socket, re-initialize it and connect again
-				if (::connect(_socket, (struct sockaddr*) &_socketAddress, sizeof(_socketAddress)) != 0) {
+				if (::connect(_socket, reinterpret_cast<sockaddr*>(&_socketAddress), sizeof(_socketAddress)) != 0) {
 					// Already connected
 					if (errno == EISCONN) {
 						ESP_LOGI(_loggingTag, "Connected");
 
-						socklen_t sockLen = (socklen_t) sizeof(int);
+						socklen_t sockLen = sizeof(int);
 						int sockError;
 
 						if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (void*) &sockError, &sockLen) < 0) {

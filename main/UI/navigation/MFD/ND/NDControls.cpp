@@ -13,7 +13,7 @@ namespace pizda {
 
 		updateOrientationButtonText();
 
-		addGovnoButton(&_orientationButton, [this]() {
+		addGovnoButton(&_orientationButton, [this] {
 			auto& settings = RC::getInstance().getSettings();
 			settings.interface.MFD.ND.northUp = !settings.interface.MFD.ND.northUp;
 			settings.enqueueWrite();
@@ -23,7 +23,7 @@ namespace pizda {
 
 		_latLongButton.setText(L"RS");
 
-		addGovnoButton(&_latLongButton, [this]() {
+		addGovnoButton(&_latLongButton, [this] {
 			_ND.resetCameraOffsetLatLon();
 		});
 	}

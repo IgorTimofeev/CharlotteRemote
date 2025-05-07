@@ -39,7 +39,7 @@ namespace pizda {
 		NDButton.setCheckMode(ButtonCheckMode::manual);
 		NDButton.setChecked(settings.interface.MFD.ND.show);
 
-		NDButton.click += [this]() {
+		NDButton.click += [this] {
 			NDButton.setChecked(!NDButton.isChecked());
 
 			auto& settings = RC::getInstance().getSettings();

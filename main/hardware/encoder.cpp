@@ -43,14 +43,14 @@ namespace pizda {
 	}
 
 	void Encoder::clkDtInterruptHandler(void* args) {
-		auto instance = (Encoder*) args;
+		auto instance = static_cast<Encoder*>(args);
 
 		instance->_interrupted = true;
 		instance->readRotation();
 	}
 
 	void Encoder::swInterruptHandler(void* args) {
-		auto instance = (Encoder*) args;
+		auto instance = static_cast<Encoder*>(args);
 
 		instance->_interrupted = true;
 		instance->readPressed();

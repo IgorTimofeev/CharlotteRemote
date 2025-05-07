@@ -13,7 +13,7 @@ namespace pizda {
 		_debugOverlaySwitch.setCheckedColor(&Theme::sky);
 		_debugOverlaySwitch.setChecked(RC::getInstance().getSettings().interface.developer.debugOverlay);
 
-		_debugOverlaySwitch.isCheckedChanged += [this]() {
+		_debugOverlaySwitch.isCheckedChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 			settings.interface.developer.debugOverlay = _debugOverlaySwitch.isChecked();
 			settings.enqueueWrite();
@@ -51,7 +51,7 @@ namespace pizda {
 		Theme::apply(&_speakerButton);
 		_speakerButton.setText(L"Play");
 
-		_speakerButton.click += [this]() {
+		_speakerButton.click += [this] {
 			auto& rc = RC::getInstance();
 
 			const uint32_t frequency = static_cast<uint32_t>(_speakerFrequencySlider.getValue()) * 12'000ul / 0xFFFFul;
@@ -76,7 +76,7 @@ namespace pizda {
 		Theme::apply(&_textFontSizeSlider);
 		_textFontSizeSlider.setValue(0xFFFF * 40 / 100);
 
-		_textFontSizeSlider.valueChanged += [this]() {
+		_textFontSizeSlider.valueChanged += [this] {
 			_text.setFontScale(1 + static_cast<uint8_t>(std::round(_textFontSizeSlider.getValue() * 8 / 0xFFFF)));
 		};
 
@@ -87,7 +87,7 @@ namespace pizda {
 		_textMarginSlider.setFillColor(&Theme::good2);
 		_textMarginSlider.setValue(0xFFFF * 50 / 100);
 
-		_textMarginSlider.valueChanged += [this]() {
+		_textMarginSlider.valueChanged += [this] {
 			const uint16_t value = 1 + static_cast<uint8_t>(std::round(_textMarginSlider.getValue() * 80 / 0xFFFF));
 
 			rows.setMargin(Margin(value, rows.getMargin().getTop(), value, rows.getMargin().getTop()));

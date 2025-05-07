@@ -26,7 +26,7 @@ namespace pizda {
 			else {
 				renderer->renderLine(
 					point,
-					point + (Point) Vector2F(length, 0).rotate(angle),
+					point + static_cast<Point>(Vector2F(length, 0).rotate(angle)),
 					color
 				);
 			}
@@ -39,7 +39,7 @@ namespace pizda {
 				bounds.getY() + 1
 			),
 			7,
-			-rc.getLeverLeft().getMappedFloatValue() * (float) toRadians(maxAngle)
+			-rc.getLeverLeft().getMappedFloatValue() * toRadians(maxAngle)
 		);
 
 		// Flaps
@@ -49,7 +49,7 @@ namespace pizda {
 				bounds.getY() + 3
 			),
 			8,
-			rc.getLeverRight().getMappedFloatValue() * (float) toRadians(maxAngle)
+			rc.getLeverRight().getMappedFloatValue() * toRadians(maxAngle)
 		);
 	}
 }

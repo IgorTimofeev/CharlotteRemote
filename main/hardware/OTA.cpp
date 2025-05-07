@@ -100,7 +100,7 @@ namespace pizda {
 			state = esp_https_ota_perform(instance->_OTAHandle);
 
 			if (state == ESP_ERR_HTTPS_OTA_IN_PROGRESS) {
-				const uint16_t progress = (uint16_t) ((uint64_t) esp_https_ota_get_image_len_read(instance->_OTAHandle) * 0xFFFF / (uint64_t) esp_https_ota_get_image_size(instance->_OTAHandle));
+				const uint16_t progress = static_cast<uint16_t>(static_cast<uint64_t>(esp_https_ota_get_image_len_read(instance->_OTAHandle) * 0xFFFF / (uint64_t) esp_https_ota_get_image_size(instance->_OTAHandle)));
 				ESP_LOGI("OTA", "Progress: %d", progress * 100 / 0xFFFF);
 
 				instance->onProgressChanged(progress);

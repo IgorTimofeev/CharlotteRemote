@@ -25,10 +25,10 @@ namespace pizda {
 				// |--|--|                      |--|--|
 				// |--|--|                     |--|--|
 				// 3     2                     3     2
-				const auto headingRadians = toRadians((float) _runway.getHeadingDegrees());
+				const auto headingRadians = toRadians(static_cast<float>(_runway.getHeadingDegrees()));
 				const auto& headingVectorNorm = Vector2F(std::sinf(headingRadians), std::cosf(headingRadians));
-				const auto center01Meters = headingVectorNorm * ((float) _runway.getLength() / 2.f);
-				const auto corner0OffsetMeters = headingVectorNorm.counterClockwisePerpendicular() * ((float) _runway.getWidth() / 2.f);
+				const auto center01Meters = headingVectorNorm * (static_cast<float>(_runway.getLength()) / 2.f);
+				const auto corner0OffsetMeters = headingVectorNorm.counterClockwisePerpendicular() * (static_cast<float>(_runway.getWidth()) / 2.f);
 				const auto corner0Radians = (center01Meters + corner0OffsetMeters) * GeographicCoordinates::equatorialRadiansPerMeter;
 				const auto corner1Radians = (center01Meters - corner0OffsetMeters) * GeographicCoordinates::equatorialRadiansPerMeter;
 
@@ -66,7 +66,7 @@ namespace pizda {
 
 			Runway _runway;
 
-			Vector3F cornerToVertex(const Vector2F& corner) {
+			Vector3F cornerToVertex(const Vector2F& corner) const {
 				const auto lat = _runway.getCenter().getLatitude() + corner.getY();
 
 				return GeographicCoordinates(

@@ -22,7 +22,7 @@ namespace pizda {
 				renderer->renderRectangle(Bounds(tipPosition, tipSize), &Theme::bg4);
 
 				// Fill
-				const auto fillWidth = (uint16_t) ((uint32_t) (borderWidth - 2) * _charge / 0xFF);
+				const auto fillWidth = static_cast<uint16_t>(static_cast<uint32_t>(borderWidth - 2) * _charge / 0xFF);
 
 				if (fillWidth > 0) {
 					const Color* color;
@@ -49,7 +49,7 @@ namespace pizda {
 				}
 
 				// Text
-				const auto text = std::format(L"{:.1f}v", (float) _voltage / 1000.f);
+				const auto text = std::format(L"{:.1f}v", static_cast<float>(_voltage) / 1000.f);
 
 				renderer->renderString(
 					Point(

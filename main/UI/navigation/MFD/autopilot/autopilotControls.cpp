@@ -17,7 +17,7 @@ namespace pizda {
 		FDButton.setCheckMode(ButtonCheckMode::toggle);
 		FDButton.setChecked(settings.interface.MFD.PFD.flightDirectors);
 
-		FDButton.isCheckedChanged += [this]() {
+		FDButton.isCheckedChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 			settings.interface.MFD.PFD.flightDirectors = FDButton.isChecked();
 			settings.enqueueWrite();
@@ -29,13 +29,13 @@ namespace pizda {
 		speed.seven.setValue(settings.autopilot.speedKt);
 		speed.button.setChecked(settings.autopilot.autoThrottle);
 
-		speed.rotated += [this]() {
+		speed.rotated += [this] {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.speedKt = speed.seven.getValue();
 			settings.enqueueWrite();
 		};
 
-		speed.button.isCheckedChanged += [this]() {
+		speed.button.isCheckedChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.autoThrottle = speed.button.isChecked();
 			settings.enqueueWrite();
@@ -48,13 +48,13 @@ namespace pizda {
 		heading.seven.setValue(settings.autopilot.headingDeg);
 		heading.button.setChecked(settings.autopilot.headingHold);
 
-		heading.rotated += [this]() {
+		heading.rotated += [this] {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.headingDeg = heading.seven.getValue();
 			settings.enqueueWrite();
 		};
 
-		heading.button.isCheckedChanged += [this]() {
+		heading.button.isCheckedChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.headingHold = heading.button.isChecked();
 			settings.enqueueWrite();
@@ -67,13 +67,13 @@ namespace pizda {
 		altitude.seven.setValue(settings.autopilot.altitudeFt);
 		altitude.button.setChecked(settings.autopilot.levelChange);
 
-		altitude.rotated += [this]() {
+		altitude.rotated += [this] {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.altitudeFt = altitude.seven.getValue();
 			settings.enqueueWrite();
 		};
 
-		altitude.button.isCheckedChanged += [this]() {
+		altitude.button.isCheckedChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 			settings.autopilot.levelChange = altitude.button.isChecked();
 			settings.enqueueWrite();

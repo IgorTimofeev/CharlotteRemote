@@ -53,7 +53,7 @@ namespace pizda {
 	}
 
 	float Axis::getMappedFloatValue() {
-		return (float) getProcessedValue() / (float) maxValue;
+		return static_cast<float>(getProcessedValue()) / static_cast<float>(maxValue);
 	}
 
 	uint8_t Axis::getMappedUint8Value() {
