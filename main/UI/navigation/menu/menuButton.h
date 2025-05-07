@@ -12,7 +12,7 @@ namespace pizda {
 	using namespace YOBA;
 
 	class Menu;
-	class MenuView;
+	class MenuSection;
 
 	class MenuButton : public Button {
 		public:
@@ -21,22 +21,11 @@ namespace pizda {
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
-			MenuView* getMenuView();
+			MenuSection* getMenuSection();
 
 		private:
 			constexpr static const uint8_t _textOffset = 4;
 
 			const Image* _image;
-	};
-
-	class ViewMenuButton : public MenuButton {
-		public:
-			ViewMenuButton(const Image* image, const std::wstring_view& text, const Route* route);
-
-		protected:
-			void onClick() override;
-
-		private:
-			const Route* _route;
 	};
 }

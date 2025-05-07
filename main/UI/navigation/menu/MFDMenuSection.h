@@ -3,7 +3,7 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "menuView.h"
+#include "menuSection.h"
 #include "menuButton.h"
 #include "../../../settings.h"
 #include "../../../resources/images.h"
@@ -22,24 +22,22 @@ namespace pizda {
 			SettingsInterfaceMFDInstrumentsMode _mode;
 	};
 
-	class MFDMenuView : public MenuView {
+	class MFDMenuSection : public MenuSection {
 		public:
-			explicit MFDMenuView();
+			explicit MFDMenuSection();
 
 			MenuButton
 				NDButton = MenuButton(&resources::Images::menuIconND, L"N/D");
 
 			MFDModeMenuButton
-				mainButton = MFDModeMenuButton(&resources::Images::menuIconMFDMain, L"Main", SettingsInterfaceMFDInstrumentsMode::main),
-				autopilotButton = MFDModeMenuButton(&resources::Images::menuIconMFDAutopilot, L"A/P", SettingsInterfaceMFDInstrumentsMode::autopilot),
-				pressureButton = MFDModeMenuButton(&resources::Images::menuIconMFDPressure, L"Baro", SettingsInterfaceMFDInstrumentsMode::pressure);
+				mainButton = MFDModeMenuButton(&resources::Images::menuIconMFDMain, L"ECAM", SettingsInterfaceMFDInstrumentsMode::main),
+				autopilotButton = MFDModeMenuButton(&resources::Images::menuIconMFDAutopilot, L"MCP", SettingsInterfaceMFDInstrumentsMode::autopilot),
+				pressureButton = MFDModeMenuButton(&resources::Images::menuIconMFDPressure, L"EFIS", SettingsInterfaceMFDInstrumentsMode::pressure);
 
 			MFDModeMenuButton* modeButtons[3] {
 				&mainButton,
 				&autopilotButton,
 				&pressureButton
 			};
-
-			ViewMenuButton mainViewButton;
 	};
 }

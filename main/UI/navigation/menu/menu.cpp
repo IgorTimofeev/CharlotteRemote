@@ -18,7 +18,9 @@ namespace pizda {
 		RC::getInstance().hideMenu();
 	}
 
-	Menu::Menu(const Route* route) {
+	Menu::Menu() {
+		auto& rc = RC::getInstance();
+
 		// Background
 		*this += &_overlayBackground;
 
@@ -32,24 +34,67 @@ namespace pizda {
 		setAutoSize(&_slideLayout);
 		*this += &_slideLayout;
 
-		setView(route);
+		// Rows
+		_rows.setSpacing(10);
+		_rows.setMargin(Margin(15, 10, 15, 10));
+		_slideLayout += &_rows;
+
+		// Lower section
+		_lowerSection.title.setText(L"Menu");
+
+		for (auto routeButton : _routeButtons) {
+			if (rc.getRoute() == routeButton->getMainRoute()) {
+				routeButton->setChecked(true);
+
+				if (routeButton->getUpperSectionRoute() != nullptr)
+					addUpperSectionRoute(routeButton->getUpperSectionRoute());
+			}
+
+			_lowerSection.wrapLayout += routeButton;
+		}
+
+		_rows += &_lowerSection;
 	}
 
 	Menu::~Menu() {
-		if (_view) {
-			delete _view;
+		if (_upperSectionElement) {
+			delete _upperSectionElement;
 		}
 	}
 
-	void Menu::setView(const Route* value) {
-		_route = value;
+	void Menu::removeUpperSectionRoute() {
+		_upperSectionRoute = nullptr;
 
-		if (_view) {
-			_slideLayout -= _view;
-			delete _view;
+		if (_upperSectionElement) {
+			_rows -= _upperSectionElement;
+			delete _upperSectionElement;
+			_upperSectionElement = nullptr;
 		}
+	}
 
-		_view = _route->buildElement();
-		_slideLayout += _view;
+	void Menu::addUpperSectionRoute(const Route* route) {
+		_upperSectionRoute = route;
+
+		_upperSectionElement = _upperSectionRoute->buildElement();
+		_rows.insertChild(0, _upperSectionElement);
+	}
+
+	void Menu::setRoute(const Route* route) {
+		auto& rc = RC::getInstance();
+
+		rc.setRoute(route);
+		removeUpperSectionRoute();
+
+		for (auto routeButton : _routeButtons) {
+			if (routeButton->getMainRoute() == route) {
+				routeButton->setChecked(true);
+
+				if (routeButton->getUpperSectionRoute() != nullptr)
+					addUpperSectionRoute(routeButton->getUpperSectionRoute());
+			}
+			else {
+				routeButton->setChecked(false);
+			}
+		}
 	}
 }

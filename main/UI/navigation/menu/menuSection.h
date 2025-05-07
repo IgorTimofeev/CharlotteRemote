@@ -8,13 +8,12 @@ namespace pizda {
 
 	class Menu;
 
-	class MenuView : public StackLayout {
+	class MenuSection : public StackLayout {
 		public:
-			explicit MenuView();
+			explicit MenuSection();
 
 			Menu* getMenu();
 
-		protected:
 			Text title {};
 			WrapLayout wrapLayout {};
 	};

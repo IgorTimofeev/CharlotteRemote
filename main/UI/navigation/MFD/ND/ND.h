@@ -14,7 +14,6 @@ namespace pizda {
 	class ND : public Scene {
 		public:
 			ND();
-
 			~ND();
 
 			constexpr static const uint32_t cameraAltitudeMinimum = 50;
@@ -35,7 +34,7 @@ namespace pizda {
 
 			float _pinchLength = 0;
 			Point _touchDownPosition {};
-			Point _cursorPosition {};
+			Point _cursorPosition { -1, -1 };
 
 			AircraftElement* _aircraftElement = nullptr;
 

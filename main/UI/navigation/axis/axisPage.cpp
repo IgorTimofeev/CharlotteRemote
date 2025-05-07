@@ -1,7 +1,7 @@
 #include "axisPage.h"
 
-#include "../../../../rc.h"
-#include "../../../theme.h"
+#include "../../../rc.h"
+#include "../../theme.h"
 
 namespace pizda {
 	AxisPage::AxisPage() :

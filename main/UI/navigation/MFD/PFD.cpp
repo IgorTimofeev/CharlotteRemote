@@ -614,7 +614,7 @@ namespace pizda {
 	}
 
 	void PFD::onRender(Renderer* renderer, const Bounds& bounds) {
-		Element::onRender(renderer, bounds);
+		Layout::onRender(renderer, bounds);
 
 		renderSpeed(renderer, Bounds(
 			bounds.getX(),

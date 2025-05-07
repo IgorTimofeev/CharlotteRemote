@@ -18,11 +18,11 @@ namespace pizda {
 		public:
 			ScrollViewPage();
 
-			ScrollView scrollView;
-			StackLayout rows;
+			ScrollView scrollView {};
+			StackLayout rows {};
 
-			RelativeStackLayout upperRow;
+			RelativeStackLayout upperRow {};
 			OpenMenuButton menuButton {};
-			Text title;
+			Text title {};
 	};
 }

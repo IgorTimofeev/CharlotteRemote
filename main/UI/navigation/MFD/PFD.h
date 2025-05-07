@@ -183,7 +183,6 @@ namespace pizda {
 			void onTick() override;
 
 		private:
-
 			PFDScene _scene {};
 
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;

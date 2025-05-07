@@ -2,10 +2,9 @@
 
 #include "../../theme.h"
 #include "../../../rc.h"
-#include "menuRoutes.h"
 
 namespace pizda {
-	OpenMenuButton::OpenMenuButton(const Route* route) : _route(route) {
+	OpenMenuButton::OpenMenuButton() {
 		Theme::apply(this);
 
 		setSize(Size(24));
@@ -20,13 +19,9 @@ namespace pizda {
 		setText(L"...");
 	}
 
-	OpenMenuButton::OpenMenuButton() : OpenMenuButton(&MenuRoutes::main) {
-
-	}
-
 	void OpenMenuButton::onClick() {
 		Button::onClick();
 
-		RC::getInstance().showMenu(_route);
+		RC::getInstance().showMenu();
 	}
 }

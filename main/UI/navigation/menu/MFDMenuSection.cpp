@@ -1,9 +1,8 @@
-#include "MFDMenuView.h"
+#include "MFDMenuSection.h"
 
 #include "../../theme.h"
 #include "../../../rc.h"
 #include "../MFD/MFDPage.h"
-#include "menuRoutes.h"
 
 namespace pizda {
 	MFDModeMenuButton::MFDModeMenuButton(const Image* image, const std::wstring_view& text, SettingsInterfaceMFDInstrumentsMode mode) : MenuButton(image, text), _mode(mode) {
@@ -14,7 +13,7 @@ namespace pizda {
 	void MFDModeMenuButton::onClick() {
 		MenuButton::onClick();
 
-		auto view = reinterpret_cast<MFDMenuView*>(getMenuView());
+		auto view = reinterpret_cast<MFDMenuSection*>(getMenuSection());
 
 		for (auto modeButton : view->modeButtons) {
 			modeButton->setChecked(modeButton == this);
@@ -29,10 +28,10 @@ namespace pizda {
 		});
 	}
 
-	MFDMenuView::MFDMenuView() : mainViewButton(ViewMenuButton(&resources::Images::menuIconSettings, L"Settings", &MenuRoutes::main)) {
-		title.setText(L"MFD options");
-
+	MFDMenuSection::MFDMenuSection() {
 		const auto& settings = RC::getInstance().getSettings();
+
+		title.setText(L"MFD panels");
 
 		// N/D
 		NDButton.setPressedBorderColor(&Theme::purple);
@@ -57,8 +56,5 @@ namespace pizda {
 		for (auto modeButton : modeButtons) {
 			wrapLayout += modeButton;
 		}
-
-		// Main
-		wrapLayout += &mainViewButton;
 	}
 }

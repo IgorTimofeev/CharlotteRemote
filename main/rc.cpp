@@ -374,11 +374,11 @@ namespace pizda {
 		_pageLayout += _route->buildElement();
 	}
 
-	void RC::showMenu(const Route* route) {
+	void RC::showMenu() {
 		if (isMenuVisible())
 			return;
 
-		_menu = new Menu(route);
+		_menu = new Menu();
 		_application += _menu;
 	}
 

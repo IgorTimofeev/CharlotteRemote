@@ -1,8 +1,7 @@
 #include "instrumentToolbar.h"
-#include "../menu/menuRoutes.h"
 
 namespace pizda {
-	InstrumentToolbar::InstrumentToolbar() : menuButton(OpenMenuButton(&MenuRoutes::MFD)) {
+	InstrumentToolbar::InstrumentToolbar() {
 		// Titles
 		topPanel.setHeight(InstrumentToolbar::topPanelHeight);
 		topPanel.setVerticalAlignment(Alignment::start);

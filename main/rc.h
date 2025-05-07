@@ -53,7 +53,7 @@ namespace pizda {
 			void handleAircraftPacket(AircraftPacket* packet);
 
 			bool isMenuVisible();
-			void showMenu(const Route* route);
+			void showMenu();
 			void hideMenu();
 
 			bool isDebugOverlayVisible();

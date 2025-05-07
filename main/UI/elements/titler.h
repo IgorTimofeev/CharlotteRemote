@@ -24,6 +24,10 @@ namespace pizda {
 				*this += element;
 			}
 
+			Titler(Element* element) : Titler() {
+				*this += element;
+			}
+
 			Text& getTitle() {
 				return _title;
 			}

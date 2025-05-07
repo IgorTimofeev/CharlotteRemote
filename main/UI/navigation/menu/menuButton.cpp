@@ -1,6 +1,6 @@
 #include "menuButton.h"
 
-#include "menuView.h"
+#include "menuSection.h"
 #include "menu.h"
 
 #include "../../../rc.h"
@@ -55,21 +55,7 @@ namespace pizda {
 		);
 	}
 
-	MenuView* MenuButton::getMenuView() {
-		return reinterpret_cast<MenuView*>(getParent()->getParent());
-	}
-
-	// -------------------------------- View --------------------------------
-
-	ViewMenuButton::ViewMenuButton(const Image* image, const std::wstring_view& text, const Route* route) : MenuButton(image, text), _route(route) {
-
-	}
-
-	void ViewMenuButton::onClick() {
-		Button::onClick();
-
-		RC::getInstance().getApplication().enqueueOnTick([this]() {
-			getMenuView()->getMenu()->setView(_route);
-		});
+	MenuSection* MenuButton::getMenuSection() {
+		return reinterpret_cast<MenuSection*>(getParent()->getParent());
 	}
 }
