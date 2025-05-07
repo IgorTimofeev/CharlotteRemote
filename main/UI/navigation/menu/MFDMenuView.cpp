@@ -30,7 +30,7 @@ namespace pizda {
 	}
 
 	MFDMenuView::MFDMenuView() {
-		const auto& settings = RC::getInstance().getSettings();
+		auto& settings = RC::getInstance().getSettings();
 
 		// N/D
 		NDButton.setPressedBorderColor(&Theme::purple);
@@ -39,10 +39,9 @@ namespace pizda {
 		NDButton.setCheckMode(ButtonCheckMode::manual);
 		NDButton.setChecked(settings.interface.MFD.ND.show);
 
-		NDButton.click += [this] {
+		NDButton.click += [this, &settings] {
 			NDButton.setChecked(!NDButton.isChecked());
 
-			auto& settings = RC::getInstance().getSettings();
 			settings.interface.MFD.ND.show = !settings.interface.MFD.ND.show;
 			settings.enqueueWrite();
 
@@ -52,7 +51,7 @@ namespace pizda {
 		*this += &NDButton;
 
 		// Mode
-		for (auto modeButton : modeButtons) {
+		for (const auto modeButton : modeButtons) {
 			*this += modeButton;
 		}
 	}

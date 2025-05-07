@@ -11,6 +11,7 @@
     </sourceRoots>
     <libraryRoots>
       <file path="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.4" />
+      <file path="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.4.1" />
     </libraryRoots>
     <excludeRoots>
       <file path="$PROJECT_DIR$/build" />

@@ -127,7 +127,7 @@ namespace pizda {
 		_onStateChanged += callback;
 	}
 
-	void WiFi::reconnect(void* args) {
+	void WiFi::reconnect(void* arg) {
 		ESP_LOGI("WiFi", "Scheduling reconnection in %lu ms", constants::wifi::connectionInterval / 1000);
 
 		vTaskDelay(constants::wifi::connectionInterval / 1000 / portTICK_PERIOD_MS);
@@ -136,11 +136,11 @@ namespace pizda {
 
 		connect();
 
-		vTaskDelete(NULL);
+		vTaskDelete(nullptr);
 	}
 
 	void WiFi::scheduleReconnection() {
-		xTaskCreate(reconnect, "WiFi reconnection task", 1024, NULL, 3, NULL);
+		xTaskCreate(reconnect, "WiFi reconnection task", 1024, nullptr, 3, nullptr);
 	}
 
 	void WiFi::setState(WiFiState value) {

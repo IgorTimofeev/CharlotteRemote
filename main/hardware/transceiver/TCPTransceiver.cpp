@@ -5,7 +5,7 @@
 
 namespace pizda {
 	void TCPTransceiver::setup() {
-		WiFi::addOnStateChanged([this](WiFiState fromState, WiFiState toState) {
+		WiFi::addOnStateChanged([this](WiFiState, WiFiState toState) {
 			switch (toState) {
 				case WiFiState::connected: {
 					_TCP.connect(
@@ -121,10 +121,10 @@ namespace pizda {
 	}
 
 	void TCPTransceiver::setTCPSendingBuffer() {
-		_TCP.setSendingBuffer((uint8_t*) &_remotePacket, sizeof(RemotePacket));
+		_TCP.setSendingBuffer(reinterpret_cast<uint8_t*>(&_remotePacket), sizeof(RemotePacket));
 	}
 
 	void TCPTransceiver::setTCPReceivingBuffer() {
-		_TCP.setReceivingBuffer((uint8_t*) &_aircraftPacket, sizeof(AircraftPacket));
+		_TCP.setReceivingBuffer(reinterpret_cast<uint8_t*>(&_aircraftPacket), sizeof(AircraftPacket));
 	}
 }

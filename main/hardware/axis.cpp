@@ -2,7 +2,6 @@
 
 #include <limits>
 #include <esp_timer.h>
-#include <esp_log.h>
 #include <algorithm>
 #include "../rc.h"
 

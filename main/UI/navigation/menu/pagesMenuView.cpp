@@ -5,8 +5,6 @@
 
 namespace pizda {
 	PagesMenuView::PagesMenuView() {
-		auto& rc = RC::getInstance();
-
 		if (_route == nullptr)
 			_route = _buttons[0]->getRoute();
 

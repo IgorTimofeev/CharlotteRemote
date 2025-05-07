@@ -24,8 +24,8 @@ namespace pizda {
 				if (vertices[0].getZ() < scene.getNearPlaneDistance())
 					return;
 
-				constexpr static const uint8_t triangleWidth = 8;
-				constexpr static const uint8_t triangleHeight = 6;
+				constexpr static uint8_t triangleWidth = 8;
+				constexpr static uint8_t triangleHeight = 6;
 
 				const auto position = Point(
 					static_cast<int32_t>(vertices[0].getX()),

@@ -38,9 +38,9 @@ namespace pizda {
 					getText()
 				);
 
-				constexpr static const uint8_t lineMarginHorizontal = 7;
-				constexpr static const uint8_t lineMarginVertical = 4;
-				constexpr static const uint8_t lineHeight = 2;
+				constexpr static uint8_t lineMarginHorizontal = 7;
+				constexpr static uint8_t lineMarginVertical = 4;
+				constexpr static uint8_t lineHeight = 2;
 
 				const uint16_t lineWidth = bounds.getWidth() - lineMarginHorizontal * 2;
 

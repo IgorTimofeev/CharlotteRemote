@@ -18,16 +18,16 @@ namespace pizda {
 			Slider _PFDFOVSlider {};
 			Titler _PFDFOVTitle = Titler(&_PFDFOVSlider);
 
-			constexpr static const uint8_t _PFDFOVMin = 20;
-			constexpr static const uint8_t _PFDFOVMax = 120;
+			constexpr static uint8_t _PFDFOVMin = 20;
+			constexpr static uint8_t _PFDFOVMax = 120;
 
 			Text _MFDTitle {};
 
 			Slider _MFDHeightSlider {};
 			Titler _MFDHeightTitle = Titler(&_MFDHeightSlider);
 
-			constexpr static const uint8_t _MFDHeightMin = 20;
-			constexpr static const uint8_t _MFDHeightMax = 80;
+			constexpr static uint8_t _MFDHeightMin = 20;
+			constexpr static uint8_t _MFDHeightMax = 80;
 
 			Switcher _MFDSphereSwitcher { L"Show earth bounds" };
 

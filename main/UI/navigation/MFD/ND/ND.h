@@ -16,8 +16,8 @@ namespace pizda {
 			ND();
 			~ND() override;
 
-			constexpr static const uint32_t cameraAltitudeMinimum = 50;
-			constexpr static const uint32_t cameraAltitudeMaximum = GeographicCoordinates::equatorialRadiusMeters * 2;
+			constexpr static uint32_t cameraAltitudeMinimum = 50;
+			constexpr static uint32_t cameraAltitudeMaximum = GeographicCoordinates::equatorialRadiusMeters * 2;
 
 			const GeographicCoordinates& getCameraOffset() const;
 			void setCameraOffset(const GeographicCoordinates& value);

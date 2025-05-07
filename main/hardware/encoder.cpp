@@ -61,10 +61,10 @@ namespace pizda {
 	}
 
 	void Encoder::readRotation() {
-		auto clkAndDt = (gpio_get_level(_clkPin) << 1) | gpio_get_level(_dtPin);
+		const auto clkAndDt = gpio_get_level(_clkPin) << 1 | gpio_get_level(_dtPin);
 
 		if (clkAndDt != _oldClkAndDt) {
-			switch (_oldClkAndDt | (clkAndDt << 2)) {
+			switch (_oldClkAndDt | clkAndDt << 2) {
 				case 0:
 				case 5:
 				case 10:

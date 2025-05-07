@@ -366,38 +366,27 @@ namespace pizda {
 
 		const auto viewport = renderer->pushViewport(bounds);
 
-		Vector2F
-			lineCenterPerp,
-			lineVec;
-
-		Point
-			lineLeft,
-			lineRight;
-
-		const Color* color;
-		std::wstring_view text;
-
 		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += PFD::pitchOverlayAngleStepDeg) {
 			if (lineAngleDeg == 0)
 				continue;
 
-			color = lineAngleDeg >= 0 ? PFD::pitchOverlayColorGround : PFD::pitchOverlayColorSky;
+			const auto color = lineAngleDeg >= 0 ? PFD::pitchOverlayColorGround : PFD::pitchOverlayColorSky;
 
 			// Same as tan(lineAngleDeg) * projectionPlaneDistance, but with spherical correction
 			// This loop uses horizon as starting point, not aircraft pitch, so we just subtract it
-			lineCenterPerp = horizonCenter + horizonVecPerp * (std::tanf(ad.computed.pitch + toRadians(lineAngleDeg)) * projectionPlaneDistance - pitchPixelOffsetProjected);
+			const auto lineCenterPerp = horizonCenter + horizonVecPerp * (std::tanf(ad.computed.pitch + toRadians(lineAngleDeg)) * projectionPlaneDistance - pitchPixelOffsetProjected);
 
-			lineVec = horizonVecNorm * (
+			const auto lineVec = horizonVecNorm * (
 				(
 					lineAngleDeg % 10 == 0
-					? PFD::pitchOverlayLineBig
-					: PFD::pitchOverlayLineSmall
+						? PFD::pitchOverlayLineBig
+						: PFD::pitchOverlayLineSmall
 				)
 				/ 2
 			);
 
-			lineLeft = static_cast<Point>(lineCenterPerp - lineVec);
-			lineRight = static_cast<Point>(lineCenterPerp + lineVec);
+			const auto lineLeft = static_cast<Point>(lineCenterPerp - lineVec);
+			const auto lineRight = static_cast<Point>(lineCenterPerp + lineVec);
 
 			renderer->renderLine(
 				lineLeft,
@@ -406,7 +395,7 @@ namespace pizda {
 			);
 
 			if (lineAngleDeg % 10 == 0) {
-				text = std::to_wstring(abs(lineAngleDeg));
+				const auto text = std::to_wstring(abs(lineAngleDeg));
 
 				const auto& textCenterVec = Vector2F(static_cast<float>(PFD::pitchOverlayFont->getWidth(text)) / 2.f, static_cast<float>(PFD::pitchOverlayFont->getHeight()) / 2.f);
 				const auto textCenterVecLengthWithOffset = static_cast<float>(PFD::pitchOverlayTextOffset) + textCenterVec.getLength();
@@ -706,7 +695,7 @@ namespace pizda {
 		renderer->renderFilledRectangle(rectangleBounds, &Theme::bg2);
 
 		// Text
-		constexpr static const uint8_t textOffset = 0;
+		constexpr static uint8_t textOffset = 0;
 
 		const auto oldViewport = renderer->pushViewport(rectangleBounds);
 

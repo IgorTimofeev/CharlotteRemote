@@ -13,11 +13,11 @@ namespace pizda {
 		public:
 			InstrumentToolbar();
 
-			constexpr static const uint8_t topPanelHeight = 8;
-			constexpr static const uint8_t contentHorizontalMargin = 7;
-			constexpr static const uint8_t contentVerticalMargin = 5;
-			constexpr static const uint8_t contentPanelMarginTop = topPanelHeight + contentVerticalMargin;
-			constexpr static const uint8_t titleVerticalOffset = 1;
+			constexpr static uint8_t topPanelHeight = 8;
+			constexpr static uint8_t contentHorizontalMargin = 7;
+			constexpr static uint8_t contentVerticalMargin = 5;
+			constexpr static uint8_t contentPanelMarginTop = topPanelHeight + contentVerticalMargin;
+			constexpr static uint8_t titleVerticalOffset = 1;
 
 		protected:
 			OpenMenuButton menuButton {};

@@ -35,7 +35,7 @@ namespace pizda {
 		);
 
 		renderLine([&text] {
-			text = std::format(L"CPU clock: {} MHz", (static_cast<uint32_t>(esp_clk_cpu_freq()) / 1000000UL));
+			text = std::format(L"CPU clock: {} MHz", static_cast<uint32_t>(esp_clk_cpu_freq()) / 1000000UL);
 		});
 
 		renderLine([&text] {

@@ -57,7 +57,7 @@ namespace pizda {
 		private:
 			Vector3F _vertices[4];
 
-			constexpr static const uint16_t _lineVertexIndices[] = {
+			constexpr static uint16_t _lineVertexIndices[] = {
 				0, 1,
 				1, 2,
 				2, 3,

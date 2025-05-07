@@ -13,12 +13,12 @@
 namespace pizda {
 	class Routes {
 		public:
-			constexpr static const ElementRoute<MFDPage> MFD = {};
+			constexpr static ElementRoute<MFDPage> MFD = {};
 
-			constexpr static const ElementRoute<MFDSettingsPage> settingsMFD = {};
-			constexpr static const ElementRoute<PersonalizationSettingsPage> settingsPersonalization = {};
-			constexpr static const ElementRoute<WiFiSettingsPage> settingsWiFi = {};
-			constexpr static const ElementRoute<AxisSettingsPage> settingsAxis = {};
-			constexpr static const ElementRoute<DeveloperSettingsPage> settingsDeveloper = {};
+			constexpr static ElementRoute<MFDSettingsPage> settingsMFD = {};
+			constexpr static ElementRoute<PersonalizationSettingsPage> settingsPersonalization = {};
+			constexpr static ElementRoute<WiFiSettingsPage> settingsWiFi = {};
+			constexpr static ElementRoute<AxisSettingsPage> settingsAxis = {};
+			constexpr static ElementRoute<DeveloperSettingsPage> settingsDeveloper = {};
 	};
 }

@@ -101,8 +101,8 @@ namespace pizda {
 
 		// Cursor
 		if (_cursorPosition.getX() >= 0 &&  _cursorPosition.getY() >= 0) {
-			constexpr const uint8_t lineAreaOffset = 5;
-			constexpr const uint8_t lineAreaSize = 8;
+			constexpr static uint8_t lineAreaOffset = 5;
+			constexpr static uint8_t lineAreaSize = 8;
 
 			// Center
 			const auto& center = bounds.getPosition() + _cursorPosition;

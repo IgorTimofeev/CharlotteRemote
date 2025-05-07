@@ -6,8 +6,8 @@
 
 namespace pizda {
 	void ThrottleIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
-		constexpr static const uint8_t textOffset = 3;
-		constexpr static const uint8_t lineOffsetX = 2;
+		constexpr static uint8_t textOffset = 3;
+		constexpr static uint8_t lineOffsetX = 2;
 
 		const uint16_t frameHeight = bounds.getHeight() - Theme::fontSmall.getHeight() - textOffset + 3;
 		const auto frameY2 = bounds.getY() + frameHeight - 1;
