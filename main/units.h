@@ -26,11 +26,11 @@ namespace pizda {
 
 	class VSpeed {
 		public:
-			constexpr VSpeed(const std::wstring_view& name, const uint32_t value) : _name(name), _value(value) {
+			constexpr VSpeed(std::wstring_view name, const uint32_t value) : _name(name), _value(value) {
 
 			}
 
-			const std::wstring_view& getName() const {
+			std::wstring_view getName() const {
 				return _name;
 			}
 

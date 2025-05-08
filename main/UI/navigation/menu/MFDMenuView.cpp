@@ -8,7 +8,7 @@
 #include "../MFD/MFDPage.h"
 
 namespace pizda {
-	MFDModeMenuViewButton::MFDModeMenuViewButton(const Image* image, const std::wstring_view& text, SettingsInterfaceMFDInstrumentsMode mode) : MenuViewButton(image, text), _mode(mode) {
+	MFDModeMenuViewButton::MFDModeMenuViewButton(const Image* image, std::wstring_view text, SettingsInterfaceMFDInstrumentsMode mode) : MenuViewButton(image, text), _mode(mode) {
 		setCheckMode(ButtonCheckMode::manual);
 		setChecked(RC::getInstance().getSettings().interface.MFD.instrumentsMode == mode);
 	}
@@ -18,7 +18,7 @@ namespace pizda {
 
 		const auto menuView = reinterpret_cast<MFDMenuView*>(getMenuView());
 
-		for (auto modeButton : menuView->modeButtons) {
+		for (const auto modeButton : menuView->modeButtons) {
 			modeButton->setChecked(modeButton == this);
 		}
 

@@ -10,7 +10,7 @@ namespace pizda {
 		public:
 			FlapsAndSpoilersIndicator();
 
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer* renderer) override;
 
 		private:
 			constexpr static uint8_t maxAngle = 45;

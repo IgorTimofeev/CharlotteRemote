@@ -4,8 +4,9 @@
 #include "../../../../rc.h"
 
 namespace pizda {
-	void AxisEditorTrack::onRender(Renderer* renderer, const Bounds& bounds) {
-		auto editor = getEditor();
+	void AxisEditorTrack::onRender(Renderer* renderer) {
+		const auto& bounds = getBounds();
+		const auto editor = getEditor();
 
 		// Track
 		renderer->renderFilledRectangle(bounds, Theme::cornerRadius, &Theme::bg2);
@@ -48,7 +49,7 @@ namespace pizda {
 		);
 
 		// Pins
-		const auto renderPin = [this, renderer, &bounds](int32_t x, uint16_t settingsValue, bool to) {
+		const auto renderPin = [this, &renderer, &bounds](int32_t x, uint16_t settingsValue, bool to) {
 			const Color* bg;
 			const Color* fg;
 
@@ -108,7 +109,7 @@ namespace pizda {
 			true
 		);
 
-		Element::onRender(renderer, bounds);
+		Element::onRender(renderer);
 	}
 
 	void AxisEditorTrack::onEvent(Event* event) {
@@ -124,7 +125,7 @@ namespace pizda {
 		if (isTouchDown) {
 			const auto touchDownEvent = static_cast<TouchDownEvent*>(event);
 
-			auto editor = getEditor();
+			const auto editor = getEditor();
 			const auto& bounds = getBounds();
 
 			const auto touchX = touchDownEvent->getPosition().getX();
@@ -137,15 +138,15 @@ namespace pizda {
 		else if (isTouchDrag) {
 			const auto touchDragEvent = static_cast<TouchDragEvent*>(event);
 
-			auto editor = getEditor();
-			auto settings = editor->getAxis()->getSettings();
+			const auto editor = getEditor();
+			const auto settings = editor->getAxis()->getSettings();
 			const auto touchX = touchDragEvent->getPosition().getX();
 
 			const auto& bounds = getBounds();
 			const int32_t clampedTouchX = std::clamp(touchX - bounds.getX(), static_cast<int32_t>(0), static_cast<int32_t>(bounds.getWidth()));
 
 			// Updating settings
-			uint16_t value = clampedTouchX * Axis::maxValue / bounds.getWidth();
+			const uint16_t value = clampedTouchX * Axis::maxValue / bounds.getWidth();
 
 			if (_selectedPin == SelectedPin::to) {
 				settings->to = std::max(settings->from, value);
@@ -166,7 +167,7 @@ namespace pizda {
 		event->setHandled(true);
 	}
 
-	AxisEditor* AxisEditorTrack::getEditor() {
+	AxisEditor* AxisEditorTrack::getEditor() const {
 		return dynamic_cast<AxisEditor*>(getParent());
 	}
 

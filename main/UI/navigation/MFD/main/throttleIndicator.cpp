@@ -5,7 +5,9 @@
 #include "../../../../rc.h"
 
 namespace pizda {
-	void ThrottleIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
+	void ThrottleIndicator::onRender(Renderer* renderer) {
+		const auto& bounds = getBounds();
+
 		constexpr static uint8_t textOffset = 3;
 		constexpr static uint8_t lineOffsetX = 2;
 
@@ -24,7 +26,7 @@ namespace pizda {
 			&Theme::bg6
 		);
 
-		const auto& renderOffsetLine = [renderer, &bounds](int32_t y, const Color* color) {
+		const auto& renderOffsetLine = [&renderer, &bounds](int32_t y, const Color* color) {
 			renderer->renderHorizontalLine(
 				Point(
 					bounds.getX() - lineOffsetX,

@@ -25,7 +25,7 @@ namespace pizda {
 
 	void Encoder::setup() {
 		// GPIO
-		gpio_config_t config = {
+		const gpio_config_t config = {
 			.pin_bit_mask = BIT64(_clkPin) | BIT64(_dtPin) | BIT64(_swPin),
 			.mode = GPIO_MODE_INPUT,
 			.pull_up_en = GPIO_PULLUP_ENABLE,
@@ -43,14 +43,14 @@ namespace pizda {
 	}
 
 	void Encoder::clkDtInterruptHandler(void* args) {
-		auto instance = static_cast<Encoder*>(args);
+		const auto instance = static_cast<Encoder*>(args);
 
 		instance->_interrupted = true;
 		instance->readRotation();
 	}
 
 	void Encoder::swInterruptHandler(void* args) {
-		auto instance = static_cast<Encoder*>(args);
+		const auto instance = static_cast<Encoder*>(args);
 
 		instance->_interrupted = true;
 		instance->readPressed();

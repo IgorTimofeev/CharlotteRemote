@@ -24,7 +24,8 @@ namespace pizda {
 		}
 	}
 
-	void PFDScene::onRender(Renderer* renderer, const Bounds& bounds) {
+	void PFDScene::onRender(Renderer* renderer) {
+		const auto& bounds = getBounds();
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
 
@@ -60,7 +61,7 @@ namespace pizda {
 			horizonRight
 		);
 
-		Scene::onRender(renderer, bounds);
+		Scene::onRender(renderer);
 
 		// Roll overlay
 		renderTurnCoordinatorOverlay(
@@ -230,7 +231,7 @@ namespace pizda {
 		}
 
 		// Aircraft symbol
-		const auto& renderAircraftSymbolRect = [renderer](const Point& position, uint16_t width) {
+		const auto& renderAircraftSymbolRect = [&renderer](const Point& position, uint16_t width) {
 			renderer->renderFilledRectangle(
 				Bounds(
 					position.getX(),
@@ -425,7 +426,7 @@ namespace pizda {
 			bounds.getY() + PFD::turnCoordinatorOverlayRollIndicatorRadius
 		);
 
-		const auto& renderLine = [renderer, &center, &aircraftData](int8_t angle, bool isBig) {
+		const auto& renderLine = [&renderer, &center, &aircraftData](int8_t angle, bool isBig) {
 			const auto vec = Vector2F(0, PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(toRadians(angle) - aircraftData.computed.roll);
 			const auto lineFrom = center - static_cast<Point>(vec);
 
@@ -496,7 +497,7 @@ namespace pizda {
 		const auto y2 = bounds.getY2();
 
 		float closestInteger;
-		float closestFractional = modff(toDegrees(aircraftData.computed.yaw) / PFD::yawOverlayAngleStepUnits, &closestInteger);
+		const float closestFractional = modff(toDegrees(aircraftData.computed.yaw) / PFD::yawOverlayAngleStepUnits, &closestInteger);
 		closestInteger *= PFD::yawOverlayAngleStepUnits;
 
 		const uint8_t fullCount = static_cast<uint8_t>(std::ceilf(static_cast<float>(centerX - bounds.getX()) / PFD::yawOverlayAngleStepPixels)) + 1;
@@ -506,16 +507,12 @@ namespace pizda {
 		if (angle < 0)
 			angle += 360;
 
-		bool isBig;
-		uint8_t lineLength;
-		int32_t lineY;
-
 		while (x <= bounds.getX2()) {
-			isBig = angle % 10 == 0;
-			lineLength = isBig ? PFD::yawOverlayLineBigLength : PFD::yawOverlayLineSmallLength;
+			const auto isBig = angle % 10 == 0;
+			const auto lineLength = isBig ? PFD::yawOverlayLineBigLength : PFD::yawOverlayLineSmallLength;
 
 			// Line
-			lineY = y2 - lineLength + 1;
+			const int32_t lineY = y2 - lineLength + 1;
 
 			renderer->renderVerticalLine(
 				Point(
@@ -611,8 +608,10 @@ namespace pizda {
 		invalidate();
 	}
 
-	void PFD::onRender(Renderer* renderer, const Bounds& bounds) {
-		Layout::onRender(renderer, bounds);
+	void PFD::onRender(Renderer* renderer) {
+		Layout::onRender(renderer);
+
+		const auto& bounds = getBounds();
 
 		renderSpeed(renderer, Bounds(
 			bounds.getX(),
@@ -740,10 +739,9 @@ namespace pizda {
 		};
 
 		auto shouldScroll = true;
-		uint8_t digit;
 
 		do {
-			digit = uintValue % 10;
+			const uint8_t digit = uintValue % 10;
 
 			if (shouldScroll) {
 				renderDigit(scrolledY - currentValueFont->getHeight(), getAdjacentDigit(digit, true));
@@ -980,11 +978,10 @@ namespace pizda {
 
 		int32_t lineValue = static_cast<int32_t>(snappedInteger + 1) * speedStepUnits + altitudeYFullLines * speedStepUnits;
 
-		bool isBig;
 		const Color* lineColor = &Theme::fg3;
 
 		do {
-			isBig = lineValue % speedStepUnitsBig == 0;
+			const auto isBig = lineValue % speedStepUnitsBig == 0;
 
 			if (isBig) {
 				// Line
@@ -1108,12 +1105,10 @@ namespace pizda {
 
 		int32_t lineValue = static_cast<int32_t>(snappedInteger + 1) * altitudeStepUnits + yFullLines * altitudeStepUnits;
 
-		bool isBig;
-
 		const Color* lineColor = &Theme::fg3;
 
 		do {
-			isBig = lineValue % altitudeStepUnitsBig == 0;
+			const auto isBig = lineValue % altitudeStepUnitsBig == 0;
 
 			if (isBig) {
 				renderer->renderHorizontalLine(
@@ -1258,7 +1253,7 @@ namespace pizda {
 
 		bool isBig;
 
-		auto renderLines = [&lineValue, &isBig, renderer, lineColor, &bounds, &y](int32_t yAdder) {
+		auto renderLines = [&lineValue, &isBig, &renderer, lineColor, &bounds, &y](int32_t yAdder) {
 			while (lineValue <= verticalSpeedStepUnitsLimit) {
 				isBig = lineValue % verticalSpeedStepUnitsBig == 0;
 

@@ -96,8 +96,10 @@ namespace pizda {
 		invalidate();
 	}
 
-	void ND::onRender(Renderer* renderer, const Bounds& bounds) {
-		Scene::onRender(renderer, bounds);
+	void ND::onRender(Renderer* renderer) {
+		Scene::onRender(renderer);
+
+		const auto& bounds = getBounds();
 
 		// Cursor
 		if (_cursorPosition.getX() >= 0 &&  _cursorPosition.getY() >= 0) {
@@ -267,7 +269,7 @@ namespace pizda {
 		}
 	}
 
-	float ND::getEquatorialRadiansPerPixel() {
+	float ND::getEquatorialRadiansPerPixel() const {
 		// Imagine that camera is placed in the center of small sphere with radius = camera altitude
 //		const float maxViewportRads = 2.f * std::asinf(GeographicCoordinates::equatorialRadiusMeters / (GeographicCoordinates::equatorialRadiusMeters + cameraAltitudeMaximum));
 

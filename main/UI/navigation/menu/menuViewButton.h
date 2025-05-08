@@ -15,10 +15,10 @@ namespace pizda {
 
 	class MenuViewButton : public Button {
 		public:
-			explicit MenuViewButton(const Image* image, const std::wstring_view& text);
+			explicit MenuViewButton(const Image* image, std::wstring_view text);
 
 		protected:
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer* renderer) override;
 
 			MenuView* getMenuView() const;
 

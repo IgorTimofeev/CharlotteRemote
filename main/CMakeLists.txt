@@ -1,5 +1,5 @@
 file(GLOB_RECURSE pizda_sources
-        "*.*"
+    "*.*"
 )
 
 idf_component_register(

@@ -3,7 +3,7 @@
 namespace pizda {
 	InstrumentToolbar::InstrumentToolbar() {
 		// Titles
-		topPanel.setHeight(InstrumentToolbar::topPanelHeight);
+		topPanel.setHeight(topPanelHeight);
 		topPanel.setVerticalAlignment(Alignment::start);
 		topPanel.setFillColor(&Theme::bg2);
 		*this += &topPanel;

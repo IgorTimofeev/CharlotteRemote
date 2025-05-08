@@ -3,7 +3,7 @@
 #include "pagesMenuView.h"
 
 namespace pizda {
-	PageMenuViewButton::PageMenuViewButton(const Image* image, const std::wstring_view& text, const Route* route) :
+	PageMenuViewButton::PageMenuViewButton(const Image* image, std::wstring_view text, const Route* route) :
 		MenuViewButton(image, text),
 		_route(route)
 	{

@@ -15,7 +15,7 @@ namespace pizda {
 			void setup();
 			void start();
 			void stop();
-			bool isStarted();
+			bool isStarted() const;
 
 		private:
 			TaskHandle_t* _task = nullptr;

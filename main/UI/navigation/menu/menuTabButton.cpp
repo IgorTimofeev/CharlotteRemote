@@ -4,7 +4,7 @@
 #include "menu.h"
 
 namespace pizda {
-	MenuTabButton::MenuTabButton(const std::wstring_view& text, const Route* route) : _route(route) {
+	MenuTabButton::MenuTabButton(std::wstring_view text, const Route* route) : _route(route) {
 		setHeight(16);
 
 		setDefaultBackgroundColor(&Theme::bg1);
@@ -17,8 +17,8 @@ namespace pizda {
 		setText(text);
 	}
 
-	void MenuTabButton::onRender(Renderer* renderer, const Bounds& bounds) {
-		Button::onRender(renderer, bounds);
+	void MenuTabButton::onRender(Renderer* renderer) {
+		Button::onRender(renderer);
 
 		// if (isChecked())
 		// 	renderer->renderHorizontalLine(bounds.getBottomLeft(), bounds.getWidth(), &Theme::fg1);

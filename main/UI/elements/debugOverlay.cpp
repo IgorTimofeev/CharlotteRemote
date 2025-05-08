@@ -9,7 +9,7 @@ namespace pizda {
 		invalidateRender();
 	}
 
-	void DebugOverlay::onRender(Renderer* renderer, const Bounds& bounds) {
+	void DebugOverlay::onRender(Renderer* renderer) {
 		auto& rc = RC::getInstance();
 
 		int32_t y = 0;
@@ -17,7 +17,7 @@ namespace pizda {
 
 		const auto totalDeltaTime = rc.getTickDeltaTime();
 
-		const auto renderLine = [renderer, &y, &text](const std::function<void()>& textSetter, const Color* color = &Theme::purple, uint8_t scale = 1) {
+		const auto renderLine = [&renderer, &y, &text](const std::function<void()>& textSetter, const Color* color = &Theme::purple, uint8_t scale = 1) {
 			textSetter();
 
 			renderer->renderString(Point(10, y), &Theme::fontNormal, color, text, scale);

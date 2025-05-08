@@ -7,7 +7,7 @@ namespace pizda {
 
 	class ThrottleIndicator : public Element {
 		public:
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer* renderer) override;
 
 			uint8_t getRemoteValue() const;
 			void setRemoteValue(uint8_t value);

@@ -25,7 +25,7 @@ namespace pizda {
 
 		protected:
 			void onTick() override;
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer* renderer) override;
 			void onEvent(Event* event) override;
 
 		private:
@@ -38,6 +38,6 @@ namespace pizda {
 
 			AircraftElement* _aircraftElement = nullptr;
 
-			float getEquatorialRadiansPerPixel();
+			float getEquatorialRadiansPerPixel() const;
 	};
 }

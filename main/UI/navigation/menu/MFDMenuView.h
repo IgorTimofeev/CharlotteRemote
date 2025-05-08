@@ -12,7 +12,7 @@ namespace pizda {
 
 	class MFDModeMenuViewButton : public MenuViewButton {
 		public:
-			explicit MFDModeMenuViewButton(const Image* image, const std::wstring_view& text, SettingsInterfaceMFDInstrumentsMode mode);
+			explicit MFDModeMenuViewButton(const Image* image, std::wstring_view text, SettingsInterfaceMFDInstrumentsMode mode);
 
 		protected:
 			void onClick() override;

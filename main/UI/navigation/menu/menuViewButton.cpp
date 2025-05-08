@@ -8,7 +8,7 @@
 namespace pizda {
 	// -------------------------------- Default --------------------------------
 
-	MenuViewButton::MenuViewButton(const Image* image, const std::wstring_view& text) : _image(image) {
+	MenuViewButton::MenuViewButton(const Image* image, std::wstring_view text) : _image(image) {
 		setSize(Size(45, image->getSize().getHeight() + _textOffset + Theme::fontSmall.getHeight()));
 		setText(text);
 
@@ -20,7 +20,8 @@ namespace pizda {
 		setPressedTextColor(&Theme::fg1);
 	}
 
-	void MenuViewButton::onRender(Renderer* renderer, const Bounds& bounds) {
+	void MenuViewButton::onRender(Renderer* renderer) {
+		const auto& bounds = getBounds();
 		constexpr static uint8_t cornerRadius = 4;
 
 		// Background

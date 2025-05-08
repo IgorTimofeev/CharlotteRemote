@@ -10,8 +10,8 @@ namespace pizda {
 
 	}
 
-	void Axis::setup() {
-		adc_oneshot_chan_cfg_t channelConfig = {
+	void Axis::setup() const {
+		constexpr adc_oneshot_chan_cfg_t channelConfig = {
 			.atten = ADC_ATTEN_DB_12,
 			.bitwidth = ADC_BITWIDTH_12
 		};
@@ -43,27 +43,27 @@ namespace pizda {
 		_processedValue = (std::clamp(_rawValue, _settings->from, _settings->to) - _settings->from) * maxValue / (_settings->to - _settings->from);
 	}
 
-	uint16_t Axis::getRawValue() {
+	uint16_t Axis::getRawValue() const {
 		return _rawValue;
 	}
 
-	uint16_t Axis::getProcessedValue() {
+	uint16_t Axis::getProcessedValue() const {
 		return _processedValue;
 	}
 
-	float Axis::getMappedFloatValue() {
+	float Axis::getMappedFloatValue() const {
 		return static_cast<float>(getProcessedValue()) / static_cast<float>(maxValue);
 	}
 
-	uint8_t Axis::getMappedUint8Value() {
+	uint8_t Axis::getMappedUint8Value() const {
 		return getProcessedValue() * 0xFF / maxValue;
 	}
 
-	uint16_t Axis::getMappedUint16Value() {
+	uint16_t Axis::getMappedUint16Value() const {
 		return getProcessedValue() * 0xFFFF / maxValue;
 	}
 
-	SettingsAxisData* Axis::getSettings() {
+	SettingsAxisData* Axis::getSettings() const {
 		return _settings;
 	}
 }

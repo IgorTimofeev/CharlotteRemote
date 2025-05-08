@@ -32,7 +32,7 @@ namespace pizda {
 		Layout::onTick();
 
 		auto& rc = RC::getInstance();
-		auto& settings = rc.getSettings();
+		const auto& settings = rc.getSettings();
 
 		// Controls
 		_landingGearImageView.setImage(

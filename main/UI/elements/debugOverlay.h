@@ -8,7 +8,7 @@ namespace pizda {
 
 	class DebugOverlay : public Element {
 		protected:
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer* renderer) override;
 
 			void onTick() override;
 	};

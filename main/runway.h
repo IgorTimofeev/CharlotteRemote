@@ -6,7 +6,7 @@
 namespace pizda {
 	class Runway {
 		public:
-			Runway(const GeographicCoordinates& center, uint16_t headingDegrees, uint16_t length, uint16_t width, const std::wstring_view& name) :
+			Runway(const GeographicCoordinates& center, uint16_t headingDegrees, uint16_t length, uint16_t width, std::wstring_view name) :
 				_center(center),
 				_headingDegrees(headingDegrees),
 				_length(length),

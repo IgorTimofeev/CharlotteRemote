@@ -9,7 +9,9 @@ namespace pizda {
 
 	class BatteryIndicator : public Element {
 		public:
-			void onRender(Renderer* renderer, const Bounds& bounds) override {
+			void onRender(Renderer* renderer) override {
+				const auto& bounds = getBounds();
+
 				const auto yCenter = bounds.getYCenter();
 				const auto tipSize = Size(4, 6);
 				const auto tipPosition = Point(bounds.getX2() - tipSize.getWidth(), yCenter - tipSize.getHeight() / 2);

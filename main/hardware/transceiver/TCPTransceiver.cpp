@@ -61,7 +61,7 @@ namespace pizda {
 		});
 	}
 
-	bool TCPTransceiver::isStarted() {
+	bool TCPTransceiver::isStarted() const {
 		return _task != nullptr;
 	}
 
@@ -73,7 +73,7 @@ namespace pizda {
 	}
 
 	void TCPTransceiver::startTaskFunction(void* arg) {
-		auto instance = reinterpret_cast<TCPTransceiver*>(arg);
+		const auto instance = static_cast<TCPTransceiver*>(arg);
 
 		while (true) {
 			instance->_TCP.tick();
@@ -94,7 +94,7 @@ namespace pizda {
 
 	void TCPTransceiver::fillRemotePacket() {
 		auto& rc = RC::getInstance();
-		auto& settings = rc.getSettings();
+		const auto& settings = rc.getSettings();
 
 		_remotePacket.throttle = settings.controls.throttle;
 

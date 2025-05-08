@@ -21,7 +21,7 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 		const auto& rd = rc.getAircraftData();
-		auto& settings = rc.getSettings();
+		const auto& settings = rc.getSettings();
 
 		// Throttles
 		throttleIndicator1.setRemoteValue(settings.controls.throttle);
@@ -36,12 +36,12 @@ namespace pizda {
 
 		if (event->getTypeID() == EncoderRotateEvent::typeID) {
 			if (isFocused()) {
-				auto rotateEvent = reinterpret_cast<EncoderRotateEvent*>(event);
+				const auto rotateEvent = reinterpret_cast<EncoderRotateEvent*>(event);
 
 //				ESP_LOGI("Encoder", "RPS: %ld", rotateEvent->getRPS());
 
 				auto& settings = RC::getInstance().getSettings();
-				settings.controls.throttle = YOBA::addSaturating(settings.controls.throttle, rotateEvent->getRPSFactor(60, 1, 10) * 0xFF / 100);
+				settings.controls.throttle = addSaturating(settings.controls.throttle, rotateEvent->getRPSFactor(60, 1, 10) * 0xFF / 100);
 				settings.enqueueWrite();
 
 				invalidate();

@@ -12,7 +12,7 @@ namespace pizda {
 
 	class InstrumentIndicatorLayout : public Layout {
 		public:
-			InstrumentIndicatorLayout(const std::wstring_view& text) {
+			InstrumentIndicatorLayout(std::wstring_view text) {
 				_text.setMargin(Margin(
 					InstrumentToolbar::contentHorizontalMargin,
 					InstrumentToolbar::titleVerticalOffset,
@@ -28,7 +28,7 @@ namespace pizda {
 				*this += &_text;
 			}
 
-			InstrumentIndicatorLayout(const std::wstring_view& text, Element* content, bool addHorizontalMargin) : InstrumentIndicatorLayout(text) {
+			InstrumentIndicatorLayout(std::wstring_view text, Element* content, bool addHorizontalMargin) : InstrumentIndicatorLayout(text) {
 				setContent(content, addHorizontalMargin);
 			}
 
@@ -67,8 +67,10 @@ namespace pizda {
 				updateTextColor();
 			}
 
-			void onRender(Renderer* renderer, const Bounds& bounds) override {
+			void onRender(Renderer* renderer) override {
 				if (isFocused()) {
+					const auto& bounds = getBounds();
+
 					// Panel
 					renderer->renderFilledRectangle(
 						Bounds(bounds.getX(), bounds.getY(), bounds.getWidth(), InstrumentToolbar::topPanelHeight),
@@ -82,7 +84,7 @@ namespace pizda {
 					);
 				}
 
-				Layout::onRender(renderer, bounds);
+				Layout::onRender(renderer);
 			}
 
 		private:

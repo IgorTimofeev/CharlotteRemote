@@ -20,13 +20,13 @@ namespace pizda {
 		public:
 
 		protected:
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer* renderer) override;
 			void onEvent(Event* event) override;
 
 		private:
 			SelectedPin _selectedPin = SelectedPin::none;
 
-			AxisEditor* getEditor();
+			AxisEditor* getEditor() const;
 	};
 
 	class AxisEditor : public Layout {

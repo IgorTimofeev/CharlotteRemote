@@ -10,16 +10,16 @@ namespace pizda {
 
 			constexpr static uint16_t maxValue = 4096;
 
-			void setup();
+			void setup() const;
 			void tick();
 
-			SettingsAxisData* getSettings();
+			SettingsAxisData* getSettings() const;
 
-			uint16_t getRawValue();
-			uint16_t getProcessedValue();
-			float getMappedFloatValue();
-			uint8_t getMappedUint8Value();
-			uint16_t getMappedUint16Value();
+			uint16_t getRawValue() const;
+			uint16_t getProcessedValue() const;
+			float getMappedFloatValue() const;
+			uint8_t getMappedUint8Value() const;
+			uint16_t getMappedUint16Value() const;
 
 		private:
 			adc_channel_t _channel;

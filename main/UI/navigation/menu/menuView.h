@@ -13,7 +13,7 @@ namespace pizda {
 		public:
 			explicit MenuView();
 
-			Menu* getMenu();
+			Menu* getMenu() const;
 
 			virtual const Route* getRoute() = 0;
 	};

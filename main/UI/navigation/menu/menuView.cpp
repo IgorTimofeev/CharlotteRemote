@@ -9,7 +9,7 @@ namespace pizda {
 		setMargin(Margin(15, 15, 15, 10));
 	}
 
-	Menu* MenuView::getMenu() {
+	Menu* MenuView::getMenu() const {
 		return reinterpret_cast<Menu*>(getParent()->getParent()->getParent());
 	}
 }

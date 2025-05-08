@@ -9,7 +9,7 @@ namespace pizda {
 
 	class KorryButton : public Button {
 		public:
-			KorryButton(const std::wstring_view& text) {
+			explicit KorryButton(std::wstring_view text) {
 				setCornerRadius(3);
 
 				setDefaultBackgroundColor(&Theme::bg2);
@@ -17,6 +17,7 @@ namespace pizda {
 				setDefaultTextColor(&Theme::fg3);
 
 				setPressedBackgroundColor(&Theme::bg2);
+
 				setPressedBorderColor(&Theme::bg3);
 				setPressedTextColor(&Theme::fg1);
 
@@ -24,7 +25,9 @@ namespace pizda {
 				setText(text);
 			}
 
-			void onRender(Renderer* renderer, const Bounds& bounds) override {
+			void onRender(Renderer* renderer) override {
+				const auto& bounds = getBounds();
+
 				renderer->renderFilledRectangle(bounds, getCornerRadius(), isChecked() ? getPressedBackgroundColor() : getDefaultBackgroundColor());
 //				renderer->renderRectangle(bounds, getCornerRadius(), isChecked() ? getPressedBorderColor() : getDefaultBorderColor());
 

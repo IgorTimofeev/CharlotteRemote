@@ -16,14 +16,14 @@ namespace pizda {
 
 	class MenuTabButton : public Button {
 		public:
-			MenuTabButton(const std::wstring_view& text, const Route* route);
+			MenuTabButton(std::wstring_view text, const Route* route);
 
 			const Route* getRoute() const;
 
 		protected:
 			void onClick() override;
 
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer* renderer) override;
 
 		private:
 			const Route* _route;

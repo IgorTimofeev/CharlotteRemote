@@ -272,7 +272,7 @@ namespace pizda {
 	}
 
 	void RC::ADCUnitsSetup() {
-		const adc_oneshot_unit_init_cfg_t ADC1UnitConfig = {
+		constexpr adc_oneshot_unit_init_cfg_t ADC1UnitConfig = {
 			.unit_id = ADC_UNIT_1,
 			.clk_src = ADC_RTC_CLK_SRC_DEFAULT,
 			.ulp_mode = ADC_ULP_MODE_DISABLE
@@ -362,7 +362,7 @@ namespace pizda {
 
 		// Removing old page
 		if (_pageLayout.getChildrenCount() > 0) {
-			auto oldPage = _pageLayout[0];
+			const auto oldPage = _pageLayout[0];
 
 			_pageLayout.removeChildAt(0);
 
