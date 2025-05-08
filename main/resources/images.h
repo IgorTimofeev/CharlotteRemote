@@ -9,6 +9,7 @@
 #include "images/menuIconWiFiImage.h"
 #include "images/menuIconAxisImage.h"
 #include "images/menuIconDevImage.h"
+#include "images/menuIconPowerImage.h"
 
 #include "images/MFDFlapsAndSpoilersImage.h"
 #include "images/MFDLandingGearExtendedImage.h"
@@ -26,6 +27,7 @@ namespace pizda::resources {
 			static const MenuIconWiFiImage menuIconWiFi;
 			static const MenuIconAxisImage menuIconAxis;
 			static const MenuIconDevImage menuIconDev;
+			static const MenuIconPowerImage menuIconPower;
 
 			static const MFDFlapsAndSpoilersImage MFDFlapsAndSpoilers;
 			static const MFDLandingGearExtendedImage MFDLandingGearExtended;

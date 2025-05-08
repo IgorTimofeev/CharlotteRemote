@@ -27,6 +27,7 @@ namespace pizda {
 	void PFDScene::onRender(Renderer* renderer) {
 		const auto& bounds = getBounds();
 		auto& rc = RC::getInstance();
+		const auto& settings = rc.getSettings();
 		const auto& ad = rc.getAircraftData();
 
 		const auto& center = bounds.getCenter();
@@ -91,16 +92,18 @@ namespace pizda {
 		);
 
 		// Yaw overlay
-		renderYawOverlay(
-			renderer,
-			Bounds(
-				bounds.getX(),
-				bounds.getY2() - PFD::yawOverlayHeight + 1,
-				bounds.getWidth(),
-				PFD::yawOverlayHeight
-			),
-			ad
-		);
+		if (!settings.interface.MFD.ND.show) {
+			renderYawOverlay(
+				renderer,
+				Bounds(
+					bounds.getX(),
+					bounds.getY2() - PFD::yawOverlayHeight + 1,
+					bounds.getWidth(),
+					PFD::yawOverlayHeight
+				),
+				ad
+			);
+		}
 
 		// Wind
 		if (ad.groundSpeed > PFD::windVisibilityGroundSpeed) {
@@ -153,7 +156,7 @@ namespace pizda {
 		}
 
 		// Flight director
-		if (rc.getSettings().interface.MFD.PFD.flightDirectors) {
+		if (settings.interface.MFD.PFD.flightDirectors) {
 			const uint16_t flightDirectorLength = static_cast<uint32_t>(std::min(bounds.getWidth(), bounds.getHeight())) * PFD::flightDirectorLengthFactor / 100;
 			const auto flightDirectorLengthHalfF = static_cast<float>(flightDirectorLength) / 2.f;
 
@@ -497,7 +500,7 @@ namespace pizda {
 		const auto y2 = bounds.getY2();
 
 		float closestInteger;
-		const float closestFractional = modff(toDegrees(aircraftData.computed.yaw) / PFD::yawOverlayAngleStepUnits, &closestInteger);
+		const float closestFractional = std::modff(toDegrees(aircraftData.computed.yaw) / PFD::yawOverlayAngleStepUnits, &closestInteger);
 		closestInteger *= PFD::yawOverlayAngleStepUnits;
 
 		const uint8_t fullCount = static_cast<uint8_t>(std::ceilf(static_cast<float>(centerX - bounds.getX()) / PFD::yawOverlayAngleStepPixels)) + 1;
@@ -579,7 +582,7 @@ namespace pizda {
 	}
 
 	PFD::PFD() {
-//		setClipToBounds(true);
+		setClipToBounds(true);
 
 		_scene.setMargin(Margin(speedWidth, 0, altitudeWidth + verticalSpeedWidth, 0));
 		*this += &_scene;

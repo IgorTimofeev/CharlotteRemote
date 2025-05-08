@@ -15,6 +15,13 @@ namespace pizda {
 
 			*this += button;
 		}
+
+		// Power
+		_powerButton.click += [] {
+			esp_restart();
+		};
+
+		*this += &_powerButton;
 	}
 
 	const Route* PagesMenuView::_route = nullptr;

@@ -29,6 +29,22 @@ namespace pizda {
 			void onEvent(Event* event) override;
 
 		private:
+			constexpr static uint8_t _compassMarginTop = 15;
+			constexpr static uint8_t _compassMarginBottom = 20;
+
+			constexpr static uint16_t _compassViewportDeg = 120;
+			constexpr static uint16_t _compassViewportHalfDeg = _compassViewportDeg / 2;
+
+			constexpr static uint8_t _compassAngleStepUnitsDeg = 10;
+			constexpr static uint8_t _compassAngleStepLineSmallLength = 3;
+
+			constexpr static uint8_t _compassAngleStepUnitsBigDeg = 30;
+			constexpr static uint8_t _compassAngleStepLineBigLength = 5;
+
+			constexpr static uint8_t _compassAngleStepBigLineTextOffset = 5;
+			constexpr static int16_t _compassAngleFromDeg = -_compassViewportHalfDeg + _compassAngleStepUnitsDeg;
+			constexpr static int16_t _compassAngleToDeg = _compassViewportHalfDeg;
+
 			static GeographicCoordinates _cameraOffset;
 			GeographicCoordinates _cameraCoordinates {};
 

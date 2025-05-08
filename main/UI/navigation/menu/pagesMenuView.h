@@ -22,11 +22,13 @@ namespace pizda {
 			static const Route* _route;
 
 			PageMenuViewButton
-				_MFDButton = PageMenuViewButton(&resources::Images::menuIconMFD, L"MFD", &Routes::settingsMFD),
-				_personalizationButton = PageMenuViewButton(&resources::Images::menuIconPersonalization, L"Person.", &Routes::settingsPersonalization),
-				_axisButton = PageMenuViewButton(&resources::Images::menuIconAxis, L"Axis", &Routes::settingsAxis),
-				_WiFiButton = PageMenuViewButton(&resources::Images::menuIconWiFi, L"Wi-Fi", &Routes::settingsWiFi),
-				_UITestButton = PageMenuViewButton(&resources::Images::menuIconDev, L"Dev", &Routes::settingsDeveloper);
+				_MFDButton = { &resources::Images::menuIconMFD, L"MFD", &Routes::settingsMFD },
+				_personalizationButton = { &resources::Images::menuIconPersonalization, L"Person.", &Routes::settingsPersonalization },
+				_axisButton = { &resources::Images::menuIconAxis, L"Axis", &Routes::settingsAxis },
+				_WiFiButton = { &resources::Images::menuIconWiFi, L"Wi-Fi", &Routes::settingsWiFi },
+				_UITestButton = { &resources::Images::menuIconDev, L"Dev", &Routes::settingsDeveloper };
+
+			MenuViewButton _powerButton = { &resources::Images::menuIconPower, L"Reboot" };
 
 			PageMenuViewButton* _buttons[5] = {
 				&_MFDButton,

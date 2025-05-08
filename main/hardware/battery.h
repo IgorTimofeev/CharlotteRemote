@@ -26,8 +26,8 @@ namespace pizda {
 
 			}
 
-			void setup() {
-				adc_oneshot_chan_cfg_t channelConfig = {
+			void setup() const {
+				constexpr adc_oneshot_chan_cfg_t channelConfig = {
 					.atten = ADC_ATTEN_DB_12,
 					.bitwidth = ADC_BITWIDTH_12,
 				};

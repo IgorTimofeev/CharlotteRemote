@@ -13,6 +13,7 @@ namespace pizda {
 		const auto& sd = rc.getSpatialData();
 
 		setClipToBounds(true);
+		setFOV(toRadians(90));
 
 		// Axis
 //		addElement(new SpatialLine(
@@ -47,6 +48,7 @@ namespace pizda {
 		// Aircraft
 		_aircraftElement = new AircraftElement();
 		addElement(_aircraftElement);
+
 	}
 
 	ND::~ND() {
@@ -64,6 +66,7 @@ namespace pizda {
 	void ND::onTick() {
 		Scene::onTick();
 
+		const auto& bounds = getBounds();
 		auto& rc = RC::getInstance();
 		const auto& settings = rc.getSettings();
 		const auto& ad = rc.getAircraftData();
@@ -79,11 +82,11 @@ namespace pizda {
 		);
 
 		// Camera
-		setFOV(toRadians(90));
-
 		_cameraCoordinates.setLatitude(ad.geographicCoordinates.getLatitude() + _cameraOffset.getLatitude());
 		_cameraCoordinates.setLongitude(ad.geographicCoordinates.getLongitude() + _cameraOffset.getLongitude());
 		_cameraCoordinates.setAltitude(_cameraOffset.getAltitude());
+
+		setPivotOffset(Point(0, bounds.getHeight() / 2 - _compassMarginBottom));
 
 		setCameraPosition(_cameraCoordinates.toCartesian());
 
@@ -100,40 +103,106 @@ namespace pizda {
 		Scene::onRender(renderer);
 
 		const auto& bounds = getBounds();
+		auto& rc = RC::getInstance();
+		const auto& ad = rc.getAircraftData();
+
+		// Compass
+		{
+			const uint16_t compassRadius = bounds.getHeight() - _compassMarginTop - _compassMarginBottom;
+
+			const auto compassCenter = Point(
+				bounds.getXCenter(),
+				bounds.getY() + _compassMarginTop + compassRadius
+			);
+
+			// Arc
+			renderer->renderArc(
+				compassCenter,
+				compassRadius,
+				(90 - _compassViewportHalfDeg) * 255 / 360,
+				(90 + _compassViewportHalfDeg) * 255 / 360,
+				&Theme::fg1
+			);
+
+			// Marks
+			const auto yawDeg = toDegrees(ad.computed.yaw);
+
+			float stepUnitsPerYawDegIntPart;
+			const float stepUnitsPerYawDegFractPart = std::modff(yawDeg / _compassAngleStepUnitsDeg, &stepUnitsPerYawDegIntPart);
+			const auto stepUnitsPerYawDegInt = static_cast<int32_t>(stepUnitsPerYawDegIntPart);
+
+			const int32_t yawDegBig = stepUnitsPerYawDegInt * _compassAngleStepUnitsDeg;
+
+			for (int16_t angleDeg = _compassAngleFromDeg; angleDeg <= _compassAngleToDeg; angleDeg += _compassAngleStepUnitsDeg) {
+				const int32_t shownAngleDeg = angleDeg + yawDegBig;
+				const auto isBig = shownAngleDeg % _compassAngleStepUnitsBigDeg == 0;
+
+				const auto angleEndVec = Vector2F(0, compassRadius).rotate(-toRadians(angleDeg - stepUnitsPerYawDegFractPart * _compassAngleStepUnitsDeg));
+				const auto angleEndVecNorm = angleEndVec.normalize();
+				const auto angleStartVec = angleEndVec - angleEndVecNorm * (isBig ? _compassAngleStepLineBigLength : _compassAngleStepLineSmallLength);
+
+				renderer->renderLine(
+					Point(
+						compassCenter.getX() + static_cast<int32_t>(angleStartVec.getX()),
+						compassCenter.getY() - static_cast<int32_t>(angleStartVec.getY())
+					),
+					Point(
+						compassCenter.getX() + static_cast<int32_t>(angleEndVec.getX()),
+						compassCenter.getY() - static_cast<int32_t>(angleEndVec.getY())
+					),
+					&Theme::fg1
+				);
+
+				if (isBig) {
+					const auto angleTextVec = angleStartVec - angleEndVecNorm * _compassAngleStepBigLineTextOffset;
+					const auto text = std::to_wstring(shownAngleDeg);
+
+					renderer->renderString(
+						Point(
+							compassCenter.getX() + static_cast<int32_t>(angleTextVec.getX()) - Theme::fontSmall.getWidth(text) / 2,
+							compassCenter.getY() - static_cast<int32_t>(angleTextVec.getY())
+						),
+						&Theme::fontSmall,
+						&Theme::fg1,
+						text
+					);
+				}
+			}
+		}
 
 		// Cursor
-		if (_cursorPosition.getX() >= 0 &&  _cursorPosition.getY() >= 0) {
+		if (_cursorPosition.getX() >= 0 && _cursorPosition.getY() >= 0) {
 			constexpr static uint8_t lineAreaOffset = 5;
 			constexpr static uint8_t lineAreaSize = 8;
 
 			// Center
-			const auto& center = bounds.getPosition() + _cursorPosition;
+			const auto cursorCenter = bounds.getPosition() + _cursorPosition;
 
-			renderer->renderPixel(center, &Theme::yellow);
+			renderer->renderPixel(cursorCenter, &Theme::yellow);
 
 			// Upper
 			renderer->renderLine(
-				Point(center.getX(), center.getY() - lineAreaOffset),
-				Point(center.getX() - lineAreaSize, center.getY() - lineAreaOffset - lineAreaSize),
+				Point(cursorCenter.getX(), cursorCenter.getY() - lineAreaOffset),
+				Point(cursorCenter.getX() - lineAreaSize, cursorCenter.getY() - lineAreaOffset - lineAreaSize),
 				&Theme::yellow
 			);
 
 			renderer->renderLine(
-				Point(center.getX(), center.getY() - lineAreaOffset),
-				Point(center.getX() + lineAreaSize, center.getY() - lineAreaOffset - lineAreaSize),
+				Point(cursorCenter.getX(), cursorCenter.getY() - lineAreaOffset),
+				Point(cursorCenter.getX() + lineAreaSize, cursorCenter.getY() - lineAreaOffset - lineAreaSize),
 				&Theme::yellow
 			);
 
 			// Lower
 			renderer->renderLine(
-				Point(center.getX(), center.getY() + lineAreaOffset),
-				Point(center.getX() - lineAreaSize, center.getY() + lineAreaOffset + lineAreaSize),
+				Point(cursorCenter.getX(), cursorCenter.getY() + lineAreaOffset),
+				Point(cursorCenter.getX() - lineAreaSize, cursorCenter.getY() + lineAreaOffset + lineAreaSize),
 				&Theme::yellow
 			);
 
 			renderer->renderLine(
-				Point(center.getX(), center.getY() + lineAreaOffset),
-				Point(center.getX() + lineAreaSize, center.getY() + lineAreaOffset + lineAreaSize),
+				Point(cursorCenter.getX(), cursorCenter.getY() + lineAreaOffset),
+				Point(cursorCenter.getX() + lineAreaSize, cursorCenter.getY() + lineAreaOffset + lineAreaSize),
 				&Theme::yellow
 			);
 		}
