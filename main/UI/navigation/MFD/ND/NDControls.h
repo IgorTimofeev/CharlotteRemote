@@ -13,12 +13,12 @@ namespace pizda {
 		public:
 			NDControls();
 
-			void updateOrientationButtonText();
+			void updateViewModeButtonText();
 
 		private:
 			ND _ND {};
 
-			Button _orientationButton {};
+			Button _viewModeButton {};
 			StackLayout _rightRows {};
 			Button _latLongButton {};
 

@@ -12,13 +12,13 @@ namespace pizda {
 
 	class MFDModeMenuViewButton : public MenuViewButton {
 		public:
-			explicit MFDModeMenuViewButton(const Image* image, std::wstring_view text, SettingsInterfaceMFDInstrumentsMode mode);
+			explicit MFDModeMenuViewButton(const Image* image, std::wstring_view text, SettingsInterfaceMFDToolbarMode mode);
 
 		protected:
 			void onClick() override;
 
 		private:
-			SettingsInterfaceMFDInstrumentsMode _mode;
+			SettingsInterfaceMFDToolbarMode _mode;
 	};
 
 	class MFDMenuView : public MenuView {
@@ -26,12 +26,14 @@ namespace pizda {
 			explicit MFDMenuView();
 
 			MenuViewButton
-				NDButton = MenuViewButton(&resources::Images::menuIconND, L"ND");
+				PFDButton = { &resources::Images::menuIconMFDPFD, L"PFD" },
+				NDButton = { &resources::Images::menuIconMFDND, L"ND" },
+				FPLButton = { &resources::Images::menuIconMFDFlightPlan, L"FPL" };
 
 			MFDModeMenuViewButton
-				mainButton = MFDModeMenuViewButton(&resources::Images::menuIconMFDMain, L"ECAM", SettingsInterfaceMFDInstrumentsMode::main),
-				autopilotButton = MFDModeMenuViewButton(&resources::Images::menuIconMFDAutopilot, L"MCP", SettingsInterfaceMFDInstrumentsMode::autopilot),
-				pressureButton = MFDModeMenuViewButton(&resources::Images::menuIconMFDPressure, L"EFIS", SettingsInterfaceMFDInstrumentsMode::pressure);
+				mainButton { &resources::Images::menuIconMFDMain, L"ECAM", SettingsInterfaceMFDToolbarMode::main },
+				autopilotButton { &resources::Images::menuIconMFDAutopilot, L"MCP", SettingsInterfaceMFDToolbarMode::autopilot },
+				pressureButton { &resources::Images::menuIconMFDPressure, L"EFIS", SettingsInterfaceMFDToolbarMode::pressure };
 
 			MFDModeMenuViewButton* modeButtons[3] {
 				&mainButton,
@@ -40,5 +42,8 @@ namespace pizda {
 			};
 
 			const Route* getRoute() override;
+
+		private:
+
 	};
 }

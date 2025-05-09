@@ -21,8 +21,8 @@ namespace pizda {
 			uint32_t referencePressurePa = 101325;
 			bool referencePressureSTD = false;
 
-			uint32_t minimumAltitudeFt = 100;
-			bool minimumAltitudeEnabled = false;
+			uint32_t minimumAltitudeFt = 350;
+			bool minimumAltitudeEnabled = true;
 
 			bool landingGear = true;
 			bool strobeLights = false;
@@ -48,13 +48,13 @@ namespace pizda {
 
 	class SettingsAutopilot {
 		public:
-			uint16_t speedKt = 0;
+			uint16_t speedKt = 90;
 			bool autoThrottle = false;
 
 			uint16_t headingDeg = 0;
 			bool headingHold = false;
 
-			uint16_t altitudeFt = 0;
+			uint16_t altitudeFt = 100;
 			bool levelChange = false;
 	};
 
@@ -67,28 +67,45 @@ namespace pizda {
 
 	class SettingsInterfaceMFDPFD {
 		public:
-			uint8_t FOV = 60;
+			bool visible = true;
+			uint8_t FOV = 50;
 			bool flightDirectors = true;
 	};
 
 	class SettingsInterfaceMFDND {
 		public:
-			bool show = false;
-			uint8_t heightPercent = 40;
-			bool northUp = false;
+			bool visible = true;
+			bool arc = true;
 	};
 
-	enum class SettingsInterfaceMFDInstrumentsMode : uint8_t {
+	enum class SettingsInterfaceMFDToolbarMode : uint8_t {
+		none,
 		main,
 		autopilot,
 		pressure
+	};
+
+	class SettingsInterfaceMFDFlightPlan {
+		public:
+			bool visible = true;
+	};
+
+	class SettingsInterfaceMFDToolbar {
+		public:
+			SettingsInterfaceMFDToolbarMode mode = SettingsInterfaceMFDToolbarMode::main;
 	};
 
 	class SettingsInterfaceMFD {
 		public:
 			SettingsInterfaceMFDPFD PFD {};
 			SettingsInterfaceMFDND ND {};
-			SettingsInterfaceMFDInstrumentsMode instrumentsMode = SettingsInterfaceMFDInstrumentsMode::main;
+			SettingsInterfaceMFDFlightPlan flightPlan {};
+			SettingsInterfaceMFDToolbar toolbar {};
+			uint8_t splitPercent = 60;
+
+			bool isAnyPanelVisible() const {
+				return PFD.visible || ND.visible || flightPlan.visible || toolbar.mode != SettingsInterfaceMFDToolbarMode::none;
+			}
 	};
 
 	class SettingsInterfaceDeveloper {
@@ -165,7 +182,7 @@ namespace pizda {
 
 		private:
 			constexpr static uint32_t _writeDelay = 2500000;
-			constexpr static uint8_t _version = 15;
+			constexpr static uint8_t _version = 18;
 			uint32_t _timeToWrite = 0;
 	};
 

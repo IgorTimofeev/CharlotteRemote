@@ -2,12 +2,12 @@
 
 #include "../page.h"
 
-#include "PFD.h"
-
-#include "main/mainControls.h"
+#include "PFD/PFD.h"
 #include "ND/NDControls.h"
-#include "autopilot/autopilotControls.h"
-#include "pressure/pressureControls.h"
+#include "flightPlan/flightPlan.h"
+#include "toolbar/main/mainControls.h"
+#include "toolbar/autopilot/autopilotControls.h"
+#include "toolbar/pressure/pressureControls.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -23,11 +23,11 @@ namespace pizda {
 		private:
 			static MFDPage* _instance;
 
-			PFD _PFD {};
-
 			RelativeStackLayout _rows {};
 
+			PFD* _PFD = nullptr;
 			NDControls* _NDControls = nullptr;
+			FlightPlan* _flightPlan = nullptr;
 			MainControls* _mainControls = nullptr;
 			AutopilotControls* _autopilotControls = nullptr;
 			PressureControls* _pressureControls = nullptr;

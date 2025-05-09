@@ -16,7 +16,9 @@ namespace pizda {
 	}
 
 	MFDPage::~MFDPage() {
+		delete _PFD;
 		delete _NDControls;
+		delete _flightPlan;
 		delete _mainControls;
 		delete _autopilotControls;
 		delete _pressureControls;
@@ -32,40 +34,76 @@ namespace pizda {
 	void MFDPage::fromSettingsInstance() {
 		_rows.removeChildren();
 
+		auto& rc = RC::getInstance();
 		const auto& settings = RC::getInstance().getSettings();
 
-		if (_NDControls && !settings.interface.MFD.ND.show) {
+		// Deleting
+		if (_PFD && !settings.interface.MFD.PFD.visible) {
+			delete _PFD;
+			_PFD = nullptr;
+		}
+
+		if (_NDControls && !settings.interface.MFD.ND.visible) {
 			delete _NDControls;
 			_NDControls = nullptr;
 		}
 
-		if (_mainControls && settings.interface.MFD.instrumentsMode != SettingsInterfaceMFDInstrumentsMode::main) {
+		if (_flightPlan && !settings.interface.MFD.flightPlan.visible) {
+			delete _flightPlan;
+			_flightPlan = nullptr;
+		}
+
+		if (_mainControls && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::main) {
 			delete _mainControls;
 			_mainControls = nullptr;
 		}
 
-		if (_autopilotControls && settings.interface.MFD.instrumentsMode != SettingsInterfaceMFDInstrumentsMode::autopilot) {
+		if (_autopilotControls && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::autopilot) {
 			delete _autopilotControls;
 			_autopilotControls = nullptr;
 		}
 
-		if (_pressureControls && settings.interface.MFD.instrumentsMode != SettingsInterfaceMFDInstrumentsMode::pressure) {
+		if (_pressureControls && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::pressure) {
 			delete _pressureControls;
 			_pressureControls = nullptr;
 		}
 
-		_rows += &_PFD;
+		// Creating
+		if (settings.interface.MFD.PFD.visible) {
+			if (!_PFD)
+				_PFD = new PFD();
 
-		if (settings.interface.MFD.ND.show) {
+			_rows += _PFD;
+		}
+
+		if (settings.interface.MFD.ND.visible) {
 			if (!_NDControls)
 				_NDControls = new NDControls();
 
-			_rows.setRelativeSize(_NDControls, static_cast<float>(settings.interface.MFD.ND.heightPercent) / 100.f * 2.f);
 			_rows += _NDControls;
 		}
 
-		switch (settings.interface.MFD.instrumentsMode) {
-			case SettingsInterfaceMFDInstrumentsMode::main: {
+		if (settings.interface.MFD.flightPlan.visible) {
+			if (!_flightPlan)
+				_flightPlan = new FlightPlan();
+
+			_rows += _flightPlan;
+		}
+
+		if (_rows.getChildrenCount() > 1)
+			_rows.setRelativeSize(_rows[0], static_cast<float>(settings.interface.MFD.splitPercent) / 100.f * 2.f);
+
+		auto& openMenuButton = rc.getOpenMenuButton();
+
+		if (settings.interface.MFD.toolbar.mode == SettingsInterfaceMFDToolbarMode::none) {
+			openMenuButton.applyBottomStyle();
+		}
+		else {
+			openMenuButton.applyBottomRightStyle();
+		}
+
+		switch (settings.interface.MFD.toolbar.mode) {
+			case SettingsInterfaceMFDToolbarMode::main: {
 				if (!_mainControls)
 					_mainControls = new MainControls();
 
@@ -74,7 +112,7 @@ namespace pizda {
 
 				break;
 			}
-			case SettingsInterfaceMFDInstrumentsMode::autopilot: {
+			case SettingsInterfaceMFDToolbarMode::autopilot: {
 				if (!_autopilotControls)
 					_autopilotControls = new AutopilotControls();
 
@@ -83,7 +121,7 @@ namespace pizda {
 
 				break;
 			}
-			case SettingsInterfaceMFDInstrumentsMode::pressure: {
+			case SettingsInterfaceMFDToolbarMode::pressure: {
 				if (!_pressureControls)
 					_pressureControls = new PressureControls();
 
@@ -92,6 +130,8 @@ namespace pizda {
 
 				break;
 			}
+			default:
+				break;
 		}
 
 		invalidate();

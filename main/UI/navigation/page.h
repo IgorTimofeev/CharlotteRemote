@@ -10,7 +10,6 @@ namespace pizda {
 	using namespace YOBA;
 
 	class Page : public Layout {
-		public:
 
 	};
 
@@ -21,7 +20,6 @@ namespace pizda {
 			ScrollView scrollView {};
 			StackLayout rows {};
 
-			OpenMenuButton menuButton {};
 			Text title {};
 	};
 }

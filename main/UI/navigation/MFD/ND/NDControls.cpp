@@ -11,17 +11,17 @@ namespace pizda {
 		_rightRows.setMargin(Margin(0, 5, 5, 0));
 		*this += &_rightRows;
 
-		updateOrientationButtonText();
+		updateViewModeButtonText();
 
-		addGovnoButton(&_orientationButton, [this] {
+		addGovnoButton(&_viewModeButton, [this] {
 			auto& settings = RC::getInstance().getSettings();
-			settings.interface.MFD.ND.northUp = !settings.interface.MFD.ND.northUp;
+			settings.interface.MFD.ND.arc = !settings.interface.MFD.ND.arc;
 			settings.enqueueWrite();
 
-			updateOrientationButtonText();
+			updateViewModeButtonText();
 		});
 
-		_latLongButton.setText(L"RS");
+		_latLongButton.setText(L"RST");
 
 		addGovnoButton(&_latLongButton, [this] {
 			_ND.resetCameraOffsetLatLon();
@@ -46,7 +46,7 @@ namespace pizda {
 		_rightRows += button;
 	}
 
-	void NDControls::updateOrientationButtonText() {
-		_orientationButton.setText(RC::getInstance().getSettings().interface.MFD.ND.northUp ? L"NU" : L"TU");
+	void NDControls::updateViewModeButtonText() {
+		_viewModeButton.setText(RC::getInstance().getSettings().interface.MFD.ND.arc ? L"arc" : L"map");
 	}
 }

@@ -32,12 +32,6 @@ namespace pizda {
 					static_cast<int32_t>(vertices[0].getY())
 				);
 
-				renderer->renderLine(
-					position,
-					Point(position.getX(), scene.getBounds().getY()),
-					&Theme::purple
-				);
-
 				renderer->renderTriangle(
 					position,
 					Point(position.getX() - triangleWidth / 2, position.getY() + triangleHeight),

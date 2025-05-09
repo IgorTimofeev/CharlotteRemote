@@ -8,6 +8,7 @@
 #include "UI/theme.h"
 #include "UI/navigation/route.h"
 #include "UI/navigation/menu/menu.h"
+#include "UI/navigation/menu/openMenuButton.h"
 #include "UI/elements/debugOverlay.h"
 
 #include "units.h"
@@ -55,6 +56,7 @@ namespace pizda {
 			bool isMenuVisible() const;
 			void showMenu();
 			void hideMenu();
+			OpenMenuButton& getOpenMenuButton();
 
 			bool isDebugOverlayVisible();
 			void updateDebugOverlayVisibility();
@@ -157,11 +159,11 @@ namespace pizda {
 			Application _application {};
 			Layout _pageLayout {};
 
+			OpenMenuButton _openMenuButton {};
 			Menu* _menu = nullptr;
 			DebugOverlay* _debugOverlay = nullptr;
 
 			const Route* _route = nullptr;
-
 
 			// -------------------------------- Timings --------------------------------
 

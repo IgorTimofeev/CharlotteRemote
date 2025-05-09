@@ -66,7 +66,6 @@ namespace pizda {
 	void ND::onTick() {
 		Scene::onTick();
 
-		const auto& bounds = getBounds();
 		auto& rc = RC::getInstance();
 		const auto& settings = rc.getSettings();
 		const auto& ad = rc.getAircraftData();
@@ -86,17 +85,29 @@ namespace pizda {
 		_cameraCoordinates.setLongitude(ad.geographicCoordinates.getLongitude() + _cameraOffset.getLongitude());
 		_cameraCoordinates.setAltitude(_cameraOffset.getAltitude());
 
-		setPivotOffset(Point(0, bounds.getHeight() / 2 - _compassMarginBottom));
-
 		setCameraPosition(_cameraCoordinates.toCartesian());
 
 		setCameraRotation(Vector3F(
 			-_cameraCoordinates.getLatitude(),
-			settings.interface.MFD.ND.northUp ? 0 : ad.computed.yaw,
+			ad.computed.yaw,
 			toRadians(90) + _cameraCoordinates.getLongitude()
 		));
 
 		invalidate();
+	}
+
+	void ND::onBoundsChanged() {
+		Scene::onBoundsChanged();
+
+		const auto& bounds = getBounds();
+		auto& rc = RC::getInstance();
+		const auto& settings = rc.getSettings();
+
+		setPivotOffset(
+			settings.interface.MFD.ND.arc
+			? Point(0, bounds.getHeight() / 2 - _compassMarginBottom)
+			: Point()
+		);
 	}
 
 	void ND::onRender(Renderer* renderer) {
@@ -104,36 +115,77 @@ namespace pizda {
 
 		const auto& bounds = getBounds();
 		auto& rc = RC::getInstance();
+		const auto& settings = rc.getSettings();
 		const auto& ad = rc.getAircraftData();
 
 		// Compass
 		{
-			const uint16_t compassRadius = bounds.getHeight() - _compassMarginTop - _compassMarginBottom;
-
-			const auto compassCenter = Point(
-				bounds.getXCenter(),
-				bounds.getY() + _compassMarginTop + compassRadius
-			);
-
-			// Arc
-			renderer->renderArc(
-				compassCenter,
-				compassRadius,
-				(90 - _compassViewportHalfDeg) * 255 / 360,
-				(90 + _compassViewportHalfDeg) * 255 / 360,
-				&Theme::fg1
-			);
-
-			// Marks
+			const auto centerX = bounds.getXCenter();
 			const auto yawDeg = toDegrees(ad.computed.yaw);
 
+			// Text
+			const auto yawDegText = std::to_wstring(static_cast<int32_t>(yawDeg) % 360);
+
+			renderer->renderString(
+				Point(
+					centerX - Theme::fontNormal.getWidth(yawDegText) / 2,
+					bounds.getY() + _compassMarginTop
+				),
+				&Theme::fontNormal,
+				&Theme::fg1,
+				yawDegText
+			);
+
+			const uint16_t compassLocalY = _compassMarginTop + Theme::fontNormal.getHeight() + _compassHeadingTextOffset;
+			const uint16_t compassHeight = bounds.getHeight() - compassLocalY - _compassMarginBottom;
+
+			uint16_t compassRadius;
+			int32_t compassCenterY;
+
+			int16_t compassAngleFromDeg;
+			int16_t compassAngleToDeg;
+
+			// Arc
+			if (settings.interface.MFD.ND.arc) {
+				compassRadius = compassHeight;
+				compassCenterY = bounds.getY() + compassLocalY;
+
+				constexpr static uint16_t compassViewportDeg = 100;
+				constexpr static uint16_t compassViewportHalfDeg = compassViewportDeg / 2;
+
+				compassAngleFromDeg = -compassViewportHalfDeg + _compassAngleStepUnitsDeg;
+				compassAngleToDeg = compassViewportHalfDeg;
+
+				renderer->renderArc(
+					Point(centerX, compassCenterY),
+					compassRadius,
+					(90 - compassViewportHalfDeg) * 255 / 360,
+					(90 + compassViewportHalfDeg) * 255 / 360,
+					&Theme::fg1
+				);
+			}
+			// Circle
+			else {
+				compassRadius = compassHeight / 2;
+				compassCenterY = bounds.getY() + compassLocalY + compassRadius;
+
+				compassAngleFromDeg = 0;
+				compassAngleToDeg = 360 - _compassAngleStepUnitsDeg;
+
+				renderer->renderCircle(
+					Point(centerX, compassCenterY),
+					compassRadius,
+					&Theme::fg1
+				);
+			}
+
+			// Marks
 			float stepUnitsPerYawDegIntPart;
 			const float stepUnitsPerYawDegFractPart = std::modff(yawDeg / _compassAngleStepUnitsDeg, &stepUnitsPerYawDegIntPart);
-
 			const int32_t yawSnappedInt = static_cast<int32_t>(stepUnitsPerYawDegIntPart) * _compassAngleStepUnitsDeg;
 
-			for (int16_t angleDeg = _compassAngleFromDeg; angleDeg <= _compassAngleToDeg; angleDeg += _compassAngleStepUnitsDeg) {
-				const uint16_t shownAngleDeg = normalizeAngle360(yawSnappedInt + angleDeg);
+			for (int16_t angleDeg = compassAngleFromDeg; angleDeg <= compassAngleToDeg; angleDeg += _compassAngleStepUnitsDeg) {
+				const uint16_t shownAngleDeg = (yawSnappedInt + angleDeg) % 360;
 				const auto isBig = shownAngleDeg % _compassAngleStepUnitsBigDeg == 0;
 
 				const auto angleEndVec = Vector2F(0, compassRadius).rotate(-toRadians(angleDeg - stepUnitsPerYawDegFractPart * _compassAngleStepUnitsDeg));
@@ -142,12 +194,12 @@ namespace pizda {
 
 				renderer->renderLine(
 					Point(
-						compassCenter.getX() + static_cast<int32_t>(angleStartVec.getX()),
-						compassCenter.getY() - static_cast<int32_t>(angleStartVec.getY())
+						centerX + static_cast<int32_t>(angleStartVec.getX()),
+						compassCenterY - static_cast<int32_t>(angleStartVec.getY())
 					),
 					Point(
-						compassCenter.getX() + static_cast<int32_t>(angleEndVec.getX()),
-						compassCenter.getY() - static_cast<int32_t>(angleEndVec.getY())
+						centerX + static_cast<int32_t>(angleEndVec.getX()),
+						compassCenterY - static_cast<int32_t>(angleEndVec.getY())
 					),
 					&Theme::fg1
 				);
@@ -158,8 +210,8 @@ namespace pizda {
 
 					renderer->renderString(
 						Point(
-							compassCenter.getX() + static_cast<int32_t>(angleTextVec.getX()) - Theme::fontSmall.getWidth(text) / 2,
-							compassCenter.getY() - static_cast<int32_t>(angleTextVec.getY())
+							centerX + static_cast<int32_t>(angleTextVec.getX()) - Theme::fontSmall.getWidth(text) / 2,
+							compassCenterY - static_cast<int32_t>(angleTextVec.getY())
 						),
 						&Theme::fontSmall,
 						&Theme::fg1,

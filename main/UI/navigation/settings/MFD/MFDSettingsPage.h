@@ -15,23 +15,36 @@ namespace pizda {
 			MFDSettingsPage();
 
 		private:
+			// -------------------------------- MFD --------------------------------
+
+			// Height
+			Slider _MFDSplitSlider {};
+			Titler _MFDSplitTitle = Titler(&_MFDSplitSlider);
+
+			constexpr static uint8_t _MFDSplitMin = 20;
+			constexpr static uint8_t _MFDSplitMax = 80;
+
+			void updateMFDHeightTitle();
+
+
+			// -------------------------------- PFD --------------------------------
+
+			Text _PFDTitle {};
+
+			// FOV
 			Slider _PFDFOVSlider {};
 			Titler _PFDFOVTitle = Titler(&_PFDFOVSlider);
 
 			constexpr static uint8_t _PFDFOVMin = 20;
 			constexpr static uint8_t _PFDFOVMax = 120;
 
-			Text _MFDTitle {};
-
-			Slider _MFDHeightSlider {};
-			Titler _MFDHeightTitle = Titler(&_MFDHeightSlider);
-
-			constexpr static uint8_t _MFDHeightMin = 20;
-			constexpr static uint8_t _MFDHeightMax = 80;
-
-			Switcher _MFDSphereSwitcher { L"Show earth bounds" };
-
 			void updatePFDFOVTitle();
-			void updateMFDHeightTitle();
+
+			// -------------------------------- ND --------------------------------
+
+			Text _NDTitle {};
+
+			// Sphere
+			Switcher _MFDSphereSwitcher { L"Show earth bounds" };
 	};
 }

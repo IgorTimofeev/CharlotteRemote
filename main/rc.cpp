@@ -63,6 +63,9 @@ namespace pizda {
 		_application.setBackgroundColor(&Theme::bg1);
 		_application += &_pageLayout;
 
+		_openMenuButton.applyBottomStyle();
+		_application += &_openMenuButton;
+
 		setRoute(&Routes::MFD);
 		updateDebugOverlayVisibility();
 
@@ -389,6 +392,10 @@ namespace pizda {
 		_application -= _menu;
 		delete _menu;
 		_menu = nullptr;
+	}
+
+	OpenMenuButton& RC::getOpenMenuButton() {
+		return _openMenuButton;
 	}
 
 	TCPTransceiver& RC::getTransceiver() {

@@ -9,9 +9,31 @@ namespace pizda {
 	MFDSettingsPage::MFDSettingsPage() {
 		auto& settings = RC::getInstance().getSettings();
 
-		// Title
-		title.setText(L"PFD options");
+		// -------------------------------- MFD --------------------------------
 
+		title.setText(L"MFD options");
+
+		// Height
+		Theme::apply(&_MFDSplitSlider);
+		_MFDSplitSlider.setValue(0xFFFF * (settings.interface.MFD.splitPercent - _MFDSplitMin) / (_MFDSplitMax - _MFDSplitMin));
+
+		_MFDSplitSlider.valueChanged += [this, &settings] {
+			settings.interface.MFD.splitPercent = _MFDSplitMin + _MFDSplitSlider.getValue() * (_MFDSplitMax - _MFDSplitMin) / 0xFFFF;
+			settings.enqueueWrite();
+
+			updateMFDHeightTitle();
+		};
+
+		updateMFDHeightTitle();
+		rows += &_MFDSplitTitle;
+
+		// -------------------------------- PFD --------------------------------
+
+		Theme::applyTitle(&_PFDTitle);
+		_PFDTitle.setText(L"PFD options");
+		rows += &_PFDTitle;
+
+		// FOV
 		Theme::apply(&_PFDFOVSlider);
 		_PFDFOVSlider.setValue(0xFFFF * (settings.interface.MFD.PFD.FOV - _PFDFOVMin) / (_PFDFOVMax - _PFDFOVMin));
 
@@ -25,35 +47,22 @@ namespace pizda {
 		updatePFDFOVTitle();
 		rows += &_PFDFOVTitle;
 
-		// MFD
-		Theme::applyTitle(&_MFDTitle);
-		_MFDTitle.setText(L"ND options");
-		rows += &_MFDTitle;
+		// -------------------------------- ND --------------------------------
 
-		// Slider
-		Theme::apply(&_MFDHeightSlider);
-		_MFDHeightSlider.setValue(0xFFFF * (settings.interface.MFD.ND.heightPercent - _MFDHeightMin) / (_MFDHeightMax - _MFDHeightMin));
-
-		_MFDHeightSlider.valueChanged += [this, &settings] {
-			settings.interface.MFD.ND.heightPercent = _MFDHeightMin + _MFDHeightSlider.getValue() * (_MFDHeightMax - _MFDHeightMin) / 0xFFFF;
-			settings.enqueueWrite();
-
-			updateMFDHeightTitle();
-		};
-
-		updateMFDHeightTitle();
-		rows += &_MFDHeightTitle;
+		Theme::applyTitle(&_NDTitle);
+		_NDTitle.setText(L"ND options");
+		rows += &_NDTitle;
 
 		// Sphere
 		_MFDSphereSwitcher.getSwitch().setChecked(true);
 		rows += &_MFDSphereSwitcher;
 	}
 
-	void MFDSettingsPage::updatePFDFOVTitle() {
-		_PFDFOVTitle.getTitle().setText(std::format(L"Field of view ({} deg)", RC::getInstance().getSettings().interface.MFD.PFD.FOV));
+	void MFDSettingsPage::updateMFDHeightTitle() {
+		_MFDSplitTitle.getTitle().setText(std::format(L"Split view height ({}%)", RC::getInstance().getSettings().interface.MFD.splitPercent));
 	}
 
-	void MFDSettingsPage::updateMFDHeightTitle() {
-		_MFDHeightTitle.getTitle().setText(std::format(L"Height ({}%)", RC::getInstance().getSettings().interface.MFD.ND.heightPercent));
+	void MFDSettingsPage::updatePFDFOVTitle() {
+		_PFDFOVTitle.getTitle().setText(std::format(L"Field of view ({} deg)", RC::getInstance().getSettings().interface.MFD.PFD.FOV));
 	}
 }
