@@ -32,7 +32,7 @@ namespace pizda {
 			constexpr static uint8_t _compassMarginTop = 15;
 			constexpr static uint8_t _compassMarginBottom = 20;
 
-			constexpr static uint16_t _compassViewportDeg = 120;
+			constexpr static uint16_t _compassViewportDeg = 100;
 			constexpr static uint16_t _compassViewportHalfDeg = _compassViewportDeg / 2;
 
 			constexpr static uint8_t _compassAngleStepUnitsDeg = 10;

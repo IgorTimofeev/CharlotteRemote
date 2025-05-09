@@ -129,12 +129,11 @@ namespace pizda {
 
 			float stepUnitsPerYawDegIntPart;
 			const float stepUnitsPerYawDegFractPart = std::modff(yawDeg / _compassAngleStepUnitsDeg, &stepUnitsPerYawDegIntPart);
-			const auto stepUnitsPerYawDegInt = static_cast<int32_t>(stepUnitsPerYawDegIntPart);
 
-			const int32_t yawDegBig = stepUnitsPerYawDegInt * _compassAngleStepUnitsDeg;
+			const int32_t yawSnappedInt = static_cast<int32_t>(stepUnitsPerYawDegIntPart) * _compassAngleStepUnitsDeg;
 
 			for (int16_t angleDeg = _compassAngleFromDeg; angleDeg <= _compassAngleToDeg; angleDeg += _compassAngleStepUnitsDeg) {
-				const int32_t shownAngleDeg = angleDeg + yawDegBig;
+				const uint16_t shownAngleDeg = normalizeAngle360(yawSnappedInt + angleDeg);
 				const auto isBig = shownAngleDeg % _compassAngleStepUnitsBigDeg == 0;
 
 				const auto angleEndVec = Vector2F(0, compassRadius).rotate(-toRadians(angleDeg - stepUnitsPerYawDegFractPart * _compassAngleStepUnitsDeg));
@@ -155,7 +154,7 @@ namespace pizda {
 
 				if (isBig) {
 					const auto angleTextVec = angleStartVec - angleEndVecNorm * _compassAngleStepBigLineTextOffset;
-					const auto text = std::to_wstring(shownAngleDeg);
+					const auto text = std::to_wstring(shownAngleDeg / 10);
 
 					renderer->renderString(
 						Point(

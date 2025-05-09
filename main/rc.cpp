@@ -273,12 +273,12 @@ namespace pizda {
 
 	void RC::ADCUnitsSetup() {
 		constexpr adc_oneshot_unit_init_cfg_t ADC1UnitConfig = {
-			.unit_id = ADC_UNIT_1,
+			.unit_id = constants::adc::unit,
 			.clk_src = ADC_RTC_CLK_SRC_DEFAULT,
 			.ulp_mode = ADC_ULP_MODE_DISABLE
 		};
 
-		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &constants::adc::unit1));
+		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &constants::adc::oneshotUnit));
 	}
 
 	void RC::handleAircraftPacket(const AircraftPacket* packet) {

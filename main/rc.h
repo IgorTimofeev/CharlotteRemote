@@ -111,37 +111,38 @@ namespace pizda {
 			uint32_t _axisTickTime = 0;
 
 			Axis _leverLeft = Axis(
-				constants::axis::leverLeft::unit,
+				&constants::adc::oneshotUnit,
 				constants::axis::leverLeft::channel,
 				&_settings.axis.leverLeft
 			);
 
 			Axis _leverRight = Axis(
-				constants::axis::leverRight::unit,
+				&constants::adc::oneshotUnit,
 				constants::axis::leverRight::channel,
 				&_settings.axis.leverRight
 			);
 
 			Axis _joystickHorizontal = Axis(
-				constants::axis::joystickHorizontal::unit,
+				&constants::adc::oneshotUnit,
 				constants::axis::joystickHorizontal::channel,
 				&_settings.axis.joystickHorizontal
 			);
 
 			Axis _joystickVertical = Axis(
-				constants::axis::joystickVertical::unit,
+				&constants::adc::oneshotUnit,
 				constants::axis::joystickVertical::channel,
 				&_settings.axis.joystickVertical
 			);
 
 			Axis _ring = Axis(
-				constants::axis::ring::unit,
+				&constants::adc::oneshotUnit,
 				constants::axis::ring::channel,
 				&_settings.axis.ring
 			);
 
 			Battery _battery = Battery(
-				constants::battery::unit,
+				constants::adc::unit,
+				&constants::adc::oneshotUnit,
 				constants::battery::channel,
 
 				constants::battery::voltageMin,

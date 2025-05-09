@@ -23,7 +23,8 @@ namespace pizda {
 	
 			class adc {
 				public:
-					static adc_oneshot_unit_handle_t unit1;
+					constexpr static adc_unit_t unit = ADC_UNIT_1;
+					static adc_oneshot_unit_handle_t oneshotUnit;
 			};
 
 			class wifi {
@@ -87,31 +88,26 @@ namespace pizda {
 
 					class leverLeft {
 						public:
-							constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 							constexpr static adc_channel_t channel = ADC_CHANNEL_0;
 					};
 
 					class leverRight {
 						public:
-							constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 							constexpr static adc_channel_t channel = ADC_CHANNEL_3;
 					};
 
 					class joystickHorizontal {
 						public:
-							constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 							constexpr static adc_channel_t channel = ADC_CHANNEL_7;
 					};
 
 					class joystickVertical {
 						public:
-							constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 							constexpr static adc_channel_t channel = ADC_CHANNEL_5;
 					};
 
 					class ring {
 						public:
-							constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 							constexpr static adc_channel_t channel = ADC_CHANNEL_6;
 					};
 			};
@@ -139,7 +135,6 @@ namespace pizda {
 			*/
 			class battery {
 				public:
-					constexpr static adc_oneshot_unit_handle_t* unit = &adc::unit1;
 					constexpr static adc_channel_t channel = ADC_CHANNEL_4;
 
 					constexpr static uint32_t voltageMin = 6'000;
