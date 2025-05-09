@@ -30,17 +30,23 @@ namespace pizda {
 			void onEvent(Event* event) override;
 
 		private:
-			constexpr static uint8_t _compassMarginTop = 15;
-			constexpr static uint8_t _compassMarginBottom = 20;
-			constexpr static uint8_t _compassHeadingTextOffset = 10;
-
 			constexpr static uint8_t _compassAngleStepUnitsDeg = 10;
-			constexpr static uint8_t _compassAngleStepLineSmallLength = 3;
-
 			constexpr static uint8_t _compassAngleStepUnitsBigDeg = 30;
-			constexpr static uint8_t _compassAngleStepLineBigLength = 5;
 
-			constexpr static uint8_t _compassAngleStepBigLineTextOffset = 5;
+			constexpr static uint8_t _compassHeadingTextMarginTop = 3;
+			constexpr static uint8_t _compassHeadingTextHorizontalLineOffset = 1;
+			constexpr static uint8_t _compassHeadingTextVerticalLineHeight = 2;
+
+			constexpr static uint8_t _compassMarginTop = 4;
+
+			constexpr static uint8_t _compassArcLandscapeMarginHorizontal = 15;
+			constexpr static uint8_t _compassArcMarginBottom = 20;
+			constexpr static uint16_t _compassArcViewportDeg = _compassAngleStepUnitsDeg * 10;
+			constexpr static uint16_t _compassArcViewportHalfDeg = _compassArcViewportDeg / 2;
+
+			constexpr static uint8_t _compassAngleStepLineSmallLength = 3;
+			constexpr static uint8_t _compassAngleStepLineBigLength = 5;
+			constexpr static uint8_t _compassAngleStepLineTextOffset = 3;
 
 			static GeographicCoordinates _cameraOffset;
 			GeographicCoordinates _cameraCoordinates {};

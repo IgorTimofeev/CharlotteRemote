@@ -47,6 +47,6 @@ namespace pizda {
 	}
 
 	void NDControls::updateViewModeButtonText() {
-		_viewModeButton.setText(RC::getInstance().getSettings().interface.MFD.ND.arc ? L"arc" : L"map");
+		_viewModeButton.setText(RC::getInstance().getSettings().interface.MFD.ND.arc ? L"MAP" : L"ARC");
 	}
 }

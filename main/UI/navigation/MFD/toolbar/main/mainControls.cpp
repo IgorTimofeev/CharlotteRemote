@@ -4,7 +4,7 @@
 
 namespace pizda {
 	MainControls::MainControls() {
-		setHeight(48);
+		setHeight(46);
 
 		// Throttle
 		row += &_throttleIndicatorLayout;

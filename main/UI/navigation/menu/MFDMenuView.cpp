@@ -16,20 +16,14 @@ namespace pizda {
 	void MFDModeMenuViewButton::onClick() {
 		MenuViewButton::onClick();
 
-		auto& settings = RC::getInstance().getSettings();
-
-		settings.interface.MFD.toolbar.mode = settings.interface.MFD.toolbar.mode == SettingsInterfaceMFDToolbarMode::none ? _mode : SettingsInterfaceMFDToolbarMode::none;
-
-		if (!settings.interface.MFD.isAnyPanelVisible())
-			settings.interface.MFD.toolbar.mode = _mode;
-
-		settings.enqueueWrite();
-
 		const auto menuView = reinterpret_cast<MFDMenuView*>(getMenuView());
 
-		for (const auto modeButton : menuView->modeButtons) {
-			modeButton->setChecked(modeButton->_mode == settings.interface.MFD.toolbar.mode);
-		}
+		for (const auto modeButton : menuView->modeButtons)
+			modeButton->setChecked(modeButton->_mode == _mode);
+
+		auto& settings = RC::getInstance().getSettings();
+		settings.interface.MFD.toolbar.mode = _mode;
+		settings.enqueueWrite();
 
 		MFDPage::fromSettings();
 	}
@@ -79,26 +73,6 @@ namespace pizda {
 
 		*this += &NDButton;
 
-		// Flight plan
-		FPLButton.setPressedBorderColor(&Theme::purple);
-		FPLButton.setPressedTextColor(&Theme::purple);
-		FPLButton.setCheckMode(ButtonCheckMode::manual);
-		FPLButton.setChecked(settings.interface.MFD.flightPlan.visible);
-
-		FPLButton.click += [this, &settings] {
-			settings.interface.MFD.flightPlan.visible = !settings.interface.MFD.flightPlan.visible;
-
-			if (!settings.interface.MFD.isAnyPanelVisible())
-				settings.interface.MFD.flightPlan.visible = true;
-
-			FPLButton.setChecked(settings.interface.MFD.flightPlan.visible);
-
-			settings.enqueueWrite();
-
-			MFDPage::fromSettings();
-		};
-
-		*this += &FPLButton;
 
 		// Mode
 		for (const auto modeButton : modeButtons) {

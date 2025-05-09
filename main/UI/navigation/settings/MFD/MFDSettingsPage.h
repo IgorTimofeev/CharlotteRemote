@@ -45,6 +45,6 @@ namespace pizda {
 			Text _NDTitle {};
 
 			// Sphere
-			Switcher _MFDSphereSwitcher { L"Show earth bounds" };
+			Switcher _MFDSphereSwitcher { L"Show Earth" };
 	};
 }

@@ -37,7 +37,7 @@ namespace pizda {
 		applyRoundStyle();
 
 		setAlignment(Alignment::end, Alignment::end);
-		setMargin(Margin(0, 0, -(_roundStyleSize / 2 + 3), 50 / 2 - _roundStyleSize / 2));
+		setMargin(Margin(0, 0, -(_roundStyleSize / 2 + 3), 5));
 		setContentMargin(Margin(0, 0, 7, 0));
 	}
 }

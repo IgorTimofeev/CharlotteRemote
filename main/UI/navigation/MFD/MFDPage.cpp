@@ -13,12 +13,13 @@ namespace pizda {
 
 		// Initialization
 		fromSettings();
+
+		RC::getInstance().getOpenMenuButton().applyBottomRightStyle();
 	}
 
 	MFDPage::~MFDPage() {
 		delete _PFD;
 		delete _NDControls;
-		delete _flightPlan;
 		delete _mainControls;
 		delete _autopilotControls;
 		delete _pressureControls;
@@ -35,7 +36,7 @@ namespace pizda {
 		_rows.removeChildren();
 
 		auto& rc = RC::getInstance();
-		const auto& settings = RC::getInstance().getSettings();
+		const auto& settings = rc.getSettings();
 
 		// Deleting
 		if (_PFD && !settings.interface.MFD.PFD.visible) {
@@ -46,11 +47,6 @@ namespace pizda {
 		if (_NDControls && !settings.interface.MFD.ND.visible) {
 			delete _NDControls;
 			_NDControls = nullptr;
-		}
-
-		if (_flightPlan && !settings.interface.MFD.flightPlan.visible) {
-			delete _flightPlan;
-			_flightPlan = nullptr;
 		}
 
 		if (_mainControls && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::main) {
@@ -83,24 +79,8 @@ namespace pizda {
 			_rows += _NDControls;
 		}
 
-		if (settings.interface.MFD.flightPlan.visible) {
-			if (!_flightPlan)
-				_flightPlan = new FlightPlan();
-
-			_rows += _flightPlan;
-		}
-
 		if (_rows.getChildrenCount() > 1)
 			_rows.setRelativeSize(_rows[0], static_cast<float>(settings.interface.MFD.splitPercent) / 100.f * 2.f);
-
-		auto& openMenuButton = rc.getOpenMenuButton();
-
-		if (settings.interface.MFD.toolbar.mode == SettingsInterfaceMFDToolbarMode::none) {
-			openMenuButton.applyBottomStyle();
-		}
-		else {
-			openMenuButton.applyBottomRightStyle();
-		}
 
 		switch (settings.interface.MFD.toolbar.mode) {
 			case SettingsInterfaceMFDToolbarMode::main: {

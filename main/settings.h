@@ -76,18 +76,13 @@ namespace pizda {
 		public:
 			bool visible = true;
 			bool arc = true;
+			bool sphere = true;
 	};
 
 	enum class SettingsInterfaceMFDToolbarMode : uint8_t {
-		none,
 		main,
 		autopilot,
 		pressure
-	};
-
-	class SettingsInterfaceMFDFlightPlan {
-		public:
-			bool visible = true;
 	};
 
 	class SettingsInterfaceMFDToolbar {
@@ -99,12 +94,11 @@ namespace pizda {
 		public:
 			SettingsInterfaceMFDPFD PFD {};
 			SettingsInterfaceMFDND ND {};
-			SettingsInterfaceMFDFlightPlan flightPlan {};
 			SettingsInterfaceMFDToolbar toolbar {};
 			uint8_t splitPercent = 60;
 
 			bool isAnyPanelVisible() const {
-				return PFD.visible || ND.visible || flightPlan.visible || toolbar.mode != SettingsInterfaceMFDToolbarMode::none;
+				return PFD.visible || ND.visible;
 			}
 	};
 
@@ -182,7 +176,7 @@ namespace pizda {
 
 		private:
 			constexpr static uint32_t _writeDelay = 2500000;
-			constexpr static uint8_t _version = 18;
+			constexpr static uint8_t _version = 20;
 			uint32_t _timeToWrite = 0;
 	};
 

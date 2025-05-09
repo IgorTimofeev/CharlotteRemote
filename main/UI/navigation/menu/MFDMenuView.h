@@ -27,8 +27,7 @@ namespace pizda {
 
 			MenuViewButton
 				PFDButton = { &resources::Images::menuIconMFDPFD, L"PFD" },
-				NDButton = { &resources::Images::menuIconMFDND, L"ND" },
-				FPLButton = { &resources::Images::menuIconMFDFlightPlan, L"FPL" };
+				NDButton = { &resources::Images::menuIconMFDND, L"ND" };
 
 			MFDModeMenuViewButton
 				mainButton { &resources::Images::menuIconMFDMain, L"ECAM", SettingsInterfaceMFDToolbarMode::main },
