@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../sound.h"
+#include "../audio/sound.h"
 
 namespace pizda::resources {
 	class Sounds {

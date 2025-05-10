@@ -2,7 +2,7 @@
 #include <numbers>
 
 #include "../../../../rc.h"
-#include "../../../../units.h"
+#include "../../../../types/units.h"
 #include "../../../elements/spatial/runwayElement.h"
 
 namespace pizda {
@@ -1379,7 +1379,7 @@ namespace pizda {
 			fg = &Theme::bg1;
 		}
 		else {
-			text = std::to_wstring(static_cast<uint32_t>(convertPressure(rc.getSettings().controls.referencePressurePa, PressureUnit::pascal,
+			text = std::to_wstring(static_cast<uint32_t>(Units::convertPressure(rc.getSettings().controls.referencePressurePa, PressureUnit::pascal,
 																		PressureUnit::hectopascal)));
 		}
 

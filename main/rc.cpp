@@ -299,16 +299,16 @@ namespace pizda {
 		_aircraftData.geographicCoordinates.setLongitude(packet->longitudeRad);
 		_aircraftData.geographicCoordinates.setAltitude(packet->altitudeM);
 
-		_aircraftData.windSpeed = convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+		_aircraftData.windSpeed = Units::convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 
 		// LowPassFilters
-		_aircraftData.altitude = convertDistance(packet->altitudeM, DistanceUnit::meter, DistanceUnit::foot);
+		_aircraftData.altitude = Units::convertDistance(packet->altitudeM, DistanceUnit::meter, DistanceUnit::foot);
 		_aircraftData.pitch = packet->pitchRad;
 		_aircraftData.roll = packet->rollRad;
 		_aircraftData.yaw = packet->yawRad;
 
-		_aircraftData.airSpeed = convertSpeed(packet->airSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
-		_aircraftData.groundSpeed = convertSpeed(packet->groundSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+		_aircraftData.airSpeed = Units::convertSpeed(packet->airSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+		_aircraftData.groundSpeed = Units::convertSpeed(packet->groundSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 
 		_aircraftData.flightPathVectorPitch = packet->flightPathPitchRad;
 		_aircraftData.flightPathVectorYaw = packet->flightPathYawRad;

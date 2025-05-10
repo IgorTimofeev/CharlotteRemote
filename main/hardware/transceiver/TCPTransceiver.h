@@ -5,8 +5,8 @@
 #include "esp_log.h"
 
 #include "packet.h"
-#include "../TCP.h"
-#include "../WiFi.h"
+#include "../WiFi/TCP.h"
+#include "../WiFi/WiFi.h"
 #include "../../constants.h"
 
 namespace pizda {

@@ -7,7 +7,7 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
-#include "../../../runway.h"
+#include "../../../types/runway.h"
 
 namespace pizda {
 	using namespace YOBA;

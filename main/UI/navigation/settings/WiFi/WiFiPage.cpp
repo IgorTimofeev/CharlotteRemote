@@ -2,7 +2,7 @@
 
 #include "../../../theme.h"
 #include "../../../../constants.h"
-#include "../../../../hardware/WiFi.h"
+#include "../../../../hardware/WiFi/WiFi.h"
 //#include "../../../../hardware/OTA.h"
 #include "../../../../rc.h"
 #include "../../../elements/dialog.h"

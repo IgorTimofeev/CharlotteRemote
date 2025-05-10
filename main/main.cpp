@@ -1,40 +1,14 @@
-
-#include <freertos/FreeRTOS.h>
-#include <freertos/task.h>
-#include "NVSController.h"
-#include <esp_timer.h>
-#include <esp_log.h>
-
+#include "rc.h"
 
 extern "C" void app_main(void) {
-	const auto status = nvs_flash_init();
-
-	if (status == ESP_ERR_NVS_NO_FREE_PAGES || status == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-		// NVS partition was truncated and needs to be erased
-		ESP_ERROR_CHECK(nvs_flash_erase());
-		// Retry init
-		ESP_ERROR_CHECK(nvs_flash_init());
-	}
-	else {
-		ESP_ERROR_CHECK(status);
-	}
-
-	while (true) {
-		vTaskDelay(pdMS_TO_TICKS(1000));
-
-		pizda::NVSController nvs {};
-		nvs.testForBullshit();
-
-		vTaskDelay(pdMS_TO_TICKS(10000));
-	}
+	pizda::RC::getInstance().run();
 }
 
-
-// #include "rc.h"
-
-// extern "C" void app_main(void) {
-// 	pizda::RC::getInstance().run();
-// }
+// #include <freertos/FreeRTOS.h>
+// #include <freertos/task.h>
+// #include "NVSController.h"
+// #include <esp_timer.h>
+// #include <esp_log.h>
 
 //#include <YOBA/main.h>
 //#include <YOBA/UI.h>

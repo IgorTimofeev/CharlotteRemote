@@ -107,13 +107,13 @@ namespace pizda {
 
 		_remotePacket.altimeterPressurePa = settings.controls.referencePressureSTD ? 101325 : settings.controls.referencePressurePa;
 
-		_remotePacket.autopilotAirspeedMs = convertSpeed(settings.autopilot.speedKt, SpeedUnit::knot, SpeedUnit::meterPerSecond);
+		_remotePacket.autopilotAirspeedMs = Units::convertSpeed(settings.autopilot.speedKt, SpeedUnit::knot, SpeedUnit::meterPerSecond);
 		_remotePacket.autopilotAutoThrottle = settings.autopilot.autoThrottle;
 
 		_remotePacket.autopilotHeadingDeg = settings.autopilot.headingDeg;
 		_remotePacket.autopilotHeadingHold = settings.autopilot.headingHold;
 
-		_remotePacket.autopilotAltitudeM = convertDistance(settings.autopilot.altitudeFt, DistanceUnit::foot, DistanceUnit::meter);
+		_remotePacket.autopilotAltitudeM = Units::convertDistance(settings.autopilot.altitudeFt, DistanceUnit::foot, DistanceUnit::meter);
 		_remotePacket.autopilotLevelChange = settings.autopilot.levelChange;
 
 		_remotePacket.landingGear = settings.controls.landingGear;

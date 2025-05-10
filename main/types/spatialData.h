@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <vector>
 #include "YOBA/main.h"
-#include "runway.h"
+#include "../types/runway.h"
 
 namespace pizda {
 	using namespace YOBA;

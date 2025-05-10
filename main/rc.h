@@ -11,20 +11,21 @@
 #include "UI/navigation/menu/openMenuButton.h"
 #include "UI/elements/debugOverlay.h"
 
-#include "units.h"
 #include "settings.h"
 #include "constants.h"
-#include "lowPassFilter.h"
 
-#include "hardware/WiFi.h"
+#include "hardware/WiFi/WiFi.h"
 #include "hardware/transceiver/packet.h"
 #include "hardware/transceiver/TCPTransceiver.h"
 #include "hardware/speaker.h"
 #include "hardware/axis.h"
 #include "hardware/battery.h"
 #include "hardware/encoder.h"
-#include "aircraftData.h"
-#include "spatialData.h"
+
+#include "types/units.h"
+#include "types/lowPassFilter.h"
+#include "types/aircraftData.h"
+#include "types/spatialData.h"
 
 namespace pizda {
 	using namespace YOBA;

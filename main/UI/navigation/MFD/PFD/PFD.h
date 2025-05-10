@@ -5,8 +5,9 @@
 #include <YOBA/UI/spatial.h>
 
 #include "../../../theme.h"
-#include "../../../../units.h"
-#include "../../../../aircraftData.h"
+#include "../../../../types/units.h"
+#include "../../../../types/VSpeed.h"
+#include "../../../../types/aircraftData.h"
 
 namespace pizda {
 	using namespace YOBA;

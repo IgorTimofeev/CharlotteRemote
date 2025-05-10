@@ -5,7 +5,7 @@
 #include "esp_err.h"
 #include "vector"
 
-#include "../sound.h"
+#include "../audio/sound.h"
 #include "../constants.h"
 
 namespace pizda {

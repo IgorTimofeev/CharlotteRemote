@@ -5,25 +5,21 @@
 #include <esp_log.h>
 #include <memory>
 #include <cstring>
-#include <freertos/FreeRTOS.h>
-#include <freertos/task.h>
-#include <esp_timer.h>
 #include <esp_log.h>
-#include <bits/locale_facets_nonio.h>
 
 #include "nvs_flash.h"
 #include "nvs.h"
-#include "units.h"
 
 namespace pizda {
-	class NVSController {
+	class NVS {
 		public:
 			void openForWriting(const char* key) {
 				ESP_ERROR_CHECK(nvs_open(key, NVS_READWRITE, &_handle));
 			}
 
 			void openForReading(const char* key) {
-				ESP_ERROR_CHECK(nvs_open(key, NVS_READONLY, &_handle));
+				const auto status = nvs_open(key, NVS_READONLY, &_handle);
+				assert(status == ESP_OK || status == ESP_ERR_NVS_NOT_FOUND);
 			}
 
 			void commit() const {
@@ -35,7 +31,7 @@ namespace pizda {
 			}
 
 			uint8_t getUint8(const char* key, uint8_t defaultValue = 0) const {
-				return getValue<uint8_t, nvs_get_u8>(key, defaultValue);
+				return getValue<uint8_t, uint8_t, nvs_get_u8>(key, defaultValue);
 			}
 
 			void setUint8(const char* key, uint8_t value) const {
@@ -43,7 +39,7 @@ namespace pizda {
 			}
 
 			uint16_t getUint16(const char* key, uint16_t defaultValue = 0) const {
-				return getValue<uint16_t, nvs_get_u16>(key, defaultValue);
+				return getValue<uint16_t, uint16_t, nvs_get_u16>(key, defaultValue);
 			}
 
 			void setUint16(const char* key, uint16_t value) const {
@@ -51,7 +47,7 @@ namespace pizda {
 			}
 
 			uint32_t getUint32(const char* key, uint32_t defaultValue = 0) const {
-				return getValue<uint32_t, nvs_get_u32>(key, defaultValue);
+				return getValue<uint32_t, uint32_t, nvs_get_u32>(key, defaultValue);
 			}
 
 			void setUint32(const char* key, uint32_t value) const {
@@ -70,6 +66,14 @@ namespace pizda {
 				uint32_t u32;
 				std::memcpy(&u32, &value, sizeof(float));
 				setUint32(key, u32);
+			}
+
+			bool getBool(const char* key, bool defaultValue = false) const {
+				return getValue<bool, uint8_t, nvs_get_u8>(key, defaultValue);
+			}
+
+			void setBool(const char* key, bool value) const {
+				setValue<bool, nvs_set_u8>(key, value);
 			}
 
 			std::string getString(const char* key, const std::string& defaultValue = std::string()) const {
@@ -106,14 +110,14 @@ namespace pizda {
 		private:
 			nvs_handle_t _handle {};
 
-			template<typename TValue, auto Function>
-			TValue getValue(const char* key, TValue defaultValue = 0) const {
-				TValue result;
+			template<typename TResult, typename TGet, auto Function>
+			TResult getValue(const char* key, TResult defaultValue = 0) const {
+				TGet got;
 
-				if (Function(_handle, key, &result) != ESP_OK)
-					result = defaultValue;
+				if (Function(_handle, key, &got) == ESP_OK)
+					return static_cast<TResult>(got);
 
-				return result;
+				return defaultValue;
 			}
 
 			template<typename TValue, auto Function>
