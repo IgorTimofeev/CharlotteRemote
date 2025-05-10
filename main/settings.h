@@ -3,9 +3,19 @@
 #include <cstdint>
 #include <esp_timer.h>
 #include <esp_log.h>
+#include <memory>
+#include <cstring>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <esp_timer.h>
+#include <esp_log.h>
+#include <bits/locale_facets_nonio.h>
+
 #include "nvs_flash.h"
 #include "nvs.h"
 #include "units.h"
+
+#include "NVSController.h"
 
 namespace pizda {
 	#pragma pack(push, 1)
