@@ -18,12 +18,6 @@ namespace pizda {
 	}
 
 	MFDPage::~MFDPage() {
-		delete _PFD;
-		delete _NDControls;
-		delete _mainControls;
-		delete _autopilotControls;
-		delete _pressureControls;
-
 		_instance = nullptr;
 	}
 
@@ -39,44 +33,34 @@ namespace pizda {
 		const auto& settings = rc.getSettings();
 
 		// Deleting
-		if (_PFD && !settings.interface.MFD.PFD.visible) {
-			delete _PFD;
-			_PFD = nullptr;
-		}
+		if (_PFD.get() && !settings.interface.MFD.PFD.visible)
+			_PFD.reset();
 
-		if (_NDControls && !settings.interface.MFD.ND.visible) {
-			delete _NDControls;
-			_NDControls = nullptr;
-		}
+		if (_ND.get() && !settings.interface.MFD.ND.visible)
+			_ND.reset();
 
-		if (_mainControls && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::main) {
-			delete _mainControls;
-			_mainControls = nullptr;
-		}
+		if (_mainControls.get() && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::main)
+			_mainControls.reset();
 
-		if (_autopilotControls && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::autopilot) {
-			delete _autopilotControls;
-			_autopilotControls = nullptr;
-		}
+		if (_autopilotControls.get() && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::autopilot)
+			_autopilotControls.reset();
 
-		if (_pressureControls && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::pressure) {
-			delete _pressureControls;
-			_pressureControls = nullptr;
-		}
+		if (_pressureControls.get() && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::pressure)
+			_pressureControls.reset();
 
 		// Creating
 		if (settings.interface.MFD.PFD.visible) {
-			if (!_PFD)
-				_PFD = new PFD();
+			if (!_PFD.get())
+				_PFD = std::make_unique<PFD>();
 
-			_rows += _PFD;
+			_rows += _PFD.get();
 		}
 
 		if (settings.interface.MFD.ND.visible) {
-			if (!_NDControls)
-				_NDControls = new NDControls();
+			if (!_ND.get())
+				_ND = std::make_unique<NDControls>();
 
-			_rows += _NDControls;
+			_rows += _ND.get();
 		}
 
 		if (_rows.getChildrenCount() > 1)
@@ -84,29 +68,29 @@ namespace pizda {
 
 		switch (settings.interface.MFD.toolbar.mode) {
 			case SettingsInterfaceMFDToolbarMode::main: {
-				if (!_mainControls)
-					_mainControls = new MainControls();
+				if (!_mainControls.get())
+					_mainControls = std::make_unique<MainControls>();
 
-				_rows.setAutoSize(_mainControls, true);
-				_rows += _mainControls;
+				_rows.setAutoSize(_mainControls.get(), true);
+				_rows += _mainControls.get();
 
 				break;
 			}
 			case SettingsInterfaceMFDToolbarMode::autopilot: {
-				if (!_autopilotControls)
-					_autopilotControls = new AutopilotControls();
+				if (!_autopilotControls.get())
+					_autopilotControls = std::make_unique<AutopilotControls>();
 
-				_rows.setAutoSize(_autopilotControls, true);
-				_rows += _autopilotControls;
+				_rows.setAutoSize(_autopilotControls.get(), true);
+				_rows += _autopilotControls.get();
 
 				break;
 			}
 			case SettingsInterfaceMFDToolbarMode::pressure: {
-				if (!_pressureControls)
-					_pressureControls = new PressureControls();
+				if (!_pressureControls.get())
+					_pressureControls = std::make_unique<PressureControls>();
 
-				_rows.setAutoSize(_pressureControls, true);
-				_rows += _pressureControls;
+				_rows.setAutoSize(_pressureControls.get(), true);
+				_rows += _pressureControls.get();
 
 				break;
 			}

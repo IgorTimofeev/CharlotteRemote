@@ -72,11 +72,19 @@ namespace pizda {
 			bool flightDirectors = true;
 	};
 
+	enum class SettingsInterfaceMFDNDMode : uint8_t {
+		arcHeadingUp,
+		mapHeadingUp,
+		mapNorthUp,
+
+		last = mapNorthUp
+	};
+
 	class SettingsInterfaceMFDND {
 		public:
 			bool visible = true;
-			bool arc = true;
-			bool sphere = true;
+			SettingsInterfaceMFDNDMode mode = SettingsInterfaceMFDNDMode::arcHeadingUp;
+			bool earth = true;
 	};
 
 	enum class SettingsInterfaceMFDToolbarMode : uint8_t {
@@ -121,10 +129,10 @@ namespace pizda {
 			SettingsInterface interface {};
 			SettingsUnits units {};
 
-			void setup() { // NOLINT(*-convert-member-functions-to-static)
+			void read() {
 				// Opening
 				nvs_handle_t handle;
-				ESP_ERROR_CHECK(nvs_open("settings", NVS_READWRITE, &handle));
+				ESP_ERROR_CHECK(nvs_open("settings", NVS_READONLY, &handle));
 
 				// Reading version
 				uint8_t readVersion = 0;
@@ -146,7 +154,7 @@ namespace pizda {
 				assert(status == ESP_OK || status == ESP_ERR_NVS_NOT_FOUND);
 			}
 
-			void write() {
+			void write() const {
 				ESP_LOGI("Settings", "Writing");
 
 				// Opening
@@ -176,7 +184,7 @@ namespace pizda {
 
 		private:
 			constexpr static uint32_t _writeDelay = 2500000;
-			constexpr static uint8_t _version = 20;
+			constexpr static uint8_t _version = 22;
 			uint32_t _timeToWrite = 0;
 	};
 

@@ -15,7 +15,14 @@ namespace pizda {
 
 		addGovnoButton(&_viewModeButton, [this] {
 			auto& settings = RC::getInstance().getSettings();
-			settings.interface.MFD.ND.arc = !settings.interface.MFD.ND.arc;
+
+			uint8_t nextMode = static_cast<uint8_t>(settings.interface.MFD.ND.mode) + 1;
+
+			if (nextMode > static_cast<uint8_t>(SettingsInterfaceMFDNDMode::last))
+				nextMode = 0;
+
+			settings.interface.MFD.ND.mode = static_cast<SettingsInterfaceMFDNDMode>(nextMode);
+
 			settings.enqueueWrite();
 
 			updateViewModeButtonText();
@@ -24,7 +31,7 @@ namespace pizda {
 		_latLongButton.setText(L"RST");
 
 		addGovnoButton(&_latLongButton, [this] {
-			_ND.resetCameraOffsetLatLon();
+			_ND.resetCameraLateralOffset();
 		});
 	}
 
@@ -47,6 +54,20 @@ namespace pizda {
 	}
 
 	void NDControls::updateViewModeButtonText() {
-		_viewModeButton.setText(RC::getInstance().getSettings().interface.MFD.ND.arc ? L"MAP" : L"ARC");
+		std::wstring text;
+
+		switch (RC::getInstance().getSettings().interface.MFD.ND.mode) {
+			case SettingsInterfaceMFDNDMode::arcHeadingUp:
+				text = L"ARC";
+				break;
+			case SettingsInterfaceMFDNDMode::mapHeadingUp:
+				text = L"MAP";
+				break;
+			case SettingsInterfaceMFDNDMode::mapNorthUp:
+				text = L"NUP";
+				break;
+		}
+
+		_viewModeButton.setText(text);
 	}
 }

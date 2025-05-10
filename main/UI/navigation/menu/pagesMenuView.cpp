@@ -4,39 +4,44 @@
 #include "../../../rc.h"
 
 namespace pizda {
-	PagesMenuView::PagesMenuView() {
-		if (_route == nullptr)
-			_route = _buttons[0]->getRoute();
+	PagesMenuView::PagesMenuView(PageMenuViewButton* buttons, uint8_t buttonCount, const Route** lastRoute) :
+		_lastRoute(lastRoute),
+		_buttons(buttons),
+		_buttonCount(buttonCount)
+	{
 
-		for (const auto button : _buttons) {
-			if (button->getRoute() == _route) {
+	}
+
+	void PagesMenuView::setup() {
+		MenuView::setup();
+
+		if (*_lastRoute == nullptr)
+			*_lastRoute = _buttons[0].getRoute();
+
+		for (uint8_t i = 0; i < _buttonCount; i++) {
+			const auto button = _buttons + i;
+
+			if (button->getRoute() == *_lastRoute) {
 				button->setChecked(true);
 			}
 
 			*this += button;
 		}
-
-		// Power
-		_powerButton.click += [] {
-			esp_restart();
-		};
-
-		*this += &_powerButton;
 	}
-
-	const Route* PagesMenuView::_route = nullptr;
 
 	const Route* PagesMenuView::getRoute() {
-		return _route;
+		return *_lastRoute;
 	}
 
-	void PagesMenuView::setRoute(const Route* route) {
-		_route = route;
+	void PagesMenuView::setRoute(const Route* route) const {
+		*_lastRoute = route;
 
-		for (const auto button : _buttons) {
-			button->setChecked(button->getRoute() == _route);
+		for (uint8_t i = 0; i < _buttonCount; i++) {
+			const auto button = _buttons + i;
+
+			button->setChecked(button->getRoute() == *_lastRoute);
 		}
 
-		RC::getInstance().setRoute(_route);
+		RC::getInstance().setRoute(*_lastRoute);
 	}
 }

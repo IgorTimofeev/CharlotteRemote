@@ -4,6 +4,8 @@
 
 #include "MFD/MFDPage.h"
 
+#include "nav/flightPlan/flightPlanPage.h"
+
 #include "settings/MFD/MFDSettingsPage.h"
 #include "settings/personalization/personalizationSettingsPage.h"
 #include "settings/axis/axisSettingsPage.h"
@@ -14,6 +16,8 @@ namespace pizda {
 	class Routes {
 		public:
 			constexpr static ElementRoute<MFDPage> MFD = {};
+
+			constexpr static ElementRoute<FlightPlanPage> navFlightPlan = {};
 
 			constexpr static ElementRoute<MFDSettingsPage> settingsMFD = {};
 			constexpr static ElementRoute<PersonalizationSettingsPage> settingsPersonalization = {};

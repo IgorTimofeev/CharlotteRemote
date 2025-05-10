@@ -1,11 +1,11 @@
-#include "MFDMenuView.h"
+#include "../MFD/MFDMenuView.h"
 
 #include "../../theme.h"
 #include "../../../rc.h"
 #include "../../../settings.h"
 
 #include "../routes.h"
-#include "../MFD/MFDPage.h"
+#include "MFDPage.h"
 
 namespace pizda {
 	MFDModeMenuViewButton::MFDModeMenuViewButton(const Image* image, std::wstring_view text, SettingsInterfaceMFDToolbarMode mode) : MenuViewButton(image, text), _mode(mode) {
@@ -72,7 +72,6 @@ namespace pizda {
 		};
 
 		*this += &NDButton;
-
 
 		// Mode
 		for (const auto modeButton : modeButtons) {

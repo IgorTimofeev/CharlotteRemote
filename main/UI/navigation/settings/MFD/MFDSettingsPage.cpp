@@ -54,10 +54,10 @@ namespace pizda {
 		rows += &_NDTitle;
 
 		// Sphere
-		_MFDSphereSwitcher.getSwitch().setChecked(settings.interface.MFD.ND.sphere);
+		_MFDSphereSwitcher.getSwitch().setChecked(settings.interface.MFD.ND.earth);
 
 		_MFDSphereSwitcher.getSwitch().isCheckedChanged += [this, &settings] {
-			settings.interface.MFD.ND.sphere = _MFDSphereSwitcher.getSwitch().isChecked();
+			settings.interface.MFD.ND.earth = _MFDSphereSwitcher.getSwitch().isChecked();
 			settings.enqueueWrite();
 		};
 

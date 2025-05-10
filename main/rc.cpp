@@ -21,7 +21,7 @@ namespace pizda {
 		NVSSetup();
 
 		// Settings
-		_settings.setup();
+		_settings.read();
 
 		// Display
 		_display.setup();

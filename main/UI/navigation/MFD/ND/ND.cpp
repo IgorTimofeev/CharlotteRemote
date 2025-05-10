@@ -36,14 +36,14 @@ namespace pizda {
 //		));
 
 		// Sphere
-		if (settings.interface.MFD.ND.sphere)
+		if (settings.interface.MFD.ND.earth)
 			addElement(new LinearSphere(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg3));
 
 		// Runways
 		for (const auto& runway : sd.runways) {
 			addElement(new RunwayElement(
 				runway,
-				&Theme::fg2
+				&Theme::fg1
 			));
 		}
 
@@ -61,24 +61,29 @@ namespace pizda {
 	GeographicCoordinates ND::_cameraOffset = {
 		0,
 		0,
-		500
+		2500
 	};
 
 	void ND::onTick() {
 		Scene::onTick();
 
 		auto& rc = RC::getInstance();
+		const auto& settings = rc.getSettings();
 		const auto& ad = rc.getAircraftData();
 
 		// Aircraft
-		_aircraftElement->setPosition(
-			GeographicCoordinates(
-				ad.geographicCoordinates.getLatitude(),
-				ad.geographicCoordinates.getLongitude(),
-				0
-			)
-			.toCartesian()
-		);
+		_aircraftElement->setVisible(isCameraShiftedLaterally());
+
+		if (_aircraftElement->isVisible()) {
+			_aircraftElement->setPosition(
+				GeographicCoordinates(
+					ad.geographicCoordinates.getLatitude(),
+					ad.geographicCoordinates.getLongitude(),
+					0
+				)
+				.toCartesian()
+			);
+		}
 
 		// Camera
 		_cameraCoordinates.setLatitude(ad.geographicCoordinates.getLatitude() + _cameraOffset.getLatitude());
@@ -89,7 +94,7 @@ namespace pizda {
 
 		setCameraRotation(Vector3F(
 			-_cameraCoordinates.getLatitude(),
-			ad.computed.yaw,
+			settings.interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : ad.computed.yaw,
 			toRadians(90) + _cameraCoordinates.getLongitude()
 		));
 
@@ -104,8 +109,8 @@ namespace pizda {
 		const auto& settings = rc.getSettings();
 
 		setPivotOffset(
-			settings.interface.MFD.ND.arc
-			? Point(0, bounds.getHeight() / 2 - _compassArcMarginBottom)
+			settings.interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::arcHeadingUp
+			? Point(0, bounds.getHeight() / 2 - bounds.getHeight() * _compassCircleMarginBottomPct / 100)
 			: Point()
 		);
 	}
@@ -121,150 +126,195 @@ namespace pizda {
 		// Compass
 		{
 			const auto centerX = bounds.getXCenter();
+			const auto centerY = bounds.getYCenter();
+
 			const auto yawDeg = toDegrees(ad.computed.yaw);
 
 			const auto isLandscape = bounds.isLandscape();
 
-			uint16_t compassRadius;
+			uint16_t circleRadius;
+			uint16_t tickMarksRadius;
+			int16_t tickAngleFromDeg;
+			int16_t tickAngleToDeg;
+			uint16_t y;
 
-			int16_t compassAngleFromDeg;
-			int16_t compassAngleToDeg;
-			uint16_t compassY;
-
-			uint16_t compassAvailableHeight =
-				bounds.getHeight()
-				- _compassHeadingTextMarginTop
-				- Theme::fontNormal.getHeight()
-				- _compassHeadingTextHorizontalLineOffset
-				- 1
-				- _compassHeadingTextVerticalLineHeight
-				- _compassMarginTop
-				- _compassArcMarginBottom;
+			const uint16_t circleMarginTopPixels = bounds.getHeight() * _compassHeadingTextMarginTopPct / 100;
+			const uint16_t circleMarginBottomPixels = bounds.getHeight() * _compassCircleMarginBottomPct / 100;
 
 			// Arc
-			if (settings.interface.MFD.ND.arc) {
-				compassRadius = compassAvailableHeight;
-				compassY = bounds.getY2() - _compassArcMarginBottom;
+			if (settings.interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::arcHeadingUp) {
+				circleRadius =
+					bounds.getHeight()
+					- circleMarginTopPixels
+					- Theme::fontNormal.getHeight()
+					- _compassHeadingTextHorizontalLineOffset
+					- 1
+					- _compassHeadingTextVerticalLineHeight
+					- _compassCircleMarginTopPx
+					- circleMarginBottomPixels;
 
-				compassAngleFromDeg = -_compassArcViewportHalfDeg + _compassAngleStepUnitsDeg;
-				compassAngleToDeg = _compassArcViewportHalfDeg;
+				tickMarksRadius = circleRadius;
+
+				y = bounds.getY2() - circleMarginBottomPixels;
+
+				tickAngleFromDeg = -_compassArcViewportHalfDeg + _compassTickMarkUnitsDeg;
+				tickAngleToDeg = _compassArcViewportHalfDeg;
 
 				renderer->renderArc(
-					Point(centerX, compassY),
-					compassRadius,
+					Point(centerX, y),
+					circleRadius,
 					(90 - _compassArcViewportHalfDeg) * 255 / 360,
 					(90 + _compassArcViewportHalfDeg) * 255 / 360,
 					&Theme::fg1
 				);
 			}
-			// Circle
+			// Map / north up
 			else {
-				compassRadius =
-					(
-						isLandscape
-						? compassAvailableHeight
-						: bounds.getWidth() - _compassArcLandscapeMarginHorizontal * 2
-					) / 2;
+				const uint16_t landscapeRadius =
+					bounds.getHeight() / 2
+					- circleMarginTopPixels
+					- Theme::fontNormal.getHeight()
+					- _compassHeadingTextHorizontalLineOffset
+					- 1
+					- _compassHeadingTextVerticalLineHeight
+					- _compassCircleMarginTopPx;
 
-				compassY = bounds.getYCenter();
+				const uint16_t portraitRadius = (bounds.getWidth() - (bounds.getWidth() * _compassCircleMarginHorizontalPct / 100) * 2) / 2;
 
-				compassAngleFromDeg = 0;
-				compassAngleToDeg = 360 - _compassAngleStepUnitsDeg;
+				circleRadius =
+					isLandscape
+					? landscapeRadius
+					: std::min(landscapeRadius, portraitRadius);
 
-				// renderer->renderCircle(
-				// 	Point(centerX, compassY),
-				// 	compassRadius,
-				// 	&Theme::fg1
-				// );
+				tickMarksRadius = circleRadius - 1;
+
+				y = centerY;
+
+				tickAngleFromDeg = 0;
+				tickAngleToDeg = 360 - _compassTickMarkUnitsDeg;
 			}
 
-			// Marks
-			float stepUnitsPerYawDegIntPart;
-			const float stepUnitsPerYawDegFractPart = std::modff(yawDeg / _compassAngleStepUnitsDeg, &stepUnitsPerYawDegIntPart);
-			const int32_t yawSnappedInt = static_cast<int32_t>(stepUnitsPerYawDegIntPart) * _compassAngleStepUnitsDeg;
-
-			for (int16_t angleDeg = compassAngleFromDeg; angleDeg <= compassAngleToDeg; angleDeg += _compassAngleStepUnitsDeg) {
-				const uint16_t shownAngleDeg = normalizeAngle360(yawSnappedInt + angleDeg);
-				const auto isBig = shownAngleDeg % _compassAngleStepUnitsBigDeg == 0;
-
-				const auto angleEndVec = Vector2F(0, compassRadius).rotate(-toRadians(angleDeg - stepUnitsPerYawDegFractPart * _compassAngleStepUnitsDeg));
-				const auto angleEndVecNorm = angleEndVec.normalize();
-				const auto angleStartVec = angleEndVec - angleEndVecNorm * (isBig ? _compassAngleStepLineBigLength : _compassAngleStepLineSmallLength);
-
-				renderer->renderLine(
+			if (isCameraShiftedLaterally()) {
+				// Cross
+				renderer->renderHorizontalLine(
 					Point(
-						centerX + static_cast<int32_t>(angleStartVec.getX()),
-						compassY - static_cast<int32_t>(angleStartVec.getY())
+						centerX - _compassLateralOffsetCrossSize / 2,
+						y
 					),
-					Point(
-						centerX + static_cast<int32_t>(angleEndVec.getX()),
-						compassY - static_cast<int32_t>(angleEndVec.getY())
-					),
+					_compassLateralOffsetCrossSize,
 					&Theme::fg1
 				);
 
-				if (isBig) {
-					const auto text = std::to_wstring(shownAngleDeg / 10);
-					const auto textWidth = Theme::fontSmall.getWidth(text);
-					const auto textDiagonal = std::sqrt(textWidth * textWidth + Theme::fontSmall.getHeight() * Theme::fontSmall.getHeight());
-					const auto textCenterVec = angleStartVec - angleEndVecNorm * (_compassAngleStepLineTextOffset + textDiagonal / 2);
-
-					renderer->renderString(
-						Point(
-							centerX + static_cast<int32_t>(textCenterVec.getX()) - textWidth / 2,
-							compassY - static_cast<int32_t>(textCenterVec.getY()) - Theme::fontSmall.getHeight() / 2
-						),
-						&Theme::fontSmall,
-						&Theme::fg1,
-						text
-					);
-				}
+				renderer->renderVerticalLine(
+					Point(
+						centerX,
+						y - _compassLateralOffsetCrossSize / 2
+					),
+					_compassLateralOffsetCrossSize,
+					&Theme::fg1
+				);
+			}
+			else {
+				// Aircraft indicator
+				AircraftElement::render(renderer, Point(
+					centerX,
+					y
+				));
 			}
 
-			// Heading text
-			const auto yawDegText = std::format(L"{:03d}", static_cast<int32_t>(normalizeAngle360(yawDeg)));
-			const uint16_t yawDegTextWidth = Theme::fontNormal.getWidth(yawDegText);
+			// North up
+			if (settings.interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp) {
 
-			compassY -= compassRadius + _compassMarginTop + _compassHeadingTextVerticalLineHeight - 1;
+			}
+			else {
+				// Tick marks
+				float stepUnitsPerYawDegIntPart;
+				const float stepUnitsPerYawDegFractPart = std::modff(yawDeg / _compassTickMarkUnitsDeg, &stepUnitsPerYawDegIntPart);
+				const int32_t yawSnappedInt = static_cast<int32_t>(stepUnitsPerYawDegIntPart) * _compassTickMarkUnitsDeg;
 
-			// Vertical line
-			renderer->renderVerticalLine(
-				Point(
-					centerX,
-					compassY
-				),
-				_compassHeadingTextVerticalLineHeight,
-				&Theme::fg1
-			);
+				for (int16_t angleDeg = tickAngleFromDeg; angleDeg <= tickAngleToDeg; angleDeg += _compassTickMarkUnitsDeg) {
+					const uint16_t shownAngleDeg = normalizeAngle360(yawSnappedInt + angleDeg);
+					const auto isBig = shownAngleDeg % _compassTickMarkUnitsBigDeg == 0;
 
-			compassY -= 1;
+					const auto angleEndVec = Vector2F(0, tickMarksRadius).rotate(-toRadians(angleDeg - stepUnitsPerYawDegFractPart * _compassTickMarkUnitsDeg));
+					const auto angleEndVecNorm = angleEndVec.normalize();
+					const auto angleStartVec = angleEndVec - angleEndVecNorm * (isBig ? _compassTickMarkBigLength : _compassTickMarkSmallLength);
 
-			// Horizontal line
-			renderer->renderHorizontalLine(
-				Point(
-					centerX - yawDegTextWidth / 2,
-					compassY
-				),
-				yawDegTextWidth,
-				&Theme::fg1
-			);
+					renderer->renderLine(
+						Point(
+							centerX + static_cast<int32_t>(angleStartVec.getX()),
+							y - static_cast<int32_t>(angleStartVec.getY())
+						),
+						Point(
+							centerX + static_cast<int32_t>(angleEndVec.getX()),
+							y - static_cast<int32_t>(angleEndVec.getY())
+						),
+						&Theme::fg1
+					);
 
-			compassY -= _compassHeadingTextHorizontalLineOffset + Theme::fontNormal.getHeight();
+					if (isBig) {
+						const auto text = std::to_wstring(shownAngleDeg / 10);
+						const auto textWidth = Theme::fontSmall.getWidth(text);
+						const auto textDiagonal = std::sqrt(textWidth * textWidth + Theme::fontSmall.getHeight() * Theme::fontSmall.getHeight());
+						const auto textCenterVec = angleStartVec - angleEndVecNorm * (_compassTickMarkTextOffset + textDiagonal / 2);
 
-			// Heading text
-			renderer->renderString(
-				Point(
-					centerX - yawDegTextWidth / 2,
-					compassY
-				),
-				&Theme::fontNormal,
-				&Theme::fg1,
-				yawDegText
-			);
+						renderer->renderString(
+							Point(
+								centerX + static_cast<int32_t>(textCenterVec.getX()) - textWidth / 2,
+								y - static_cast<int32_t>(textCenterVec.getY()) - Theme::fontSmall.getHeight() / 2
+							),
+							&Theme::fontSmall,
+							&Theme::fg1,
+							text
+						);
+					}
+				}
+
+				// Heading text
+				const auto yawDegText = std::format(L"{:03}", static_cast<int32_t>(normalizeAngle360(yawDeg)));
+				const uint16_t yawDegTextWidth = Theme::fontNormal.getWidth(yawDegText);
+
+				y -= circleRadius + _compassCircleMarginTopPx + _compassHeadingTextVerticalLineHeight - 1;
+
+				// Vertical line
+				renderer->renderVerticalLine(
+					Point(
+						centerX,
+						y
+					),
+					_compassHeadingTextVerticalLineHeight,
+					&Theme::fg1
+				);
+
+				y -= 1;
+
+				// Horizontal line
+				renderer->renderHorizontalLine(
+					Point(
+						centerX - yawDegTextWidth / 2,
+						y
+					),
+					yawDegTextWidth,
+					&Theme::fg1
+				);
+
+				y -= _compassHeadingTextHorizontalLineOffset + Theme::fontNormal.getHeight();
+
+				// Heading text
+				renderer->renderString(
+					Point(
+						centerX - yawDegTextWidth / 2,
+						y
+					),
+					&Theme::fontNormal,
+					&Theme::fg1,
+					yawDegText
+				);
+			}
 		}
 
 		// Cursor
-		if (_cursorPosition.getX() >= 0 && _cursorPosition.getY() >= 0) {
+		if (isFocused() && _cursorPosition.getX() >= 0 && _cursorPosition.getY() >= 0) {
 			constexpr static uint8_t lineAreaOffset = 5;
 			constexpr static uint8_t lineAreaSize = 8;
 
@@ -320,7 +370,9 @@ namespace pizda {
 
 //			ESP_LOGI("ND", "------------- Drag -------------");
 
-			const auto& deltaPixels = (touchDragEventEvent->getPosition() - _touchDownPosition).rotate(RC::getInstance().getAircraftData().computed.yaw);
+			auto& rc = RC::getInstance();
+			const auto yaw = rc.getSettings().interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : rc.getAircraftData().computed.yaw;
+			const auto& deltaPixels = (touchDragEventEvent->getPosition() - _touchDownPosition).rotate(yaw);
 			_touchDownPosition = touchDragEventEvent->getPosition();
 			_cursorPosition = touchDragEventEvent->getPosition() - getBounds().getPosition();
 
@@ -424,7 +476,7 @@ namespace pizda {
 				const auto pushEvent = static_cast<EncoderPushEvent*>(event);
 
 				if (pushEvent->isDown())
-					resetCameraOffsetLatLon();
+					resetCameraLateralOffset();
 
 				event->setHandled(true);
 			}
@@ -462,7 +514,11 @@ namespace pizda {
 		invalidate();
 	}
 
-	void ND::resetCameraOffsetLatLon() {
+	void ND::resetCameraLateralOffset() {
 		setCameraOffset(GeographicCoordinates(0, 0, _cameraOffset.getAltitude()));
+	}
+
+	bool ND::isCameraShiftedLaterally() const {
+		return _cameraOffset.getLatitude() != 0 || _cameraOffset.getLongitude() != 0;
 	}
 }

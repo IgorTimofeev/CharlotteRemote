@@ -31,8 +31,8 @@ namespace pizda {
 		// Tabs
 		_tabsRow.setOrientation(Orientation::horizontal);
 
-		for (const auto tab : tabs)
-			_tabsRow += tab;
+		for (auto& tab : tabs)
+			_tabsRow += &tab;
 
 		// Tabs & content
 		_tabsAndContentRows += &_tabsRow;
@@ -46,9 +46,7 @@ namespace pizda {
 	}
 
 	Menu::~Menu() {
-		if (_view) {
-			delete _view;
-		}
+		delete _view;
 	}
 
 	const Route* Menu::_viewRoute = &MenuRoutes::MFD;
@@ -56,8 +54,8 @@ namespace pizda {
 	void Menu::setViewRoute(const Route* route) {
 		_viewRoute = route;
 
-		for (const auto tab : tabs) {
-			tab->setChecked(tab->getRoute() == route);
+		for (auto& tab : tabs) {
+			tab.setChecked(tab.getRoute() == route);
 		}
 
 		if (_view) {
@@ -66,6 +64,7 @@ namespace pizda {
 		}
 
 		_view = dynamic_cast<MenuView*>(_viewRoute->buildElement());
+		_view->setup();
 		_tabsAndContentRows.insertChild(0, _view);
 
 		auto& rc = RC::getInstance();

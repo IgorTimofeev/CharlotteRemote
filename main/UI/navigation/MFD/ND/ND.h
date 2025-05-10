@@ -21,7 +21,8 @@ namespace pizda {
 
 			const GeographicCoordinates& getCameraOffset() const;
 			void setCameraOffset(const GeographicCoordinates& value);
-			void resetCameraOffsetLatLon();
+			void resetCameraLateralOffset();
+			bool isCameraShiftedLaterally() const;
 
 		protected:
 			void onTick() override;
@@ -30,23 +31,25 @@ namespace pizda {
 			void onEvent(Event* event) override;
 
 		private:
-			constexpr static uint8_t _compassAngleStepUnitsDeg = 10;
-			constexpr static uint8_t _compassAngleStepUnitsBigDeg = 30;
+			constexpr static uint8_t _compassTickMarkUnitsDeg = 10;
+			constexpr static uint8_t _compassTickMarkUnitsBigDeg = 30;
 
-			constexpr static uint8_t _compassHeadingTextMarginTop = 3;
+			constexpr static uint8_t _compassLateralOffsetCrossSize = 8;
+
+			constexpr static uint8_t _compassTickMarkSmallLength = 2;
+			constexpr static uint8_t _compassTickMarkBigLength = 4;
+			constexpr static uint8_t _compassTickMarkTextOffset = 3;
+
+			constexpr static uint8_t _compassHeadingTextMarginTopPct = 3;
 			constexpr static uint8_t _compassHeadingTextHorizontalLineOffset = 1;
 			constexpr static uint8_t _compassHeadingTextVerticalLineHeight = 2;
 
-			constexpr static uint8_t _compassMarginTop = 4;
+			constexpr static uint8_t _compassCircleMarginTopPx = 4;
+			constexpr static uint8_t _compassCircleMarginBottomPct = 10;
+			constexpr static uint8_t _compassCircleMarginHorizontalPct = 6;
 
-			constexpr static uint8_t _compassArcLandscapeMarginHorizontal = 15;
-			constexpr static uint8_t _compassArcMarginBottom = 20;
-			constexpr static uint16_t _compassArcViewportDeg = _compassAngleStepUnitsDeg * 10;
+			constexpr static uint16_t _compassArcViewportDeg = _compassTickMarkUnitsDeg * 10;
 			constexpr static uint16_t _compassArcViewportHalfDeg = _compassArcViewportDeg / 2;
-
-			constexpr static uint8_t _compassAngleStepLineSmallLength = 3;
-			constexpr static uint8_t _compassAngleStepLineBigLength = 5;
-			constexpr static uint8_t _compassAngleStepLineTextOffset = 3;
 
 			static GeographicCoordinates _cameraOffset;
 			GeographicCoordinates _cameraCoordinates {};

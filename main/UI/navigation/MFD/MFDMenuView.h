@@ -3,8 +3,8 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "menuView.h"
-#include "menuViewButton.h"
+#include "../menu/menuView.h"
+#include "../menu/menuViewButton.h"
 #include "../../../resources/images.h"
 
 namespace pizda {

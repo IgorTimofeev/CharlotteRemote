@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "../page.h"
 
 #include "PFD/PFD.h"
@@ -24,11 +26,12 @@ namespace pizda {
 
 			RelativeStackLayout _rows {};
 
-			PFD* _PFD = nullptr;
-			NDControls* _NDControls = nullptr;
-			MainControls* _mainControls = nullptr;
-			AutopilotControls* _autopilotControls = nullptr;
-			PressureControls* _pressureControls = nullptr;
+			std::unique_ptr<PFD> _PFD {};
+			std::unique_ptr<NDControls> _ND {};
+
+			std::unique_ptr<MainControls> _mainControls {};
+			std::unique_ptr<AutopilotControls> _autopilotControls {};
+			std::unique_ptr<PressureControls> _pressureControls {};
 
 			void fromSettingsInstance();
 	};

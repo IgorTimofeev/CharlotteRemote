@@ -13,29 +13,16 @@ namespace pizda {
 
 	class PagesMenuView : public MenuView {
 		public:
-			explicit PagesMenuView();
+			explicit PagesMenuView(PageMenuViewButton* buttons, uint8_t buttonCount, const Route** lastRoute);
+
+			void setup() override;
 
 			const Route* getRoute() override;
-			void setRoute(const Route* route);
+			void setRoute(const Route* route) const;
 
 		private:
-			static const Route* _route;
-
-			PageMenuViewButton
-				_MFDButton = { &resources::Images::menuIconMFD, L"MFD", &Routes::settingsMFD },
-				_personalizationButton = { &resources::Images::menuIconPersonalization, L"Person.", &Routes::settingsPersonalization },
-				_axisButton = { &resources::Images::menuIconAxis, L"Axis", &Routes::settingsAxis },
-				_WiFiButton = { &resources::Images::menuIconWiFi, L"Wi-Fi", &Routes::settingsWiFi },
-				_UITestButton = { &resources::Images::menuIconDev, L"Dev", &Routes::settingsDeveloper };
-
-			MenuViewButton _powerButton = { &resources::Images::menuIconPower, L"Reboot" };
-
-			PageMenuViewButton* _buttons[5] = {
-				&_MFDButton,
-				&_personalizationButton,
-				&_axisButton,
-				&_WiFiButton,
-				&_UITestButton,
-			};
+			const Route** _lastRoute;
+			PageMenuViewButton* _buttons;
+			uint8_t _buttonCount;
 	};
 }

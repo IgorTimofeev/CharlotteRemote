@@ -24,20 +24,10 @@ namespace pizda {
 				if (vertices[0].getZ() < scene.getNearPlaneDistance())
 					return;
 
-				constexpr static uint8_t triangleWidth = 8;
-				constexpr static uint8_t triangleHeight = 6;
-
-				const auto position = Point(
+				render(renderer, Point(
 					static_cast<int32_t>(vertices[0].getX()),
 					static_cast<int32_t>(vertices[0].getY())
-				);
-
-				renderer->renderTriangle(
-					position,
-					Point(position.getX() - triangleWidth / 2, position.getY() + triangleHeight),
-					Point(position.getX() + triangleWidth / 2, position.getY() + triangleHeight),
-					&Theme::fg1
-				);
+				));
 			}
 
 			const Vector3F& getPosition() const {
@@ -46,6 +36,18 @@ namespace pizda {
 
 			void setPosition(const Vector3F& position) {
 				_position = position;
+			}
+
+			static void render(Renderer* renderer, const Point& position) {
+				constexpr static uint8_t triangleWidth = 8;
+				constexpr static uint8_t triangleHeight = 6;
+
+				renderer->renderTriangle(
+					position,
+					Point(position.getX() - triangleWidth / 2, position.getY() + triangleHeight),
+					Point(position.getX() + triangleWidth / 2, position.getY() + triangleHeight),
+					&Theme::yellow
+				);
 			}
 
 		private:
