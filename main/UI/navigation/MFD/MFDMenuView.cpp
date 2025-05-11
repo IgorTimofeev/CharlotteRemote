@@ -2,7 +2,7 @@
 
 #include "../../theme.h"
 #include "../../../rc.h"
-#include "../../../settings.h"
+#include "../../../settings/settings.h"
 
 #include "../routes.h"
 #include "MFDPage.h"

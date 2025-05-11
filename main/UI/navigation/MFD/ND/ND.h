@@ -24,6 +24,8 @@ namespace pizda {
 			void resetCameraLateralOffset();
 			bool isCameraShiftedLaterally() const;
 
+			static void renderWaypointStar(Renderer* renderer, const Point& center, const Color* color);
+
 		protected:
 			void onTick() override;
 			void onBoundsChanged() override;

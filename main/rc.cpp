@@ -169,10 +169,6 @@ namespace pizda {
 		return _aircraftData;
 	}
 
-	SpatialData& RC::getSpatialData() {
-		return _spatialData;
-	}
-
 	uint32_t RC::getTickDeltaTime() const {
 		return _tickDeltaTime;
 	}

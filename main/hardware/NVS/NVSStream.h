@@ -84,6 +84,15 @@ namespace pizda {
 				setStringT<char>(key, value);
 			}
 
+			void getBlob(const char* key, uint8_t* data, size_t length) const {
+				size_t lengthCopy = length;
+				ESP_ERROR_CHECK(nvs_get_blob(_handle, key, data, &lengthCopy));
+			}
+
+			void setBlob(const char* key, const uint8_t* data, size_t length) const {
+				ESP_ERROR_CHECK(nvs_set_blob(_handle, key, data, length));
+			}
+
 			void testForBullshit() {
 				ESP_LOGI("NVS test", "Writing");
 

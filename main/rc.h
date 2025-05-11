@@ -11,7 +11,7 @@
 #include "UI/navigation/menu/openMenuButton.h"
 #include "UI/elements/debugOverlay.h"
 
-#include "settings.h"
+#include "settings/settings.h"
 #include "constants.h"
 
 #include "hardware/WiFi/WiFi.h"
@@ -25,7 +25,6 @@
 #include "types/units.h"
 #include "types/lowPassFilter.h"
 #include "types/aircraftData.h"
-#include "types/spatialData.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -66,7 +65,6 @@ namespace pizda {
 			void setRoute(const Route* route);
 
 			AircraftData& getAircraftData();
-			SpatialData& getSpatialData();
 
 		private:
 			RC() = default;
@@ -74,7 +72,6 @@ namespace pizda {
 			Settings _settings;
 
 			// -------------------------------- Hardware --------------------------------
-
 
 			ILI9341Display _display = ILI9341Display(
 				constants::spi::mosi,
@@ -175,7 +172,6 @@ namespace pizda {
 			// -------------------------------- Other shit --------------------------------
 
 			AircraftData _aircraftData {};
-			SpatialData _spatialData {};
 
 			void SPIBusSetup() const;
 			static void ADCUnitsSetup();

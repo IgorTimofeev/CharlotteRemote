@@ -3,21 +3,20 @@
 
 #include "../../../../rc.h"
 #include "../../../../types/units.h"
-#include "../../../elements/spatial/runwayElement.h"
+#include "../../../elements/spatial/runwayMesh.h"
 
 namespace pizda {
 	PFDScene::PFDScene() {
 		setClipToBounds(true);
 
 		auto& rc = RC::getInstance();
-		const auto& sd = rc.getSpatialData();
 
 		setFOV(toRadians(rc.getSettings().interface.MFD.PFD.FOV));
 
 		// Runways
-		for (const auto& runway : sd.runways) {
-			addElement(new RunwayElement(
-				runway,
+		for (const auto& runway : rc.getSettings().navigation.runways) {
+			addElement(new RunwayMesh(
+				&runway,
 				&Theme::bg1
 			));
 		}

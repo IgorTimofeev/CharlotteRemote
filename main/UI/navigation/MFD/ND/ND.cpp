@@ -5,13 +5,13 @@
 #include <numbers>
 #include <format>
 #include <esp_log.h>
-#include "../../../elements/spatial/runwayElement.h"
+#include "sceneElements/NDRunwayMesh.h"
+#include "sceneElements/RNAVWaypointElement.h"
 
 namespace pizda {
 	ND::ND() {
 		auto& rc = RC::getInstance();
 		const auto& settings = rc.getSettings();
-		const auto& sd = rc.getSpatialData();
 
 		setClipToBounds(true);
 		setFOV(toRadians(90));
@@ -39,12 +39,14 @@ namespace pizda {
 		if (settings.interface.MFD.ND.earth)
 			addElement(new LinearSphere(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg3));
 
+		// RNAV waypoints
+		for (const auto& waypoint : settings.navigation.RNAVWaypoints) {
+			addElement(new RNAVWaypointElement(&waypoint));
+		}
+
 		// Runways
-		for (const auto& runway : sd.runways) {
-			addElement(new RunwayElement(
-				runway,
-				&Theme::fg1
-			));
+		for (const auto& runway : settings.navigation.runways) {
+			addElement(new NDRunwayMesh(&runway));
 		}
 
 		// Aircraft
@@ -520,5 +522,53 @@ namespace pizda {
 
 	bool ND::isCameraShiftedLaterally() const {
 		return _cameraOffset.getLatitude() != 0 || _cameraOffset.getLongitude() != 0;
+	}
+
+	void ND::renderWaypointStar(Renderer* renderer, const Point& center, const Color* color) {
+		renderer->renderRectangle(
+			Bounds(
+				center.getX() - 1,
+				center.getY() - 1,
+				3,
+				3
+			),
+			color
+		);
+
+		renderer->renderHorizontalLine(
+			Point(
+				center.getX() - 3,
+				center.getY()
+			),
+			2,
+			color
+		);
+
+		renderer->renderHorizontalLine(
+			Point(
+				center.getX() + 2,
+				center.getY()
+			),
+			2,
+			color
+		);
+
+		renderer->renderVerticalLine(
+			Point(
+				center.getX(),
+				center.getY() - 3
+			),
+			2,
+			color
+		);
+
+		renderer->renderVerticalLine(
+			Point(
+				center.getX(),
+				center.getY() + 2
+			),
+			2,
+			color
+		);
 	}
 }
