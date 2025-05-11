@@ -177,8 +177,8 @@ namespace pizda {
 			AircraftData _aircraftData {};
 			SpatialData _spatialData {};
 
-			static void SPIBusSetup();
-			void ADCUnitsSetup();
+			void SPIBusSetup() const;
+			static void ADCUnitsSetup();
 
 			void axisTick();
 

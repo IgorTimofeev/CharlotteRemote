@@ -23,7 +23,7 @@ namespace pizda {
 
 		auto& settings = RC::getInstance().getSettings();
 		settings.interface.MFD.toolbar.mode = _mode;
-		settings.enqueueWrite();
+		settings.interface.enqueueWrite();
 
 		MFDPage::fromSettings();
 	}
@@ -45,7 +45,7 @@ namespace pizda {
 
 			PFDButton.setChecked(settings.interface.MFD.PFD.visible);
 
-			settings.enqueueWrite();
+			settings.interface.enqueueWrite();
 
 			MFDPage::fromSettings();
 		};
@@ -66,7 +66,7 @@ namespace pizda {
 
 			NDButton.setChecked(settings.interface.MFD.ND.visible);
 
-			settings.enqueueWrite();
+			settings.interface.enqueueWrite();
 
 			MFDPage::fromSettings();
 		};

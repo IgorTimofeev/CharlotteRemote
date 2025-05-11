@@ -1,5 +1,7 @@
 #pragma once
 
+#include "images/splashScreenImage.h"
+
 #include "images/menuIconMFDImage.h"
 #include "images/menuIconMFDPFDImage.h"
 #include "images/menuIconMFDNDImage.h"
@@ -20,6 +22,8 @@
 namespace pizda::resources {
 	class Images {
 		public:
+			static const SplashScreenImage splashScreen;
+
 			static const MenuIconMFDImage menuIconMFD;
 			static const MenuIconMFDPFDImage menuIconMFDPFD;
 			static const MenuIconMFDNDImage menuIconMFDND;

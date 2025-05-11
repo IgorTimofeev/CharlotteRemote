@@ -1,6 +1,8 @@
 #include "images.h"
 
 namespace pizda::resources {
+	const SplashScreenImage Images::splashScreen {};
+
 	const MenuIconMFDImage Images::menuIconMFD {};
 	const MenuIconMFDPFDImage Images::menuIconMFDPFD {};
 	const MenuIconMFDNDImage Images::menuIconMFDND {};

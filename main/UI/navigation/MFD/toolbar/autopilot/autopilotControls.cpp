@@ -19,7 +19,7 @@ namespace pizda {
 
 		FDButton.isCheckedChanged += [this, &settings] {
 			settings.interface.MFD.PFD.flightDirectors = FDButton.isChecked();
-			settings.enqueueWrite();
+			settings.interface.enqueueWrite();
 		};
 		
 		row += &FDButton;
@@ -30,12 +30,12 @@ namespace pizda {
 
 		speed.rotated += [this, &settings] {
 			settings.autopilot.speedKt = speed.seven.getValue();
-			settings.enqueueWrite();
+			settings.autopilot.enqueueWrite();
 		};
 
 		speed.button.isCheckedChanged += [this, &settings] {
 			settings.autopilot.autoThrottle = speed.button.isChecked();
-			settings.enqueueWrite();
+			settings.autopilot.enqueueWrite();
 		};
 
 		speedLayout.setFocusable(false);
@@ -47,12 +47,12 @@ namespace pizda {
 
 		heading.rotated += [this, &settings] {
 			settings.autopilot.headingDeg = heading.seven.getValue();
-			settings.enqueueWrite();
+			settings.autopilot.enqueueWrite();
 		};
 
 		heading.button.isCheckedChanged += [this, &settings] {
 			settings.autopilot.headingHold = heading.button.isChecked();
-			settings.enqueueWrite();
+			settings.autopilot.enqueueWrite();
 		};
 
 		headingLayout.setFocusable(false);
@@ -64,12 +64,12 @@ namespace pizda {
 
 		altitude.rotated += [this, &settings] {
 			settings.autopilot.altitudeFt = altitude.seven.getValue();
-			settings.enqueueWrite();
+			settings.autopilot.enqueueWrite();
 		};
 
 		altitude.button.isCheckedChanged += [this, &settings] {
 			settings.autopilot.levelChange = altitude.button.isChecked();
-			settings.enqueueWrite();
+			settings.autopilot.enqueueWrite();
 		};
 
 		altitudeLayout.setFocusable(false);

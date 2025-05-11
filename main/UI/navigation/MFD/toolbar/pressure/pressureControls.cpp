@@ -17,12 +17,12 @@ namespace pizda {
 
 		pressure.rotated += [this, &settings] {
 			settings.controls.referencePressurePa = pressure.seven.getValue() * 100;
-			RC::getInstance().getSettings().enqueueWrite();
+			RC::getInstance().getSettings().controls.enqueueWrite();
 		};
 
 		pressure.button.isCheckedChanged += [this, &settings] {
 			settings.controls.referencePressureSTD = pressure.button.isChecked();
-			RC::getInstance().getSettings().enqueueWrite();
+			RC::getInstance().getSettings().controls.enqueueWrite();
 		};
 
 		pressureLayout.setFocusable(false);
@@ -34,12 +34,12 @@ namespace pizda {
 
 		minimums.rotated += [this, &settings] {
 			settings.controls.minimumAltitudeFt = minimums.seven.getValue();
-			RC::getInstance().getSettings().enqueueWrite();
+			RC::getInstance().getSettings().controls.enqueueWrite();
 		};
 
 		minimums.button.isCheckedChanged += [this, &settings] {
 			settings.controls.minimumAltitudeEnabled = minimums.button.isChecked();
-			RC::getInstance().getSettings().enqueueWrite();
+			RC::getInstance().getSettings().controls.enqueueWrite();
 		};
 
 		minimumsLayout.setFocusable(false);

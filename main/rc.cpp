@@ -4,6 +4,7 @@
 #include "rc.h"
 #include "constants.h"
 #include "resources/sounds.h"
+#include "resources/images.h"
 #include "UI/navigation/routes.h"
 
 namespace pizda {
@@ -16,50 +17,59 @@ namespace pizda {
 	}
 
 	[[noreturn]] void RC::run() {
+		// First, let's render a splash screen while we wait for the peripherals to finish warming up
 		SPIBusSetup();
-		ADCUnitsSetup();
-		NVSSetup();
 
-		// Settings
-		_settings.read();
-
-		// Display
+		// After applying power or a hard reset, the LCD panel will be turned off, its internal pixel
+		// buffer will contain random garbage, and the driver will wait for pixel data to be received
+		//
+		// If you turn on the LCD before sending pixels, this garbage will be immediately shown,
+		// which will definitely cause bleed from videophiles eyes
+		//
+		// So...
 		_display.setup();
-
-		// Renderer
 		_renderer.setTarget(&_display);
 
-		// Application
-		_application.setRenderer(&_renderer);
+		// Rendering splash screen
+		Theme::setPaletteColors(&_renderer);
+		_renderer.clear(&Theme::bg1);
+		_renderer.renderImage(Point(), &resources::Images::splashScreen);
+		_renderer.flush();
 
-		// Touch panel
+		// Turning display on
+		_display.turnOn();
+
+		// NVS is required by settings & Wi-Fi
+		NVSSetup();
+		ADCUnitsSetup();
+
+		// Settings contain calibration data for the ADC axes, so they should be read first
+		_settings.readAll();
+
+		// Peripherals
 		_touchPanel.setup();
-		_application.addInputDevice(&_touchPanel);
+		_encoder.setup();
+		_battery.setup();
+		_speaker.setup();
 
-//		// Transceiver
-		WiFi::start();
-		_transceiver.setup();
-		_transceiver.start();
-
-		// Axis
 		_leverLeft.setup();
 		_leverRight.setup();
 		_joystickHorizontal.setup();
 		_joystickVertical.setup();
 		_ring.setup();
 
-		// Encoder
-		_encoder.setup();
+		// WiFi
+		WiFi::start();
 
-		// Battery
-		_battery.setup();
+		// Transceiver
+		_transceiver.setup();
+		_transceiver.start();
 
-		// Speaker
-		_speaker.setup();
+		// Application
+		_application.setRenderer(&_renderer);
+		_application.addInputDevice(&_touchPanel);
 
-		// -------------------------------- UI --------------------------------
-
-		Theme::setup(&_renderer);
+		// UI
 		_application.setBackgroundColor(&Theme::bg1);
 		_application += &_pageLayout;
 
@@ -69,10 +79,13 @@ namespace pizda {
 		setRoute(&Routes::MFD);
 		updateDebugOverlayVisibility();
 
-		// -------------------------------- Take off --------------------------------
+		// This shit is blazingly 🔥 fast 🚀, so letting user enjoy logo for a few moments
+		vTaskDelay(pdMS_TO_TICKS(1000));
 
+		// Beep beep
 		_speaker.play(resources::Sounds::boot());
 
+		// Main loop
 		while (true) {
 			const auto time = esp_timer_get_time();
 
@@ -86,7 +99,6 @@ namespace pizda {
 
 			// Low priority tasks
 			_speaker.tick();
-			_settings.tick();
 
 			_tickDeltaTime = esp_timer_get_time() - time;
 
@@ -262,14 +274,14 @@ namespace pizda {
 		}
 	}
 
-	void RC::SPIBusSetup() {
+	void RC::SPIBusSetup() const {
 		spi_bus_config_t busConfig {};
 		busConfig.mosi_io_num = constants::spi::mosi;
 		busConfig.miso_io_num = constants::spi::miso;
 		busConfig.sclk_io_num = constants::spi::sck;
 		busConfig.quadwp_io_num = -1;
 		busConfig.quadhd_io_num = -1;
-		busConfig.max_transfer_sz = 320 * 240 * 2;
+		busConfig.max_transfer_sz = _display.getSize().getSquare() * 2;
 
 		ESP_ERROR_CHECK(spi_bus_initialize(SPI2_HOST, &busConfig, SPI_DMA_CH_AUTO));
 	}

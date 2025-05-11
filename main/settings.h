@@ -6,10 +6,11 @@
 #include <memory>
 #include <cstring>
 
-#include "hardware/NVS.h"
+#include "hardware/NVS/NVSStream.h"
+#include "hardware/NVS/NVSSerializable.h"
 
 namespace pizda {
-	class SettingsControls {
+	class SettingsControls : public NVSSerializable {
 		public:
 			uint8_t throttle = 0;
 
@@ -21,6 +22,47 @@ namespace pizda {
 
 			bool landingGear = false;
 			bool strobeLights = false;
+
+		protected:
+			const char* getNVSNamespace() override {
+				return _namespace;
+			}
+
+			void onRead(const NVSStream& stream) override {
+				throttle = stream.getFloat(_throttle, 0);
+
+				referencePressurePa = stream.getUint32(_referencePressurePa, 101325);
+				referencePressureSTD = stream.getBool(_referencePressureSTD, false);
+
+				minimumAltitudeFt = stream.getUint32(_minimumAltitudeFt, 350);
+				minimumAltitudeEnabled = stream.getBool(_minimumAltitudeEnabled, true);
+
+				landingGear = stream.getBool(_landingGear, true);
+				strobeLights = stream.getBool(_strobeLights, true);
+			}
+
+			void onWrite(const NVSStream& stream) override {
+				stream.setFloat(_throttle, throttle);
+
+				stream.setUint32(_referencePressurePa, referencePressurePa);
+				stream.setBool(_referencePressureSTD, referencePressureSTD);
+
+				stream.setUint32(_minimumAltitudeFt, minimumAltitudeFt);
+				stream.setBool(_minimumAltitudeEnabled, minimumAltitudeEnabled);
+
+				stream.setBool(_landingGear, landingGear);
+				stream.setBool(_strobeLights, strobeLights);
+			}
+
+		private:
+			constexpr static auto _namespace = "ctns";
+			constexpr static auto _throttle = "ctth";
+			constexpr static auto _referencePressurePa = "ctrp";
+			constexpr static auto _referencePressureSTD = "ctrs";
+			constexpr static auto _minimumAltitudeFt = "ctma";
+			constexpr static auto _minimumAltitudeEnabled = "ctme";
+			constexpr static auto _landingGear = "ctlg";
+			constexpr static auto _strobeLights = "ctsl";
 	};
 
 	class SettingsAxisData {
@@ -30,7 +72,7 @@ namespace pizda {
 			bool inverted = false;
 	};
 
-	class SettingsAxis {
+	class SettingsAxis: public NVSSerializable {
 		public:
 			SettingsAxisData leverLeft {};
 			SettingsAxisData leverRight {};
@@ -39,9 +81,84 @@ namespace pizda {
 			SettingsAxisData ring {};
 			uint16_t lowPassFactor = 0;
 			uint8_t jitteringCutoffValue = 0;
+
+		protected:
+			const char* getNVSNamespace() override {
+				return _namespace;
+			}
+
+			void onRead(const NVSStream& stream) override {
+				leverLeft.from = stream.getUint16(_leverLeftFrom, 0);
+				leverLeft.to = stream.getUint16(_leverLeftTo, 4096);
+				leverLeft.inverted = stream.getUint16(_leverLeftInverted, false);
+
+				leverRight.from = stream.getUint16(_leverRightFrom, 0);
+				leverRight.to = stream.getUint16(_leverRightTo, 4096);
+				leverRight.inverted = stream.getUint16(_leverRightInverted, false);
+
+				joystickHorizontal.from = stream.getUint16(_joystickHorizontalFrom, 778);
+				joystickHorizontal.to = stream.getUint16(_joystickHorizontalTo, 2744);
+				joystickHorizontal.inverted = stream.getUint16(_joystickHorizontalInverted, true);
+
+				joystickVertical.from = stream.getUint16(_joystickVerticalFrom, 1474);
+				joystickVertical.to = stream.getUint16(_joystickVerticalTo, 3031);
+				joystickVertical.inverted = stream.getUint16(_joystickVerticalInverted, false);
+
+				ring.from = stream.getUint16(_ringFrom, 0);
+				ring.to = stream.getUint16(_ringTo, 3768);
+				ring.inverted = stream.getUint16(_ringInverted, true);
+
+				lowPassFactor = stream.getUint16(_lowPassFactor, 0xFFFF * 75 / 100);
+				jitteringCutoffValue = stream.getUint8(_jitteringCutoffValue, 30);
+			}
+
+			void onWrite(const NVSStream& stream) override {
+				stream.setUint16(_leverLeftFrom, leverLeft.from);
+				stream.setUint16(_leverLeftTo, leverLeft.to);
+				stream.setUint16(_leverLeftInverted, leverLeft.inverted);
+
+				stream.setUint16(_leverRightFrom, leverRight.from);
+				stream.setUint16(_leverRightTo, leverRight.to);
+				stream.setUint16(_leverRightInverted, leverRight.inverted);
+
+				stream.setUint16(_joystickHorizontalFrom, joystickHorizontal.from);
+				stream.setUint16(_joystickHorizontalTo, joystickHorizontal.to);
+				stream.setUint16(_joystickHorizontalInverted, joystickHorizontal.inverted);
+
+				stream.setUint16(_joystickVerticalFrom, joystickVertical.from);
+				stream.setUint16(_joystickVerticalTo, joystickVertical.to);
+				stream.setUint16(_joystickVerticalInverted, joystickVertical.inverted);
+
+				stream.setUint16(_ringFrom, ring.from);
+				stream.setUint16(_ringTo, ring.to);
+				stream.setUint16(_ringInverted, ring.inverted);
+
+				stream.setUint16(_lowPassFactor, lowPassFactor);
+				stream.setUint8(_jitteringCutoffValue, jitteringCutoffValue);
+			}
+
+		private:
+			constexpr static auto _namespace = "axns";
+			constexpr static auto _leverLeftFrom = "axllf";
+			constexpr static auto _leverLeftTo = "axllt";
+			constexpr static auto _leverLeftInverted = "axlli";
+			constexpr static auto _leverRightFrom = "axlrf";
+			constexpr static auto _leverRightTo = "axlrt";
+			constexpr static auto _leverRightInverted = "axlri";
+			constexpr static auto _joystickHorizontalFrom = "axjhf";
+			constexpr static auto _joystickHorizontalTo = "axjht";
+			constexpr static auto _joystickHorizontalInverted = "axjhi";
+			constexpr static auto _joystickVerticalFrom = "axjvf";
+			constexpr static auto _joystickVerticalTo = "axjvt";
+			constexpr static auto _joystickVerticalInverted = "axjvi";
+			constexpr static auto _ringFrom = "axrgf";
+			constexpr static auto _ringTo = "axrgt";
+			constexpr static auto _ringInverted = "axrgi";
+			constexpr static auto _lowPassFactor = "axlpf";
+			constexpr static auto _jitteringCutoffValue = "axjc";
 	};
 
-	class SettingsAutopilot {
+	class SettingsAutopilot : public NVSSerializable {
 		public:
 			uint16_t speedKt = 0;
 			bool autoThrottle = false;
@@ -51,6 +168,42 @@ namespace pizda {
 
 			uint16_t altitudeFt = 0;
 			bool levelChange = false;
+
+		protected:
+			const char* getNVSNamespace() override {
+				return _namespace;
+			}
+
+			void onRead(const NVSStream& stream) override {
+				speedKt = stream.getUint16(_speedKt, 90);
+				autoThrottle = stream.getBool(_autoThrottle, false);
+
+				headingDeg = stream.getUint16(_headingDeg, 0);
+				headingHold = stream.getBool(_headingHold, false);
+
+				altitudeFt = stream.getUint16(_altitudeFt, 100);
+				levelChange = stream.getBool(_levelChange, false);
+			}
+
+			void onWrite(const NVSStream& stream) override {
+				stream.setUint16(_speedKt, speedKt);
+				stream.setBool(_autoThrottle, autoThrottle);
+
+				stream.setUint16(_headingDeg, headingDeg);
+				stream.setBool(_headingHold, headingHold);
+
+				stream.setUint16(_altitudeFt, altitudeFt);
+				stream.setBool(_levelChange, levelChange);
+			}
+
+		private:
+			constexpr static auto _namespace = "apns";
+			constexpr static auto _speedKt = "apsp";
+			constexpr static auto _autoThrottle = "apat";
+			constexpr static auto _headingDeg = "aphd";
+			constexpr static auto _headingHold = "aphh";
+			constexpr static auto _altitudeFt = "apal";
+			constexpr static auto _levelChange = "aplc";
 	};
 
 	class SettingsInterfaceMFDPFD {
@@ -103,10 +256,59 @@ namespace pizda {
 			bool debugOverlay = false;
 	};
 
-	class SettingsInterface {
+	class SettingsInterface : public NVSSerializable {
 		public:
 			SettingsInterfaceMFD MFD {};
 			SettingsInterfaceDeveloper developer {};
+
+		protected:
+			const char* getNVSNamespace() override {
+				return _namespace;
+			}
+
+			void onRead(const NVSStream& stream) override {
+				MFD.PFD.visible = stream.getBool(_MFDPFDVisible, true);
+				MFD.PFD.FOV = stream.getUint8(_MFDPFDFOV, 50);
+				MFD.PFD.flightDirectors = stream.getBool(_MFDPFDFlightDirectors, true);
+
+				MFD.ND.visible = stream.getBool(_MFDNDVisible, true);
+				MFD.ND.mode = static_cast<SettingsInterfaceMFDNDMode>(stream.getUint8(_MFDNDMode, static_cast<uint8_t>(SettingsInterfaceMFDNDMode::arcHeadingUp)));
+				MFD.ND.earth = stream.getBool(_MFDNDEarth, true);
+
+				MFD.toolbar.mode = static_cast<SettingsInterfaceMFDToolbarMode>(stream.getUint8(_MFDToolbarMode, static_cast<uint8_t>(SettingsInterfaceMFDToolbarMode::main)));
+
+				MFD.splitPercent = stream.getUint8(_MFDSplitPercent, 60);
+
+				developer.debugOverlay = stream.getBool(_developerDebugOverlay, false);
+			}
+
+			void onWrite(const NVSStream& stream) override {
+				stream.setBool(_MFDPFDVisible, MFD.PFD.visible);
+				stream.setUint8(_MFDPFDFOV, MFD.PFD.FOV);
+				stream.setBool(_MFDPFDFlightDirectors, MFD.PFD.flightDirectors);
+
+				stream.setBool(_MFDNDVisible, MFD.ND.visible);
+				stream.getUint8(_MFDNDMode, static_cast<uint8_t>(MFD.ND.mode));
+				stream.setBool(_MFDNDEarth, MFD.ND.earth);
+
+				stream.getUint8(_MFDToolbarMode, static_cast<uint8_t>(MFD.toolbar.mode));
+
+				stream.setUint8(_MFDSplitPercent, MFD.splitPercent);
+
+				stream.setBool(_developerDebugOverlay, developer.debugOverlay);
+			}
+
+		private:
+			constexpr static auto _namespace = "ifns";
+			constexpr static auto _MFDPFDVisible = "ifmpvi";
+			constexpr static auto _MFDPFDFOV = "ifmpfo";
+			constexpr static auto _MFDPFDFlightDirectors = "ifmpfd";
+			constexpr static auto _MFDNDVisible = "ifmnvi";
+			constexpr static auto _MFDNDMode = "ifmnmd";
+			constexpr static auto _MFDNDEarth = "ifmnea";
+			constexpr static auto _MFDToolbarMode = "ifmtmd";
+			constexpr static auto _MFDSplitPercent = "ifmsp";
+			constexpr static auto _developerDebugOverlay = "ifddo";
 	};
 
 	class Settings {
@@ -116,226 +318,11 @@ namespace pizda {
 			SettingsAutopilot autopilot {};
 			SettingsInterface interface {};
 
-			void read() {
-				NVS NVS {};
-				NVS.openForReading(Keys::root);
-
-				// -------------------------------- Controls --------------------------------
-
-				controls.throttle = NVS.getFloat(Keys::controlsThrottle, 0);
-
-				controls.referencePressurePa = NVS.getUint32(Keys::controlsReferencePressurePa, 101325);
-				controls.referencePressureSTD = NVS.getBool(Keys::controlsReferencePressureSTD, false);
-
-				controls.minimumAltitudeFt = NVS.getUint32(Keys::controlsMinimumAltitudeFt, 350);
-				controls.minimumAltitudeEnabled = NVS.getBool(Keys::controlsMinimumAltitudeEnabled, true);
-
-				controls.landingGear = NVS.getBool(Keys::controlsLandingGear, true);
-				controls.strobeLights = NVS.getBool(Keys::controlsStrobeLights, true);
-
-				// -------------------------------- Axis --------------------------------
-
-				axis.leverLeft.from = NVS.getUint16(Keys::axisLeverLeftFrom, 0);
-				axis.leverLeft.to = NVS.getUint16(Keys::axisLeverLeftTo, 4096);
-				axis.leverLeft.inverted = NVS.getUint16(Keys::axisLeverLeftInverted, false);
-
-				axis.leverRight.from = NVS.getUint16(Keys::axisLeverRightFrom, 0);
-				axis.leverRight.to = NVS.getUint16(Keys::axisLeverRightTo, 4096);
-				axis.leverRight.inverted = NVS.getUint16(Keys::axisLeverRightInverted, false);
-
-				axis.joystickHorizontal.from = NVS.getUint16(Keys::axisJoystickHorizontalFrom, 778);
-				axis.joystickHorizontal.to = NVS.getUint16(Keys::axisJoystickHorizontalTo, 2744);
-				axis.joystickHorizontal.inverted = NVS.getUint16(Keys::axisJoystickHorizontalInverted, true);
-
-				axis.joystickVertical.from = NVS.getUint16(Keys::axisJoystickVerticalFrom, 1474);
-				axis.joystickVertical.to = NVS.getUint16(Keys::axisJoystickVerticalTo, 3031);
-				axis.joystickVertical.inverted = NVS.getUint16(Keys::axisJoystickVerticalInverted, false);
-
-				axis.ring.from = NVS.getUint16(Keys::axisRingFrom, 0);
-				axis.ring.to = NVS.getUint16(Keys::axisRingTo, 3768);
-				axis.ring.inverted = NVS.getUint16(Keys::axisRingInverted, true);
-
-				axis.lowPassFactor = NVS.getUint16(Keys::axisLowPassFactor, 0xFFFF * 75 / 100);
-				axis.jitteringCutoffValue = NVS.getUint8(Keys::axisJitteringCutoffValue, 30);
-
-				// -------------------------------- Autopilot --------------------------------
-
-				autopilot.speedKt = NVS.getUint16(Keys::autopilotSpeedKt, 90);
-				autopilot.autoThrottle = NVS.getBool(Keys::autopilotAutoThrottle, false);
-
-				autopilot.headingDeg = NVS.getUint16(Keys::autopilotHeadingDeg, 0);
-				autopilot.headingHold = NVS.getBool(Keys::autopilotHeadingHold, false);
-
-				autopilot.altitudeFt = NVS.getUint16(Keys::autopilotAltitudeFt, 100);
-				autopilot.levelChange = NVS.getBool(Keys::autopilotLevelChange, false);
-
-				// -------------------------------- Interface --------------------------------
-
-				// MFD -> PFD
-				interface.MFD.PFD.visible = NVS.getBool(Keys::interfaceMFDPFDVisible, true);
-				interface.MFD.PFD.FOV = NVS.getUint8(Keys::interfaceMFDPFDFOV, 50);
-				interface.MFD.PFD.flightDirectors = NVS.getBool(Keys::interfaceMFDPFDFlightDirectors, true);
-
-				// MFD -> ND
-				interface.MFD.ND.visible = NVS.getBool(Keys::interfaceMFDNDVisible, true);
-				interface.MFD.ND.mode = static_cast<SettingsInterfaceMFDNDMode>(NVS.getUint8(Keys::interfaceMFDNDMode, static_cast<uint8_t>(SettingsInterfaceMFDNDMode::arcHeadingUp)));
-				interface.MFD.ND.earth = NVS.getBool(Keys::interfaceMFDNDEarth, true);
-
-				// MFD -> toolbar
-				interface.MFD.toolbar.mode = static_cast<SettingsInterfaceMFDToolbarMode>(NVS.getUint8(Keys::interfaceMFDToolbarMode, static_cast<uint8_t>(SettingsInterfaceMFDToolbarMode::main)));
-
-				// MFD
-				interface.MFD.splitPercent = NVS.getUint8(Keys::interfaceMFDSplitPercent, 60);
-
-				// Developer
-				interface.developer.debugOverlay = NVS.getBool(Keys::interfaceDeveloperDebugOverlay, false);
-
-				NVS.close();
+			void readAll() {
+				controls.read();
+				axis.read();
+				autopilot.read();
+				interface.read();
 			}
-
-			void write() const {
-				ESP_LOGI("Settings", "Writing");
-
-				NVS NVS {};
-				NVS.openForWriting(Keys::root);
-
-				// -------------------------------- Controls --------------------------------
-
-				NVS.setFloat(Keys::controlsThrottle, controls.throttle);
-
-				NVS.setUint32(Keys::controlsReferencePressurePa, controls.referencePressurePa);
-				NVS.setBool(Keys::controlsReferencePressureSTD, controls.referencePressureSTD);
-
-				NVS.setUint32(Keys::controlsMinimumAltitudeFt, controls.minimumAltitudeFt);
-				NVS.setBool(Keys::controlsMinimumAltitudeEnabled, controls.minimumAltitudeEnabled);
-
-				NVS.setBool(Keys::controlsLandingGear, controls.landingGear);
-				NVS.setBool(Keys::controlsStrobeLights, controls.strobeLights);
-
-				// -------------------------------- Axis --------------------------------
-
-				NVS.setUint16(Keys::axisLeverLeftFrom, axis.leverLeft.from);
-				NVS.setUint16(Keys::axisLeverLeftTo, axis.leverLeft.to);
-				NVS.setUint16(Keys::axisLeverLeftInverted, axis.leverLeft.inverted);
-
-				NVS.setUint16(Keys::axisLeverRightFrom, axis.leverRight.from);
-				NVS.setUint16(Keys::axisLeverRightTo, axis.leverRight.to);
-				NVS.setUint16(Keys::axisLeverRightInverted, axis.leverRight.inverted);
-
-				NVS.setUint16(Keys::axisJoystickHorizontalFrom, axis.joystickHorizontal.from);
-				NVS.setUint16(Keys::axisJoystickHorizontalTo, axis.joystickHorizontal.to);
-				NVS.setUint16(Keys::axisJoystickHorizontalInverted, axis.joystickHorizontal.inverted);
-
-				NVS.setUint16(Keys::axisJoystickVerticalFrom, axis.joystickVertical.from);
-				NVS.setUint16(Keys::axisJoystickVerticalTo, axis.joystickVertical.to);
-				NVS.setUint16(Keys::axisJoystickVerticalInverted, axis.joystickVertical.inverted);
-
-				NVS.setUint16(Keys::axisRingFrom, axis.ring.from);
-				NVS.setUint16(Keys::axisRingTo, axis.ring.to);
-				NVS.setUint16(Keys::axisRingInverted, axis.ring.inverted);
-
-				NVS.setUint16(Keys::axisLowPassFactor, axis.lowPassFactor);
-				NVS.setUint8(Keys::axisJitteringCutoffValue, axis.jitteringCutoffValue);
-
-				// -------------------------------- Autopilot --------------------------------
-
-				NVS.setUint16(Keys::autopilotSpeedKt, autopilot.speedKt);
-				NVS.setBool(Keys::autopilotAutoThrottle, autopilot.autoThrottle);
-
-				NVS.setUint16(Keys::autopilotHeadingDeg, autopilot.headingDeg);
-				NVS.setBool(Keys::autopilotHeadingHold, autopilot.headingHold);
-
-				NVS.setUint16(Keys::autopilotAltitudeFt, autopilot.altitudeFt);
-				NVS.setBool(Keys::autopilotLevelChange, autopilot.levelChange);
-
-				// -------------------------------- Interface --------------------------------
-
-				// MFD -> PFD
-				NVS.setBool(Keys::interfaceMFDPFDVisible, interface.MFD.PFD.visible);
-				NVS.setUint8(Keys::interfaceMFDPFDFOV, interface.MFD.PFD.FOV);
-				NVS.setBool(Keys::interfaceMFDPFDFlightDirectors, interface.MFD.PFD.flightDirectors);
-
-				// MFD -> ND
-				NVS.setBool(Keys::interfaceMFDNDVisible, interface.MFD.ND.visible);
-				NVS.getUint8(Keys::interfaceMFDNDMode, static_cast<uint8_t>(interface.MFD.ND.mode));
-				NVS.setBool(Keys::interfaceMFDNDEarth, interface.MFD.ND.earth);
-
-				// MFD -> toolbar
-				NVS.getUint8(Keys::interfaceMFDToolbarMode, static_cast<uint8_t>(interface.MFD.toolbar.mode));
-
-				// MFD
-				NVS.setUint8(Keys::interfaceMFDSplitPercent, interface.MFD.splitPercent);
-
-				// Developer
-				NVS.setBool(Keys::interfaceDeveloperDebugOverlay, interface.developer.debugOverlay);
-
-				NVS.commit();
-				NVS.close();
-			}
-
-			void enqueueWrite() {
-				_timeToWrite = esp_timer_get_time() + _writeDelay;
-			}
-
-			void tick() {
-				if (_timeToWrite == 0 || esp_timer_get_time() < _timeToWrite)
-					return;
-
-				_timeToWrite = 0;
-
-				write();
-			}
-
-		private:
-			constexpr static uint32_t _writeDelay = 2500000;
-			uint32_t _timeToWrite = 0;
-
-			class Keys {
-				public:
-					constexpr static auto root = "st";
-
-					constexpr static auto controlsThrottle = "ctth";
-					constexpr static auto controlsReferencePressurePa = "ctrp";
-					constexpr static auto controlsReferencePressureSTD = "ctrs";
-					constexpr static auto controlsMinimumAltitudeFt = "ctma";
-					constexpr static auto controlsMinimumAltitudeEnabled = "ctme";
-					constexpr static auto controlsLandingGear = "ctlg";
-					constexpr static auto controlsStrobeLights = "ctsl";
-
-					constexpr static auto axisLeverLeftFrom = "axllf";
-					constexpr static auto axisLeverLeftTo = "axllt";
-					constexpr static auto axisLeverLeftInverted = "axlli";
-					constexpr static auto axisLeverRightFrom = "axlrf";
-					constexpr static auto axisLeverRightTo = "axlrt";
-					constexpr static auto axisLeverRightInverted = "axlri";
-					constexpr static auto axisJoystickHorizontalFrom = "axjhf";
-					constexpr static auto axisJoystickHorizontalTo = "axjht";
-					constexpr static auto axisJoystickHorizontalInverted = "axjhi";
-					constexpr static auto axisJoystickVerticalFrom = "axjvf";
-					constexpr static auto axisJoystickVerticalTo = "axjvt";
-					constexpr static auto axisJoystickVerticalInverted = "axjvi";
-					constexpr static auto axisRingFrom = "axrgf";
-					constexpr static auto axisRingTo = "axrgt";
-					constexpr static auto axisRingInverted = "axrgi";
-					constexpr static auto axisLowPassFactor = "axlpf";
-					constexpr static auto axisJitteringCutoffValue = "axjc";
-
-					constexpr static auto autopilotSpeedKt = "apsp";
-					constexpr static auto autopilotAutoThrottle = "apat";
-					constexpr static auto autopilotHeadingDeg = "aphd";
-					constexpr static auto autopilotHeadingHold = "aphh";
-					constexpr static auto autopilotAltitudeFt = "apal";
-					constexpr static auto autopilotLevelChange = "aplc";
-
-					constexpr static auto interfaceMFDPFDVisible = "ifmpvi";
-					constexpr static auto interfaceMFDPFDFOV = "ifmpfo";
-					constexpr static auto interfaceMFDPFDFlightDirectors = "ifmpfd";
-					constexpr static auto interfaceMFDNDVisible = "ifmnvi";
-					constexpr static auto interfaceMFDNDMode = "ifmnmd";
-					constexpr static auto interfaceMFDNDEarth = "ifmnea";
-					constexpr static auto interfaceMFDToolbarMode = "ifmtmd";
-					constexpr static auto interfaceMFDSplitPercent = "ifmsp";
-					constexpr static auto interfaceDeveloperDebugOverlay = "ifddo";
-			};
 	};
 }

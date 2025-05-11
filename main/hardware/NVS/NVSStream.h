@@ -11,7 +11,7 @@
 #include "nvs.h"
 
 namespace pizda {
-	class NVS {
+	class NVSStream {
 		public:
 			void openForWriting(const char* key) {
 				ESP_ERROR_CHECK(nvs_open(key, NVS_READWRITE, &_handle));

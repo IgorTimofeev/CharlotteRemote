@@ -40,7 +40,7 @@ namespace pizda {
 	const PIXY10Font Theme::fontNormal = PIXY10Font();
 	const Vaticanus8Font Theme::fontSmall = Vaticanus8Font();
 
-	void Theme::setup(Bit8PaletteRenderer* renderer) {
+	void Theme::setPaletteColors(Bit8PaletteRenderer* renderer) {
 		renderer->setPaletteColors({
 			// Background
 			RGB888Color(0x000000),

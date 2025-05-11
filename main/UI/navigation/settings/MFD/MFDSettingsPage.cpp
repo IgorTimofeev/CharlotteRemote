@@ -19,7 +19,7 @@ namespace pizda {
 
 		_MFDSplitSlider.valueChanged += [this, &settings] {
 			settings.interface.MFD.splitPercent = _MFDSplitMin + _MFDSplitSlider.getValue() * (_MFDSplitMax - _MFDSplitMin) / 0xFFFF;
-			settings.enqueueWrite();
+			settings.interface.enqueueWrite();
 
 			updateMFDHeightTitle();
 		};
@@ -39,7 +39,7 @@ namespace pizda {
 
 		_PFDFOVSlider.valueChanged += [this, &settings] {
 			settings.interface.MFD.PFD.FOV = _PFDFOVMin + _PFDFOVSlider.getValue() * (_PFDFOVMax - _PFDFOVMin) / 0xFFFF;
-			settings.enqueueWrite();
+			settings.interface.enqueueWrite();
 
 			updatePFDFOVTitle();
 		};
@@ -58,7 +58,7 @@ namespace pizda {
 
 		_MFDSphereSwitcher.getSwitch().isCheckedChanged += [this, &settings] {
 			settings.interface.MFD.ND.earth = _MFDSphereSwitcher.getSwitch().isChecked();
-			settings.enqueueWrite();
+			settings.interface.enqueueWrite();
 		};
 
 		rows += &_MFDSphereSwitcher;

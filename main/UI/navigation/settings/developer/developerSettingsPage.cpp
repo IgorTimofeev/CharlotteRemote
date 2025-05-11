@@ -15,7 +15,7 @@ namespace pizda {
 		_debugOverlaySwitch.isCheckedChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 			settings.interface.developer.debugOverlay = _debugOverlaySwitch.isChecked();
-			settings.enqueueWrite();
+			settings.interface.enqueueWrite();
 
 			RC::getInstance().updateDebugOverlayVisibility();
 		};
