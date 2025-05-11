@@ -18,14 +18,15 @@ namespace pizda {
 
 		const auto menuView = reinterpret_cast<MFDMenuView*>(getMenuView());
 
-		for (const auto modeButton : menuView->modeButtons)
-			modeButton->setChecked(modeButton->_mode == _mode);
-
 		auto& settings = RC::getInstance().getSettings();
-		settings.interface.MFD.toolbar.mode = _mode;
-		settings.interface.enqueueWrite();
+		settings.interface.MFD.toolbar.mode = settings.interface.MFD.toolbar.mode == _mode ? SettingsInterfaceMFDToolbarMode::none : _mode;
+
+		for (const auto modeButton : menuView->modeButtons)
+			modeButton->setChecked(modeButton->_mode == settings.interface.MFD.toolbar.mode);
 
 		MFDPage::fromSettings();
+
+		settings.interface.scheduleWrite();
 	}
 
 	MFDMenuView::MFDMenuView() {
@@ -45,7 +46,7 @@ namespace pizda {
 
 			PFDButton.setChecked(settings.interface.MFD.PFD.visible);
 
-			settings.interface.enqueueWrite();
+			settings.interface.scheduleWrite();
 
 			MFDPage::fromSettings();
 		};
@@ -66,7 +67,7 @@ namespace pizda {
 
 			NDButton.setChecked(settings.interface.MFD.ND.visible);
 
-			settings.interface.enqueueWrite();
+			settings.interface.scheduleWrite();
 
 			MFDPage::fromSettings();
 		};

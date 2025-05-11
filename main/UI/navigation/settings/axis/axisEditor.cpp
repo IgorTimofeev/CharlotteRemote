@@ -158,8 +158,7 @@ namespace pizda {
 		else {
 			_selectedPin = SelectedPin::none;
 
-			// Saving changes
-			RC::getInstance().getSettings().axis.enqueueWrite();
+			RC::getInstance().getSettings().axis.scheduleWrite();
 
 			setCaptured(false);
 		}
@@ -196,7 +195,7 @@ namespace pizda {
 		_invertButton.click += [this] {
 			_axis->getSettings()->inverted = _invertButton.isChecked();
 
-			RC::getInstance().getSettings().axis.enqueueWrite();
+			RC::getInstance().getSettings().axis.scheduleWrite();
 		};
 
 		*this += &_invertButton;

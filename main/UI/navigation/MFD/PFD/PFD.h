@@ -133,8 +133,9 @@ namespace pizda {
 
 			// Yaw overlay
 			constexpr static uint8_t yawOverlayHeight = 20;
-			constexpr static uint8_t yawOverlayAngleStepUnits = 2;
-			constexpr static uint8_t yawOverlayAngleStepPixels = 9;
+			constexpr static uint8_t yawOverlayAngleStepUnits = 10;
+			constexpr static uint8_t yawOverlayAngleStepUnitsBig = 30;
+			constexpr static uint8_t yawOverlayAngleStepPixels = 18;
 			constexpr static uint8_t yawOverlayLineSmallLength = 2;
 			constexpr static uint8_t yawOverlayLineBigLength = 4;
 			constexpr static uint8_t yawOverlayTextOffset = 0;

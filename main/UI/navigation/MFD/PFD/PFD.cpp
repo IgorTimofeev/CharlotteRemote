@@ -510,7 +510,7 @@ namespace pizda {
 			angle += 360;
 
 		while (x <= bounds.getX2()) {
-			const auto isBig = angle % 10 == 0;
+			const auto isBig = angle % PFD::yawOverlayAngleStepUnitsBig == 0;
 			const auto lineLength = isBig ? PFD::yawOverlayLineBigLength : PFD::yawOverlayLineSmallLength;
 
 			// Line

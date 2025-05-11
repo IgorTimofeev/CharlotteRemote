@@ -27,6 +27,8 @@ namespace pizda {
 			}
 
 			void write() {
+				ESP_LOGI("NVSSerializable", "Writing %s", getNVSNamespace());
+
 				NVSStream stream {};
 				stream.openForWriting(getNVSNamespace());
 
@@ -36,8 +38,38 @@ namespace pizda {
 				stream.close();
 			}
 
-			void enqueueWrite() {
-				xTaskCreate(enqueueWriteTaskFunction, "NVSSerWrite", 1024, this, 1, nullptr);
+			void scheduleWrite() {
+				const auto alreadyScheduled = _scheduledWriteTimeUs > 0;
+
+				_scheduledWriteTimeUs = esp_timer_get_time() + 2'500'000;
+
+				if (alreadyScheduled)
+					return;
+
+				xTaskCreate(
+					[](void* arg) {
+						const auto instance = static_cast<NVSSerializable*>(arg);
+
+						while (true) {
+							const auto time = esp_timer_get_time();
+
+							if (time >= instance->_scheduledWriteTimeUs)
+								break;
+
+							vTaskDelay(pdMS_TO_TICKS((instance->_scheduledWriteTimeUs - time) / 1000));
+						}
+
+						instance->_scheduledWriteTimeUs = 0;
+						instance->write();
+
+						vTaskDelete(nullptr);
+					},
+					"NVSSerWrite",
+					4096,
+					this,
+					1,
+					nullptr
+				);
 			}
 
 		protected:
@@ -47,14 +79,6 @@ namespace pizda {
 
 		private:
 			constexpr static uint32_t _writeDelayTicks = pdMS_TO_TICKS(2500);
-
-			static void enqueueWriteTaskFunction(void* arg) {
-				const auto instance = static_cast<NVSSerializable*>(arg);
-
-				vTaskDelay(_writeDelayTicks);
-				instance->write();
-
-				vTaskDelete(nullptr);
-			}
+			uint32_t _scheduledWriteTimeUs = 0;
 	};
 }

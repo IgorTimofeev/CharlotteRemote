@@ -23,7 +23,7 @@ namespace pizda {
 
 			settings.interface.MFD.ND.mode = static_cast<SettingsInterfaceMFDNDMode>(nextMode);
 
-			settings.interface.enqueueWrite();
+			settings.interface.scheduleWrite();
 
 			updateViewModeButtonText();
 		});

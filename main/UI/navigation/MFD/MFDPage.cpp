@@ -13,8 +13,6 @@ namespace pizda {
 
 		// Initialization
 		fromSettings();
-
-		RC::getInstance().getOpenMenuButton().applyBottomRightStyle();
 	}
 
 	MFDPage::~MFDPage() {
@@ -96,6 +94,13 @@ namespace pizda {
 			}
 			default:
 				break;
+		}
+
+		if (settings.interface.MFD.toolbar.mode == SettingsInterfaceMFDToolbarMode::none) {
+			rc.getOpenMenuButton().applyBottomStyle();
+		}
+		else {
+			rc.getOpenMenuButton().applyBottomRightStyle();
 		}
 
 		invalidate();

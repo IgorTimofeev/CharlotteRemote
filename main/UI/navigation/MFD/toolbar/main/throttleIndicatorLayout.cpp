@@ -42,7 +42,7 @@ namespace pizda {
 
 				auto& settings = RC::getInstance().getSettings();
 				settings.controls.throttle = addSaturating(settings.controls.throttle, rotateEvent->getRPSFactor(60, 1, 10) * 0xFF / 100);
-				settings.controls.enqueueWrite();
+				settings.controls.scheduleWrite();
 
 				invalidate();
 
@@ -53,7 +53,7 @@ namespace pizda {
 			if (isFocused() && reinterpret_cast<EncoderPushEvent*>(event)->isDown()) {
 				auto& settings = RC::getInstance().getSettings();
 				settings.autopilot.autoThrottle = !settings.autopilot.autoThrottle;
-				settings.autopilot.enqueueWrite();
+				settings.autopilot.scheduleWrite();
 
 				invalidate();
 
