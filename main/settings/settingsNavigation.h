@@ -16,8 +16,8 @@ namespace pizda {
 	using namespace YOBA;
 
 	enum class SettingsNavigationWaypointType : uint8_t {
-		RNAVWaypoint,
-		runway
+		RNAV,
+		airport
 	};
 
 	class SettingsNavigationWaypoint {
@@ -112,14 +112,14 @@ namespace pizda {
 
 			void addRNAVWaypoint(std::wstring_view name, const GeographicCoordinates& coordinates) {
 				RNAVWaypoints.push_back(SettingsNavigationRNAVWaypoint(
-					getOrCreateWaypointIndex(SettingsNavigationWaypointType::RNAVWaypoint, name),
+					getOrCreateWaypointIndex(SettingsNavigationWaypointType::RNAV, name),
 					coordinates
 				));
 			}
 
 			void addRunway(std::wstring_view name, const GeographicCoordinates& coordinates, uint16_t headingDeg, uint16_t lengthM, uint16_t widthM) {
 				runways.push_back(SettingsNavigationRunway(
-					getOrCreateWaypointIndex(SettingsNavigationWaypointType::runway, name),
+					getOrCreateWaypointIndex(SettingsNavigationWaypointType::airport, name),
 					coordinates,
 					headingDeg,
 					lengthM,
@@ -189,6 +189,7 @@ namespace pizda {
 					);
 
 					// Runways
+
 
 					// Kronshtadt
 					addRunway(

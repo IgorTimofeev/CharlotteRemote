@@ -770,7 +770,7 @@ namespace pizda {
 				autopilotIndicatorWidth,
 				autopilotIndicatorTriangleVerticalMargin
 			),
-			&Theme::blue
+			&Theme::ocean
 		);
 
 		// Lower
@@ -781,7 +781,7 @@ namespace pizda {
 				autopilotIndicatorWidth,
 				autopilotIndicatorTriangleVerticalMargin
 			),
-			&Theme::blue
+			&Theme::ocean
 		);
 
 		// Rect
@@ -792,7 +792,7 @@ namespace pizda {
 				autopilotIndicatorRectangleWidth,
 				autopilotIndicatorTriangleHeight
 			),
-			&Theme::blue
+			&Theme::ocean
 		);
 
 		// Upper triangle
@@ -809,7 +809,7 @@ namespace pizda {
 				left ? point.getX() + autopilotIndicatorTriangleWidth - 1 : point.getX() + autopilotIndicatorRectangleWidth - 1,
 				point.getY() + autopilotIndicatorHeightHalf
 			),
-			&Theme::blue
+			&Theme::ocean
 		);
 
 		// Lower triangle
@@ -826,7 +826,7 @@ namespace pizda {
 				left ? point.getX() : point.getX() + autopilotIndicatorRectangleWidth - 1,
 				point.getY() + autopilotIndicatorHeight - autopilotIndicatorTriangleVerticalMargin - 1
 			),
-			&Theme::blue
+			&Theme::ocean
 		);
 	}
 
@@ -1350,7 +1350,7 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		const auto bg = &Theme::bg2;
-		const auto fg = &Theme::blue;
+		const auto fg = &Theme::ocean;
 
 		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getSettings().autopilot.speedKt, rc.getSettings().autopilot.speedKt > 0, true);
 	}
@@ -1359,7 +1359,7 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		const auto bg = &Theme::bg2;
-		const auto fg = &Theme::blue;
+		const auto fg = &Theme::ocean;
 
 		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getSettings().autopilot.altitudeFt, rc.getSettings().autopilot.altitudeFt > 0, false);
 	}

@@ -31,7 +31,7 @@ namespace pizda {
 	const Bit8PaletteColor Theme::green = Bit8PaletteColor(22);
 	const Bit8PaletteColor Theme::greenSpeed = Bit8PaletteColor(23);
 	const Bit8PaletteColor Theme::yellow = Bit8PaletteColor(24);
-	const Bit8PaletteColor Theme::blue = Bit8PaletteColor(25);
+	const Bit8PaletteColor Theme::ocean = Bit8PaletteColor(25);
 	const Bit8PaletteColor Theme::ground = Bit8PaletteColor(26);
 	const Bit8PaletteColor Theme::ground2 = Bit8PaletteColor(27);
 	const Bit8PaletteColor Theme::sky = Bit8PaletteColor(28);

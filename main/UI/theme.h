@@ -40,7 +40,7 @@ namespace pizda {
 			static const Bit8PaletteColor green;
 			static const Bit8PaletteColor greenSpeed;
 			static const Bit8PaletteColor yellow;
-			static const Bit8PaletteColor blue;
+			static const Bit8PaletteColor ocean;
 			static const Bit8PaletteColor ground;
 			static const Bit8PaletteColor ground2;
 			static const Bit8PaletteColor sky;

@@ -14,11 +14,12 @@ namespace pizda {
 	void RNAVWaypointElement::onRender(Renderer* renderer, const Scene& scene, const Vector3F* vertices) {
 		ND::renderWaypointStar(
 			renderer,
+			_waypoint,
 			Point(
 				static_cast<int32_t>(vertices[0].getX()),
 				static_cast<int32_t>(vertices[0].getY())
 			),
-			&Theme::fg1
+			&Theme::ocean
 		);
 	}
 

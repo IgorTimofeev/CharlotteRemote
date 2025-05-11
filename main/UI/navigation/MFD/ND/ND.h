@@ -4,6 +4,7 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
+#include "../../../../settings/settings.h"
 #include "../../../theme.h"
 #include "aircraft.h"
 
@@ -24,7 +25,7 @@ namespace pizda {
 			void resetCameraLateralOffset();
 			bool isCameraShiftedLaterally() const;
 
-			static void renderWaypointStar(Renderer* renderer, const Point& center, const Color* color);
+			static void renderWaypointStar(Renderer* renderer, const SettingsNavigationWaypoint* waypoint, const Point& center, const Color* color);
 
 		protected:
 			void onTick() override;

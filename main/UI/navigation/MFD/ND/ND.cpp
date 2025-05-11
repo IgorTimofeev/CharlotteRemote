@@ -46,7 +46,7 @@ namespace pizda {
 
 		// Runways
 		for (const auto& runway : settings.navigation.runways) {
-			addElement(new NDRunwayMesh(&runway));
+			addElement(new NDRunwayMesh(&runway, &Theme::fg1));
 		}
 
 		// Aircraft
@@ -524,7 +524,7 @@ namespace pizda {
 		return _cameraOffset.getLatitude() != 0 || _cameraOffset.getLongitude() != 0;
 	}
 
-	void ND::renderWaypointStar(Renderer* renderer, const Point& center, const Color* color) {
+	void ND::renderWaypointStar(Renderer* renderer, const SettingsNavigationWaypoint* waypoint, const Point& center, const Color* color) {
 		renderer->renderRectangle(
 			Bounds(
 				center.getX() - 1,
@@ -569,6 +569,13 @@ namespace pizda {
 			),
 			2,
 			color
+		);
+
+		renderer->renderString(
+			Point(center.getX() + 10, center.getY() - 10),
+			&Theme::fontSmall,
+			color,
+			waypoint->name
 		);
 	}
 }
