@@ -57,7 +57,7 @@ namespace pizda {
 				Layout::onEvent(event);
 
 				if (event->getTypeID() == TouchDownEvent::typeID) {
-					setFocused(true);
+					focus();
 				}
 			}
 

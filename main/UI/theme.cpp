@@ -131,7 +131,7 @@ namespace pizda {
 		button->setHeight(elementHeight);
 		button->setCornerRadius(cornerRadius);
 
-		button->setDefaultBorderColor(&Theme::bg3);
+		button->setDefaultBorderColor(&Theme::fg4);
 		button->setPressedBorderColor(&Theme::fg1);
 
 		button->setDefaultTextColor(&Theme::bg3);

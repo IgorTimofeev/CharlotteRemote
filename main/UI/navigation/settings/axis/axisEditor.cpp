@@ -133,7 +133,7 @@ namespace pizda {
 
 			_selectedPin = std::abs(touchValue - editor->getAxis()->getSettings()->to) <= std::abs(touchValue - editor->getAxis()->getSettings()->from) ? SelectedPin::to : SelectedPin::from;
 
-			setCaptured(true);
+			capture();
 		}
 		else if (isTouchDrag) {
 			const auto touchDragEvent = static_cast<TouchDragEvent*>(event);
@@ -160,7 +160,7 @@ namespace pizda {
 
 			RC::getInstance().getSettings().axis.scheduleWrite();
 
-			setCaptured(false);
+			removeCapture();
 		}
 
 		event->setHandled(true);

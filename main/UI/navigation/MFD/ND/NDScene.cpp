@@ -314,8 +314,8 @@ namespace pizda {
 		if (event->getTypeID() == TouchDownEvent::typeID) {
 			const auto touchDownEvent = static_cast<TouchDownEvent*>(event);
 
-			setFocused(true);
-			setCaptured(true);
+			focus();
+			capture();
 
 			_touchDownPosition = touchDownEvent->getPosition();
 			_cursorPosition = touchDownEvent->getPosition() - getBounds().getPosition();
@@ -367,7 +367,7 @@ namespace pizda {
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == TouchUpEvent::typeID) {
-			setCaptured(false);
+			removeCapture();
 
 			event->setHandled(true);
 		}
