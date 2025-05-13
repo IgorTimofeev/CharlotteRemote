@@ -12,8 +12,6 @@
 namespace pizda {
 	NDScene::NDScene() {
 		auto& rc = RC::getInstance();
-		const auto& settings = rc.getSettings();
-		const auto& nd = rc.getNavigationData();
 
 		setClipToBounds(true);
 		setFOV(toRadians(90));

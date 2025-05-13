@@ -27,12 +27,15 @@ namespace pizda {
 			settings.interface.scheduleWrite();
 
 			updateViewModeButtonText();
+
+			_scene.setFocused(true);
 		});
 
 		_latLongButton.setText(L"RST");
 
 		addGovnoButton(&_latLongButton, [this] {
 			_scene.resetCameraLateralOffset();
+			_scene.setFocused(true);
 		});
 
 		_waypointButton.setText(L"+");
@@ -41,6 +44,7 @@ namespace pizda {
 			WaypointDialog::create(_scene.getCameraCoordinates(), [this] {
 				_scene.deleteSceneElements();
 				_scene.createSceneElementsFromNavigationData();
+				_scene.setFocused(true);
 			});
 		});
 	}

@@ -24,7 +24,7 @@ namespace pizda {
 
 			static void create(const GeographicCoordinates& coordinates, const std::function<void()>& onConfirm) {
 				const auto dialog = new WaypointDialog(coordinates, onConfirm);
-				dialog->show(&RC::getInstance().getApplication());
+				dialog->show();
 			}
 
 		private:
@@ -55,7 +55,7 @@ namespace pizda {
 
 				// Callbacks
 				cancelButton.click += [this] {
-					getApplication()->enqueueOnTick([this] {
+					Application::getCurrent()->scheduleTask([this] {
 						hide();
 						delete this;
 					});
@@ -67,7 +67,7 @@ namespace pizda {
 						return;
 					}
 
-					getApplication()->enqueueOnTick([this] {
+					Application::getCurrent()->scheduleTask([this] {
 						const auto latitudeRad = toRadians(std::wcstof(latitude.getText().data(), nullptr));
 						const auto longitudeRad = toRadians(std::wcstof(longitude.getText().data(), nullptr));
 
