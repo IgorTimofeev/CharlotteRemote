@@ -5,7 +5,7 @@
 #include "../../../../hardware/WiFi/WiFi.h"
 //#include "../../../../hardware/OTA.h"
 #include "../../../../rc.h"
-#include "../../../elements/dialog.h"
+#include "../../../elements/dialogs/progressDialog.h"
 
 namespace pizda {
 	WiFiSettingsPage::WiFiSettingsPage() {

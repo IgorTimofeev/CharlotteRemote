@@ -14,6 +14,8 @@ namespace pizda {
 
 	class NavigationWaypointData {
 		public:
+			NavigationWaypointData() = default;
+
 			NavigationWaypointData(
 				NavigationWaypointType type,
 				std::wstring_view name,
@@ -28,6 +30,8 @@ namespace pizda {
 
 	class NavigationRNAVWaypointData : public NavigationWaypointData {
 		public:
+			NavigationRNAVWaypointData() = default;
+
 			NavigationRNAVWaypointData(NavigationWaypointType type, const std::wstring_view& name, const GeographicCoordinates& coordinates) :
 				NavigationWaypointData(type, name, coordinates)
 			{

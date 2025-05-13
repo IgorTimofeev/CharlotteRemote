@@ -1,5 +1,6 @@
 #include "ND.h"
 #include "../../../../rc.h"
+#include "../../../elements/dialogs/addWaypointDialog.h"
 
 namespace pizda {
 	ND::ND() {
@@ -37,46 +38,10 @@ namespace pizda {
 		_waypointButton.setText(L"+");
 
 		addGovnoButton(&_waypointButton, [this] {
-			const auto dialog = new WaypointDialog();
-
-			const auto& coordinates = _scene.getCameraCoordinates();
-			dialog->latitude.setText(std::to_wstring(toDegrees(coordinates.getLatitude())));
-			dialog->longitude.setText(std::to_wstring(toDegrees(coordinates.getLongitude())));
-
-			dialog->cancelButton.click += [this, dialog] {
-				getApplication()->enqueueOnTick([this, dialog] {
-					dialog->hide();
-					delete dialog;
-				});
-			};
-
-			dialog->confirmButton.click += [this, dialog] {
-				if (dialog->name.getText().size() == 0) {
-					dialog->name.setBorderColor(&Theme::bad2);
-					return;
-				}
-
-				getApplication()->enqueueOnTick([this, dialog] {
-					const auto latitudeRad = toRadians(std::wcstof(dialog->latitude.getText().data(), nullptr));
-					const auto longitudeRad = toRadians(std::wcstof(dialog->latitude.getText().data(), nullptr));
-
-					auto& nd = RC::getInstance().getNavigationData();
-
-					nd.RNAVWaypoints.push_back(NavigationRNAVWaypointData(
-						NavigationWaypointType::enroute,
-						dialog->name.getText(),
-						GeographicCoordinates(latitudeRad, longitudeRad, 0)
-					));
-
-					_scene.deleteSceneElements();
-					_scene.createSceneElementsFromNavigationData();
-
-					dialog->hide();
-					delete dialog;
-				});
-			};
-
-			dialog->show(getApplication());
+			WaypointDialog::create(_scene.getCameraCoordinates(), [this] {
+				_scene.deleteSceneElements();
+				_scene.createSceneElementsFromNavigationData();
+			});
 		});
 	}
 
