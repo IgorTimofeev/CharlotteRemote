@@ -6,7 +6,8 @@
 #include <format>
 #include <esp_log.h>
 #include "sceneElements/NDRunwayMesh.h"
-#include "sceneElements/RNAVWaypointElement.h"
+#include "sceneElements/waypointElement.h"
+#include "sceneElements/routeElement.h"
 
 namespace pizda {
 	ND::ND() {
@@ -39,14 +40,26 @@ namespace pizda {
 		if (settings.interface.MFD.ND.earth)
 			addElement(new LinearSphere(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg3));
 
-		// RNAV waypoints
-		for (const auto& waypoint : settings.navigation.RNAVWaypoints) {
-			addElement(new RNAVWaypointElement(&waypoint));
+		// Flight plan
+		auto fromIndex = settings.navigation.flightPlan.departureAirportWaypointIndex;
+
+		// Routes
+		for (const auto routeWaypointIndex : settings.navigation.flightPlan.routeWaypointIndices) {
+			addElement(new RouteElement(fromIndex, routeWaypointIndex, &Theme::purple));
+			fromIndex = routeWaypointIndex;
 		}
+
+		// Arrival
+		addElement(new RouteElement(fromIndex, settings.navigation.flightPlan.arrivalAirportWaypointIndex, &Theme::purple));
 
 		// Runways
 		for (const auto& runway : settings.navigation.runways) {
 			addElement(new NDRunwayMesh(&runway, &Theme::fg1));
+		}
+
+		// Waypoints
+		for (const auto& waypoint : settings.navigation.waypoints) {
+			addElement(new WaypointElement(&waypoint));
 		}
 
 		// Aircraft
@@ -572,7 +585,7 @@ namespace pizda {
 		);
 
 		renderer->renderString(
-			Point(center.getX() + 10, center.getY() - 10),
+			Point(center.getX() + 8, center.getY() - 5),
 			&Theme::fontSmall,
 			color,
 			waypoint->name

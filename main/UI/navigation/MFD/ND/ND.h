@@ -26,7 +26,6 @@ namespace pizda {
 			bool isCameraShiftedLaterally() const;
 
 			static void renderWaypointStar(Renderer* renderer, const SettingsNavigationWaypoint* waypoint, const Point& center, const Color* color);
-
 		protected:
 			void onTick() override;
 			void onBoundsChanged() override;

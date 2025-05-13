@@ -10,16 +10,16 @@ namespace pizda {
 	using namespace YOBA;
 	using namespace YOBA::spatial;
 
-	class RNAVWaypointElement : public SceneElement {
+	class RouteElement : public SceneElement {
 		public:
-			explicit RNAVWaypointElement(const SettingsNavigationRNAVWaypoint* waypoint);
+			RouteElement(uint16_t waypointIndexFrom, uint16_t waypointIndexTo, const Color* color);
 
-			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* vertices) override;
 			const Vector3F* getVertices() override;
 			uint16_t getVertexCount() override;
+			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* vertices) override;
 
 		private:
-			Vector3F _vertex;
-			const SettingsNavigationWaypoint* _waypoint;
+			const Color* _color;
+			Vector3F _vertices[2] {};
 	};
 }

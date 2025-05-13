@@ -16,23 +16,12 @@ namespace pizda {
 	using namespace YOBA;
 
 	enum class SettingsNavigationWaypointType : uint8_t {
-		RNAV,
+		enroute,
+		terminal,
 		airport
 	};
 
-	class SettingsNavigationWaypoint {
-		public:
-			SettingsNavigationWaypoint() = default;
-
-			explicit SettingsNavigationWaypoint(SettingsNavigationWaypointType type, std::wstring_view nameArg) : type(type) {
-				std::ranges::copy(nameArg, name);
-			}
-
-			SettingsNavigationWaypointType type;
-			wchar_t name[16] {};
-	};
-
-	class SettingsNavigationWaypointCoordinatesAware {
+	class SettingsNavigationWaypointCoordinatesAware{
 		public:
 			explicit SettingsNavigationWaypointCoordinatesAware() = default;
 
@@ -47,31 +36,57 @@ namespace pizda {
 		public:
 			explicit SettingsNavigationWaypointIndexAware() = default;
 
-			explicit SettingsNavigationWaypointIndexAware(uint16_t waypointIndex) : waypointIndex(waypointIndex) {
+			explicit SettingsNavigationWaypointIndexAware(uint16_t waypointIndex) :
+				waypointIndex(waypointIndex)
+			{
 
 			}
 
 			uint16_t waypointIndex = 0;
 	};
 
-	class SettingsNavigationRNAVWaypoint : public SettingsNavigationWaypointIndexAware, public SettingsNavigationWaypointCoordinatesAware {
+	class SettingsNavigationWaypoint : public SettingsNavigationWaypointCoordinatesAware {
+		public:
+			SettingsNavigationWaypoint() = default;
+
+			explicit SettingsNavigationWaypoint(
+				SettingsNavigationWaypointType type,
+				std::wstring_view nameArg,
+				const GeographicCoordinates& coordinates
+			) :
+				SettingsNavigationWaypointCoordinatesAware(coordinates),
+				type(type)
+			{
+				std::ranges::copy(nameArg, name);
+			}
+
+			SettingsNavigationWaypointType type;
+			wchar_t name[16] {};
+	};
+
+	class SettingsNavigationRNAVWaypoint : public SettingsNavigationWaypointIndexAware {
 		public:
 			explicit SettingsNavigationRNAVWaypoint() = default;
 
-			explicit SettingsNavigationRNAVWaypoint(uint16_t waypointIndex, const GeographicCoordinates& coordinates) :
-				SettingsNavigationWaypointIndexAware(waypointIndex),
-				SettingsNavigationWaypointCoordinatesAware(coordinates)
+			explicit SettingsNavigationRNAVWaypoint(uint16_t waypointIndex) :
+				SettingsNavigationWaypointIndexAware(waypointIndex)
 			{
 
 			}
 	};
 
-	class SettingsNavigationRunway : public SettingsNavigationWaypointIndexAware, public SettingsNavigationWaypointCoordinatesAware {
+	class SettingsNavigationAirportRunway : public SettingsNavigationWaypointIndexAware, public SettingsNavigationWaypointCoordinatesAware {
 		public:
-			explicit SettingsNavigationRunway() = default;
+			explicit SettingsNavigationAirportRunway() = default;
 
-			SettingsNavigationRunway(uint16_t waypointIndex, const GeographicCoordinates& coordinates, uint16_t headingDeg, uint16_t lengthM, uint16_t widthM) :
-				SettingsNavigationWaypointIndexAware(waypointIndex),
+			SettingsNavigationAirportRunway(
+				uint16_t airportWaypointIndex,
+				const GeographicCoordinates& coordinates,
+				uint16_t headingDeg,
+				uint16_t lengthM,
+				uint16_t widthM
+			) :
+				SettingsNavigationWaypointIndexAware(airportWaypointIndex),
 				SettingsNavigationWaypointCoordinatesAware(coordinates),
 				headingDeg(headingDeg),
 				lengthM(lengthM),
@@ -85,14 +100,25 @@ namespace pizda {
 			uint16_t widthM = 0;
 	};
 
+	class SettingsNavigationFlightPlan {
+		public:
+			uint16_t departureAirportWaypointIndex = 0;
+			uint8_t departureRunwayIndex = 0;
+
+			uint16_t arrivalAirportWaypointIndex = 0;
+			uint8_t arrivalRunwayIndex = 0;
+
+			std::vector<uint16_t> routeWaypointIndices {};
+	};
+
 	class SettingsNavigation : public NVSSerializable {
 		public:
-			uint8_t throttle = 0;
 			std::vector<SettingsNavigationWaypoint> waypoints {};
 			std::vector<SettingsNavigationRNAVWaypoint> RNAVWaypoints {};
-			std::vector<SettingsNavigationRunway> runways {};
+			std::vector<SettingsNavigationAirportRunway> runways {};
+			SettingsNavigationFlightPlan flightPlan {};
 
-			size_t getOrCreateWaypointIndex(SettingsNavigationWaypointType type, std::wstring_view name) {
+			size_t getOrCreateWaypointIndex(SettingsNavigationWaypointType type, std::wstring_view name, const GeographicCoordinates& coordinates) {
 				const auto it = std::ranges::find_if(waypoints, [&name](const auto& wp) {
 					return wp.name == name;
 				});
@@ -104,27 +130,11 @@ namespace pizda {
 				// Creating new waypoint
 				waypoints.push_back(SettingsNavigationWaypoint(
 					type,
-					name
+					name,
+					coordinates
 				));
 
 				return waypoints.size() - 1;
-			}
-
-			void addRNAVWaypoint(std::wstring_view name, const GeographicCoordinates& coordinates) {
-				RNAVWaypoints.push_back(SettingsNavigationRNAVWaypoint(
-					getOrCreateWaypointIndex(SettingsNavigationWaypointType::RNAV, name),
-					coordinates
-				));
-			}
-
-			void addRunway(std::wstring_view name, const GeographicCoordinates& coordinates, uint16_t headingDeg, uint16_t lengthM, uint16_t widthM) {
-				runways.push_back(SettingsNavigationRunway(
-					getOrCreateWaypointIndex(SettingsNavigationWaypointType::airport, name),
-					coordinates,
-					headingDeg,
-					lengthM,
-					widthM
-				));
 			}
 
 		protected:
@@ -171,52 +181,12 @@ namespace pizda {
 						stream.getBlob(
 							_runwaysList,
 							reinterpret_cast<uint8_t*>(runways.data()),
-							sizeof(SettingsNavigationRunway) * size
+							sizeof(SettingsNavigationAirportRunway) * size
 						);
 					}
 				}
-				// Filling with template data
 				else {
-					// RNAV waypoints
-					addRNAVWaypoint(
-						L"DIKOM",
-						GeographicCoordinates(toRadians(59.79f), toRadians(29.76f), 0)
-					);
-
-					addRNAVWaypoint(
-						L"LI29",
-						GeographicCoordinates(toRadians(60.06f), toRadians(29.63f), 0)
-					);
-
-					// Runways
-
-
-					// Kronshtadt
-					addRunway(
-						L"ULLY",
-						GeographicCoordinates(toRadians(60.014568277272f), toRadians(29.702727704862f), 0),
-						95,
-						500,
-						30
-					);
-
-					// Pulkovo 10 L
-					addRunway(
-						L"ULLI",
-						GeographicCoordinates(toRadians(59.805114621892f), toRadians(30.276415586255f), 0),
-						106,
-						3780,
-						60
-					);
-
-					// Pulkovo 10 R
-					addRunway(
-						L"ULLI",
-						GeographicCoordinates(toRadians(59.794929404415f), toRadians(30.251926678005f), 0),
-						106,
-						3780,
-						60
-					);
+					fillTemplateData();
 				}
 			}
 
@@ -245,7 +215,7 @@ namespace pizda {
 				stream.setBlob(
 					_runwaysList,
 					reinterpret_cast<uint8_t*>(runways.data()),
-					sizeof(SettingsNavigationRunway) * runways.size()
+					sizeof(SettingsNavigationAirportRunway) * runways.size()
 				);
 			}
 
@@ -260,5 +230,110 @@ namespace pizda {
 
 			constexpr static auto _runwaysSize = "nvrs";
 			constexpr static auto _runwaysList = "nvrl";
+
+			void fillTemplateData() {
+				RNAVWaypoints.reserve(6);
+				runways.reserve(3);
+				flightPlan.routeWaypointIndices.reserve(6);
+
+				// Kronshtadt
+				const auto departureAirportWaypointIndex = getOrCreateWaypointIndex(
+					SettingsNavigationWaypointType::airport,
+					L"ULLY",
+					GeographicCoordinates(toRadians(60.014568277272f), toRadians(29.702727704862f), 0)
+				);
+
+				// 95
+				runways.push_back(SettingsNavigationAirportRunway(
+					departureAirportWaypointIndex,
+					GeographicCoordinates(toRadians(60.014568277272f), toRadians(29.702727704862f), 0),
+					95,
+					500,
+					30
+				));
+
+				const uint8_t departureRunwayIndex = runways.size() - 1;
+
+				// RNAV waypoints
+
+				RNAVWaypoints.push_back(SettingsNavigationRNAVWaypoint(getOrCreateWaypointIndex(
+					SettingsNavigationWaypointType::enroute,
+					L"OMEGA",
+					GeographicCoordinates(toRadians(59.983333f), toRadians(30.133333f), 0)
+				)));
+
+				RNAVWaypoints.push_back(SettingsNavigationRNAVWaypoint(getOrCreateWaypointIndex(
+					SettingsNavigationWaypointType::enroute,
+					L"ABREL",
+					GeographicCoordinates(toRadians(59.913056f), toRadians(31.335f), 0)
+				)));
+
+				RNAVWaypoints.push_back(SettingsNavigationRNAVWaypoint(getOrCreateWaypointIndex(
+					SettingsNavigationWaypointType::enroute,
+					L"SAPKI",
+					GeographicCoordinates(toRadians(59.604722f), toRadians(31.180833f), 0)
+				)));
+
+				RNAVWaypoints.push_back(SettingsNavigationRNAVWaypoint(getOrCreateWaypointIndex(
+					SettingsNavigationWaypointType::terminal,
+					L"LI754",
+					GeographicCoordinates(toRadians(59.516944f), toRadians(31.0225f), 0)
+				)));
+
+				RNAVWaypoints.push_back(SettingsNavigationRNAVWaypoint(getOrCreateWaypointIndex(
+					SettingsNavigationWaypointType::terminal,
+					L"OBARI",
+					GeographicCoordinates(toRadians(59.599722f), toRadians(30.679167f), 0)
+				)));
+
+				RNAVWaypoints.push_back(SettingsNavigationRNAVWaypoint(getOrCreateWaypointIndex(
+					SettingsNavigationWaypointType::terminal,
+					L"BIPRI",
+					GeographicCoordinates(toRadians(59.747778f), toRadians(30.565556f), 0)
+				)));
+
+				// Pulkovo
+				const auto arrivalAirportWaypointIndex = getOrCreateWaypointIndex(
+					SettingsNavigationWaypointType::airport,
+					L"ULLI",
+					GeographicCoordinates(toRadians(59.800278f), toRadians(30.2625f), 0)
+				);
+
+				// 10 L
+				runways.push_back(SettingsNavigationAirportRunway(
+					arrivalAirportWaypointIndex,
+					GeographicCoordinates(toRadians(59.805114621892f), toRadians(30.276415586255f), 0),
+					106,
+					3780,
+					60
+				));
+
+				// 10 R
+				runways.push_back(SettingsNavigationAirportRunway(
+					arrivalAirportWaypointIndex,
+					GeographicCoordinates(toRadians(59.794929404415f), toRadians(30.251926678005f), 0),
+					106,
+					3780,
+					60
+				));
+
+				const uint8_t arrivalRunwayIndex = runways.size() - 1;
+
+				// Flight plan
+				flightPlan.departureAirportWaypointIndex = departureAirportWaypointIndex;
+				flightPlan.departureRunwayIndex = departureRunwayIndex;
+
+				flightPlan.arrivalAirportWaypointIndex = arrivalAirportWaypointIndex;
+				flightPlan.arrivalRunwayIndex = arrivalRunwayIndex;
+
+				// Route
+				flightPlan.routeWaypointIndices.push_back(1);
+				flightPlan.routeWaypointIndices.push_back(2);
+				flightPlan.routeWaypointIndices.push_back(3);
+				flightPlan.routeWaypointIndices.push_back(4);
+				flightPlan.routeWaypointIndices.push_back(5);
+				flightPlan.routeWaypointIndices.push_back(6);
+
+			}
 	};
 }

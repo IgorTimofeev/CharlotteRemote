@@ -16,7 +16,7 @@ namespace pizda {
 
 	class RunwayMesh : public LinearMesh {
 		public:
-			RunwayMesh(const SettingsNavigationRunway* runway, const Color* color) : _runway(runway) {
+			RunwayMesh(const SettingsNavigationAirportRunway* runway, const Color* color) : _runway(runway) {
 				_waypoint = &RC::getInstance().getSettings().navigation.waypoints[runway->waypointIndex];
 
 				// 0     1                           0     1
@@ -35,13 +35,13 @@ namespace pizda {
 				const auto corner0Rad = (center01M + corner0OffsetM) * GeographicCoordinates::equatorialRadiansPerMeter;
 				const auto corner1Rad = (center01M - corner0OffsetM) * GeographicCoordinates::equatorialRadiansPerMeter;
 
-				ESP_LOGI("Runway", "---------------------");
-				ESP_LOGI("Runway", "heading (deg): %d", _runway->headingDeg);
-				ESP_LOGI("Runway", "headingVectorNorm: %f, %f", headingVectorNorm.getX(), headingVectorNorm.getY());
-				ESP_LOGI("Runway", "center01Meters: %f, %f", center01M.getX(), center01M.getY());
-				ESP_LOGI("Runway", "corner0OffsetMeters: %f, %f", corner0OffsetM.getX(), corner0OffsetM.getY());
-				ESP_LOGI("Runway", "corner0Radians: %f, %f", corner0Rad.getX(), corner0Rad.getY());
-				ESP_LOGI("Runway", "corner1Radians: %f, %f", corner1Rad.getX(), corner1Rad.getY());
+				// ESP_LOGI("Runway", "---------------------");
+				// ESP_LOGI("Runway", "heading (deg): %d", _runway->headingDeg);
+				// ESP_LOGI("Runway", "headingVectorNorm: %f, %f", headingVectorNorm.getX(), headingVectorNorm.getY());
+				// ESP_LOGI("Runway", "center01Meters: %f, %f", center01M.getX(), center01M.getY());
+				// ESP_LOGI("Runway", "corner0OffsetMeters: %f, %f", corner0OffsetM.getX(), corner0OffsetM.getY());
+				// ESP_LOGI("Runway", "corner0Radians: %f, %f", corner0Rad.getX(), corner0Rad.getY());
+				// ESP_LOGI("Runway", "corner1Radians: %f, %f", corner1Rad.getX(), corner1Rad.getY());
 
 				_vertices[0] = cornerToVertex(corner0Rad);
 				_vertices[1] = cornerToVertex(corner1Rad);
@@ -67,7 +67,7 @@ namespace pizda {
 				0, 3
 			};
 
-			const SettingsNavigationRunway* _runway;
+			const SettingsNavigationAirportRunway* _runway;
 			const SettingsNavigationWaypoint* _waypoint;
 
 			Vector3F cornerToVertex(const Vector2F& corner) const {

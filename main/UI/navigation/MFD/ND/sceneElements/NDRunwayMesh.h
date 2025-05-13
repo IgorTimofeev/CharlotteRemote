@@ -13,6 +13,6 @@ namespace pizda {
 
 	class NDRunwayMesh : public RunwayMesh {
 		public:
-			NDRunwayMesh(const SettingsNavigationRunway* runway, const Color* color);
+			NDRunwayMesh(const SettingsNavigationAirportRunway* runway, const Color* color);
 	};
 }
