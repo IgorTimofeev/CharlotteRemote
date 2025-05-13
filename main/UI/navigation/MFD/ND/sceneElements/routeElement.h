@@ -5,6 +5,7 @@
 #include <YOBA/UI/spatial.h>
 
 #include "../../../../../settings/settings.h"
+#include "../../../../../types/navigationData.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -12,14 +13,14 @@ namespace pizda {
 
 	class RouteElement : public SceneElement {
 		public:
-			RouteElement(uint16_t waypointIndexFrom, uint16_t waypointIndexTo, const Color* color);
+			RouteElement(const NavigationDataFlightPlanRoute* routeData, const Color* color);
 
 			const Vector3F* getVertices() override;
 			uint16_t getVertexCount() override;
 			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* vertices) override;
 
 		private:
+			const NavigationDataFlightPlanRoute* _routeData;
 			const Color* _color;
-			Vector3F _vertices[2] {};
 	};
 }

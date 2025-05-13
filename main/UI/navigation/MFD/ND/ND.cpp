@@ -13,6 +13,7 @@ namespace pizda {
 	ND::ND() {
 		auto& rc = RC::getInstance();
 		const auto& settings = rc.getSettings();
+		const auto& nd = rc.getNavigationData();
 
 		setClipToBounds(true);
 		setFOV(toRadians(90));
@@ -40,25 +41,23 @@ namespace pizda {
 		if (settings.interface.MFD.ND.earth)
 			addElement(new LinearSphere(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg3));
 
-		// Flight plan
-		auto fromIndex = settings.navigation.flightPlan.departureAirportWaypointIndex;
-
-		// Routes
-		for (const auto routeWaypointIndex : settings.navigation.flightPlan.routeWaypointIndices) {
-			addElement(new RouteElement(fromIndex, routeWaypointIndex, &Theme::purple));
-			fromIndex = routeWaypointIndex;
+		// Flight plan routes
+		for (const auto& route : nd.flightPlan.routes) {
+			addElement(new RouteElement(&route, &Theme::purple));
 		}
 
-		// Arrival
-		addElement(new RouteElement(fromIndex, settings.navigation.flightPlan.arrivalAirportWaypointIndex, &Theme::purple));
+		// Airports
+		for (const auto& airport : nd.airports) {
+			addElement(new WaypointElement(&airport));
 
-		// Runways
-		for (const auto& runway : settings.navigation.runways) {
-			addElement(new NDRunwayMesh(&runway, &Theme::fg1));
+			// Runways
+			for (const auto& runway : airport.runways) {
+				addElement(new NDRunwayMesh(&runway, &Theme::fg1));
+			}
 		}
 
-		// Waypoints
-		for (const auto& waypoint : settings.navigation.waypoints) {
+		// RNAV waypoints
+		for (const auto& waypoint : nd.RNAVWaypoints) {
 			addElement(new WaypointElement(&waypoint));
 		}
 
@@ -119,15 +118,7 @@ namespace pizda {
 	void ND::onBoundsChanged() {
 		Scene::onBoundsChanged();
 
-		const auto& bounds = getBounds();
-		auto& rc = RC::getInstance();
-		const auto& settings = rc.getSettings();
-
-		setPivotOffset(
-			settings.interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::arcHeadingUp
-			? Point(0, bounds.getHeight() / 2 - bounds.getHeight() * _compassCircleMarginBottomPct / 100)
-			: Point()
-		);
+		updatePivot();
 	}
 
 	void ND::onRender(Renderer* renderer) {
@@ -329,7 +320,7 @@ namespace pizda {
 		}
 
 		// Cursor
-		if (isFocused() && _cursorPosition.getX() >= 0 && _cursorPosition.getY() >= 0) {
+		if (isCursorVisible()) {
 			constexpr static uint8_t lineAreaOffset = 5;
 			constexpr static uint8_t lineAreaSize = 8;
 
@@ -433,7 +424,7 @@ namespace pizda {
 			const auto pinchDownEvent = static_cast<PinchDownEvent*>(event);
 
 			_pinchLength = pinchDownEvent->getLength();
-			_cursorPosition = { -1, -1 };
+			hideCursor();
 
 			event->setHandled(true);
 		}
@@ -464,6 +455,8 @@ namespace pizda {
 				)
 			));
 
+			hideCursor();
+
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == EncoderRotateEvent::typeID) {
@@ -476,12 +469,14 @@ namespace pizda {
 					_cameraOffset.getLongitude(),
 					std::clamp(
 						rotateEvent->getRPS() >= 0
-						? _cameraOffset.getAltitude() / scaleFactor
-						: _cameraOffset.getAltitude() * scaleFactor,
+							? _cameraOffset.getAltitude() / scaleFactor
+							: _cameraOffset.getAltitude() * scaleFactor,
 						static_cast<float>(cameraAltitudeMinimum),
 						static_cast<float>(cameraAltitudeMaximum)
 					)
 				));
+
+				hideCursor();
 
 				event->setHandled(true);
 			}
@@ -490,10 +485,12 @@ namespace pizda {
 			if (isFocused()) {
 				const auto pushEvent = static_cast<EncoderPushEvent*>(event);
 
-				if (pushEvent->isDown())
+				if (pushEvent->isDown()) {
 					resetCameraLateralOffset();
+					hideCursor();
 
-				event->setHandled(true);
+					event->setHandled(true);
+				}
 			}
 		}
 	}
@@ -537,7 +534,7 @@ namespace pizda {
 		return _cameraOffset.getLatitude() != 0 || _cameraOffset.getLongitude() != 0;
 	}
 
-	void ND::renderWaypointStar(Renderer* renderer, const SettingsNavigationWaypoint* waypoint, const Point& center, const Color* color) {
+	void ND::renderWaypointStar(Renderer* renderer, const NavigationWaypointData* waypointData, const Point& center, const Color* color) {
 		renderer->renderRectangle(
 			Bounds(
 				center.getX() - 1,
@@ -585,10 +582,30 @@ namespace pizda {
 		);
 
 		renderer->renderString(
-			Point(center.getX() + 8, center.getY() - 5),
+			Point(center.getX() + 7, center.getY() - 7),
 			&Theme::fontSmall,
 			color,
-			waypoint->name
+			waypointData->name
+		);
+	}
+
+	bool ND::isCursorVisible() const {
+		return _cursorPosition.getX() >= 0 && _cursorPosition.getY() >= 0;
+	}
+
+	void ND::hideCursor() {
+		_cursorPosition = { -1, -1 };
+	}
+
+	void ND::updatePivot() {
+		const auto& bounds = getBounds();
+		auto& rc = RC::getInstance();
+		const auto& settings = rc.getSettings();
+
+		setPivotOffset(
+			settings.interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::arcHeadingUp
+			? Point(0, bounds.getHeight() / 2 - bounds.getHeight() * _compassCircleMarginBottomPct / 100)
+			: Point()
 		);
 	}
 }

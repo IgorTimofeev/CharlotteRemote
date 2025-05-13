@@ -5,6 +5,7 @@
 #include <YOBA/UI/spatial.h>
 
 #include "../../../../../settings/settings.h"
+#include "../../../../../types/navigationData.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -12,14 +13,13 @@ namespace pizda {
 
 	class WaypointElement : public SceneElement {
 		public:
-			explicit WaypointElement(const SettingsNavigationWaypoint* waypoint);
+			explicit WaypointElement(const NavigationWaypointData* waypointData);
 
 			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* vertices) override;
 			const Vector3F* getVertices() override;
 			uint16_t getVertexCount() override;
 
 		private:
-			Vector3F _vertex;
-			const SettingsNavigationWaypoint* _waypoint;
+			const NavigationWaypointData* _waypointData;
 	};
 }

@@ -169,6 +169,10 @@ namespace pizda {
 		return _aircraftData;
 	}
 
+	NavigationData& RC::getNavigationData() {
+		return _navigationData;
+	}
+
 	uint32_t RC::getTickDeltaTime() const {
 		return _tickDeltaTime;
 	}

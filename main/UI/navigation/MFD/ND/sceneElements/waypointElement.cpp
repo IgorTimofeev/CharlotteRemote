@@ -6,8 +6,8 @@
 #include "../ND.h"
 
 namespace pizda {
-	WaypointElement::WaypointElement(const SettingsNavigationWaypoint* waypoint) : _waypoint(waypoint) {
-		_vertex = _waypoint->coordinates.toCartesian();
+	WaypointElement::WaypointElement(const NavigationWaypointData* waypointData) : _waypointData(waypointData) {
+
 	}
 
 	void WaypointElement::onRender(Renderer* renderer, const Scene& scene, const Vector3F* vertices) {
@@ -16,18 +16,18 @@ namespace pizda {
 			static_cast<int32_t>(vertices[0].getY())
 		);
 
-		switch (_waypoint->type) {
-			case SettingsNavigationWaypointType::enroute: {
+		switch (_waypointData->type) {
+			case NavigationWaypointType::enroute: {
 				ND::renderWaypointStar(
 					renderer,
-					_waypoint,
+					_waypointData,
 					center,
 					&Theme::fg1
 				);
 
 				break;
 			}
-			case SettingsNavigationWaypointType::terminal: {
+			case NavigationWaypointType::terminal: {
 				renderer->renderTriangle(
 					Point(center.getX(), center.getY() - 3),
 					Point(center.getX() - 3, center.getY() + 2),
@@ -36,15 +36,15 @@ namespace pizda {
 				);
 
 				renderer->renderString(
-					Point(center.getX() + 8, center.getY() - 5),
+					Point(center.getX() + 7, center.getY() - 7),
 					&Theme::fontSmall,
 					&Theme::fg1,
-					_waypoint->name
+					_waypointData->name
 				);
 
 				break;
 			}
-			case SettingsNavigationWaypointType::airport: {
+			case NavigationWaypointType::airport: {
 				renderer->renderCircle(
 					center,
 					4,
@@ -52,10 +52,10 @@ namespace pizda {
 				);
 
 				renderer->renderString(
-					Point(center.getX() + 8, center.getY() - 5),
+					Point(center.getX() + 7, center.getY() - 7),
 					&Theme::fontSmall,
 					&Theme::ocean,
-					_waypoint->name
+					_waypointData->name
 				);
 
 				break;
@@ -64,7 +64,7 @@ namespace pizda {
 	}
 
 	const Vector3F* WaypointElement::getVertices() {
-		return &_vertex;
+		return &_waypointData->cartesianCoordinates;
 	}
 
 	uint16_t WaypointElement::getVertexCount() {

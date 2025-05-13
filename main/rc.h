@@ -25,6 +25,7 @@
 #include "types/units.h"
 #include "types/lowPassFilter.h"
 #include "types/aircraftData.h"
+#include "types/navigationData.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -65,6 +66,7 @@ namespace pizda {
 			void setRoute(const Route* route);
 
 			AircraftData& getAircraftData();
+			NavigationData& getNavigationData();
 
 		private:
 			RC() = default;
@@ -172,6 +174,7 @@ namespace pizda {
 			// -------------------------------- Other shit --------------------------------
 
 			AircraftData _aircraftData {};
+			NavigationData _navigationData {};
 
 			void SPIBusSetup() const;
 			static void ADCUnitsSetup();

@@ -5,13 +5,12 @@
 #include "../ND.h"
 
 namespace pizda {
-	RouteElement::RouteElement(uint16_t waypointIndexFrom, uint16_t waypointIndexTo, const Color* color) : _color(color) {
-		_vertices[0] = RC::getInstance().getSettings().navigation.waypoints[waypointIndexFrom].coordinates.toCartesian();
-		_vertices[1] = RC::getInstance().getSettings().navigation.waypoints[waypointIndexTo].coordinates.toCartesian();
+	RouteElement::RouteElement(const NavigationDataFlightPlanRoute* routeData, const Color* color) : _routeData(routeData), _color(color) {
+
 	}
 
 	const Vector3F* RouteElement::getVertices() {
-		return _vertices;
+		return _routeData->cartesianCoordinates;
 	}
 
 	uint16_t RouteElement::getVertexCount() {

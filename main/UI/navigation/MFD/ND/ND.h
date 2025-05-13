@@ -4,6 +4,7 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
+#include "../../../../types/navigationData.h"
 #include "../../../../settings/settings.h"
 #include "../../../theme.h"
 #include "aircraft.h"
@@ -25,7 +26,8 @@ namespace pizda {
 			void resetCameraLateralOffset();
 			bool isCameraShiftedLaterally() const;
 
-			static void renderWaypointStar(Renderer* renderer, const SettingsNavigationWaypoint* waypoint, const Point& center, const Color* color);
+			static void renderWaypointStar(Renderer* renderer, const NavigationWaypointData* waypointData, const Point& center, const Color* color);
+
 		protected:
 			void onTick() override;
 			void onBoundsChanged() override;
@@ -47,7 +49,7 @@ namespace pizda {
 			constexpr static uint8_t _compassHeadingTextVerticalLineHeight = 2;
 
 			constexpr static uint8_t _compassCircleMarginTopPx = 4;
-			constexpr static uint8_t _compassCircleMarginBottomPct = 10;
+			constexpr static uint8_t _compassCircleMarginBottomPct = 14;
 			constexpr static uint8_t _compassCircleMarginHorizontalPct = 6;
 
 			constexpr static uint16_t _compassArcViewportDeg = _compassTickMarkUnitsDeg * 10;
@@ -63,5 +65,8 @@ namespace pizda {
 			AircraftElement* _aircraftElement = nullptr;
 
 			float getEquatorialRadiansPerPixel() const;
+			bool isCursorVisible() const;
+			void hideCursor();
+			void updatePivot();
 	};
 }

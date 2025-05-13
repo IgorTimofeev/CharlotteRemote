@@ -5,6 +5,7 @@
 #include <YOBA/UI/spatial.h>
 
 #include "../../../../../settings/settings.h"
+#include "../../../../../types/navigationData.h"
 #include "../../../../elements/spatial/runwayMesh.h"
 
 namespace pizda {
@@ -13,6 +14,6 @@ namespace pizda {
 
 	class NDRunwayMesh : public RunwayMesh {
 		public:
-			NDRunwayMesh(const SettingsNavigationAirportRunway* runway, const Color* color);
+			NDRunwayMesh(const NavigationRunwayData* runwayData, const Color* color);
 	};
 }

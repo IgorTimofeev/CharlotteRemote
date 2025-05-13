@@ -12,7 +12,7 @@ namespace pizda {
 
 	class AircraftElement : public SceneElement {
 		public:
-			Vector3F* getVertices() override {
+			const Vector3F* getVertices() override {
 				return &_position;
 			}
 
