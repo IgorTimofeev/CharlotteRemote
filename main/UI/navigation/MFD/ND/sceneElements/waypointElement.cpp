@@ -3,7 +3,7 @@
 
 #include "../../../../../rc.h"
 #include "../../../../theme.h"
-#include "../ND.h"
+#include "../NDScene.h"
 
 namespace pizda {
 	WaypointElement::WaypointElement(const NavigationWaypointData* waypointData) : _waypointData(waypointData) {
@@ -18,7 +18,7 @@ namespace pizda {
 
 		switch (_waypointData->type) {
 			case NavigationWaypointType::enroute: {
-				ND::renderWaypointStar(
+				NDScene::renderWaypointStar(
 					renderer,
 					_waypointData,
 					center,

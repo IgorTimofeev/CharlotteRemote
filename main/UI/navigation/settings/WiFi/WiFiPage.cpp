@@ -51,7 +51,7 @@ namespace pizda {
 
 			const auto dialog = new ProgressDialog();
 			dialog->title.setText(L"Updating firmware");
-			dialog->description.setText(L"Do not turn off your device and wait for the process to finish. Otherwise, you risk getting a fucking awesome but poorly functional brick.");
+			dialog->descriptionText.setText(L"Do not turn off your device and wait for the process to finish. Otherwise, you risk getting a fucking awesome but poorly functional brick.");
 			dialog->show(&rc.getApplication());
 
 //			auto ota = new OTA();

@@ -127,6 +127,19 @@ namespace pizda {
 		button->setFont(&Theme::fontNormal);
 	}
 
+	void Theme::applySecondary(Button* button) {
+		button->setHeight(elementHeight);
+		button->setCornerRadius(cornerRadius);
+
+		button->setDefaultBorderColor(&Theme::bg3);
+		button->setPressedBorderColor(&Theme::fg1);
+
+		button->setDefaultTextColor(&Theme::bg3);
+		button->setPressedTextColor(&Theme::fg1);
+
+		button->setFont(&Theme::fontNormal);
+	}
+
 	void Theme::apply(Switch* sw) {
 		sw->setSize(Size(45, 18));
 		sw->setCornerRadius(9);

@@ -54,6 +54,7 @@ namespace pizda {
 
 			static void setPaletteColors(Bit8PaletteRenderer* renderer);
 			static void apply(Button* button);
+			static void applySecondary(Button* button);
 			static void apply(Slider* slider);
 			static void apply(TextField* textField);
 			static void apply(ScrollView* scrollView);

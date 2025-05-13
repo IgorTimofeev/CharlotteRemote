@@ -5,7 +5,7 @@
 #include "../page.h"
 
 #include "PFD/PFD.h"
-#include "ND/NDControls.h"
+#include "ND/ND.h"
 #include "toolbar/main/mainControls.h"
 #include "toolbar/autopilot/autopilotControls.h"
 #include "toolbar/pressure/pressureControls.h"
@@ -27,7 +27,7 @@ namespace pizda {
 			RelativeStackLayout _rows {};
 
 			std::unique_ptr<PFD> _PFD {};
-			std::unique_ptr<NDControls> _ND {};
+			std::unique_ptr<ND> _ND {};
 
 			std::unique_ptr<MainControls> _mainControls {};
 			std::unique_ptr<AutopilotControls> _autopilotControls {};

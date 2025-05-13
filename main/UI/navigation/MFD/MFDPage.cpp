@@ -56,7 +56,7 @@ namespace pizda {
 
 		if (settings.interface.MFD.ND.visible) {
 			if (!_ND.get())
-				_ND = std::make_unique<NDControls>();
+				_ND = std::make_unique<ND>();
 
 			_rows += _ND.get();
 		}

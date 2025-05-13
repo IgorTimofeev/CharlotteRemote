@@ -1,72 +1,83 @@
 #pragma once
 
-#include <YOBA/main.h>
-#include <YOBA/UI.h>
-#include <YOBA/UI/spatial.h>
+#include "NDScene.h"
 
-#include "../../../../types/navigationData.h"
-#include "../../../../settings/settings.h"
+#include <esp_log.h>
+
 #include "../../../theme.h"
-#include "aircraft.h"
+#include "../../../elements/dialog.h"
+#include "../../../elements/titler.h"
 
 namespace pizda {
 	using namespace YOBA;
-	using namespace YOBA::spatial;
 
-	class ND : public Scene {
+	class WaypointDialog : public Dialog {
+		public:
+			WaypointDialog() {
+				title.setText(L"Add waypoint");
+
+				// Name
+				Theme::apply(&name);
+				rows += &nameTitle;
+
+				// Latitude & longitude
+				rows += &_latitudeAndLongitudeRow;
+
+				// Latitude
+				Theme::apply(&latitude);
+				_latitudeAndLongitudeRow += &latitudeTitle;
+
+				// Longitude
+				Theme::apply(&longitude);
+				_latitudeAndLongitudeRow += &longitudeTitle;
+
+				// Bottom buttons
+				rows += &bottomButtonsRow;
+
+				// Cancel
+				Theme::apply(&cancelButton);
+				cancelButton.setDefaultBackgroundColor(&Theme::bg3);
+				cancelButton.setDefaultTextColor(&Theme::fg3);
+				cancelButton.setText(L"Cancel");
+				bottomButtonsRow += &cancelButton;
+
+				// Confirm
+				Theme::apply(&confirmButton);
+				confirmButton.setText(L"Confirm");
+				bottomButtonsRow += &confirmButton;
+			}
+
+			TextField name {};
+			Titler nameTitle = { L"Name", &name };
+
+			RelativeStackLayout _latitudeAndLongitudeRow { Orientation::horizontal, 10 };
+
+			TextField latitude {};
+			Titler latitudeTitle = { L"Latitude", &latitude };
+
+			TextField longitude {};
+			Titler longitudeTitle = { L"Longitude", &longitude };
+
+			RelativeStackLayout bottomButtonsRow { Orientation::horizontal, 10 };
+			Button cancelButton {};
+			Button confirmButton {};
+	};
+
+	class ND : public Layout {
 		public:
 			ND();
-			~ND() override;
 
-			constexpr static uint32_t cameraAltitudeMinimum = 50;
-			constexpr static uint32_t cameraAltitudeMaximum = GeographicCoordinates::equatorialRadiusMeters * 2;
-
-			const GeographicCoordinates& getCameraOffset() const;
-			void setCameraOffset(const GeographicCoordinates& value);
-			void resetCameraLateralOffset();
-			bool isCameraShiftedLaterally() const;
-
-			static void renderWaypointStar(Renderer* renderer, const NavigationWaypointData* waypointData, const Point& center, const Color* color);
-
-		protected:
-			void onTick() override;
-			void onBoundsChanged() override;
-			void onRender(Renderer* renderer) override;
-			void onEvent(Event* event) override;
+			void updateViewModeButtonText();
 
 		private:
-			constexpr static uint8_t _compassTickMarkUnitsDeg = 10;
-			constexpr static uint8_t _compassTickMarkUnitsBigDeg = 30;
+			NDScene _scene {};
 
-			constexpr static uint8_t _compassLateralOffsetCrossSize = 8;
+			StackLayout _rightRows {};
 
-			constexpr static uint8_t _compassTickMarkSmallLength = 2;
-			constexpr static uint8_t _compassTickMarkBigLength = 4;
-			constexpr static uint8_t _compassTickMarkTextOffset = 3;
+			Button _viewModeButton {};
+			Button _latLongButton {};
+			Button _waypointButton {};
 
-			constexpr static uint8_t _compassHeadingTextMarginTopPct = 3;
-			constexpr static uint8_t _compassHeadingTextHorizontalLineOffset = 1;
-			constexpr static uint8_t _compassHeadingTextVerticalLineHeight = 2;
-
-			constexpr static uint8_t _compassCircleMarginTopPx = 4;
-			constexpr static uint8_t _compassCircleMarginBottomPct = 14;
-			constexpr static uint8_t _compassCircleMarginHorizontalPct = 6;
-
-			constexpr static uint16_t _compassArcViewportDeg = _compassTickMarkUnitsDeg * 10;
-			constexpr static uint16_t _compassArcViewportHalfDeg = _compassArcViewportDeg / 2;
-
-			static GeographicCoordinates _cameraOffset;
-			GeographicCoordinates _cameraCoordinates {};
-
-			float _pinchLength = 0;
-			Point _touchDownPosition {};
-			Point _cursorPosition { -1, -1 };
-
-			AircraftElement* _aircraftElement = nullptr;
-
-			float getEquatorialRadiansPerPixel() const;
-			bool isCursorVisible() const;
-			void hideCursor();
-			void updatePivot();
+			void addGovnoButton(Button* button, const std::function<void()>& onClick);
 	};
 }
