@@ -13,7 +13,7 @@ namespace pizda {
 		title.setText(L"Wi-Fi");
 
 		// State
-		switcher.getSwitch().setChecked(true);
+		switcher.getSwitch().setActive(true);
 		rows += &switcher;
 
 		// SSID

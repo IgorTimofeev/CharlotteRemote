@@ -55,7 +55,7 @@ namespace pizda {
 		_viewRoute = route;
 
 		for (auto& tab : tabs) {
-			tab.setChecked(tab.getRoute() == route);
+			tab.setActive(tab.getRoute() == route);
 		}
 
 		if (_view) {

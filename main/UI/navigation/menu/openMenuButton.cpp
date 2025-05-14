@@ -17,8 +17,8 @@ namespace pizda {
 		setDefaultBackgroundColor(&Theme::bg3);
 		setDefaultTextColor(&Theme::fg3);
 
-		setPressedBackgroundColor(&Theme::fg1);
-		setPressedTextColor(&Theme::bg1);
+		setActiveBackgroundColor(&Theme::fg1);
+		setActiveTextColor(&Theme::bg1);
 
 		setFont(&Theme::fontSmall);
 

@@ -16,10 +16,10 @@ namespace pizda {
 				setDefaultBorderColor(&Theme::bg3);
 				setDefaultTextColor(&Theme::fg3);
 
-				setPressedBackgroundColor(&Theme::bg2);
+				setActiveBackgroundColor(&Theme::bg2);
 
-				setPressedBorderColor(&Theme::bg3);
-				setPressedTextColor(&Theme::fg1);
+				setActiveBorderColor(&Theme::bg3);
+				setActiveTextColor(&Theme::fg1);
 
 				setFont(&Theme::fontSmall);
 				setText(text);
@@ -28,8 +28,8 @@ namespace pizda {
 			void onRender(Renderer* renderer) override {
 				const auto& bounds = getBounds();
 
-				renderer->renderFilledRectangle(bounds, getCornerRadius(), isChecked() ? getPressedBackgroundColor() : getDefaultBackgroundColor());
-//				renderer->renderRectangle(bounds, getCornerRadius(), isChecked() ? getPressedBorderColor() : getDefaultBorderColor());
+				renderer->renderFilledRectangle(bounds, getCornerRadius(), isActive() ? getActiveBackgroundColor() : getDefaultBackgroundColor());
+//				renderer->renderRectangle(bounds, getCornerRadius(), isChecked() ? getActiveBorderColor() : getDefaultBorderColor());
 
 				renderer->renderString(
 					Point(
@@ -37,7 +37,7 @@ namespace pizda {
 						bounds.getYCenter() - getFont()->getHeight() / 2
 					),
 					getFont(),
-					isChecked() ? getPressedTextColor() : getDefaultTextColor(),
+					isActive() ? getActiveTextColor() : getDefaultTextColor(),
 					getText()
 				);
 
@@ -54,7 +54,7 @@ namespace pizda {
 						lineWidth,
 						lineHeight
 					),
-					isChecked() ? &Theme::green : &Theme::bg3
+					isActive() ? &Theme::green : &Theme::bg3
 				);
 			}
 	};

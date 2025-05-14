@@ -10,11 +10,11 @@ namespace pizda {
 		// Debug overlay switch
 		Theme::apply(&_debugOverlaySwitch);
 		_debugOverlaySwitch.setCheckedColor(&Theme::sky);
-		_debugOverlaySwitch.setChecked(RC::getInstance().getSettings().interface.developer.debugOverlay);
+		_debugOverlaySwitch.setActive(RC::getInstance().getSettings().interface.developer.debugOverlay);
 
-		_debugOverlaySwitch.isCheckedChanged += [this] {
+		_debugOverlaySwitch.isActiveChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
-			settings.interface.developer.debugOverlay = _debugOverlaySwitch.isChecked();
+			settings.interface.developer.debugOverlay = _debugOverlaySwitch.isActive();
 			settings.interface.scheduleWrite();
 
 			RC::getInstance().updateDebugOverlayVisibility();

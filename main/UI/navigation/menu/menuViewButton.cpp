@@ -15,9 +15,9 @@ namespace pizda {
 		setDefaultBackgroundColor(&Theme::bg3);
 		setDefaultTextColor(&Theme::fg4);
 
-		setPressedBackgroundColor(&Theme::bg3);
-		setPressedBorderColor(&Theme::fg1);
-		setPressedTextColor(&Theme::fg1);
+		setActiveBackgroundColor(&Theme::bg3);
+		setActiveBorderColor(&Theme::fg1);
+		setActiveTextColor(&Theme::fg1);
 	}
 
 	void MenuViewButton::onRender(Renderer* renderer) {
@@ -28,18 +28,18 @@ namespace pizda {
 		renderer->renderFilledRectangle(
 			Bounds(bounds.getX() - 1, bounds.getY() - 1, bounds.getWidth() + 2, _image->getSize().getHeight() + 2),
 			cornerRadius,
-			isChecked() ? getPressedBackgroundColor() : getDefaultBackgroundColor()
+			isActive() ? getActiveBackgroundColor() : getDefaultBackgroundColor()
 		);
 
 		// Image
 		renderer->renderImage(bounds.getTopLeft(), _image);
 
 		// Border
-		if (isChecked()) {
+		if (isActive()) {
 			renderer->renderRectangle(
 				Bounds(bounds.getX() - 1, bounds.getY() - 1, bounds.getWidth() + 2, _image->getSize().getHeight() + 2),
 				cornerRadius,
-				getPressedBorderColor()
+				getActiveBorderColor()
 			);
 		}
 
@@ -50,7 +50,7 @@ namespace pizda {
 				bounds.getY() + _image->getSize().getHeight() + _textOffset
 			),
 			&Theme::fontSmall,
-			isChecked() ? getPressedTextColor() : getDefaultTextColor(),
+			isActive() ? getActiveTextColor() : getDefaultTextColor(),
 			getText()
 		);
 	}

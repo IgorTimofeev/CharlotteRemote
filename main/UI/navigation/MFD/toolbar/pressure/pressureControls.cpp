@@ -13,15 +13,15 @@ namespace pizda {
 
 		// Pressure
 		pressure.seven.setValue(settings.controls.referencePressurePa / 100);
-		pressure.button.setChecked(settings.controls.referencePressureSTD);
+		pressure.button.setActive(settings.controls.referencePressureSTD);
 
 		pressure.rotated += [this, &settings] {
 			settings.controls.referencePressurePa = pressure.seven.getValue() * 100;
 			RC::getInstance().getSettings().controls.scheduleWrite();
 		};
 
-		pressure.button.isCheckedChanged += [this, &settings] {
-			settings.controls.referencePressureSTD = pressure.button.isChecked();
+		pressure.button.isActiveChanged += [this, &settings] {
+			settings.controls.referencePressureSTD = pressure.button.isActive();
 			RC::getInstance().getSettings().controls.scheduleWrite();
 		};
 
@@ -30,15 +30,15 @@ namespace pizda {
 
 		// Minimums
 		minimums.seven.setValue(settings.controls.minimumAltitudeFt);
-		minimums.button.setChecked(settings.controls.minimumAltitudeEnabled);
+		minimums.button.setActive(settings.controls.minimumAltitudeEnabled);
 
 		minimums.rotated += [this, &settings] {
 			settings.controls.minimumAltitudeFt = minimums.seven.getValue();
 			RC::getInstance().getSettings().controls.scheduleWrite();
 		};
 
-		minimums.button.isCheckedChanged += [this, &settings] {
-			settings.controls.minimumAltitudeEnabled = minimums.button.isChecked();
+		minimums.button.isActiveChanged += [this, &settings] {
+			settings.controls.minimumAltitudeEnabled = minimums.button.isActive();
 			RC::getInstance().getSettings().controls.scheduleWrite();
 		};
 

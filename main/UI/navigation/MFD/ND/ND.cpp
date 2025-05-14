@@ -57,8 +57,8 @@ namespace pizda {
 		button->setDefaultBackgroundColor(&Theme::bg2);
 		button->setDefaultTextColor(&Theme::fg5);
 
-		button->setPressedBackgroundColor(&Theme::fg1);
-		button->setPressedTextColor(&Theme::bg1);
+		button->setActiveBackgroundColor(&Theme::fg1);
+		button->setActiveTextColor(&Theme::bg1);
 
 		button->setFont(&Theme::fontSmall);
 

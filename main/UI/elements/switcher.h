@@ -25,7 +25,7 @@ namespace pizda {
 			}
 
 			Switcher(std::wstring_view title, bool value) : Switcher(title) {
-				_switch.setChecked(value);
+				_switch.setActive(value);
 			}
 
 			Text& getText() {

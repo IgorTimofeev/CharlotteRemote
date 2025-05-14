@@ -21,16 +21,16 @@ namespace pizda {
 				button.setCornerRadius(2);
 				button.setContentMargin(Margin(0, 3, 0, 0));
 
-				button.setCheckMode(ButtonCheckMode::toggle);
-
 				button.setDefaultBackgroundColor(&Theme::bg3);
-				button.setPressedBackgroundColor(&Theme::fg1);
+				button.setActiveBackgroundColor(&Theme::fg1);
 
 				button.setDefaultTextColor(&Theme::fg5);
-				button.setPressedTextColor(&Theme::bg1);
+				button.setActiveTextColor(&Theme::bg1);
 
 				button.setFont(&Theme::fontSmall);
 				button.setText(text);
+
+				button.setToggle(true);
 
 				*this += &button;
 
@@ -121,7 +121,7 @@ namespace pizda {
 					if (!pushEvent->isDown())
 						return;
 
-					button.setChecked(!button.isChecked());
+					button.setActive(!button.isActive());
 
 					event->setHandled(true);
 				}

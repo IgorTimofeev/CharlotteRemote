@@ -177,23 +177,22 @@ namespace pizda {
 		_invertButton.setWidth(Theme::elementHeight);
 		_invertButton.setHorizontalAlignment(Alignment::end);
 
-		_invertButton.setCheckMode(ButtonCheckMode::toggle);
 		_invertButton.setCornerRadius(Theme::cornerRadius);
 
 		_invertButton.setDefaultBackgroundColor(&Theme::bg3);
-		_invertButton.setPressedBackgroundColor(&Theme::fg1);
+		_invertButton.setActiveBackgroundColor(&Theme::fg1);
 
 		_invertButton.setDefaultTextColor(&Theme::bg7);
-		_invertButton.setPressedTextColor(&Theme::bg2);
+		_invertButton.setActiveTextColor(&Theme::bg2);
 
 		_invertButton.setFont(&Theme::fontSmall);
 		_invertButton.setText(L"INV");
 
-		_invertButton.setCheckMode(ButtonCheckMode::toggle);
-		_invertButton.setChecked(_axis->getSettings()->inverted);
+		_invertButton.setToggle(true);
+		_invertButton.setActive(_axis->getSettings()->inverted);
 
 		_invertButton.click += [this] {
-			_axis->getSettings()->inverted = _invertButton.isChecked();
+			_axis->getSettings()->inverted = _invertButton.isActive();
 
 			RC::getInstance().getSettings().axis.scheduleWrite();
 		};

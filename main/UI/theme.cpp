@@ -119,10 +119,10 @@ namespace pizda {
 		button->setCornerRadius(cornerRadius);
 
 		button->setDefaultBackgroundColor(&Theme::accent1);
-		button->setPressedBackgroundColor(&Theme::accent2);
-
 		button->setDefaultTextColor(&Theme::bg1);
-		button->setPressedTextColor(&Theme::bg1);
+
+		button->setActiveBackgroundColor(&Theme::accent2);
+		button->setActiveTextColor(&Theme::bg1);
 
 		button->setFont(&Theme::fontNormal);
 	}
@@ -132,10 +132,10 @@ namespace pizda {
 		button->setCornerRadius(cornerRadius);
 
 		button->setDefaultBorderColor(&Theme::fg4);
-		button->setPressedBorderColor(&Theme::fg1);
+		button->setDefaultTextColor(&Theme::fg4);
 
-		button->setDefaultTextColor(&Theme::bg3);
-		button->setPressedTextColor(&Theme::fg1);
+		button->setActiveBorderColor(&Theme::fg1);
+		button->setActiveTextColor(&Theme::fg1);
 
 		button->setFont(&Theme::fontNormal);
 	}

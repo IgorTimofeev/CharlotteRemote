@@ -22,7 +22,7 @@ namespace pizda {
 			const auto button = _buttons + i;
 
 			if (button->getRoute() == *_lastRoute) {
-				button->setChecked(true);
+				button->setActive(true);
 			}
 
 			*this += button;
@@ -39,7 +39,7 @@ namespace pizda {
 		for (uint8_t i = 0; i < _buttonCount; i++) {
 			const auto button = _buttons + i;
 
-			button->setChecked(button->getRoute() == *_lastRoute);
+			button->setActive(button->getRoute() == *_lastRoute);
 		}
 
 		RC::getInstance().setRoute(*_lastRoute);
