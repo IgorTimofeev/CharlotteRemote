@@ -5,10 +5,13 @@
 #include "images/menuIconMFDImage.h"
 #include "images/menuIconMFDPFDImage.h"
 #include "images/menuIconMFDNDImage.h"
-#include "images/menuIconMFDFlightPlanImage.h"
 #include "images/menuIconMFDMainImage.h"
 #include "images/menuIconMFDAutopilotImage.h"
 #include "images/menuIconMFDPressureImage.h"
+
+#include "images/menuIconFlightPlanImage.h"
+#include "images/menuIconWaypointsImage.h"
+
 #include "images/menuIconPersonalizationImage.h"
 #include "images/menuIconWiFiImage.h"
 #include "images/menuIconAxisImage.h"
@@ -27,10 +30,13 @@ namespace pizda::resources {
 			static const MenuIconMFDImage menuIconMFD;
 			static const MenuIconMFDPFDImage menuIconMFDPFD;
 			static const MenuIconMFDNDImage menuIconMFDND;
-			static const MenuIconMFDFlightPlanImage menuIconMFDFlightPlan;
 			static const MenuIconMFDMainImage menuIconMFDMain;
 			static const MenuIconMFDAutopilotImage menuIconMFDAutopilot;
 			static const MenuIconMFDPressureImage menuIconMFDPressure;
+
+			static const MenuIconFlightPlanImage menuIconFlightPlan;
+			static const MenuIconWaypointsImage menuIconWaypointsImage;
+
 			static const MenuIconPersonalizationImage menuIconPersonalization;
 			static const MenuIconWiFiImage menuIconWiFi;
 			static const MenuIconAxisImage menuIconAxis;

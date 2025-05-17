@@ -3,8 +3,8 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "../../theme.h"
-#include "../../../settings/settings.h"
+#include <UI/theme.h>
+#include <settings/settings.h>
 
 #include "menuView.h"
 #include "menuTabButton.h"

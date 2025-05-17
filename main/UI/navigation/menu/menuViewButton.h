@@ -3,10 +3,10 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "../../theme.h"
-#include "../../../settings/settings.h"
-#include "../page.h"
-#include "../route.h"
+#include <UI/theme.h>
+#include <settings/settings.h>
+#include <UI/navigation/page.h>
+#include <UI/navigation/route.h>
 
 namespace pizda {
 	using namespace YOBA;

@@ -3,7 +3,7 @@
 #include "menuView.h"
 #include "menu.h"
 
-#include "../../../rc.h"
+#include <rc.h>
 
 namespace pizda {
 	// -------------------------------- Default --------------------------------

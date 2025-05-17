@@ -5,9 +5,9 @@
 #include "esp_log.h"
 
 #include "packet.h"
-#include "../WiFi/TCP.h"
-#include "../WiFi/WiFi.h"
-#include "../../constants.h"
+#include <hardware/WiFi/TCP.h>
+#include <hardware/WiFi/WiFi.h>
+#include <constants.h>
 
 namespace pizda {
 	class TCPTransceiver {
@@ -22,8 +22,8 @@ namespace pizda {
 
 			TCP _TCP;
 
-			RemotePacket _remotePacket;
-			AircraftPacket _aircraftPacket;
+			RemotePacket _remotePacket {};
+			AircraftPacket _aircraftPacket {};
 
 			static void startTaskFunction(void* arg);
 

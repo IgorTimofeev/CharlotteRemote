@@ -4,9 +4,9 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
-#include "../../../../../settings/settings.h"
-#include "../../../../../types/navigationData.h"
-#include "../../../../elements/spatial/runwayMesh.h"
+#include <settings/settings.h>
+#include <types/navigationData.h>
+#include <UI/elements/spatial/runwayMesh.h>
 
 namespace pizda {
 	using namespace YOBA;

@@ -1,8 +1,8 @@
 #include <cstdint>
 #include <esp_timer.h>
 #include "nvs.h"
-#include "rc.h"
-#include "constants.h"
+#include <rc.h>
+#include <constants.h>
 #include "resources/sounds.h"
 #include "resources/images.h"
 #include "UI/navigation/routes.h"

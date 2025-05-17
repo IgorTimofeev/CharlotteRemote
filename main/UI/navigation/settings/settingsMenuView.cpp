@@ -1,10 +1,10 @@
 #include "settingsMenuView.h"
 
-#include "../../theme.h"
-#include "../../../rc.h"
+#include <UI/theme.h>
+#include <rc.h>
 
 namespace pizda {
-	SettingsMenuView::SettingsMenuView() : PagesMenuView(_pageButtons, 5, &_lastRoute) {
+	SettingsMenuView::SettingsMenuView() : PagesMenuView(_pageButtons.data(), _pageButtons.size(), &_lastRoute) {
 
 	}
 

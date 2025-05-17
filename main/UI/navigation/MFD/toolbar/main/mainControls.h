@@ -8,8 +8,8 @@
 #include "batteryIndicator.h"
 #include "radioIndicator.h"
 
-#include "../toolbar.h"
-#include "../instrumentIndicatorLayout.h"
+#include <UI/navigation/MFD/toolbar/toolbar.h>
+#include <UI/navigation/MFD/toolbar/instrumentIndicatorLayout.h>
 
 namespace pizda {
 	using namespace YOBA;

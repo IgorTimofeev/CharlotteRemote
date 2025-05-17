@@ -1,7 +1,7 @@
 #pragma once
 
 #include "esp_adc/adc_oneshot.h"
-#include "../settings/settings.h"
+#include <settings/settings.h>
 
 namespace pizda {
 	class Axis {

@@ -1,4 +1,4 @@
-#include "rc.h"
+#include <rc.h>
 
 extern "C" void app_main(void) {
 	pizda::RC::getInstance().run();
@@ -18,7 +18,7 @@ extern "C" void app_main(void) {
 //#include <esp_timer.h>
 //#include <esp_log.h>
 //
-//#include "constants.h"
+//#include <constants.h>
 //#include "resources/images/menuIconMFDNDImage.h"
 //#include "resources/images/menuIconMFDImage.h"
 //

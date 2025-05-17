@@ -4,10 +4,10 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
-#include "../../../theme.h"
-#include "../../../../types/units.h"
-#include "../../../../types/VSpeed.h"
-#include "../../../../types/aircraftData.h"
+#include <UI/theme.h>
+#include <types/units.h>
+#include <types/VSpeed.h>
+#include <types/aircraftData.h>
 
 namespace pizda {
 	using namespace YOBA;

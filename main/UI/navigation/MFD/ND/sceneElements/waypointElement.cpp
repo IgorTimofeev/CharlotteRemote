@@ -1,9 +1,9 @@
 #include "waypointElement.h"
 
-
-#include "../../../../../rc.h"
-#include "../../../../theme.h"
-#include "../NDScene.h"
+#include <rc.h>
+#include <UI/theme.h>
+#include <UI/navigation/MFD/ND/NDScene.h>
+#include <utils/rendering.h>
 
 namespace pizda {
 	WaypointElement::WaypointElement(const NavigationWaypointData* waypointData) : _waypointData(waypointData) {
@@ -16,51 +16,21 @@ namespace pizda {
 			static_cast<int32_t>(vertices[0].getY())
 		);
 
-		switch (_waypointData->type) {
-			case NavigationWaypointType::enroute: {
-				NDScene::renderWaypointStar(
-					renderer,
-					_waypointData,
-					center,
-					&Theme::fg1
-				);
+		const auto color = _waypointData->type == NavigationWaypointType::airport ? &Theme::ocean : &Theme::fg1;
 
-				break;
-			}
-			case NavigationWaypointType::terminal: {
-				renderer->renderTriangle(
-					Point(center.getX(), center.getY() - 3),
-					Point(center.getX() - 3, center.getY() + 2),
-					Point(center.getX() + 3, center.getY() + 2),
-					&Theme::fg1
-				);
+		RenderingUtils::renderWaypoint(
+			renderer,
+			center,
+			color,
+			_waypointData
+		);
 
-				renderer->renderString(
-					Point(center.getX() + 7, center.getY() - 7),
-					&Theme::fontSmall,
-					&Theme::fg1,
-					_waypointData->name
-				);
-
-				break;
-			}
-			case NavigationWaypointType::airport: {
-				renderer->renderCircle(
-					center,
-					4,
-					&Theme::ocean
-				);
-
-				renderer->renderString(
-					Point(center.getX() + 7, center.getY() - 7),
-					&Theme::fontSmall,
-					&Theme::ocean,
-					_waypointData->name
-				);
-
-				break;
-			}
-		}
+		renderer->renderString(
+			Point(center.getX() + 7, center.getY() - 7),
+			&Theme::fontSmall,
+			color,
+			_waypointData->name
+		);
 	}
 
 	const Vector3F* WaypointElement::getVertices() {

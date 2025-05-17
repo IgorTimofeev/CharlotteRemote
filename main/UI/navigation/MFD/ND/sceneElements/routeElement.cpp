@@ -1,8 +1,7 @@
 #include "routeElement.h"
 
-#include "../../../../theme.h"
-#include "../../../../../rc.h"
-#include "../NDScene.h"
+#include <UI/theme.h>
+#include <rc.h>
 
 namespace pizda {
 	RouteElement::RouteElement(const NavigationDataFlightPlanRoute* routeData, const Color* color) : _routeData(routeData), _color(color) {

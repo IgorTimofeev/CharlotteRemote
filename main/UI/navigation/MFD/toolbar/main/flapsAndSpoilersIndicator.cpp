@@ -1,6 +1,6 @@
 #include "flapsAndSpoilersIndicator.h"
-#include "../../../../../rc.h"
-#include "../../../../../resources/images.h"
+#include <rc.h>
+#include <resources/images.h>
 
 namespace pizda {
 	FlapsAndSpoilersIndicator::FlapsAndSpoilersIndicator() {

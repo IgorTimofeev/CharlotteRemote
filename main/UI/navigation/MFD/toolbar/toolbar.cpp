@@ -1,6 +1,6 @@
 #include "toolbar.h"
 
-#include "../../../theme.h"
+#include <UI/theme.h>
 
 namespace pizda {
 	Toolbar::Toolbar() {

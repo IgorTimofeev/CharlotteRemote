@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../MFD/MFDMenuView.h"
-#include "../nav/navMenuView.h"
-#include "../settings/settingsMenuView.h"
+#include <UI/navigation/MFD/MFDMenuView.h>
+#include <UI/navigation/nav/navMenuView.h>
+#include <UI/navigation/settings/settingsMenuView.h>
 
 namespace pizda {
 	class MenuRoutes {

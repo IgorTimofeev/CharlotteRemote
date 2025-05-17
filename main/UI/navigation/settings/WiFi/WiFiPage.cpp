@@ -1,11 +1,11 @@
 #include "WiFiSettingsPage.h"
 
-#include "../../../theme.h"
-#include "../../../../constants.h"
-#include "../../../../hardware/WiFi/WiFi.h"
-//#include "../../../../hardware/OTA.h"
-#include "../../../../rc.h"
-#include "../../../elements/dialogs/progressDialog.h"
+#include <UI/theme.h>
+#include <constants.h>
+#include <hardware/WiFi/WiFi.h>
+//#include <hardware/OTA.h>
+#include <rc.h>
+#include <UI/elements/dialogs/progressDialog.h>
 
 namespace pizda {
 	WiFiSettingsPage::WiFiSettingsPage() {

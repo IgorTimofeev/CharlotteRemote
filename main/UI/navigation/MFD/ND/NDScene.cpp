@@ -1,6 +1,6 @@
 #include "NDScene.h"
 
-#include "../../../../rc.h"
+#include <rc.h>
 
 #include <numbers>
 #include <format>
@@ -11,8 +11,6 @@
 
 namespace pizda {
 	NDScene::NDScene() {
-		auto& rc = RC::getInstance();
-
 		setClipToBounds(true);
 		setFOV(toRadians(90));
 
@@ -314,8 +312,8 @@ namespace pizda {
 		if (event->getTypeID() == TouchDownEvent::typeID) {
 			const auto touchDownEvent = static_cast<TouchDownEvent*>(event);
 
-			focus();
-			capture();
+			setFocused(true);
+			setCaptured(true);
 
 			_touchDownPosition = touchDownEvent->getPosition();
 			_cursorPosition = touchDownEvent->getPosition() - getBounds().getPosition();
@@ -367,7 +365,7 @@ namespace pizda {
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == TouchUpEvent::typeID) {
-			removeCapture();
+			setCaptured(false);
 
 			event->setHandled(true);
 		}
@@ -531,7 +529,9 @@ namespace pizda {
 
 		// Airports
 		for (const auto& airport : nd.airports) {
-			addElement(new WaypointElement(&airport));
+			// addElement(new WaypointElement(airport.waypointData));
+
+			ESP_LOGI("ND scene", "AP address: %p", airport.waypointData);
 
 			// Runways
 			for (const auto& runway : airport.runways) {
@@ -539,69 +539,22 @@ namespace pizda {
 			}
 		}
 
-		// RNAV waypoints
 		for (const auto& waypoint : nd.RNAVWaypoints) {
+			ESP_LOGI("ND scene", "RNAV address: %p", waypoint.waypointData);
+
+			addElement(new WaypointElement(waypoint.waypointData));
+		}
+
+		// Waypoints
+		for (const auto& waypoint : nd.waypoints) {
+			ESP_LOGI("ND scene 2222", "wp address: %p", &waypoint);
+
 			addElement(new WaypointElement(&waypoint));
 		}
 
 		// Aircraft
 		_aircraftElement = new AircraftElement();
 		addElement(_aircraftElement);
-	}
-
-	void NDScene::renderWaypointStar(Renderer* renderer, const NavigationWaypointData* waypointData, const Point& center, const Color* color) {
-		renderer->renderRectangle(
-			Bounds(
-				center.getX() - 1,
-				center.getY() - 1,
-				3,
-				3
-			),
-			color
-		);
-
-		renderer->renderHorizontalLine(
-			Point(
-				center.getX() - 3,
-				center.getY()
-			),
-			2,
-			color
-		);
-
-		renderer->renderHorizontalLine(
-			Point(
-				center.getX() + 2,
-				center.getY()
-			),
-			2,
-			color
-		);
-
-		renderer->renderVerticalLine(
-			Point(
-				center.getX(),
-				center.getY() - 3
-			),
-			2,
-			color
-		);
-
-		renderer->renderVerticalLine(
-			Point(
-				center.getX(),
-				center.getY() + 2
-			),
-			2,
-			color
-		);
-
-		renderer->renderString(
-			Point(center.getX() + 7, center.getY() - 7),
-			&Theme::fontSmall,
-			color,
-			waypointData->name
-		);
 	}
 
 	bool NDScene::isCursorVisible() const {

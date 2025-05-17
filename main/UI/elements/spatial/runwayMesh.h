@@ -7,9 +7,9 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
-#include "../../../rc.h"
-#include "../../../settings/settings.h"
-#include "../../../types/navigationData.h"
+#include <rc.h>
+#include <settings/settings.h>
+#include <types/navigationData.h>
 
 namespace pizda {
 	using namespace YOBA;

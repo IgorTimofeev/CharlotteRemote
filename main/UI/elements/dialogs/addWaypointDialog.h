@@ -2,9 +2,9 @@
 
 #include <esp_log.h>
 #include "cancelConfirmDialog.h"
-#include "../../theme.h"
-#include "../../elements/titler.h"
-#include "../../../types/navigationData.h"
+#include <UI/theme.h>
+#include <UI/elements/titler.h>
+#include <types/navigationData.h>
 
 namespace pizda {
 	using namespace YOBA;
@@ -73,11 +73,11 @@ namespace pizda {
 
 						auto& nd = RC::getInstance().getNavigationData();
 
-						nd.RNAVWaypoints.push_back(NavigationRNAVWaypointData(
+						nd.addRNAVWaypoint(
 							NavigationWaypointType::enroute,
 							name.getText(),
 							GeographicCoordinates(latitudeRad, longitudeRad, 0)
-						));
+						);
 
 						_onConfirm();
 

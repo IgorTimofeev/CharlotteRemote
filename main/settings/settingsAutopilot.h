@@ -6,8 +6,8 @@
 #include <memory>
 #include <cstring>
 
-#include "../hardware/NVS/NVSStream.h"
-#include "../hardware/NVS/NVSSerializable.h"
+#include <hardware/NVS/NVSStream.h>
+#include <hardware/NVS/NVSSerializable.h>
 
 namespace pizda {
 	class SettingsAutopilot : public NVSSerializable {

@@ -4,7 +4,7 @@
 #include <YOBA/UI.h>
 
 #include "menuViewButton.h"
-#include "../route.h"
+#include <UI/navigation/route.h>
 
 namespace pizda {
 	using namespace YOBA;

@@ -6,7 +6,7 @@
 #include "esp_netif.h"
 #include <esp_timer.h>
 #include "esp_log.h"
-#include "../../constants.h"
+#include <constants.h>
 
 namespace pizda {
 	enum class TCPState : uint8_t {

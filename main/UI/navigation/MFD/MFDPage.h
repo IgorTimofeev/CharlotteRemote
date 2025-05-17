@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "../page.h"
+#include <UI/navigation/page.h>
 
 #include "PFD/PFD.h"
 #include "ND/ND.h"

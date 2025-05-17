@@ -3,10 +3,10 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "../menu/pagesMenuView.h"
-#include "../menu/pageMenuViewButton.h"
-#include "../routes.h"
-#include "../../../resources/images.h"
+#include <UI/navigation/menu/pagesMenuView.h>
+#include <UI/navigation/menu/pageMenuViewButton.h>
+#include <UI/navigation/routes.h>
+#include <resources/images.h>
 
 namespace pizda {
 	using namespace YOBA;
@@ -20,12 +20,12 @@ namespace pizda {
 		private:
 			static const Route* _lastRoute;
 
-			PageMenuViewButton _pageButtons[5] {
-				{ &resources::Images::menuIconMFD, L"MFD", &Routes::settingsMFD },
-				{ &resources::Images::menuIconPersonalization, L"Prsnl", &Routes::settingsPersonalization },
-				{ &resources::Images::menuIconAxis, L"Axis", &Routes::settingsAxis },
-				{ &resources::Images::menuIconWiFi, L"Wi-Fi", &Routes::settingsWiFi },
-				{ &resources::Images::menuIconDev, L"Dev", &Routes::settingsDeveloper },
+			std::array<PageMenuViewButton, 5> _pageButtons {
+				PageMenuViewButton(&resources::Images::menuIconMFD, L"MFD", &Routes::settingsMFD),
+				PageMenuViewButton(&resources::Images::menuIconPersonalization, L"Prsnl", &Routes::settingsPersonalization),
+				PageMenuViewButton(&resources::Images::menuIconAxis, L"Axis", &Routes::settingsAxis),
+				PageMenuViewButton(&resources::Images::menuIconWiFi, L"Wi-Fi", &Routes::settingsWiFi),
+				PageMenuViewButton(&resources::Images::menuIconDev, L"Dev", &Routes::settingsDeveloper),
 			};
 
 			MenuViewButton _powerButton = { &resources::Images::menuIconPower, L"Reboot" };

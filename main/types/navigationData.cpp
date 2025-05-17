@@ -1,6 +1,6 @@
 #include "navigationData.h"
 
-#include "../rc.h"
+#include <rc.h>
 
 namespace pizda {
 	NavigationWaypointData::NavigationWaypointData(
@@ -9,10 +9,11 @@ namespace pizda {
 		const GeographicCoordinates& coordinates
 	) :
 		type(type),
+		name(name),
 		geographicCoordinates(coordinates),
 		cartesianCoordinates(coordinates.toCartesian())
 	{
-		std::ranges::copy(name, this->name);
+
 	}
 
 	NavigationRunwayData::NavigationRunwayData(
@@ -77,9 +78,46 @@ namespace pizda {
 		cartesianCoordinates[1] = this->to->cartesianCoordinates;
 	}
 
+	void NavigationData::addAirport(
+		std::wstring_view name,
+		const GeographicCoordinates& coordinates,
+		std::initializer_list<NavigationRunwayData> runways
+	) {
+		waypoints.push_back(NavigationWaypointData(
+			NavigationWaypointType::airport,
+			name,
+			coordinates
+		));
+
+		ESP_LOGI("nav data", "AP address: %p", &waypoints[waypoints.size() - 1]);
+
+		airports.push_back(NavigationAirportData(
+			&waypoints[waypoints.size() - 1],
+			runways
+		));
+	}
+
+	void NavigationData::addRNAVWaypoint(
+		NavigationWaypointType type,
+		std::wstring_view name,
+		const GeographicCoordinates& coordinates
+	) {
+		waypoints.push_back(NavigationWaypointData(
+			type,
+			name,
+			coordinates
+		));
+
+		ESP_LOGI("nav data", "RNAV address: %p",&waypoints[waypoints.size() - 1]);
+
+		RNAVWaypoints.push_back(NavigationRNAVWaypointData(
+			&waypoints[waypoints.size() - 1]
+		));
+	}
+
 	void NavigationData::fillWithTemplateData() {
 		// Kronshtadt
-		airports.push_back(NavigationAirportData(
+		addAirport(
 			L"ULLY",
 			GeographicCoordinates(toRadians(60.014568277272f), toRadians(29.702727704862f), 0),
 			{
@@ -92,47 +130,47 @@ namespace pizda {
 					30
 				)
 			}
-		));
+		);
 
 		// RNAV waypoints
-		RNAVWaypoints.push_back(NavigationRNAVWaypointData(
+		addRNAVWaypoint(
 			NavigationWaypointType::enroute,
 			L"OMEGA",
 			GeographicCoordinates(toRadians(59.983333f), toRadians(30.133333f), 0)
-		));
+		);
 
-		RNAVWaypoints.push_back(NavigationRNAVWaypointData(
+		addRNAVWaypoint(
 			NavigationWaypointType::enroute,
 			L"ABREL",
 			GeographicCoordinates(toRadians(59.913056f), toRadians(31.335f), 0)
-		));
+		);
 
-		RNAVWaypoints.push_back(NavigationRNAVWaypointData(
+		addRNAVWaypoint(
 			NavigationWaypointType::enroute,
 			L"SAPKI",
 			GeographicCoordinates(toRadians(59.604722f), toRadians(31.180833f), 0)
-		));
+		);
 
-		RNAVWaypoints.push_back(NavigationRNAVWaypointData(
+		addRNAVWaypoint(
 			NavigationWaypointType::terminal,
 			L"LI754",
 			GeographicCoordinates(toRadians(59.516944f), toRadians(31.0225f), 0)
-		));
+		);
 
-		RNAVWaypoints.push_back(NavigationRNAVWaypointData(
+		addRNAVWaypoint(
 			NavigationWaypointType::terminal,
 			L"OBARI",
 			GeographicCoordinates(toRadians(59.599722f), toRadians(30.679167f), 0)
-		));
+		);
 
-		RNAVWaypoints.push_back(NavigationRNAVWaypointData(
+		addRNAVWaypoint(
 			NavigationWaypointType::terminal,
 			L"BIPRI",
 			GeographicCoordinates(toRadians(59.747778f), toRadians(30.565556f), 0)
-		));
+		);
 
 		// Pulkovo
-		airports.push_back(NavigationAirportData(
+		addAirport(
 			L"ULLI",
 			GeographicCoordinates(toRadians(59.800278f), toRadians(30.2625f), 0),
 			{
@@ -153,19 +191,15 @@ namespace pizda {
 					60
 				)
 			}
-		));
+		);
 
 		// Flight plan
 		flightPlan.departure = NavigationDataFlightPlanAirport(&airports[0], 0);
 		flightPlan.arrival = NavigationDataFlightPlanAirport(&airports[1], 0);
 
 		// Route
-		flightPlan.routes.push_back(NavigationDataFlightPlanRoute(flightPlan.departure.value().airport, &RNAVWaypoints[0]));
-
-		for (uint8_t i = 0; i < RNAVWaypoints.size() - 1; i++) {
-			flightPlan.routes.push_back(NavigationDataFlightPlanRoute(&RNAVWaypoints[i], &RNAVWaypoints[i + 1]));
+		for (uint8_t i = 0; i < waypoints.size() - 1; i++) {
+			flightPlan.routes.push_back(NavigationDataFlightPlanRoute(&waypoints[i], &waypoints[i + 1]));
 		}
-
-		flightPlan.routes.push_back(NavigationDataFlightPlanRoute(&RNAVWaypoints[RNAVWaypoints.size() - 1], flightPlan.arrival.value().airport));
 	}
 }

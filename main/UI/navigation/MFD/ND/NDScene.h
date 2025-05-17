@@ -4,9 +4,9 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
-#include "../../../../types/navigationData.h"
-#include "../../../../settings/settings.h"
-#include "../../../theme.h"
+#include <types/navigationData.h>
+#include <settings/settings.h>
+#include <UI/theme.h>
 #include "aircraft.h"
 
 namespace pizda {
@@ -28,8 +28,6 @@ namespace pizda {
 			bool isCameraShiftedLaterally() const;
 			void deleteSceneElements();
 			void createSceneElementsFromNavigationData();
-
-			static void renderWaypointStar(Renderer* renderer, const NavigationWaypointData* waypointData, const Point& center, const Color* color);
 
 		protected:
 			void onTick() override;

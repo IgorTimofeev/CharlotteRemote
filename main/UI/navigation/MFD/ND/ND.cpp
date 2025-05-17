@@ -1,6 +1,6 @@
 #include "ND.h"
-#include "../../../../rc.h"
-#include "../../../elements/dialogs/addWaypointDialog.h"
+#include <rc.h>
+#include <UI/elements/dialogs/addWaypointDialog.h>
 
 namespace pizda {
 	ND::ND() {
@@ -23,19 +23,18 @@ namespace pizda {
 				nextMode = 0;
 
 			settings.interface.MFD.ND.mode = static_cast<SettingsInterfaceMFDNDMode>(nextMode);
-
 			settings.interface.scheduleWrite();
 
 			updateViewModeButtonText();
 
-			_scene.focus();
+			_scene.setFocused(true);
 		});
 
 		_latLongButton.setText(L"RST");
 
 		addGovnoButton(&_latLongButton, [this] {
 			_scene.resetCameraLateralOffset();
-			_scene.focus();
+			_scene.setFocused(true);
 		});
 
 		_waypointButton.setText(L"+");
@@ -44,7 +43,7 @@ namespace pizda {
 			WaypointDialog::create(_scene.getCameraCoordinates(), [this] {
 				_scene.deleteSceneElements();
 				_scene.createSceneElementsFromNavigationData();
-				_scene.focus();
+				_scene.setFocused(true);
 			});
 		});
 	}

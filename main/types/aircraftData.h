@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include "YOBA/main.h"
+#include <YOBA/main.h>
 
 namespace pizda {
 	using namespace YOBA;

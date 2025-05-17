@@ -3,9 +3,9 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "../menu/menuView.h"
-#include "../menu/menuViewButton.h"
-#include "../../../resources/images.h"
+#include <UI/navigation/menu/menuView.h>
+#include <UI/navigation/menu/menuViewButton.h>
+#include <resources/images.h>
 
 namespace pizda {
 	using namespace YOBA;

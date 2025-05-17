@@ -1,7 +1,7 @@
 #include "TCPTransceiver.h"
 #include <esp_timer.h>
-#include "../../rc.h"
-#include "../../resources/sounds.h"
+#include <rc.h>
+#include <resources/sounds.h>
 
 namespace pizda {
 	void TCPTransceiver::setup() {

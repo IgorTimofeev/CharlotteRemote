@@ -3,8 +3,8 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "../../page.h"
-#include "../../../elements/titler.h"
+#include <UI/navigation/page.h>
+#include <UI/elements/titler.h>
 
 namespace pizda {
 	using namespace YOBA;

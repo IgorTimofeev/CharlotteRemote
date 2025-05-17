@@ -1,5 +1,6 @@
-#include "../WiFi/WiFi.h"
-#include "../../constants.h"
+#include "WiFi.h"
+
+#include <constants.h>
 
 namespace pizda {
 	TaskHandle_t* WiFi::_task = nullptr;

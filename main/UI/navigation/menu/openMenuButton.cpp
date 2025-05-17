@@ -1,7 +1,7 @@
 #include "openMenuButton.h"
 
-#include "../../theme.h"
-#include "../../../rc.h"
+#include <UI/theme.h>
+#include <rc.h>
 
 namespace pizda {
 	void OpenMenuButton::onClick() {

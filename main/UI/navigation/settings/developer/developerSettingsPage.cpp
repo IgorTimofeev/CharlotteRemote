@@ -1,6 +1,6 @@
 #include "developerSettingsPage.h"
-#include "../../../theme.h"
-#include "../../../../rc.h"
+#include <UI/theme.h>
+#include <rc.h>
 
 namespace pizda {
 	DeveloperSettingsPage::DeveloperSettingsPage() {

@@ -1,8 +1,8 @@
 #include "throttleIndicator.h"
 
 #include <format>
-#include "../../../../theme.h"
-#include "../../../../../rc.h"
+#include <UI/theme.h>
+#include <rc.h>
 
 namespace pizda {
 	void ThrottleIndicator::onRender(Renderer* renderer) {

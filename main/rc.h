@@ -5,27 +5,29 @@
 #include <YOBA/hardware/displays/ILI9341Display.h>
 #include <YOBA/hardware/touchPanels/FT6336UTouchPanel.h>
 
-#include "UI/theme.h"
-#include "UI/navigation/route.h"
-#include "UI/navigation/menu/menu.h"
-#include "UI/navigation/menu/openMenuButton.h"
-#include "UI/elements/debugOverlay.h"
+#include <UI/theme.h>
+#include <UI/navigation/route.h>
+#include <UI/navigation/menu/menu.h>
+#include <UI/navigation/menu/openMenuButton.h>
+#include <UI/elements/debugOverlay.h>
 
-#include "settings/settings.h"
-#include "constants.h"
+#include <settings/settings.h>
+#include <constants.h>
 
-#include "hardware/WiFi/WiFi.h"
-#include "hardware/transceiver/packet.h"
-#include "hardware/transceiver/TCPTransceiver.h"
-#include "hardware/speaker.h"
-#include "hardware/axis.h"
-#include "hardware/battery.h"
-#include "hardware/encoder.h"
+#include <hardware/WiFi/WiFi.h>
+#include <hardware/transceiver/packet.h>
+#include <hardware/transceiver/TCPTransceiver.h>
+#include <hardware/speaker/speaker.h>
+#include <hardware/axis.h>
+#include <hardware/battery.h>
+#include <hardware/encoder.h>
 
-#include "types/units.h"
-#include "types/lowPassFilter.h"
-#include "types/aircraftData.h"
-#include "types/navigationData.h"
+#include <types/units.h>
+#include <types/aircraftData.h>
+#include <types/navigationData.h>
+
+#include <utils/lowPassFilter.h>
+
 
 namespace pizda {
 	using namespace YOBA;

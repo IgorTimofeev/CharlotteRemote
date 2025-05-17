@@ -1,7 +1,7 @@
 #include "axisEditor.h"
 
-#include "../../../theme.h"
-#include "../../../../rc.h"
+#include <UI/theme.h>
+#include <rc.h>
 
 namespace pizda {
 	void AxisEditorTrack::onRender(Renderer* renderer) {
@@ -133,7 +133,7 @@ namespace pizda {
 
 			_selectedPin = std::abs(touchValue - editor->getAxis()->getSettings()->to) <= std::abs(touchValue - editor->getAxis()->getSettings()->from) ? SelectedPin::to : SelectedPin::from;
 
-			capture();
+			setCaptured(true);
 		}
 		else if (isTouchDrag) {
 			const auto touchDragEvent = static_cast<TouchDragEvent*>(event);
@@ -160,7 +160,7 @@ namespace pizda {
 
 			RC::getInstance().getSettings().axis.scheduleWrite();
 
-			removeCapture();
+			setCaptured(false);
 		}
 
 		event->setHandled(true);

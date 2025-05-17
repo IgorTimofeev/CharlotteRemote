@@ -1,9 +1,9 @@
 #include "PFD.h"
 #include <numbers>
 
-#include "../../../../rc.h"
-#include "../../../../types/units.h"
-#include "../../../elements/spatial/runwayMesh.h"
+#include <rc.h>
+#include <types/units.h>
+#include <UI/elements/spatial/runwayMesh.h>
 
 namespace pizda {
 	PFDScene::PFDScene() {

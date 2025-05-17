@@ -2,13 +2,13 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
-#include "../../../../theme.h"
+#include <UI/theme.h>
 
-#include "../toolbar.h"
-#include "../instrumentIndicatorLayout.h"
+#include <UI/navigation/MFD/toolbar/toolbar.h>
+#include <UI/navigation/MFD/toolbar/instrumentIndicatorLayout.h>
 
-#include "../../rotaryControl.h"
-#include "../../korryButton.h"
+#include <UI/navigation/MFD/rotaryControl.h>
+#include <UI/navigation/MFD/korryButton.h>
 
 namespace pizda {
 	using namespace YOBA;

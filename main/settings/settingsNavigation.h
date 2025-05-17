@@ -9,9 +9,9 @@
 
 #include <YOBA/main.h>
 
-#include "../types/navigationData.h"
-#include "../hardware/NVS/NVSStream.h"
-#include "../hardware/NVS/NVSSerializable.h"
+#include <types/navigationData.h>
+#include <hardware/NVS/NVSStream.h>
+#include <hardware/NVS/NVSSerializable.h>
 
 namespace pizda {
 	using namespace YOBA;

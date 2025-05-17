@@ -1,9 +1,9 @@
 #include "MFDSettingsPage.h"
 
 #include <format>
-#include "../../../theme.h"
-#include "../../../../constants.h"
-#include "../../../../rc.h"
+#include <UI/theme.h>
+#include <constants.h>
+#include <rc.h>
 
 namespace pizda {
 	MFDSettingsPage::MFDSettingsPage() {

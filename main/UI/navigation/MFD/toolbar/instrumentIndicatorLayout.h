@@ -3,7 +3,7 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "../../../theme.h"
+#include <UI/theme.h>
 
 #include "toolbar.h"
 
@@ -57,7 +57,7 @@ namespace pizda {
 				Layout::onEvent(event);
 
 				if (event->getTypeID() == TouchDownEvent::typeID) {
-					focus();
+					setFocused(true);
 				}
 			}
 

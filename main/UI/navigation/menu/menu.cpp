@@ -1,6 +1,6 @@
 #include "menu.h"
-#include "../../../rc.h"
-#include "../MFD/MFDPage.h"
+#include <rc.h>
+#include <UI/navigation/MFD/MFDPage.h>
 
 namespace pizda {
 	MenuOverlayBackground::MenuOverlayBackground() {

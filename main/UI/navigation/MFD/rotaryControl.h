@@ -3,8 +3,8 @@
 #include <esp_log.h>
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
-#include "../../theme.h"
-#include "../../../hardware/encoder.h"
+#include <UI/theme.h>
+#include <hardware/encoder.h>
 
 namespace pizda {
 	using namespace YOBA;
@@ -82,7 +82,7 @@ namespace pizda {
 				Layout::onEvent(event);
 
 				if (event->getTypeID() == TouchDownEvent::typeID) {
-					focus();
+					setFocused(true);
 				}
 				else if (event->getTypeID() == EncoderRotateEvent::typeID) {
 					if (!isFocused())

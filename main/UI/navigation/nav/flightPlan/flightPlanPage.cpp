@@ -1,6 +1,6 @@
 #include "flightPlanPage.h"
 
-#include "../../../../rc.h"
+#include <rc.h>
 
 #include <numbers>
 #include <format>
@@ -24,9 +24,6 @@ namespace pizda {
 
 	FlightPlanPage::FlightPlanPage() {
 		title.setText(L"Flight plan");
-
-		rows.setMargin(Margin(8));
-		rows.setSpacing(5);
 
 		for (auto& button : _buttons) {
 			rows += &button;

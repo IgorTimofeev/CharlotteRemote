@@ -5,8 +5,8 @@
 #include "esp_err.h"
 #include "vector"
 
-#include "../audio/sound.h"
-#include "../constants.h"
+#include <constants.h>
+#include "sound.h"
 
 namespace pizda {
 	class Speaker {

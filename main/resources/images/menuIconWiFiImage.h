@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "YOBA/main.h"
+#include <YOBA/main.h>
 
 namespace pizda {
 	using namespace YOBA;

@@ -19,7 +19,7 @@
 #include <functional>
 
 #include "WiFi.h"
-#include "../constants.h"
+#include <constants.h>
 
 namespace pizda {
 	class OTA {

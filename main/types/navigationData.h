@@ -23,20 +23,22 @@ namespace pizda {
 			);
 
 			NavigationWaypointType type;
+			std::wstring name {};
 			GeographicCoordinates geographicCoordinates {};
-			wchar_t name[16] {};
 			Vector3F cartesianCoordinates;
 	};
 
-	class NavigationRNAVWaypointData : public NavigationWaypointData {
+	class NavigationRNAVWaypointData {
 		public:
 			NavigationRNAVWaypointData() = default;
 
-			NavigationRNAVWaypointData(NavigationWaypointType type, const std::wstring_view& name, const GeographicCoordinates& coordinates) :
-				NavigationWaypointData(type, name, coordinates)
+			explicit NavigationRNAVWaypointData(const NavigationWaypointData* waypointData) :
+				waypointData(waypointData)
 			{
 
 			}
+
+			const NavigationWaypointData* waypointData;
 	};
 
 	enum class NavigationRunwayDataAlignment : uint8_t {
@@ -67,15 +69,16 @@ namespace pizda {
 			Vector3F cornerToVertex(const Vector2F& corner) const;
 	};
 
-	class NavigationAirportData : public NavigationWaypointData {
+	class NavigationAirportData {
 		public:
-			NavigationAirportData(const std::wstring_view& name, const GeographicCoordinates& coordinates, std::initializer_list<NavigationRunwayData> runways) :
-				NavigationWaypointData(NavigationWaypointType::airport, name, coordinates),
+			NavigationAirportData(const NavigationWaypointData* waypointData, std::initializer_list<NavigationRunwayData> runways) :
+				waypointData(waypointData),
 				runways(runways)
 			{
 
 			}
 
+			const NavigationWaypointData* waypointData;
 			std::vector<NavigationRunwayData> runways {};
 	};
 
@@ -113,6 +116,7 @@ namespace pizda {
 
 	class NavigationData {
 		public:
+			std::vector<NavigationWaypointData> waypoints {};
 			std::vector<NavigationRNAVWaypointData> RNAVWaypoints {};
 			std::vector<NavigationAirportData> airports {};
 			NavigationDataFlightPlan flightPlan {};
@@ -136,6 +140,8 @@ namespace pizda {
 			// 	return waypoints.size() - 1;
 			// }
 
+			void addAirport(std::wstring_view name, const GeographicCoordinates& coordinates, std::initializer_list<NavigationRunwayData> runways);
+			void addRNAVWaypoint(NavigationWaypointType type, std::wstring_view name, const GeographicCoordinates& coordinates);
 			void fillWithTemplateData();
 	};
 }
