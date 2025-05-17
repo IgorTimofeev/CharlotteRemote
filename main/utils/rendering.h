@@ -9,8 +9,8 @@ namespace pizda {
 
 	class RenderingUtils {
 		public:
-			static void renderWaypoint(Renderer* renderer, const Point& center, const Color* color, const NavigationWaypointData* waypointData) {
-				switch (waypointData->type) {
+			static void renderWaypoint(Renderer* renderer, const Point& center, const Color* color, const NavigationWaypointData& waypointData) {
+				switch (waypointData.type) {
 					case NavigationWaypointType::enroute: {
 						renderer->renderRectangle(
 							Bounds(

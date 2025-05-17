@@ -92,7 +92,7 @@ namespace pizda {
 		ESP_LOGI("nav data", "AP address: %p", &waypoints[waypoints.size() - 1]);
 
 		airports.push_back(NavigationAirportData(
-			&waypoints[waypoints.size() - 1],
+			waypoints.size() - 1,
 			runways
 		));
 	}
@@ -108,10 +108,8 @@ namespace pizda {
 			coordinates
 		));
 
-		ESP_LOGI("nav data", "RNAV address: %p",&waypoints[waypoints.size() - 1]);
-
 		RNAVWaypoints.push_back(NavigationRNAVWaypointData(
-			&waypoints[waypoints.size() - 1]
+			waypoints.size() - 1
 		));
 	}
 

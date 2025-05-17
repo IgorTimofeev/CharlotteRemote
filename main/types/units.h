@@ -15,7 +15,8 @@ namespace pizda {
 
 	enum class DistanceUnit : uint8_t {
 		meter,
-		foot
+		foot,
+		nauticalMile
 	};
 
 	enum class PressureUnit : uint8_t {
@@ -48,12 +49,21 @@ namespace pizda {
 					case DistanceUnit::meter: {
 						switch (toUnit) {
 							case DistanceUnit::meter: return value;
-							default: return value / 0.3048f;
+							case DistanceUnit::foot: return value / 0.3048f;
+							default: return value / 1852.f;
+						}
+					}
+					case DistanceUnit::foot: {
+						switch (toUnit) {
+							case DistanceUnit::meter: return value * 0.3048f;
+							case DistanceUnit::foot: return value;
+							default: return value / 6076.f;
 						}
 					}
 					default: {
 						switch (toUnit) {
-							case DistanceUnit::meter: return value * 0.3048f;
+							case DistanceUnit::meter: return value * 1852.f;
+							case DistanceUnit::foot: return value * 6076.f;
 							default: return value;
 						}
 					}

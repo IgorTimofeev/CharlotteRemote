@@ -9,7 +9,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class WaypointDialog : public CancelConfirmDialog {
+	class AddWaypointDialog : public CancelConfirmDialog {
 		public:
 			TextField name {};
 			Titler nameTitle = { L"Name", &name };
@@ -23,14 +23,14 @@ namespace pizda {
 			Titler longitudeTitle = { L"Longitude", &longitude };
 
 			static void create(const GeographicCoordinates& coordinates, const std::function<void()>& onConfirm) {
-				const auto dialog = new WaypointDialog(coordinates, onConfirm);
+				const auto dialog = new AddWaypointDialog(coordinates, onConfirm);
 				dialog->show();
 			}
 
 		private:
 			std::function<void()> _onConfirm;
 
-			explicit WaypointDialog(const GeographicCoordinates& coordinates, const std::function<void()>& onConfirm) : _onConfirm(onConfirm) {
+			explicit AddWaypointDialog(const GeographicCoordinates& coordinates, const std::function<void()>& onConfirm) : _onConfirm(onConfirm) {
 				title.setText(L"Create waypoint");
 
 				// Name

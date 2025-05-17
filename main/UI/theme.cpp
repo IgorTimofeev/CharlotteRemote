@@ -131,10 +131,23 @@ namespace pizda {
 		button->setHeight(elementHeight);
 		button->setCornerRadius(cornerRadius);
 
-		button->setDefaultBorderColor(&Theme::fg4);
-		button->setDefaultTextColor(&Theme::fg4);
+		button->setDefaultBackgroundColor(&Theme::bg3);
+		button->setDefaultTextColor(&Theme::fg3);
 
-		button->setActiveBorderColor(&Theme::fg1);
+		button->setActiveBackgroundColor(&Theme::bg5);
+		button->setActiveTextColor(&Theme::fg1);
+
+		button->setFont(&Theme::fontNormal);
+	}
+
+	void Theme::applyCritical(Button* button) {
+		button->setHeight(elementHeight);
+		button->setCornerRadius(cornerRadius);
+
+		button->setDefaultBackgroundColor(&Theme::bad2);
+		button->setDefaultTextColor(&Theme::fg1);
+
+		button->setActiveBackgroundColor(&Theme::bad1);
 		button->setActiveTextColor(&Theme::fg1);
 
 		button->setFont(&Theme::fontNormal);
@@ -198,7 +211,7 @@ namespace pizda {
 			keyboard->setFont(&Theme::fontNormal);
 			keyboard->setBackgroundColor(&Theme::bg2);
 
-			keyboard->setKeyHeight(26);
+			keyboard->setKeyHeight(24);
 			keyboard->setKeyCornerRadius(0);
 
 			keyboard->setHorizontalKeySpacing(1);

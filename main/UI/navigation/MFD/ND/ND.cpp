@@ -40,7 +40,7 @@ namespace pizda {
 		_waypointButton.setText(L"+");
 
 		addGovnoButton(&_waypointButton, [this] {
-			WaypointDialog::create(_scene.getCameraCoordinates(), [this] {
+			AddWaypointDialog::create(_scene.getCameraCoordinates(), [this] {
 				_scene.deleteSceneElements();
 				_scene.createSceneElementsFromNavigationData();
 				_scene.setFocused(true);

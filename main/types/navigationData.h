@@ -28,17 +28,26 @@ namespace pizda {
 			Vector3F cartesianCoordinates;
 	};
 
-	class NavigationRNAVWaypointData {
+	class NavigationWaypointDataIndexAware {
 		public:
-			NavigationRNAVWaypointData() = default;
+			explicit NavigationWaypointDataIndexAware() = default;
 
-			explicit NavigationRNAVWaypointData(const NavigationWaypointData* waypointData) :
-				waypointData(waypointData)
-			{
+			explicit NavigationWaypointDataIndexAware(uint16_t waypointIndex) : waypointIndex(waypointIndex) {
 
 			}
 
-			const NavigationWaypointData* waypointData;
+			uint16_t waypointIndex;
+	};
+
+	class NavigationRNAVWaypointData : public NavigationWaypointDataIndexAware {
+		public:
+			NavigationRNAVWaypointData() = default;
+
+			explicit NavigationRNAVWaypointData(uint16_t waypointIndex) :
+				NavigationWaypointDataIndexAware(waypointIndex)
+			{
+
+			}
 	};
 
 	enum class NavigationRunwayDataAlignment : uint8_t {
@@ -69,16 +78,15 @@ namespace pizda {
 			Vector3F cornerToVertex(const Vector2F& corner) const;
 	};
 
-	class NavigationAirportData {
+	class NavigationAirportData : public NavigationWaypointDataIndexAware {
 		public:
-			NavigationAirportData(const NavigationWaypointData* waypointData, std::initializer_list<NavigationRunwayData> runways) :
-				waypointData(waypointData),
+			NavigationAirportData(uint16_t waypointIndex, std::initializer_list<NavigationRunwayData> runways) :
+				NavigationWaypointDataIndexAware(waypointIndex),
 				runways(runways)
 			{
 
 			}
 
-			const NavigationWaypointData* waypointData;
 			std::vector<NavigationRunwayData> runways {};
 	};
 

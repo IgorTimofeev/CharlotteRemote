@@ -13,13 +13,13 @@ namespace pizda {
 
 	class WaypointElement : public SceneElement {
 		public:
-			explicit WaypointElement(const NavigationWaypointData* waypointData);
+			explicit WaypointElement(uint16_t waypointIndex);
 
 			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* vertices) override;
 			const Vector3F* getVertices() override;
 			uint16_t getVertexCount() override;
 
 		private:
-			const NavigationWaypointData* _waypointData;
+			uint16_t waypointIndex;
 	};
 }

@@ -529,28 +529,22 @@ namespace pizda {
 
 		// Airports
 		for (const auto& airport : nd.airports) {
-			// addElement(new WaypointElement(airport.waypointData));
-
-			ESP_LOGI("ND scene", "AP address: %p", airport.waypointData);
-
 			// Runways
 			for (const auto& runway : airport.runways) {
 				addElement(new NDRunwayMesh(&runway, &Theme::fg1));
 			}
-		}
 
-		for (const auto& waypoint : nd.RNAVWaypoints) {
-			ESP_LOGI("ND scene", "RNAV address: %p", waypoint.waypointData);
-
-			addElement(new WaypointElement(waypoint.waypointData));
+			addElement(new WaypointElement(airport.waypointIndex));
 		}
 
 		// Waypoints
-		for (const auto& waypoint : nd.waypoints) {
-			ESP_LOGI("ND scene 2222", "wp address: %p", &waypoint);
-
-			addElement(new WaypointElement(&waypoint));
+		for (const auto& waypoint : nd.RNAVWaypoints) {
+			addElement(new WaypointElement(waypoint.waypointIndex));
 		}
+
+		// for (const auto& waypoint : nd.waypoints) {
+		// 	addElement(new WaypointElement(&waypoint));
+		// }
 
 		// Aircraft
 		_aircraftElement = new AircraftElement();

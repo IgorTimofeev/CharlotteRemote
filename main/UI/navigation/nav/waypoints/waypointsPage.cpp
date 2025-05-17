@@ -4,6 +4,7 @@
 #include <types/navigationData.h>
 #include <UI/theme.h>
 #include <utils/rendering.h>
+#include <utils/string.h>
 
 #include <format>
 #include <esp_log.h>
@@ -33,6 +34,8 @@ namespace pizda {
 	}
 
 	WaypointsPage::~WaypointsPage() {
+		deleteItems();
+
 		_instance = nullptr;
 	}
 
@@ -40,34 +43,37 @@ namespace pizda {
 		return _instance;
 	}
 
+	void WaypointsPage::deleteItems() {
+		for (const auto child : _waypointsRows) {
+			delete child;
+		}
+	}
+
 	void WaypointsPage::updateFromNavigationData() {
 		const auto& nd = RC::getInstance().getNavigationData();
 
 		// Removing
-		for (const auto child : _waypointsRows) {
-			delete child;
-		}
+		deleteItems();
 
 		_waypointsRows.removeChildren();
 
 		// Adding
-		for (const auto& waypoint : nd.waypoints) {
-			_waypointsRows += new WaypointItem(&waypoint);
+		for (uint16_t i = 0; i < nd.waypoints.size(); i++) {
+			_waypointsRows += new WaypointItem(i);
 		}
 	}
 
 	void WaypointsPage::search() {
-		auto text = std::wstring(_searchTextField.getText());
-
-		std::ranges::transform(text, text.begin(), ::towlower);
+		const auto& nd = RC::getInstance().getNavigationData();
+		const auto text = _searchTextField.getText();
 
 		for (const auto child : _waypointsRows) {
 			const auto waypointItem = dynamic_cast<WaypointItem*>(child);
 
-			std::wstring pizda = waypointItem->waypointData->name;
-			std::ranges::transform(pizda, pizda.begin(), ::towlower);
-
-			waypointItem->setVisible(text.length() == 0 || pizda.contains(text));
+			waypointItem->setVisible(
+				text.length() == 0
+				|| StringUtils::containsIgnoreCase(nd.waypoints[waypointItem->_waypointIndex].name, text)
+			);
 		}
 	}
 }

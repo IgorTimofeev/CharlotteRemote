@@ -12,6 +12,7 @@ namespace pizda {
 		public:
 			explicit WaypointsPage();
 			~WaypointsPage() override;
+			void deleteItems();
 
 			static const WaypointsPage* getInstance();
 
