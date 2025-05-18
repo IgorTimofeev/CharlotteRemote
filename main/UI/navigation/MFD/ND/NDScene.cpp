@@ -522,9 +522,60 @@ namespace pizda {
 		if (settings.interface.MFD.ND.earth)
 			addElement(new LinearSphere(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg3));
 
-		// Flight plan routes
-		for (const auto& route : nd.flightPlan.routes) {
-			addElement(new RouteElement(&route, &Theme::purple));
+		// Flight plan
+		{
+			uint16_t waypointFromIndex = 0;
+			uint16_t legIndex = 0;
+
+			// Origin
+			if (nd.flightPlan.origin.has_value()) {
+				const auto originWaypointIndex = nd.airports[nd.flightPlan.origin.value().airportIndex].waypointIndex;
+
+				if (nd.flightPlan.legs.size() > 0) {
+					const auto leg0WaypointIndex = nd.flightPlan.legs[0].waypointIndex;
+
+					// Origin -> leg 0
+					addElement(new RouteElement(
+						&nd.waypoints[originWaypointIndex],
+						&nd.waypoints[leg0WaypointIndex],
+						&Theme::red
+					));
+
+					waypointFromIndex = leg0WaypointIndex;
+					legIndex = 1;
+				}
+				else {
+					waypointFromIndex = originWaypointIndex;
+				}
+			}
+			else {
+				if (nd.flightPlan.legs.size() > 0) {
+					waypointFromIndex = nd.flightPlan.legs[0].waypointIndex;
+					legIndex = 1;
+				}
+			}
+
+			// Legs
+			for (; legIndex < nd.flightPlan.legs.size(); legIndex++) {
+				const auto& leg = nd.flightPlan.legs[legIndex];
+
+				addElement(new RouteElement(
+					&nd.waypoints[waypointFromIndex],
+					&nd.waypoints[leg.waypointIndex],
+					&Theme::purple
+				));
+
+				waypointFromIndex = leg.waypointIndex;
+			}
+
+			// Destination
+			if (nd.flightPlan.destination.has_value() && waypointFromIndex > 0) {
+				addElement(new RouteElement(
+					&nd.waypoints[waypointFromIndex],
+					&nd.waypoints[nd.airports[nd.flightPlan.destination.value().airportIndex].waypointIndex],
+					&Theme::yellow
+				));
+			}
 		}
 
 		// Airports

@@ -15,13 +15,13 @@ namespace pizda {
 	class WaypointItem : public Button {
 		public:
 			explicit WaypointItem(uint16_t waypointIndex);
+			uint16_t waypointIndex;
 
 		protected:
 			void onClick() override;
 			void onRender(Renderer* renderer) override;
 
 		private:
-			uint16_t _waypointIndex;
 			float _distanceNm;
 	};
 }

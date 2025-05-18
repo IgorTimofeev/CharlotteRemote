@@ -1,10 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <esp_timer.h>
-#include <esp_log.h>
-#include <memory>
-#include <cstring>
 
 #include <hardware/NVS/NVSStream.h>
 #include <hardware/NVS/NVSSerializable.h>
@@ -78,6 +74,7 @@ namespace pizda {
 
 				MFD.ND.visible = stream.getBool(_MFDNDVisible, true);
 				MFD.ND.mode = static_cast<SettingsInterfaceMFDNDMode>(stream.getUint8(_MFDNDMode, static_cast<uint8_t>(SettingsInterfaceMFDNDMode::arcHeadingUp)));
+
 				MFD.ND.earth = stream.getBool(_MFDNDEarth, true);
 
 				MFD.toolbar.mode = static_cast<SettingsInterfaceMFDToolbarMode>(stream.getUint8(_MFDToolbarMode, static_cast<uint8_t>(SettingsInterfaceMFDToolbarMode::main)));
@@ -93,10 +90,11 @@ namespace pizda {
 				stream.setBool(_MFDPFDFlightDirectors, MFD.PFD.flightDirectors);
 
 				stream.setBool(_MFDNDVisible, MFD.ND.visible);
-				stream.getUint8(_MFDNDMode, static_cast<uint8_t>(MFD.ND.mode));
+				stream.setUint8(_MFDNDMode, static_cast<uint8_t>(MFD.ND.mode));
+
 				stream.setBool(_MFDNDEarth, MFD.ND.earth);
 
-				stream.getUint8(_MFDToolbarMode, static_cast<uint8_t>(MFD.toolbar.mode));
+				stream.setUint8(_MFDToolbarMode, static_cast<uint8_t>(MFD.toolbar.mode));
 
 				stream.setUint8(_MFDSplitPercent, MFD.splitPercent);
 

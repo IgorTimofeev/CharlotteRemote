@@ -4,12 +4,17 @@
 #include <rc.h>
 
 namespace pizda {
-	RouteElement::RouteElement(const NavigationDataFlightPlanRoute* routeData, const Color* color) : _routeData(routeData), _color(color) {
-
+	RouteElement::RouteElement(const NavigationWaypointData* from, const NavigationWaypointData* to, const Color* color) :
+		_from(from),
+		_to(to),
+		_color(color)
+	{
+		_vertices[0] = from->cartesianCoordinates;
+		_vertices[1] = to->cartesianCoordinates;
 	}
 
 	const Vector3F* RouteElement::getVertices() {
-		return _routeData->cartesianCoordinates;
+		return _vertices;
 	}
 
 	uint16_t RouteElement::getVertexCount() {

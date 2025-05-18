@@ -13,14 +13,16 @@ namespace pizda {
 
 	class RouteElement : public SceneElement {
 		public:
-			RouteElement(const NavigationDataFlightPlanRoute* routeData, const Color* color);
+			RouteElement(const NavigationWaypointData* from, const NavigationWaypointData* to, const Color* color);
 
 			const Vector3F* getVertices() override;
 			uint16_t getVertexCount() override;
 			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* vertices) override;
 
 		private:
-			const NavigationDataFlightPlanRoute* _routeData;
+			const NavigationWaypointData* _from;
+			const NavigationWaypointData* _to;
+			Vector3F _vertices[2];
 			const Color* _color;
 	};
 }

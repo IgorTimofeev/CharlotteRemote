@@ -12,17 +12,18 @@ namespace pizda {
 		public:
 			explicit WaypointsPage();
 			~WaypointsPage() override;
-			void deleteItems();
 
-			static const WaypointsPage* getInstance();
+			static WaypointsPage* getInstance();
+
+			void updateFromNavigationData();
 
 		private:
-			static const WaypointsPage* _instance;
+			static WaypointsPage* _instance;
 
 			TextField _searchTextField {};
 			StackLayout _waypointsRows {};
 
-			void updateFromNavigationData();
+			void deleteItems();
 			void search();
 	};
 }

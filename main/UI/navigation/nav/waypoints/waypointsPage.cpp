@@ -12,7 +12,7 @@
 #include "waypointItem.h"
 
 namespace pizda {
-	const WaypointsPage* WaypointsPage::_instance = nullptr;
+	WaypointsPage* WaypointsPage::_instance = nullptr;
 
 	WaypointsPage::WaypointsPage() {
 		_instance = this;
@@ -39,12 +39,16 @@ namespace pizda {
 		_instance = nullptr;
 	}
 
-	const WaypointsPage* WaypointsPage::getInstance() {
+	WaypointsPage* WaypointsPage::getInstance() {
 		return _instance;
 	}
 
 	void WaypointsPage::deleteItems() {
-		for (const auto child : _waypointsRows) {
+		while (_waypointsRows.getChildrenCount() > 0) {
+			const auto index = _waypointsRows.getChildrenCount() - 1;
+			const auto child = _waypointsRows[index];
+
+			_waypointsRows.removeChildAt(index);
 			delete child;
 		}
 	}
@@ -52,15 +56,10 @@ namespace pizda {
 	void WaypointsPage::updateFromNavigationData() {
 		const auto& nd = RC::getInstance().getNavigationData();
 
-		// Removing
 		deleteItems();
 
-		_waypointsRows.removeChildren();
-
-		// Adding
-		for (uint16_t i = 0; i < nd.waypoints.size(); i++) {
+		for (uint16_t i = 0; i < nd.waypoints.size(); i++)
 			_waypointsRows += new WaypointItem(i);
-		}
 	}
 
 	void WaypointsPage::search() {
@@ -68,11 +67,11 @@ namespace pizda {
 		const auto text = _searchTextField.getText();
 
 		for (const auto child : _waypointsRows) {
-			const auto waypointItem = dynamic_cast<WaypointItem*>(child);
+			const auto waypointItem = reinterpret_cast<WaypointItem*>(child);
 
 			waypointItem->setVisible(
 				text.length() == 0
-				|| StringUtils::containsIgnoreCase(nd.waypoints[waypointItem->_waypointIndex].name, text)
+				|| StringUtils::containsIgnoreCase(nd.waypoints[waypointItem->waypointIndex].name, text)
 			);
 		}
 	}

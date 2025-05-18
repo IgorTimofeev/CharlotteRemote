@@ -1,5 +1,6 @@
 #include "navigationData.h"
 
+#include <esp_log.h>
 #include <rc.h>
 
 namespace pizda {
@@ -70,12 +71,10 @@ namespace pizda {
 		).toCartesian();
 	}
 
-	NavigationDataFlightPlanRoute::NavigationDataFlightPlanRoute(const NavigationWaypointData* from, const NavigationWaypointData* to) :
-		from(from),
-		to(to)
+	NavigationDataFlightPlanLeg::NavigationDataFlightPlanLeg(uint16_t waypointIndex):
+		NavigationWaypointDataIndexAware(waypointIndex)
 	{
-		cartesianCoordinates[0] = this->from->cartesianCoordinates;
-		cartesianCoordinates[1] = this->to->cartesianCoordinates;
+
 	}
 
 	void NavigationData::addAirport(
@@ -88,8 +87,6 @@ namespace pizda {
 			name,
 			coordinates
 		));
-
-		ESP_LOGI("nav data", "AP address: %p", &waypoints[waypoints.size() - 1]);
 
 		airports.push_back(NavigationAirportData(
 			waypoints.size() - 1,
@@ -192,12 +189,53 @@ namespace pizda {
 		);
 
 		// Flight plan
-		flightPlan.departure = NavigationDataFlightPlanAirport(&airports[0], 0);
-		flightPlan.arrival = NavigationDataFlightPlanAirport(&airports[1], 0);
+		flightPlan.origin = NavigationDataFlightPlanAirport(0, 0);
 
-		// Route
-		for (uint8_t i = 0; i < waypoints.size() - 1; i++) {
-			flightPlan.routes.push_back(NavigationDataFlightPlanRoute(&waypoints[i], &waypoints[i + 1]));
+		// Legs
+		for (uint8_t i = 1; i < waypoints.size() - 1; i++) {
+			flightPlan.legs.push_back(NavigationDataFlightPlanLeg(i));
 		}
+
+		flightPlan.destination = NavigationDataFlightPlanAirport(1, 0);
+	}
+
+	void NavigationData::removeWaypointAt(uint16_t waypointIndex) {
+		const auto& waypointData = waypoints[waypointIndex];
+
+		if (waypointData.type == NavigationWaypointType::airport) {
+			for (int32_t airportIndex = 0; airportIndex < airports.size(); airportIndex++) {
+				auto& airport = airports[airportIndex];
+
+				if (airport.waypointIndex == waypointIndex) {
+					if (flightPlan.origin.has_value() && flightPlan.origin.value().airportIndex == airportIndex) {
+						flightPlan.origin = std::nullopt;
+					}
+
+					if (flightPlan.destination.has_value() && flightPlan.destination.value().airportIndex == airportIndex) {
+						flightPlan.destination = std::nullopt;
+					}
+
+					airports.erase(airports.begin() + airportIndex);
+
+					airportIndex--;
+				}
+				else if (airport.waypointIndex > waypointIndex) {
+					airport.waypointIndex--;
+				}
+ 			}
+		}
+
+		shiftWaypointIndicesAt(flightPlan.legs, waypointIndex);
+		shiftWaypointIndicesAt(RNAVWaypoints, waypointIndex);
+
+		waypoints.erase(waypoints.begin() + waypointIndex);
+	}
+
+	size_t NavigationData::getAirportIndex(uint16_t waypointIndex) const {
+		return getWaypointIndexAwareVectorIndex(airports, waypointIndex);
+	}
+
+	size_t NavigationData::getRNAVWaypointIndex(uint16_t waypointIndex) const {
+		return getWaypointIndexAwareVectorIndex(RNAVWaypoints, waypointIndex);
 	}
 }

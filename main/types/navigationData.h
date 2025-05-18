@@ -92,34 +92,29 @@ namespace pizda {
 
 	class NavigationDataFlightPlanAirport {
 		public:
-			NavigationDataFlightPlanAirport(const NavigationAirportData* airport, uint16_t runwayIndex) :
-				airport(airport),
+			NavigationDataFlightPlanAirport(uint16_t airportIndex, uint16_t runwayIndex) :
+				airportIndex(airportIndex),
 				runwayIndex(runwayIndex)
 			{
 
 			}
 
-			const NavigationAirportData* airport;
+			uint16_t airportIndex;
 			uint16_t runwayIndex = 0;
 	};
 
-	class NavigationDataFlightPlanRoute {
+	class NavigationDataFlightPlanLeg : public NavigationWaypointDataIndexAware {
 		public:
-			NavigationDataFlightPlanRoute(
-				const NavigationWaypointData* from,
-				const NavigationWaypointData* to
-			);
+			NavigationDataFlightPlanLeg() = default;
 
-			const NavigationWaypointData* from;
-			const NavigationWaypointData* to;
-			Vector3F cartesianCoordinates[2];
+			explicit NavigationDataFlightPlanLeg(uint16_t waypointIndex);
 	};
 
 	class NavigationDataFlightPlan {
 		public:
-			std::optional<NavigationDataFlightPlanAirport> departure = std::nullopt;
-			std::optional<NavigationDataFlightPlanAirport> arrival = std::nullopt;
-			std::vector<NavigationDataFlightPlanRoute> routes {};
+			std::optional<NavigationDataFlightPlanAirport> origin = std::nullopt;
+			std::optional<NavigationDataFlightPlanAirport> destination = std::nullopt;
+			std::vector<NavigationDataFlightPlanLeg> legs {};
 	};
 
 	class NavigationData {
@@ -151,5 +146,43 @@ namespace pizda {
 			void addAirport(std::wstring_view name, const GeographicCoordinates& coordinates, std::initializer_list<NavigationRunwayData> runways);
 			void addRNAVWaypoint(NavigationWaypointType type, std::wstring_view name, const GeographicCoordinates& coordinates);
 			void fillWithTemplateData();
+			void removeWaypointAt(uint16_t waypointIndex);
+			size_t getAirportIndex(uint16_t waypointIndex) const;
+
+			size_t getRNAVWaypointIndex(uint16_t waypointIndex) const;
+
+		private:
+			template<std::derived_from<NavigationWaypointDataIndexAware> T>
+			static int32_t getWaypointIndexAwareVectorIndex(const std::vector<T>& source, uint16_t waypointIndex);
+
+			template<std::derived_from<NavigationWaypointDataIndexAware> T>
+			static void shiftWaypointIndicesAt(std::vector<T>& source, uint16_t waypointIndex);
 	};
+
+	template<std::derived_from<NavigationWaypointDataIndexAware> T>
+	int32_t NavigationData::getWaypointIndexAwareVectorIndex(const std::vector<T>& source, uint16_t waypointIndex) {
+		for (uint16_t i = 0; i < source.size(); i++) {
+			if (source[i].waypointIndex == waypointIndex) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	template<std::derived_from<NavigationWaypointDataIndexAware> T>
+	void NavigationData::shiftWaypointIndicesAt(std::vector<T>& source, uint16_t waypointIndex) {
+		for (int32_t i = 0; i < source.size(); i++) {
+			auto& item = source[i];
+
+			if (item.waypointIndex == waypointIndex) {
+				source.erase(source.begin() + i);
+				i--;
+			}
+			else if (item.waypointIndex > waypointIndex) {
+				// ReSharper disable once CppDiscardedPostfixOperatorResult
+				item.waypointIndex--;
+			}
+		}
+	}
 }

@@ -4,11 +4,11 @@
 #include "waypointItemDialog.h"
 
 namespace pizda {
-	WaypointItem::WaypointItem(uint16_t waypointIndex): _waypointIndex(waypointIndex) {
+	WaypointItem::WaypointItem(uint16_t waypointIndex): waypointIndex(waypointIndex) {
 		setHeight(32);
 
 		auto& rc = RC::getInstance();
-		const auto& waypointData = rc.getNavigationData().waypoints[_waypointIndex];
+		const auto& waypointData = rc.getNavigationData().waypoints[waypointIndex];
 
 		_distanceNm = YOBA::round(
 			Units::convertDistance(
@@ -21,14 +21,14 @@ namespace pizda {
 	}
 
 	void WaypointItem::onClick() {
-		WaypointItemDialog::create(&RC::getInstance().getNavigationData().waypoints[_waypointIndex]);
+		WaypointItemDialog::showCyka(waypointIndex);
 	}
 
 	void WaypointItem::onRender(Renderer* renderer) {
 		const auto& bounds = getBounds();
 
 		auto& rc = RC::getInstance();
-		const auto& waypointData = rc.getNavigationData().waypoints[_waypointIndex];
+		const auto& waypointData = rc.getNavigationData().waypoints[waypointIndex];
 
 		constexpr static uint8_t cornerRadius = 3;
 		constexpr static uint8_t nameFontScale = 1;
