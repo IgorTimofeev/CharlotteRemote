@@ -99,7 +99,7 @@ namespace pizda {
 
 			}
 
-			uint16_t airportIndex;
+			uint16_t airportIndex = 0;
 			uint16_t runwayIndex = 0;
 	};
 

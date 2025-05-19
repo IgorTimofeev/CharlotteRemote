@@ -21,9 +21,8 @@ namespace pizda {
 			static WaypointsPage* _instance;
 
 			TextField _searchTextField {};
-			StackLayout _waypointsRows {};
+			StackLayout _itemsLayout {};
 
-			void deleteItems();
 			void search();
 	};
 }

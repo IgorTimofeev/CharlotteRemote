@@ -1,34 +1,50 @@
-#include "waypointItem.h"
+#include "waypointButton.h"
 
+#include <UI/theme.h>
+#include <types/navigationData.h>
+#include <utils/rendering.h>
 #include <rc.h>
-#include "waypointItemDialog.h"
 
 namespace pizda {
-	WaypointItem::WaypointItem(uint16_t waypointIndex): waypointIndex(waypointIndex) {
+	WaypointButton::WaypointButton() {
 		setHeight(32);
-
-		auto& rc = RC::getInstance();
-		const auto& waypointData = rc.getNavigationData().waypoints[waypointIndex];
-
-		_distanceNm = YOBA::round(
-			Units::convertDistance(
-				(waypointData.cartesianCoordinates - rc.getAircraftData().geographicCoordinates.toCartesian()).getLength(),
-				DistanceUnit::meter,
-				DistanceUnit::nauticalMile
-			),
-			2
-		);
 	}
 
-	void WaypointItem::onClick() {
-		WaypointItemDialog::showCyka(waypointIndex);
+	WaypointButton::WaypointButton(uint32_t waypointIndex): WaypointButton() {
+		setWaypointIndex(waypointIndex);
 	}
 
-	void WaypointItem::onRender(Renderer* renderer) {
+	int32_t WaypointButton::getWaypointIndex() const {
+		return _waypointIndex;
+	}
+
+	void WaypointButton::setWaypointIndex(int32_t value) {
+		_waypointIndex = value;
+
+		if (_waypointIndex >= 0) {
+			auto& rc = RC::getInstance();
+			const auto& waypointData = rc.getNavigationData().waypoints[value];
+
+			_distanceNm = YOBA::round(
+				Units::convertDistance(
+					(waypointData.cartesianCoordinates - rc.getAircraftData().geographicCoordinates.toCartesian()).getLength(),
+					DistanceUnit::meter,
+					DistanceUnit::nauticalMile
+				),
+				1
+			);
+		}
+
+		invalidate();
+	}
+
+	void WaypointButton::onRender(Renderer* renderer) {
+		if (_waypointIndex < 0)
+			return;
+
 		const auto& bounds = getBounds();
 
-		auto& rc = RC::getInstance();
-		const auto& waypointData = rc.getNavigationData().waypoints[waypointIndex];
+		const auto& waypointData = RC::getInstance().getNavigationData().waypoints[_waypointIndex];
 
 		constexpr static uint8_t cornerRadius = 3;
 		constexpr static uint8_t nameFontScale = 1;
@@ -84,6 +100,7 @@ namespace pizda {
 			nameFontScale
 		);
 
+		// Distance
 		const auto coordsText = std::format(
 			L"{} nm",
 			YOBA::round(_distanceNm, 2)

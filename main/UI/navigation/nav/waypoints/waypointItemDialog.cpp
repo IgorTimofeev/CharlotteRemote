@@ -7,11 +7,6 @@
 #include "waypointsPage.h"
 
 namespace pizda {
-	void WaypointItemDialog::showCyka(uint16_t waypointIndex) {
-		const auto dialog = new WaypointItemDialog(waypointIndex);
-		dialog->show();
-	}
-
 	WaypointItemDialog::WaypointItemDialog(uint16_t waypointIndex) {
 		auto& rc = RC::getInstance();
 		auto& nd = rc.getNavigationData();
@@ -21,11 +16,11 @@ namespace pizda {
 		title.setText(waypointData.name);
 
 		// FPL origin
-		Theme::applySecondary(&FPLOriginButton);
-		FPLOriginButton.setVisible(waypointData.type == NavigationWaypointType::airport);
-		FPLOriginButton.setText(L"Set as origin");
+		Theme::applySecondary(&_FPLOriginButton);
+		_FPLOriginButton.setVisible(waypointData.type == NavigationWaypointType::airport);
+		_FPLOriginButton.setText(L"Set as origin");
 
-		FPLOriginButton.click += [&rc, &nd, waypointIndex, this] {
+		_FPLOriginButton.click += [&rc, &nd, waypointIndex, this] {
 			rc.getApplication().scheduleTask([&rc, &nd, waypointIndex, this] {
 				nd.flightPlan.origin = NavigationDataFlightPlanAirport(nd.getAirportIndex(waypointIndex), 0);
 
@@ -34,14 +29,14 @@ namespace pizda {
 			});
 		};
 
-		rows += &FPLOriginButton;
+		rows += &_FPLOriginButton;
 
 		// FPL leg
-		Theme::applySecondary(&FPLLegButton);
-		FPLLegButton.setVisible(waypointData.type != NavigationWaypointType::airport);
-		FPLLegButton.setText(L"Add to FPL");
+		Theme::applySecondary(&_FPLLegButton);
+		_FPLLegButton.setVisible(waypointData.type != NavigationWaypointType::airport);
+		_FPLLegButton.setText(L"Add to FPL");
 
-		FPLLegButton.click += [&rc, &nd, waypointIndex, this] {
+		_FPLLegButton.click += [&rc, &nd, waypointIndex, this] {
 			rc.getApplication().scheduleTask([&rc, &nd, waypointIndex, this] {
 				const auto it = std::ranges::find_if(nd.flightPlan.legs, [waypointIndex](const auto& leg) {
 					return leg.waypointIndex == waypointIndex;
@@ -55,14 +50,14 @@ namespace pizda {
 			});
 		};
 
-		rows += &FPLLegButton;
+		rows += &_FPLLegButton;
 
 		// FPL destination
-		Theme::applySecondary(&FPLDestinationButton);
-		FPLDestinationButton.setVisible(waypointData.type == NavigationWaypointType::airport);
-		FPLDestinationButton.setText(L"Set as destination");
+		Theme::applySecondary(&_FPLDestinationButton);
+		_FPLDestinationButton.setVisible(waypointData.type == NavigationWaypointType::airport);
+		_FPLDestinationButton.setText(L"Set as destination");
 
-		FPLDestinationButton.click += [&rc, &nd, waypointIndex, this] {
+		_FPLDestinationButton.click += [&rc, &nd, waypointIndex, this] {
 			rc.getApplication().scheduleTask([&rc, &nd, waypointIndex, this] {
 				nd.flightPlan.destination = NavigationDataFlightPlanAirport(nd.getAirportIndex(waypointIndex), 0);
 
@@ -71,13 +66,13 @@ namespace pizda {
 			});
 		};
 
-		rows += &FPLDestinationButton;
+		rows += &_FPLDestinationButton;
 
 		// Remove button
-		Theme::applyCritical(&removeButton);
-		removeButton.setText(L"Delete");
+		Theme::applyCritical(&_removeButton);
+		_removeButton.setText(L"Delete");
 
-		removeButton.click += [&rc, &nd, waypointIndex, this] {
+		_removeButton.click += [&rc, &nd, waypointIndex, this] {
 			rc.getApplication().scheduleTask([&rc, &nd, waypointIndex, this] {
 				nd.removeWaypointAt(waypointIndex);
 
@@ -91,6 +86,6 @@ namespace pizda {
 			});
 		};
 
-		rows += &removeButton;
+		rows += &_removeButton;
 	}
 }

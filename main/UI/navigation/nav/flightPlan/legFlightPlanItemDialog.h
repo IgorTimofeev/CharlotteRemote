@@ -8,14 +8,13 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class WaypointItemDialog : public Dialog {
+	class LegFlightPlanItemDialog : public Dialog {
 		public:
-			explicit WaypointItemDialog(uint16_t waypointIndex);
+			explicit LegFlightPlanItemDialog(uint16_t legIndex);
 
 		private:
-			Button _FPLOriginButton {};
-			Button _FPLLegButton {};
-			Button _FPLDestinationButton {};
+			Button _insertBeforeButton {};
+			Button _insertAfterButton {};
 			Button _removeButton {};
 	};
 }

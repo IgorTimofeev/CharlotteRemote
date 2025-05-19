@@ -6,25 +6,38 @@
 #include <UI/navigation/page.h>
 #include <UI/theme.h>
 
+#include "flightPlanItem.h"
+#include "placeholderButton.h"
+
 namespace pizda {
 	using namespace YOBA;
-
-	class FlightPlanButton : public Button {
-		public:
-			explicit FlightPlanButton(std::wstring_view text);
-	};
 
 	class FlightPlanPage : public ScrollViewPage {
 		public:
 			explicit FlightPlanPage();
+			~FlightPlanPage() override;
+
+			static FlightPlanPage* getInstance();
+
+			void updateFromNavigationData();
 
 		private:
-			FlightPlanButton _buttons[5] {
-				FlightPlanButton(L"LI746"),
-				FlightPlanButton(L"OBARI"),
-				FlightPlanButton(L"BIPRI"),
-				FlightPlanButton(L"FF28L"),
-				FlightPlanButton(L"ULLI28L"),
-			};
+			static FlightPlanPage* _instance;
+
+			StackLayout _itemsLayout {};
+
+			Text _originTitle {};
+			AirportFlightPlanItem _originItem { false };
+			AirportPlaceholderButton _originPlaceholderItem { false };
+
+			Text _legsTitle {};
+			StackLayout _legsLayout {};
+			LegPlaceholderButton _legPlaceholderButton {};
+
+			Text _destinationTitle {};
+			AirportFlightPlanItem _destinationItem { true };
+			AirportPlaceholderButton _destinationPlaceholderItem { true };
+
+			static void applyTitleStyle(Text& text);
 	};
 }

@@ -411,7 +411,7 @@ namespace pizda {
 		else if (event->getTypeID() == EncoderRotateEvent::typeID) {
 			if (isFocused()) {
 				const auto rotateEvent = static_cast<EncoderRotateEvent*>(event);
-				const auto scaleFactor = rotateEvent->getRPS() > 60 ? 1.5f : 2.f;
+				const auto scaleFactor = std::abs(rotateEvent->getRPS()) > 60 ? 1.5f : 1.25f;
 
 				setCameraOffset(GeographicCoordinates(
 					_cameraOffset.getLatitude(),

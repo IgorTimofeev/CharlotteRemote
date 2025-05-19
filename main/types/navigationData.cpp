@@ -207,13 +207,19 @@ namespace pizda {
 				auto& airport = airports[airportIndex];
 
 				if (airport.waypointIndex == waypointIndex) {
-					if (flightPlan.origin.has_value() && flightPlan.origin.value().airportIndex == airportIndex) {
-						flightPlan.origin = std::nullopt;
-					}
+					const auto handleFPLAirport = [airportIndex](std::optional<NavigationDataFlightPlanAirport>& airport) {
+						if (airport.has_value()) {
+							if (airport.value().airportIndex == airportIndex) {
+								airport = std::nullopt;
+							}
+							else if (airport.value().airportIndex > airportIndex) {
+								airport.value().airportIndex--;
+							}
+						}
+					};
 
-					if (flightPlan.destination.has_value() && flightPlan.destination.value().airportIndex == airportIndex) {
-						flightPlan.destination = std::nullopt;
-					}
+					handleFPLAirport(flightPlan.origin);
+					handleFPLAirport(flightPlan.destination);
 
 					airports.erase(airports.begin() + airportIndex);
 

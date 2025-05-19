@@ -1,27 +1,21 @@
 #pragma once
 
-#include <format>
-
-#include <YOBA/main.h>
-#include <YOBA/UI.h>
-
-#include <UI/theme.h>
-#include <types/navigationData.h>
-#include <utils/rendering.h>
+#include <UI/elements/navigation/waypointButton.h>
+#include "waypointItemDialog.h"
 
 namespace pizda {
-	using namespace YOBA;
-
-	class WaypointItem : public Button {
+	class WaypointItem : public WaypointButton {
 		public:
-			explicit WaypointItem(uint16_t waypointIndex);
-			uint16_t waypointIndex;
+			explicit WaypointItem(uint32_t waypointIndex) : WaypointButton(waypointIndex) {
+
+			}
 
 		protected:
-			void onClick() override;
-			void onRender(Renderer* renderer) override;
+			void onClick() override {
+				if (getWaypointIndex() < 0)
+					return;
 
-		private:
-			float _distanceNm;
+				(new WaypointItemDialog(getWaypointIndex()))->show();
+			}
 	};
 }
