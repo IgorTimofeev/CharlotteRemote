@@ -173,7 +173,7 @@ namespace pizda {
 				NavigationRunwayData(
 					GeographicCoordinates(toRadians(59.805114621892f), toRadians(30.276415586255f), 0),
 					106,
-					NavigationRunwayDataAlignment::none,
+					NavigationRunwayDataAlignment::left,
 					3780,
 					60
 				),
@@ -181,7 +181,7 @@ namespace pizda {
 				NavigationRunwayData(
 					GeographicCoordinates(toRadians(59.794929404415f), toRadians(30.251926678005f), 0),
 					106,
-					NavigationRunwayDataAlignment::none,
+					NavigationRunwayDataAlignment::right,
 					3780,
 					60
 				)
@@ -197,6 +197,54 @@ namespace pizda {
 		}
 
 		flightPlan.destination = NavigationDataFlightPlanAirport(1, 0);
+
+		// Gostilitsy
+		addAirport(
+			L"ULSG",
+			GeographicCoordinates(toRadians(59.725833f), toRadians(29.640278f), 0),
+			{
+				// 14
+				NavigationRunwayData(
+					GeographicCoordinates(toRadians(59.805114621892f), toRadians(30.276415586255f), 0),
+					154,
+					NavigationRunwayDataAlignment::none,
+					711,
+					20
+				),
+			}
+		);
+
+		// Domodedovo
+		addAirport(
+			L"UUDD",
+			GeographicCoordinates(toRadians(55.409167f), toRadians(37.9075f), 0),
+			{
+				// 14 L
+				NavigationRunwayData(
+					GeographicCoordinates(toRadians(55.41046196776684f), toRadians(37.92864359192132f), 0),
+					146,
+					NavigationRunwayDataAlignment::left,
+					3800,
+					60
+				),
+				// 14 C
+				NavigationRunwayData(
+					GeographicCoordinates(toRadians(55.407978701847995f), toRadians(37.926114240209586f), 0),
+					146,
+					NavigationRunwayDataAlignment::center,
+					2370,
+					53
+				),
+				// 14 R
+				NavigationRunwayData(
+					GeographicCoordinates(toRadians(55.40872572644867f), toRadians(37.88697508989965f), 0),
+					146,
+					NavigationRunwayDataAlignment::right,
+					3500,
+					60
+				),
+			}
+		);
 	}
 
 	void NavigationData::removeWaypointAt(uint16_t waypointIndex) {

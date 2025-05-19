@@ -25,15 +25,14 @@ namespace pizda {
 		public:
 			explicit AirportFlightPlanItem(bool destination);
 
-			const std::optional<NavigationDataFlightPlanAirport>& getAirport() const;
-
-			void setAirport(const std::optional<NavigationDataFlightPlanAirport>& airport);
+			const std::optional<NavigationAirportIndexAndRunwayIndexData>& getAirport() const;
+			void setAirport(const std::optional<NavigationAirportIndexAndRunwayIndexData>& airport);
 
 		protected:
 			void onClick() override;
 
 		private:
-			std::optional<NavigationDataFlightPlanAirport> _airport = std::nullopt;
+			std::optional<NavigationAirportIndexAndRunwayIndexData> _airport = std::nullopt;
 			bool _destination;
 	};
 

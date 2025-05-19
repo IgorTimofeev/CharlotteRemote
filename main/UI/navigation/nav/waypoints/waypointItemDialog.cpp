@@ -21,7 +21,7 @@ namespace pizda {
 		_FPLOriginButton.setText(L"Set as origin");
 
 		_FPLOriginButton.click += [&rc, &nd, waypointIndex, this] {
-			rc.getApplication().scheduleTask([&rc, &nd, waypointIndex, this] {
+			rc.getApplication().scheduleOnTick([&rc, &nd, waypointIndex, this] {
 				nd.flightPlan.origin = NavigationDataFlightPlanAirport(nd.getAirportIndex(waypointIndex), 0);
 
 				hide();
@@ -37,7 +37,7 @@ namespace pizda {
 		_FPLLegButton.setText(L"Add to FPL");
 
 		_FPLLegButton.click += [&rc, &nd, waypointIndex, this] {
-			rc.getApplication().scheduleTask([&rc, &nd, waypointIndex, this] {
+			rc.getApplication().scheduleOnTick([&rc, &nd, waypointIndex, this] {
 				const auto it = std::ranges::find_if(nd.flightPlan.legs, [waypointIndex](const auto& leg) {
 					return leg.waypointIndex == waypointIndex;
 				});
@@ -58,7 +58,7 @@ namespace pizda {
 		_FPLDestinationButton.setText(L"Set as destination");
 
 		_FPLDestinationButton.click += [&rc, &nd, waypointIndex, this] {
-			rc.getApplication().scheduleTask([&rc, &nd, waypointIndex, this] {
+			rc.getApplication().scheduleOnTick([&rc, &nd, waypointIndex, this] {
 				nd.flightPlan.destination = NavigationDataFlightPlanAirport(nd.getAirportIndex(waypointIndex), 0);
 
 				hide();
@@ -73,7 +73,7 @@ namespace pizda {
 		_removeButton.setText(L"Delete");
 
 		_removeButton.click += [&rc, &nd, waypointIndex, this] {
-			rc.getApplication().scheduleTask([&rc, &nd, waypointIndex, this] {
+			rc.getApplication().scheduleOnTick([&rc, &nd, waypointIndex, this] {
 				nd.removeWaypointAt(waypointIndex);
 
 				const auto page = WaypointsPage::getInstance();

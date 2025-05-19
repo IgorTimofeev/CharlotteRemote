@@ -33,23 +33,27 @@ namespace pizda {
 				// Dithered
 				*this += &ditheredBackground;
 
-				// Slide
-				slideLayout.setVerticalAlignment(Alignment::end);
-				setAutoSize(&slideLayout);
-				*this += &slideLayout;
-
 				// Background
 				slideLayoutBackground.setFillColor(&Theme::bg2);
 				slideLayout += &slideLayoutBackground;
+
+				// Rows
+				rows.setMargin(Margin(15));
+				rows.setSpacing(10);
 
 				// Title
 				Theme::apply(&title);
 				rows += &title;
 
-				// Rows
-				rows.setMargin(Margin(15));
-				rows.setSpacing(10);
-				slideLayout += &rows;
+				// ScrollView
+				Theme::apply(&scrollView);
+				scrollView += &rows;
+				slideLayout += &scrollView;
+
+				// Slide
+				slideLayout.setMaxHeight(Application::getCurrent()->getRenderer()->getTarget()->getSize().getHeight() * 8 / 10);
+				setAutoSize(&slideLayout);
+				*this += &slideLayout;
 			}
 
 			DialogSlideLayoutBackground ditheredBackground {};
@@ -57,6 +61,7 @@ namespace pizda {
 			Rectangle slideLayoutBackground {};
 			Layout slideLayout {};
 
+			ScrollView scrollView {};
 			StackLayout rows {};
 			Text title {};
 	};

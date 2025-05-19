@@ -29,7 +29,7 @@ namespace pizda {
 
 		// -------------------------------- PFD --------------------------------
 
-		Theme::applyTitle(&_PFDTitle);
+		Theme::applyPageTitle(&_PFDTitle);
 		_PFDTitle.setText(L"PFD options");
 		rows += &_PFDTitle;
 
@@ -49,7 +49,7 @@ namespace pizda {
 
 		// -------------------------------- ND --------------------------------
 
-		Theme::applyTitle(&_NDTitle);
+		Theme::applyPageTitle(&_NDTitle);
 		_NDTitle.setText(L"ND options");
 		rows += &_NDTitle;
 

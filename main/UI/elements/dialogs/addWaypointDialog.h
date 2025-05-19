@@ -31,6 +31,9 @@ namespace pizda {
 			std::function<void()> _onConfirm;
 
 			explicit AddWaypointDialog(const GeographicCoordinates& coordinates, const std::function<void()>& onConfirm) : _onConfirm(onConfirm) {
+				auto& rc = RC::getInstance();
+				auto& nd = rc.getNavigationData();
+
 				title.setText(L"Create waypoint");
 
 				// Name
@@ -54,24 +57,22 @@ namespace pizda {
 				rows += &bottomButtonsRow;
 
 				// Callbacks
-				cancelButton.click += [this] {
-					Application::getCurrent()->scheduleTask([this] {
+				cancelButton.click += [this, &rc] {
+					rc.getApplication().scheduleOnTick([this] {
 						hide();
 						delete this;
 					});
 				};
 
-				confirmButton.click += [this] {
+				confirmButton.click += [this, &nd, &rc] {
 					if (name.getText().size() == 0) {
 						name.setBorderColor(&Theme::bad2);
 						return;
 					}
 
-					Application::getCurrent()->scheduleTask([this] {
+					rc.getApplication().scheduleOnTick([this, &nd] {
 						const auto latitudeRad = toRadians(std::wcstof(latitude.getText().data(), nullptr));
 						const auto longitudeRad = toRadians(std::wcstof(longitude.getText().data(), nullptr));
-
-						auto& nd = RC::getInstance().getNavigationData();
 
 						nd.addRNAVWaypoint(
 							NavigationWaypointType::enroute,

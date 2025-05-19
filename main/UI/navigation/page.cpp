@@ -5,7 +5,7 @@
 namespace pizda {
 	ScrollViewPage::ScrollViewPage() {
 		// Title
-		Theme::applyTitle(&title);
+		Theme::applyPageTitle(&title);
 		title.setVerticalAlignment(Alignment::center);
 		rows += &title;
 

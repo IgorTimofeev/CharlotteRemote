@@ -96,6 +96,7 @@ namespace pizda {
 
 			// UI
 			_application.tick();
+			_application.render();
 
 			// Low priority tasks
 			_speaker.tick();

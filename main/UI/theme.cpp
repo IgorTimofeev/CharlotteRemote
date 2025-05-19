@@ -108,10 +108,15 @@ namespace pizda {
 		text->setFont(&Theme::fontNormal);
 	}
 
-	void Theme::applyTitle(Text* text) {
+	void Theme::applyPageTitle(Text* text) {
 		text->setTextColor(&Theme::fg1);
 		text->setFont(&Theme::fontNormal);
 		text->setFontScale(2);
+	}
+
+	void Theme::applyTitle(Text* text) {
+		text->setFont(&Theme::fontNormal);
+		text->setTextColor(&Theme::fg3);
 	}
 
 	void Theme::apply(Button* button) {
@@ -148,6 +153,19 @@ namespace pizda {
 		button->setDefaultTextColor(&Theme::fg1);
 
 		button->setActiveBackgroundColor(&Theme::bad1);
+		button->setActiveTextColor(&Theme::fg1);
+
+		button->setFont(&Theme::fontNormal);
+	}
+
+	void Theme::applyPlaceholder(Button* button) {
+		button->setHeight(elementHeight);
+		button->setCornerRadius(cornerRadius);
+
+		button->setDefaultBorderColor(&Theme::fg5);
+		button->setDefaultTextColor(&Theme::fg5);
+
+		button->setActiveBorderColor(&Theme::fg1);
 		button->setActiveTextColor(&Theme::fg1);
 
 		button->setFont(&Theme::fontNormal);

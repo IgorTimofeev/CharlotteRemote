@@ -11,7 +11,7 @@ namespace pizda {
 
 	class AirportFlightPlanItemDialog : public Dialog {
 		public:
-			explicit AirportFlightPlanItemDialog(const NavigationDataFlightPlanAirport& flightPlanAirport, bool destination);
+			explicit AirportFlightPlanItemDialog(const NavigationAirportIndexAndRunwayIndexData& airportAndRunway, bool destination);
 
 		private:
 			Button _removeButton {};

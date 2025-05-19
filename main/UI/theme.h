@@ -49,19 +49,21 @@ namespace pizda {
 			static const PIXY10Font fontNormal;
 			static const Vaticanus8Font fontSmall;
 
-			static const uint16_t elementHeight = 28;
-			static const uint16_t cornerRadius = 3;
+			constexpr static uint16_t elementHeight = 28;
+			constexpr static uint16_t cornerRadius = 3;
 
 			static void setPaletteColors(Bit8PaletteRenderer* renderer);
 			static void apply(Button* button);
 			static void applySecondary(Button* button);
 			static void applyCritical(Button* button);
+			static void applyPlaceholder(Button* button);
 			static void apply(Slider* slider);
 			static void apply(TextField* textField);
 			static void apply(ScrollView* scrollView);
 			static void apply(Switch* sw);
 			static void apply(ProgressBar* progressBar);
 			static void apply(Text* text);
+			static void applyPageTitle(Text* text);
 			static void applyTitle(Text* text);
 			static void applyDescription(Text* text);
 	};

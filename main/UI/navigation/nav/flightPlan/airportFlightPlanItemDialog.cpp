@@ -7,21 +7,21 @@
 #include "flightPlanPage.h"
 
 namespace pizda {
-	AirportFlightPlanItemDialog::AirportFlightPlanItemDialog(const NavigationDataFlightPlanAirport& flightPlanAirport, bool destination) {
+	AirportFlightPlanItemDialog::AirportFlightPlanItemDialog(const NavigationAirportIndexAndRunwayIndexData& airportAndRunway, bool destination) {
 		auto& rc = RC::getInstance();
 		auto& nd = rc.getNavigationData();
 
-		const auto& airport = nd.airports[flightPlanAirport.airportIndex];
+		const auto& airport = nd.airports[airportAndRunway.airportIndex];
 		const auto& waypointData = nd.waypoints[airport.waypointIndex];
 
-		title.setText(waypointData.name);
+		title.setText(std::format(L"{} - {}", destination ? L"Destination" : L"Origin", waypointData.name));
 
 		// Remove button
 		Theme::applyCritical(&_removeButton);
 		_removeButton.setText(L"Delete");
 
 		_removeButton.click += [&rc, &nd, this, destination] {
-			rc.getApplication().scheduleTask([&rc, &nd, this, destination] {
+			rc.getApplication().scheduleOnTick([&rc, &nd, this, destination] {
 				if (destination) {
 					nd.flightPlan.destination = std::nullopt;
 				}

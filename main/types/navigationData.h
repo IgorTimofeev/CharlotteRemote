@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <format>
 #include <YOBA/main.h>
 
 namespace pizda {
@@ -74,6 +75,26 @@ namespace pizda {
 			uint16_t widthM = 0;
 			Vector3F vertices[5];
 
+			uint8_t getShortHeading() const {
+				return (headingDeg % 10 >= 5 ? headingDeg + 10 : headingDeg) / 10;
+			}
+
+			std::wstring getFormattedName() const {
+				switch (alignment) {
+					case NavigationRunwayDataAlignment::left:
+						return std::format(L"{:02}L", getShortHeading());
+
+					case NavigationRunwayDataAlignment::center:
+						return std::format(L"{:02}C", getShortHeading());
+
+					case NavigationRunwayDataAlignment::right:
+						return std::format(L"{:02}R", getShortHeading());
+
+					default:
+						return std::format(L"{:02}", getShortHeading());
+				}
+			}
+
 		private:
 			Vector3F cornerToVertex(const Vector2F& corner) const;
 	};
@@ -90,9 +111,9 @@ namespace pizda {
 			std::vector<NavigationRunwayData> runways {};
 	};
 
-	class NavigationDataFlightPlanAirport {
+	class NavigationAirportIndexAndRunwayIndexData {
 		public:
-			NavigationDataFlightPlanAirport(uint16_t airportIndex, uint16_t runwayIndex) :
+			NavigationAirportIndexAndRunwayIndexData(uint16_t airportIndex, uint16_t runwayIndex) :
 				airportIndex(airportIndex),
 				runwayIndex(runwayIndex)
 			{
@@ -101,6 +122,15 @@ namespace pizda {
 
 			uint16_t airportIndex = 0;
 			uint16_t runwayIndex = 0;
+	};
+
+	class NavigationDataFlightPlanAirport : public NavigationAirportIndexAndRunwayIndexData {
+		public:
+			NavigationDataFlightPlanAirport(uint16_t airportIndex, uint16_t runwayIndex) :
+				NavigationAirportIndexAndRunwayIndexData(airportIndex, runwayIndex)
+			{
+
+			}
 	};
 
 	class NavigationDataFlightPlanLeg : public NavigationWaypointDataIndexAware {

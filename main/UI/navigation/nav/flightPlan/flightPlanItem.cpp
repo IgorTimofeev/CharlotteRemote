@@ -7,7 +7,7 @@
 
 namespace pizda {
 	FlightPlanItem::FlightPlanItem() {
-		setHeight(32);
+
 	}
 
 	void FlightPlanItem::onRender(Renderer* renderer) {
@@ -78,11 +78,11 @@ namespace pizda {
 
 	}
 
-	const std::optional<NavigationDataFlightPlanAirport>& AirportFlightPlanItem::getAirport() const {
+	const std::optional<NavigationAirportIndexAndRunwayIndexData>& AirportFlightPlanItem::getAirport() const {
 		return _airport;
 	}
 
-	void AirportFlightPlanItem::setAirport(const std::optional<NavigationDataFlightPlanAirport>& airport) {
+	void AirportFlightPlanItem::setAirport(const std::optional<NavigationAirportIndexAndRunwayIndexData>& airport) {
 		_airport = airport;
 
 		const auto& nd = RC::getInstance().getNavigationData();
@@ -105,6 +105,6 @@ namespace pizda {
 	}
 
 	void LegFlightPlanItem::onClick() {
-		(new LegFlightPlanItemDialog(getWaypointIndex()))->show();
+		(new LegFlightPlanItemDialog(_legIndex))->show();
 	}
 }

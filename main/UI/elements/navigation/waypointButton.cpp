@@ -7,7 +7,7 @@
 
 namespace pizda {
 	WaypointButton::WaypointButton() {
-		setHeight(32);
+		setHeight(height);
 	}
 
 	WaypointButton::WaypointButton(uint32_t waypointIndex): WaypointButton() {
@@ -47,7 +47,6 @@ namespace pizda {
 		const auto& waypointData = RC::getInstance().getNavigationData().waypoints[_waypointIndex];
 
 		constexpr static uint8_t cornerRadius = 3;
-		constexpr static uint8_t nameFontScale = 1;
 
 		renderer->renderFilledRectangle(
 			bounds,
@@ -92,12 +91,11 @@ namespace pizda {
 		renderer->renderString(
 			Point(
 				x,
-				y - Theme::fontNormal.getHeight() / 2 * nameFontScale
+				y - Theme::fontNormal.getHeight() / 2
 			),
 			&Theme::fontNormal,
 			&Theme::fg1,
-			waypointData.name,
-			nameFontScale
+			waypointData.name
 		);
 
 		// Distance

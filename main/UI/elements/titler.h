@@ -11,8 +11,7 @@ namespace pizda {
 			Titler() {
 				setSpacing(3);
 
-				_title.setFont(&Theme::fontNormal);
-				_title.setTextColor(&Theme::fg3);
+				Theme::applyTitle(&_title);
 				*this += &_title;
 			}
 

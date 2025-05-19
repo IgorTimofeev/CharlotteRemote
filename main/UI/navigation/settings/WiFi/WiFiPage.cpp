@@ -32,7 +32,7 @@ namespace pizda {
 		// Updates
 
 		// Title
-		Theme::applyTitle(&_updatesTitle);
+		Theme::applyPageTitle(&_updatesTitle);
 		_updatesTitle.setText(L"Updates");
 		rows += &_updatesTitle;
 
