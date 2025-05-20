@@ -49,12 +49,12 @@ namespace pizda {
 			}
 
 		private:
-			constexpr static auto _namespace = "apns";
-			constexpr static auto _speedKt = "apsp";
-			constexpr static auto _autoThrottle = "apat";
-			constexpr static auto _headingDeg = "aphd";
-			constexpr static auto _headingHold = "aphh";
-			constexpr static auto _altitudeFt = "apal";
-			constexpr static auto _levelChange = "aplc";
+			constexpr static auto _namespace = "ap";
+			constexpr static auto _speedKt = "sp";
+			constexpr static auto _autoThrottle = "at";
+			constexpr static auto _headingDeg = "hd";
+			constexpr static auto _headingHold = "hh";
+			constexpr static auto _altitudeFt = "al";
+			constexpr static auto _levelChange = "lc";
 	};
 }

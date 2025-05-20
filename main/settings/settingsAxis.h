@@ -83,23 +83,23 @@ namespace pizda {
 			}
 
 		private:
-			constexpr static auto _namespace = "axns";
-			constexpr static auto _leverLeftFrom = "axllf";
-			constexpr static auto _leverLeftTo = "axllt";
-			constexpr static auto _leverLeftInverted = "axlli";
-			constexpr static auto _leverRightFrom = "axlrf";
-			constexpr static auto _leverRightTo = "axlrt";
-			constexpr static auto _leverRightInverted = "axlri";
-			constexpr static auto _joystickHorizontalFrom = "axjhf";
-			constexpr static auto _joystickHorizontalTo = "axjht";
-			constexpr static auto _joystickHorizontalInverted = "axjhi";
-			constexpr static auto _joystickVerticalFrom = "axjvf";
-			constexpr static auto _joystickVerticalTo = "axjvt";
-			constexpr static auto _joystickVerticalInverted = "axjvi";
-			constexpr static auto _ringFrom = "axrgf";
-			constexpr static auto _ringTo = "axrgt";
-			constexpr static auto _ringInverted = "axrgi";
-			constexpr static auto _lowPassFactor = "axlpf";
-			constexpr static auto _jitteringCutoffValue = "axjc";
+			constexpr static auto _namespace = "ax";
+			constexpr static auto _leverLeftFrom = "llf";
+			constexpr static auto _leverLeftTo = "llt";
+			constexpr static auto _leverLeftInverted = "lli";
+			constexpr static auto _leverRightFrom = "lrf";
+			constexpr static auto _leverRightTo = "lrt";
+			constexpr static auto _leverRightInverted = "lri";
+			constexpr static auto _joystickHorizontalFrom = "jhf";
+			constexpr static auto _joystickHorizontalTo = "jht";
+			constexpr static auto _joystickHorizontalInverted = "jhi";
+			constexpr static auto _joystickVerticalFrom = "jvf";
+			constexpr static auto _joystickVerticalTo = "jvt";
+			constexpr static auto _joystickVerticalInverted = "jvi";
+			constexpr static auto _ringFrom = "rgf";
+			constexpr static auto _ringTo = "rgt";
+			constexpr static auto _ringInverted = "rgi";
+			constexpr static auto _lowPassFactor = "lpf";
+			constexpr static auto _jitteringCutoffValue = "jc";
 	};
 }

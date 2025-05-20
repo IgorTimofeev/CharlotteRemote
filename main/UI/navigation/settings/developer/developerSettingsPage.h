@@ -14,6 +14,11 @@ namespace pizda {
 			explicit DeveloperSettingsPage();
 
 		private:
+			Button _settingsNavigationResetButton;
+
+			// Speaker
+			Text _speakerTitle;
+
 			Slider _speakerFrequencySlider;
 			Titler _speakerFrequencySliderTitle = Titler(L"Frequency (1 - 12 KHz)", &_speakerFrequencySlider);
 
@@ -26,6 +31,7 @@ namespace pizda {
 
 			Button _speakerButton;
 
+			// Text
 			Slider _textFontSizeSlider;
 			Titler _textSliderTitle = Titler(L"Font size slider", &_textFontSizeSlider);
 

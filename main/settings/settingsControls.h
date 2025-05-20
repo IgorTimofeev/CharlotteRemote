@@ -55,13 +55,13 @@ namespace pizda {
 			}
 
 		private:
-			constexpr static auto _namespace = "ctns";
-			constexpr static auto _throttle = "ctth";
-			constexpr static auto _referencePressurePa = "ctrp";
-			constexpr static auto _referencePressureSTD = "ctrs";
-			constexpr static auto _minimumAltitudeFt = "ctma";
-			constexpr static auto _minimumAltitudeEnabled = "ctme";
-			constexpr static auto _landingGear = "ctlg";
-			constexpr static auto _strobeLights = "ctsl";
+			constexpr static auto _namespace = "ct";
+			constexpr static auto _throttle = "th";
+			constexpr static auto _referencePressurePa = "rp";
+			constexpr static auto _referencePressureSTD = "rs";
+			constexpr static auto _minimumAltitudeFt = "ma";
+			constexpr static auto _minimumAltitudeEnabled = "me";
+			constexpr static auto _landingGear = "lg";
+			constexpr static auto _strobeLights = "sl";
 	};
 }

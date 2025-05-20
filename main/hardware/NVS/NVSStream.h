@@ -54,6 +54,14 @@ namespace pizda {
 				setValue<uint32_t, nvs_set_u32>(key, value);
 			}
 
+			uint64_t getUint64(const char* key, uint64_t defaultValue = 0) const {
+				return getValue<uint64_t, uint64_t, nvs_get_u64>(key, defaultValue);
+			}
+
+			void setUint64(const char* key, uint64_t value) const {
+				setValue<uint64_t, nvs_set_u64>(key, value);
+			}
+
 			float getFloat(const char* key, float defaultValue = 0) const {
 				const auto u32 = getUint32(key, defaultValue);
 
@@ -91,6 +99,24 @@ namespace pizda {
 
 			void setBlob(const char* key, const uint8_t* data, size_t length) const {
 				ESP_ERROR_CHECK(nvs_set_blob(_handle, key, data, length));
+			}
+
+			template<typename T>
+			void getObject(const char* key, T* data, size_t length) const {
+				getBlob(
+					key,
+					reinterpret_cast<uint8_t*>(data),
+					sizeof(T) * length
+				);
+			}
+
+			template<typename T>
+			void setObject(const char* key, const T* data, size_t length) const {
+				setBlob(
+					key,
+					reinterpret_cast<const uint8_t*>(data),
+					sizeof(T) * length
+				);
 			}
 
 			void testForBullshit() {

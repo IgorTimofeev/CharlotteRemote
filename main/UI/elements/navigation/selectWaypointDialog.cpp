@@ -105,7 +105,7 @@ namespace pizda {
 					const auto airportIndex = nd.getAirportIndex(waypointIndex);
 					const auto& airport = nd.airports[airportIndex];
 
-					for (size_t runwayIndex = 0; runwayIndex < airport.runways.size(); runwayIndex++) {
+					for (uint8_t runwayIndex = 0; runwayIndex < airport.runways.size(); runwayIndex++) {
 						_runwaysSelector.addItem(new RunwayItem(NavigationAirportIndexAndRunwayIndexData(airportIndex, runwayIndex)));
 					}
 

@@ -16,63 +16,58 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class SettingsNavigationWaypointCoordinatesAware {
-		public:
-			explicit SettingsNavigationWaypointCoordinatesAware() = default;
-
-			explicit SettingsNavigationWaypointCoordinatesAware(const GeographicCoordinates& coordinates) : coordinates(coordinates) {
-
-			}
-
-			GeographicCoordinates coordinates {};
-	};
-
-	class SettingsNavigationWaypointIndexAware {
-		public:
-			explicit SettingsNavigationWaypointIndexAware() = default;
-
-			explicit SettingsNavigationWaypointIndexAware(uint16_t waypointIndex) :
-				waypointIndex(waypointIndex)
-			{
-
-			}
-
-			uint16_t waypointIndex = 0;
-	};
-
-	class SettingsNavigationWaypoint : public SettingsNavigationWaypointCoordinatesAware {
+	class SettingsNavigationWaypoint {
 		public:
 			SettingsNavigationWaypoint() = default;
 
 			explicit SettingsNavigationWaypoint(
 				NavigationWaypointType type,
 				std::wstring_view name,
-				const GeographicCoordinates& coordinates
+				const GeographicCoordinates& geographicCoordinates
 			) :
-				SettingsNavigationWaypointCoordinatesAware(coordinates),
-				type(type)
+				type(type),
+				geographicCoordinates(geographicCoordinates)
 			{
 				std::ranges::copy(name, this->name);
 			}
 
 			NavigationWaypointType type;
 			wchar_t name[16] {};
+			GeographicCoordinates geographicCoordinates;
 	};
 
-	class SettingsNavigationAirportRunway : public SettingsNavigationWaypointIndexAware, public SettingsNavigationWaypointCoordinatesAware {
+	class SettingsNavigationRNAVWaypoint : public NavigationWaypointDataIndexAware {
+		public:
+			SettingsNavigationRNAVWaypoint() = default;
+
+			explicit SettingsNavigationRNAVWaypoint(uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {\
+
+			}
+	};
+
+	class SettingsNavigationAirport : public NavigationWaypointDataIndexAware {
+		public:
+			SettingsNavigationAirport() = default;
+
+			explicit SettingsNavigationAirport(uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {
+
+			}
+	};
+
+	class SettingsNavigationAirportRunway {
 		public:
 			SettingsNavigationAirportRunway() = default;
 
 			SettingsNavigationAirportRunway(
-				uint16_t airportWaypointIndex,
-				const GeographicCoordinates& coordinates,
+				uint16_t airportIndex,
+				const GeographicCoordinates& geographicCoordinates,
 				uint16_t headingDeg,
 				NavigationRunwayDataAlignment alignment,
 				uint16_t lengthM,
 				uint16_t widthM
 			) :
-				SettingsNavigationWaypointIndexAware(airportWaypointIndex),
-				SettingsNavigationWaypointCoordinatesAware(coordinates),
+				airportIndex(airportIndex),
+				geographicCoordinates(geographicCoordinates),
 				headingDeg(headingDeg),
 				alignment(alignment),
 				lengthM(lengthM),
@@ -81,44 +76,58 @@ namespace pizda {
 
 			}
 
+			uint16_t airportIndex = 0;
+			GeographicCoordinates geographicCoordinates;
 			uint16_t headingDeg = 0;
 			NavigationRunwayDataAlignment alignment;
 			uint16_t lengthM = 0;
 			uint16_t widthM = 0;
 	};
 
-	class SettingsNavigationFlightPlan {
+	class SettingsNavigationFlightPlanLeg : public NavigationWaypointDataIndexAware {
 		public:
-			uint16_t departureAirportWaypointIndex = 0;
-			uint8_t departureRunwayIndex = 0;
+			SettingsNavigationFlightPlanLeg() = default;
 
-			uint16_t arrivalAirportWaypointIndex = 0;
-			uint8_t arrivalRunwayIndex = 0;
+			explicit SettingsNavigationFlightPlanLeg(uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {
 
-			std::vector<uint16_t> routeWaypointIndices {};
+			}
 	};
 
 	class SettingsNavigation : public NVSSerializable {
 		public:
 
-
 		protected:
-			const char* getNVSNamespace() override {
-				return _namespace;
-			}
+			const char* getNVSNamespace() override;
 
 			void onRead(const NVSStream& stream) override;
 
 			void onWrite(const NVSStream& stream) override;
 
 		private:
-			constexpr static auto _namespace = "nvns";
+			constexpr static auto _namespace = "nv";
 
-			constexpr static auto _waypointsSize = "nvws";
-			constexpr static auto _waypointsList = "nvwl";
+			constexpr static auto _waypointsSize = "ws";
+			constexpr static auto _waypointsList = "wl";
 
-			constexpr static auto _runwaysSize = "nvrs";
-			constexpr static auto _runwaysList = "nvrl";
+			constexpr static auto _RNAVWaypointsSize = "vs";
+			constexpr static auto _RNAVWaypointsList = "vl";
+
+			constexpr static auto _airportsSize = "as";
+			constexpr static auto _airportsList = "al";
+
+			constexpr static auto _runwaysSize = "rs";
+			constexpr static auto _runwaysList = "rl";
+
+			constexpr static auto _flightPlanOriginExists = "foe";
+			constexpr static auto _flightPlanOriginAirportIndex = "foa";
+			constexpr static auto _flightPlanOriginRunwayIndex = "for";
+
+			constexpr static auto _flightPlanLegsSize = "fls";
+			constexpr static auto _flightPlanLegsList = "fll";
+
+			constexpr static auto _flightPlanDestinationExists = "fde";
+			constexpr static auto _flightPlanDestinationAirportIndex = "fda";
+			constexpr static auto _flightPlanDestinationRunwayIndex = "fdr";
 
 			void fillTemplateData();
 	};

@@ -5,7 +5,7 @@
 namespace pizda {
 	DeveloperSettingsPage::DeveloperSettingsPage() {
 		// Page title
-		title.setText(L"Developer page");
+		title.setText(L"Dev options");
 
 		// Debug overlay switch
 		Theme::apply(&_debugOverlaySwitch);
@@ -22,9 +22,27 @@ namespace pizda {
 
 		rows += &_debugOverlaySwitchTitle;
 
+		// Button
+		Theme::apply(&_settingsNavigationResetButton);
+
+		_settingsNavigationResetButton.click += [] {
+			auto& rc = RC::getInstance();
+			auto& nd = rc.getNavigationData();
+
+			nd.clear();
+			nd.addTemplateData();
+
+			rc.getSettings().navigation.scheduleWrite();
+		};
+
+		_settingsNavigationResetButton.setText(L"Reset NAV data");
+		rows += &_settingsNavigationResetButton;
+
 		// Speaker
 		// Title
-		title.setText(L"Speaker");
+		Theme::applyPageTitle(&_speakerTitle);
+		_speakerTitle.setText(L"Speaker");
+		rows += &_speakerTitle;
 
 		// Frequency
 		Theme::apply(&_speakerFrequencySlider);

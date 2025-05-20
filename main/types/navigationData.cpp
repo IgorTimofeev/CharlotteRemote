@@ -110,7 +110,17 @@ namespace pizda {
 		));
 	}
 
-	void NavigationData::fillWithTemplateData() {
+	void NavigationData::clear() {
+		waypoints.clear();
+		RNAVWaypoints.clear();
+		airports.clear();
+
+		flightPlan.origin = std::nullopt;
+		flightPlan.legs.clear();
+		flightPlan.destination = std::nullopt;
+	}
+
+	void NavigationData::addTemplateData() {
 		// Kronshtadt
 		addAirport(
 			L"ULLY",

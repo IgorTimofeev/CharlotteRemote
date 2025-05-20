@@ -29,8 +29,6 @@ namespace pizda {
 
 				const auto flightPlanAirport = NavigationDataFlightPlanAirport(airportAndRunway.value().airportIndex, airportAndRunway.value().runwayIndex);
 
-				ESP_LOGI("AirportPlaceholderButton:clock", "apt: %d, rwy: %d", flightPlanAirport.airportIndex, flightPlanAirport.runwayIndex);
-
 				if (_destination) {
 					nd.flightPlan.destination = flightPlanAirport;
 				}

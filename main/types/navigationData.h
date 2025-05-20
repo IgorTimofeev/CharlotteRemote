@@ -108,12 +108,12 @@ namespace pizda {
 
 			}
 
-			std::vector<NavigationRunwayData> runways {};
+			std::vector<NavigationRunwayData> runways;
 	};
 
 	class NavigationAirportIndexAndRunwayIndexData {
 		public:
-			NavigationAirportIndexAndRunwayIndexData(uint16_t airportIndex, uint16_t runwayIndex) :
+			NavigationAirportIndexAndRunwayIndexData(uint16_t airportIndex, uint8_t runwayIndex) :
 				airportIndex(airportIndex),
 				runwayIndex(runwayIndex)
 			{
@@ -121,7 +121,7 @@ namespace pizda {
 			}
 
 			uint16_t airportIndex = 0;
-			uint16_t runwayIndex = 0;
+			uint8_t runwayIndex = 0;
 	};
 
 	class NavigationDataFlightPlanAirport : public NavigationAirportIndexAndRunwayIndexData {
@@ -175,7 +175,8 @@ namespace pizda {
 
 			void addAirport(std::wstring_view name, const GeographicCoordinates& coordinates, std::initializer_list<NavigationRunwayData> runways);
 			void addRNAVWaypoint(NavigationWaypointType type, std::wstring_view name, const GeographicCoordinates& coordinates);
-			void fillWithTemplateData();
+			void clear();
+			void addTemplateData();
 			void removeWaypointAt(uint16_t waypointIndex);
 			size_t getAirportIndex(uint16_t waypointIndex) const;
 

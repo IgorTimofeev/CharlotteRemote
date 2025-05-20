@@ -102,15 +102,15 @@ namespace pizda {
 			}
 
 		private:
-			constexpr static auto _namespace = "ifns";
-			constexpr static auto _MFDPFDVisible = "ifmpvi";
-			constexpr static auto _MFDPFDFOV = "ifmpfo";
-			constexpr static auto _MFDPFDFlightDirectors = "ifmpfd";
-			constexpr static auto _MFDNDVisible = "ifmnvi";
-			constexpr static auto _MFDNDMode = "ifmnmd";
-			constexpr static auto _MFDNDEarth = "ifmnea";
-			constexpr static auto _MFDToolbarMode = "ifmtmd";
-			constexpr static auto _MFDSplitPercent = "ifmsp";
-			constexpr static auto _developerDebugOverlay = "ifddo";
+			constexpr static auto _namespace = "if";
+			constexpr static auto _MFDPFDVisible = "mpvi";
+			constexpr static auto _MFDPFDFOV = "mpfo";
+			constexpr static auto _MFDPFDFlightDirectors = "mpfd";
+			constexpr static auto _MFDNDVisible = "mnvi";
+			constexpr static auto _MFDNDMode = "mnmd";
+			constexpr static auto _MFDNDEarth = "mnea";
+			constexpr static auto _MFDToolbarMode = "mtmd";
+			constexpr static auto _MFDSplitPercent = "msp";
+			constexpr static auto _developerDebugOverlay = "ddo";
 	};
 }
