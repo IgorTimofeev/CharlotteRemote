@@ -529,23 +529,21 @@ namespace pizda {
 
 			// Origin
 			if (nd.flightPlan.origin.has_value()) {
-				const auto originWaypointIndex = nd.airports[nd.flightPlan.origin.value().airportIndex].waypointIndex;
-
 				if (nd.flightPlan.legs.size() > 0) {
 					const auto leg0WaypointIndex = nd.flightPlan.legs[0].waypointIndex;
 
 					// Origin -> leg 0
 					addElement(new RouteElement(
-						&nd.waypoints[originWaypointIndex],
-						&nd.waypoints[leg0WaypointIndex],
-						&Theme::red
+						nd.airports[nd.flightPlan.origin.value().airportIndex].runways[nd.flightPlan.origin.value().runwayIndex].vertices[0],
+						nd.waypoints[leg0WaypointIndex].cartesianCoordinates,
+						&Theme::fg1
 					));
 
 					waypointFromIndex = leg0WaypointIndex;
 					legIndex = 1;
 				}
 				else {
-					waypointFromIndex = originWaypointIndex;
+					waypointFromIndex = nd.airports[nd.flightPlan.origin.value().airportIndex].waypointIndex;
 				}
 			}
 			else {
@@ -560,8 +558,8 @@ namespace pizda {
 				const auto& leg = nd.flightPlan.legs[legIndex];
 
 				addElement(new RouteElement(
-					&nd.waypoints[waypointFromIndex],
-					&nd.waypoints[leg.waypointIndex],
+					nd.waypoints[waypointFromIndex].cartesianCoordinates,
+					nd.waypoints[leg.waypointIndex].cartesianCoordinates,
 					&Theme::purple
 				));
 
@@ -571,9 +569,9 @@ namespace pizda {
 			// Destination
 			if (nd.flightPlan.destination.has_value() && waypointFromIndex > 0) {
 				addElement(new RouteElement(
-					&nd.waypoints[waypointFromIndex],
-					&nd.waypoints[nd.airports[nd.flightPlan.destination.value().airportIndex].waypointIndex],
-					&Theme::yellow
+					nd.waypoints[waypointFromIndex].cartesianCoordinates,
+					nd.airports[nd.flightPlan.destination.value().airportIndex].runways[nd.flightPlan.destination.value().runwayIndex].vertices[0],
+					&Theme::fg1
 				));
 			}
 		}

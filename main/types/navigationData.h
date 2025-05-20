@@ -61,14 +61,14 @@ namespace pizda {
 	class NavigationRunwayData {
 		public:
 			NavigationRunwayData(
-				const GeographicCoordinates& coordinates,
+				const GeographicCoordinates& geographicCoordinates,
 				uint16_t headingDeg,
 				NavigationRunwayDataAlignment alignment,
 				uint16_t lengthM,
 				uint16_t widthM
 			);
 
-			GeographicCoordinates coordinates {};
+			GeographicCoordinates geographicCoordinates {};
 			uint16_t headingDeg = 0;
 			NavigationRunwayDataAlignment alignment;
 			uint16_t lengthM = 0;

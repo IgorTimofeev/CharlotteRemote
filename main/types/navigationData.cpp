@@ -18,13 +18,13 @@ namespace pizda {
 	}
 
 	NavigationRunwayData::NavigationRunwayData(
-		const GeographicCoordinates& coordinates,
+		const GeographicCoordinates& geographicCoordinates,
 		uint16_t headingDeg,
 		NavigationRunwayDataAlignment alignment,
 		uint16_t lengthM,
 		uint16_t widthM
 	) :
-		coordinates(coordinates),
+		geographicCoordinates(geographicCoordinates),
 		headingDeg(headingDeg),
 		alignment(alignment),
 		lengthM(lengthM),
@@ -54,7 +54,7 @@ namespace pizda {
 		// ESP_LOGI("Runway", "corner0Radians: %f, %f", corner0Rad.getX(), corner0Rad.getY());
 		// ESP_LOGI("Runway", "corner1Radians: %f, %f", corner1Rad.getX(), corner1Rad.getY());
 
-		vertices[0] = this->coordinates.toCartesian();
+		vertices[0] = this->geographicCoordinates.toCartesian();
 		vertices[1] = cornerToVertex(corner0Rad);
 		vertices[2] = cornerToVertex(corner1Rad);
 		vertices[3] = cornerToVertex(-corner0Rad);
@@ -62,12 +62,12 @@ namespace pizda {
 	}
 
 	Vector3F NavigationRunwayData::cornerToVertex(const Vector2F& corner) const {
-		const auto lat = coordinates.getLatitude() + corner.getY();
+		const auto lat = geographicCoordinates.getLatitude() + corner.getY();
 
 		return GeographicCoordinates(
 			lat,
-			coordinates.getLongitude() + corner.getX() / std::cosf(lat),
-			coordinates.getAltitude()
+			geographicCoordinates.getLongitude() + corner.getX() / std::cosf(lat),
+			geographicCoordinates.getAltitude()
 		).toCartesian();
 	}
 
@@ -205,7 +205,7 @@ namespace pizda {
 			{
 				// 14
 				NavigationRunwayData(
-					GeographicCoordinates(toRadians(59.805114621892f), toRadians(30.276415586255f), 0),
+					GeographicCoordinates(toRadians(59.725833f), toRadians(29.640278f), 0),
 					154,
 					NavigationRunwayDataAlignment::none,
 					711,
