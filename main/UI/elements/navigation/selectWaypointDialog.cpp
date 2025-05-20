@@ -7,18 +7,15 @@
 #include <esp_log.h>
 
 namespace pizda {
-	RunwayButton::RunwayButton(const NavigationAirportIndexAndRunwayIndexData& airportAndRunway) : airportAndRunway(airportAndRunway) {
+	RunwayItem::RunwayItem(const NavigationAirportIndexAndRunwayIndexData& airportAndRunway) : airportAndRunway(airportAndRunway) {
 		setHeight(WaypointButton::height);
-		setToggle(true);
 	}
 
-	void RunwayButton::onRender(Renderer* renderer) {
+	void RunwayItem::onRender(Renderer* renderer) {
 		const auto& bounds = getBounds();
 
 		const auto& airport = RC::getInstance().getNavigationData().airports[airportAndRunway.airportIndex];
 		const auto& runway = airport.runways[airportAndRunway.runwayIndex];
-
-		constexpr static uint8_t cornerRadius = 3;
 
 		renderer->renderFilledRectangle(
 			bounds,
@@ -28,19 +25,21 @@ namespace pizda {
 
 		renderer->renderRectangle(
 			bounds,
-			cornerRadius,
+			Theme::cornerRadius,
 			isActive() ? &Theme::fg1 : &Theme::bg4
 		);
 
 		// Name
+		const auto text =runway.getFormattedName();
+
 		renderer->renderString(
 			Point(
-				bounds.getX() + 15,
+				bounds.getXCenter() - Theme::fontNormal.getWidth(text) / 2,
 				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
 			),
 			&Theme::fontNormal,
 			&Theme::fg1,
-			runway.getFormattedName()
+			text
 		);
 	}
 
@@ -80,6 +79,8 @@ namespace pizda {
 				_waypointButton.setVisible(false);
 
 				_runwaysTitle.setVisible(false);
+
+				_runwaysSelector.setSelectedIndex(-1);
 				_runwaysLayout.removeAndDeleteChildren();
 			}
 			// Found
@@ -90,7 +91,6 @@ namespace pizda {
 				_waypointPlaceholder.setVisible(false);
 
 				_waypointButton.setWaypointIndex(waypointIndex);
-				_waypointButton.setActive(false);
 				_waypointButton.setVisible(true);
 
 				// Airport
@@ -98,20 +98,26 @@ namespace pizda {
 					_waypointTitle.getTitle().setText(L"Airport");
 
 					_runwaysTitle.setVisible(true);
+
+					_runwaysSelector.setSelectedIndex(-1);
 					_runwaysLayout.removeAndDeleteChildren();
 
 					const auto airportIndex = nd.getAirportIndex(waypointIndex);
 					const auto& airport = nd.airports[airportIndex];
 
 					for (size_t runwayIndex = 0; runwayIndex < airport.runways.size(); runwayIndex++) {
-						_runwaysLayout += new RunwayButton(NavigationAirportIndexAndRunwayIndexData(airportIndex, runwayIndex));
+						_runwaysSelector.addItem(new RunwayItem(NavigationAirportIndexAndRunwayIndexData(airportIndex, runwayIndex)));
 					}
+
+					_runwaysSelector.setSelectedIndex(0);
 				}
 				// Waypoint
 				else {
 					_waypointTitle.getTitle().setText(L"Waypoint");
 
 					_runwaysTitle.setVisible(false);
+
+					_runwaysSelector.setSelectedIndex(-1);
 					_runwaysLayout.removeAndDeleteChildren();
 				}
 			}
@@ -127,13 +133,19 @@ namespace pizda {
 
 		_waypointButton.setVisible(false);
 		_waypointButton.setToggle(true);
+		_waypointButton.setEnabled(false);
 		_waypointLayout += &_waypointButton;
 
 		rows += &_waypointTitle;
 
 		// Runways
 		_runwaysTitle.setVisible(false);
+
+		_runwaysLayout.setOrientation(Orientation::horizontal);
 		_runwaysLayout.setSpacing(5);
+		_runwaysSelector += &_runwaysLayout;
+		_runwaysSelector.setItemsLayout(&_runwaysLayout);
+
 		rows += &_runwaysTitle;
 
 		// Confirm button
@@ -149,12 +161,12 @@ namespace pizda {
 
 				// Airport
 				if (waypointData.type == NavigationWaypointType::airport) {
-					if (_runwaysLayout.getChildrenCount() == 0)
+					if (_runwaysSelector.getSelectedIndex() < 0)
 						return;
 
-					const auto runwayButton = dynamic_cast<RunwayButton*>(_runwaysLayout[0]);
+					const auto runwayItem = dynamic_cast<RunwayItem*>(_runwaysSelector.getSelectedItem());
 
-					onConfirm(_waypointButton.getWaypointIndex(), runwayButton->airportAndRunway);
+					onConfirm(_waypointButton.getWaypointIndex(), runwayItem->airportAndRunway);
 				}
 				else {
 					onConfirm(_waypointButton.getWaypointIndex(), std::nullopt);

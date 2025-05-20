@@ -38,6 +38,10 @@ namespace pizda {
 		invalidate();
 	}
 
+	float WaypointButton::getDistanceNm() const {
+		return _distanceNm;
+	}
+
 	void WaypointButton::onRender(Renderer* renderer) {
 		if (_waypointIndex < 0)
 			return;
@@ -101,7 +105,7 @@ namespace pizda {
 		// Distance
 		const auto coordsText = std::format(
 			L"{} nm",
-			YOBA::round(_distanceNm, 2)
+			YOBA::round(_distanceNm, 1)
 		);
 
 		x = bounds.getX2() - 10 - Theme::fontNormal.getWidth(coordsText);

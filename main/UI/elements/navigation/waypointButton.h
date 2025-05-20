@@ -19,6 +19,8 @@ namespace pizda {
 			int32_t getWaypointIndex() const;
 			void setWaypointIndex(int32_t value);
 
+			float getDistanceNm() const;
+
 		protected:
 			void onRender(Renderer* renderer) override;
 

@@ -13,9 +13,9 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class RunwayButton : public Button {
+	class RunwayItem : public SelectorItem {
 		public:
-			explicit RunwayButton(const NavigationAirportIndexAndRunwayIndexData& airportAndRunway);
+			explicit RunwayItem(const NavigationAirportIndexAndRunwayIndexData& airportAndRunway);
 
 			NavigationAirportIndexAndRunwayIndexData airportAndRunway;
 
@@ -40,8 +40,9 @@ namespace pizda {
 			Layout _waypointLayout {};
 			Titler _waypointTitle = { L"Waypoint", &_waypointLayout };
 
-			StackLayout _runwaysLayout {};
-			Titler _runwaysTitle = { L"Runway", &_runwaysLayout };
+			RelativeStackLayout _runwaysLayout {};
+			Selector _runwaysSelector {};
+			Titler _runwaysTitle = { L"Runway", &_runwaysSelector };
 
 			Button _confirmButton {};
 	};

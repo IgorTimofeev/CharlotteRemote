@@ -72,6 +72,24 @@ namespace pizda {
 			waypointData.name,
 			nameFontScale
 		);
+
+		// Distance
+		const auto coordsText = std::format(
+			L"{} nm",
+			YOBA::round(getDistanceNm(), 1)
+		);
+
+		x = bounds.getX2() - 10 - Theme::fontNormal.getWidth(coordsText);
+
+		renderer->renderString(
+			Point(
+				x,
+				y - Theme::fontNormal.getHeight() / 2
+			),
+			&Theme::fontNormal,
+			&Theme::fg4,
+			coordsText
+		);
 	}
 
 	AirportFlightPlanItem::AirportFlightPlanItem(bool destination) : _destination(destination) {
