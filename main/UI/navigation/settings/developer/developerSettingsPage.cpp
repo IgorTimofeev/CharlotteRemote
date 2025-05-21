@@ -23,7 +23,7 @@ namespace pizda {
 		rows += &_debugOverlaySwitchTitle;
 
 		// Button
-		Theme::apply(&_settingsNavigationResetButton);
+		Theme::applyPrimary(&_settingsNavigationResetButton);
 
 		_settingsNavigationResetButton.click += [] {
 			auto& rc = RC::getInstance();
@@ -65,7 +65,7 @@ namespace pizda {
 		rows += &_speakerCountSliderTitle;
 
 		// Button
-		Theme::apply(&_speakerButton);
+		Theme::applyPrimary(&_speakerButton);
 		_speakerButton.setText(L"Play");
 
 		_speakerButton.click += [this] {

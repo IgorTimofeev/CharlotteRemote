@@ -1,6 +1,6 @@
 #include "ND.h"
 #include <rc.h>
-#include <UI/elements/dialogs/addWaypointDialog.h>
+#include <UI/elements/navigation/addWaypointDialog.h>
 
 namespace pizda {
 	ND::ND() {
@@ -49,7 +49,7 @@ namespace pizda {
 	}
 
 	void ND::addGovnoButton(Button* button, const std::function<void()>& onClick) {
-		Theme::apply(button);
+		Theme::applyPrimary(button);
 
 		button->setSize(Size(20));
 

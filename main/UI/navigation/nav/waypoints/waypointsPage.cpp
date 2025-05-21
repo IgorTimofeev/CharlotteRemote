@@ -8,6 +8,7 @@
 
 #include <format>
 #include <esp_log.h>
+#include <UI/elements/navigation/addWaypointDialog.h>
 
 #include "waypointItem.h"
 
@@ -17,16 +18,56 @@ namespace pizda {
 	WaypointsPage::WaypointsPage() {
 		_instance = this;
 
-		title.setText(L"Waypoints");
+		title.setText(L"Nav database");
 
-		Theme::apply(&_searchTextField);
+		// Type selector
+		_airportTypeItem.setText(L"Airport");
+		_typeSelector.addItem(&_airportTypeItem);
 
-		_searchTextField.textChanged += [this] {
-			search();
+		_waypointTypeItem.setText(L"Waypoint");
+		_typeSelector.addItem(&_waypointTypeItem);
+
+		_typeSelector.setSelectedIndex(0);
+
+		_typeSelector.selectionChanged += [this] {
+			updateFromNavigationData();
 		};
 
-		rows += &_searchTextField;
+		rows += &_typeSelector;
 
+		// Search and add button
+		_searchAndAddRow.setOrientation(Orientation::horizontal);
+		_searchAndAddRow.setSpacing(10);
+
+		// Search text field
+		Theme::apply(&_searchTextField);
+
+		_searchTextField.setPlaceholder(L"Search");
+
+		_searchTextField.textChanged += [this] {
+			if (_searchTextField.isFocused())
+				updateFromNavigationData();
+		};
+
+		_searchAndAddRow += &_searchTextField;
+
+		// Add button
+		Theme::applySecondary(&_addButton);
+		_addButton.setWidth(Theme::elementHeight);
+		_addButton.setText(L"+");
+
+		_addButton.click += [this] {
+			AddWaypointDialog::create({}, [this] {
+				updateFromNavigationData();
+			});
+		};
+
+		_searchAndAddRow.setAutoSize(&_addButton);
+		_searchAndAddRow += &_addButton;
+
+		rows += &_searchAndAddRow;
+
+		// Items
 		_itemsLayout.setSpacing(5);
 		rows += &_itemsLayout;
 
@@ -45,24 +86,22 @@ namespace pizda {
 
 	void WaypointsPage::updateFromNavigationData() {
 		const auto& nd = RC::getInstance().getNavigationData();
+		const auto text = _searchTextField.getText();
 
 		_itemsLayout.removeAndDeleteChildren();
 
-		for (uint16_t i = 0; i < nd.waypoints.size(); i++)
-			_itemsLayout += new WaypointItem(i);
-	}
+		for (uint16_t i = 0; i < nd.waypoints.size(); i++) {
+			const auto& waypointData = nd.waypoints[i];
 
-	void WaypointsPage::search() {
-		const auto& nd = RC::getInstance().getNavigationData();
-		const auto text = _searchTextField.getText();
-
-		for (const auto child : _itemsLayout) {
-			const auto waypointItem = dynamic_cast<WaypointItem*>(child);
-
-			waypointItem->setVisible(
-				text.length() == 0
-				|| StringUtils::containsIgnoreCase(nd.waypoints[waypointItem->getWaypointIndex()].name, text)
-			);
+			if (
+				(_typeSelector.getSelectedIndex() == 0) == (waypointData.type == NavigationWaypointType::airport)
+				&& (
+					text.length() == 0
+					|| StringUtils::containsIgnoreCase(waypointData.name, text)
+				)
+			) {
+				_itemsLayout += new WaypointItem(i);
+			}
 		}
 	}
 }

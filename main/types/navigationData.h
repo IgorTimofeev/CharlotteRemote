@@ -111,9 +111,9 @@ namespace pizda {
 			std::vector<NavigationRunwayData> runways;
 	};
 
-	class NavigationAirportIndexAndRunwayIndexData {
+	class NavigationAirportAndRunwayIndicesData {
 		public:
-			NavigationAirportIndexAndRunwayIndexData(uint16_t airportIndex, uint8_t runwayIndex) :
+			NavigationAirportAndRunwayIndicesData(uint16_t airportIndex, uint8_t runwayIndex) :
 				airportIndex(airportIndex),
 				runwayIndex(runwayIndex)
 			{
@@ -124,10 +124,16 @@ namespace pizda {
 			uint8_t runwayIndex = 0;
 	};
 
-	class NavigationDataFlightPlanAirport : public NavigationAirportIndexAndRunwayIndexData {
+	class NavigationDataFlightPlanAirport : public NavigationAirportAndRunwayIndicesData {
 		public:
 			NavigationDataFlightPlanAirport(uint16_t airportIndex, uint16_t runwayIndex) :
-				NavigationAirportIndexAndRunwayIndexData(airportIndex, runwayIndex)
+				NavigationAirportAndRunwayIndicesData(airportIndex, runwayIndex)
+			{
+
+			}
+
+			explicit NavigationDataFlightPlanAirport(const NavigationAirportAndRunwayIndicesData& airportAndRunway) :
+				NavigationDataFlightPlanAirport(airportAndRunway.airportIndex, airportAndRunway.runwayIndex)
 			{
 
 			}

@@ -19,18 +19,15 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		const auto& waypointData = rc.getNavigationData().waypoints[getWaypointIndex()];
 
-		constexpr static uint8_t cornerRadius = 3;
-		constexpr static uint8_t nameFontScale = 1;
-
 		renderer->renderFilledRectangle(
 			bounds,
-			cornerRadius,
+			Theme::cornerRadius,
 			isActive() ? &Theme::bg4 : &Theme::bg3
 		);
 
 		renderer->renderRectangle(
 			bounds,
-			cornerRadius,
+			Theme::cornerRadius,
 			isActive() ? &Theme::fg1 : &Theme::bg4
 		);
 
@@ -65,12 +62,11 @@ namespace pizda {
 		renderer->renderString(
 			Point(
 				x,
-				y - Theme::fontNormal.getHeight() / 2 * nameFontScale
+				y - Theme::fontNormal.getHeight() / 2
 			),
 			&Theme::fontNormal,
 			&Theme::fg1,
-			waypointData.name,
-			nameFontScale
+			getNameForRendering(waypointData)
 		);
 
 		// Distance
@@ -92,22 +88,26 @@ namespace pizda {
 		);
 	}
 
+	std::wstring FlightPlanItem::getNameForRendering(const NavigationWaypointData& waypointData) const {
+		return waypointData.name;
+	}
+
 	AirportFlightPlanItem::AirportFlightPlanItem(bool destination) : _destination(destination) {
 
 	}
 
-	const std::optional<NavigationAirportIndexAndRunwayIndexData>& AirportFlightPlanItem::getAirport() const {
-		return _airport;
+	const std::optional<NavigationAirportAndRunwayIndicesData>& AirportFlightPlanItem::getAirportAndRunway() const {
+		return _airportAndRunway;
 	}
 
-	void AirportFlightPlanItem::setAirport(const std::optional<NavigationAirportIndexAndRunwayIndexData>& airport) {
-		_airport = airport;
+	void AirportFlightPlanItem::setAirportAndRunway(const std::optional<NavigationAirportAndRunwayIndicesData>& airportAndRunway) {
+		_airportAndRunway = airportAndRunway;
 
 		const auto& nd = RC::getInstance().getNavigationData();
 
 		setWaypointIndex(
-			_airport.has_value()
-			? nd.airports[_airport.value().airportIndex].waypointIndex
+			_airportAndRunway.has_value()
+			? nd.airports[_airportAndRunway.value().airportIndex].waypointIndex
 			: -1
 		);
 
@@ -115,7 +115,14 @@ namespace pizda {
 	}
 
 	void AirportFlightPlanItem::onClick() {
-		(new AirportFlightPlanItemDialog(_airport.value(), _destination))->show();
+		(new AirportFlightPlanItemDialog(_airportAndRunway.value(), _destination))->show();
+	}
+
+	std::wstring AirportFlightPlanItem::getNameForRendering(const NavigationWaypointData& waypointData) const {
+		const auto& nd = RC::getInstance().getNavigationData();
+		const auto& airport = nd.airports[_airportAndRunway.value().airportIndex];
+
+		return std::format(L"{} / {}", waypointData.name, airport.runways[_airportAndRunway.value().runwayIndex].getFormattedName());
 	}
 
 	LegFlightPlanItem::LegFlightPlanItem(uint16_t legIndex): _legIndex(legIndex) {

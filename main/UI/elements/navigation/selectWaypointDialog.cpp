@@ -7,7 +7,7 @@
 #include <esp_log.h>
 
 namespace pizda {
-	RunwayItem::RunwayItem(const NavigationAirportIndexAndRunwayIndexData& airportAndRunway) : airportAndRunway(airportAndRunway) {
+	RunwayItem::RunwayItem(const NavigationAirportAndRunwayIndicesData& airportAndRunway) : airportAndRunway(airportAndRunway) {
 		setHeight(WaypointButton::height);
 	}
 
@@ -30,7 +30,7 @@ namespace pizda {
 		);
 
 		// Name
-		const auto text =runway.getFormattedName();
+		const auto text = runway.getFormattedName();
 
 		renderer->renderString(
 			Point(
@@ -43,10 +43,27 @@ namespace pizda {
 		);
 	}
 
+	void SelectWaypointDialog::edit(
+		std::wstring_view titleText,
+		const WaypointDialogSelectedItem& selectedItem,
+		const std::function<void(const WaypointDialogSelectedItem& selectedItem)>& onConfirm
+	) {
+		const auto& nd = RC::getInstance().getNavigationData();
+		const auto& selectedWaypointData = nd.waypoints[selectedItem.waypointIndex];
+
+		(new SelectWaypointDialog(
+			titleText,
+			selectedWaypointData.type == NavigationWaypointType::airport,
+			selectedItem,
+			onConfirm
+		))->show();
+	}
+
 	SelectWaypointDialog::SelectWaypointDialog(
 		std::wstring_view titleText,
-		const std::function<bool(const NavigationWaypointData&)>& filter,
-		const std::function<void(uint16_t, const std::optional<NavigationAirportIndexAndRunwayIndexData>& airportAndRunway)>& onConfirm
+		bool airportsOnly,
+		const std::optional<WaypointDialogSelectedItem>& selectedItem,
+		const std::function<void(const WaypointDialogSelectedItem& selectedItem)>& onConfirm
 	) {
 		auto& rc = RC::getInstance();
 		auto& nd = rc.getNavigationData();
@@ -54,106 +71,60 @@ namespace pizda {
 		title.setText(titleText);
 
 		// Name
-		Theme::apply(&_name);
+		Theme::apply(&_searchTextField);
 
-		_name.textChanged += [this, &nd, filter] {
+		_searchTextField.setPlaceholder(L"Search");
+
+		_searchTextField.textChanged += [this, &nd, airportsOnly] {
+			if (!_searchTextField.isFocused())
+				return;
+
 			// Searching for waypoints by filter & name
 			const auto it =
-				_name.getText().length() == 0
+				_searchTextField.getText().length() == 0
 				? nd.waypoints.end()
 				: std::ranges::find_if(
 					nd.waypoints,
-					[this, filter](const NavigationWaypointData& waypointData) {
+					[this, airportsOnly](const NavigationWaypointData& waypointData) {
 						return
-							filter(waypointData)
-							&& StringUtils::containsIgnoreCase(waypointData.name, _name.getText());
+							((waypointData.type == NavigationWaypointType::airport) == airportsOnly)
+							&& StringUtils::containsIgnoreCase(waypointData.name, _searchTextField.getText());
 					}
 				);
 
 			// Not found
 			if (it == nd.waypoints.end()) {
-				_waypointTitle.getTitle().setText(L"Waypoint");
-
-				_waypointPlaceholder.setVisible(true);
-
-				_waypointButton.setVisible(false);
-
+				_waypointTitle.setVisible(false);
 				_runwaysTitle.setVisible(false);
-
-				_runwaysSelector.setSelectedIndex(-1);
-				_runwaysLayout.removeAndDeleteChildren();
+				_runwaysSelector.removeAndDeleteItems();
 			}
 			// Found
 			else {
+				_waypointTitle.setVisible(true);
+
 				const auto waypointIndex = std::distance(nd.waypoints.begin(), it);
 				const auto& waypointData = nd.waypoints[waypointIndex];
 
-				_waypointPlaceholder.setVisible(false);
-
-				_waypointButton.setWaypointIndex(waypointIndex);
-				_waypointButton.setVisible(true);
-
-				// Airport
-				if (waypointData.type == NavigationWaypointType::airport) {
-					_waypointTitle.getTitle().setText(L"Airport");
-
-					_runwaysTitle.setVisible(true);
-
-					_runwaysSelector.setSelectedIndex(-1);
-					_runwaysLayout.removeAndDeleteChildren();
-
-					const auto airportIndex = nd.getAirportIndex(waypointIndex);
-					const auto& airport = nd.airports[airportIndex];
-
-					for (uint8_t runwayIndex = 0; runwayIndex < airport.runways.size(); runwayIndex++) {
-						_runwaysSelector.addItem(new RunwayItem(NavigationAirportIndexAndRunwayIndexData(airportIndex, runwayIndex)));
-					}
-
-					_runwaysSelector.setSelectedIndex(0);
-				}
-				// Waypoint
-				else {
-					_waypointTitle.getTitle().setText(L"Waypoint");
-
-					_runwaysTitle.setVisible(false);
-
-					_runwaysSelector.setSelectedIndex(-1);
-					_runwaysLayout.removeAndDeleteChildren();
-				}
+				select(waypointIndex, waypointData, 0);
 			}
 		};
 
-		rows += &_nameTitle;
+		rows += &_searchTextFieldTitle;
 
 		// Waypoint
-		Theme::applyPlaceholder(&_waypointPlaceholder);
-		_waypointPlaceholder.setHeight(WaypointButton::height);
-		_waypointPlaceholder.setText(L"Press me, senpai");
-		_waypointLayout += &_waypointPlaceholder;
-
-		_waypointButton.setVisible(false);
 		_waypointButton.setToggle(true);
 		_waypointButton.setEnabled(false);
-		_waypointLayout += &_waypointButton;
-
 		rows += &_waypointTitle;
 
 		// Runways
-		_runwaysTitle.setVisible(false);
-
-		_runwaysLayout.setOrientation(Orientation::horizontal);
-		_runwaysLayout.setSpacing(5);
-		_runwaysSelector += &_runwaysLayout;
-		_runwaysSelector.setItemsLayout(&_runwaysLayout);
-
 		rows += &_runwaysTitle;
 
 		// Confirm button
-		Theme::apply(&_confirmButton);
+		Theme::applyPrimary(&_confirmButton);
 		_confirmButton.setText(L"Confirm");
 
-		_confirmButton.click += [&rc, &nd, this, onConfirm, filter] {
-			rc.getApplication().scheduleOnTick([&rc, &nd, this, onConfirm, filter] {
+		_confirmButton.click += [&rc, &nd, this, onConfirm] {
+			rc.getApplication().scheduleOnTick([&rc, &nd, this, onConfirm] {
 				if (_waypointButton.getWaypointIndex() < 0)
 					return;
 
@@ -166,10 +137,10 @@ namespace pizda {
 
 					const auto runwayItem = dynamic_cast<RunwayItem*>(_runwaysSelector.getSelectedItem());
 
-					onConfirm(_waypointButton.getWaypointIndex(), runwayItem->airportAndRunway);
+					onConfirm(WaypointDialogSelectedItem(_waypointButton.getWaypointIndex(), runwayItem->airportAndRunway));
 				}
 				else {
-					onConfirm(_waypointButton.getWaypointIndex(), std::nullopt);
+					onConfirm(WaypointDialogSelectedItem(_waypointButton.getWaypointIndex(), std::nullopt));
 				}
 
 				hide();
@@ -178,5 +149,57 @@ namespace pizda {
 		};
 
 		rows += &_confirmButton;
+
+		// Initialization
+		if (selectedItem.has_value()) {
+			_waypointTitle.setVisible(true);
+
+			const auto& waypointData = nd.waypoints[selectedItem.value().waypointIndex];
+
+			_searchTextField.setText(waypointData.name);
+
+			select(
+				selectedItem.value().waypointIndex,
+				waypointData,
+				selectedItem.value().airportAndRunway.has_value() ? selectedItem.value().airportAndRunway.value().runwayIndex : 0
+			);
+		}
+		else {
+			_waypointTitle.setVisible(false);
+			_runwaysTitle.setVisible(false);
+		}
+	}
+
+	void SelectWaypointDialog::select(
+		uint16_t waypointIndex,
+		const NavigationWaypointData& waypointData,
+		uint16_t runwayIndex
+	) {
+		const auto& nd = RC::getInstance().getNavigationData();
+
+		_waypointButton.setWaypointIndex(waypointIndex);
+
+		// Airport
+		if (waypointData.type == NavigationWaypointType::airport) {
+			_waypointTitle.getTitle().setText(L"Airport");
+			_runwaysTitle.setVisible(true);
+
+			const auto airportIndex = nd.getAirportIndex(waypointIndex);
+			const auto& airport = nd.airports[airportIndex];
+
+			_runwaysSelector.removeAndDeleteItems();
+
+			for (uint8_t i = 0; i < airport.runways.size(); i++) {
+				_runwaysSelector.addItem(new RunwayItem(NavigationAirportAndRunwayIndicesData(airportIndex, i)));
+			}
+
+			_runwaysSelector.setSelectedIndex(runwayIndex);
+		}
+		// Waypoint
+		else {
+			_waypointTitle.getTitle().setText(L"Waypoint");
+			_runwaysTitle.setVisible(false);
+			_runwaysSelector.removeAndDeleteItems();
+		}
 	}
 }

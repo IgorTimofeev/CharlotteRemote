@@ -17,7 +17,7 @@ namespace pizda {
 				bottomButtonsRow += &cancelButton;
 
 				// Confirm
-				Theme::apply(&confirmButton);
+				Theme::applyPrimary(&confirmButton);
 				confirmButton.setText(L"Confirm");
 				bottomButtonsRow += &confirmButton;
 			}

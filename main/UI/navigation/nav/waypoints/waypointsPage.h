@@ -4,6 +4,10 @@
 #include <YOBA/UI.h>
 
 #include <UI/navigation/page.h>
+#include <UI/elements/tabSelector.h>
+#include <UI/elements/tabSelector.h>
+
+#include "waypointItem.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -20,9 +24,14 @@ namespace pizda {
 		private:
 			static WaypointsPage* _instance;
 
-			TextField _searchTextField {};
-			StackLayout _itemsLayout {};
+			TabSelectorItem _airportTypeItem {};
+			TabSelectorItem _waypointTypeItem {};
+			TabSelector _typeSelector {};
 
-			void search();
+			RelativeStackLayout _searchAndAddRow {};
+			TextField _searchTextField {};
+			Button _addButton {};
+
+			StackLayout _itemsLayout {};
 	};
 }

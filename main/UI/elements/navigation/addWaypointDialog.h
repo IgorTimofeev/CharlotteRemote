@@ -1,7 +1,7 @@
 #pragma once
 
 #include <esp_log.h>
-#include "cancelConfirmDialog.h"
+#include "UI/elements/dialogs/cancelConfirmDialog.h"
 #include <UI/theme.h>
 #include <UI/elements/titler.h>
 #include <types/navigationData.h>
@@ -66,7 +66,7 @@ namespace pizda {
 
 				confirmButton.click += [this, &nd, &rc] {
 					if (name.getText().size() == 0) {
-						name.setBorderColor(&Theme::bad2);
+						name.setDefaultBorderColor(&Theme::bad2);
 						return;
 					}
 

@@ -46,8 +46,8 @@ namespace pizda {
 				seven.setSegmentThickness(1);
 				seven.setSegmentLength(6);
 				seven.setDigitCount(digitCount);
-				seven.setSecondaryColor(&Theme::fg1);
-				seven.setPrimaryColor(&Theme::bg5);
+				seven.setInactiveColor(&Theme::bg5);
+				seven.setActiveColor(&Theme::fg1);
 				backgroundAndSevenLayout += &seven;
 
 				backgroundAndSevenLayout.setMargin(Margin(0, 0, 0, button.getSize().getHeight() - button.getCornerRadius() * 2));

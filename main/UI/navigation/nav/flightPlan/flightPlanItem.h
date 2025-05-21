@@ -19,20 +19,24 @@ namespace pizda {
 
 		protected:
 			void onRender(Renderer* renderer) override;
+
+			virtual std::wstring getNameForRendering(const NavigationWaypointData& waypointData) const;
 	};
 
 	class AirportFlightPlanItem : public FlightPlanItem {
 		public:
 			explicit AirportFlightPlanItem(bool destination);
 
-			const std::optional<NavigationAirportIndexAndRunwayIndexData>& getAirport() const;
-			void setAirport(const std::optional<NavigationAirportIndexAndRunwayIndexData>& airport);
+			const std::optional<NavigationAirportAndRunwayIndicesData>& getAirportAndRunway() const;
+			void setAirportAndRunway(const std::optional<NavigationAirportAndRunwayIndicesData>& airportAndRunway);
 
 		protected:
 			void onClick() override;
 
+			std::wstring getNameForRendering(const NavigationWaypointData& waypointData) const override;
+
 		private:
-			std::optional<NavigationAirportIndexAndRunwayIndexData> _airport = std::nullopt;
+			std::optional<NavigationAirportAndRunwayIndicesData> _airportAndRunway = std::nullopt;
 			bool _destination;
 	};
 

@@ -43,7 +43,7 @@ namespace pizda {
 		rows += &_updatesDescription;
 
 		// Button
-		Theme::apply(&_updatesButton);
+		Theme::applyPrimary(&_updatesButton);
 		_updatesButton.setText(L"Begin");
 
 		_updatesButton.click += [] {

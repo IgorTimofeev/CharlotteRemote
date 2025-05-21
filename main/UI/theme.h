@@ -53,7 +53,7 @@ namespace pizda {
 			constexpr static uint16_t cornerRadius = 3;
 
 			static void setPaletteColors(Bit8PaletteRenderer* renderer);
-			static void apply(Button* button);
+			static void applyPrimary(Button* button);
 			static void applySecondary(Button* button);
 			static void applyCritical(Button* button);
 			static void applyPlaceholder(Button* button);

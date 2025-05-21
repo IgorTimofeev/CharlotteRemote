@@ -68,7 +68,7 @@ namespace pizda {
 
 		// Origin
 		_originItem.setVisible(nd.flightPlan.origin.has_value());
-		_originItem.setAirport(nd.flightPlan.origin);
+		_originItem.setAirportAndRunway(nd.flightPlan.origin);
 		_originPlaceholderItem.setVisible(!nd.flightPlan.origin.has_value());
 
 		// Legs
@@ -81,7 +81,7 @@ namespace pizda {
 
 		// Destination
 		_destinationItem.setVisible(nd.flightPlan.destination.has_value());
-		_destinationItem.setAirport(nd.flightPlan.destination);
+		_destinationItem.setAirportAndRunway(nd.flightPlan.destination);
 		_destinationPlaceholderItem.setVisible(!nd.flightPlan.destination.has_value());
 	}
 }

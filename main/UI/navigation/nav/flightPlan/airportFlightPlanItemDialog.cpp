@@ -3,18 +3,50 @@
 #include <rc.h>
 #include <types/navigationData.h>
 #include <UI/theme.h>
+#include <UI/elements/navigation/selectWaypointDialog.h>
 
 #include "flightPlanPage.h"
 
 namespace pizda {
-	AirportFlightPlanItemDialog::AirportFlightPlanItemDialog(const NavigationAirportIndexAndRunwayIndexData& airportAndRunway, bool destination) {
+	AirportFlightPlanItemDialog::AirportFlightPlanItemDialog(const NavigationAirportAndRunwayIndicesData& airportAndRunway, bool destination) {
 		auto& rc = RC::getInstance();
 		auto& nd = rc.getNavigationData();
 
 		const auto& airport = nd.airports[airportAndRunway.airportIndex];
 		const auto& waypointData = nd.waypoints[airport.waypointIndex];
 
-		title.setText(std::format(L"{} - {}", destination ? L"Destination" : L"Origin", waypointData.name));
+		title.setText(std::format(L"{} - {}", waypointData.name, destination ? L"destination" : L"origin"));
+
+		// Edit
+		Theme::applySecondary(&_editButton);
+		_editButton.setText(L"Change");
+
+		_editButton.click += [this, &waypointData, &airport, &airportAndRunway, destination, &nd] {
+			SelectWaypointDialog::edit(
+				std::format(L"Change {}", waypointData.name),
+				WaypointDialogSelectedItem(airport.waypointIndex, airportAndRunway),
+				[this, destination, &nd](const WaypointDialogSelectedItem& selectedItem) {
+					hide();
+					delete this;
+
+					const auto flightPlanAirport = NavigationDataFlightPlanAirport(selectedItem.airportAndRunway.value());
+
+					if (destination) {
+						nd.flightPlan.destination = flightPlanAirport;
+					}
+					else {
+						nd.flightPlan.origin = flightPlanAirport;
+					}
+
+					const auto page = FlightPlanPage::getInstance();
+
+					if (page)
+						page->updateFromNavigationData();
+				}
+			);
+		};
+
+		rows += &_editButton;
 
 		// Remove button
 		Theme::applyCritical(&_removeButton);
@@ -22,6 +54,9 @@ namespace pizda {
 
 		_removeButton.click += [&rc, &nd, this, destination] {
 			rc.getApplication().scheduleOnTick([&rc, &nd, this, destination] {
+				hide();
+				delete this;
+
 				if (destination) {
 					nd.flightPlan.destination = std::nullopt;
 				}
@@ -33,9 +68,6 @@ namespace pizda {
 
 				if (page)
 					page->updateFromNavigationData();
-
-				hide();
-				delete this;
 			});
 		};
 

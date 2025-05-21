@@ -18,10 +18,11 @@ namespace pizda {
 			);
 
 		private:
+			Button _editButton {};
 			Button _insertBeforeButton {};
 			Button _insertAfterButton {};
 			Button _removeButton {};
 
-			void insertWaypoint(const std::wstring& title, uint16_t insertAt);
+			void insertOnButtonClick(const std::wstring& title, uint16_t insertAt);
 	};
 }

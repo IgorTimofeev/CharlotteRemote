@@ -11,9 +11,10 @@ namespace pizda {
 
 	class AirportFlightPlanItemDialog : public Dialog {
 		public:
-			explicit AirportFlightPlanItemDialog(const NavigationAirportIndexAndRunwayIndexData& airportAndRunway, bool destination);
+			explicit AirportFlightPlanItemDialog(const NavigationAirportAndRunwayIndicesData& airportAndRunway, bool destination);
 
 		private:
+			Button _editButton {};
 			Button _removeButton {};
 	};
 }

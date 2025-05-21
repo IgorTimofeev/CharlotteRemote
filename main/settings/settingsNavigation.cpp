@@ -85,8 +85,8 @@ namespace pizda {
 				const auto runways = std::make_unique<SettingsNavigationAirportRunway[]>(runwaysSize);
 				stream.getObject(_runwaysList, runways.get(), runwaysSize);
 
-				for (uint32_t ri = 0; ri < runwaysSize; ri++) {
-					const auto& runway = runways[ri];
+				for (uint32_t i = 0; i < runwaysSize; i++) {
+					const auto& runway = runways[i];
 
 					nd.airports[runway.airportIndex].runways.push_back(NavigationRunwayData(
 						runway.geographicCoordinates,

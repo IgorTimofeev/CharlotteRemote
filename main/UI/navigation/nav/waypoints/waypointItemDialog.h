@@ -13,9 +13,6 @@ namespace pizda {
 			explicit WaypointItemDialog(uint16_t waypointIndex);
 
 		private:
-			Button _FPLOriginButton {};
-			Button _FPLLegButton {};
-			Button _FPLDestinationButton {};
 			Button _removeButton {};
 	};
 }

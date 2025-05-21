@@ -119,7 +119,7 @@ namespace pizda {
 		text->setTextColor(&Theme::fg3);
 	}
 
-	void Theme::apply(Button* button) {
+	void Theme::applyPrimary(Button* button) {
 		button->setHeight(elementHeight);
 		button->setCornerRadius(cornerRadius);
 
@@ -212,15 +212,16 @@ namespace pizda {
 		textField->setHeight(elementHeight);
 		textField->setCornerRadius(cornerRadius);
 
-		textField->setPrimaryColor(&Theme::bg3);
-		textField->setFocusedPrimaryColor(&Theme::bg4);
+		textField->setDefaultBackgroundColor(&Theme::bg3);
+		textField->setFocusedBackgroundColor(&Theme::bg4);
 
-		textField->setSecondaryColor(&Theme::fg1);
-		textField->setFocusedSecondaryColor(&Theme::fg1);
+		textField->setDefaultTextColor(&Theme::fg1);
+		textField->setFocusedTextColor(&Theme::fg1);
 
-		textField->setBorderColor(&Theme::bg4);
+		textField->setDefaultBorderColor(&Theme::bg4);
 		textField->setFocusedBorderColor(&Theme::accent1);
 
+		textField->setPlaceholderColor(&Theme::fg5);
 		textField->setCursorColor(&Theme::accent1);
 
 		textField->setFont(&Theme::fontNormal);

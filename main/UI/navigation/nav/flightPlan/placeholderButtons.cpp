@@ -19,15 +19,13 @@ namespace pizda {
 	void AirportPlaceholderButton::onClick() {
 		Button::onClick();
 
-		(new SelectWaypointDialog(
+		SelectWaypointDialog::select(
 			getText(),
-			[](const NavigationWaypointData& waypointData) {
-				return waypointData.type == NavigationWaypointType::airport;
-			},
-			[this](uint16_t, const std::optional<NavigationAirportIndexAndRunwayIndexData>& airportAndRunway) {
+			true,
+			[this](const WaypointDialogSelectedItem& selectedItem) {
 				auto& nd = RC::getInstance().getNavigationData();
 
-				const auto flightPlanAirport = NavigationDataFlightPlanAirport(airportAndRunway.value().airportIndex, airportAndRunway.value().runwayIndex);
+				const auto flightPlanAirport = NavigationDataFlightPlanAirport(selectedItem.airportAndRunway.value());
 
 				if (_destination) {
 					nd.flightPlan.destination = flightPlanAirport;
@@ -41,7 +39,7 @@ namespace pizda {
 				if (page)
 					page->updateFromNavigationData();
 			}
-		))->show();
+		);
 	}
 
 	LegPlaceholderButton::LegPlaceholderButton() {
