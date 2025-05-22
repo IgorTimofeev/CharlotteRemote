@@ -21,22 +21,27 @@ namespace pizda {
 		Theme::applySecondary(&_editButton);
 		_editButton.setText(L"Change");
 
-		_editButton.click += [this, &waypointData, legIndex, &leg] {
-			SelectWaypointDialog::edit(
-				std::format(L"Change {}", waypointData.name),
-				WaypointDialogSelectedItem(leg.waypointIndex, std::nullopt),
-				[legIndex](const WaypointDialogSelectedItem& selectedItem) {
-					auto& rc = RC::getInstance();
-					auto& nd = rc.getNavigationData();
+		_editButton.click += [this, &waypointData, legIndex, &leg, &rc] {
+			rc.getApplication().scheduleOnTick([&rc, this, &leg, legIndex, &waypointData] {
+				SelectWaypointDialog::edit(
+					std::format(L"Change {}", waypointData.name),
+					WaypointDialogSelectedItem(leg.waypointIndex, std::nullopt),
+					[legIndex](const WaypointDialogSelectedItem& selectedItem) {
+						auto& rc = RC::getInstance();
+						auto& nd = rc.getNavigationData();
 
-					nd.flightPlan.legs[legIndex] = NavigationDataFlightPlanLeg(selectedItem.waypointIndex);
+						nd.flightPlan.legs[legIndex] = NavigationDataFlightPlanLeg(selectedItem.waypointIndex);
 
-					const auto page = FlightPlanPage::getInstance();
+						const auto page = FlightPlanPage::getInstance();
 
-					if (page)
-						page->updateFromNavigationData();
-				}
-			);
+						if (page)
+							page->updateFromNavigationData();
+					}
+				);
+
+				hide();
+				delete this;
+			});
 		};
 
 		rows += &_editButton;
@@ -108,10 +113,10 @@ namespace pizda {
 
 	void LegFlightPlanItemDialog::insertOnButtonClick(const std::wstring& title, uint16_t insertAt) {
 		RC::getInstance().getApplication().scheduleOnTick([this, insertAt, title] {
+			showWaypointSelectionDialogToInsertAt(title, insertAt);
+
 			hide();
 			delete this;
-
-			showWaypointSelectionDialogToInsertAt(title, insertAt);
 		});
 	}
 }

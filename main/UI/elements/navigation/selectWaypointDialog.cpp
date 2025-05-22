@@ -8,39 +8,20 @@
 
 namespace pizda {
 	RunwayItem::RunwayItem(const NavigationAirportAndRunwayIndicesData& airportAndRunway) : airportAndRunway(airportAndRunway) {
-		setHeight(WaypointButton::height);
+		const auto& nd = RC::getInstance().getNavigationData();
+		setText(nd.airports[airportAndRunway.airportIndex].runways[airportAndRunway.runwayIndex].getFormattedName());
 	}
 
-	void RunwayItem::onRender(Renderer* renderer) {
-		const auto& bounds = getBounds();
+	WaypointDialogSelectedItem::WaypointDialogSelectedItem(uint16_t waypointIndex,
+		const std::optional<NavigationAirportAndRunwayIndicesData>& selectedItem):
+		NavigationWaypointDataIndexAware(waypointIndex),
+		airportAndRunway(selectedItem) {
 
-		const auto& airport = RC::getInstance().getNavigationData().airports[airportAndRunway.airportIndex];
-		const auto& runway = airport.runways[airportAndRunway.runwayIndex];
+	}
 
-		renderer->renderFilledRectangle(
-			bounds,
-			Theme::cornerRadius,
-			isActive() ? &Theme::bg4 : &Theme::bg3
-		);
-
-		renderer->renderRectangle(
-			bounds,
-			Theme::cornerRadius,
-			isActive() ? &Theme::fg1 : &Theme::bg4
-		);
-
-		// Name
-		const auto text = runway.getFormattedName();
-
-		renderer->renderString(
-			Point(
-				bounds.getXCenter() - Theme::fontNormal.getWidth(text) / 2,
-				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
-			),
-			&Theme::fontNormal,
-			&Theme::fg1,
-			text
-		);
+	void SelectWaypointDialog::select(std::wstring_view titleText, bool airportsOnly,
+		const std::function<void(const WaypointDialogSelectedItem& selectedItem)>& onConfirm) {
+		(new SelectWaypointDialog(titleText, airportsOnly, std::nullopt, onConfirm))->show();
 	}
 
 	void SelectWaypointDialog::edit(
@@ -181,7 +162,7 @@ namespace pizda {
 
 		// Airport
 		if (waypointData.type == NavigationWaypointType::airport) {
-			_waypointTitle.getTitle().setText(L"Airport");
+			_waypointTitle.title.setText(L"Airport");
 			_runwaysTitle.setVisible(true);
 
 			const auto airportIndex = nd.getAirportIndex(waypointIndex);
@@ -197,7 +178,7 @@ namespace pizda {
 		}
 		// Waypoint
 		else {
-			_waypointTitle.getTitle().setText(L"Waypoint");
+			_waypointTitle.title.setText(L"Waypoint");
 			_runwaysTitle.setVisible(false);
 			_runwaysSelector.removeAndDeleteItems();
 		}

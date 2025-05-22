@@ -8,7 +8,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class ProgressDialog : public Dialog {
+	class ProgressDialog : public ScrollViewDialog {
 		public:
 			ProgressDialog() {
 				// Description text

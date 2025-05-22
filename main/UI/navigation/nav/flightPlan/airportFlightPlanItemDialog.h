@@ -9,7 +9,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class AirportFlightPlanItemDialog : public Dialog {
+	class AirportFlightPlanItemDialog : public ScrollViewDialog {
 		public:
 			explicit AirportFlightPlanItemDialog(const NavigationAirportAndRunwayIndicesData& airportAndRunway, bool destination);
 

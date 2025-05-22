@@ -8,7 +8,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class WaypointItemDialog : public Dialog {
+	class WaypointItemDialog : public ScrollViewDialog {
 		public:
 			explicit WaypointItemDialog(uint16_t waypointIndex);
 

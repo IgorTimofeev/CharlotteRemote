@@ -21,29 +21,31 @@ namespace pizda {
 		Theme::applySecondary(&_editButton);
 		_editButton.setText(L"Change");
 
-		_editButton.click += [this, &waypointData, &airport, &airportAndRunway, destination, &nd] {
-			SelectWaypointDialog::edit(
-				std::format(L"Change {}", waypointData.name),
-				WaypointDialogSelectedItem(airport.waypointIndex, airportAndRunway),
-				[this, destination, &nd](const WaypointDialogSelectedItem& selectedItem) {
-					hide();
-					delete this;
+		_editButton.click += [this, &waypointData, &airport, &airportAndRunway, destination, &nd, &rc] {
+			rc.getApplication().scheduleOnTick([&rc, &nd, this, destination, &waypointData, &airport, &airportAndRunway] {
+				SelectWaypointDialog::edit(
+					std::format(L"Change {}", waypointData.name),
+					WaypointDialogSelectedItem(airport.waypointIndex, airportAndRunway),
+					[this, destination, &nd](const WaypointDialogSelectedItem& selectedItem) {
+						const auto flightPlanAirport = NavigationDataFlightPlanAirport(selectedItem.airportAndRunway.value());
 
-					const auto flightPlanAirport = NavigationDataFlightPlanAirport(selectedItem.airportAndRunway.value());
+						if (destination) {
+							nd.flightPlan.destination = flightPlanAirport;
+						}
+						else {
+							nd.flightPlan.origin = flightPlanAirport;
+						}
 
-					if (destination) {
-						nd.flightPlan.destination = flightPlanAirport;
+						const auto page = FlightPlanPage::getInstance();
+
+						if (page)
+							page->updateFromNavigationData();
 					}
-					else {
-						nd.flightPlan.origin = flightPlanAirport;
-					}
+				);
 
-					const auto page = FlightPlanPage::getInstance();
-
-					if (page)
-						page->updateFromNavigationData();
-				}
-			);
+				hide();
+				delete this;
+			});
 		};
 
 		rows += &_editButton;
@@ -54,9 +56,6 @@ namespace pizda {
 
 		_removeButton.click += [&rc, &nd, this, destination] {
 			rc.getApplication().scheduleOnTick([&rc, &nd, this, destination] {
-				hide();
-				delete this;
-
 				if (destination) {
 					nd.flightPlan.destination = std::nullopt;
 				}
@@ -68,6 +67,9 @@ namespace pizda {
 
 				if (page)
 					page->updateFromNavigationData();
+
+				hide();
+				delete this;
 			});
 		};
 

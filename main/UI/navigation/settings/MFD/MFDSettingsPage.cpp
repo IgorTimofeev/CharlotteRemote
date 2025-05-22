@@ -65,10 +65,10 @@ namespace pizda {
 	}
 
 	void MFDSettingsPage::updateMFDHeightTitle() {
-		_MFDSplitTitle.getTitle().setText(std::format(L"Split view height ({}%)", RC::getInstance().getSettings().interface.MFD.splitPercent));
+		_MFDSplitTitle.title.setText(std::format(L"Split view height ({}%)", RC::getInstance().getSettings().interface.MFD.splitPercent));
 	}
 
 	void MFDSettingsPage::updatePFDFOVTitle() {
-		_PFDFOVTitle.getTitle().setText(std::format(L"Field of view ({} deg)", RC::getInstance().getSettings().interface.MFD.PFD.FOV));
+		_PFDFOVTitle.title.setText(std::format(L"Field of view ({} deg)", RC::getInstance().getSettings().interface.MFD.PFD.FOV));
 	}
 }

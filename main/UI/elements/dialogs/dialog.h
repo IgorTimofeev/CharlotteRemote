@@ -23,7 +23,10 @@ namespace pizda {
 
 				event->setHandled(true);
 
-				reinterpret_cast<ModalElement*>(getParent())->hide();
+				const auto element = dynamic_cast<ModalElement*>(getParent());
+
+				element->hide();
+				delete element;
 			}
 	};
 
@@ -37,6 +40,21 @@ namespace pizda {
 				slideLayoutBackground.setFillColor(&Theme::bg2);
 				slideLayout += &slideLayoutBackground;
 
+				// Slide
+				slideLayout.setMaxHeight(Application::getCurrent()->getRenderer()->getTarget()->getSize().getHeight() * 8 / 10);
+				setAutoSize(&slideLayout);
+				*this += &slideLayout;
+			}
+
+			DialogSlideLayoutBackground ditheredBackground {};
+
+			Rectangle slideLayoutBackground {};
+			Layout slideLayout {};
+	};
+
+	class ScrollViewDialog : public Dialog {
+		public:
+			ScrollViewDialog() {
 				// Rows
 				rows.setMargin(Margin(15));
 				rows.setSpacing(10);
@@ -49,17 +67,7 @@ namespace pizda {
 				Theme::apply(&scrollView);
 				scrollView += &rows;
 				slideLayout += &scrollView;
-
-				// Slide
-				slideLayout.setMaxHeight(Application::getCurrent()->getRenderer()->getTarget()->getSize().getHeight() * 8 / 10);
-				setAutoSize(&slideLayout);
-				*this += &slideLayout;
 			}
-
-			DialogSlideLayoutBackground ditheredBackground {};
-
-			Rectangle slideLayoutBackground {};
-			Layout slideLayout {};
 
 			ScrollView scrollView {};
 			StackLayout rows {};

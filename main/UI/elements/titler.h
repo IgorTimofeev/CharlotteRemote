@@ -11,27 +11,22 @@ namespace pizda {
 			Titler() {
 				setSpacing(3);
 
-				Theme::applyTitle(&_title);
-				*this += &_title;
+				Theme::applyTitle(&title);
+				*this += &title;
 			}
 
 			explicit Titler(std::wstring_view title) : Titler()  {
-				_title.setText(title);
+				this->title.setText(title);
 			}
 
 			Titler(std::wstring_view title, Element* element) : Titler(title) {
 				*this += element;
 			}
 
-			Titler(Element* element) : Titler() {
+			explicit Titler(Element* element) : Titler() {
 				*this += element;
 			}
 
-			Text& getTitle() {
-				return _title;
-			}
-
-		private:
-			Text _title {};
+			Text title {};
 	};
 }

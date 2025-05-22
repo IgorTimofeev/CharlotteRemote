@@ -14,37 +14,27 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class RunwayItem : public SelectorItem {
+	class RunwayItem : public TabSelectorItem {
 		public:
 			explicit RunwayItem(const NavigationAirportAndRunwayIndicesData& airportAndRunway);
 
 			NavigationAirportAndRunwayIndicesData airportAndRunway;
-
-		protected:
-			void onRender(Renderer* renderer) override;
 	};
 
 	class WaypointDialogSelectedItem : public NavigationWaypointDataIndexAware {
 		public:
-			WaypointDialogSelectedItem(uint16_t waypointIndex, const std::optional<NavigationAirportAndRunwayIndicesData>& selectedItem) :
-				NavigationWaypointDataIndexAware(waypointIndex),
-				airportAndRunway(selectedItem)
-			{
-
-			}
+			WaypointDialogSelectedItem(uint16_t waypointIndex, const std::optional<NavigationAirportAndRunwayIndicesData>& selectedItem);
 
 			std::optional<NavigationAirportAndRunwayIndicesData> airportAndRunway;
 	};
 
-	class SelectWaypointDialog : public Dialog {
+	class SelectWaypointDialog : public ScrollViewDialog {
 		public:
 			static void select(
 				std::wstring_view titleText,
 				bool airportsOnly,
 				const std::function<void(const WaypointDialogSelectedItem& selectedItem)>& onConfirm
-			) {
-				(new SelectWaypointDialog(titleText, airportsOnly, std::nullopt, onConfirm))->show();
-			}
+			);
 
 			static void edit(
 				std::wstring_view titleText,

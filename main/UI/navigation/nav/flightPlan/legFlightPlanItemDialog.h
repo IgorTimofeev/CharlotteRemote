@@ -8,7 +8,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class LegFlightPlanItemDialog : public Dialog {
+	class LegFlightPlanItemDialog : public ScrollViewDialog {
 		public:
 			explicit LegFlightPlanItemDialog(uint16_t legIndex);
 

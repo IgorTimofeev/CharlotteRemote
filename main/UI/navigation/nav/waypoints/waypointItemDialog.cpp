@@ -21,15 +21,15 @@ namespace pizda {
 
 		_removeButton.click += [&rc, &nd, waypointIndex, this] {
 			rc.getApplication().scheduleOnTick([&rc, &nd, waypointIndex, this] {
+				hide();
+				delete this;
+
 				nd.removeWaypointAt(waypointIndex);
 
 				const auto page = WaypointsPage::getInstance();
 
 				if (page)
 					page->updateFromNavigationData();
-
-				hide();
-				delete this;
 			});
 		};
 
