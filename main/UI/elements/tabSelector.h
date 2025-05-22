@@ -45,7 +45,8 @@ namespace pizda {
 			TabSelector() {
 				setHeight(Theme::elementHeight);
 
-				backgroundRectangle.setFillColor(&Theme::bg2);
+				applyPageStyle();
+
 				backgroundRectangle.setCornerRadius(Theme::cornerRadius);
 				*this += &backgroundRectangle;
 
@@ -57,5 +58,15 @@ namespace pizda {
 
 			Rectangle backgroundRectangle {};
 			RelativeStackLayout itemsLayout {};
+
+			void applyPageStyle() {
+				backgroundRectangle.setFillColor(&Theme::bg2);
+				backgroundRectangle.setBorderColor(&Theme::bg3);
+			}
+
+			void applyDialogStyle() {
+				backgroundRectangle.setFillColor(&Theme::bg1);
+				backgroundRectangle.setBorderColor(&Theme::bg3);
+			}
 	};
 }

@@ -98,6 +98,8 @@ namespace pizda {
 		rows += &_waypointTitle;
 
 		// Runways
+		_runwaysSelector.applyDialogStyle();
+
 		rows += &_runwaysTitle;
 
 		// Confirm button

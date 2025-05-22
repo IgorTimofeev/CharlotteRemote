@@ -11,7 +11,7 @@ namespace pizda {
 		public:
 			static void renderWaypoint(Renderer* renderer, const Point& center, const Color* color, const NavigationWaypointData& waypointData) {
 				switch (waypointData.type) {
-					case NavigationWaypointType::enroute: {
+					case NavigationWaypointType::route: {
 						renderer->renderRectangle(
 							Bounds(
 								center.getX() - 1,

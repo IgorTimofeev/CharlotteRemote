@@ -10,7 +10,7 @@ namespace pizda {
 		rows += &title;
 
 		// Rows
-		rows.setSpacing(10);
+		rows.setSpacing(Theme::spacing);
 		rows.setMargin(Margin(15));
 		scrollView += &rows;
 

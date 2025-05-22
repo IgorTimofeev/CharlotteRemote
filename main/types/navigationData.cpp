@@ -139,19 +139,19 @@ namespace pizda {
 
 		// RNAV waypoints
 		addRNAVWaypoint(
-			NavigationWaypointType::enroute,
+			NavigationWaypointType::route,
 			L"OMEGA",
 			GeographicCoordinates(toRadians(59.983333f), toRadians(30.133333f), 0)
 		);
 
 		addRNAVWaypoint(
-			NavigationWaypointType::enroute,
+			NavigationWaypointType::route,
 			L"ABREL",
 			GeographicCoordinates(toRadians(59.913056f), toRadians(31.335f), 0)
 		);
 
 		addRNAVWaypoint(
-			NavigationWaypointType::enroute,
+			NavigationWaypointType::route,
 			L"SAPKI",
 			GeographicCoordinates(toRadians(59.604722f), toRadians(31.180833f), 0)
 		);

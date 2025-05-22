@@ -18,7 +18,7 @@ namespace pizda {
 			void onEvent(Event* event) override {
 				Element::onEvent(event);
 
-				if (!ScreenEvent::isScreen(event))
+				if (event->getTypeID() != TouchDownEvent::typeID)
 					return;
 
 				event->setHandled(true);
@@ -57,10 +57,10 @@ namespace pizda {
 			ScrollViewDialog() {
 				// Rows
 				rows.setMargin(Margin(15));
-				rows.setSpacing(10);
+				rows.setSpacing(Theme::spacing);
 
 				// Title
-				Theme::apply(&title);
+				Theme::applyPageTitle(&title);
 				rows += &title;
 
 				// ScrollView

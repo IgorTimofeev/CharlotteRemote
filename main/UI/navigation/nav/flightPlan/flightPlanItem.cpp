@@ -36,7 +36,7 @@ namespace pizda {
 		const Color* color;
 
 		switch (waypointData.type) {
-			case NavigationWaypointType::enroute:
+			case NavigationWaypointType::route:
 				color = &Theme::purple;
 
 				break;

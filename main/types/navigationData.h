@@ -8,7 +8,7 @@ namespace pizda {
 	using namespace YOBA;
 
 	enum class NavigationWaypointType : uint8_t {
-		enroute,
+		route,
 		terminal,
 		airport
 	};
