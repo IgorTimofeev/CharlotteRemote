@@ -42,11 +42,9 @@ namespace pizda {
 		return _distanceNm;
 	}
 
-	void WaypointButton::onRender(Renderer* renderer) {
+	void WaypointButton::onRender(Renderer* renderer, const Bounds& bounds) {
 		if (_waypointIndex < 0)
 			return;
-
-		const auto& bounds = getBounds();
 
 		const auto& waypointData = RC::getInstance().getNavigationData().waypoints[_waypointIndex];
 

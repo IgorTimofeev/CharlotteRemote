@@ -17,9 +17,7 @@ namespace pizda {
 			}
 
 		protected:
-			void onRender(Renderer* renderer) override {
-				const auto& bounds = getBounds();
-
+			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				if (isActive()) {
 					renderer->renderFilledRectangle(
 						bounds,

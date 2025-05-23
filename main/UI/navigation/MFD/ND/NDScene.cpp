@@ -70,10 +70,9 @@ namespace pizda {
 		updatePivot();
 	}
 
-	void NDScene::onRender(Renderer* renderer) {
-		Scene::onRender(renderer);
+	void NDScene::onRender(Renderer* renderer, const Bounds& bounds) {
+		Scene::onRender(renderer, bounds);
 
-		const auto& bounds = getBounds();
 		auto& rc = RC::getInstance();
 		const auto& settings = rc.getSettings();
 		const auto& ad = rc.getAircraftData();
@@ -408,9 +407,9 @@ namespace pizda {
 
 			event->setHandled(true);
 		}
-		else if (event->getTypeID() == EncoderRotateEvent::typeID) {
+		else if (event->getTypeID() == RotaryEncoderRotationEvent::typeID) {
 			if (isFocused()) {
-				const auto rotateEvent = static_cast<EncoderRotateEvent*>(event);
+				const auto rotateEvent = static_cast<RotaryEncoderRotationEvent*>(event);
 				const auto scaleFactor = std::abs(rotateEvent->getRPS()) > 60 ? 1.5f : 1.25f;
 
 				setCameraOffset(GeographicCoordinates(
@@ -430,11 +429,11 @@ namespace pizda {
 				event->setHandled(true);
 			}
 		}
-		else if (event->getTypeID() == EncoderPushEvent::typeID) {
+		else if (event->getTypeID() == RotaryEncoderSwitchEvent::typeID) {
 			if (isFocused()) {
-				const auto pushEvent = static_cast<EncoderPushEvent*>(event);
+				const auto pushEvent = static_cast<RotaryEncoderSwitchEvent*>(event);
 
-				if (pushEvent->isDown()) {
+				if (pushEvent->isPressed()) {
 					resetCameraLateralOffset();
 					hideCursor();
 

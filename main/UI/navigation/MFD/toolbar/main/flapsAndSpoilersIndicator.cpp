@@ -7,10 +7,9 @@ namespace pizda {
 		setImage(&resources::Images::MFDFlapsAndSpoilers);
 	}
 
-	void FlapsAndSpoilersIndicator::onRender(Renderer* renderer) {
-		ImageView::onRender(renderer);
+	void FlapsAndSpoilersIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
+		ImageView::onRender(renderer, bounds);
 
-		const auto& bounds = getBounds();
 		auto& rc = RC::getInstance();
 
 		// If surface rotation >= 5 deg

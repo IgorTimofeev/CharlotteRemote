@@ -18,7 +18,7 @@ namespace pizda {
 			PFDScene();
 
 		protected:
-			void onRender(Renderer* renderer) override;
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
 			static void renderPitchOverlay(
@@ -179,7 +179,7 @@ namespace pizda {
 			// Wind
 			constexpr static uint8_t windVisibilityGroundSpeed = 10;
 
-			void onRender(Renderer* renderer) override;
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		protected:
 			void onTick() override;

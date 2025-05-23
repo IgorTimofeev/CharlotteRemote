@@ -34,9 +34,9 @@ namespace pizda {
 	void ThrottleIndicatorLayout::onEvent(Event* event) {
 		InstrumentIndicatorLayout::onEvent(event);
 
-		if (event->getTypeID() == EncoderRotateEvent::typeID) {
+		if (event->getTypeID() == RotaryEncoderRotationEvent::typeID) {
 			if (isFocused()) {
-				const auto rotateEvent = reinterpret_cast<EncoderRotateEvent*>(event);
+				const auto rotateEvent = reinterpret_cast<RotaryEncoderRotationEvent*>(event);
 
 //				ESP_LOGI("Encoder", "RPS: %ld", rotateEvent->getRPS());
 
@@ -49,8 +49,8 @@ namespace pizda {
 				event->setHandled(true);
 			}
 		}
-		else if (event->getTypeID() == EncoderPushEvent::typeID) {
-			if (isFocused() && reinterpret_cast<EncoderPushEvent*>(event)->isDown()) {
+		else if (event->getTypeID() == RotaryEncoderSwitchEvent::typeID) {
+			if (isFocused() && reinterpret_cast<RotaryEncoderSwitchEvent*>(event)->isPressed()) {
 				auto& settings = RC::getInstance().getSettings();
 				settings.autopilot.autoThrottle = !settings.autopilot.autoThrottle;
 				settings.autopilot.scheduleWrite();

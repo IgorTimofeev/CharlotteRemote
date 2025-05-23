@@ -10,11 +10,9 @@ namespace pizda {
 
 	}
 
-	void FlightPlanItem::onRender(Renderer* renderer) {
+	void FlightPlanItem::onRender(Renderer* renderer, const Bounds& bounds) {
 		if (getWaypointIndex() < 0)
 			return;
-
-		const auto& bounds = getBounds();
 
 		auto& rc = RC::getInstance();
 		const auto& waypointData = rc.getNavigationData().waypoints[getWaypointIndex()];

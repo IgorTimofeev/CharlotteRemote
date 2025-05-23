@@ -4,6 +4,7 @@
 #include <YOBA/UI.h>
 #include <YOBA/hardware/displays/ILI9341Display.h>
 #include <YOBA/hardware/touchPanels/FT6336UTouchPanel.h>
+#include <YOBA/hardware/rotaryEncoder.h>
 
 #include <UI/theme.h>
 #include <UI/navigation/route.h>
@@ -20,7 +21,6 @@
 #include <hardware/speaker/speaker.h>
 #include <hardware/axis.h>
 #include <hardware/battery.h>
-#include <hardware/encoder.h>
 
 #include <types/units.h>
 #include <types/aircraftData.h>
@@ -46,7 +46,7 @@ namespace pizda {
 			Speaker& getSpeaker();
 
 			Axis& getLeverLeft();
-			Encoder& getEncoder();
+			RotaryEncoder& getEncoder();
 			Axis& getLeverRight();
 			Axis& getJoystickHorizontal();
 			Axis& getJoystickVertical();
@@ -102,14 +102,11 @@ namespace pizda {
 			TCPTransceiver _transceiver {};
 
 			// Encoder
-			uint32_t _encoderRotationTime = 0;
-			bool _encoderWasPressed = false;
-
-			Encoder _encoder = Encoder(
+			RotaryEncoder _encoder = {
 				constants::encoder::a,
 				constants::encoder::b,
 				constants::encoder::sw
-			);
+			};
 
 			// Axis
 			uint32_t _axisTickTime = 0;
@@ -182,8 +179,6 @@ namespace pizda {
 			static void ADCUnitsSetup();
 
 			void axisTick();
-
-			void encoderTick();
 
 			void NVSSetup();
 

@@ -67,10 +67,8 @@ namespace pizda {
 				updateTextColor();
 			}
 
-			void onRender(Renderer* renderer) override {
+			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				if (isFocused()) {
-					const auto& bounds = getBounds();
-
 					// Panel
 					renderer->renderFilledRectangle(
 						Bounds(bounds.getX(), bounds.getY(), bounds.getWidth(), Toolbar::topPanelHeight),
@@ -84,7 +82,7 @@ namespace pizda {
 					);
 				}
 
-				Layout::onRender(renderer);
+				Layout::onRender(renderer, bounds);
 			}
 
 		private:

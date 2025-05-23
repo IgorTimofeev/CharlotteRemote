@@ -18,7 +18,7 @@ namespace pizda {
 			explicit FlightPlanItem();
 
 		protected:
-			void onRender(Renderer* renderer) override;
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 			virtual std::wstring getNameForRendering(const NavigationWaypointData& waypointData) const;
 	};

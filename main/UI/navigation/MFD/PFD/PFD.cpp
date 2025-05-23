@@ -26,8 +26,7 @@ namespace pizda {
 		}
 	}
 
-	void PFDScene::onRender(Renderer* renderer) {
-		const auto& bounds = getBounds();
+	void PFDScene::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 		const auto& settings = rc.getSettings();
 		const auto& ad = rc.getAircraftData();
@@ -64,7 +63,7 @@ namespace pizda {
 			horizonRight
 		);
 
-		Scene::onRender(renderer);
+		Scene::onRender(renderer, bounds);
 
 		// Roll overlay
 		renderTurnCoordinatorOverlay(
@@ -613,10 +612,8 @@ namespace pizda {
 		invalidate();
 	}
 
-	void PFD::onRender(Renderer* renderer) {
-		Layout::onRender(renderer);
-
-		const auto& bounds = getBounds();
+	void PFD::onRender(Renderer* renderer, const Bounds& bounds) {
+		Layout::onRender(renderer, bounds);
 
 		renderSpeed(renderer, Bounds(
 			bounds.getX(),

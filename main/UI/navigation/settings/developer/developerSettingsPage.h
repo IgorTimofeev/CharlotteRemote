@@ -14,39 +14,39 @@ namespace pizda {
 			explicit DeveloperSettingsPage();
 
 		private:
-			Button _settingsNavigationResetButton;
+			Button _settingsNavigationResetButton {};
 
 			// Speaker
-			Text _speakerTitle;
+			Text _speakerTitle {};
 
-			Slider _speakerFrequencySlider;
+			Slider _speakerFrequencySlider {};
 			Titler _speakerFrequencySliderTitle = Titler(L"Frequency (1 - 12 KHz)", &_speakerFrequencySlider);
 
-			Slider _speakerDurationSlider;
+			Slider _speakerDurationSlider {};
 			Titler _speakerDurationSliderTitle = Titler(L"Duration (1 - 1000 ms)", &_speakerDurationSlider);
 
-			Slider _speakerCountSlider;
+			Slider _speakerCountSlider {};
 			Titler _speakerCountSliderTitle = Titler(L"Count (1 - 5 times)", &_speakerCountSlider);
-			Text _speakerCountText;
+			Text _speakerCountText {};
 
-			Button _speakerButton;
+			Button _speakerButton {};
 
 			// Text
-			Slider _textFontSizeSlider;
+			Slider _textFontSizeSlider {};
 			Titler _textSliderTitle = Titler(L"Font size slider", &_textFontSizeSlider);
 
-			Slider _textMarginSlider;
+			Slider _textMarginSlider {};
 			Titler _textMarginSliderTitle = Titler(L"Margin slider", &_textMarginSlider);
 
-			Text _text;
+			Text _text {};
 
-			ProgressBar _progressBar;
+			ProgressBar _progressBar {};
 			Titler _progressBarTitle = Titler(L"Progress bar", &_progressBar);
 
-			Switch _debugOverlaySwitch;
+			Switch _debugOverlaySwitch {};
 			Titler _debugOverlaySwitchTitle = Titler(L"Switch", &_debugOverlaySwitch);
 
-			TextField _textField;
+			TextField _textField {};
 			Titler textFieldTitle = Titler(L"Text", &_textField);
 
 	};

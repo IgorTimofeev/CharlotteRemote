@@ -25,9 +25,7 @@ namespace pizda {
 				setText(text);
 			}
 
-			void onRender(Renderer* renderer) override {
-				const auto& bounds = getBounds();
-
+			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				renderer->renderFilledRectangle(bounds, getCornerRadius(), isActive() ? getActiveBackgroundColor() : getDefaultBackgroundColor());
 //				renderer->renderRectangle(bounds, getCornerRadius(), isChecked() ? getActiveBorderColor() : getDefaultBorderColor());
 

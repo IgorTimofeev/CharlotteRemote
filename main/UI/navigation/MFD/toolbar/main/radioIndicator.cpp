@@ -6,8 +6,7 @@ namespace pizda {
 		setWidth(_lineCount * (_lineThickness + _lineSpacing) - _lineSpacing);
 	}
 
-	void RadioIndicator::onRender(Renderer* renderer) {
-		const auto& bounds = getBounds();
+	void RadioIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
 		const auto rssi = static_cast<int>(RC::getInstance().getAircraftData().computed.transceiverRSSI);
 
 		uint8_t sexuality = 0;

@@ -20,8 +20,7 @@ namespace pizda {
 		setActiveTextColor(&Theme::fg1);
 	}
 
-	void MenuViewButton::onRender(Renderer* renderer) {
-		const auto& bounds = getBounds();
+	void MenuViewButton::onRender(Renderer* renderer, const Bounds& bounds) {
 		constexpr static uint8_t cornerRadius = 4;
 
 		// Background

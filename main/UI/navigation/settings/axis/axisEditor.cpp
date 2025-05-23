@@ -4,8 +4,7 @@
 #include <rc.h>
 
 namespace pizda {
-	void AxisEditorTrack::onRender(Renderer* renderer) {
-		const auto& bounds = getBounds();
+	void AxisEditorTrack::onRender(Renderer* renderer, const Bounds& bounds) {
 		const auto editor = getEditor();
 
 		// Track
@@ -109,7 +108,7 @@ namespace pizda {
 			true
 		);
 
-		Element::onRender(renderer);
+		Element::onRender(renderer, bounds);
 	}
 
 	void AxisEditorTrack::onEvent(Event* event) {

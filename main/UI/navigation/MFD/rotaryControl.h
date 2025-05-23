@@ -4,7 +4,7 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 #include <UI/theme.h>
-#include <hardware/encoder.h>
+#include <YOBA/hardware/rotaryEncoder.h>
 
 namespace pizda {
 	using namespace YOBA;
@@ -84,11 +84,11 @@ namespace pizda {
 				if (event->getTypeID() == TouchDownEvent::typeID) {
 					setFocused(true);
 				}
-				else if (event->getTypeID() == EncoderRotateEvent::typeID) {
+				else if (event->getTypeID() == RotaryEncoderRotationEvent::typeID) {
 					if (!isFocused())
 						return;
 
-					const auto rotateEvent = static_cast<EncoderRotateEvent*>(event);
+					const auto rotateEvent = static_cast<RotaryEncoderRotationEvent*>(event);
 					const auto rps = rotateEvent->getRPS();
 					const int32_t change = (std::abs(rps) < 70 ? smallChange : bigChange) * (rps >= 0 ? 1 : -1);
 
@@ -112,13 +112,13 @@ namespace pizda {
 
 					event->setHandled(true);
 				}
-				else if (event->getTypeID() == EncoderPushEvent::typeID) {
+				else if (event->getTypeID() == RotaryEncoderSwitchEvent::typeID) {
 					if (!isFocused())
 						return;
 
-					const auto pushEvent = static_cast<EncoderPushEvent*>(event);
+					const auto pushEvent = static_cast<RotaryEncoderSwitchEvent*>(event);
 
-					if (!pushEvent->isDown())
+					if (!pushEvent->isPressed())
 						return;
 
 					button.setActive(!button.isActive());

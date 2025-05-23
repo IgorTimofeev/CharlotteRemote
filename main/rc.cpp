@@ -49,6 +49,7 @@ namespace pizda {
 		// Peripherals
 		_touchPanel.setup();
 		_encoder.setup();
+
 		_battery.setup();
 		_speaker.setup();
 
@@ -67,12 +68,12 @@ namespace pizda {
 
 		// Application
 		_application.setRenderer(&_renderer);
-		_application.addInputDevice(&_touchPanel);
+		_application.addHID(&_touchPanel);
+		_application.addHID(&_encoder);
 
 		// UI
 		_application.setBackgroundColor(&Theme::bg1);
 		_application += &_pageLayout;
-
 		_openMenuButton.applyBottomStyle();
 		_application += &_openMenuButton;
 
@@ -91,7 +92,6 @@ namespace pizda {
 
 			// High priority tasks
 			axisTick();
-			encoderTick();
 			interpolationTick();
 
 			// UI
@@ -110,8 +110,6 @@ namespace pizda {
 
 //				ESP_LOGI("Main", "Skipping ticks for %lu ms", (constants::application::mainTickInterval - _tickDeltaTime) / 1000);
 			}
-
-			_tickDeltaTime /= 1000;
 		}
 	}
 
@@ -190,7 +188,7 @@ namespace pizda {
 		return _leverLeft;
 	}
 
-	Encoder& RC::getEncoder() {
+	RotaryEncoder& RC::getEncoder() {
 		return _encoder;
 	}
 
@@ -212,39 +210,6 @@ namespace pizda {
 
 	Battery& RC::getBattery() {
 		return _battery;
-	}
-
-	void RC::encoderTick() {
-		if (!_encoder.interrupted())
-			return;
-
-		_encoder.acknowledgeInterrupt();
-
-		// Rotation
-		if (std::abs(_encoder.getRotation()) > 2) {
-			const uint32_t time = esp_timer_get_time();
-			const uint32_t deltaTime = time - _encoderRotationTime;
-			_encoderRotationTime = time;
-
-			// No cast = sign lost
-//			ESP_LOGI("Encoder", "rotation: %ld", _encoder.getRotation());
-
-			const auto rps = _encoder.getRotation() * static_cast<int32_t>(1'000'000) / static_cast<int32_t>(deltaTime);
-//			ESP_LOGI("Encoder", "rps: %ld", rps);
-
-			auto event = EncoderRotateEvent(rps);
-			_application.handleEvent(&event);
-
-			_encoder.setRotation(0);
-		}
-
-		// Push
-		if (_encoder.isPressed() != _encoderWasPressed) {
-			auto event = EncoderPushEvent(_encoder.isPressed());
-			_application.handleEvent(&event);
-
-			_encoderWasPressed = _encoder.isPressed();
-		}
 	}
 
 	void RC::axisTick() {
