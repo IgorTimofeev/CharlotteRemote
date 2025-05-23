@@ -109,7 +109,7 @@ namespace pizda {
 			};
 
 			// Axis
-			uint32_t _axisTickTime = 0;
+			uint64_t _axisTickTime = 0;
 
 			Axis _leverLeft = Axis(
 				&constants::adc::oneshotUnit,
@@ -167,8 +167,8 @@ namespace pizda {
 			// -------------------------------- Timings --------------------------------
 
 			uint32_t _tickDeltaTime = 0;
-			uint32_t _interpolationTickTime = 0;
-			uint32_t _aircraftPacketTime = 0;
+			uint64_t _interpolationTickTime = 0;
+			uint64_t _aircraftPacketTime = 0;
 
 			// -------------------------------- Other shit --------------------------------
 

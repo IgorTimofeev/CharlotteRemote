@@ -114,7 +114,7 @@ namespace pizda {
 	}
 
 	void RC::interpolationTick() {
-		const auto deltaTime = esp_timer_get_time() - _interpolationTickTime;
+		const uint32_t deltaTime = esp_timer_get_time() - _interpolationTickTime;
 
 		if (deltaTime < constants::application::interpolationTickInterval)
 			return;

@@ -225,6 +225,8 @@ namespace pizda {
 				// Confirm
 				Theme::applyPrimary(&_confirmButton);
 				_confirmButton.setText(L"Confirm");
+				// _confirmButton.setCornerRadius(0);
+				// _confirmButton.setMargin(Margin(-15, 0, -15, -15));
 
 				_confirmButton.click += [this, &nd, &rc] {
 					if (_nameTextField.getText().size() == 0) {

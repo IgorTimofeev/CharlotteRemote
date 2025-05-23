@@ -50,7 +50,7 @@ extern "C" void app_main(void) {
 //MenuIconMFDImage image1 {};
 //MenuIconMFDNDImage image2 {};
 //
-//uint32_t govnoTime = 0;
+//uint64_t govnoTime = 0;
 //
 //extern "C" void app_main(void) {
 //	display.setup();

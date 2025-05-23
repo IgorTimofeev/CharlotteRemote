@@ -141,7 +141,7 @@ namespace pizda {
 
 			TCPState _state = TCPState::disconnected;
 
-			uint32_t _scheduledConnectionTime = 0;
+			uint64_t _scheduledConnectionTime = 0;
 
 			uint8_t* _sendingBuffer = nullptr;
 			ssize_t _sendingBufferLength = -1;
