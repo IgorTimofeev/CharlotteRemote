@@ -16,12 +16,13 @@ namespace pizda {
 
 		protected:
 			void onEvent(Event* event) override {
-				Element::onEvent(event);
-
-				if (event->getTypeID() != TouchDownEvent::typeID)
+				if (!ScreenEvent::isScreen(event))
 					return;
 
 				event->setHandled(true);
+
+				if (event->getTypeID() != TouchDownEvent::typeID)
+					return;
 
 				const auto element = dynamic_cast<ModalElement*>(getParent());
 
