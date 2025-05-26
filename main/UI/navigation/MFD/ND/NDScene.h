@@ -33,7 +33,15 @@ namespace pizda {
 			void onTick() override;
 			void onBoundsChanged() override;
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
+
 			void onEvent(Event* event) override;
+
+			void onTouchDown(TouchDownEvent* event) override;
+			void onTouchDrag(TouchDragEvent* event) override;
+			void onTouchUp(TouchUpEvent* event) override;
+
+			void onPinchDown(PinchDownEvent* event) override;
+			void onPinchDrag(PinchDragEvent* event) override;
 
 		private:
 			constexpr static uint8_t _compassTickMarkUnitsDeg = 10;

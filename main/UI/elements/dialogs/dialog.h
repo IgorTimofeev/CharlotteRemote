@@ -10,42 +10,15 @@ namespace pizda {
 
 	class DialogSlideLayoutBackground : public DitheredRectangle {
 		public:
-			DialogSlideLayoutBackground() {
-				setFillColor(&Theme::bg1);
-			}
+			DialogSlideLayoutBackground();
 
 		protected:
-			void onEvent(Event* event) override {
-				if (!ScreenEvent::isScreen(event))
-					return;
-
-				event->setHandled(true);
-
-				if (event->getTypeID() != TouchDownEvent::typeID)
-					return;
-
-				const auto element = dynamic_cast<ModalElement*>(getParent());
-
-				element->hide();
-				delete element;
-			}
+			void onTouchUp(TouchUpEvent* event) override;
 	};
 
 	class Dialog : public RelativeStackLayout, public ModalElement {
 		public:
-			Dialog() {
-				// Dithered
-				*this += &ditheredBackground;
-
-				// Background
-				slideLayoutBackground.setFillColor(&Theme::bg2);
-				slideLayout += &slideLayoutBackground;
-
-				// Slide
-				slideLayout.setMaxHeight(Application::getCurrent()->getRenderer()->getTarget()->getSize().getHeight() * 8 / 10);
-				setAutoSize(&slideLayout);
-				*this += &slideLayout;
-			}
+			Dialog();
 
 			DialogSlideLayoutBackground ditheredBackground {};
 
@@ -55,20 +28,7 @@ namespace pizda {
 
 	class ScrollViewDialog : public Dialog {
 		public:
-			ScrollViewDialog() {
-				// Rows
-				rows.setMargin(Margin(15));
-				rows.setSpacing(Theme::spacing);
-
-				// Title
-				Theme::applyPageTitle(&title);
-				rows += &title;
-
-				// ScrollView
-				Theme::apply(&scrollView);
-				scrollView += &rows;
-				slideLayout += &scrollView;
-			}
+			ScrollViewDialog();
 
 			ScrollView scrollView {};
 			StackLayout rows {};

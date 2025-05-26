@@ -14,7 +14,7 @@ namespace pizda {
 	template<uint8_t digitCount, uint32_t minimum, uint32_t maximum, bool cycling, uint16_t smallChange, uint16_t bigChange>
 	class RotaryControl : public Layout {
 		public:
-			RotaryControl(std::wstring_view text) {
+			explicit RotaryControl(std::wstring_view text) {
 				// Button
 				button.setVerticalAlignment(Alignment::end);
 				button.setHeight(12);
@@ -78,13 +78,14 @@ namespace pizda {
 //				button.setDefaultBorderColor(isFocused() ? &Theme::fg1 : nullptr);
 			}
 
+			void onTouchDown(TouchDownEvent* event) override {
+				setFocused(true);
+			}
+
 			void onEvent(Event* event) override {
 				Layout::onEvent(event);
 
-				if (event->getTypeID() == TouchDownEvent::typeID) {
-					setFocused(true);
-				}
-				else if (event->getTypeID() == RotaryEncoderRotationEvent::typeID) {
+				if (event->getTypeID() == RotaryEncoderRotationEvent::typeID) {
 					if (!isFocused())
 						return;
 

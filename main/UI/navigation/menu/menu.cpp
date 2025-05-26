@@ -7,15 +7,12 @@ namespace pizda {
 		setFillColor(&Theme::bg1);
 	}
 
-	void MenuOverlayBackground::onEvent(Event* event) {
-		Element::onEvent(event);
-
-		if (!ScreenEvent::isScreen(event))
-			return;
+	void MenuOverlayBackground::onTouchUp(TouchUpEvent* event) {
+		RC::getInstance().getApplication().scheduleOnTick([] {
+			RC::getInstance().hideMenu();
+		});
 
 		event->setHandled(true);
-
-		RC::getInstance().hideMenu();
 	}
 
 	Menu::Menu() {

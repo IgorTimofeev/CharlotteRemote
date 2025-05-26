@@ -21,7 +21,9 @@ namespace pizda {
 
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
-			void onEvent(Event* event) override;
+			void onTouchDown(TouchDownEvent* event) override;
+			void onTouchUp(TouchUpEvent* event) override;
+			void onTouchDrag(TouchDragEvent* event) override;
 
 		private:
 			SelectedPin _selectedPin = SelectedPin::none;

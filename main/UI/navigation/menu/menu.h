@@ -18,7 +18,7 @@ namespace pizda {
 			MenuOverlayBackground();
 
 		protected:
-			void onEvent(Event* event) override;
+			void onTouchUp(TouchUpEvent* event) override;
 	};
 
 	class Menu : public RelativeStackLayout {
