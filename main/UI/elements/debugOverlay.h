@@ -6,7 +6,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class DebugOverlay : public Element {
+	class DebugOverlay : public Control {
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 

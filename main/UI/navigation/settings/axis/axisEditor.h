@@ -16,7 +16,7 @@ namespace pizda {
 		to
 	};
 
-	class AxisEditorTrack : public Element {
+	class AxisEditorTrack : public Control {
 		public:
 
 		protected:

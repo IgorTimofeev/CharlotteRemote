@@ -5,7 +5,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class ThrottleIndicator : public Element {
+	class ThrottleIndicator : public Control {
 		public:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 

@@ -7,7 +7,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class BatteryIndicator : public Element {
+	class BatteryIndicator : public Control {
 		public:
 			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				const auto yCenter = bounds.getYCenter();

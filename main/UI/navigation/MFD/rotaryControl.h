@@ -78,13 +78,11 @@ namespace pizda {
 //				button.setDefaultBorderColor(isFocused() ? &Theme::fg1 : nullptr);
 			}
 
-			void onTouchDown(TouchDownEvent* event) override {
+			void onTouchDownBeforeChildren(TouchDownEvent* event) override {
 				setFocused(true);
 			}
 
-			void onEvent(Event* event) override {
-				Layout::onEvent(event);
-
+			void onEventBeforeChildren(Event* event) override {
 				if (event->getTypeID() == RotaryEncoderRotationEvent::typeID) {
 					if (!isFocused())
 						return;

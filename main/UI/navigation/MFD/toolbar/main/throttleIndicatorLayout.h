@@ -15,7 +15,7 @@ namespace pizda {
 			ThrottleIndicator throttleIndicator2 {};
 
 		protected:
-			void onEvent(Event* event) override;
+			void onEventBeforeChildren(Event* event) override;
 			void onTick() override;
 	};
 }

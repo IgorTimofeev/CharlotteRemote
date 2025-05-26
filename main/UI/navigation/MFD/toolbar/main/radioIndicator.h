@@ -5,7 +5,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class RadioIndicator : public Element {
+	class RadioIndicator : public Control {
 		public:
 			RadioIndicator();
 

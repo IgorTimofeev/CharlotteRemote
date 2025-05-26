@@ -31,9 +31,7 @@ namespace pizda {
 		throttleIndicator2.setAircraftValue(throttleIndicator1.getAircraftValue());
 	}
 
-	void ThrottleIndicatorLayout::onEvent(Event* event) {
-		InstrumentIndicatorLayout::onEvent(event);
-
+	void ThrottleIndicatorLayout::onEventBeforeChildren(Event* event) {
 		if (event->getTypeID() == RotaryEncoderRotationEvent::typeID) {
 			if (isFocused()) {
 				const auto rotateEvent = reinterpret_cast<RotaryEncoderRotationEvent*>(event);
