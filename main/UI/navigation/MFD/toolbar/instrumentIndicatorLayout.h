@@ -53,8 +53,10 @@ namespace pizda {
 			}
 
 		protected:
-			void onTouchDownBeforeChildren(TouchDownEvent* event) override {
-				setFocused(true);
+			void onEventBeforeChildren(Event* event) override {
+				if (event->getTypeID() == TouchDownEvent::typeID) {
+					setFocused(true);
+				}
 			}
 
 			void onFocusChanged() override {

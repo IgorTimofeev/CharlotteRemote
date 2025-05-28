@@ -4,7 +4,7 @@
 #include <YOBA/UI.h>
 
 #include <UI/elements/titler.h>
-#include <UI/elements/dialogs/dialog.h>
+#include <UI/elements/dialogs/scrollViewDialog.h>
 
 #include <types/navigationData.h>
 #include <UI/elements/tabSelector.h>

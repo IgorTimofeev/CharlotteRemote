@@ -3,11 +3,13 @@
 #include <UI/theme.h>
 #include <rc.h>
 
+#include <UI/navigation/menu/menu.h>
+
 namespace pizda {
 	void OpenMenuButton::onClick() {
 		Button::onClick();
 
-		RC::getInstance().showMenu();
+		(new Menu())->show();
 	}
 
 	void OpenMenuButton::applyRoundStyle() {

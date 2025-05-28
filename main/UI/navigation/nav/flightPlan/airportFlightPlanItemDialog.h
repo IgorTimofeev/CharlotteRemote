@@ -4,7 +4,7 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/elements/dialogs/dialog.h>
+#include <UI/elements/dialogs/scrollViewDialog.h>
 
 namespace pizda {
 	using namespace YOBA;

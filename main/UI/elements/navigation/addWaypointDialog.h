@@ -1,9 +1,13 @@
 #pragma once
 
+#include <YOBA/main.h>
+#include <YOBA/UI.h>
+
 #include <esp_log.h>
-#include <UI/elements/dialogs/dialog.h>
+#include <UI/elements/dialogs/scrollViewDialog.h>
 #include <UI/theme.h>
 #include <UI/elements/titler.h>
+#include <UI/elements/tabSelector.h>
 #include <types/navigationData.h>
 
 namespace pizda {

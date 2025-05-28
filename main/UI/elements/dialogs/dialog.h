@@ -3,8 +3,6 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/theme.h>
-
 namespace pizda {
 	using namespace YOBA;
 
@@ -13,10 +11,10 @@ namespace pizda {
 			DialogSlideLayoutBackground();
 
 		protected:
-			void onTouchUp(TouchUpEvent* event) override;
+			void onEvent(Event* event) override;
 	};
 
-	class Dialog : public RelativeStackLayout, public ModalElement {
+	class Dialog : public RelativeStackLayout {
 		public:
 			Dialog();
 
@@ -24,14 +22,9 @@ namespace pizda {
 
 			Rectangle slideLayoutBackground {};
 			Layout slideLayout {};
-	};
 
-	class ScrollViewDialog : public Dialog {
-		public:
-			ScrollViewDialog();
+			void show();
 
-			ScrollView scrollView {};
-			StackLayout rows {};
-			Text title {};
+			void hide();
 	};
 }

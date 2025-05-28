@@ -7,6 +7,7 @@
 #include <types/navigationData.h>
 #include <rc.h>
 
+#include "flightPlanPage.h"
 #include "legFlightPlanItemDialog.h"
 
 namespace pizda {

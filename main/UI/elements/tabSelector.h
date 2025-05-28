@@ -1,6 +1,8 @@
 #pragma once
 
 #include <YOBA/UI.h>
+#include <YOBA/main.h>
+
 #include <UI/theme.h>
 
 namespace pizda {

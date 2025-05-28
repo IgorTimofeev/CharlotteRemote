@@ -111,49 +111,49 @@ namespace pizda {
 		Element::onRender(renderer, bounds);
 	}
 
-	void AxisEditorTrack::onTouchDown(TouchDownEvent* event) {
-		const auto editor = getEditor();
-		const auto& bounds = getBounds();
+	void AxisEditorTrack::onEvent(Event* event) {
+		if (event->getTypeID() == TouchDownEvent::typeID) {
+			const auto editor = getEditor();
+			const auto& bounds = getBounds();
 
-		const auto touchX = event->getPosition().getX();
-		const int32_t touchValue = (touchX - bounds.getX()) * Axis::maxValue / bounds.getWidth();
+			const auto touchX = reinterpret_cast<TouchDownEvent*>(event)->getPosition().getX();
+			const int32_t touchValue = (touchX - bounds.getX()) * Axis::maxValue / bounds.getWidth();
 
-		_selectedPin = std::abs(touchValue - editor->getAxis()->getSettings()->to) <= std::abs(touchValue - editor->getAxis()->getSettings()->from) ? SelectedPin::to : SelectedPin::from;
+			_selectedPin = std::abs(touchValue - editor->getAxis()->getSettings()->to) <= std::abs(touchValue - editor->getAxis()->getSettings()->from) ? SelectedPin::to : SelectedPin::from;
 
-		setCaptured(true);
+			setCaptured(true);
 
-		event->setHandled(true);
-	}
-
-	void AxisEditorTrack::onTouchDrag(TouchDragEvent* event) {
-		const auto editor = getEditor();
-		const auto settings = editor->getAxis()->getSettings();
-		const auto touchX = event->getPosition().getX();
-
-		const auto& bounds = getBounds();
-		const int32_t clampedTouchX = std::clamp(touchX - bounds.getX(), static_cast<int32_t>(0), static_cast<int32_t>(bounds.getWidth()));
-
-		// Updating settings
-		const uint16_t value = clampedTouchX * Axis::maxValue / bounds.getWidth();
-
-		if (_selectedPin == SelectedPin::to) {
-			settings->to = std::max(settings->from, value);
+			event->setHandled(true);
 		}
-		else {
-			settings->from = std::min(settings->to, value);
+		else if (event->getTypeID() == TouchDragEvent::typeID) {
+			const auto editor = getEditor();
+			const auto settings = editor->getAxis()->getSettings();
+			const auto touchX = reinterpret_cast<TouchDragEvent*>(event)->getPosition().getX();
+
+			const auto& bounds = getBounds();
+			const int32_t clampedTouchX = std::clamp(touchX - bounds.getX(), static_cast<int32_t>(0), static_cast<int32_t>(bounds.getWidth()));
+
+			// Updating settings
+			const uint16_t value = clampedTouchX * Axis::maxValue / bounds.getWidth();
+
+			if (_selectedPin == SelectedPin::to) {
+				settings->to = std::max(settings->from, value);
+			}
+			else {
+				settings->from = std::min(settings->to, value);
+			}
+
+			event->setHandled(true);
 		}
+		else if (event->getTypeID() == TouchUpEvent::typeID) {
+			_selectedPin = SelectedPin::none;
 
-		event->setHandled(true);
-	}
+			RC::getInstance().getSettings().axis.scheduleWrite();
 
-	void AxisEditorTrack::onTouchUp(TouchUpEvent* event) {
-		_selectedPin = SelectedPin::none;
+			setCaptured(false);
 
-		RC::getInstance().getSettings().axis.scheduleWrite();
-
-		setCaptured(false);
-
-		event->setHandled(true);
+			event->setHandled(true);
+		}
 	}
 
 	AxisEditor* AxisEditorTrack::getEditor() const {

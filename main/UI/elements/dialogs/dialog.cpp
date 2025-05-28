@@ -1,17 +1,24 @@
 #include "dialog.h"
 
 #include <rc.h>
+#include <UI/theme.h>
 
 namespace pizda {
 	DialogSlideLayoutBackground::DialogSlideLayoutBackground() {
 		setFillColor(&Theme::bg1);
 	}
 
-	void DialogSlideLayoutBackground::onTouchUp(TouchUpEvent* event) {
+	void DialogSlideLayoutBackground::onEvent(Event* event) {
+		if (!ScreenEvent::isScreen(event))
+			return;
+
 		event->setHandled(true);
 
+		if (event->getTypeID() != TouchUpEvent::typeID)
+			return;
+
 		RC::getInstance().getApplication().scheduleOnTick([this] {
-			const auto element = dynamic_cast<ModalElement*>(getParent());
+			const auto element = dynamic_cast<Dialog*>(getParent());
 
 			element->hide();
 			delete element;
@@ -32,18 +39,11 @@ namespace pizda {
 		*this += &slideLayout;
 	}
 
-	ScrollViewDialog::ScrollViewDialog() {
-		// Rows
-		rows.setMargin(Margin(15));
-		rows.setSpacing(Theme::spacing);
+	void Dialog::show() {
+		*Application::getCurrent() += this;
+	}
 
-		// Title
-		Theme::applyPageTitle(&title);
-		rows += &title;
-
-		// ScrollView
-		Theme::apply(&scrollView);
-		scrollView += &rows;
-		slideLayout += &scrollView;
+	void Dialog::hide() {
+		*getParent() -= this;
 	}
 }

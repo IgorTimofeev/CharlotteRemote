@@ -1,3 +1,5 @@
+#include "radioIndicator.h"
+
 #include <rc.h>
 #include <UI/theme.h>
 

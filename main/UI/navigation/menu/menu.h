@@ -4,6 +4,7 @@
 #include <YOBA/UI.h>
 
 #include <UI/theme.h>
+#include <UI/elements/dialogs/dialog.h>
 #include <settings/settings.h>
 
 #include "menuView.h"
@@ -13,15 +14,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class MenuOverlayBackground : public DitheredRectangle {
-		public:
-			MenuOverlayBackground();
-
-		protected:
-			void onTouchUp(TouchUpEvent* event) override;
-	};
-
-	class Menu : public RelativeStackLayout {
+	class Menu : public Dialog {
 		public:
 			explicit Menu();
 			~Menu() override;
@@ -30,11 +23,6 @@ namespace pizda {
 
 		private:
 			static const Route* _viewRoute;
-
-			MenuOverlayBackground _overlayBackground = {};
-
-			Layout _slideLayout = {};
-			Rectangle _slideBackground = {};
 
 			StackLayout _tabsAndContentRows {};
 			RelativeStackLayout _tabsRow {};

@@ -305,112 +305,109 @@ namespace pizda {
 		}
 	}
 
-	void NDScene::onTouchDown(TouchDownEvent* event) {
-		const auto touchDownEvent = static_cast<TouchDownEvent*>(event);
-
-		setFocused(true);
-		setCaptured(true);
-
-		_touchDownPosition = touchDownEvent->getPosition();
-		_cursorPosition = touchDownEvent->getPosition() - getBounds().getPosition();
-
-		event->setHandled(true);
-	}
-
-	void NDScene::onTouchDrag(TouchDragEvent* event) {
-		const auto touchDragEventEvent = static_cast<TouchDragEvent*>(event);
-
-//			ESP_LOGI("ND", "------------- Drag -------------");
-
-		auto& rc = RC::getInstance();
-		const auto yaw = rc.getSettings().interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : rc.getAircraftData().computed.yaw;
-		const auto& deltaPixels = (touchDragEventEvent->getPosition() - _touchDownPosition).rotate(yaw);
-		_touchDownPosition = touchDragEventEvent->getPosition();
-		_cursorPosition = touchDragEventEvent->getPosition() - getBounds().getPosition();
-
-//			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
-
-		// viewport rad - height px
-		// x rad - 1 px
-		const auto equatorialRadiansPerPixel = getEquatorialRadiansPerPixel();
-
-//			ESP_LOGI("ND", "camera lat: %f", cameraCoordinates.getLatitude());
-//			ESP_LOGI("ND", "camera lat cos: %f", std::cosf(cameraCoordinates.getLatitude()));
-//			ESP_LOGI("ND", "deltaPixelsX with coorection: %f", static_cast<float>(deltaPixels.getX()) / std::cosf(cameraCoordinates.getLatitude()));
-
-		const auto deltaRadLon = static_cast<float>(deltaPixels.getX()) * equatorialRadiansPerPixel / std::cosf(_cameraCoordinates.getLatitude());
-		const auto deltaRadLat = static_cast<float>(deltaPixels.getY()) * equatorialRadiansPerPixel;
-
-//			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
-
-		setCameraOffset(GeographicCoordinates(
-			_cameraOffset.getLatitude() + deltaRadLat,
-			_cameraOffset.getLongitude() - deltaRadLon,
-			_cameraOffset.getAltitude()
-		));
-
-//			ESP_LOGI("ND", "cameraOffset: %f deg, %f deg, %f m", toDegrees(_cameraCoordinates.getLatitude()), toDegrees(_cameraCoordinates.getLongitude()), _cameraCoordinates.getAltitude());
-
-//			setCameraOffset(GeographicCoordinates(
-//				_cameraOffset.getLatitude() + toRadians(deltaPixels.getX() >= 0 ? -5 : 5),
-//				_cameraOffset.getLongitude() + toRadians(deltaPixels.getY() >= 0 ? -5 : 5),
-//				_cameraOffset.getAltitude()
-//			));
-//
-//			ESP_LOGI("ND", "cameraOffset: %f, %f, %f", _cameraOffset.getLatitude(), _cameraOffset.getLongitude(), _cameraOffset.getAltitude());
-
-		event->setHandled(true);
-	}
-
-
-	void NDScene::onTouchUp(TouchUpEvent* event) {
-		setCaptured(false);
-
-		event->setHandled(true);
-	}
-
-	void NDScene::onPinchDown(PinchDownEvent* event) {
-		_pinchLength = event->getLength();
-		hideCursor();
-
-		event->setHandled(true);
-	}
-
-	void NDScene::onPinchDrag(PinchDragEvent* event) {
-
-		//			ESP_LOGI("ND", "------------- Pinch -------------");
-
-		//			const auto pinchLength = pinchDragEvent->getLength();
-		//			const auto pinchDelta = pinchLength - _pinchLength;
-		//			_pinchLength = pinchLength;
-		//
-		//			ESP_LOGI("ND", "pinchDelta: %f px", pinchDelta);
-		//
-		//			setAltitudeFromDeltaPixels(-pinchDelta);
-
-		const auto pinchLength = event->getLength();
-		const auto pinchFactor = _pinchLength / pinchLength;
-		_pinchLength = pinchLength;
-
-		setCameraOffset(GeographicCoordinates(
-			_cameraOffset.getLatitude(),
-			_cameraOffset.getLongitude(),
-			std::clamp(
-				_cameraOffset.getAltitude() * pinchFactor,
-				static_cast<float>(cameraAltitudeMinimum),
-				static_cast<float>(cameraAltitudeMaximum)
-			)
-		));
-
-		hideCursor();
-
-		event->setHandled(true);
-	}
-
 	void NDScene::onEvent(Event* event) {
 		Scene::onEvent(event);
 
-		if (event->getTypeID() == RotaryEncoderRotationEvent::typeID) {
+		if (event->getTypeID() == TouchDownEvent::typeID) {
+			const auto touchDownEvent = static_cast<TouchDownEvent*>(event);
+
+			setFocused(true);
+			setCaptured(true);
+
+			_touchDownPosition = touchDownEvent->getPosition();
+			_cursorPosition = touchDownEvent->getPosition() - getBounds().getPosition();
+
+			event->setHandled(true);
+		}
+		else if (event->getTypeID() == TouchDragEvent::typeID) {
+			const auto touchDragEventEvent = static_cast<TouchDragEvent*>(event);
+
+//			ESP_LOGI("ND", "------------- Drag -------------");
+
+			auto& rc = RC::getInstance();
+			const auto yaw = rc.getSettings().interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : rc.getAircraftData().computed.yaw;
+			const auto& deltaPixels = (touchDragEventEvent->getPosition() - _touchDownPosition).rotate(yaw);
+			_touchDownPosition = touchDragEventEvent->getPosition();
+			_cursorPosition = touchDragEventEvent->getPosition() - getBounds().getPosition();
+
+	//			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
+
+			// viewport rad - height px
+			// x rad - 1 px
+			const auto equatorialRadiansPerPixel = getEquatorialRadiansPerPixel();
+
+	//			ESP_LOGI("ND", "camera lat: %f", cameraCoordinates.getLatitude());
+	//			ESP_LOGI("ND", "camera lat cos: %f", std::cosf(cameraCoordinates.getLatitude()));
+	//			ESP_LOGI("ND", "deltaPixelsX with coorection: %f", static_cast<float>(deltaPixels.getX()) / std::cosf(cameraCoordinates.getLatitude()));
+
+			const auto deltaRadLon = static_cast<float>(deltaPixels.getX()) * equatorialRadiansPerPixel / std::cosf(_cameraCoordinates.getLatitude());
+			const auto deltaRadLat = static_cast<float>(deltaPixels.getY()) * equatorialRadiansPerPixel;
+
+	//			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
+
+			setCameraOffset(GeographicCoordinates(
+				_cameraOffset.getLatitude() + deltaRadLat,
+				_cameraOffset.getLongitude() - deltaRadLon,
+				_cameraOffset.getAltitude()
+			));
+
+	//			ESP_LOGI("ND", "cameraOffset: %f deg, %f deg, %f m", toDegrees(_cameraCoordinates.getLatitude()), toDegrees(_cameraCoordinates.getLongitude()), _cameraCoordinates.getAltitude());
+
+	//			setCameraOffset(GeographicCoordinates(
+	//				_cameraOffset.getLatitude() + toRadians(deltaPixels.getX() >= 0 ? -5 : 5),
+	//				_cameraOffset.getLongitude() + toRadians(deltaPixels.getY() >= 0 ? -5 : 5),
+	//				_cameraOffset.getAltitude()
+	//			));
+	//
+	//			ESP_LOGI("ND", "cameraOffset: %f, %f, %f", _cameraOffset.getLatitude(), _cameraOffset.getLongitude(), _cameraOffset.getAltitude());
+
+			event->setHandled(true);
+		}
+		else if (event->getTypeID() == TouchUpEvent::typeID) {
+			setCaptured(false);
+
+			event->setHandled(true);
+		}
+		else if (event->getTypeID() == PinchDownEvent::typeID) {
+			_pinchLength = reinterpret_cast<PinchDownEvent*>(event)->getLength();
+			hideCursor();
+
+			event->setHandled(true);
+		}
+		else if (event->getTypeID() == PinchDragEvent::typeID) {
+
+			//			ESP_LOGI("ND", "------------- Pinch -------------");
+
+			//			const auto pinchLength = pinchDragEvent->getLength();
+			//			const auto pinchDelta = pinchLength - _pinchLength;
+			//			_pinchLength = pinchLength;
+			//
+			//			ESP_LOGI("ND", "pinchDelta: %f px", pinchDelta);
+			//
+			//			setAltitudeFromDeltaPixels(-pinchDelta);
+
+			const auto pinchLength = reinterpret_cast<PinchDragEvent*>(event)->getLength();
+			const auto pinchFactor = _pinchLength / pinchLength;
+			_pinchLength = pinchLength;
+
+			setCameraOffset(GeographicCoordinates(
+				_cameraOffset.getLatitude(),
+				_cameraOffset.getLongitude(),
+				std::clamp(
+					_cameraOffset.getAltitude() * pinchFactor,
+					static_cast<float>(cameraAltitudeMinimum),
+					static_cast<float>(cameraAltitudeMaximum)
+				)
+			));
+
+			hideCursor();
+
+			event->setHandled(true);
+		}
+		else if (event->getTypeID() == PinchUpEvent::typeID) {
+
+		}
+		else if (event->getTypeID() == RotaryEncoderRotationEvent::typeID) {
 			if (isFocused()) {
 				const auto rotateEvent = static_cast<RotaryEncoderRotationEvent*>(event);
 				const auto scaleFactor = std::abs(rotateEvent->getRPS()) > 60 ? 1.5f : 1.25f;

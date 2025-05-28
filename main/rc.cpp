@@ -309,10 +309,6 @@ namespace pizda {
 		_aircraftData.verticalSpeed = deltaAltitude * 60'000'000 / deltaTime;
 	}
 
-	bool RC::isMenuVisible() const {
-		return _menu != nullptr;
-	}
-
 	void RC::updateDebugOverlayVisibility() {
 		if (_settings.interface.developer.debugOverlay) {
 			if (_debugOverlay != nullptr)
@@ -353,23 +349,6 @@ namespace pizda {
 		// Adding new page
 		if (_route)
 			_pageLayout += _route->buildElement();
-	}
-
-	void RC::showMenu() {
-		if (isMenuVisible())
-			return;
-
-		_menu = new Menu();
-		_application += _menu;
-	}
-
-	void RC::hideMenu() {
-		if (!isMenuVisible())
-			return;
-
-		_application -= _menu;
-		delete _menu;
-		_menu = nullptr;
 	}
 
 	OpenMenuButton& RC::getOpenMenuButton() {

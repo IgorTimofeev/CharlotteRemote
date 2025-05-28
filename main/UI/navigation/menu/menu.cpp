@@ -1,30 +1,8 @@
 #include "menu.h"
 #include <rc.h>
-#include <UI/navigation/MFD/MFDPage.h>
 
 namespace pizda {
-	MenuOverlayBackground::MenuOverlayBackground() {
-		setFillColor(&Theme::bg1);
-	}
-
-	void MenuOverlayBackground::onTouchUp(TouchUpEvent* event) {
-		RC::getInstance().getApplication().scheduleOnTick([] {
-			RC::getInstance().hideMenu();
-		});
-
-		event->setHandled(true);
-	}
-
 	Menu::Menu() {
-		// Background
-		*this += &_overlayBackground;
-
-		// Holder
-
-		// Items background
-		_slideBackground.setFillColor(&Theme::bg2);
-		_slideLayout += &_slideBackground;
-
 		// Tabs
 		_tabsRow.setOrientation(Orientation::horizontal);
 
@@ -33,11 +11,7 @@ namespace pizda {
 
 		// Tabs & content
 		_tabsAndContentRows += &_tabsRow;
-		_slideLayout += &_tabsAndContentRows;
-
-		_slideLayout.setVerticalAlignment(Alignment::end);
-		setAutoSize(&_slideLayout);
-		*this += &_slideLayout;
+		slideLayout += &_tabsAndContentRows;
 
 		setViewRoute(_viewRoute);
 	}

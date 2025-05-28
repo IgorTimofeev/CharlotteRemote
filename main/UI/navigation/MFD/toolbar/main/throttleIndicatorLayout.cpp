@@ -1,8 +1,8 @@
 #include "throttleIndicatorLayout.h"
+
 #include <rc.h>
 
 namespace pizda {
-
 	ThrottleIndicatorLayout::ThrottleIndicatorLayout() : InstrumentIndicatorLayout(L"THR") {
 		row.setOrientation(Orientation::horizontal);
 		row.setSpacing(10);
@@ -32,6 +32,8 @@ namespace pizda {
 	}
 
 	void ThrottleIndicatorLayout::onEventBeforeChildren(Event* event) {
+		InstrumentIndicatorLayout::onEventBeforeChildren(event);
+
 		if (event->getTypeID() == RotaryEncoderRotationEvent::typeID) {
 			if (isFocused()) {
 				const auto rotateEvent = reinterpret_cast<RotaryEncoderRotationEvent*>(event);

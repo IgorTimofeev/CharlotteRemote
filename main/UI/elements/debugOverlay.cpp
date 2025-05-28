@@ -3,6 +3,10 @@
 #include <rc.h>
 
 namespace pizda {
+	DebugOverlay::DebugOverlay() {
+		setVisibleForPointerEvents(false);
+	}
+
 	void DebugOverlay::onTick() {
 		Element::onTick();
 
