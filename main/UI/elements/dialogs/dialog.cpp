@@ -14,7 +14,7 @@ namespace pizda {
 
 		event->setHandled(true);
 
-		if (event->getTypeID() != TouchUpEvent::typeID)
+		if (event->getTypeID() != PointerUpEvent::typeID)
 			return;
 
 		RC::getInstance().getApplication().scheduleOnTick([this] {

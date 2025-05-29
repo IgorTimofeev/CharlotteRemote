@@ -308,27 +308,27 @@ namespace pizda {
 	void NDScene::onEvent(Event* event) {
 		Scene::onEvent(event);
 
-		if (event->getTypeID() == TouchDownEvent::typeID) {
-			const auto touchDownEvent = static_cast<TouchDownEvent*>(event);
+		if (event->getTypeID() == PointerDownEvent::typeID) {
+			const auto pointerDownEvent = static_cast<PointerDownEvent*>(event);
 
 			setFocused(true);
 			setCaptured(true);
 
-			_touchDownPosition = touchDownEvent->getPosition();
-			_cursorPosition = touchDownEvent->getPosition() - getBounds().getPosition();
+			_pointerDownPosition = pointerDownEvent->getPosition();
+			_cursorPosition = pointerDownEvent->getPosition() - getBounds().getPosition();
 
 			event->setHandled(true);
 		}
-		else if (event->getTypeID() == TouchDragEvent::typeID) {
-			const auto touchDragEventEvent = static_cast<TouchDragEvent*>(event);
+		else if (event->getTypeID() == PointerDragEvent::typeID) {
+			const auto pointerDragEventEvent = static_cast<PointerDragEvent*>(event);
 
 //			ESP_LOGI("ND", "------------- Drag -------------");
 
 			auto& rc = RC::getInstance();
 			const auto yaw = rc.getSettings().interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : rc.getAircraftData().computed.yaw;
-			const auto& deltaPixels = (touchDragEventEvent->getPosition() - _touchDownPosition).rotate(yaw);
-			_touchDownPosition = touchDragEventEvent->getPosition();
-			_cursorPosition = touchDragEventEvent->getPosition() - getBounds().getPosition();
+			const auto& deltaPixels = (pointerDragEventEvent->getPosition() - _pointerDownPosition).rotate(yaw);
+			_pointerDownPosition = pointerDragEventEvent->getPosition();
+			_cursorPosition = pointerDragEventEvent->getPosition() - getBounds().getPosition();
 
 	//			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
 
@@ -363,7 +363,7 @@ namespace pizda {
 
 			event->setHandled(true);
 		}
-		else if (event->getTypeID() == TouchUpEvent::typeID) {
+		else if (event->getTypeID() == PointerUpEvent::typeID) {
 			setCaptured(false);
 
 			event->setHandled(true);

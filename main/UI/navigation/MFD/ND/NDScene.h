@@ -60,7 +60,7 @@ namespace pizda {
 			GeographicCoordinates _cameraCoordinates {};
 
 			float _pinchLength = 0;
-			Point _touchDownPosition {};
+			Point _pointerDownPosition {};
 			Point _cursorPosition { -1, -1 };
 
 			AircraftElement* _aircraftElement = nullptr;

@@ -112,26 +112,26 @@ namespace pizda {
 	}
 
 	void AxisEditorTrack::onEvent(Event* event) {
-		if (event->getTypeID() == TouchDownEvent::typeID) {
+		if (event->getTypeID() == PointerDownEvent::typeID) {
 			const auto editor = getEditor();
 			const auto& bounds = getBounds();
 
-			const auto touchX = reinterpret_cast<TouchDownEvent*>(event)->getPosition().getX();
-			const int32_t touchValue = (touchX - bounds.getX()) * Axis::maxValue / bounds.getWidth();
+			const auto pointerX = reinterpret_cast<PointerDownEvent*>(event)->getPosition().getX();
+			const int32_t pointerValue = (pointerX - bounds.getX()) * Axis::maxValue / bounds.getWidth();
 
-			_selectedPin = std::abs(touchValue - editor->getAxis()->getSettings()->to) <= std::abs(touchValue - editor->getAxis()->getSettings()->from) ? SelectedPin::to : SelectedPin::from;
+			_selectedPin = std::abs(pointerValue - editor->getAxis()->getSettings()->to) <= std::abs(pointerValue - editor->getAxis()->getSettings()->from) ? SelectedPin::to : SelectedPin::from;
 
 			setCaptured(true);
 
 			event->setHandled(true);
 		}
-		else if (event->getTypeID() == TouchDragEvent::typeID) {
+		else if (event->getTypeID() == PointerDragEvent::typeID) {
 			const auto editor = getEditor();
 			const auto settings = editor->getAxis()->getSettings();
-			const auto touchX = reinterpret_cast<TouchDragEvent*>(event)->getPosition().getX();
+			const auto pointerX = reinterpret_cast<PointerDragEvent*>(event)->getPosition().getX();
 
 			const auto& bounds = getBounds();
-			const int32_t clampedTouchX = std::clamp(touchX - bounds.getX(), static_cast<int32_t>(0), static_cast<int32_t>(bounds.getWidth()));
+			const int32_t clampedTouchX = std::clamp(pointerX - bounds.getX(), static_cast<int32_t>(0), static_cast<int32_t>(bounds.getWidth()));
 
 			// Updating settings
 			const uint16_t value = clampedTouchX * Axis::maxValue / bounds.getWidth();
@@ -145,7 +145,7 @@ namespace pizda {
 
 			event->setHandled(true);
 		}
-		else if (event->getTypeID() == TouchUpEvent::typeID) {
+		else if (event->getTypeID() == PointerUpEvent::typeID) {
 			_selectedPin = SelectedPin::none;
 
 			RC::getInstance().getSettings().axis.scheduleWrite();
