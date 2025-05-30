@@ -98,7 +98,7 @@ namespace pizda {
 			TCPTransceiver _transceiver {};
 
 			// Encoder
-			PushButtonEncoder _encoder = {
+			PushButtonEncoder _encoder {
 				constants::encoder::a,
 				constants::encoder::b,
 				constants::encoder::sw

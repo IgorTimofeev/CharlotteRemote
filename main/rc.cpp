@@ -48,7 +48,9 @@ namespace pizda {
 
 		// Peripherals
 		_touchPanel.setup();
+
 		_encoder.setup();
+		_encoder.setMinimumDelta(4);
 
 		_battery.setup();
 		_speaker.setup();
@@ -188,7 +190,7 @@ namespace pizda {
 		return _leverLeft;
 	}
 
-	Encoder& RC::getEncoder() {
+	PushButtonEncoder& RC::getEncoder() {
 		return _encoder;
 	}
 
