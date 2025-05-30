@@ -407,16 +407,16 @@ namespace pizda {
 		else if (event->getTypeID() == PinchUpEvent::typeID) {
 
 		}
-		else if (event->getTypeID() == RotaryEncoderRotationEvent::typeID) {
+		else if (event->getTypeID() == EncoderValueChangedEvent::typeID) {
 			if (isFocused()) {
-				const auto rotateEvent = static_cast<RotaryEncoderRotationEvent*>(event);
-				const auto scaleFactor = std::abs(rotateEvent->getRPS()) > 60 ? 1.5f : 1.25f;
+				const auto rotateEvent = static_cast<EncoderValueChangedEvent*>(event);
+				const auto scaleFactor = std::abs(rotateEvent->getDPS()) > 60 ? 1.5f : 1.25f;
 
 				setCameraOffset(GeographicCoordinates(
 					_cameraOffset.getLatitude(),
 					_cameraOffset.getLongitude(),
 					std::clamp(
-						rotateEvent->getRPS() >= 0
+						rotateEvent->getDPS() >= 0
 							? _cameraOffset.getAltitude() / scaleFactor
 							: _cameraOffset.getAltitude() * scaleFactor,
 						static_cast<float>(cameraAltitudeMinimum),
@@ -429,16 +429,12 @@ namespace pizda {
 				event->setHandled(true);
 			}
 		}
-		else if (event->getTypeID() == RotaryEncoderSwitchEvent::typeID) {
+		else if (event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
 			if (isFocused()) {
-				const auto pushEvent = static_cast<RotaryEncoderSwitchEvent*>(event);
+				resetCameraLateralOffset();
+				hideCursor();
 
-				if (pushEvent->isPressed()) {
-					resetCameraLateralOffset();
-					hideCursor();
-
-					event->setHandled(true);
-				}
+				event->setHandled(true);
 			}
 		}
 	}

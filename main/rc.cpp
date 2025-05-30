@@ -31,7 +31,7 @@ namespace pizda {
 		_renderer.setTarget(&_display);
 
 		// Rendering splash screen
-		Theme::setPaletteColors(&_renderer);
+		Theme::setup(&_renderer);
 		_renderer.clear(&Theme::bg1);
 		_renderer.renderImage(Point(), &resources::Images::splashScreen);
 		_renderer.flush();
@@ -188,7 +188,7 @@ namespace pizda {
 		return _leverLeft;
 	}
 
-	RotaryEncoder& RC::getEncoder() {
+	Encoder& RC::getEncoder() {
 		return _encoder;
 	}
 

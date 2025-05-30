@@ -40,7 +40,7 @@ namespace pizda {
 	const PIXY10Font Theme::fontNormal = PIXY10Font();
 	const Vaticanus8Font Theme::fontSmall = Vaticanus8Font();
 
-	void Theme::setPaletteColors(Bit8PaletteRenderer* renderer) {
+	void Theme::setup(Bit8PaletteRenderer* renderer) {
 		renderer->setPaletteColors({
 			// Background
 			RGB888Color(0x000000),
@@ -95,6 +95,39 @@ namespace pizda {
 			RGB888Color(0x317fcb),
 			// Sky 2
 			RGB888Color(0xaed1f2),
+		});
+
+		// Keyboard
+		KeyboardController::setOnShow([](Keyboard* keyboard) {
+			keyboard->setFont(&Theme::fontNormal);
+			keyboard->setBackgroundColor(&Theme::bg1);
+
+			keyboard->setKeyHeight(24);
+			keyboard->setKeyCornerRadius(0);
+
+			keyboard->setHorizontalKeySpacing(1);
+			keyboard->setVerticalKeySpacing(1);
+
+			keyboard->setDefaultKeyBackgroundColor(&Theme::bg3);
+			keyboard->setDefaultKeyTextColor(&Theme::fg1);
+
+			keyboard->setActionKeyBackgroundColor(&Theme::bg2);
+			keyboard->setActionKeyTextColor(&Theme::fg1);
+
+			keyboard->setCharactersLayoutBuilder([] {
+				return new CharactersKeyboardLayout();
+			});
+
+			keyboard->setCyclicLayoutBuilders({
+				[] {
+					return new EnglishKeyboardLayout();
+				},
+//			[]() {
+//				return new RussianKeyboardLayout();
+//			}
+			});
+
+			keyboard->setCyclicLayoutIndex(0);
 		});
 	}
 
@@ -225,36 +258,5 @@ namespace pizda {
 		textField->setCursorColor(&Theme::accent1);
 
 		textField->setFont(&Theme::fontNormal);
-
-		textField->setKeyboardConfigurator([](Keyboard* keyboard) {
-			keyboard->setFont(&Theme::fontNormal);
-			keyboard->setBackgroundColor(&Theme::bg2);
-
-			keyboard->setKeyHeight(24);
-			keyboard->setKeyCornerRadius(0);
-
-			keyboard->setHorizontalKeySpacing(1);
-			keyboard->setVerticalKeySpacing(1);
-
-			keyboard->setDefaultKeyBackgroundColor(&Theme::bg4);
-			keyboard->setDefaultKeyTextColor(&Theme::fg1);
-			keyboard->setActionKeyBackgroundColor(&Theme::bg3);
-			keyboard->setActionKeySecondaryColor(&Theme::fg1);
-
-			keyboard->setCharactersLayoutBuilder([] {
-				return new CharactersKeyboardLayout();
-			});
-
-			keyboard->setCyclicLayoutBuilders({
-				[] {
-					return new EnglishKeyboardLayout();
-				},
-//			[]() {
-//				return new RussianKeyboardLayout();
-//			}
-			});
-
-			keyboard->setCyclicLayoutIndex(0);
-		});
 	}
 }

@@ -34,14 +34,14 @@ namespace pizda {
 	void ThrottleIndicatorLayout::onEventBeforeChildren(Event* event) {
 		InstrumentIndicatorLayout::onEventBeforeChildren(event);
 
-		if (event->getTypeID() == RotaryEncoderRotationEvent::typeID) {
+		if (event->getTypeID() == EncoderValueChangedEvent::typeID) {
 			if (isFocused()) {
-				const auto rotateEvent = reinterpret_cast<RotaryEncoderRotationEvent*>(event);
+				const auto rotateEvent = reinterpret_cast<EncoderValueChangedEvent*>(event);
 
-//				ESP_LOGI("Encoder", "RPS: %ld", rotateEvent->getRPS());
+//				ESP_LOGI("Encoder", "RPS: %ld", rotateEvent->getDPS());
 
 				auto& settings = RC::getInstance().getSettings();
-				settings.controls.throttle = addSaturating(settings.controls.throttle, rotateEvent->getRPSFactor(60, 1, 10) * 0xFF / 100);
+				settings.controls.throttle = addSaturating(settings.controls.throttle, rotateEvent->getDPSFactor(60, 1, 10) * 0xFF / 100);
 				settings.controls.scheduleWrite();
 
 				invalidate();
@@ -49,8 +49,8 @@ namespace pizda {
 				event->setHandled(true);
 			}
 		}
-		else if (event->getTypeID() == RotaryEncoderSwitchEvent::typeID) {
-			if (isFocused() && reinterpret_cast<RotaryEncoderSwitchEvent*>(event)->isPressed()) {
+		else if (event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
+			if (isFocused()) {
 				auto& settings = RC::getInstance().getSettings();
 				settings.autopilot.autoThrottle = !settings.autopilot.autoThrottle;
 				settings.autopilot.scheduleWrite();

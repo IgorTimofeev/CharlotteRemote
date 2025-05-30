@@ -4,7 +4,7 @@
 #include <YOBA/UI.h>
 #include <YOBA/hardware/displays/ILI9341Display.h>
 #include <YOBA/hardware/touchPanels/FT6336UTouchPanel.h>
-#include <YOBA/hardware/rotaryEncoder.h>
+#include <YOBA/hardware/encoder.h>
 
 #include <UI/theme.h>
 #include <UI/navigation/route.h>
@@ -45,7 +45,7 @@ namespace pizda {
 			Speaker& getSpeaker();
 
 			Axis& getLeverLeft();
-			RotaryEncoder& getEncoder();
+			PushButtonEncoder& getEncoder();
 			Axis& getLeverRight();
 			Axis& getJoystickHorizontal();
 			Axis& getJoystickVertical();
@@ -98,7 +98,7 @@ namespace pizda {
 			TCPTransceiver _transceiver {};
 
 			// Encoder
-			RotaryEncoder _encoder = {
+			PushButtonEncoder _encoder = {
 				constants::encoder::a,
 				constants::encoder::b,
 				constants::encoder::sw
