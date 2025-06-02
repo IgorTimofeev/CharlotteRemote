@@ -5,25 +5,17 @@
 
 namespace pizda {
 	void TCPTransceiver::setup() {
-		WiFi::addOnStateChanged([this](WiFiState, WiFiState toState) {
-			switch (toState) {
-				case WiFiState::connected: {
-					_TCP.connect(
-						constants::transceiver::tcp::address,
-						constants::transceiver::tcp::port
-					);
-
-					break;
-				}
-				case WiFiState::disconnected: {
-					_TCP.disconnect();
-
-					break;
-				}
-				default:
-					break;
+		WiFi::isConnectedChanged += [this] {
+			if (WiFi::isConnected()) {
+				_TCP.connect(
+					constants::transceiver::tcp::address,
+					constants::transceiver::tcp::port
+				);
 			}
-		});
+			else {
+				_TCP.disconnect();
+			}
+		};
 
 		_TCP.setOnStateChanged([this](TCPState fromState, TCPState toState) {
 			switch (toState) {
@@ -41,7 +33,8 @@ namespace pizda {
 					if (fromState == TCPState::connected)
 						RC::getInstance().getSpeaker().play(resources::Sounds::transceiverDisconnect());
 
-					_TCP.scheduleConnection();
+					if (WiFi::isConnected())
+						_TCP.scheduleConnection();
 
 					break;
 				}
@@ -62,14 +55,14 @@ namespace pizda {
 	}
 
 	bool TCPTransceiver::isStarted() const {
-		return _task != nullptr;
+		return _startTask != nullptr;
 	}
 
 	void TCPTransceiver::start() {
 		if (isStarted())
 			return;
 
-		xTaskCreate(startTaskFunction, "Transceiver", 4096, this, 1, _task);
+		xTaskCreate(startTaskFunction, "Transceiver start", 4096, this, 1, _startTask);
 	}
 
 	void TCPTransceiver::startTaskFunction(void* arg) {
@@ -88,8 +81,8 @@ namespace pizda {
 
 		ESP_LOGE("Transceiver", "Stopped");
 
-		vTaskDelete(*_task);
-		_task = nullptr;
+		vTaskDelete(*_startTask);
+		_startTask = nullptr;
 	}
 
 	void TCPTransceiver::fillRemotePacket() {

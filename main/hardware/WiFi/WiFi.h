@@ -3,9 +3,12 @@
 #include <cstring>
 #include <iterator>
 #include <functional>
-#include "esp_wifi.h"
-#include "nvs_flash.h"
+#include <esp_wifi.h>
+#include <nvs_flash.h>
 #include <esp_timer.h>
+#include <optional>
+#include <span>
+
 #include "esp_log.h"
 
 #include <YOBA/main.h>
@@ -13,31 +16,33 @@
 namespace pizda {
 	using namespace YOBA;
 
-	enum class WiFiState : uint8_t {
-		stopped,
-		started,
-		connected,
-		disconnected
-	};
-
 	class WiFi {
 		public:
+			static void setup();
 			static void start();
 			static void stop();
+			static void updateConfig();
 			static void connect();
 			static void disconnect();
-			static WiFiState getState();
-			static void addOnStateChanged(const std::function<void(WiFiState, WiFiState)>& callback);
+			static void scan();
+
+			static bool isStarted();
+			static bool isConnected();
 			static int getRSSI();
 
-		private:
-			static TaskHandle_t* _task;
-			static WiFiState _state;
-			static Callback<WiFiState, WiFiState> _onStateChanged;
+			static Callback<> isStartedChanged;
+			static Callback<> isConnectedChanged;
+			static Callback<const std::span<wifi_ap_record_t>&> scanCompleted;
 
+		private:
+			static bool _started;
+			static bool _connected;
+
+			static void setStarted(bool value);
+			static void setConnected(bool value);
 			static void WiFiEventHandler(void* arg, esp_event_base_t eventBase, int32_t eventID, void* eventData);
-			static void setState(WiFiState value);
-			static void reconnect(void* arg);
 			static void scheduleReconnection();
+			static void reconnectTaskFunction(void* arg);
+			static void connectUnchecked();
 	};
 }

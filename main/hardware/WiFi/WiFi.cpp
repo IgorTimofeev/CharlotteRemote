@@ -1,26 +1,26 @@
 #include "WiFi.h"
 
 #include <constants.h>
+#include <memory>
+#include <rc.h>
 
 namespace pizda {
-	TaskHandle_t* WiFi::_task = nullptr;
-	WiFiState WiFi::_state = WiFiState::stopped;
-	Callback<WiFiState, WiFiState> WiFi::_onStateChanged = {};
+	bool WiFi::_connected = false;
+	bool WiFi::_started = false;
 
-	void WiFi::start() {
-		if (getState() != WiFiState::stopped)
-			return;
+	Callback<> WiFi::isStartedChanged {};
+	Callback<> WiFi::isConnectedChanged {};
+	Callback<const std::span<wifi_ap_record_t>&> WiFi::scanCompleted {};
 
-		ESP_LOGI("WiFi", "Starting requested");
-
+	void WiFi::setup() {
 		ESP_ERROR_CHECK(esp_netif_init());
 
-		auto state = esp_event_loop_create_default();
+		const auto state = esp_event_loop_create_default();
 		assert(state == ESP_OK || state == ESP_ERR_INVALID_STATE);
 
 		esp_netif_create_default_wifi_sta();
 
-		wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+		const wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 		ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 
 		esp_event_handler_instance_t eventHandlerInstanceID;
@@ -44,114 +44,170 @@ namespace pizda {
 		));
 
 		ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
+		ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));
+	}
+
+	void WiFi::start() {
+		if (isStarted())
+			return;
+
+		ESP_LOGI("WiFi", "Start requested");
+
+		ESP_ERROR_CHECK(esp_wifi_start());
+	}
+
+	void WiFi::stop() {
+		if (!isStarted())
+			return;
+
+		ESP_LOGI("WiFi", "Stop requested");
+
+		esp_wifi_stop();
+	}
+
+	void WiFi::updateConfig() {
+		const auto& settings = RC::getInstance().getSettings();
+
+		if (!settings.WiFi.current.has_value()) {
+			ESP_LOGI("WiFi", "Couldn't update config, because SSID & password haven't been configured yet");
+			return;
+		}
 
 		wifi_config_t wifi_config {};
 
 		strncpy(
 			reinterpret_cast<char*>(wifi_config.sta.ssid),
-			constants::wifi::ssid,
+			settings.WiFi.current.value().ssid.data(),
 			std::size(wifi_config.sta.ssid)
 		);
 
 		strncpy(
 			reinterpret_cast<char*>(wifi_config.sta.password),
-			constants::wifi::password,
+			settings.WiFi.current.value().password.data(),
 			std::size(wifi_config.sta.password)
 		);
 
 		wifi_config.sta.threshold.authmode = WIFI_AUTH_WPA2_PSK;
 
 		ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
-		ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));
-		ESP_ERROR_CHECK(esp_wifi_start());
-	}
-
-	void WiFi::stop() {
-		if (_state == WiFiState::stopped)
-			return;
-
-		ESP_LOGI("WiFi", "Stopping requested");
-
-		esp_wifi_stop();
 	}
 
 	void WiFi::connect() {
-		if (_state == WiFiState::stopped || _state == WiFiState::connected)
+		if (!isStarted() || isConnected())
 			return;
 
-		ESP_LOGI("WiFi", "Connection requested");
+		connectUnchecked();
+	}
+
+	void WiFi::connectUnchecked() {
+		const auto& settings = RC::getInstance().getSettings();
+
+		if (!settings.WiFi.current.has_value()) {
+			ESP_LOGI("WiFi", "Couldn't connect, because SSID & password haven't been configured yet");
+			return;
+		}
 
 		esp_wifi_connect();
 	}
 
 	void WiFi::disconnect() {
-		if (_state == WiFiState::stopped || _state == WiFiState::connected)
+		if (!isStarted() || !isConnected())
 			return;
 
-		ESP_LOGI("WiFi", "Disconnection requested");
+		ESP_LOGI("WiFi", "Disconnect requested");
 
 		esp_wifi_disconnect();
 	}
 
-	WiFiState WiFi::getState() {
-		return _state;
+	bool WiFi::isStarted() {
+		return _started;
+	}
+
+	bool WiFi::isConnected() {
+		return _connected;
+	}
+
+	void WiFi::setStarted(bool value) {
+		if (value == _started)
+			return;
+
+		_started = value;
+
+		ESP_LOGI("WiFi", "IsStarted changed: %d", _started);
+
+		isStartedChanged();
+	}
+
+	void WiFi::setConnected(bool value) {
+		if (value == _connected)
+			return;
+
+		_connected = value;
+
+		ESP_LOGI("WiFi", "IsConnected changed: %d", _connected);
+
+		isConnectedChanged();
 	}
 
 	void WiFi::WiFiEventHandler(void* arg, esp_event_base_t eventBase, int32_t eventID, void* eventData) {
 		if (eventBase == WIFI_EVENT && eventID == WIFI_EVENT_STA_START) {
-			ESP_LOGI("WiFi", "Ready to connect");
+			ESP_LOGI("WiFi", "Started");
 
-			setState(WiFiState::started);
-			connect();
+			connectUnchecked();
+			setStarted(true);
 		}
 		else if (eventBase == WIFI_EVENT && eventID == WIFI_EVENT_STA_STOP) {
 			ESP_LOGI("WiFi", "Stopped");
 
-			setState(WiFiState::stopped);
+			setStarted(false);
 		}
 		else if (eventBase == WIFI_EVENT && eventID == WIFI_EVENT_STA_DISCONNECTED) {
-			ESP_LOGI("WiFi", "Disconnected");
+			const auto event = static_cast<wifi_event_sta_disconnected_t*>(eventData);
 
-			setState(WiFiState::disconnected);
+			ESP_LOGI("WiFi", "Disconnected, reason code: %d", event->reason);
 
-			scheduleReconnection();
+			setConnected(false);
+			// connect();
 		}
 		else if (eventBase == IP_EVENT && eventID == IP_EVENT_STA_GOT_IP) {
 //			auto event = (ip_event_got_ip_t*) eventData;
 			ESP_LOGI("WiFi", "Connected");
 
-			setState(WiFiState::connected);
+			setConnected(true);
+		}
+		else if (eventBase == WIFI_EVENT && eventID == WIFI_EVENT_SCAN_DONE) {
+			const auto event = static_cast<wifi_event_sta_scan_done_t*>(eventData);
+
+			ESP_LOGI("WiFi", "Scan finished, event %d", event->number);
+
+			// Count
+			uint16_t accessPointCount = 0;
+			auto state = esp_wifi_scan_get_ap_num(&accessPointCount);
+
+			ESP_LOGI("WiFi", "Found AP count: %d", accessPointCount);
+
+			if (state != ESP_OK)
+				ESP_ERROR_CHECK_WITHOUT_ABORT(state);
+
+			// List
+			const auto accessPoints = std::make_unique<wifi_ap_record_t[]>(accessPointCount);
+			state = esp_wifi_scan_get_ap_records(&accessPointCount, accessPoints.get());
+
+			ESP_LOGI("WiFi", "esp_wifi_scan_get_ap_records count: %d", accessPointCount);
+
+			if (state == ESP_OK) {
+				scanCompleted(std::span(accessPoints.get(), accessPointCount));
+			}
+			else {
+				ESP_ERROR_CHECK_WITHOUT_ABORT(state);
+			}
+
+			esp_wifi_clear_ap_list();
 		}
 	}
 
-	void WiFi::addOnStateChanged(const std::function<void(WiFiState, WiFiState)>& callback) {
-		_onStateChanged += callback;
-	}
-
-	void WiFi::reconnect(void* arg) {
-		ESP_LOGI("WiFi", "Scheduling reconnection in %lu ms", constants::wifi::connectionInterval / 1000);
-
-		vTaskDelay(constants::wifi::connectionInterval / 1000 / portTICK_PERIOD_MS);
-
-		ESP_LOGI("WiFi", "Scheduled reconnection time reached");
-
-		connect();
-
-		vTaskDelete(nullptr);
-	}
-
 	void WiFi::scheduleReconnection() {
-		xTaskCreate(reconnect, "WiFi reconnection task", 1024, nullptr, 3, nullptr);
-	}
-
-	void WiFi::setState(WiFiState value) {
-		if (value == _state)
-			return;
-
-		const auto fromState = _state;
-		_state = value;
-
-		_onStateChanged(fromState, _state);
+		xTaskCreate(reconnectTaskFunction, "WiFi reconnection task", 4096, nullptr, 3, nullptr);
 	}
 
 	int WiFi::getRSSI() {
@@ -161,5 +217,27 @@ namespace pizda {
 			result = 0;
 
 		return result;
+	}
+
+	void WiFi::scan() {
+		ESP_LOGI("WiFi", "Scan started");
+
+		wifi_scan_config_t config {};
+		config.scan_type = WIFI_SCAN_TYPE_ACTIVE;
+		config.show_hidden = false;
+
+		esp_wifi_scan_start(&config, false);
+	}
+
+	void WiFi::reconnectTaskFunction(void* arg) {
+		ESP_LOGI("WiFi", "Scheduling reconnection in %lu ms", constants::wifi::connectionInterval / 1000);
+
+		vTaskDelay(pdMS_TO_TICKS(constants::wifi::connectionInterval / 1000));
+
+		ESP_LOGI("WiFi", "Scheduled reconnection time reached");
+
+		connect();
+
+		vTaskDelete(nullptr);
 	}
 }

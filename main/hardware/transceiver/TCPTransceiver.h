@@ -18,7 +18,7 @@ namespace pizda {
 			bool isStarted() const;
 
 		private:
-			TaskHandle_t* _task = nullptr;
+			TaskHandle_t* _startTask = nullptr;
 
 			TCP _TCP;
 

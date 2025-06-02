@@ -136,7 +136,7 @@ namespace pizda {
 		private:
 			constexpr static auto _loggingTag = "TCP";
 
-			sockaddr_in _socketAddress = {};
+			sockaddr_in _socketAddress {};
 			int _socket = -1;
 
 			TCPState _state = TCPState::disconnected;

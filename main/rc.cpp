@@ -62,6 +62,7 @@ namespace pizda {
 		_ring.setup();
 
 		// WiFi
+		WiFi::setup();
 		WiFi::start();
 
 		// Transceiver

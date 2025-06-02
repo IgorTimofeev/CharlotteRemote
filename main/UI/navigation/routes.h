@@ -10,21 +10,21 @@
 #include <UI/navigation/settings/MFD/MFDSettingsPage.h>
 #include <UI/navigation/settings/personalization/personalizationSettingsPage.h>
 #include <UI/navigation/settings/axis/axisSettingsPage.h>
-#include <UI/navigation/settings/WiFi/WiFiSettingsPage.h>
+#include <UI/navigation/settings/WiFi/WiFiPage.h>
 #include <UI/navigation/settings/developer/developerSettingsPage.h>
 
 namespace pizda {
 	class Routes {
 		public:
-			constexpr static ElementRoute<MFDPage> MFD = {};
+			constexpr static ElementRoute<MFDPage> MFD {};
 
-			constexpr static ElementRoute<FlightPlanPage> navFlightPlan = {};
-			constexpr static ElementRoute<WaypointsPage> navWaypoints = {};
+			constexpr static ElementRoute<FlightPlanPage> navFlightPlan {};
+			constexpr static ElementRoute<WaypointsPage> navWaypoints {};
 
-			constexpr static ElementRoute<MFDSettingsPage> settingsMFD = {};
-			constexpr static ElementRoute<PersonalizationSettingsPage> settingsPersonalization = {};
-			constexpr static ElementRoute<WiFiSettingsPage> settingsWiFi = {};
-			constexpr static ElementRoute<AxisSettingsPage> settingsAxis = {};
-			constexpr static ElementRoute<DeveloperSettingsPage> settingsDeveloper = {};
+			constexpr static ElementRoute<MFDSettingsPage> settingsMFD {};
+			constexpr static ElementRoute<PersonalizationSettingsPage> settingsPersonalization {};
+			constexpr static ElementRoute<WiFiSettingsPage> settingsWiFi {};
+			constexpr static ElementRoute<AxisSettingsPage> settingsAxis {};
+			constexpr static ElementRoute<DeveloperSettingsPage> settingsDeveloper {};
 	};
 }
