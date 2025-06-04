@@ -54,16 +54,10 @@ namespace pizda {
 
 			rc.getApplication().scheduleOnTick([this, &rc, item] {
 				auto& settings = rc.getSettings();
-
-				settings.WiFi.current = SettingsWiFiNetwork {
-					StringUtils::toString(item->getText()),
-					StringUtils::toString(passwordTextField.getText())
-				};
-
 				settings.WiFi.scheduleWrite();
 
 				WiFi::disconnect();
-				WiFi::updateConfig();
+				WiFi::setAccessPoint(item->accessPoint, StringUtils::toString(passwordTextField.getText()));
 				WiFi::connect();
 
 				hide();

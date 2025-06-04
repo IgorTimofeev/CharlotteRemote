@@ -63,6 +63,13 @@ namespace pizda {
 
 		// WiFi
 		WiFi::setup();
+
+		WiFi::isStartedChanged += [] {
+			if (WiFi::isStarted()) {
+				WiFi::connect();
+			}
+		};
+
 		WiFi::start();
 
 		// Transceiver
