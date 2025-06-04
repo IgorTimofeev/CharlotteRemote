@@ -5,9 +5,10 @@
 #include <rc.h>
 
 namespace pizda {
-	std::deque<WiFi::Operation> WiFi::_operations {};
 	bool WiFi::_connected = false;
 	bool WiFi::_started = false;
+	bool WiFi::_scanWasScheduled = false;
+	bool WiFi::_scanShouldBeScheduled = false;
 
 	Callback<> WiFi::isStartedChanged {};
 	Callback<> WiFi::isConnectedChanged {};
@@ -95,14 +96,18 @@ namespace pizda {
 		if (isStarted())
 			return;
 
-		scheduleOperation(Operation::start);
+		ESP_LOGI("WiFi", "Start requested");
+
+		ESP_ERROR_CHECK(esp_wifi_start());
 	}
 
 	void WiFi::stop() {
 		if (!isStarted())
 			return;
 
-		scheduleOperation(Operation::stop);
+		ESP_LOGI("WiFi", "Stop requested");
+
+		esp_wifi_stop();
 	}
 
 	void WiFi::setAccessPoint(const wifi_ap_record_t& accessPoint, std::string_view password) {
@@ -131,14 +136,24 @@ namespace pizda {
 		if (!isStarted() || isConnected())
 			return;
 
-		scheduleOperation(Operation::connect);
+		ESP_LOGI("WiFi", "Connect requested");
+
+		if (!isAccessPointSet()) {
+			ESP_LOGI("WiFi", "Couldn't connect, because SSID & password haven't been configured yet");
+			return;
+		}
+
+		_scanShouldBeScheduled = true;
+		esp_wifi_connect();
 	}
 
 	void WiFi::disconnect() {
 		if (!isStarted() || !isConnected())
 			return;
 
-		scheduleOperation(Operation::disconnect);
+		ESP_LOGI("WiFi", "Disconnect requested");
+
+		esp_wifi_disconnect();
 	}
 
 	bool WiFi::isStarted() {
@@ -176,13 +191,11 @@ namespace pizda {
 			ESP_LOGI("WiFi", "Started");
 
 			setStarted(true);
-			finishOperation(Operation::start);
 		}
 		else if (eventBase == WIFI_EVENT && eventID == WIFI_EVENT_STA_STOP) {
 			ESP_LOGI("WiFi", "Stopped");
 
 			setStarted(false);
-			finishOperation(Operation::stop);
 		}
 		else if (eventBase == WIFI_EVENT && eventID == WIFI_EVENT_STA_DISCONNECTED) {
 			const auto event = static_cast<wifi_event_sta_disconnected_t*>(eventData);
@@ -190,14 +203,22 @@ namespace pizda {
 			ESP_LOGI("WiFi", "Disconnected, reason code: %d", event->reason);
 
 			setConnected(false);
-			finishOperation(Operation::disconnect);
+			_scanShouldBeScheduled = false;
 		}
 		else if (eventBase == IP_EVENT && eventID == IP_EVENT_STA_GOT_IP) {
 //			auto event = (ip_event_got_ip_t*) eventData;
 			ESP_LOGI("WiFi", "Connected");
 
 			setConnected(true);
-			finishOperation(Operation::connect);
+
+			// Running scheduled scan
+			_scanShouldBeScheduled = false;
+
+			if (_scanWasScheduled) {
+				runScan();
+
+				_scanWasScheduled = false;
+			}
 		}
 		else if (eventBase == WIFI_EVENT && eventID == WIFI_EVENT_SCAN_DONE) {
 			const auto event = static_cast<wifi_event_sta_scan_done_t*>(eventData);
@@ -210,9 +231,13 @@ namespace pizda {
 			const auto accessPoints = std::make_unique<wifi_ap_record_t[]>(accessPointCount);
 			const auto state = esp_wifi_scan_get_ap_records(&accessPointCount, accessPoints.get());
 
-			ESP_LOGI("WiFi", "esp_wifi_scan_get_ap_records count: %d", accessPointCount);
-
 			if (state == ESP_OK) {
+				for (size_t i = 0; i < accessPointCount; i++) {
+					const auto ap = accessPoints.get()[i];
+
+					ESP_LOGI("WiFi", "SSID: %s, rssi: %d", reinterpret_cast<const char*>(ap.ssid), ap.rssi);
+				}
+
 				scanCompleted(std::span(accessPoints.get(), accessPointCount));
 			}
 			else {
@@ -220,7 +245,6 @@ namespace pizda {
 			}
 
 			esp_wifi_clear_ap_list();
-			finishOperation(Operation::scan);
 		}
 	}
 
@@ -238,7 +262,27 @@ namespace pizda {
 	}
 
 	void WiFi::scan() {
-		scheduleOperation(Operation::scan);
+		if (!isStarted())
+			return;
+
+		if (_scanShouldBeScheduled) {
+			ESP_LOGI("WiFi", "Scan scheduled");
+
+			_scanWasScheduled = true;
+		}
+		else {
+			runScan();
+		}
+	}
+
+	void WiFi::runScan() {
+		ESP_LOGI("WiFi", "Scan started");
+
+		wifi_scan_config_t config {};
+		config.scan_type = WIFI_SCAN_TYPE_ACTIVE;
+		config.show_hidden = false;
+
+		esp_wifi_scan_start(&config, false);
 	}
 
 	void WiFi::reconnectTaskFunction(void* arg) {
@@ -251,82 +295,5 @@ namespace pizda {
 		connect();
 
 		vTaskDelete(nullptr);
-	}
-
-	void WiFi::scheduleOperation(Operation operation) {
-		_operations.push_back(operation);
-
-		if (_operations.size() == 1)
-			runOperation(operation);
-	}
-
-	void WiFi::finishOperation(Operation operation) {
-		if (_operations.front() == operation) {
-			_operations.pop_front();
-
-			if (_operations.empty())
-				return;
-		}
-
-		runOperation(_operations.front());
-	}
-
-	void WiFi::runStartOperation() {
-		ESP_LOGI("WiFi", "Start requested");
-
-		ESP_ERROR_CHECK(esp_wifi_start());
-	}
-
-	void WiFi::runStopOperation() {
-		ESP_LOGI("WiFi", "Stop requested");
-
-		esp_wifi_stop();
-	}
-
-	void WiFi::runConnectOperation() {
-		ESP_LOGI("WiFi", "Connect requested");
-
-		if (!isAccessPointSet()) {
-			ESP_LOGI("WiFi", "Couldn't connect, because SSID & password haven't been configured yet");
-			return;
-		}
-
-		esp_wifi_connect();
-	}
-
-	void WiFi::runDisconnectOperation() {
-		ESP_LOGI("WiFi", "Disconnect requested");
-
-		esp_wifi_disconnect();
-	}
-
-	void WiFi::runScanOperation() {
-		ESP_LOGI("WiFi", "Scan started");
-
-		wifi_scan_config_t config {};
-		config.scan_type = WIFI_SCAN_TYPE_ACTIVE;
-		config.show_hidden = false;
-
-		esp_wifi_scan_start(&config, false);
-	}
-
-	void WiFi::runOperation(Operation operation) {
-		switch (operation) {
-			case Operation::start:
-				runStartOperation();
-				break;
-			case Operation::stop:
-				runStopOperation();
-				break;
-			case Operation::connect:
-				runConnectOperation();
-				break;
-			case Operation::disconnect:
-				runDisconnectOperation();
-				break;
-			case Operation::scan:
-				runScanOperation();
-				break;
-		}
 	}
 }

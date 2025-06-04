@@ -18,9 +18,9 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class WiFiSettingsPageItem : public Button {
+	class WiFiSettingsPageAccessPointItem : public Button {
 		public:
-			explicit WiFiSettingsPageItem(const wifi_ap_record_t& accessPoint);
+			explicit WiFiSettingsPageAccessPointItem(const wifi_ap_record_t& accessPoint);
 
 			wifi_ap_record_t accessPoint;
 
@@ -31,7 +31,7 @@ namespace pizda {
 
 	class WiFiSettingsPageDialog : public ScrollViewDialog {
 		public:
-			explicit WiFiSettingsPageDialog(const WiFiSettingsPageItem* item);
+			explicit WiFiSettingsPageDialog(const WiFiSettingsPageAccessPointItem* item);
 
 			TextField passwordTextField;
 			Titler passwordTitle {L"Password", &passwordTextField };
@@ -46,12 +46,12 @@ namespace pizda {
 			WiFiSettingsPage();
 			~WiFiSettingsPage() override;
 
-			Switcher switcher = Switcher(L"Enable:");
+			Switcher switcher = Switcher(L"Enabled");
 
-			StackLayout itemsLayout {};
-			Titler itemsTitle { L"Access points", &itemsLayout };
+			StackLayout accessPointsLayout {};
+			Titler accessPointsTitle { L"Available networks", &accessPointsLayout };
 
-			Button updateItemButton {};
+			Button updateAccessPointsButton {};
 
 			Text updatesTitle {};
 			Text updatesDescription {};

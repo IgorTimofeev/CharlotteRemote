@@ -46,23 +46,16 @@ namespace pizda {
 				scan
 			};
 
-			static std::deque<Operation> _operations;
-
 			static bool _started;
 			static bool _connected;
+			static bool _scanWasScheduled;
+			static bool _scanShouldBeScheduled;
 
 			static void setStarted(bool value);
 			static void setConnected(bool value);
 			static void WiFiEventHandler(void* arg, esp_event_base_t eventBase, int32_t eventID, void* eventData);
 			static void scheduleReconnection();
 			static void reconnectTaskFunction(void* arg);
-			static void scheduleOperation(Operation operation);
-			static void finishOperation(Operation operation);
-			static void runStartOperation();
-			static void runStopOperation();
-			static void runConnectOperation();
-			static void runDisconnectOperation();
-			static void runScanOperation();
-			static void runOperation(Operation operation);
+			static void runScan();
 	};
 }

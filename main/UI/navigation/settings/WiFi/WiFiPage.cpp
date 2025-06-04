@@ -7,21 +7,35 @@
 #include <utils/string.h>
 
 namespace pizda {
-	WiFiSettingsPageItem::WiFiSettingsPageItem(const wifi_ap_record_t& accessPoint) : accessPoint(accessPoint) {
+	WiFiSettingsPageAccessPointItem::WiFiSettingsPageAccessPointItem(const wifi_ap_record_t& accessPoint) : accessPoint(accessPoint) {
 		setHeight(Theme::elementHeight);
 
 		setText(StringUtils::toWString(reinterpret_cast<const char*>(&this->accessPoint.ssid)));
 	}
 
-	void WiFiSettingsPageItem::onRender(Renderer* renderer, const Bounds& bounds) {
+	void WiFiSettingsPageAccessPointItem::onRender(Renderer* renderer, const Bounds& bounds) {
 		renderer->renderFilledRectangle(bounds, Theme::cornerRadius, &Theme::bg3);
 		renderer->renderRectangle(bounds, Theme::cornerRadius, isActive() ? &Theme::fg1 : &Theme::bg3);
+
+		const auto centerY = bounds.getYCenter();
+
+		// RSSI
+		constexpr static uint8_t rssiRadiusStep = 3;
+		constexpr static uint8_t rssiRadius = rssiRadiusStep * 3;
+		constexpr static uint8_t rssiAngleFrom = 30;
+		constexpr static uint8_t rssiAngleTo = 150;
+
+		const auto rssiPosition = Point(bounds.getX() + 8 + rssiRadius, centerY + 5);
+		renderer->renderPixel(rssiPosition, &Theme::accent1);
+		renderer->renderArc(rssiPosition, rssiRadiusStep    , rssiAngleFrom * 255 / 360, rssiAngleTo * 255 / 360, accessPoint.rssi > -80 ? &Theme::accent1 : &Theme::fg5);
+		renderer->renderArc(rssiPosition, rssiRadiusStep * 2, rssiAngleFrom * 255 / 360, rssiAngleTo * 255 / 360, accessPoint.rssi > -60 ? &Theme::accent1 : &Theme::fg5);
+		renderer->renderArc(rssiPosition, rssiRadiusStep * 3, rssiAngleFrom * 255 / 360, rssiAngleTo * 255 / 360, accessPoint.rssi > -40 ? &Theme::accent1 : &Theme::fg5);
 
 		// SSID
 		renderer->renderString(
 			Point(
-				bounds.getX() + 10,
-				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
+				rssiPosition.getX() + rssiRadius + 10,
+				centerY - Theme::fontNormal.getHeight() / 2
 			),
 			&Theme::fontNormal,
 			&Theme::fg1,
@@ -31,11 +45,11 @@ namespace pizda {
 		// RSSI
 	}
 
-	void WiFiSettingsPageItem::onClick() {
+	void WiFiSettingsPageAccessPointItem::onClick() {
 		(new WiFiSettingsPageDialog(this))->show();
 	}
 
-	WiFiSettingsPageDialog::WiFiSettingsPageDialog(const WiFiSettingsPageItem* item) {
+	WiFiSettingsPageDialog::WiFiSettingsPageDialog(const WiFiSettingsPageAccessPointItem* item) {
 		title.setText(item->getText());
 
 		// Password
@@ -86,8 +100,8 @@ namespace pizda {
 				WiFi::start();
 			}
 			else {
-				itemsLayout.removeAndDeleteChildren();
-				itemsTitle.setVisible(false);
+				accessPointsLayout.removeAndDeleteChildren();
+				accessPointsTitle.setVisible(false);
 
 				WiFi::stop();
 			}
@@ -98,19 +112,19 @@ namespace pizda {
 		rows += &switcher;
 
 		// Items
-		itemsLayout.setSpacing(5);
-		rows += &itemsTitle;
+		accessPointsLayout.setSpacing(5);
+		rows += &accessPointsTitle;
 
-		Theme::applySecondary(&updateItemButton);
-		updateItemButton.setText(L"Refresh list");
+		Theme::applySecondary(&updateAccessPointsButton);
+		updateAccessPointsButton.setText(L"Refresh list");
 
-		updateItemButton.click += [this] {
+		updateAccessPointsButton.click += [this] {
 			if (WiFi::isStarted()) {
 				WiFi::scan();
 			}
 		};
 
-		rows += &updateItemButton;
+		rows += &updateAccessPointsButton;
 
 		// Updates
 
@@ -158,13 +172,13 @@ namespace pizda {
 		};
 
 		WiFiScanCompletedCallbackIndex = WiFi::scanCompleted += [this](const std::span<wifi_ap_record_t>& accessPoints) {
-			itemsLayout.removeAndDeleteChildren();
+			accessPointsLayout.removeAndDeleteChildren();
 
 			for (const auto& accessPoint : accessPoints) {
-				itemsLayout += new WiFiSettingsPageItem(accessPoint);
+				accessPointsLayout += new WiFiSettingsPageAccessPointItem(accessPoint);
 			}
 
-			itemsTitle.setVisible(accessPoints.size() > 0);
+			accessPointsTitle.setVisible(accessPoints.size() > 0);
 		};
 
 		if (WiFi::isStarted()) {
