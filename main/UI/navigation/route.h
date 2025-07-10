@@ -7,6 +7,7 @@ namespace pizda {
 
 	class Route {
 		public:
+			virtual ~Route() = default;
 			virtual Element* buildElement() const = 0;
 	};
 

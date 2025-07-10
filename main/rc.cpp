@@ -111,15 +111,15 @@ namespace pizda {
 			// Low priority tasks
 			_speaker.tick();
 
-			_tickDeltaTime = esp_timer_get_time() - time;
-
-			// Skipping remaining tick time if any
-			if (_tickDeltaTime < constants::application::mainTickInterval) {
-				// FreeRTOS tasks can be only delayed by ms, so...
-				vTaskDelay(pdMS_TO_TICKS((constants::application::mainTickInterval - _tickDeltaTime) / 1000));
-
-//				ESP_LOGI("Main", "Skipping ticks for %lu ms", (constants::application::mainTickInterval - _tickDeltaTime) / 1000);
-			}
+// 			_tickDeltaTime = esp_timer_get_time() - time;
+//
+// 			// Skipping remaining tick time if any
+// 			if (_tickDeltaTime < constants::application::mainTickInterval) {
+// 				// FreeRTOS tasks can be only delayed by ms, so...
+// 				vTaskDelay(pdMS_TO_TICKS((constants::application::mainTickInterval - _tickDeltaTime) / 1000));
+//
+// //				ESP_LOGI("Main", "Skipping ticks for %lu ms", (constants::application::mainTickInterval - _tickDeltaTime) / 1000);
+// 			}
 		}
 	}
 
