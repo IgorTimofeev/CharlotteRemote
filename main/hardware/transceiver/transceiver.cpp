@@ -96,18 +96,18 @@ namespace pizda {
 			if (!sx1262.receive(buffer, receivedLength, 1'000'000))
 				continue;
 			
-			ESP_LOGI(_logTag, "receivedLength: %d", receivedLength);
-			
-			for (int i = 0; i < receivedLength; ++i) {
-				ESP_LOGI(_logTag, "buffer[%d]: %d", i, buffer[i]);
-			}
-			
+//			ESP_LOGI(_logTag, "receivedLength: %d", receivedLength);
+//
+//			for (int i = 0; i < receivedLength; ++i) {
+//				ESP_LOGI(_logTag, "buffer[%d]: %d", i, buffer[i]);
+//			}
+//
 			// Header validation
 			if (std::memcmp(reinterpret_cast<const uint8_t*>(Packet::header), buffer, Packet::headerLengthBytes) == 0) {
 				BitStream stream { buffer + Packet::headerLengthBytes };
 				
 				auto packetType = static_cast<PacketType>(stream.readUint8(Packet::typeLengthBits));
-				ESP_LOGI(_logTag, "packet type: %d", packetType);
+//				ESP_LOGI(_logTag, "packet type: %d", packetType);
 
 				switch (packetType) {
 					case PacketType::AircraftAHRS:
@@ -140,6 +140,7 @@ namespace pizda {
 		ad.rollRad = stream.readFloat();
 		ad.pitchRad = stream.readFloat();
 		ad.yawRad = stream.readFloat();
+		ad.airSpeedKt = stream.readFloat();
 		ad.altitudeFt = stream.readFloat();
 //		ad.throttle = packet->throttle;
 		
@@ -152,8 +153,8 @@ namespace pizda {
 //
 //		ad.windSpeed = Units::convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 		
+		ad.airSpeedKt = Units::convertSpeed(ad.airSpeedKt, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 		ad.altitudeFt = Units::convertDistance(ad.altitudeFt, DistanceUnit::meter, DistanceUnit::foot);
-//		ad.airSpeedKt = Units::convertSpeed(packet->airSpeedKt, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 //		ad.groundSpeedKt = Units::convertSpeed(packet->groundSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 		
 //		ad.flightPathVectorPitch = packet->flightPathPitchRad;
