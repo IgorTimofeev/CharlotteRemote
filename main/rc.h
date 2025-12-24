@@ -12,11 +12,11 @@
 #include <UI/elements/debugOverlay.h>
 
 #include <settings/settings.h>
-#include <constants.h>
+#include "config.h"
 
-#include <hardware/WiFi/WiFi.h>
-#include <hardware/transceiver/packet.h>
-#include <hardware/transceiver/TCPTransceiver.h>
+#include "hardware/transceiver/packet.h"
+#include "hardware/transceiver/transceiver.h"
+
 #include <hardware/speaker/speaker.h>
 #include <hardware/axis.h>
 #include <hardware/battery.h>
@@ -51,7 +51,7 @@ namespace pizda {
 			Axis& getJoystickVertical();
 			Axis& getRing();
 			Battery& getBattery();
-			TCPTransceiver& getTransceiver();
+			Transceiver& getTransceiver();
 
 			void handleAircraftPacket(const AircraftPacket* packet);
 
@@ -74,79 +74,79 @@ namespace pizda {
 			// -------------------------------- Hardware --------------------------------
 
 			ILI9341Display _display = ILI9341Display(
-				constants::spi::mosi,
-				constants::spi::miso,
-				constants::spi::sck,
+				config::spi::mosi,
+				config::spi::miso,
+				config::spi::sck,
 
-				constants::screen::slaveSelect,
-				constants::screen::dataCommand,
-				constants::screen::reset,
-				constants::screen::frequency
+				config::screen::slaveSelect,
+				config::screen::dataCommand,
+				config::screen::reset,
+				config::screen::frequency
 			);
 
 			Bit8PaletteRenderer _renderer { 32 };
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
-				constants::i2c::sda,
-				constants::i2c::scl,
+				config::i2c::sda,
+				config::i2c::scl,
 
-				constants::screen::touch::reset,
-				constants::screen::touch::interrupt
+				config::screen::touch::reset,
+				config::screen::touch::interrupt
 			);
 
 			Speaker _speaker {};
-			TCPTransceiver _transceiver {};
+			Transceiver _transceiver {};
 
 			// Encoder
 			PushButtonEncoder _encoder {
-				constants::encoder::a,
-				constants::encoder::b,
-				constants::encoder::sw
+				config::encoder::a,
+				config::encoder::b,
+				config::encoder::sw
 			};
 
 			// Axis
 			uint64_t _axisTickTime = 0;
 
 			Axis _leverLeft = Axis(
-				&constants::adc::oneshotUnit,
-				constants::axis::leverLeft::channel,
+				&config::adc::oneshotUnit,
+				config::axis::leverLeft::channel,
 				&_settings.axis.leverLeft
 			);
 
 			Axis _leverRight = Axis(
-				&constants::adc::oneshotUnit,
-				constants::axis::leverRight::channel,
+				&config::adc::oneshotUnit,
+				config::axis::leverRight::channel,
 				&_settings.axis.leverRight
 			);
 
 			Axis _joystickHorizontal = Axis(
-				&constants::adc::oneshotUnit,
-				constants::axis::joystickHorizontal::channel,
+				&config::adc::oneshotUnit,
+				config::axis::joystickHorizontal::channel,
 				&_settings.axis.joystickHorizontal
 			);
 
 			Axis _joystickVertical = Axis(
-				&constants::adc::oneshotUnit,
-				constants::axis::joystickVertical::channel,
+				&config::adc::oneshotUnit,
+				config::axis::joystickVertical::channel,
 				&_settings.axis.joystickVertical
 			);
 
 			Axis _ring = Axis(
-				&constants::adc::oneshotUnit,
-				constants::axis::ring::channel,
+				&config::adc::oneshotUnit,
+				config::axis::ring::channel,
 				&_settings.axis.ring
 			);
 
 			Battery _battery = Battery(
-				constants::adc::unit,
-				&constants::adc::oneshotUnit,
-				constants::battery::channel,
+				config::adc::unit,
+				&config::adc::oneshotUnit,
+				config::battery::channel,
 
-				constants::battery::voltageMin,
-				constants::battery::voltageMax,
+				config::battery::voltageMin,
+				config::battery::voltageMax,
 
-				constants::battery::voltageDividerR1,
-				constants::battery::voltageDividerR2
+				config::battery::voltageDividerR1,
+				config::battery::voltageDividerR2
 			);
 
 			// -------------------------------- UI --------------------------------
@@ -169,8 +169,10 @@ namespace pizda {
 
 			AircraftData _aircraftData {};
 			NavigationData _navigationData {};
+			
 
 			void SPIBusSetup() const;
+			void GPIOSetup() const;
 			static void ADCUnitsSetup();
 
 			void axisTick();

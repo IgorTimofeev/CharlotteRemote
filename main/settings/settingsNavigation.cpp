@@ -1,5 +1,5 @@
 #include "settingsNavigation.h"
-#include <rc.h>
+#include "rc.h"
 
 namespace pizda {
 	const char* SettingsNavigation::getNVSNamespace() {

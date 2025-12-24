@@ -1,7 +1,7 @@
 #include "axisEditor.h"
 
 #include <UI/theme.h>
-#include <rc.h>
+#include "rc.h"
 
 namespace pizda {
 	void AxisEditorTrack::onRender(Renderer* renderer, const Bounds& bounds) {

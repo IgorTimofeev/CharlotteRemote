@@ -1,6 +1,6 @@
 #include "waypointItemDialog.h"
 
-#include <rc.h>
+#include "rc.h"
 #include <types/navigationData.h>
 #include <UI/theme.h>
 

@@ -1,6 +1,6 @@
 #include "radioIndicator.h"
 
-#include <rc.h>
+#include "rc.h"
 #include <UI/theme.h>
 
 namespace pizda {

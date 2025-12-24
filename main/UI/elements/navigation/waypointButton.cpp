@@ -3,7 +3,7 @@
 #include <UI/theme.h>
 #include <types/navigationData.h>
 #include <utils/rendering.h>
-#include <rc.h>
+#include "rc.h"
 
 namespace pizda {
 	WaypointButton::WaypointButton() {

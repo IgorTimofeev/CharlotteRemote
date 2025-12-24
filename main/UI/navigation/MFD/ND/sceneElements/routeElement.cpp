@@ -1,7 +1,7 @@
 #include "routeElement.h"
 
 #include <UI/theme.h>
-#include <rc.h>
+#include "rc.h"
 
 namespace pizda {
 	RouteElement::RouteElement(const Vector3F& from, const Vector3F& to, const Color* color) :

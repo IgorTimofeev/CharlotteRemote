@@ -8,9 +8,9 @@ dependencies:
   idf:
     source:
       type: idf
-    version: 5.4.1
+    version: 5.5.1
 direct_dependencies:
 - YOBA
-manifest_hash: c90253e225556174ecf17769a967ef844d4e1b037a057fe2e1d988275e535b8f
+manifest_hash: 69151c7fd012f1aa4581af0d23c94925eb27860c5526ff06fad0d6577b853753
 target: esp32
 version: 2.0.0

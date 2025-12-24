@@ -1,7 +1,7 @@
 #include "openMenuButton.h"
 
 #include <UI/theme.h>
-#include <rc.h>
+#include "rc.h"
 
 #include <UI/navigation/menu/menu.h>
 

@@ -1,6 +1,6 @@
 #include "selectWaypointDialog.h"
 
-#include <rc.h>
+#include "rc.h"
 #include <UI/theme.h>
 #include <utils/string.h>
 #include <esp_log.h>

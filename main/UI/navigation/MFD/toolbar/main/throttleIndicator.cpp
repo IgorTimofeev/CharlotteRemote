@@ -2,7 +2,7 @@
 
 #include <format>
 #include <UI/theme.h>
-#include <rc.h>
+#include "rc.h"
 
 namespace pizda {
 	void ThrottleIndicator::onRender(Renderer* renderer, const Bounds& bounds) {

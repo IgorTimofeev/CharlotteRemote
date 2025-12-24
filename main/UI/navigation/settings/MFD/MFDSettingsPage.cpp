@@ -2,8 +2,8 @@
 
 #include <format>
 #include <UI/theme.h>
-#include <constants.h>
-#include <rc.h>
+#include "config.h"
+#include "rc.h"
 
 namespace pizda {
 	MFDSettingsPage::MFDSettingsPage() {

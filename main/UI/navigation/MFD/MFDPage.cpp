@@ -1,7 +1,7 @@
 #include "MFDPage.h"
 
 #include <UI/theme.h>
-#include <rc.h>
+#include "rc.h"
 
 namespace pizda {
 	MFDPage* MFDPage::_instance = nullptr;

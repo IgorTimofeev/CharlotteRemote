@@ -3,7 +3,7 @@
 #include <limits>
 #include <esp_timer.h>
 #include <algorithm>
-#include <rc.h>
+#include "rc.h"
 
 namespace pizda {
 	Axis::Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, SettingsAxisData* settings) : _channel(channel), _unitHandle(unitHandle), _settings(settings) {

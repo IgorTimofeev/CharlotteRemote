@@ -1,6 +1,6 @@
 #include "page.h"
 
-#include <rc.h>
+#include "rc.h"
 
 namespace pizda {
 	ScrollViewPage::ScrollViewPage() {

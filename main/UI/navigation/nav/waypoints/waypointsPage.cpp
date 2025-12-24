@@ -1,6 +1,6 @@
 #include "waypointsPage.h"
 
-#include <rc.h>
+#include "rc.h"
 #include <types/navigationData.h>
 #include <UI/theme.h>
 #include <utils/rendering.h>

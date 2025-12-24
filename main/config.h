@@ -1,15 +1,18 @@
 #pragma once
 
-#include "driver/ledc.h"
-#include "cstdint"
-#include "esp_adc/adc_oneshot.h"
-//#include "RadioLib.h"
+#include <cstdint>
+
+#include <driver/ledc.h>
+#include <driver/spi_master.h>
+
+#include <esp_adc/adc_oneshot.h>
 
 namespace pizda {
-	class constants {
+	class config {
 		public:
 			class spi {
 				public:
+					constexpr static spi_host_device_t host = SPI2_HOST;
 					constexpr static gpio_num_t mosi = GPIO_NUM_23;
 					constexpr static gpio_num_t miso = GPIO_NUM_19;
 					constexpr static gpio_num_t sck = GPIO_NUM_18;
@@ -20,18 +23,11 @@ namespace pizda {
 					constexpr static gpio_num_t sda = GPIO_NUM_21;
 					constexpr static gpio_num_t scl = GPIO_NUM_22;
 			};
-	
+			
 			class adc {
 				public:
 					constexpr static adc_unit_t unit = ADC_UNIT_1;
 					static adc_oneshot_unit_handle_t oneshotUnit;
-			};
-
-			class wifi {
-				public:
-					constexpr static const char* ssid = "IT";
-					constexpr static const char* password = "SERGTIM64ST17";
-					constexpr static uint32_t connectionInterval = 5'000'000;
 			};
 
 			class ota {
@@ -55,31 +51,23 @@ namespace pizda {
 	
 			class transceiver {
 				public:
-//					class lora {
-//						public:
-//							constexpr static gpio_num_t slaveSelect = GPIO_NUM_14;
-//							constexpr static gpio_num_t busy = GPIO_NUM_12;
-//							constexpr static gpio_num_t dio0 = GPIO_NUM_13;
-//							constexpr static uint32_t reset = RADIOLIB_NC;
-//
-//							// Something random, "CHRL" in this case
-//							constexpr static float frequency = 915;
-//							constexpr static float bandwidth = 500;
-//							constexpr static uint8_t spreadingFactor = 7;
-//							constexpr static uint8_t codingRate = 5;
-//							constexpr static uint16_t power = 22;
-//							constexpr static uint16_t preambleLength = 8;
-//					};
+					// SX1262 supports up to 16 MHz, but with long wires (10+ cm) there will be troubles, so
+					constexpr static uint32_t SPIFrequencyHz = 4'000'000;
+					
+					constexpr static gpio_num_t slaveSelect = GPIO_NUM_14;
+					constexpr static gpio_num_t busy = GPIO_NUM_12;
+					constexpr static gpio_num_t reset = GPIO_NUM_NC;
+					constexpr static gpio_num_t DIO1 = GPIO_NUM_13;
 
-					class tcp {
-						public:
-							constexpr static const char* address = "192.168.1.38";
-							constexpr static uint16_t port = 25569;
-							constexpr static uint32_t connectionInterval = 5'000'000;
-					};
+					constexpr static float RFFrequencyMHz = 915;
+					constexpr static float bandwidthKHz = 500;
+					constexpr static uint8_t spreadingFactor = 7;
+					constexpr static uint8_t codingRate = 5;
+					constexpr static uint8_t syncWord = 0x34;
+					constexpr static uint16_t powerDBm = 22;
+					constexpr static uint16_t preambleLength = 8;
 
 					constexpr static uint32_t packetHeader = 0x4348524C;
-					constexpr static uint32_t tickInterval = 1'000'000 / 30;
 			};
 	
 			class axis {

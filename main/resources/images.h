@@ -13,7 +13,6 @@
 #include "images/menuIconWaypointsImage.h"
 
 #include "images/menuIconPersonalizationImage.h"
-#include "images/menuIconWiFiImage.h"
 #include "images/menuIconAxisImage.h"
 #include "images/menuIconDevImage.h"
 #include "images/menuIconPowerImage.h"
@@ -38,7 +37,6 @@ namespace pizda::resources {
 			static const MenuIconWaypointsImage menuIconWaypointsImage;
 
 			static const MenuIconPersonalizationImage menuIconPersonalization;
-			static const MenuIconWiFiImage menuIconWiFi;
 			static const MenuIconAxisImage menuIconAxis;
 			static const MenuIconDevImage menuIconDev;
 			static const MenuIconPowerImage menuIconPower;

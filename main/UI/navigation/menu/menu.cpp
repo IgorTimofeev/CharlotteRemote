@@ -1,5 +1,5 @@
 #include "menu.h"
-#include <rc.h>
+#include "rc.h"
 
 namespace pizda {
 	Menu::Menu() {

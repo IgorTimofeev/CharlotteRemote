@@ -1,8 +1,8 @@
 #include <cstdint>
 #include <esp_timer.h>
 #include "nvs.h"
-#include <rc.h>
-#include <constants.h>
+#include "rc.h"
+#include "config.h"
 #include "resources/sounds.h"
 #include "resources/images.h"
 #include "UI/navigation/routes.h"
@@ -19,7 +19,8 @@ namespace pizda {
 	[[noreturn]] void RC::run() {
 		// First, let's render a splash screen while we wait for the peripherals to finish warming up
 		SPIBusSetup();
-
+		GPIOSetup();
+		
 		// After applying power or a hard reset, the LCD panel will be turned off, its internal pixel
 		// buffer will contain random garbage, and the driver will wait for pixel data to be received
 		//
@@ -60,17 +61,6 @@ namespace pizda {
 		_joystickHorizontal.setup();
 		_joystickVertical.setup();
 		_ring.setup();
-
-		// WiFi
-		WiFi::setup();
-
-		WiFi::isStartedChanged += [] {
-			if (WiFi::isStarted()) {
-				WiFi::connect();
-			}
-		};
-
-		WiFi::start();
 
 		// Transceiver
 		_transceiver.setup();
@@ -126,7 +116,7 @@ namespace pizda {
 	void RC::interpolationTick() {
 		const uint32_t deltaTime = esp_timer_get_time() - _interpolationTickTime;
 
-		if (deltaTime < constants::application::interpolationTickInterval)
+		if (deltaTime < config::application::interpolationTickInterval)
 			return;
 
 		// Principle of calculating the interpolation factor:
@@ -163,9 +153,9 @@ namespace pizda {
 
 		// Smooth as fuck
 		LPFFactor = 0.5f * static_cast<float>(deltaTime) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.transceiverRSSI, static_cast<float>(WiFi::getRSSI()), LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.transceiverRSSI, -22, LPFFactor);
 
-		_interpolationTickTime = esp_timer_get_time() + constants::application::interpolationTickInterval;
+		_interpolationTickTime = esp_timer_get_time() + config::application::interpolationTickInterval;
 	}
 
 	// ------------------------- Data -------------------------
@@ -233,7 +223,7 @@ namespace pizda {
 		_ring.tick();
 		_battery.tick();
 
-		_axisTickTime = esp_timer_get_time() + constants::axis::tickInterval;
+		_axisTickTime = esp_timer_get_time() + config::axis::tickInterval;
 	}
 
 	void RC::NVSSetup() {
@@ -251,25 +241,39 @@ namespace pizda {
 	}
 
 	void RC::SPIBusSetup() const {
-		spi_bus_config_t busConfig {};
-		busConfig.mosi_io_num = constants::spi::mosi;
-		busConfig.miso_io_num = constants::spi::miso;
-		busConfig.sclk_io_num = constants::spi::sck;
-		busConfig.quadwp_io_num = -1;
-		busConfig.quadhd_io_num = -1;
-		busConfig.max_transfer_sz = _display.getSize().getSquare() * 2;
+		spi_bus_config_t config {};
+		config.mosi_io_num = config::spi::mosi;
+		config.miso_io_num = config::spi::miso;
+		config.sclk_io_num = config::spi::sck;
+		config.quadwp_io_num = -1;
+		config.quadhd_io_num = -1;
+		config.max_transfer_sz = _display.getSize().getSquare() * 2;
 
-		ESP_ERROR_CHECK(spi_bus_initialize(SPI2_HOST, &busConfig, SPI_DMA_CH_AUTO));
+		ESP_ERROR_CHECK(spi_bus_initialize(config::spi::host, &config, SPI_DMA_CH_AUTO));
+	}
+	
+	void RC::GPIOSetup() const {
+		// Slave selects
+		gpio_config_t g = {};
+		g.pin_bit_mask = (1ULL << config::screen::slaveSelect) | (1ULL << config::transceiver::slaveSelect);
+		g.mode = GPIO_MODE_OUTPUT;
+		g.pull_up_en = GPIO_PULLUP_DISABLE;
+		g.pull_down_en = GPIO_PULLDOWN_DISABLE;
+		g.intr_type = GPIO_INTR_DISABLE;
+		gpio_config(&g);
+		
+		gpio_set_level(config::screen::slaveSelect, true);
+		gpio_set_level(config::transceiver::slaveSelect, true);
 	}
 
 	void RC::ADCUnitsSetup() {
 		constexpr adc_oneshot_unit_init_cfg_t ADC1UnitConfig = {
-			.unit_id = constants::adc::unit,
+			.unit_id = config::adc::unit,
 			.clk_src = ADC_RTC_CLK_SRC_DEFAULT,
 			.ulp_mode = ADC_ULP_MODE_DISABLE
 		};
 
-		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &constants::adc::oneshotUnit));
+		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &config::adc::oneshotUnit));
 	}
 
 	void RC::handleAircraftPacket(const AircraftPacket* packet) {
@@ -365,7 +369,7 @@ namespace pizda {
 		return _openMenuButton;
 	}
 
-	TCPTransceiver& RC::getTransceiver() {
+	Transceiver& RC::getTransceiver() {
 		return _transceiver;
 	}
 }

@@ -1,7 +1,7 @@
 #include "pagesMenuView.h"
 
 #include <UI/theme.h>
-#include <rc.h>
+#include "rc.h"
 
 namespace pizda {
 	PagesMenuView::PagesMenuView(PageMenuViewButton* buttons, uint8_t buttonCount, const Route** lastRoute) :

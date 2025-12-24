@@ -11,7 +11,6 @@
 #include "settingsAutopilot.h"
 #include "settingsInterface.h"
 #include "settingsNavigation.h"
-#include "settingsWiFi.h"
 
 namespace pizda {
 	class Settings {
@@ -21,7 +20,6 @@ namespace pizda {
 			SettingsAutopilot autopilot {};
 			SettingsInterface interface {};
 			SettingsNavigation navigation {};
-			SettingsWiFi WiFi {};
 
 			void readAll() {
 				controls.read();
@@ -29,7 +27,6 @@ namespace pizda {
 				autopilot.read();
 				interface.read();
 				navigation.read();
-				WiFi.read();
 			}
 	};
 }

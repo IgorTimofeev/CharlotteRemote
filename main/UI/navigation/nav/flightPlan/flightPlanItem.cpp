@@ -1,6 +1,6 @@
 #include "flightPlanItem.h"
 
-#include <rc.h>
+#include "rc.h"
 
 #include "airportFlightPlanItemDialog.h"
 #include "legFlightPlanItemDialog.h"

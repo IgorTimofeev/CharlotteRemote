@@ -14,7 +14,6 @@ namespace pizda::resources {
 	const MenuIconWaypointsImage Images::menuIconWaypointsImage {};
 
 	const MenuIconPersonalizationImage Images::menuIconPersonalization {};
-	const MenuIconWiFiImage Images::menuIconWiFi {};
 	const MenuIconAxisImage Images::menuIconAxis {};
 	const MenuIconDevImage Images::menuIconDev {};
 	const MenuIconPowerImage Images::menuIconPower {};

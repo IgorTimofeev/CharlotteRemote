@@ -1,6 +1,6 @@
 #include "waypointElement.h"
 
-#include <rc.h>
+#include "rc.h"
 #include <UI/theme.h>
 #include <UI/navigation/MFD/ND/NDScene.h>
 #include <utils/rendering.h>

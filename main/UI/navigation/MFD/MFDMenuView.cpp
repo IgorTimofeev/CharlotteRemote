@@ -1,7 +1,7 @@
 #include "MFDMenuView.h"
 
 #include <UI/theme.h>
-#include <rc.h>
+#include "rc.h"
 #include <settings/settings.h>
 
 #include <UI/navigation/routes.h>
