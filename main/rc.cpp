@@ -153,7 +153,7 @@ namespace pizda {
 
 		// Smooth as fuck
 		LPFFactor = 0.5f * static_cast<float>(deltaTime) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.transceiverRSSI, -22, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.transceiverRSSI, _transceiver.getRSSI(), LPFFactor);
 
 		_interpolationTickTime = esp_timer_get_time() + config::application::interpolationTickInterval;
 	}

@@ -17,6 +17,8 @@ namespace pizda {
 			void setup();
 			void start();
 			void stop();
+			
+			float getRSSI();
 
 		private:
 			constexpr static const char* _logTag = "XCVR";
@@ -28,6 +30,7 @@ namespace pizda {
 			bool _started = false;
 			RemotePacket _remotePacket {};
 			uint64_t _aircraftPacketTime = 0;
+			float _RSSI = 0;
 			
 			void fillRemotePacket();
 			void onStart();

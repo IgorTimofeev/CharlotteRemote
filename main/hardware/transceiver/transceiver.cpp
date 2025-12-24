@@ -31,6 +31,10 @@ namespace pizda {
 		}
 	}
 	
+	float Transceiver::getRSSI() {
+		return _RSSI;
+	}
+	
 	void Transceiver::start() {
 		if (!_setupValid || _started)
 			return;
@@ -116,6 +120,9 @@ namespace pizda {
 					default:
 						break;
 				}
+				
+				// RSSI
+				sx1262.getRSSI(_RSSI);
 			}
 			else {
 				ESP_LOGE(_logTag, "invalid packet header: %s", buffer);
