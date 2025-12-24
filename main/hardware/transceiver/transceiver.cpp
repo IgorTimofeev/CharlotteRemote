@@ -93,36 +93,34 @@ namespace pizda {
 			std::memset(buffer, 0, bufferLength);
 			uint8_t receivedLength = 0;
 			
-			if (sx1262.receive(buffer, receivedLength, 1'000'000)) {
-				ESP_LOGI(_logTag, "receivedLength: %d", receivedLength);
+			if (!sx1262.receive(buffer, receivedLength, 1'000'000))
+				continue;
+			
+			ESP_LOGI(_logTag, "receivedLength: %d", receivedLength);
+			
+			for (int i = 0; i < receivedLength; ++i) {
+				ESP_LOGI(_logTag, "buffer[%d]: %d", i, buffer[i]);
+			}
+			
+			// Header validation
+			if (std::memcmp(reinterpret_cast<const uint8_t*>(Packet::header), buffer, Packet::headerLengthBytes) == 0) {
+				BitStream stream { buffer + Packet::headerLengthBytes };
 				
-				for (int i = 0; i < receivedLength; ++i) {
-					ESP_LOGI(_logTag, "buffer[%d]: %d", i, buffer[i]);
-				}
-				
-				// Header validation
-				if (std::memcmp(reinterpret_cast<const uint8_t*>(Packet::header), buffer, Packet::headerLengthBytes) == 0) {
-					BitStream stream { buffer + Packet::headerLengthBytes };
-					
-					auto packetType = static_cast<PacketType>(stream.readUint8(Packet::typeLengthBits));
-					ESP_LOGI(_logTag, "packet type: %d", packetType);
+				auto packetType = static_cast<PacketType>(stream.readUint8(Packet::typeLengthBits));
+				ESP_LOGI(_logTag, "packet type: %d", packetType);
 
-					switch (packetType) {
-						case PacketType::AircraftAHRS:
-							parseAircraftPacket(stream);
-							break;
-						default:
-							break;
-					}
-				}
-				else {
-					ESP_LOGE(_logTag, "invalid packet header: %s", buffer);
-					
-					continue;
+				switch (packetType) {
+					case PacketType::AircraftAHRS:
+						parseAircraftPacket(stream);
+						break;
+					default:
+						break;
 				}
 			}
 			else {
-				ESP_LOGE(_logTag, "tick received failed");
+				ESP_LOGE(_logTag, "invalid packet header: %s", buffer);
+				
+				continue;
 			}
 		}
 	}

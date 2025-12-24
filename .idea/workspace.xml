@@ -159,11 +159,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="пизда тут хуйни серануло в логи">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDFBitStream" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDFBitStream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="РАБОТАИТТТ!!!!">
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -1069,7 +1065,7 @@
       <workItem from="1766595302044" duration="592000" />
       <workItem from="1766604384010" duration="649000" />
       <workItem from="1766605047784" duration="1912000" />
-      <workItem from="1766607010497" duration="2275000" />
+      <workItem from="1766607010497" duration="2530000" />
     </task>
     <task id="LOCAL-00001" summary="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ">
       <option name="closed" value="true" />
@@ -1111,7 +1107,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766607624865</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="РАБОТАИТТТ!!!!">
+      <option name="closed" value="true" />
+      <created>1766610442849</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1766610442849</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1127,6 +1131,7 @@
     <MESSAGE value="пиздец блядь эти инклюды вонючие" />
     <MESSAGE value="еще и ресет этот ебаный блядь объединять с экраном" />
     <MESSAGE value="пизда тут хуйни серануло в логи" />
-    <option name="LAST_COMMIT_MESSAGE" value="пизда тут хуйни серануло в логи" />
+    <MESSAGE value="РАБОТАИТТТ!!!!" />
+    <option name="LAST_COMMIT_MESSAGE" value="РАБОТАИТТТ!!!!" />
   </component>
 </project>
