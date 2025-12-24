@@ -159,35 +159,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="еще и ресет этот ебаный блядь объединять с экраном">
-      <change afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ESP-IDFBitStream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="пизда тут хуйни серануло в логи">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions/src/NVSStream.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions/src/NVSStream.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDFBitStream/src/bitStream.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDFBitStream/src/bitStream.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/vector3.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/vector3.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dependencies.lock" beforeDir="false" afterPath="$PROJECT_DIR$/dependencies.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/NVS/NVSSerializable.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/NVS/NVSStream.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDFBitStream" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDFBitStream" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/settingsAutopilot.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settingsAutopilot.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/settingsAxis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settingsAxis.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/settingsControls.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settingsControls.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/settingsInterface.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settingsInterface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/settingsNavigation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settingsNavigation.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/settingsNavigation.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settingsNavigation.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/aircraftData.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,7 +176,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/ESP-IDFBitStream" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -251,6 +228,11 @@
   }
 }</component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1087,7 +1069,7 @@
       <workItem from="1766595302044" duration="592000" />
       <workItem from="1766604384010" duration="649000" />
       <workItem from="1766605047784" duration="1912000" />
-      <workItem from="1766607010497" duration="566000" />
+      <workItem from="1766607010497" duration="2275000" />
     </task>
     <task id="LOCAL-00001" summary="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ">
       <option name="closed" value="true" />
@@ -1121,7 +1103,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766595610301</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="пизда тут хуйни серануло в логи">
+      <option name="closed" value="true" />
+      <created>1766607624865</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1766607624865</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1136,6 +1126,7 @@
     <MESSAGE value="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ" />
     <MESSAGE value="пиздец блядь эти инклюды вонючие" />
     <MESSAGE value="еще и ресет этот ебаный блядь объединять с экраном" />
-    <option name="LAST_COMMIT_MESSAGE" value="еще и ресет этот ебаный блядь объединять с экраном" />
+    <MESSAGE value="пизда тут хуйни серануло в логи" />
+    <option name="LAST_COMMIT_MESSAGE" value="пизда тут хуйни серануло в логи" />
   </component>
 </project>

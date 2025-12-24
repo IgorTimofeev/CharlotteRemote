@@ -93,12 +93,18 @@ namespace pizda {
 			std::memset(buffer, 0, bufferLength);
 			uint8_t receivedLength = 0;
 			
-			if (sx1262.receive(buffer, receivedLength)) {
+			if (sx1262.receive(buffer, receivedLength, 1'000'000)) {
+				ESP_LOGI(_logTag, "receivedLength: %d", receivedLength);
+				
+				for (int i = 0; i < receivedLength; ++i) {
+					ESP_LOGI(_logTag, "buffer[%d]: %d", i, buffer[i]);
+				}
+				
 				// Header validation
-				if (std::strncmp(Packet::header, reinterpret_cast<const char*>(buffer), Packet::headerByteCount) == 0) {
-					BitStream stream { buffer + Packet::headerByteCount };
+				if (std::memcmp(reinterpret_cast<const uint8_t*>(Packet::header), buffer, Packet::headerLengthBytes) == 0) {
+					BitStream stream { buffer + Packet::headerLengthBytes };
 					
-					auto packetType = static_cast<PacketType>(stream.readUint8(Packet::typeBitCount));
+					auto packetType = static_cast<PacketType>(stream.readUint8(Packet::typeLengthBits));
 					ESP_LOGI(_logTag, "packet type: %d", packetType);
 
 					switch (packetType) {
@@ -118,8 +124,6 @@ namespace pizda {
 			else {
 				ESP_LOGE(_logTag, "tick received failed");
 			}
-			
-			vTaskDelay(pdMS_TO_TICKS(1'000));
 		}
 	}
 	
