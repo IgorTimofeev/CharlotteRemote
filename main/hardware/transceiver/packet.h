@@ -3,29 +3,28 @@
 #include "cstdint"
 
 namespace pizda {
-	enum class PacketType : uint8_t {
-		aircraftAHRS = 1,
-		controllerCommand = 2
-	};
-
 	#pragma pack(push, 1)
-
-	template<typename T>
-	struct PacketTypeWrapper {
-		explicit PacketTypeWrapper(PacketType type, T body) :
-			type(type),
-			body(body)
-		{
-
-		}
-
-		PacketType type;
-		T body;
+	
+	enum class PacketType : uint8_t {
+		RemoteChannelDataStructure,
+		RemoteChannelData,
+		RemoteMotorConfiguration,
+		
+		AircraftAHRS
 	};
-
+	
+	class Packet {
+		public:
+			constexpr static uint8_t headerByteCount = 2;
+			constexpr static const char* header = "cy";
+			
+			constexpr static uint8_t typeBitCount = 4;
+		
+		private:
+		
+	};
+	
 	struct AircraftPacket {
-		uint8_t throttle;
-
 		float latitudeRad = 0;
 		float longitudeRad = 0;
 		float altitudeM = 0;

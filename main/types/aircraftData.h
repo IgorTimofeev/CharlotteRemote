@@ -35,18 +35,18 @@ namespace pizda {
 				1000
 			);
 
-			float groundSpeed = 0;
+			float groundSpeedKt = 0;
 			float windSpeed = 0;
 			uint8_t throttle = 0;
 
-			float airSpeed = 0;
+			float airSpeedKt = 0;
 			float airSpeedTrend = 0;
-			float altitude = 0;
+			float altitudeFt = 0;
 			float altitudeTrend = 0;
 			float verticalSpeed = 0;
-			float pitch = 0;
-			float roll = 0;
-			float yaw = 0;
+			float pitchRad = 0;
+			float rollRad = 0;
+			float yawRad = 0;
 			float slipAndSkid = 0;
 			float flightPathVectorPitch = 0;
 			float flightPathVectorYaw = 0;

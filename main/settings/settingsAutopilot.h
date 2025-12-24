@@ -6,11 +6,12 @@
 #include <memory>
 #include <cstring>
 
-#include <hardware/NVS/NVSStream.h>
-#include <hardware/NVS/NVSSerializable.h>
+#include <NVSSettings.h>
 
 namespace pizda {
-	class SettingsAutopilot : public NVSSerializable {
+	using namespace YOBA;
+	
+	class SettingsAutopilot : public NVSSettings {
 		public:
 			uint16_t speedKt = 0;
 			bool autoThrottle = false;
@@ -22,30 +23,30 @@ namespace pizda {
 			bool levelChange = false;
 
 		protected:
-			const char* getNVSNamespace() override {
+			const char* getNamespace() override {
 				return _namespace;
 			}
 
 			void onRead(const NVSStream& stream) override {
-				speedKt = stream.getUint16(_speedKt, 90);
-				autoThrottle = stream.getBool(_autoThrottle, false);
+				speedKt = stream.readUint16(_speedKt, 90);
+				autoThrottle = stream.readBool(_autoThrottle, false);
 
-				headingDeg = stream.getUint16(_headingDeg, 0);
-				headingHold = stream.getBool(_headingHold, false);
+				headingDeg = stream.readUint16(_headingDeg, 0);
+				headingHold = stream.readBool(_headingHold, false);
 
-				altitudeFt = stream.getUint16(_altitudeFt, 100);
-				levelChange = stream.getBool(_levelChange, false);
+				altitudeFt = stream.readUint16(_altitudeFt, 100);
+				levelChange = stream.readBool(_levelChange, false);
 			}
 
 			void onWrite(const NVSStream& stream) override {
-				stream.setUint16(_speedKt, speedKt);
-				stream.setBool(_autoThrottle, autoThrottle);
+				stream.writeUint16(_speedKt, speedKt);
+				stream.writeBool(_autoThrottle, autoThrottle);
 
-				stream.setUint16(_headingDeg, headingDeg);
-				stream.setBool(_headingHold, headingHold);
+				stream.writeUint16(_headingDeg, headingDeg);
+				stream.writeBool(_headingHold, headingHold);
 
-				stream.setUint16(_altitudeFt, altitudeFt);
-				stream.setBool(_levelChange, levelChange);
+				stream.writeUint16(_altitudeFt, altitudeFt);
+				stream.writeBool(_levelChange, levelChange);
 			}
 
 		private:

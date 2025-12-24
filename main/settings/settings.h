@@ -13,6 +13,8 @@
 #include "settingsNavigation.h"
 
 namespace pizda {
+	using namespace YOBA;
+	
 	class Settings {
 		public:
 			SettingsControls controls {};

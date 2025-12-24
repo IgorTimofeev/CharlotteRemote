@@ -1,17 +1,20 @@
 #include "transceiver.h"
 
+#include <esp_timer.h>
+#include <esp_log.h>
+
 #include "rc.h"
 #include "config.h"
 
 namespace pizda {
 	void Transceiver::setup() {
-		const auto sxSetupValid = sx1262.setup(
+		_setupValid = sx1262.setup(
 			config::spi::host,
 			config::transceiver::SPIFrequencyHz,
 			
 			config::transceiver::slaveSelect,
-			config::transceiver::busy,
 			config::transceiver::reset,
+			config::transceiver::busy,
 			config::transceiver::DIO1,
 			
 			config::transceiver::RFFrequencyMHz,
@@ -23,13 +26,13 @@ namespace pizda {
 			config::transceiver::preambleLength
 		);
 		
-		if (!sxSetupValid) {
+		if (!_setupValid) {
 			ESP_LOGE(_logTag, "SX1262 setup failed");
 		}
 	}
 	
 	void Transceiver::start() {
-		if (_started)
+		if (!_setupValid || _started)
 			return;
 		
 		_started = true;
@@ -47,11 +50,10 @@ namespace pizda {
 	}
 	
 	void Transceiver::stop() {
-		if (!_started)
+		if (!_setupValid || !_started)
 			return;
 		
-		ESP_LOGE("Transceiver", "Stopped");
-
+		ESP_LOGI(_logTag, "Stopped");
 	}
 	
 	void Transceiver::fillRemotePacket() {
@@ -83,17 +85,93 @@ namespace pizda {
 	}
 	
 	void Transceiver::onStart() {
+		ESP_LOGI(_logTag, "Started");
 		
 		while (true) {
-			const uint8_t pizda[] {
-				0xAA, 0xBB, 0xCC
-			};
+			constexpr static uint8_t bufferLength = 255;
+			uint8_t buffer[bufferLength];
+			std::memset(buffer, 0, bufferLength);
+			uint8_t receivedLength = 0;
 			
-			const auto state = sx1262.transmit(pizda, 3);
-			
-			ESP_LOGI(_logTag, "transmit state: %d", state);
+			if (sx1262.receive(buffer, receivedLength)) {
+				// Header validation
+				if (std::strncmp(Packet::header, reinterpret_cast<const char*>(buffer), Packet::headerByteCount) == 0) {
+					BitStream stream { buffer + Packet::headerByteCount };
+					
+					auto packetType = static_cast<PacketType>(stream.readUint8(Packet::typeBitCount));
+					ESP_LOGI(_logTag, "packet type: %d", packetType);
+
+					switch (packetType) {
+						case PacketType::AircraftAHRS:
+							parseAircraftPacket(stream);
+							break;
+						default:
+							break;
+					}
+				}
+				else {
+					ESP_LOGE(_logTag, "invalid packet header: %s", buffer);
+					
+					continue;
+				}
+			}
+			else {
+				ESP_LOGE(_logTag, "tick received failed");
+			}
 			
 			vTaskDelay(pdMS_TO_TICKS(1'000));
 		}
+	}
+	
+	void Transceiver::parseAircraftPacket(BitStream& stream) {
+		auto& rc = RC::getInstance();
+		auto& ad = rc.getAircraftData();
+		
+		const auto time = esp_timer_get_time();
+		const auto deltaTime = time - _aircraftPacketTime;
+		_aircraftPacketTime = time;
+		
+		const auto oldSpeed = ad.airSpeedKt;
+		const auto oldAltitude = ad.altitudeFt;
+		
+		// Direct reading
+		ad.rollRad = stream.readFloat();
+		ad.pitchRad = stream.readFloat();
+		ad.yawRad = stream.readFloat();
+		ad.altitudeFt = stream.readFloat();
+//		ad.throttle = packet->throttle;
+		
+		
+		// Value conversions
+//
+//		ad.geographicCoordinates.setLatitude(packet->latitudeRad);
+//		ad.geographicCoordinates.setLongitude(packet->longitudeRad);
+//		ad.geographicCoordinates.setAltitude(packet->altitudeM);
+//
+//		ad.windSpeed = Units::convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+		
+		ad.altitudeFt = Units::convertDistance(ad.altitudeFt, DistanceUnit::meter, DistanceUnit::foot);
+//		ad.airSpeedKt = Units::convertSpeed(packet->airSpeedKt, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+//		ad.groundSpeedKt = Units::convertSpeed(packet->groundSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+		
+//		ad.flightPathVectorPitch = packet->flightPathPitchRad;
+//		ad.flightPathVectorYaw = packet->flightPathYawRad;
+//
+//		ad.flightDirectorPitch = packet->flightDirectorPitchRad;
+//		ad.flightDirectorRoll = packet->flightDirectorYawRad;
+//
+//		ad.slipAndSkid = -1.f + static_cast<float>(packet->slipAndSkid) / static_cast<float>(0xFFFF) * 2.f;
+//
+//		ad.windDirection = toRadians(packet->windDirectionDeg);
+		
+		// Trends
+		const auto deltaAltitude = ad.altitudeFt - oldAltitude;
+		
+		// Airspeed & altitude, 10 sec
+		ad.airSpeedTrend = (ad.airSpeedKt - oldSpeed) * 10'000'000.f / static_cast<float>(deltaTime);
+		ad.altitudeTrend = deltaAltitude * 10'000'000.f / static_cast<float>(deltaTime);
+		
+		// Vertical speed, 1 min
+		ad.verticalSpeed = deltaAltitude * 60'000'000.f / static_cast<float>(deltaTime);
 	}
 }

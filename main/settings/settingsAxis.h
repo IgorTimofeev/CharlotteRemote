@@ -6,10 +6,11 @@
 #include <memory>
 #include <cstring>
 
-#include <hardware/NVS/NVSStream.h>
-#include <hardware/NVS/NVSSerializable.h>
+#include <NVSSettings.h>
 
 namespace pizda {
+	using namespace YOBA;
+	
 	class SettingsAxisData {
 		public:
 			uint16_t from = 0;
@@ -17,7 +18,7 @@ namespace pizda {
 			bool inverted = false;
 	};
 
-	class SettingsAxis: public NVSSerializable {
+	class SettingsAxis: public NVSSettings {
 		public:
 			SettingsAxisData leverLeft {};
 			SettingsAxisData leverRight {};
@@ -28,58 +29,58 @@ namespace pizda {
 			uint8_t jitteringCutoffValue = 0;
 
 		protected:
-			const char* getNVSNamespace() override {
+			const char* getNamespace() override {
 				return _namespace;
 			}
 
 			void onRead(const NVSStream& stream) override {
-				leverLeft.from = stream.getUint16(_leverLeftFrom, 0);
-				leverLeft.to = stream.getUint16(_leverLeftTo, 4096);
-				leverLeft.inverted = stream.getUint16(_leverLeftInverted, false);
+				leverLeft.from = stream.readUint16(_leverLeftFrom, 0);
+				leverLeft.to = stream.readUint16(_leverLeftTo, 4096);
+				leverLeft.inverted = stream.readUint16(_leverLeftInverted, false);
 
-				leverRight.from = stream.getUint16(_leverRightFrom, 0);
-				leverRight.to = stream.getUint16(_leverRightTo, 4096);
-				leverRight.inverted = stream.getUint16(_leverRightInverted, false);
+				leverRight.from = stream.readUint16(_leverRightFrom, 0);
+				leverRight.to = stream.readUint16(_leverRightTo, 4096);
+				leverRight.inverted = stream.readUint16(_leverRightInverted, false);
 
-				joystickHorizontal.from = stream.getUint16(_joystickHorizontalFrom, 778);
-				joystickHorizontal.to = stream.getUint16(_joystickHorizontalTo, 2744);
-				joystickHorizontal.inverted = stream.getUint16(_joystickHorizontalInverted, true);
+				joystickHorizontal.from = stream.readUint16(_joystickHorizontalFrom, 778);
+				joystickHorizontal.to = stream.readUint16(_joystickHorizontalTo, 2744);
+				joystickHorizontal.inverted = stream.readUint16(_joystickHorizontalInverted, true);
 
-				joystickVertical.from = stream.getUint16(_joystickVerticalFrom, 1474);
-				joystickVertical.to = stream.getUint16(_joystickVerticalTo, 3031);
-				joystickVertical.inverted = stream.getUint16(_joystickVerticalInverted, false);
+				joystickVertical.from = stream.readUint16(_joystickVerticalFrom, 1474);
+				joystickVertical.to = stream.readUint16(_joystickVerticalTo, 3031);
+				joystickVertical.inverted = stream.readUint16(_joystickVerticalInverted, false);
 
-				ring.from = stream.getUint16(_ringFrom, 0);
-				ring.to = stream.getUint16(_ringTo, 3768);
-				ring.inverted = stream.getUint16(_ringInverted, true);
+				ring.from = stream.readUint16(_ringFrom, 0);
+				ring.to = stream.readUint16(_ringTo, 3768);
+				ring.inverted = stream.readUint16(_ringInverted, true);
 
-				lowPassFactor = stream.getUint16(_lowPassFactor, 0xFFFF * 75 / 100);
-				jitteringCutoffValue = stream.getUint8(_jitteringCutoffValue, 30);
+				lowPassFactor = stream.readUint16(_lowPassFactor, 0xFFFF * 75 / 100);
+				jitteringCutoffValue = stream.readUint8(_jitteringCutoffValue, 30);
 			}
 
 			void onWrite(const NVSStream& stream) override {
-				stream.setUint16(_leverLeftFrom, leverLeft.from);
-				stream.setUint16(_leverLeftTo, leverLeft.to);
-				stream.setUint16(_leverLeftInverted, leverLeft.inverted);
+				stream.writeUint16(_leverLeftFrom, leverLeft.from);
+				stream.writeUint16(_leverLeftTo, leverLeft.to);
+				stream.writeUint16(_leverLeftInverted, leverLeft.inverted);
 
-				stream.setUint16(_leverRightFrom, leverRight.from);
-				stream.setUint16(_leverRightTo, leverRight.to);
-				stream.setUint16(_leverRightInverted, leverRight.inverted);
+				stream.writeUint16(_leverRightFrom, leverRight.from);
+				stream.writeUint16(_leverRightTo, leverRight.to);
+				stream.writeUint16(_leverRightInverted, leverRight.inverted);
 
-				stream.setUint16(_joystickHorizontalFrom, joystickHorizontal.from);
-				stream.setUint16(_joystickHorizontalTo, joystickHorizontal.to);
-				stream.setUint16(_joystickHorizontalInverted, joystickHorizontal.inverted);
+				stream.writeUint16(_joystickHorizontalFrom, joystickHorizontal.from);
+				stream.writeUint16(_joystickHorizontalTo, joystickHorizontal.to);
+				stream.writeUint16(_joystickHorizontalInverted, joystickHorizontal.inverted);
 
-				stream.setUint16(_joystickVerticalFrom, joystickVertical.from);
-				stream.setUint16(_joystickVerticalTo, joystickVertical.to);
-				stream.setUint16(_joystickVerticalInverted, joystickVertical.inverted);
+				stream.writeUint16(_joystickVerticalFrom, joystickVertical.from);
+				stream.writeUint16(_joystickVerticalTo, joystickVertical.to);
+				stream.writeUint16(_joystickVerticalInverted, joystickVertical.inverted);
 
-				stream.setUint16(_ringFrom, ring.from);
-				stream.setUint16(_ringTo, ring.to);
-				stream.setUint16(_ringInverted, ring.inverted);
+				stream.writeUint16(_ringFrom, ring.from);
+				stream.writeUint16(_ringTo, ring.to);
+				stream.writeUint16(_ringInverted, ring.inverted);
 
-				stream.setUint16(_lowPassFactor, lowPassFactor);
-				stream.setUint8(_jitteringCutoffValue, jitteringCutoffValue);
+				stream.writeUint16(_lowPassFactor, lowPassFactor);
+				stream.writeUint8(_jitteringCutoffValue, jitteringCutoffValue);
 			}
 
 		private:

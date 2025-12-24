@@ -107,7 +107,7 @@ namespace pizda {
 		}
 
 		// Wind
-		if (ad.groundSpeed > PFD::windVisibilityGroundSpeed) {
+		if (ad.groundSpeedKt > PFD::windVisibilityGroundSpeed) {
 			const auto& windPosition = Point(
 				bounds.getX() + 6,
 				bounds.getY2() - 18
@@ -1390,6 +1390,6 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
 
-		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::purple, std::to_wstring(static_cast<uint16_t>(ad.groundSpeed)), 0);
+		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::purple, std::to_wstring(static_cast<uint16_t>(ad.groundSpeedKt)), 0);
 	}
 }

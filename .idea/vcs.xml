@@ -28,7 +28,9 @@
     <mapping directory="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/protobuf-c/protobuf-c" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/components/ESP-IDF-SX1262" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/components/ESP-IDFBitStream" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/components/YOBA" vcs="Git" />
   </component>
 </project>

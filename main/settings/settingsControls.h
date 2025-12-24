@@ -6,11 +6,12 @@
 #include <memory>
 #include <cstring>
 
-#include <hardware/NVS/NVSStream.h>
-#include <hardware/NVS/NVSSerializable.h>
+#include <NVSSettings.h>
 
 namespace pizda {
-	class SettingsControls : public NVSSerializable {
+	using namespace YOBA;
+	
+	class SettingsControls : public NVSSettings {
 		public:
 			uint8_t throttle = 0;
 
@@ -24,44 +25,44 @@ namespace pizda {
 			bool strobeLights = false;
 
 		protected:
-			const char* getNVSNamespace() override {
+			const char* getNamespace() override {
 				return _namespace;
 			}
 
 			void onRead(const NVSStream& stream) override {
-				throttle = stream.getFloat(_throttle, 0);
+				throttle = stream.readUint8(_throttle, 0);
 
-				referencePressurePa = stream.getUint32(_referencePressurePa, 101325);
-				referencePressureSTD = stream.getBool(_referencePressureSTD, false);
+				referencePressurePa = stream.readUint32(_referencePressurePa, 101325);
+				referencePressureSTD = stream.readBool(_referencePressureSTD, false);
 
-				minimumAltitudeFt = stream.getUint32(_minimumAltitudeFt, 350);
-				minimumAltitudeEnabled = stream.getBool(_minimumAltitudeEnabled, true);
+				minimumAltitudeFt = stream.readUint32(_minimumAltitudeFt, 350);
+				minimumAltitudeEnabled = stream.readBool(_minimumAltitudeEnabled, true);
 
-				landingGear = stream.getBool(_landingGear, true);
-				strobeLights = stream.getBool(_strobeLights, true);
+				landingGear = stream.readBool(_landingGear, true);
+				strobeLights = stream.readBool(_strobeLights, true);
 			}
 
 			void onWrite(const NVSStream& stream) override {
-				stream.setFloat(_throttle, throttle);
+				stream.writeUint8(_throttle, throttle);
 
-				stream.setUint32(_referencePressurePa, referencePressurePa);
-				stream.setBool(_referencePressureSTD, referencePressureSTD);
+				stream.writeUint32(_referencePressurePa, referencePressurePa);
+				stream.writeBool(_referencePressureSTD, referencePressureSTD);
 
-				stream.setUint32(_minimumAltitudeFt, minimumAltitudeFt);
-				stream.setBool(_minimumAltitudeEnabled, minimumAltitudeEnabled);
+				stream.writeUint32(_minimumAltitudeFt, minimumAltitudeFt);
+				stream.writeBool(_minimumAltitudeEnabled, minimumAltitudeEnabled);
 
-				stream.setBool(_landingGear, landingGear);
-				stream.setBool(_strobeLights, strobeLights);
+				stream.writeBool(_landingGear, landingGear);
+				stream.writeBool(_strobeLights, strobeLights);
 			}
 
 		private:
-			constexpr static auto _namespace = "ct";
-			constexpr static auto _throttle = "th";
-			constexpr static auto _referencePressurePa = "rp";
-			constexpr static auto _referencePressureSTD = "rs";
-			constexpr static auto _minimumAltitudeFt = "ma";
-			constexpr static auto _minimumAltitudeEnabled = "me";
-			constexpr static auto _landingGear = "lg";
-			constexpr static auto _strobeLights = "sl";
+			constexpr static const char* _namespace = "ct2";
+			constexpr static const char* _throttle = "th";
+			constexpr static const char* _referencePressurePa = "rp";
+			constexpr static const char* _referencePressureSTD = "rs";
+			constexpr static const char* _minimumAltitudeFt = "ma";
+			constexpr static const char* _minimumAltitudeEnabled = "me";
+			constexpr static const char* _landingGear = "lg";
+			constexpr static const char* _strobeLights = "sl";
 	};
 }

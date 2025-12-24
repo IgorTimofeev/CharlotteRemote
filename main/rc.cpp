@@ -128,9 +128,9 @@ namespace pizda {
 
 		// Roll / pitch / yaw / slip & skid, faster
 		float LPFFactor = 5.0f * static_cast<float>(deltaTime) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.pitch, _aircraftData.pitch, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.roll, _aircraftData.roll, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.yaw, _aircraftData.yaw, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.pitch, _aircraftData.pitchRad, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.roll, _aircraftData.rollRad, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.yaw, _aircraftData.yawRad, LPFFactor);
 
 		LowPassFilter::apply(_aircraftData.computed.slipAndSkid, _aircraftData.slipAndSkid, LPFFactor);
 
@@ -142,8 +142,8 @@ namespace pizda {
 
 		// Airspeed / altitude, normal
 		LPFFactor = 3.0f * static_cast<float>(deltaTime) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.airSpeed, _aircraftData.airSpeed, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.altitude, _aircraftData.altitude, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.airSpeed, _aircraftData.airSpeedKt, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.altitude, _aircraftData.altitudeFt, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.windDirection, _aircraftData.windDirection, LPFFactor);
 
 		// Trends, slower
@@ -274,53 +274,6 @@ namespace pizda {
 		};
 
 		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &config::adc::oneshotUnit));
-	}
-
-	void RC::handleAircraftPacket(const AircraftPacket* packet) {
-		const auto time = esp_timer_get_time();
-		const auto deltaTime = time - _aircraftPacketTime;
-		_aircraftPacketTime = time;
-
-		const auto oldSpeed = _aircraftData.airSpeed;
-		const auto oldAltitude = _aircraftData.altitude;
-
-		// Direct
-		_aircraftData.throttle = packet->throttle;
-
-		_aircraftData.geographicCoordinates.setLatitude(packet->latitudeRad);
-		_aircraftData.geographicCoordinates.setLongitude(packet->longitudeRad);
-		_aircraftData.geographicCoordinates.setAltitude(packet->altitudeM);
-
-		_aircraftData.windSpeed = Units::convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
-
-		// LowPassFilters
-		_aircraftData.altitude = Units::convertDistance(packet->altitudeM, DistanceUnit::meter, DistanceUnit::foot);
-		_aircraftData.pitch = packet->pitchRad;
-		_aircraftData.roll = packet->rollRad;
-		_aircraftData.yaw = packet->yawRad;
-
-		_aircraftData.airSpeed = Units::convertSpeed(packet->airSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
-		_aircraftData.groundSpeed = Units::convertSpeed(packet->groundSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
-
-		_aircraftData.flightPathVectorPitch = packet->flightPathPitchRad;
-		_aircraftData.flightPathVectorYaw = packet->flightPathYawRad;
-
-		_aircraftData.flightDirectorPitch = packet->flightDirectorPitchRad;
-		_aircraftData.flightDirectorRoll = packet->flightDirectorYawRad;
-
-		_aircraftData.slipAndSkid = -1.f + static_cast<float>(packet->slipAndSkid) / static_cast<float>(0xFFFF) * 2.f;
-
-		_aircraftData.windDirection = toRadians(packet->windDirectionDeg);
-
-		// Trends
-		const auto deltaAltitude = _aircraftData.altitude - oldAltitude;
-
-		// Airspeed & altitude, 10 sec
-		_aircraftData.airSpeedTrend = (_aircraftData.airSpeed - oldSpeed) * 10'000'000 / deltaTime;
-		_aircraftData.altitudeTrend = deltaAltitude * 10'000'000 / deltaTime;
-
-		// Vertical speed, 1 min
-		_aircraftData.verticalSpeed = deltaAltitude * 60'000'000 / deltaTime;
 	}
 
 	void RC::updateDebugOverlayVisibility() {

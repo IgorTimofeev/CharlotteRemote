@@ -55,8 +55,8 @@ namespace pizda {
 					constexpr static uint32_t SPIFrequencyHz = 4'000'000;
 					
 					constexpr static gpio_num_t slaveSelect = GPIO_NUM_14;
-					constexpr static gpio_num_t busy = GPIO_NUM_12;
 					constexpr static gpio_num_t reset = GPIO_NUM_NC;
+					constexpr static gpio_num_t busy = GPIO_NUM_12;
 					constexpr static gpio_num_t DIO1 = GPIO_NUM_13;
 
 					constexpr static float RFFrequencyMHz = 915;

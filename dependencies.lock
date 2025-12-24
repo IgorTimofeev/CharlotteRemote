@@ -11,6 +11,6 @@ dependencies:
     version: 5.5.1
 direct_dependencies:
 - YOBA
-manifest_hash: 69151c7fd012f1aa4581af0d23c94925eb27860c5526ff06fad0d6577b853753
+manifest_hash: ea01abcf49e20e1f910a72153fbd4cfd15c7d545c041c77aff6d66a89bc7c181
 target: esp32
 version: 2.0.0

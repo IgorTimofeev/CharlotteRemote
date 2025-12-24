@@ -10,8 +10,8 @@
 #include <YOBA/main.h>
 
 #include <types/navigationData.h>
-#include <hardware/NVS/NVSStream.h>
-#include <hardware/NVS/NVSSerializable.h>
+
+#include <NVSSettings.h>
 
 namespace pizda {
 	using namespace YOBA;
@@ -93,11 +93,11 @@ namespace pizda {
 			}
 	};
 
-	class SettingsNavigation : public NVSSerializable {
+	class SettingsNavigation : public NVSSettings {
 		public:
 
 		protected:
-			const char* getNVSNamespace() override;
+			const char* getNamespace() override;
 
 			void onRead(const NVSStream& stream) override;
 

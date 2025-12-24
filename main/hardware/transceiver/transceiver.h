@@ -3,10 +3,8 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
-#include <esp_system.h>
-#include <esp_log.h>
-
 #include <SX1262Ex.h>
+#include <bitStream.h>
 
 #include "config.h"
 #include "hardware/transceiver/packet.h"
@@ -23,12 +21,16 @@ namespace pizda {
 		private:
 			constexpr static const char* _logTag = "XCVR";
 			
+			
 			SX1262Ex sx1262 {};
 			
+			bool _setupValid = false;
 			bool _started = false;
 			RemotePacket _remotePacket {};
+			uint64_t _aircraftPacketTime = 0;
 			
 			void fillRemotePacket();
 			void onStart();
+			void parseAircraftPacket(BitStream& bitStream);
 	};
 }

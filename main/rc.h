@@ -52,9 +52,7 @@ namespace pizda {
 			Axis& getRing();
 			Battery& getBattery();
 			Transceiver& getTransceiver();
-
-			void handleAircraftPacket(const AircraftPacket* packet);
-
+			
 			OpenMenuButton& getOpenMenuButton();
 
 			bool isDebugOverlayVisible();
@@ -163,7 +161,6 @@ namespace pizda {
 
 			uint32_t _tickDeltaTime = 0;
 			uint64_t _interpolationTickTime = 0;
-			uint64_t _aircraftPacketTime = 0;
 
 			// -------------------------------- Other shit --------------------------------
 
