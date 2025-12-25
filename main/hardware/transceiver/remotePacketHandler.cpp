@@ -24,7 +24,7 @@ namespace pizda {
 	}
 	
 	bool RemotePacketHandler::readAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength) {
-		if (!validatePayloadChecksumAndLength(stream, 12 * 3 + 8 + 16, payloadLength))
+		if (!validatePayloadChecksumAndLength(stream, 10 * 3 + 7 + 14, payloadLength))
 			return false;
 		
 		auto& rc = RC::getInstance();
@@ -46,12 +46,20 @@ namespace pizda {
 			return sanitizeValue<float>(value, toRadians(-180), toRadians(180));
 		};
 		
-		ad.rollRad = readRadians(12);
-		ad.pitchRad = readRadians(12);
-		ad.yawRad = readRadians(12);
+		ad.rollRad = readRadians(10);
+		ad.pitchRad = readRadians(10);
+		ad.yawRad = readRadians(10);
 		
-		ad.airSpeedKt = static_cast<float>(sanitizeValue<uint8_t>(stream.readUint8(8), 0, 255));
-		ad.altitudeFt = static_cast<float>(sanitizeValue<int16_t>(stream.readInt16(16), -9999, 9999));
+		ad.airSpeedKt = static_cast<float>(sanitizeValue<uint8_t>(stream.readUint8(7), 0, 255));
+		
+		// Altitude
+		constexpr static int16_t altitudeMin = -1'000;
+		constexpr static int16_t altitudeMax = 10'000;
+		constexpr static uint8_t altitudeBits = 14;
+		
+		const auto altitudeValue = stream.readUint16(altitudeBits);
+		const auto altitudeFactor = static_cast<float>(altitudeValue) / static_cast<float>(1 << altitudeBits);
+		ad.altitudeFt = altitudeMin + (altitudeMax - altitudeMin) * altitudeFactor;
 
 //		ad.throttle = ...
 		
