@@ -24,7 +24,7 @@ namespace pizda {
 	}
 	
 	bool RemotePacketHandler::readAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength) {
-		if (!validatePayloadChecksumAndLength(stream, sizeof(uint32_t) * 5 * 8, payloadLength))
+		if (!validatePayloadChecksumAndLength(stream, 12 * 3 + 8 + 16, payloadLength))
 			return false;
 		
 		auto& rc = RC::getInstance();
@@ -38,13 +38,21 @@ namespace pizda {
 		const auto oldAltitude = ad.altitudeFt;
 		
 		// Direct reading
-		ad.rollRad = sanitizeValue<float>(stream.readFloat(), toRadians(-360), toRadians(360));
-		ad.pitchRad = sanitizeValue<float>(stream.readFloat(), toRadians(-360), toRadians(360));
-		ad.yawRad = sanitizeValue<float>(stream.readFloat(), toRadians(-360), toRadians(360));
+		auto readRadians = [&stream](uint8_t bits) {
+			auto value = static_cast<float>(stream.readUint16(bits)) / static_cast<float>(1 << bits);
+			value = value - 0.5f;
+			value = value * (2 * std::numbers::pi_v<float>);
+			
+			return sanitizeValue<float>(value, toRadians(-180), toRadians(180));
+		};
 		
-		ad.airSpeedKt = sanitizeValue<float>(stream.readFloat(), 0, 999);
-		ad.altitudeFt = sanitizeValue<float>(stream.readFloat(), -9999, 9999);
+		ad.rollRad = readRadians(12);
+		ad.pitchRad = readRadians(12);
+		ad.yawRad = readRadians(12);
 		
+		ad.airSpeedKt = static_cast<float>(sanitizeValue<uint8_t>(stream.readUint8(8), 0, 255));
+		ad.altitudeFt = static_cast<float>(sanitizeValue<int16_t>(stream.readInt16(16), -9999, 9999));
+
 //		ad.throttle = ...
 		
 		
@@ -103,7 +111,7 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		auto& settings = rc.getSettings();
 
-		stream.writeUint32(settings.controls.referencePressureSTD ? 101325 : settings.controls.referencePressurePa);
+		stream.writeUint16(settings.controls.referencePressureSTD ? 10132 : settings.controls.referencePressurePa / 10);
 		
 		return true;
 	}

@@ -59,15 +59,13 @@ namespace pizda {
 					constexpr static gpio_num_t busy = GPIO_NUM_12;
 					constexpr static gpio_num_t DIO1 = GPIO_NUM_13;
 
-					constexpr static float RFFrequencyMHz = 915;
+					constexpr static uint16_t RFFrequencyMHz = 915;
 					constexpr static float bandwidthKHz = 500;
 					constexpr static uint8_t spreadingFactor = 7;
 					constexpr static uint8_t codingRate = 5;
 					constexpr static uint8_t syncWord = 0x34;
 					constexpr static uint16_t powerDBm = 22;
 					constexpr static uint16_t preambleLength = 8;
-
-					constexpr static uint8_t tickRateHz = 30;
 			};
 	
 			class axis {

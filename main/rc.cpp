@@ -131,13 +131,13 @@ namespace pizda {
 
 		// Roll / pitch / yaw / slip & skid, faster
 		float LPFFactor = 5.0f * static_cast<float>(deltaTime) / 1'000'000.f;
-//		LowPassFilter::apply(_aircraftData.computed.pitch, _aircraftData.pitchRad, LPFFactor);
-//		LowPassFilter::apply(_aircraftData.computed.roll, _aircraftData.rollRad, LPFFactor);
-//		LowPassFilter::apply(_aircraftData.computed.yaw, _aircraftData.yawRad, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.pitch, _aircraftData.pitchRad, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.roll, _aircraftData.rollRad, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.yaw, _aircraftData.yawRad, LPFFactor);
 		
-		_aircraftData.computed.pitch = _aircraftData.pitchRad;
-		_aircraftData.computed.roll = _aircraftData.rollRad;
-		_aircraftData.computed.yaw = _aircraftData.yawRad;
+//		_aircraftData.computed.pitch = _aircraftData.pitchRad;
+//		_aircraftData.computed.roll = _aircraftData.rollRad;
+//		_aircraftData.computed.yaw = _aircraftData.yawRad;
 
 		_aircraftData.computed.headingDeg = normalizeAngle360(toDegrees(-_aircraftData.computed.yaw));
 		
