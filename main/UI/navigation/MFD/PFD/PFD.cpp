@@ -118,7 +118,7 @@ namespace pizda {
 
 			const auto text = std::to_wstring(static_cast<uint16_t>(ad.windSpeed));
 
-			const auto arrowVec = Vector2F(0, arrowSize).rotate(ad.computed.windDirection + std::numbers::pi_v<float> - ad.computed.yaw);
+			const auto arrowVec = Vector2F(0, arrowSize).rotate(ad.computed.windDirection + std::numbers::pi_v<float> + ad.computed.yaw);
 			const auto arrowVecNorm = arrowVec.normalize();
 			const auto arrowVecPerp = arrowVecNorm.counterClockwisePerpendicular();
 
@@ -501,7 +501,7 @@ namespace pizda {
 		const auto y2 = bounds.getY2();
 
 		float closestInteger;
-		const float closestFractional = std::modff(toDegrees(aircraftData.computed.yaw) / PFD::yawOverlayAngleStepUnits, &closestInteger);
+		const float closestFractional = std::modff(aircraftData.computed.headingDeg / PFD::yawOverlayAngleStepUnits, &closestInteger);
 		closestInteger *= PFD::yawOverlayAngleStepUnits;
 
 		const uint8_t fullCount = static_cast<uint8_t>(std::ceilf(static_cast<float>(centerX - bounds.getX()) / PFD::yawOverlayAngleStepPixels)) + 1;
@@ -606,7 +606,7 @@ namespace pizda {
 		_scene.setCameraRotation(Vector3F(
 			ad.computed.pitch,
 			ad.computed.roll,
-			-ad.computed.yaw
+			ad.computed.yaw
 		));
 
 		invalidate();

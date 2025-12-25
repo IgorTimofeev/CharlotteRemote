@@ -63,7 +63,7 @@ namespace pizda {
 		_ring.setup();
 
 		// Transceiver
-		if (!_transceiver.setup())
+		if (!_transceiver.setup(false))
 			startErrorLoop("failed to setup XCVR");
 		
 		_transceiver.setPacketHandler(&_packetHandler);
@@ -131,10 +131,16 @@ namespace pizda {
 
 		// Roll / pitch / yaw / slip & skid, faster
 		float LPFFactor = 5.0f * static_cast<float>(deltaTime) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.pitch, _aircraftData.pitchRad, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.roll, _aircraftData.rollRad, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.yaw, _aircraftData.yawRad, LPFFactor);
+//		LowPassFilter::apply(_aircraftData.computed.pitch, _aircraftData.pitchRad, LPFFactor);
+//		LowPassFilter::apply(_aircraftData.computed.roll, _aircraftData.rollRad, LPFFactor);
+//		LowPassFilter::apply(_aircraftData.computed.yaw, _aircraftData.yawRad, LPFFactor);
+		
+		_aircraftData.computed.pitch = _aircraftData.pitchRad;
+		_aircraftData.computed.roll = _aircraftData.rollRad;
+		_aircraftData.computed.yaw = _aircraftData.yawRad;
 
+		_aircraftData.computed.headingDeg = normalizeAngle360(toDegrees(-_aircraftData.computed.yaw));
+		
 		LowPassFilter::apply(_aircraftData.computed.slipAndSkid, _aircraftData.slipAndSkid, LPFFactor);
 
 		LowPassFilter::apply(_aircraftData.computed.flightPathVectorPitch, _aircraftData.flightPathVectorPitch, LPFFactor);

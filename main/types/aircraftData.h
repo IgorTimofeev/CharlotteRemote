@@ -16,6 +16,7 @@ namespace pizda {
 			float pitch = 0;
 			float roll = 0;
 			float yaw = 0;
+			float headingDeg = 0;
 			float slipAndSkid = 0;
 			float flightPathVectorPitch = 0;
 			float flightPathVectorYaw = 0;

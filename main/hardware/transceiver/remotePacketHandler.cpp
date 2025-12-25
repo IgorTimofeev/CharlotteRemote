@@ -24,7 +24,7 @@ namespace pizda {
 	}
 	
 	bool RemotePacketHandler::readAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength) {
-		if (!validatePayloadChecksumAndLength(stream, 5 * 32, payloadLength))
+		if (!validatePayloadChecksumAndLength(stream, sizeof(uint32_t) * 5 * 8, payloadLength))
 			return false;
 		
 		auto& rc = RC::getInstance();
@@ -37,28 +37,13 @@ namespace pizda {
 		const auto oldSpeed = ad.airSpeedKt;
 		const auto oldAltitude = ad.altitudeFt;
 		
-		auto sanitizeFloat = [](float value, float min, float max) {
-			if (value < min) {
-				value = min;
-				
-				ESP_LOGW(_logTag, "value %f is out of range [%f, %f]", value, min, max);
-			}
-			else if (value > max) {
-				value = max;
-				
-				ESP_LOGW(_logTag, "value %f is out of range [%f, %f]", value, min, max);
-			}
-			
-			return value;
-		};
-		
 		// Direct reading
-		ad.rollRad = sanitizeFloat(stream.readFloat(), toRadians(-360), toRadians(360));
-		ad.pitchRad = sanitizeFloat(stream.readFloat(), toRadians(-360), toRadians(360));
-		ad.yawRad = sanitizeFloat(stream.readFloat(), toRadians(-360), toRadians(360));
+		ad.rollRad = sanitizeValue<float>(stream.readFloat(), toRadians(-360), toRadians(360));
+		ad.pitchRad = sanitizeValue<float>(stream.readFloat(), toRadians(-360), toRadians(360));
+		ad.yawRad = sanitizeValue<float>(stream.readFloat(), toRadians(-360), toRadians(360));
 		
-		ad.airSpeedKt = sanitizeFloat(stream.readFloat(), 0, 999);
-		ad.altitudeFt = sanitizeFloat(stream.readFloat(), 0, 99999);
+		ad.airSpeedKt = sanitizeValue<float>(stream.readFloat(), 0, 999);
+		ad.altitudeFt = sanitizeValue<float>(stream.readFloat(), -9999, 9999);
 		
 //		ad.throttle = ...
 		
@@ -102,12 +87,25 @@ namespace pizda {
 	
 	bool RemotePacketHandler::writePacket(BitStream& stream, PacketType packetType) {
 		switch (packetType) {
+			case PacketType::remoteBaro:
+				return writeRemoteBaroPacket(stream);
+				
+				break;
 			default: {
 				ESP_LOGE(_logTag, "failed to write packet: unsupported type %d", std::to_underlying(packetType));
 				
 				return false;
 			}
 		}
+	}
+	
+	bool RemotePacketHandler::writeRemoteBaroPacket(BitStream& stream) {
+		auto& rc = RC::getInstance();
+		auto& settings = rc.getSettings();
+
+		stream.writeUint32(settings.controls.referencePressureSTD ? 101325 : settings.controls.referencePressurePa);
+		
+		return true;
 	}
 	
 	//	void Transceiver::fillRemotePacket() {
@@ -138,15 +136,19 @@ namespace pizda {
 //		_remotePacket.strobeLights = settings.controls.strobeLights;
 //	}
 	
-	void RemotePacketHandler::onConnectionLost() {
+	void RemotePacketHandler::onConnectionStateChanged(TransceiverConnectionState fromState, TransceiverConnectionState toState) {
 		auto& rc = RC::getInstance();
 		
-		rc.getSpeaker().play(resources::Sounds::transceiverDisconnect());
-	}
-	
-	void RemotePacketHandler::onConnectionRestored() {
-		auto& rc = RC::getInstance();
-		
-		rc.getSpeaker().play(resources::Sounds::transceiverConnect());
+		switch (toState) {
+			case TransceiverConnectionState::connected: {
+				rc.getSpeaker().play(resources::Sounds::transceiverConnect());
+				break;
+			}
+			case TransceiverConnectionState::disconnected: {
+				rc.getSpeaker().play(resources::Sounds::transceiverDisconnect());
+				break;
+			}
+			default: break;
+		}
 	}
 }

@@ -2,6 +2,8 @@
 
 #include <esp_log.h>
 
+#include "hardware/transceiver/transceiver.h"
+
 namespace pizda {
 	uint8_t PacketHandler::getCRC8(const uint8_t* buffer, size_t length) {
 		uint8_t crc = 0xff;
@@ -32,7 +34,7 @@ namespace pizda {
 		}
 		
 		const auto checksum = getCRC8(stream.getBuffer(), expectedPayloadLengthBytes);
-		const auto expectedChecksum = *(stream.getBuffer() + expectedPayloadLengthBytes + Packet::checksumLengthBytes);
+		const auto expectedChecksum = *(stream.getBuffer() + expectedPayloadLengthBytes);
 		
 		// Checksum
 		if (checksum != expectedChecksum) {

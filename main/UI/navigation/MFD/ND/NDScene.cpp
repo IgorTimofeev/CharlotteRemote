@@ -57,7 +57,7 @@ namespace pizda {
 
 		setCameraRotation(Vector3F(
 			-_cameraCoordinates.getLatitude(),
-			settings.interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : ad.computed.yaw,
+			settings.interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : -ad.computed.yaw,
 			toRadians(90) + _cameraCoordinates.getLongitude()
 		));
 
@@ -81,8 +81,6 @@ namespace pizda {
 		{
 			const auto centerX = bounds.getXCenter();
 			const auto centerY = bounds.getYCenter();
-
-			const auto yawDeg = toDegrees(ad.computed.yaw);
 
 			const auto isLandscape = bounds.isLandscape();
 
@@ -183,7 +181,7 @@ namespace pizda {
 			else {
 				// Tick marks
 				float stepUnitsPerYawDegIntPart;
-				const float stepUnitsPerYawDegFractPart = std::modff(yawDeg / _compassTickMarkUnitsDeg, &stepUnitsPerYawDegIntPart);
+				const float stepUnitsPerYawDegFractPart = std::modff(ad.computed.headingDeg / _compassTickMarkUnitsDeg, &stepUnitsPerYawDegIntPart);
 				const int32_t yawSnappedInt = static_cast<int32_t>(stepUnitsPerYawDegIntPart) * _compassTickMarkUnitsDeg;
 
 				for (int16_t angleDeg = tickAngleFromDeg; angleDeg <= tickAngleToDeg; angleDeg += _compassTickMarkUnitsDeg) {
@@ -225,7 +223,7 @@ namespace pizda {
 				}
 
 				// Heading text
-				const auto yawDegText = std::format(L"{:03}", static_cast<int32_t>(normalizeAngle360(yawDeg)));
+				const auto yawDegText = std::format(L"{:03}", static_cast<int32_t>(ad.computed.headingDeg));
 				const uint16_t yawDegTextWidth = Theme::fontNormal.getWidth(yawDegText);
 
 				y -= circleRadius + _compassCircleMarginTopPx + _compassHeadingTextVerticalLineHeight - 1;
@@ -325,7 +323,7 @@ namespace pizda {
 //			ESP_LOGI("ND", "------------- Drag -------------");
 
 			auto& rc = RC::getInstance();
-			const auto yaw = rc.getSettings().interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : rc.getAircraftData().computed.yaw;
+			const auto yaw = rc.getSettings().interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : -rc.getAircraftData().computed.yaw;
 			const auto& deltaPixels = (pointerDragEventEvent->getPosition() - _pointerDownPosition).rotate(yaw);
 			_pointerDownPosition = pointerDragEventEvent->getPosition();
 			_cursorPosition = pointerDragEventEvent->getPosition() - getBounds().getPosition();
