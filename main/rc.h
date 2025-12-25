@@ -15,6 +15,7 @@
 #include "config.h"
 
 #include "hardware/transceiver/packet.h"
+#include "hardware/transceiver/remotePacketHandler.h"
 #include "hardware/transceiver/transceiver.h"
 
 #include <hardware/speaker/speaker.h>
@@ -65,6 +66,8 @@ namespace pizda {
 			NavigationData& getNavigationData();
 
 		private:
+			constexpr static const char* _logTag = "Main";
+			
 			RC() = default;
 
 			Settings _settings;
@@ -72,29 +75,32 @@ namespace pizda {
 			// -------------------------------- Hardware --------------------------------
 
 			ILI9341Display _display = ILI9341Display(
-				config::spi::mosi,
-				config::spi::miso,
-				config::spi::sck,
+				config::spi::MOSI,
+				config::spi::MISO,
+				config::spi::SCK,
 
-				config::screen::slaveSelect,
-				config::screen::dataCommand,
-				config::screen::reset,
+				config::screen::SS,
+				config::screen::DC,
+				config::screen::RST,
 				config::screen::frequency
 			);
 
 			Bit8PaletteRenderer _renderer { 32 };
 
 			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
-				config::i2c::sda,
-				config::i2c::scl,
+				config::i2c::SDA,
+				config::i2c::SCL,
 
-				config::screen::touch::reset,
-				config::screen::touch::interrupt
+				config::screen::touch::RST,
+				config::screen::touch::INTR
 			);
 
 			Speaker _speaker {};
+			
+			// Transceiver
 			Transceiver _transceiver {};
-
+			RemotePacketHandler _packetHandler {};
+			
 			// Encoder
 			PushButtonEncoder _encoder {
 				config::encoder::a,
@@ -175,6 +181,8 @@ namespace pizda {
 			void axisTick();
 
 			void NVSSetup();
+			
+			void startErrorLoop(const char* error);
 
 			void interpolationTick();
 	};

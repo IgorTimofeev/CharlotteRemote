@@ -12,16 +12,16 @@ namespace pizda {
 		public:
 			class spi {
 				public:
-					constexpr static spi_host_device_t host = SPI2_HOST;
-					constexpr static gpio_num_t mosi = GPIO_NUM_23;
-					constexpr static gpio_num_t miso = GPIO_NUM_19;
-					constexpr static gpio_num_t sck = GPIO_NUM_18;
+					constexpr static spi_host_device_t device = SPI2_HOST;
+					constexpr static gpio_num_t MOSI = GPIO_NUM_23;
+					constexpr static gpio_num_t MISO = GPIO_NUM_19;
+					constexpr static gpio_num_t SCK = GPIO_NUM_18;
 			};
 	
 			class i2c {
 				public:
-					constexpr static gpio_num_t sda = GPIO_NUM_21;
-					constexpr static gpio_num_t scl = GPIO_NUM_22;
+					constexpr static gpio_num_t SDA = GPIO_NUM_21;
+					constexpr static gpio_num_t SCL = GPIO_NUM_22;
 			};
 			
 			class adc {
@@ -39,13 +39,13 @@ namespace pizda {
 				public:
 					class touch {
 						public:
-							constexpr static gpio_num_t reset = GPIO_NUM_NC;
-							constexpr static gpio_num_t interrupt = GPIO_NUM_5;
+							constexpr static gpio_num_t RST = GPIO_NUM_NC;
+							constexpr static gpio_num_t INTR = GPIO_NUM_5;
 					};
 
-					constexpr static gpio_num_t slaveSelect = GPIO_NUM_17;
-					constexpr static gpio_num_t dataCommand = GPIO_NUM_16;
-					constexpr static gpio_num_t reset = GPIO_NUM_NC;
+					constexpr static gpio_num_t SS = GPIO_NUM_17;
+					constexpr static gpio_num_t DC = GPIO_NUM_16;
+					constexpr static gpio_num_t RST = GPIO_NUM_NC;
 					constexpr static uint32_t frequency = 60'000'000;
 			};
 	
@@ -54,8 +54,8 @@ namespace pizda {
 					// SX1262 supports up to 16 MHz, but with long wires (10+ cm) there will be troubles, so
 					constexpr static uint32_t SPIFrequencyHz = 4'000'000;
 					
-					constexpr static gpio_num_t slaveSelect = GPIO_NUM_14;
-					constexpr static gpio_num_t reset = GPIO_NUM_NC;
+					constexpr static gpio_num_t SS = GPIO_NUM_14;
+					constexpr static gpio_num_t RST = GPIO_NUM_NC;
 					constexpr static gpio_num_t busy = GPIO_NUM_12;
 					constexpr static gpio_num_t DIO1 = GPIO_NUM_13;
 
@@ -67,7 +67,7 @@ namespace pizda {
 					constexpr static uint16_t powerDBm = 22;
 					constexpr static uint16_t preambleLength = 8;
 
-					constexpr static uint32_t packetHeader = 0x4348524C;
+					constexpr static uint8_t tickRateHz = 30;
 			};
 	
 			class axis {

@@ -6,19 +6,20 @@ namespace pizda {
 	#pragma pack(push, 1)
 	
 	enum class PacketType : uint8_t {
-		RemoteChannelDataStructure,
-		RemoteChannelData,
-		RemoteMotorConfiguration,
+		remoteChannelDataStructure,
+		remoteChannelData,
+		remoteMotorConfiguration,
 		
-		AircraftAHRS
+		aircraftADIRS
 	};
 	
 	class Packet {
 		public:
 			constexpr static uint8_t headerLengthBytes = 2;
-			constexpr static const char* header = "cy";
+			constexpr static uint8_t header[] { 'c', 'y' };
 			
 			constexpr static uint8_t typeLengthBits = 4;
+			constexpr static uint8_t checksumLengthBytes = 1;
 		
 		private:
 		

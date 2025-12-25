@@ -1,39 +1,51 @@
 #pragma once
 
-#include <freertos/FreeRTOS.h>
-#include <freertos/task.h>
+#include <cmath>
+#include <functional>
 
-#include <SX1262Ex.h>
 #include <bitStream.h>
+#include <SX1262Ex.h>
 
-#include "config.h"
-#include "hardware/transceiver/packet.h"
+#include "packet.h"
+#include "packetHandler.h"
 
 namespace pizda {
 	using namespace YOBA;
 	
+	enum class TransceiverConnectionState : uint8_t {
+		initial,
+		normal,
+		lost
+	};
+	
 	class Transceiver {
 		public:
-			void setup();
+			bool setup();
+			void setPacketHandler(PacketHandler* value);
 			void start();
-			void stop();
-			
-			float getRSSI();
-
+			float getRSSI() const;
+		
 		private:
 			constexpr static const char* _logTag = "XCVR";
+			constexpr static uint32_t _connectionLostInterval = 5'000'000;
 			
+			SX1262Ex _SX {};
 			
-			SX1262Ex sx1262 {};
+			PacketHandler* _packetHandler = nullptr;
 			
-			bool _setupValid = false;
-			bool _started = false;
-			RemotePacket _remotePacket {};
-			uint64_t _aircraftPacketTime = 0;
 			float _RSSI = 0;
 			
-			void fillRemotePacket();
+			bool _reading = false;
+			
+			constexpr static uint16_t _bufferLength = 255;
+			uint8_t _buffer[_bufferLength] {};
+			
+			uint32_t _connectionLostTime = 0;
+			TransceiverConnectionState _connectionState = TransceiverConnectionState::initial;
+			
+			void updateConnectionLostTime();
 			void onStart();
-			void parseAircraftPacket(BitStream& bitStream);
+			bool write();
+			bool read();
 	};
 }

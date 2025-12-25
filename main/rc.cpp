@@ -63,9 +63,12 @@ namespace pizda {
 		_ring.setup();
 
 		// Transceiver
-		_transceiver.setup();
+		if (!_transceiver.setup())
+			startErrorLoop("failed to setup XCVR");
+		
+		_transceiver.setPacketHandler(&_packetHandler);
 		_transceiver.start();
-
+		
 		// Application
 		_application.setRenderer(&_renderer);
 		_application.addHID(&_touchPanel);
@@ -242,28 +245,28 @@ namespace pizda {
 
 	void RC::SPIBusSetup() const {
 		spi_bus_config_t config {};
-		config.mosi_io_num = config::spi::mosi;
-		config.miso_io_num = config::spi::miso;
-		config.sclk_io_num = config::spi::sck;
+		config.mosi_io_num = config::spi::MOSI;
+		config.miso_io_num = config::spi::MISO;
+		config.sclk_io_num = config::spi::SCK;
 		config.quadwp_io_num = -1;
 		config.quadhd_io_num = -1;
 		config.max_transfer_sz = _display.getSize().getSquare() * 2;
 
-		ESP_ERROR_CHECK(spi_bus_initialize(config::spi::host, &config, SPI_DMA_CH_AUTO));
+		ESP_ERROR_CHECK(spi_bus_initialize(config::spi::device, &config, SPI_DMA_CH_AUTO));
 	}
 	
 	void RC::GPIOSetup() const {
 		// Slave selects
 		gpio_config_t g = {};
-		g.pin_bit_mask = (1ULL << config::screen::slaveSelect) | (1ULL << config::transceiver::slaveSelect);
+		g.pin_bit_mask = (1ULL << config::screen::SS) | (1ULL << config::transceiver::SS);
 		g.mode = GPIO_MODE_OUTPUT;
 		g.pull_up_en = GPIO_PULLUP_DISABLE;
 		g.pull_down_en = GPIO_PULLDOWN_DISABLE;
 		g.intr_type = GPIO_INTR_DISABLE;
 		gpio_config(&g);
 		
-		gpio_set_level(config::screen::slaveSelect, true);
-		gpio_set_level(config::transceiver::slaveSelect, true);
+		gpio_set_level(config::screen::SS, true);
+		gpio_set_level(config::transceiver::SS, true);
 	}
 
 	void RC::ADCUnitsSetup() {
@@ -324,5 +327,13 @@ namespace pizda {
 
 	Transceiver& RC::getTransceiver() {
 		return _transceiver;
+	}
+	
+	void RC::startErrorLoop(const char* error) {
+		ESP_LOGE(_logTag, "%s", error);
+		
+		while (true) {
+			vTaskDelay(pdMS_TO_TICKS(1'000));
+		}
 	}
 }
