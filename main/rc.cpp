@@ -137,13 +137,9 @@ namespace pizda {
 
 		// Roll / pitch / yaw / slip & skid, faster
 		float LPFFactor = 5.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
+		
 		LowPassFilter::apply(_aircraftData.computed.pitchRad, _aircraftData.raw.pitchRad, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.rollRad, _aircraftData.raw.rollRad, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.yawRad, _aircraftData.raw.yawRad, LPFFactor);
-		
-//		_aircraftData.computed.pitch = _aircraftData.pitchRad;
-//		_aircraftData.computed.roll = _aircraftData.rollRad;
-//		_aircraftData.computed.yaw = _aircraftData.yawRad;
 
 		_aircraftData.computed.headingDeg = normalizeAngle360(toDegrees(-_aircraftData.computed.yawRad));
 		
@@ -157,23 +153,30 @@ namespace pizda {
 
 		// Airspeed / altitude, normal
 		LPFFactor = 3.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
+
+		LowPassFilter::apply(_aircraftData.computed.yawRad, _aircraftData.raw.yawRad, LPFFactor);
+		
 		LowPassFilter::apply(_aircraftData.computed.airSpeedKt, _aircraftData.raw.airSpeedKt, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.altitudeFt, _aircraftData.raw.altitudeFt, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.windDirectionRad, _aircraftData.raw.windDirectionRad, LPFFactor);
 		
-//		ESP_LOGI("pizda", "deltaTime: %f, LPFFactor: %f", (float) deltaTime, LPFFactor);
+//		ESP_LOGI("pizda", "deltaTime: %f, LPFFactor: %f", (float) deltaTimeUs, LPFFactor);
 //		ESP_LOGI("pizda", "alt: %f, %f", _aircraftData.computed.altitude, _aircraftData.altitudeFt);
 		
 		// Trends, slower
 		LPFFactor = 1.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.airSpeedTrendKt, _aircraftData.raw.airSpeedTrend, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.altitudeTrendFt, _aircraftData.raw.altitudeTrend, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.airSpeedTrendKt, _aircraftData.raw.airSpeedTrendFt, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.altitudeTrendFt, _aircraftData.raw.altitudeTrendFt, LPFFactor);
 
 		// Smooth as fuck
 		LPFFactor = 0.5f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
 		LowPassFilter::apply(_aircraftData.computed.transceiverRSSIDBm, _transceiver.getRSSI(), LPFFactor);
-
-		_interpolationTickTime = esp_timer_get_time() + config::application::dataInterpolationTickIntervalUs;
+		
+		//		_aircraftData.computed.pitch = _aircraftData.pitchRad;
+//		_aircraftData.computed.roll = _aircraftData.rollRad;
+//		_aircraftData.computed.yaw = _aircraftData.yawRad;
+		
+		_interpolationTickTime = esp_timer_get_time();
 	}
 
 	// ------------------------- Data -------------------------

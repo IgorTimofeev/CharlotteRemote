@@ -6,22 +6,23 @@ namespace pizda {
 
 	AutopilotControls::AutopilotControls() {
 		auto& settings = RC::getInstance().getSettings();
-		setHeight(38);
+		setHeight(36);
 
-		row.setSpacing(6);
+//		row.setSpacing(6);
 
 		// FD
-		FDButton.setSize(Size(26, 20));
-		FDButton.setVerticalAlignment(Alignment::center);
-		FDButton.setToggle(true);
-		FDButton.setActive(settings.interface.MFD.PFD.flightDirectors);
-
-		FDButton.isActiveChanged += [this, &settings] {
-			settings.interface.MFD.PFD.flightDirectors = FDButton.isActive();
+		flightDirectorsButton.setSize(Size(24, 18));
+		flightDirectorsButton.setMargin(Margin(0, 0, 8, 0));
+		flightDirectorsButton.setVerticalAlignment(Alignment::center);
+		flightDirectorsButton.setToggle(true);
+		flightDirectorsButton.setActive(settings.interface.MFD.PFD.flightDirectors);
+		
+		flightDirectorsButton.isActiveChanged += [this, &settings] {
+			settings.interface.MFD.PFD.flightDirectors = flightDirectorsButton.isActive();
 			settings.interface.scheduleWrite();
 		};
 		
-		row += &FDButton;
+		row += &flightDirectorsButton;
 
 		// Speed
 		speed.seven.setValue(settings.autopilot.speedKt);
@@ -70,5 +71,14 @@ namespace pizda {
 		};
 
 		row += &altitude;
+		
+		// LNAV
+		LNAVButton.setSize(flightDirectorsButton.getSize());
+		LNAVButton.setMargin(Margin(8, 0, 0, 0));
+		LNAVButton.setVerticalAlignment(Alignment::center);
+		LNAVButton.setToggle(true);
+		LNAVButton.setActive(false);
+		
+		row += &LNAVButton;
 	}
 }

@@ -15,13 +15,15 @@ namespace pizda {
 	class AutopilotControls : public Toolbar {
 		public:
 			explicit AutopilotControls();
-
-			KorryButton FDButton { L"FD" };
+			
+			KorryButton flightDirectorsButton { L"FD" };
 
 			RotaryControl<3, 0, 400, false, 1, 10> speed { L"Speed", L"A/T" };
 			RotaryControl<3, 0, 360, true, 1, 10> heading { L"Heading", L"HLD" };
-			RotaryControl<4, 0, 15000, false, 100, 1000> altitude { L"Altitude", L"FLC" };
-
+			RotaryControl<4, 0, 15000, false, 10, 100> altitude { L"Altitude", L"FLC" };
+			
+			KorryButton LNAVButton { L"LNAV" };
+		
 		private:
 
 	};

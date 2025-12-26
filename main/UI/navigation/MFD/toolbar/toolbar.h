@@ -11,7 +11,7 @@ namespace pizda {
 			Toolbar();
 
 			constexpr static uint8_t topPanelHeight = 8;
-			constexpr static uint8_t contentHorizontalMargin = 7;
+			constexpr static uint8_t contentHorizontalMargin = 8;
 			constexpr static uint8_t titleVerticalOffset = 1;
 
 		protected:

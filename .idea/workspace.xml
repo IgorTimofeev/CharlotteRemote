@@ -160,84 +160,27 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ну-ка, бекапнем">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ни хуя себе десигн">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/dialogs/dialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/dialogs/dialog.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/dialogs/scrollViewDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/dialogs/scrollViewDialog.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/selectWaypointDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/selectWaypointDialog.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/waypointButton.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/waypointButton.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/waypointButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/waypointButton.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/switcher.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/switcher.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/tabSelector.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/tabSelector.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/titler.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/titler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/ND.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/ND.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/aircraft.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/aircraft.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/NDRunwayMesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/NDRunwayMesh.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/routeElement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/routeElement.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/element.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/element.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/element.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/element.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/korryButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/korryButton.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/rotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotControls.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotControls.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotControls.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotControls.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/instrumentIndicatorLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/instrumentIndicatorLayout.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/batteryIndicator.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/batteryIndicator.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/flapsAndSpoilersIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/flightControlsIndicator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/flapsAndSpoilersIndicator.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/flightControlsIndicator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/flightControlsIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/flightControlsIndicator.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainControls.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainControls.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainControls.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainControls.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicator.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicator.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicator.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicatorLayout.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicatorLayout.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicatorLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicatorLayout.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/pressure/pressureControls.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroControls.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/pressure/pressureControls.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroControls.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbar.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbar.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/menu.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/menu.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/menuTabButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/menuTabButton.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/menuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/menuView.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/menuViewButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/menuViewButton.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/openMenuButton.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/openMenuButton.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/airportFlightPlanItemDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/airportFlightPlanItemDialog.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanItem.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanItem.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/legFlightPlanItemDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/legFlightPlanItemDialog.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/placeholderButtons.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/placeholderButtons.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/navMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/navMenuView.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointItemDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointItemDialog.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/page.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/page.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/MFD/MFDSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/MFD/MFDSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/developer/developerSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/developer/developerSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDPressureImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDBaroImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/settingsInterface.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settingsInterface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/MFDFlapsAndSpoilers.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/MFDFlapsAndSpoilers.psd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/MFDLandingGear.psd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/MFDLandingGearExtended.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/MFDLandingGearRetracted.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDMain.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDMain.psd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDPressure.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDBaro.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDPressure.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDBaro.psd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/top.psd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/aircraftData.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1170,7 +1113,7 @@
       <workItem from="1766684340823" duration="21309000" />
       <workItem from="1766741661302" duration="1579000" />
       <workItem from="1766743280851" duration="7772000" />
-      <workItem from="1766751251310" duration="21106000" />
+      <workItem from="1766751251310" duration="32438000" />
     </task>
     <task id="LOCAL-00001" summary="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ">
       <option name="closed" value="true" />
@@ -1340,7 +1283,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766767858834</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="ни хуя себе десигн">
+      <option name="closed" value="true" />
+      <created>1766777148775</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1766777148775</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1352,6 +1303,7 @@
     <isAutomaticReloadCMake value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_NEW_TODO" value="false" />
     <ignored-roots>
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bootloader/subproject/components/micro-ecc/micro-ecc" />
@@ -1395,6 +1347,7 @@
     <MESSAGE value="захуярил поддержку десятичных разрядов в семисегментник, а то гектопаскали хуй введешь нормально" />
     <MESSAGE value="оказывается, все это время тогглБатоныБулочкиКрендельки были СДОХШИМИ" />
     <MESSAGE value="ну-ка, бекапнем" />
-    <option name="LAST_COMMIT_MESSAGE" value="ну-ка, бекапнем" />
+    <MESSAGE value="ни хуя себе десигн" />
+    <option name="LAST_COMMIT_MESSAGE" value="ни хуя себе десигн" />
   </component>
 </project>

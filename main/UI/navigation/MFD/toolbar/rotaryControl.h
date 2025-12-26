@@ -20,13 +20,13 @@ namespace pizda {
 			explicit RotaryControl(std::wstring_view title, std::wstring_view buttonText) : InstrumentIndicatorLayout(title) {
 				// Seven segment
 				seven.setAlignment(Alignment::center, Alignment::start);
-				seven.setMargin(Margin(0, 5, 0, 0));
+				seven.setMargin(Margin(0, 6, 0, 0));
 				
 				seven.setDigitCount(digitCount);
 				seven.setDecimalSeparatorSpacing(2);
 				
 				seven.setSegmentThickness(1);
-				seven.setSegmentLength(5);
+				seven.setSegmentLength(4);
 				
 				seven.setInactiveColor(&Theme::bg5);
 				seven.setActiveColor(&Theme::fg1);
@@ -36,7 +36,7 @@ namespace pizda {
 				// Button
 				button.setVerticalAlignment(Alignment::end);
 				button.setHeight(7);
-//				button.setMargin(Margin(-Toolbar::contentHorizontalMargin, 0, -Toolbar::contentHorizontalMargin, 0));
+				button.setMargin(Margin(-Toolbar::contentHorizontalMargin, 0, -Toolbar::contentHorizontalMargin, 0));
 				
 				button.setDefaultBackgroundColor(&Theme::bg3);
 				button.setActiveBackgroundColor(&Theme::fg1);

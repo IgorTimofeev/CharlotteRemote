@@ -10,8 +10,6 @@ namespace pizda {
 	class KorryButton : public Button {
 		public:
 			explicit KorryButton(std::wstring_view text) {
-				setCornerRadius(3);
-
 				setDefaultBackgroundColor(&Theme::bg2);
 				setDefaultBorderColor(&Theme::bg3);
 				setDefaultTextColor(&Theme::fg3);

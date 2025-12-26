@@ -847,7 +847,7 @@ namespace pizda {
 	void PFD::renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value) {
 		const auto length = static_cast<int32_t>(static_cast<float>(stepPixels) * value / static_cast<float>(unitStep));
 
-		if (abs(length) < 10)
+		if (std::abs(length) < unitStep)
 			return;
 
 		constexpr uint8_t arrowSize = 3;
@@ -1140,15 +1140,15 @@ namespace pizda {
 
 		// Ground
 		if (y < bounds.getY2() && lineValue < 0) {
-			renderer->renderHorizontalLine(
-				Point(x, y),
-				bounds.getWidth(),
-				&Theme::yellow
-			);
-			
+//			renderer->renderHorizontalLine(
+//				Point(x, y),
+//				bounds.getWidth(),
+//				&Theme::yellow
+//			);
+//
 			constexpr int8_t groundSpacing = 5;
-			auto groundPoint1 = Point(x, y + 1 + groundSpacing);
-			auto groundPoint2 = Point(x + groundSpacing, y + 1);
+			auto groundPoint1 = Point(x, y + groundSpacing);
+			auto groundPoint2 = Point(x + groundSpacing, y);
 		
 			do {
 				renderer->renderLine(

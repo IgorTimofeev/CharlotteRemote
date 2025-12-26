@@ -89,8 +89,8 @@ namespace pizda {
 
 			// Altitude
 			constexpr static uint8_t altitudeWidth = 26;
-			constexpr static uint8_t altitudeStepUnits = 5;
-			constexpr static uint8_t altitudeStepUnitsBig = 20;
+			constexpr static uint8_t altitudeStepUnits = 10;
+			constexpr static uint8_t altitudeStepUnitsBig = 50;
 			constexpr static uint8_t altitudeStepPixels = 8;
 
 			constexpr static uint8_t altitudeMinimumHorizontalOffset = 5;

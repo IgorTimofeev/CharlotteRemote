@@ -62,7 +62,7 @@ namespace pizda {
 
 		// RSSI
 		position.setX(position.getX() - _lineSpacing + _textOffset);
-		position.setY(bounds.getYCenter() - Theme::fontSmall.getHeight());
+		position.setY(bounds.getYCenter() - Theme::fontSmall.getHeight() + 1);
 		
 		renderer->renderString(
 			position,

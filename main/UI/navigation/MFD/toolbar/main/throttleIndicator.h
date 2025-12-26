@@ -7,6 +7,8 @@ namespace pizda {
 
 	class ThrottleIndicator : public Control {
 		public:
+			ThrottleIndicator();
+			
 			void onRender(Renderer* pos, const Bounds& bounds) override;
 
 			uint8_t getRemoteValue() const;

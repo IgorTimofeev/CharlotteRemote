@@ -1,15 +1,22 @@
 #include "throttleIndicator.h"
 
 #include <format>
+
 #include "UI/theme.h"
 #include "rc.h"
 
 namespace pizda {
+	ThrottleIndicator::ThrottleIndicator() {
+		setSize(Size(38, 5));
+	}
+	
 	void ThrottleIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
-		constexpr static uint8_t textSize = 14;
+		constexpr static uint8_t textMaxSize = 11;
+		constexpr static uint8_t textOffset = 4;
+		
 		constexpr static uint8_t lineOffset = 1;
 		
-		const uint16_t frameSize = bounds.getWidth() - textSize;
+		const uint16_t frameSize = bounds.getWidth() - textMaxSize - textOffset;
 		const auto& settings = RC::getInstance().getSettings();
 
 		// Frame
@@ -62,11 +69,11 @@ namespace pizda {
 		renderOffsetLine(bounds.getX() + primaryValueSize - 1, primaryValueColor);
 
 		// Aircraft value text
-		const auto text = std::to_wstring(static_cast<int32_t>(primaryValue * 100 / 0xFF));
+		const auto text = std::format(L"{:03}", static_cast<int32_t>(primaryValue * 100 / 0xFF));
 
 		renderer->renderString(
 			Point(
-				bounds.getX2() - Theme::fontSmall.getWidth(text) + 1,
+				bounds.getX() + frameSize + textOffset,
 				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1
 			),
 			&Theme::fontSmall,

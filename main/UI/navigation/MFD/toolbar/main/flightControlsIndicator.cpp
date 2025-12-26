@@ -30,7 +30,7 @@ namespace pizda {
 		
 		// Joys
 		const auto joyH = bounds.getX() + rc.getJoystickHorizontal().getMappedUint8Value() * bounds.getWidth() / 0xFF;
-		const auto joyV = bounds.getY() + rc.getJoystickVertical().getMappedUint8Value() * bounds.getWidth() / 0xFF;
+		const auto joyV = bounds.getY() + (0xFF - rc.getJoystickVertical().getMappedUint8Value()) * bounds.getWidth() / 0xFF;
 		
 		renderer->renderPixel(Point(joyH - 1, joyV), &Theme::yellow);
 		renderer->renderPixel(Point(joyH + 1, joyV), &Theme::yellow);
@@ -49,7 +49,7 @@ namespace pizda {
 		);
 		
 		// Levers
-		constexpr static uint8_t maxLeverHeight = 5;
+		constexpr static uint8_t maxLeverHeight = 8;
 
 		const auto levL = rc.getLeverLeft().getMappedUint8Value() * maxLeverHeight / 0xFF;
 		const auto levR = rc.getLeverRight().getMappedUint8Value() * maxLeverHeight / 0xFF;

@@ -22,10 +22,10 @@ namespace pizda {
 			uint8_t throttle = 0;
 			
 			float airSpeedKt = 0;
-			float airSpeedTrend = 0;
+			float airSpeedTrendFt = 0;
 			
 			float altitudeFt = 0;
-			float altitudeTrend = 0;
+			float altitudeTrendFt = 0;
 			
 			float verticalSpeed = 0;
 			
