@@ -6,10 +6,9 @@ namespace pizda {
 
 	AutopilotControls::AutopilotControls() {
 		auto& settings = RC::getInstance().getSettings();
+		setHeight(38);
 
-		setHeight(52);
-
-		row.setSpacing(8);
+		row.setSpacing(6);
 
 		// FD
 		FDButton.setSize(Size(26, 20));
@@ -18,8 +17,6 @@ namespace pizda {
 		FDButton.setActive(settings.interface.MFD.PFD.flightDirectors);
 
 		FDButton.isActiveChanged += [this, &settings] {
-			ESP_LOGI("pizda", "korry active: %d",  FDButton.isActive());
-			
 			settings.interface.MFD.PFD.flightDirectors = FDButton.isActive();
 			settings.interface.scheduleWrite();
 		};
@@ -40,8 +37,7 @@ namespace pizda {
 			settings.autopilot.scheduleWrite();
 		};
 
-		speedLayout.setFocusable(false);
-		row += &speedLayout;
+		row += &speed;
 
 		// Heading
 		heading.seven.setValue(settings.autopilot.headingDeg);
@@ -57,8 +53,7 @@ namespace pizda {
 			settings.autopilot.scheduleWrite();
 		};
 
-		headingLayout.setFocusable(false);
-		row += &headingLayout;
+		row += &heading;
 
 		// Altitude
 		altitude.seven.setValue(settings.autopilot.altitudeFt);
@@ -74,8 +69,6 @@ namespace pizda {
 			settings.autopilot.scheduleWrite();
 		};
 
-		altitudeLayout.setFocusable(false);
-
-		row += &altitudeLayout;
+		row += &altitude;
 	}
 }

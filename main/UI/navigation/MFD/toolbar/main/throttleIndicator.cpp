@@ -1,16 +1,15 @@
 #include "throttleIndicator.h"
 
 #include <format>
-#include <UI/theme.h>
+#include "UI/theme.h"
 #include "rc.h"
 
 namespace pizda {
 	void ThrottleIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
-		constexpr static uint8_t textOffset = 2;
-		constexpr static uint8_t lineOffsetX = 2;
-
-		const uint16_t frameHeight = bounds.getHeight() - Theme::fontSmall.getHeight() - textOffset + 3;
-		const auto frameY2 = bounds.getY() + frameHeight - 1;
+		constexpr static uint8_t textSize = 14;
+		constexpr static uint8_t lineOffset = 1;
+		
+		const uint16_t frameSize = bounds.getWidth() - textSize;
 		const auto& settings = RC::getInstance().getSettings();
 
 		// Frame
@@ -18,19 +17,19 @@ namespace pizda {
 			Bounds(
 				bounds.getX(),
 				bounds.getY(),
-				bounds.getWidth(),
-				frameHeight
+				frameSize,
+				bounds.getHeight()
 			),
 			&Theme::bg6
 		);
 
-		const auto& renderOffsetLine = [&renderer, &bounds](int32_t y, const Color* color) {
-			renderer->renderHorizontalLine(
+		const auto& renderOffsetLine = [&renderer, &bounds](int32_t pos, const Color* color) {
+			renderer->renderVerticalLine(
 				Point(
-					bounds.getX() - lineOffsetX,
-					y
+					pos,
+					bounds.getY() - lineOffset
 				),
-				bounds.getWidth() + lineOffsetX * 2,
+				bounds.getHeight() + lineOffset * 2,
 				color
 			);
 		};
@@ -39,40 +38,39 @@ namespace pizda {
 		const auto secondaryValue = settings.autopilot.autoThrottle ? _remoteValue : _aircraftValue;
 
 		renderOffsetLine(
-			frameY2 - std::max(static_cast<uint16_t>(frameHeight * secondaryValue / 0xFF), static_cast<uint16_t>(1)) + 1,
+			bounds.getX() + std::max(static_cast<uint16_t>(frameSize * secondaryValue / 0xFF), static_cast<uint16_t>(1)) - 1,
 			&Theme::fg5
 		);
 
 		// Primary value
 		const auto primaryValue = settings.autopilot.autoThrottle ? _aircraftValue : _remoteValue;
-		const auto primaryValueHeight = std::max(static_cast<uint16_t>(frameHeight * primaryValue / 0xFF), static_cast<uint16_t>(1));
-		const int32_t primaryValueY = frameY2 - primaryValueHeight + 1;
+		const auto primaryValueSize = std::max(static_cast<uint16_t>(frameSize * primaryValue / 0xFF), static_cast<uint16_t>(1));
 		const auto primaryValueColor = settings.autopilot.autoThrottle ? &Theme::purple : &Theme::green;
 
-		if (primaryValueHeight > 1) {
+		if (primaryValueSize > 1) {
 			renderer->renderFilledRectangle(
 				Bounds(
 					bounds.getX(),
-					primaryValueY + 1,
-					bounds.getWidth(),
-					primaryValueHeight - 1
+					bounds.getY(),
+					primaryValueSize,
+					bounds.getHeight()
 				),
 				&Theme::fg1
 			);
 		}
 
-		renderOffsetLine(primaryValueY, primaryValueColor);
+		renderOffsetLine(bounds.getX() + primaryValueSize - 1, primaryValueColor);
 
 		// Aircraft value text
 		const auto text = std::to_wstring(static_cast<int32_t>(primaryValue * 100 / 0xFF));
 
 		renderer->renderString(
 			Point(
-				bounds.getX() + bounds.getWidth() / 2 - Theme::fontSmall.getWidth(text) / 2 + 1,
-				bounds.getY() + frameHeight + textOffset
+				bounds.getX2() - Theme::fontSmall.getWidth(text) + 1,
+				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1
 			),
 			&Theme::fontSmall,
-			primaryValueColor,
+			&Theme::fg2,
 			text
 		);
 	}

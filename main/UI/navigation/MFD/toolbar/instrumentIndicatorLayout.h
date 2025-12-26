@@ -3,7 +3,7 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/theme.h>
+#include "UI/theme.h"
 
 #include "toolbar.h"
 
@@ -12,44 +12,37 @@ namespace pizda {
 
 	class InstrumentIndicatorLayout : public Layout {
 		public:
-			explicit InstrumentIndicatorLayout(std::wstring_view text) {
-				_text.setMargin(Margin(
+			explicit InstrumentIndicatorLayout(std::wstring_view title) {
+				_title.setMargin(Margin(
 					Toolbar::contentHorizontalMargin,
 					Toolbar::titleVerticalOffset,
 					Toolbar::contentHorizontalMargin,
 					0
 				));
 
-				_text.setFont(&Theme::fontSmall);
-				_text.setText(text);
+				_title.setFont(&Theme::fontSmall);
+				_title.setText(title);
+				
+				updateTitleColor();
 
-				updateTextColor();
-
-				*this += &_text;
+				*this += &_title;
+				
+				_contentHolder.setMargin(Margin(
+					Toolbar::contentHorizontalMargin,
+					Toolbar::topPanelHeight,
+					Toolbar::contentHorizontalMargin,
+					0
+				));
+				
+				*this += &_contentHolder;
 			}
 
-			InstrumentIndicatorLayout(std::wstring_view text, Element* content, bool addHorizontalMargin) : InstrumentIndicatorLayout(text) {
-				setContent(content, addHorizontalMargin);
+			InstrumentIndicatorLayout(std::wstring_view text, Element* content) : InstrumentIndicatorLayout(text) {
+				setContent(content);
 			}
 
-			void setContent(Element* element, bool addHorizontalMargin) {
-				element->setMargin(
-					addHorizontalMargin
-					? Margin(
-						Toolbar::contentHorizontalMargin,
-						Toolbar::contentPanelMarginTop,
-						Toolbar::contentHorizontalMargin,
-						Toolbar::contentVerticalMargin
-					)
-					: Margin(
-						0,
-						Toolbar::contentPanelMarginTop,
-						0,
-						Toolbar::contentVerticalMargin
-					)
-				);
-
-				*this += element;
+			void setContent(Element* element) {
+				_contentHolder += element;
 			}
 
 		protected:
@@ -61,8 +54,8 @@ namespace pizda {
 
 			void onFocusChanged() override {
 				Element::onFocusChanged();
-
-				updateTextColor();
+				
+				updateTitleColor();
 			}
 
 			void onRender(Renderer* renderer, const Bounds& bounds) override {
@@ -84,10 +77,11 @@ namespace pizda {
 			}
 
 		private:
-			Text _text {};
+			Text _title {};
+			Layout _contentHolder {};
 
-			void updateTextColor() {
-				_text.setTextColor(isFocused() ? &Theme::fg2 : &Theme::fg3);
+			void updateTitleColor() {
+				_title.setTextColor(isFocused() ? &Theme::fg2 : &Theme::fg3);
 			}
 	};
 }

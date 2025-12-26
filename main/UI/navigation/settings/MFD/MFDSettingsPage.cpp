@@ -1,7 +1,7 @@
 #include "MFDSettingsPage.h"
 
 #include <format>
-#include <UI/theme.h>
+#include "UI/theme.h"
 #include "config.h"
 #include "rc.h"
 

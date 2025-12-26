@@ -31,14 +31,13 @@ namespace pizda {
 
 	enum class SettingsInterfaceMFDToolbarMode : uint8_t {
 		none,
-		main,
 		autopilot,
-		pressure
+		baro
 	};
 
 	class SettingsInterfaceMFDToolbar {
 		public:
-			SettingsInterfaceMFDToolbarMode mode = SettingsInterfaceMFDToolbarMode::main;
+			SettingsInterfaceMFDToolbarMode mode = SettingsInterfaceMFDToolbarMode::none;
 	};
 
 	class SettingsInterfaceMFD {
@@ -78,8 +77,8 @@ namespace pizda {
 
 				MFD.ND.earth = stream.readBool(_MFDNDEarth, true);
 
-				MFD.toolbar.mode = static_cast<SettingsInterfaceMFDToolbarMode>(stream.readUint8(_MFDToolbarMode, static_cast<uint8_t>(SettingsInterfaceMFDToolbarMode::main)));
-
+				MFD.toolbar.mode = static_cast<SettingsInterfaceMFDToolbarMode>(stream.readUint8(_MFDToolbarMode, static_cast<uint8_t>(SettingsInterfaceMFDToolbarMode::none)));
+				
 				MFD.splitPercent = stream.readUint8(_MFDSplitPercent, 60);
 
 				developer.debugOverlay = stream.readBool(_developerDebugOverlay, false);

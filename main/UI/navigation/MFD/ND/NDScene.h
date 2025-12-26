@@ -6,7 +6,7 @@
 
 #include <types/navigationData.h>
 #include <settings/settings.h>
-#include <UI/theme.h>
+#include "UI/theme.h"
 #include "aircraft.h"
 
 namespace pizda {

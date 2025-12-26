@@ -3,7 +3,7 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/theme.h>
+#include "UI/theme.h"
 #include <UI/elements/dialogs/dialog.h>
 #include <settings/settings.h>
 

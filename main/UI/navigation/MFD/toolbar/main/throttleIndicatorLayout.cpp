@@ -4,16 +4,16 @@
 
 namespace pizda {
 	ThrottleIndicatorLayout::ThrottleIndicatorLayout() : InstrumentIndicatorLayout(L"THR") {
-		row.setOrientation(Orientation::horizontal);
-		row.setSpacing(10);
-
-		throttleIndicator1.setWidth(7);
+		row.setSpacing(6);
+		row.setMargin(Margin(0, 5, 0, 0));
+		
+		throttleIndicator1.setSize(Size(38, 5));
 		row += &throttleIndicator1;
 
 		throttleIndicator2.setSize(throttleIndicator1.getSize());
 		row += &throttleIndicator2;
 
-		setContent(&row, true);
+		setContent(&row);
 	}
 
 	void ThrottleIndicatorLayout::onTick() {
@@ -26,7 +26,7 @@ namespace pizda {
 		// Throttles
 		throttleIndicator1.setRemoteValue(settings.controls.throttle);
 		throttleIndicator1.setAircraftValue(ad.raw.throttle);
-
+		
 		throttleIndicator2.setRemoteValue(throttleIndicator1.getRemoteValue());
 		throttleIndicator2.setAircraftValue(throttleIndicator1.getAircraftValue());
 	}

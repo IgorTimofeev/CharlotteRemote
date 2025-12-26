@@ -4,7 +4,7 @@
 #include <YOBA/UI.h>
 
 #include "throttleIndicatorLayout.h"
-#include "flapsAndSpoilersIndicator.h"
+#include "flightControlsIndicator.h"
 #include "batteryIndicator.h"
 #include "radioIndicator.h"
 
@@ -24,17 +24,15 @@ namespace pizda {
 		private:
 			ThrottleIndicatorLayout _throttleIndicatorLayout {};
 
-			StackLayout _controlsRows {};
-			FlapsAndSpoilersIndicator _flapsAndSpoilersIndicator {};
-			ImageView _landingGearImageView {};
-			InstrumentIndicatorLayout _controlsLayout = { L"CTL", &_controlsRows, true };
+			FlightControlsIndicator _flightControlsIndicator {};
+			InstrumentIndicatorLayout _flightControlsLayout = { L"FCTL", &_flightControlsIndicator };
 
-			BatteryIndicator _batteryIndicatorController {};
-			BatteryIndicator _batteryIndicatorAircraft {};
-			StackLayout _batteryIndicatorRows {};
-			InstrumentIndicatorLayout _batteryLayout = { L"BAT", &_batteryIndicatorRows, true };
+			BatteryIndicator _batteryIndicatorRC {};
+			BatteryIndicator _batteryIndicatorAC {};
+			StackLayout _batteryRows {};
+			InstrumentIndicatorLayout _batteryLayout = { L"BAT", &_batteryRows };
 
 			RadioIndicator _radio {};
-			InstrumentIndicatorLayout _radioLayout = { L"SIG", &_radio, true };
+			InstrumentIndicatorLayout _radioLayout = { L"SIG", &_radio };
 	};
 }

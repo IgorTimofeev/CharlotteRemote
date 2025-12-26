@@ -1,6 +1,6 @@
 #include "pagesMenuView.h"
 
-#include <UI/theme.h>
+#include "UI/theme.h"
 #include "rc.h"
 
 namespace pizda {

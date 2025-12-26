@@ -4,7 +4,7 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
-#include <UI/theme.h>
+#include "UI/theme.h"
 #include <units.h>
 #include <types/VSpeed.h>
 #include <types/aircraftData.h>

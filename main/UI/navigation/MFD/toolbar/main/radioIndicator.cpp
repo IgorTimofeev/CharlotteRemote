@@ -1,11 +1,16 @@
 #include "radioIndicator.h"
 
+#include <format>
+
 #include "rc.h"
-#include <UI/theme.h>
+#include "UI/theme.h"
 
 namespace pizda {
 	RadioIndicator::RadioIndicator() {
-		setWidth(_lineCount * (_lineThickness + _lineSpacing) - _lineSpacing);
+		setSize(Size(
+			_lineCount * (_lineThickness + _lineSpacing) - _lineSpacing + _textOffset + _textMaxWidth,
+			_lineHeightMin + (_lineCount - 1) * _lineHeightIncrement
+		));
 	}
 
 	void RadioIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
@@ -36,13 +41,11 @@ namespace pizda {
 		}
 
 		// Lines
-		const int32_t textY = bounds.getY2() - Theme::fontSmall.getHeight() + 1 + 2;
-
 		uint16_t lineHeight = _lineHeightMin;
 
 		auto position = Point(
 			bounds.getX(),
-			textY - _textOffset - lineHeight
+			bounds.getY() + _lineHeightMin + (_lineCount - 1) * _lineHeightIncrement - 1
 		);
 
 		for (uint8_t i = 0; i < _lineCount; i++) {
@@ -57,12 +60,25 @@ namespace pizda {
 			lineHeight += _lineHeightIncrement;
 		}
 
-		// Text
+		// RSSI
+		position.setX(position.getX() - _lineSpacing + _textOffset);
+		position.setY(bounds.getYCenter() - Theme::fontSmall.getHeight());
+		
 		renderer->renderString(
-			Point(bounds.getX(), textY),
+			position,
 			&Theme::fontSmall,
 			&Theme::fg4,
-			std::to_wstring(rssi)
+			std::format(L"R {}", rssi)
+		);
+		
+		position.setY(position.getY() + Theme::fontSmall.getHeight());
+
+		// SNR
+		renderer->renderString(
+			position,
+			&Theme::fontSmall,
+			&Theme::fg4,
+			std::format(L"S {}", 100)
 		);
 	}
 }

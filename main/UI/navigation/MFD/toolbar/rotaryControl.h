@@ -3,8 +3,11 @@
 #include <esp_log.h>
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
-#include <UI/theme.h>
 #include <YOBA/hardware/encoder.h>
+
+#include "UI/theme.h"
+#include "UI/navigation/MFD/toolbar/instrumentIndicatorLayout.h"
+#include "UI/navigation/MFD/toolbar/toolbar.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -12,81 +15,58 @@ namespace pizda {
 	class RC;
 
 	template<uint8_t digitCount, uint32_t minimum, uint32_t maximum, bool cycling, uint16_t smallChange, uint16_t bigChange>
-	class RotaryControl : public Layout {
+	class RotaryControl : public InstrumentIndicatorLayout {
 		public:
-			explicit RotaryControl(std::wstring_view text) {
-				// Button
-				button.setVerticalAlignment(Alignment::end);
-				button.setHeight(12);
-				button.setCornerRadius(2);
-				button.setContentMargin(Margin(0, 3, 0, 0));
-
-				button.setDefaultBackgroundColor(&Theme::bg3);
-				button.setActiveBackgroundColor(&Theme::fg1);
-
-				button.setDefaultTextColor(&Theme::fg5);
-				button.setActiveTextColor(&Theme::bg1);
-
-				button.setFont(&Theme::fontSmall);
-				button.setText(text);
-
-				button.setToggle(true);
-
-				*this += &button;
-
-				// Background rect
-				backgroundRectangle.setFillColor(&Theme::bg2);
-				backgroundRectangle.setCornerRadius(button.getCornerRadius());
-				backgroundAndSevenLayout += &backgroundRectangle;
-
+			explicit RotaryControl(std::wstring_view title, std::wstring_view buttonText) : InstrumentIndicatorLayout(title) {
 				// Seven segment
-				seven.setVerticalAlignment(Alignment::center);
-				seven.setMargin(Margin(6));
+				seven.setAlignment(Alignment::center, Alignment::start);
+				seven.setMargin(Margin(0, 5, 0, 0));
 				
 				seven.setDigitCount(digitCount);
 				seven.setDecimalSeparatorSpacing(2);
 				
 				seven.setSegmentThickness(1);
-				seven.setSegmentLength(6);
+				seven.setSegmentLength(5);
 				
 				seven.setInactiveColor(&Theme::bg5);
 				seven.setActiveColor(&Theme::fg1);
 				
-				backgroundAndSevenLayout += &seven;
-
-				backgroundAndSevenLayout.setMargin(Margin(0, 0, 0, button.getSize().getHeight() - button.getCornerRadius() * 2));
-				*this += &backgroundAndSevenLayout;
-
-				updateColors();
+				sevenAndButtonLayout += &seven;
+				
+				// Button
+				button.setVerticalAlignment(Alignment::end);
+				button.setHeight(7);
+//				button.setMargin(Margin(-Toolbar::contentHorizontalMargin, 0, -Toolbar::contentHorizontalMargin, 0));
+				
+				button.setDefaultBackgroundColor(&Theme::bg3);
+				button.setActiveBackgroundColor(&Theme::fg1);
+				
+				button.setDefaultTextColor(&Theme::fg5);
+				button.setActiveTextColor(&Theme::bg1);
+				
+				button.setFont(&Theme::fontSmall);
+				button.setText(buttonText);
+				button.setContentMargin(Margin(0, 1, 0, 0));
+				
+				button.setToggle(true);
+				
+				sevenAndButtonLayout += &button;
+				
+				setContent(&sevenAndButtonLayout);
 			}
 
-			Layout backgroundAndSevenLayout {};
-
-			Rectangle backgroundRectangle {};
+			Layout sevenAndButtonLayout {};
 
 			SevenSegment seven {};
 			Button button {};
 
 			Callback<> rotated {};
 			Callback<> switched {};
-
-			void onFocusChanged() override {
-				Element::onFocusChanged();
-
-				updateColors();
-			}
-
-			void updateColors() {
-				backgroundRectangle.setBorderColor(isFocused() ? &Theme::fg1 : nullptr);
-
-//				button.setDefaultBorderColor(isFocused() ? &Theme::fg1 : nullptr);
-			}
-
+			
 			void onEventBeforeChildren(Event* event) override {
-				if (event->getTypeID() == PointerDownEvent::typeID) {
-					setFocused(true);
-				}
-				else if (event->getTypeID() == EncoderValueChangedEvent::typeID) {
+				InstrumentIndicatorLayout::onEventBeforeChildren(event);
+				
+				if (event->getTypeID() == EncoderValueChangedEvent::typeID) {
 					if (!isFocused())
 						return;
 

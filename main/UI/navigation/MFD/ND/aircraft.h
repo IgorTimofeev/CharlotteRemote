@@ -4,7 +4,7 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
-#include <UI/theme.h>
+#include "UI/theme.h"
 
 namespace pizda {
 	using namespace YOBA;

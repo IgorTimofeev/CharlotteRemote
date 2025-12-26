@@ -2,7 +2,7 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
-#include <UI/theme.h>
+#include "UI/theme.h"
 
 namespace pizda {
 	using namespace YOBA;

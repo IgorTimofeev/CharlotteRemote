@@ -1,6 +1,6 @@
 #include "MFDMenuView.h"
 
-#include <UI/theme.h>
+#include "UI/theme.h"
 #include "rc.h"
 #include <settings/settings.h>
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
@@ -30,12 +32,10 @@ namespace pizda {
 				NDButton = { &resources::Images::menuIconMFDND, L"ND" };
 
 			MFDModeMenuViewButton
-				mainButton { &resources::Images::menuIconMFDMain, L"ECAM", SettingsInterfaceMFDToolbarMode::main },
-				autopilotButton { &resources::Images::menuIconMFDAutopilot, L"MCP", SettingsInterfaceMFDToolbarMode::autopilot },
-				pressureButton { &resources::Images::menuIconMFDPressure, L"EFIS", SettingsInterfaceMFDToolbarMode::pressure };
+				autopilotButton { &resources::Images::menuIconMFDAutopilot, L"A/P", SettingsInterfaceMFDToolbarMode::autopilot },
+				pressureButton { &resources::Images::menuIconMFDBaro, L"BARO", SettingsInterfaceMFDToolbarMode::baro };
 
-			MFDModeMenuViewButton* modeButtons[3] {
-				&mainButton,
+			std::array<MFDModeMenuViewButton*, 2> modeButtons {
 				&autopilotButton,
 				&pressureButton
 			};

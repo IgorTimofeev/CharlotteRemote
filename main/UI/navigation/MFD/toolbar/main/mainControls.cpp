@@ -5,28 +5,29 @@
 
 namespace pizda {
 	MainControls::MainControls() {
-		setHeight(46);
-
+		setHeight(36);
+		
 		// Throttle
 		row += &_throttleIndicatorLayout;
 
 		// Controls
-		_controlsRows.setSpacing(5);
-		_controlsRows += &_flapsAndSpoilersIndicator;
-		_controlsRows += &_landingGearImageView;
-		row += &_controlsLayout;
-
-		// Battery
-		_batteryIndicatorController.setSize(Size(32, 12));
-		_batteryIndicatorAircraft.setSize(_batteryIndicatorController.getSize());
-
-		_batteryIndicatorRows.setSpacing(5);
-		_batteryIndicatorRows += &_batteryIndicatorController;
-		_batteryIndicatorRows += &_batteryIndicatorAircraft;
-		row += &_batteryLayout;
-
+		_flightControlsIndicator.setMargin(Margin(0, 5, 0, 0));
+		_flightControlsLayout.setFocusable(false);
+		row += &_flightControlsLayout;
+		
 		// Radio
+		_radio.setMargin(Margin(0, 5, 0, 0));
+		_radioLayout.setFocusable(false);
 		row += &_radioLayout;
+		
+		// Battery
+		_batteryRows.setSpacing(2);
+		_batteryRows.setMargin(Margin(0, 5, 0, 0));
+//		_batteryRows.setVerticalAlignment(Alignment::center);
+		_batteryRows += &_batteryIndicatorRC;
+		_batteryRows += &_batteryIndicatorAC;
+		_batteryLayout.setFocusable(false);
+		row += &_batteryLayout;
 	}
 
 	void MainControls::onTick() {
@@ -35,18 +36,11 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		const auto& settings = rc.getSettings();
 
-		// Controls
-		_landingGearImageView.setImage(
-			settings.controls.landingGear
-			? reinterpret_cast<const Image*>(&resources::Images::MFDLandingGearExtended)
-			: reinterpret_cast<const Image*>(&resources::Images::MFDLandingGearRetracted)
-		);
-
 		// Battery
-		_batteryIndicatorController.setVoltage(rc.getBattery().getVoltage());
-		_batteryIndicatorController.setCharge(rc.getBattery().getCharge());
+		_batteryIndicatorRC.setVoltage(rc.getBattery().getVoltage());
+		_batteryIndicatorRC.setCharge(rc.getBattery().getCharge());
 
-		_batteryIndicatorAircraft.setVoltage(28000);
-		_batteryIndicatorAircraft.setCharge(0xFF);
+		_batteryIndicatorAC.setVoltage(14800);
+		_batteryIndicatorAC.setCharge(0xFF);
 	}
 }

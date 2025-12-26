@@ -2,7 +2,7 @@
 
 #include "rc.h"
 #include <types/navigationData.h>
-#include <UI/theme.h>
+#include "UI/theme.h"
 
 #include "waypointsPage.h"
 

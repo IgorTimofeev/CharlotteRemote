@@ -1,7 +1,7 @@
 #include "placeholderButtons.h"
 
 #include <esp_log.h>
-#include <UI/theme.h>
+#include "UI/theme.h"
 #include <UI/elements/navigation/selectWaypointDialog.h>
 #include <UI/elements/navigation/waypointButton.h>
 #include <types/navigationData.h>

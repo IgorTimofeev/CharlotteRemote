@@ -8,7 +8,7 @@
 #include "ND/ND.h"
 #include "toolbar/main/mainControls.h"
 #include "toolbar/autopilot/autopilotControls.h"
-#include "toolbar/pressure/pressureControls.h"
+#include "toolbar/baro/baroControls.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -29,9 +29,10 @@ namespace pizda {
 			PFD* _PFD = nullptr;
 			ND* _ND = nullptr;
 
-			MainControls* _mainControls = nullptr;
+			MainControls _mainControls {};
+			
 			AutopilotControls* _autopilotControls = nullptr;
-			PressureControls* _pressureControls = nullptr;
+			BaroControls* _baroControls = nullptr;
 
 			void fromSettingsInstance();
 	};

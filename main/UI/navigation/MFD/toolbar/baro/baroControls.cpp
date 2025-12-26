@@ -1,16 +1,16 @@
-#include "pressureControls.h"
+#include "baroControls.h"
 
 #include "rc.h"
 
 namespace pizda {
 	using namespace YOBA;
 
-	PressureControls::PressureControls() {
-		setHeight(56);
+	BaroControls::BaroControls() {
+		setHeight(38);
+		
+		row.setSpacing(6);
 
 		auto& settings = RC::getInstance().getSettings();
-
-		row.setSpacing(8);
 
 		// Pressure
 		pressure.seven.setDecimalSeparatorIndex(0);
@@ -27,8 +27,7 @@ namespace pizda {
 			RC::getInstance().getSettings().controls.scheduleWrite();
 		};
 
-		pressureLayout.setFocusable(false);
-		row += &pressureLayout;
+		row += &pressure;
 
 		// Minimums
 		minimums.seven.setValue(settings.controls.minimumAltitudeFt);
@@ -44,7 +43,6 @@ namespace pizda {
 			RC::getInstance().getSettings().controls.scheduleWrite();
 		};
 
-		minimumsLayout.setFocusable(false);
-		row += &minimumsLayout;
+		row += &minimums;
 	}
 }

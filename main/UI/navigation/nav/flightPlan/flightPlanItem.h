@@ -5,7 +5,7 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/theme.h>
+#include "UI/theme.h"
 #include <types/navigationData.h>
 #include <utils/rendering.h>
 #include <UI/elements/navigation/waypointButton.h>

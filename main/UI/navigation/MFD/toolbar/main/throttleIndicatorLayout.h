@@ -1,6 +1,6 @@
 #pragma once
 
-#include <UI/navigation/MFD/toolbar/instrumentIndicatorLayout.h>
+#include "UI/navigation/MFD/toolbar/instrumentIndicatorLayout.h"
 #include "throttleIndicator.h"
 
 namespace pizda {
