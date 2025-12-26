@@ -2,7 +2,7 @@
 #include <numbers>
 
 #include "rc.h"
-#include <types/units.h>
+#include <units.h>
 #include <UI/elements/spatial/runwayMesh.h>
 
 namespace pizda {
@@ -35,10 +35,10 @@ namespace pizda {
 
 		const auto projectionPlaneDistance = getProjectionPlaneDistance();
 
-		const auto pitchPixelOffsetProjected = std::tanf(ad.computed.pitch) * projectionPlaneDistance;
-		const auto& pitchPixelOffsetRotated = Vector2F(0, pitchPixelOffsetProjected).rotate(-ad.computed.roll);
+		const auto pitchPixelOffsetProjected = std::tanf(ad.computed.pitchRad) * projectionPlaneDistance;
+		const auto& pitchPixelOffsetRotated = Vector2F(0, pitchPixelOffsetProjected).rotate(-ad.computed.rollRad);
 		const auto diagonal = std::sqrtf(bounds.getWidth() * bounds.getWidth() + bounds.getHeight() * bounds.getHeight());
-		const auto& horizonRollRotated = Vector2F(diagonal / 2.f, 0).rotate(-ad.computed.roll);
+		const auto& horizonRollRotated = Vector2F(diagonal / 2.f, 0).rotate(-ad.computed.rollRad);
 
 		const auto& horizonLeft = Point(
 			center.getX() + static_cast<int32_t>(-horizonRollRotated.getX() + pitchPixelOffsetRotated.getX()),
@@ -63,8 +63,6 @@ namespace pizda {
 			horizonRight
 		);
 		
-		return;
-
 		Scene::onRender(renderer, bounds);
 
 		// Roll overlay
@@ -109,7 +107,7 @@ namespace pizda {
 		}
 
 		// Wind
-		if (ad.groundSpeedKt > PFD::windVisibilityGroundSpeed) {
+		if (ad.raw.groundSpeedKt > PFD::windVisibilityGroundSpeed) {
 			const auto& windPosition = Point(
 				bounds.getX() + 6,
 				bounds.getY2() - 18
@@ -118,9 +116,9 @@ namespace pizda {
 			constexpr uint8_t textOffset = 4;
 			constexpr uint8_t arrowSize = 16;
 
-			const auto text = std::to_wstring(static_cast<uint16_t>(ad.windSpeed));
+			const auto text = std::to_wstring(static_cast<uint16_t>(ad.raw.windSpeed));
 
-			const auto arrowVec = Vector2F(0, arrowSize).rotate(ad.computed.windDirection + std::numbers::pi_v<float> + ad.computed.yaw);
+			const auto arrowVec = Vector2F(0, arrowSize).rotate(ad.computed.windDirectionRad + std::numbers::pi_v<float> + ad.computed.yawRad);
 			const auto arrowVecNorm = arrowVec.normalize();
 			const auto arrowVecPerp = arrowVecNorm.counterClockwisePerpendicular();
 
@@ -168,7 +166,7 @@ namespace pizda {
 				center.getX() - flightDirectorLength / 2,
 				center.getY()
 				- static_cast<int32_t>(std::clamp(
-					std::tanf(ad.computed.flightDirectorPitch) * projectionPlaneDistance,
+					std::tanf(ad.computed.flightDirectorPitchRad) * projectionPlaneDistance,
 					-flightDirectorLengthHalfF,
 					flightDirectorLengthHalfF
 				))
@@ -183,7 +181,7 @@ namespace pizda {
 			flightDirectorRectBounds.setX(
 				center.getX()
 				+ static_cast<int32_t>(std::clamp(
-					std::tanf(ad.computed.flightDirectorRoll) * projectionPlaneDistance,
+					std::tanf(ad.computed.flightDirectorRollRad) * projectionPlaneDistance,
 					-flightDirectorLengthHalfF,
 					flightDirectorLengthHalfF
 				))
@@ -198,10 +196,10 @@ namespace pizda {
 		}
 
 		// Flight path vector
-		if (ad.computed.airSpeed > PFD::speedFlapsMin) {
+		if (ad.computed.airSpeedKt > PFD::speedFlapsMin) {
 			const auto& FPVPosition = Point(
-				static_cast<int32_t>(horizonCenter.getX() + std::tanf(ad.computed.flightPathVectorYaw) * projectionPlaneDistance),
-				static_cast<int32_t>(horizonCenter.getY() - std::tanf(ad.computed.flightPathVectorPitch) * projectionPlaneDistance)
+				static_cast<int32_t>(horizonCenter.getX() + std::tanf(ad.computed.flightPathVectorYawRad) * projectionPlaneDistance),
+				static_cast<int32_t>(horizonCenter.getY() - std::tanf(ad.computed.flightPathVectorPitchRad) * projectionPlaneDistance)
 			);
 
 			// Circle
@@ -381,7 +379,7 @@ namespace pizda {
 
 			// Same as tan(lineAngleDeg) * projectionPlaneDistance, but with spherical correction
 			// This loop uses horizon as starting point, not aircraft pitch, so we just subtract it
-			const auto lineCenterPerp = horizonCenter + horizonVecPerp * (std::tanf(ad.computed.pitch + toRadians(lineAngleDeg)) * projectionPlaneDistance - pitchPixelOffsetProjected);
+			const auto lineCenterPerp = horizonCenter + horizonVecPerp * (std::tanf(ad.computed.pitchRad + toRadians(lineAngleDeg)) * projectionPlaneDistance - pitchPixelOffsetProjected);
 
 			const auto lineVec = horizonVecNorm * (
 				(
@@ -433,7 +431,7 @@ namespace pizda {
 		);
 
 		const auto& renderLine = [&renderer, &center, &aircraftData](int8_t angle, bool isBig) {
-			const auto vec = Vector2F(0, PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(toRadians(angle) - aircraftData.computed.roll);
+			const auto vec = Vector2F(0, PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(toRadians(angle) - aircraftData.computed.rollRad);
 			const auto lineFrom = center - static_cast<Point>(vec);
 
 			renderer->renderLine(
@@ -460,12 +458,12 @@ namespace pizda {
 		// Upper triangle
 		renderer->renderFilledTriangle(
 			center + static_cast<Point>(Vector2F(-PFD::turnCoordinatorOverlayRollIndicatorTriangleWidth / 2,
-												-PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(-aircraftData.computed.roll)),
+												-PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(-aircraftData.computed.rollRad)),
 			center + static_cast<Point>(Vector2F(PFD::turnCoordinatorOverlayRollIndicatorTriangleWidth / 2,
-												-PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(-aircraftData.computed.roll)),
+												-PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(-aircraftData.computed.rollRad)),
 			center + static_cast<Point>(Vector2F(
 				0, -PFD::turnCoordinatorOverlayRollIndicatorRadius + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight).rotate(
-				-aircraftData.computed.roll)),
+				-aircraftData.computed.rollRad)),
 			PFD::turnCoordinatorOverlayColor
 		);
 
@@ -597,18 +595,18 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
 
-		_scene.setCameraPosition(ad.geographicCoordinates.toCartesian());
+		_scene.setCameraPosition(ad.raw.geographicCoordinates.toCartesian());
 
 		_scene.setWorldRotation(Vector3F(
-			toRadians(90) - ad.geographicCoordinates.getLatitude(),
+			toRadians(90) - ad.raw.geographicCoordinates.getLatitude(),
 			0,
-			toRadians(90) + ad.geographicCoordinates.getLongitude()
+			toRadians(90) + ad.raw.geographicCoordinates.getLongitude()
 		));
 
 		_scene.setCameraRotation(Vector3F(
-			ad.computed.pitch,
-			ad.computed.roll,
-			ad.computed.yaw
+			ad.computed.pitchRad,
+			ad.computed.rollRad,
+			ad.computed.yawRad
 		));
 
 		invalidate();
@@ -893,7 +891,7 @@ namespace pizda {
 		const auto barX = bounds.getX2() + 1 - speedBarSize;
 
 		const auto renderBar = [&](int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) {
-			const int32_t fromY = centerY - static_cast<int32_t>((static_cast<float>(fromSpeed) - ad.computed.airSpeed) * static_cast<float>(speedStepPixels) / static_cast<float>(speedStepUnits));
+			const int32_t fromY = centerY - static_cast<int32_t>((static_cast<float>(fromSpeed) - ad.computed.airSpeedKt) * static_cast<float>(speedStepPixels) / static_cast<float>(speedStepUnits));
 			const int32_t height = (toSpeed - fromSpeed) * speedStepPixels / speedStepUnits;
 
 			renderer->renderFilledRectangle(
@@ -971,7 +969,7 @@ namespace pizda {
 		);
 
 		// Lines
-		const float snapped = ad.computed.airSpeed / static_cast<float>(speedStepUnits);
+		const float snapped = ad.computed.airSpeedKt / static_cast<float>(speedStepUnits);
 		const float snappedInteger = std::floorf(snapped);
 		const float snappedFractional = snapped - snappedInteger;
 
@@ -1030,14 +1028,14 @@ namespace pizda {
 			centerY,
 			speedStepUnits,
 			speedStepPixels,
-			ad.computed.airSpeedTrend
+			ad.computed.airSpeedTrendKt
 		);
 
 		// V-speeds
 		for (const auto& VSpeed : VSpeeds) {
 			const auto& VSpeedBounds = Bounds(
 				bounds.getX2() + VSpeedMargin + VSpeedTriangleWidth,
-				centerY - static_cast<int32_t>((static_cast<float>(VSpeed.getValue()) - ad.computed.airSpeed) * static_cast<float>(speedStepPixels) / static_cast<float>(speedStepUnits)),
+				centerY - static_cast<int32_t>((static_cast<float>(VSpeed.getValue()) - ad.computed.airSpeedKt) * static_cast<float>(speedStepPixels) / static_cast<float>(speedStepUnits)),
 				Theme::fontSmall.getWidth(VSpeed.getName()) + VSpeedTextOffset * 2,
 				Theme::fontSmall.getHeight() + VSpeedTextOffset * 2
 			);
@@ -1073,7 +1071,7 @@ namespace pizda {
 			centerY,
 			speedStepUnits,
 			speedStepPixels,
-			ad.computed.airSpeed,
+			ad.computed.airSpeedKt,
 			rc.getSettings().autopilot.speedKt,
 			true
 		);
@@ -1083,7 +1081,7 @@ namespace pizda {
 			renderer,
 			bounds,
 			centerY,
-			ad.computed.airSpeed,
+			ad.computed.airSpeedKt,
 			true
 		);
 	}
@@ -1097,7 +1095,7 @@ namespace pizda {
 
 		renderer->renderFilledRectangle(bounds, &Theme::bg1);
 
-		const float altitude = ad.computed.altitude;
+		const float altitude = ad.computed.altitudeFt;
 		const float snapped = altitude / static_cast<float>(altitudeStepUnits);
 		const float snappedInteger = std::floorf(snapped);
 		const float snappedFractional = snapped - snappedInteger;
@@ -1178,7 +1176,7 @@ namespace pizda {
 			centerY,
 			altitudeStepUnits,
 			altitudeStepPixels,
-			ad.computed.altitudeTrend
+			ad.computed.altitudeTrendFt
 		);
 
 		// Minimums
@@ -1194,10 +1192,7 @@ namespace pizda {
 			if (std::abs(delta) <= altitudeMinimumSafeUnitDelta) {
 				color = &Theme::fg1;
 			}
-			else if (delta > 0) {
-				color = &Theme::green;
-			}
-			else{
+			else {
 				color = &Theme::yellow;
 			}
 
@@ -1304,8 +1299,8 @@ namespace pizda {
 
 		// Current value
 		renderer->renderLine(
-			Point(bounds.getX(), centerY - static_cast<int32_t>(ad.computed.verticalSpeed * static_cast<float>(verticalSpeedStepPixels) / static_cast<float>(verticalSpeedStepUnits))),
-			Point(bounds.getX2(), centerY - static_cast<int32_t>(ad.computed.verticalSpeed * static_cast<float>(verticalSpeedStepPixelsRight) / static_cast<float>(verticalSpeedStepUnits))),
+			Point(bounds.getX(), centerY - static_cast<int32_t>(ad.computed.verticalSpeedFPM * static_cast<float>(verticalSpeedStepPixels) / static_cast<float>(verticalSpeedStepUnits))),
+			Point(bounds.getX2(), centerY - static_cast<int32_t>(ad.computed.verticalSpeedFPM * static_cast<float>(verticalSpeedStepPixelsRight) / static_cast<float>(verticalSpeedStepUnits))),
 			&Theme::green
 		);
 	}
@@ -1391,6 +1386,6 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
 
-		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::purple, std::to_wstring(static_cast<uint16_t>(ad.groundSpeedKt)), 0);
+		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::purple, std::to_wstring(static_cast<uint16_t>(ad.raw.groundSpeedKt)), 0);
 	}
 }

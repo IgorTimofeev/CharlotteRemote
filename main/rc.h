@@ -6,27 +6,27 @@
 #include <YOBA/hardware/touchPanels/FT6336UTouchPanel.h>
 #include <YOBA/hardware/encoder.h>
 
-#include <UI/theme.h>
-#include <UI/navigation/route.h>
-#include <UI/navigation/menu/openMenuButton.h>
-#include <UI/elements/debugOverlay.h>
+#include "UI/theme.h"
+#include "UI/navigation/route.h"
+#include "UI/navigation/menu/openMenuButton.h"
+#include "UI/elements/debugOverlay.h"
 
-#include <settings/settings.h>
 #include "config.h"
+#include "settings/settings.h"
 
 #include "hardware/transceiver/packet.h"
 #include "hardware/transceiver/remotePacketHandler.h"
 #include "hardware/transceiver/transceiver.h"
+#include "hardware/speaker/speaker.h"
+#include "hardware/axis.h"
+#include "hardware/battery.h"
 
-#include <hardware/speaker/speaker.h>
-#include <hardware/axis.h>
-#include <hardware/battery.h>
+#include "units.h"
+#include "types/aircraftData.h"
+#include "types/navigationData.h"
+#include "types/statistics.h"
 
-#include <types/units.h>
-#include <types/aircraftData.h>
-#include <types/navigationData.h>
-
-#include <utils/lowPassFilter.h>
+#include "utils/lowPassFilter.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -39,7 +39,6 @@ namespace pizda {
 
 			Application& getApplication();
 
-			uint32_t getTickDeltaTime() const;
 			Settings& getSettings();
 
 			Speaker& getSpeaker();
@@ -55,7 +54,6 @@ namespace pizda {
 			
 			OpenMenuButton& getOpenMenuButton();
 
-			bool isDebugOverlayVisible();
 			void updateDebugOverlayVisibility();
 
 			const Route* getRoute() const;
@@ -63,6 +61,7 @@ namespace pizda {
 
 			AircraftData& getAircraftData();
 			NavigationData& getNavigationData();
+			Statistics& getStatistics();
 
 		private:
 			constexpr static const char* _logTag = "Main";
@@ -162,17 +161,14 @@ namespace pizda {
 
 			const Route* _route = nullptr;
 
-			// -------------------------------- Timings --------------------------------
-
-			uint32_t _tickDeltaTime = 0;
-			int64_t _interpolationTickTime = 0;
-
 			// -------------------------------- Other shit --------------------------------
 
 			AircraftData _aircraftData {};
 			NavigationData _navigationData {};
+			Statistics _statistics {};
 			
-
+			int64_t _interpolationTickTime = 0;
+			
 			void SPIBusSetup() const;
 			void GPIOSetup() const;
 			static void ADCUnitsSetup();

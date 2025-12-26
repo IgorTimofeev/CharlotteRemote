@@ -15,10 +15,12 @@ namespace pizda {
 
 	void DebugOverlay::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
+		auto& app = rc.getApplication();
+		auto& st = rc.getStatistics();
 
 		int32_t y = 0;
 
-		const auto totalDeltaTime = rc.getTickDeltaTime();
+		const auto totalDeltaTime = st.tickDeltaTime;
 
 		const auto renderLine = [&renderer, &y](const std::wstring_view text, const Color* color = &Theme::purple, uint8_t scale = 1) {
 			renderer->renderString(Point(10, y), &Theme::fontNormal, color, text, scale);
@@ -41,11 +43,14 @@ namespace pizda {
 			renderLine(std::format(L"{}: {} ms, {}%", key, time / 1000, totalDeltaTime > 0 ? time * 100 / totalDeltaTime : 0));
 		};
 
-		renderTimeLine(L"Peripherals", rc.getApplication().getPeripheralsDeltaTime());
-		renderTimeLine(L"Tick", rc.getApplication().getTickDeltaTime());
-		renderTimeLine(L"Layout", rc.getApplication().getLayoutDeltaTime());
-		renderTimeLine(L"Render", rc.getApplication().getRenderDeltaTime());
-		renderTimeLine(L"Flush", rc.getApplication().getFlushDeltaTime());
+		renderTimeLine(L"HID", app.getHIDTickDeltaTime());
+		renderTimeLine(L"Tick", app.getTickDeltaTime());
+		renderTimeLine(L"Layout", app.getLayoutDeltaTime());
+		renderTimeLine(L"Render", app.getRenderDeltaTime());
+		renderTimeLine(L"Flush", app.getFlushDeltaTime());
+		
+		renderLine(std::format(L"RX: {} ms", st.transmitterRXDurationUs / 1000));
+		renderLine(std::format(L"TX: {} ms", st.transmitterTXDurationUs / 1000));
 
 		renderLine(std::format(L"Total: {} ms", totalDeltaTime / 1000));
 	}

@@ -7,6 +7,9 @@
 [submodule "components/ESP-IDF-NVSExtensions"]
 	path = components/ESP-IDF-NVSExtensions
 	url = https://github.com/IgorTimofeev/ESP-IDF-NVSExtensions.git
-[submodule "components/ESP-IDFBitStream"]
-	path = components/ESP-IDFBitStream
+[submodule "components/ESP-IDF-Units"]
+	path = components/ESP-IDF-Units
+	url = https://github.com/IgorTimofeev/ESP-IDF-Units.git
+[submodule "components/ESP-IDF-BitStream"]
+	path = components/ESP-IDF-BitStream
 	url = https://github.com/IgorTimofeev/ESP-IDF-BitStream.git

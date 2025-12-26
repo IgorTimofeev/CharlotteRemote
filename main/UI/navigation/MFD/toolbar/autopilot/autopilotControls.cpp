@@ -18,6 +18,8 @@ namespace pizda {
 		FDButton.setActive(settings.interface.MFD.PFD.flightDirectors);
 
 		FDButton.isActiveChanged += [this, &settings] {
+			ESP_LOGI("pizda", "korry active: %d",  FDButton.isActive());
+			
 			settings.interface.MFD.PFD.flightDirectors = FDButton.isActive();
 			settings.interface.scheduleWrite();
 		};

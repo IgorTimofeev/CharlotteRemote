@@ -76,6 +76,7 @@
       <config projectName="Remote" targetName="partition_table_bin" />
       <config projectName="Remote" targetName="__idf_esp_http_client" />
       <config projectName="Remote" targetName="bootloader" />
+      <config projectName="Remote" targetName="__idf_ESP-IDF-Units" />
       <config projectName="Remote" targetName="__idf_esp_driver_i2s" />
       <config projectName="Remote" targetName="app-flash" />
       <config projectName="Remote" targetName="encrypted-flash" />
@@ -113,6 +114,7 @@
       <config projectName="Remote" targetName="partition-table" />
       <config projectName="Remote" targetName="__idf_esp_phy" />
       <config projectName="Remote" targetName="__idf_rt" />
+      <config projectName="Remote" targetName="__idf_ESP-IDF-BitStream" />
       <config projectName="Remote" targetName="__idf_esp_driver_sdspi" />
       <config projectName="Remote" targetName="__idf_main" />
       <config projectName="Remote" targetName="__idf_esp_hid" />
@@ -140,7 +142,6 @@
       <config projectName="Remote" targetName="__idf_esp_http_server" />
       <config projectName="Remote" targetName="__idf_esp_lcd" />
       <config projectName="Remote" targetName="__idf_wpa_supplicant" />
-      <config projectName="Remote" targetName="__idf_ESP-IDFBitStream" />
       <config projectName="Remote" targetName="__idf_esp_wifi" />
       <config projectName="Remote" targetName="__idf_wifi_provisioning" />
       <config projectName="Remote" targetName="memory.ld" />
@@ -159,24 +160,39 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="сука">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="захуярил поддержку десятичных разрядов в семисегментник, а то гектопаскали хуй введешь нормально">
+      <change afterPath="$PROJECT_DIR$/components/ESP-IDF-BitStream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ESP-IDF-Units" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/types/statistics.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262Ex.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262Ex.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Units/src/YOBAUnits.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDFBitStream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/application.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/application.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/application.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/application.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/button.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/button.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/button.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/button.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencies.lock" beforeDir="false" afterPath="$PROJECT_DIR$/dependencies.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/debugOverlay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/debugOverlay.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/waypointButton.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/waypointButton.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/rotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/rotaryControl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/pressure/pressureControls.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/pressure/pressureControls.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/pressure/pressureControls.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/pressure/pressureControls.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/korryButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/korryButton.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotControls.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotControls.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicatorLayout.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicatorLayout.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/utils/lowPassFilter.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/utils/lowPassFilter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/aircraftData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/units.h" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,6 +219,9 @@
     &quot;accountId&quot;: &quot;b6e59770-aacc-4d0a-9c35-a4c42d46b1c1&quot;
   }
 }</component>
+  <component name="OCResolveContextSettings">
+    <option name="configuration" value="0-Debug-__idf_main" />
+  </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
     <option name="majorVersion" value="2025" />
@@ -214,38 +233,47 @@
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="37IWRZXu8HcXLr7vhO7Nqle9EW2" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/hardware/transceiver&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.completion&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/types",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\types" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\hardware\transceiver" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_ESP-IDF-BitStream" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_ESP-IDF-BitStream" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -260,7 +288,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="__idf_ESP-IDFBitStream" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_ESP-IDFBitStream" CONFIG_NAME="Debug">
+    <configuration name="__idf_ESP-IDF-Units" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_ESP-IDF-Units" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -710,6 +738,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="apidoc" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -966,9 +999,10 @@
       <item itemvalue="CMake Application.__idf_cxx" />
       <item itemvalue="CMake Application.__idf_driver" />
       <item itemvalue="CMake Application.__idf_efuse" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-BitStream" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-NVSExtensions" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-SX1262" />
-      <item itemvalue="CMake Application.__idf_ESP-IDFBitStream" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-Units" />
       <item itemvalue="CMake Application.__idf_esp-tls" />
       <item itemvalue="CMake Application.__idf_esp_adc" />
       <item itemvalue="CMake Application.__idf_esp_app_format" />
@@ -1086,7 +1120,8 @@
       <workItem from="1766670109063" duration="10433000" />
       <workItem from="1766684340823" duration="21309000" />
       <workItem from="1766741661302" duration="1579000" />
-      <workItem from="1766743280851" duration="6652000" />
+      <workItem from="1766743280851" duration="7772000" />
+      <workItem from="1766751251310" duration="7879000" />
     </task>
     <task id="LOCAL-00001" summary="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ">
       <option name="closed" value="true" />
@@ -1232,7 +1267,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766711781404</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="захуярил поддержку десятичных разрядов в семисегментник, а то гектопаскали хуй введешь нормально">
+      <option name="closed" value="true" />
+      <created>1766750077770</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1766750077770</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1244,6 +1287,34 @@
     <isAutomaticReloadCMake value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bootloader/subproject/components/micro-ecc/micro-ecc" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32c2/esp32c2-bt-lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32c3_family" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32c5/esp32c5-bt-lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32c6/esp32c6-bt-lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32h2/esp32h2-bt-lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/esp_ble_mesh/lib/lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/host/nimble/nimble" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/cmock/CMock" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/cmock/CMock/vendor/c_exception" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/cmock/CMock/vendor/unity" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/esp_coex/lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/esp_phy/lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/esp_wifi/lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/heap/tlsf" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/json/cJSON" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/lwip/lwip" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/mbedtls/mbedtls" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/mqtt/esp-mqtt" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/openthread/lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/openthread/openthread" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/protobuf-c/protobuf-c" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
+    </ignored-roots>
     <MESSAGE value="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ" />
     <MESSAGE value="пиздец блядь эти инклюды вонючие" />
     <MESSAGE value="еще и ресет этот ебаный блядь объединять с экраном" />
@@ -1256,6 +1327,7 @@
     <MESSAGE value="сэкономили бля пару битиков" />
     <MESSAGE value="ну-ка, проверим эту поеботу" />
     <MESSAGE value="сука" />
-    <option name="LAST_COMMIT_MESSAGE" value="сука" />
+    <MESSAGE value="захуярил поддержку десятичных разрядов в семисегментник, а то гектопаскали хуй введешь нормально" />
+    <option name="LAST_COMMIT_MESSAGE" value="захуярил поддержку десятичных разрядов в семисегментник, а то гектопаскали хуй введешь нормально" />
   </component>
 </project>

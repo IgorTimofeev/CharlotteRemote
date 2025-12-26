@@ -63,7 +63,7 @@ namespace pizda {
 		_ring.setup();
 
 		// Transceiver
-		if (!_transceiver.setup(false))
+		if (!_transceiver.setup())
 			startErrorLoop("failed to setup XCVR");
 
 		_transceiver.setPacketHandler(&_packetHandler);
@@ -104,12 +104,12 @@ namespace pizda {
 			// Low priority tasks
 			_speaker.tick();
 
- 			_tickDeltaTime = esp_timer_get_time() - tickStartTime;
+ 			_statistics.tickDeltaTime = esp_timer_get_time() - tickStartTime;
 
  			// Skipping remaining tick time if any
- 			if (_tickDeltaTime < config::application::UITickIntervalUs) {
+ 			if (_statistics.tickDeltaTime < config::application::UITickIntervalUs) {
 				// FreeRTOS tasks can be only delayed by ms, so...
-				const auto delayMs = (config::application::UITickIntervalUs - _tickDeltaTime) / 1000;
+				const auto delayMs = (config::application::UITickIntervalUs - _statistics.tickDeltaTime) / 1000;
 				
 				if (delayMs >= portTICK_PERIOD_MS) {
 					vTaskDelay(pdMS_TO_TICKS(delayMs));
@@ -137,41 +137,41 @@ namespace pizda {
 
 		// Roll / pitch / yaw / slip & skid, faster
 		float LPFFactor = 5.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.pitch, _aircraftData.pitchRad, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.roll, _aircraftData.rollRad, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.yaw, _aircraftData.yawRad, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.pitchRad, _aircraftData.raw.pitchRad, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.rollRad, _aircraftData.raw.rollRad, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.yawRad, _aircraftData.raw.yawRad, LPFFactor);
 		
 //		_aircraftData.computed.pitch = _aircraftData.pitchRad;
 //		_aircraftData.computed.roll = _aircraftData.rollRad;
 //		_aircraftData.computed.yaw = _aircraftData.yawRad;
 
-		_aircraftData.computed.headingDeg = normalizeAngle360(toDegrees(-_aircraftData.computed.yaw));
+		_aircraftData.computed.headingDeg = normalizeAngle360(toDegrees(-_aircraftData.computed.yawRad));
 		
-		LowPassFilter::apply(_aircraftData.computed.slipAndSkid, _aircraftData.slipAndSkid, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.slipAndSkid, _aircraftData.raw.slipAndSkid, LPFFactor);
 
-		LowPassFilter::apply(_aircraftData.computed.flightPathVectorPitch, _aircraftData.flightPathVectorPitch, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.flightPathVectorYaw, _aircraftData.flightPathVectorYaw, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.flightPathVectorPitchRad, _aircraftData.raw.flightPathVectorPitchRad, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.flightPathVectorYawRad, _aircraftData.raw.flightPathVectorYawRad, LPFFactor);
 
-		LowPassFilter::apply(_aircraftData.computed.flightDirectorPitch, _aircraftData.flightDirectorPitch, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.flightDirectorRoll, _aircraftData.flightDirectorRoll, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.flightDirectorPitchRad, _aircraftData.raw.flightDirectorPitchRad, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.flightDirectorRollRad, _aircraftData.raw.flightDirectorRollRad, LPFFactor);
 
 		// Airspeed / altitude, normal
 		LPFFactor = 3.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.airSpeed, _aircraftData.airSpeedKt, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.altitude, _aircraftData.altitudeFt, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.windDirection, _aircraftData.windDirection, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.airSpeedKt, _aircraftData.raw.airSpeedKt, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.altitudeFt, _aircraftData.raw.altitudeFt, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.windDirectionRad, _aircraftData.raw.windDirectionRad, LPFFactor);
 		
 //		ESP_LOGI("pizda", "deltaTime: %f, LPFFactor: %f", (float) deltaTime, LPFFactor);
 //		ESP_LOGI("pizda", "alt: %f, %f", _aircraftData.computed.altitude, _aircraftData.altitudeFt);
 		
 		// Trends, slower
 		LPFFactor = 1.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.airSpeedTrend, _aircraftData.airSpeedTrend, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.altitudeTrend, _aircraftData.altitudeTrend, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.airSpeedTrendKt, _aircraftData.raw.airSpeedTrend, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.altitudeTrendFt, _aircraftData.raw.altitudeTrend, LPFFactor);
 
 		// Smooth as fuck
 		LPFFactor = 0.5f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.transceiverRSSI, _transceiver.getRSSI(), LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.transceiverRSSIDBm, _transceiver.getRSSI(), LPFFactor);
 
 		_interpolationTickTime = esp_timer_get_time() + config::application::dataInterpolationTickIntervalUs;
 	}
@@ -189,9 +189,9 @@ namespace pizda {
 	NavigationData& RC::getNavigationData() {
 		return _navigationData;
 	}
-
-	uint32_t RC::getTickDeltaTime() const {
-		return _tickDeltaTime;
+	
+	Statistics& RC::getStatistics() {
+		return _statistics;
 	}
 
 	Settings& RC::getSettings() {

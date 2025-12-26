@@ -40,8 +40,8 @@ namespace pizda {
 		if (_aircraftElement->isVisible()) {
 			_aircraftElement->setPosition(
 				GeographicCoordinates(
-					ad.geographicCoordinates.getLatitude(),
-					ad.geographicCoordinates.getLongitude(),
+					ad.raw.geographicCoordinates.getLatitude(),
+					ad.raw.geographicCoordinates.getLongitude(),
 					0
 				)
 				.toCartesian()
@@ -49,15 +49,15 @@ namespace pizda {
 		}
 
 		// Camera
-		_cameraCoordinates.setLatitude(ad.geographicCoordinates.getLatitude() + _cameraOffset.getLatitude());
-		_cameraCoordinates.setLongitude(ad.geographicCoordinates.getLongitude() + _cameraOffset.getLongitude());
+		_cameraCoordinates.setLatitude(ad.raw.geographicCoordinates.getLatitude() + _cameraOffset.getLatitude());
+		_cameraCoordinates.setLongitude(ad.raw.geographicCoordinates.getLongitude() + _cameraOffset.getLongitude());
 		_cameraCoordinates.setAltitude(_cameraOffset.getAltitude());
 
 		setCameraPosition(_cameraCoordinates.toCartesian());
 
 		setCameraRotation(Vector3F(
 			-_cameraCoordinates.getLatitude(),
-			settings.interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : -ad.computed.yaw,
+			settings.interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : -ad.computed.yawRad,
 			toRadians(90) + _cameraCoordinates.getLongitude()
 		));
 
@@ -323,7 +323,7 @@ namespace pizda {
 //			ESP_LOGI("ND", "------------- Drag -------------");
 
 			auto& rc = RC::getInstance();
-			const auto yaw = rc.getSettings().interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : -rc.getAircraftData().computed.yaw;
+			const auto yaw = rc.getSettings().interface.MFD.ND.mode == SettingsInterfaceMFDNDMode::mapNorthUp ? 0 : -rc.getAircraftData().computed.yawRad;
 			const auto& deltaPixels = (pointerDragEventEvent->getPosition() - _pointerDownPosition).rotate(yaw);
 			_pointerDownPosition = pointerDragEventEvent->getPosition();
 			_cursorPosition = pointerDragEventEvent->getPosition() - getBounds().getPosition();

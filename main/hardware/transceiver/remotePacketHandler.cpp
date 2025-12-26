@@ -34,8 +34,8 @@ namespace pizda {
 		const auto deltaTime = time - _aircraftADIRSPacketTime;
 		_aircraftADIRSPacketTime = time;
 		
-		const auto oldSpeed = ad.airSpeedKt;
-		const auto oldAltitude = ad.altitudeFt;
+		const auto oldSpeed = ad.raw.airSpeedKt;
+		const auto oldAltitude = ad.raw.altitudeFt;
 		
 		// Direct reading
 		auto readRadians = [&stream](uint8_t bits) {
@@ -46,11 +46,11 @@ namespace pizda {
 			return sanitizeValue<float>(value, toRadians(-180), toRadians(180));
 		};
 		
-		ad.rollRad = readRadians(10);
-		ad.pitchRad = readRadians(10);
-		ad.yawRad = readRadians(10);
+		ad.raw.rollRad = readRadians(10);
+		ad.raw.pitchRad = readRadians(10);
+		ad.raw.yawRad = readRadians(10);
 		
-		ad.airSpeedKt = static_cast<float>(sanitizeValue<uint8_t>(stream.readUint8(7), 0, 255));
+		ad.raw.airSpeedKt = static_cast<float>(sanitizeValue<uint8_t>(stream.readUint8(7), 0, 255));
 		
 		// Altitude
 		constexpr static int16_t altitudeMin = -1'000;
@@ -59,21 +59,21 @@ namespace pizda {
 		
 		const auto altitudeValue = stream.readUint16(altitudeBits);
 		const auto altitudeFactor = static_cast<float>(altitudeValue) / static_cast<float>(1 << altitudeBits);
-		ad.altitudeFt = altitudeMin + (altitudeMax - altitudeMin) * altitudeFactor;
+		ad.raw.altitudeFt = altitudeMin + (altitudeMax - altitudeMin) * altitudeFactor;
 		
 //		ad.throttle = ...
 		
 		
 		// Value conversions
 //
-//		ad.geographicCoordinates.setLatitude(packet->latitudeRad);
-//		ad.geographicCoordinates.setLongitude(packet->longitudeRad);
-//		ad.geographicCoordinates.setAltitude(packet->altitudeM);
+//		ad.raw.geographicCoordinates.setLatitude(packet->latitudeRad);
+//		ad.raw.geographicCoordinates.setLongitude(packet->longitudeRad);
+//		ad.raw.geographicCoordinates.setAltitude(packet->altitudeM);
 //
 //		ad.windSpeed = Units::convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 		
-		ad.airSpeedKt = Units::convertSpeed(ad.airSpeedKt, SpeedUnit::meterPerSecond, SpeedUnit::knot);
-		ad.altitudeFt = Units::convertDistance(ad.altitudeFt, DistanceUnit::meter, DistanceUnit::foot);
+		ad.raw.airSpeedKt = Units::convertSpeed(ad.raw.airSpeedKt, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+		ad.raw.altitudeFt = Units::convertDistance(ad.raw.altitudeFt, DistanceUnit::meter, DistanceUnit::foot);
 //		ad.groundSpeedKt = Units::convertSpeed(packet->groundSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 
 //		ad.flightPathVectorPitch = packet->flightPathPitchRad;
@@ -87,14 +87,14 @@ namespace pizda {
 //		ad.windDirection = toRadians(packet->windDirectionDeg);
 		
 		// Trends
-		const auto deltaAltitude = ad.altitudeFt - oldAltitude;
+		const auto deltaAltitude = ad.raw.altitudeFt - oldAltitude;
 		
 		// Airspeed & altitude, 5 sec
-		ad.airSpeedTrend = (ad.airSpeedKt - oldSpeed) * 5'000'000.f / static_cast<float>(deltaTime);
-		ad.altitudeTrend = deltaAltitude * 5'000'000.f / static_cast<float>(deltaTime);
+		ad.raw.airSpeedTrend = (ad.raw.airSpeedKt - oldSpeed) * 5'000'000.f / static_cast<float>(deltaTime);
+		ad.raw.altitudeTrend = deltaAltitude * 5'000'000.f / static_cast<float>(deltaTime);
 		
 		// Vertical speed, 1 min
-		ad.verticalSpeed = deltaAltitude * 60'000'000.f / static_cast<float>(deltaTime);
+		ad.raw.verticalSpeed = deltaAltitude * 60'000'000.f / static_cast<float>(deltaTime);
 		
 		return true;
 	}
@@ -118,7 +118,11 @@ namespace pizda {
 	bool RemotePacketHandler::writeRemoteBaroPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		auto& settings = rc.getSettings();
-
+		
+		// 1 hectopascal ~= 7.88 meters ~= 30 feet of altitude, which is not good enough for low altitude RC aircraft
+		// So we'll be using decapascals. Cool fact: The maximum recorded atmospheric pressure on Earth, adjusted to sea level,
+		// is around 1085.7 hPa (32.09 inHg), occurring in Tonsontsengel, Mongolia (2001)
+		// So in theory 1100 daPa will be more than enough
 		stream.writeUint16(settings.controls.referencePressureSTD ? 10132 : settings.controls.referencePressurePa / 10);
 		
 		return true;

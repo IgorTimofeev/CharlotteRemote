@@ -9,11 +9,10 @@
 #include <esp_timer.h>
 
 #include "config.h"
+#include "rc.h"
 
 namespace pizda {
-	bool Transceiver::setup(bool isSlave) {
-		_isSlave = isSlave;
-		
+	bool Transceiver::setup() {
 		auto state = _SX.setup(
 			config::spi::device,
 			config::transceiver::SPIFrequencyHz,
@@ -65,26 +64,16 @@ namespace pizda {
 	[[noreturn]] void Transceiver::onStart() {
 		ESP_LOGI(_logTag, "started");
 		
-		if (_isSlave) {
-			while (true) {
-				if (receive(1'000'000)) {
-					vTaskDelay(pdMS_TO_TICKS(20));
-					transmit(1'000'000);
-				}
-			}
-		}
-		else {
-			while (true) {
-//				auto time = esp_timer_get_time();
-				transmit(100'000);
-//				auto txTime = esp_timer_get_time() - time;
-				
-//				time = esp_timer_get_time();
-				receive(100'000);
-//				auto rxTime = esp_timer_get_time() - time;
-				
-//				ESP_LOGI("PIZDA", "total time: %f, rx time: %f, txTime: %f", (float) (rxTime +  txTime), (float) rxTime, (float) txTime);
-			}
+		auto& st = RC::getInstance().getStatistics();
+		
+		while (true) {
+			auto time = esp_timer_get_time();
+			transmit(100'000);
+			st.transmitterTXDurationUs = esp_timer_get_time() - time;
+			
+			time = esp_timer_get_time();
+			receive(100'000);
+			st.transmitterRXDurationUs = esp_timer_get_time() - time;
 		}
 	}
 	
