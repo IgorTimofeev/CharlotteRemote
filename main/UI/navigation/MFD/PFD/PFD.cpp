@@ -1140,10 +1140,16 @@ namespace pizda {
 
 		// Ground
 		if (y < bounds.getY2() && lineValue < 0) {
+			renderer->renderHorizontalLine(
+				Point(x, y),
+				bounds.getWidth(),
+				&Theme::yellow
+			);
+			
 			constexpr int8_t groundSpacing = 5;
-			auto groundPoint1 = Point(x, y + groundSpacing);
-			auto groundPoint2 = Point(x + groundSpacing, y);
-
+			auto groundPoint1 = Point(x, y + 1 + groundSpacing);
+			auto groundPoint2 = Point(x + groundSpacing, y + 1);
+		
 			do {
 				renderer->renderLine(
 					groundPoint1,
@@ -1166,7 +1172,8 @@ namespace pizda {
 				else {
 					groundPoint2.setY(groundPoint2.getY() + groundSpacing);
 				}
-			} while (groundPoint1.getX() < bounds.getX2() - groundSpacing);
+			}
+			while (groundPoint1.getX() < bounds.getX2() - groundSpacing);
 		}
 
 		// Trend

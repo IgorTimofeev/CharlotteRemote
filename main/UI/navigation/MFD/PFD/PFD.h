@@ -45,9 +45,9 @@ namespace pizda {
 		public:
 			PFD();
 
-			constexpr static uint16_t lineSizeBig = 4;
+			constexpr static uint16_t lineSizeBig = 3;
 			constexpr static uint16_t lineSizeSmall = 2;
-			constexpr static uint16_t lineSizeTextOffset = 4;
+			constexpr static uint16_t lineSizeTextOffset = 3;
 
 			constexpr static uint8_t miniHeight = 16;
 			constexpr static const Font* miniFont = &Theme::fontSmall;
@@ -59,19 +59,19 @@ namespace pizda {
 			// Speed
 			constexpr static uint8_t speedWidth = 26;
 			constexpr static uint8_t speedStepPixels = 8;
-			constexpr static uint8_t speedStepUnits = 2;
-			constexpr static uint8_t speedStepUnitsBig = 10;
+			constexpr static uint8_t speedStepUnits = 1;
+			constexpr static uint8_t speedStepUnitsBig = 5;
 
 			constexpr static uint16_t speedBarSize = 4;
 
-			constexpr static uint16_t speedFlapsMin = 40;
-			constexpr static uint16_t speedFlapsMax = 85;
+			constexpr static uint16_t speedFlapsMin = 15;
+			constexpr static uint16_t speedFlapsMax = 25;
 
-			constexpr static uint16_t speedSmoothMin = 47;
-			constexpr static uint16_t speedSmoothMax = 128;
+			constexpr static uint16_t speedSmoothMin = 25;
+			constexpr static uint16_t speedSmoothMax = 38;
 
 			constexpr static uint16_t speedTurbulentMin = speedSmoothMax;
-			constexpr static uint16_t speedTurbulentMax = 163;
+			constexpr static uint16_t speedTurbulentMax = 44;
 
 			constexpr static uint16_t speedStructuralMin = speedTurbulentMax;
 			constexpr static uint16_t speedStructuralMax = speedStructuralMin * 4;
@@ -88,7 +88,7 @@ namespace pizda {
 			};
 
 			// Altitude
-			constexpr static uint8_t altitudeWidth = 28;
+			constexpr static uint8_t altitudeWidth = 26;
 			constexpr static uint8_t altitudeStepUnits = 5;
 			constexpr static uint8_t altitudeStepUnitsBig = 20;
 			constexpr static uint8_t altitudeStepPixels = 8;
@@ -99,13 +99,13 @@ namespace pizda {
 			constexpr static uint8_t altitudeMinimumSafeUnitDelta = 50;
 
 			// Vertical speed
-			constexpr static uint8_t verticalSpeedWidth = 13;
+			constexpr static uint8_t verticalSpeedWidth = 11;
 			constexpr static uint16_t verticalSpeedStepUnits = 250;
 			constexpr static uint16_t verticalSpeedStepUnitsLimit = 2000;
 			constexpr static uint16_t verticalSpeedStepUnitsBig = 1000;
 			constexpr static uint16_t verticalSpeedStepPixels = 11;
 			constexpr static uint16_t verticalSpeedStepPixelsRight = 2;
-			constexpr static uint16_t verticalSpeedTextOffset = 3;
+			constexpr static uint16_t verticalSpeedTextOffset = lineSizeTextOffset;
 
 			constexpr static const Font* verticalSpeedFont = &Theme::fontSmall;
 
