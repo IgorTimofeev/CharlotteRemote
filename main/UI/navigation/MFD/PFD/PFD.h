@@ -57,7 +57,7 @@ namespace pizda {
 			constexpr static const Font* currentValueFont = &Theme::fontSmall;
 
 			// Speed
-			constexpr static uint8_t speedWidth = 29;
+			constexpr static uint8_t speedWidth = 26;
 			constexpr static uint8_t speedStepPixels = 8;
 			constexpr static uint8_t speedStepUnits = 2;
 			constexpr static uint8_t speedStepUnitsBig = 10;
@@ -88,9 +88,9 @@ namespace pizda {
 			};
 
 			// Altitude
-			constexpr static uint8_t altitudeWidth = 30;
-			constexpr static uint8_t altitudeStepUnits = 20;
-			constexpr static uint8_t altitudeStepUnitsBig = 100;
+			constexpr static uint8_t altitudeWidth = 28;
+			constexpr static uint8_t altitudeStepUnits = 2;
+			constexpr static uint8_t altitudeStepUnitsBig = 10;
 			constexpr static uint8_t altitudeStepPixels = 8;
 
 			constexpr static uint8_t altitudeMinimumHorizontalOffset = 5;

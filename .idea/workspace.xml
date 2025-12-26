@@ -159,9 +159,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="чота медленновато пока">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="сэкономили бля пару битиков">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262Ex.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262Ex.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdkconfig" beforeDir="false" afterPath="$PROJECT_DIR$/sdkconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdkconfig.old" beforeDir="false" afterPath="$PROJECT_DIR$/sdkconfig.old" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1074,7 +1079,7 @@
       <workItem from="1766607010497" duration="6192000" />
       <workItem from="1766657472721" duration="12234000" />
       <workItem from="1766670109063" duration="10433000" />
-      <workItem from="1766684340823" duration="15989000" />
+      <workItem from="1766684340823" duration="17429000" />
     </task>
     <task id="LOCAL-00001" summary="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ">
       <option name="closed" value="true" />
@@ -1180,7 +1185,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766701734673</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="сэкономили бля пару битиков">
+      <option name="closed" value="true" />
+      <created>1766706575751</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1766706575751</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1201,6 +1214,7 @@
     <MESSAGE value="прикол, без антеннки даже на 1м от пультика rssi хуярит в -70" />
     <MESSAGE value="пиздец оно СРЁТ" />
     <MESSAGE value="чота медленновато пока" />
-    <option name="LAST_COMMIT_MESSAGE" value="чота медленновато пока" />
+    <MESSAGE value="сэкономили бля пару битиков" />
+    <option name="LAST_COMMIT_MESSAGE" value="сэкономили бля пару битиков" />
   </component>
 </project>
