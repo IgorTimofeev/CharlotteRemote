@@ -51,9 +51,9 @@ namespace pizda {
 				reinterpret_cast<Transceiver*>(arg)->onStart();
 			},
 			"Transceiver",
-			4096,
+			16 * 1024,
 			this,
-			configMAX_PRIORITIES - 1,
+			10,
 			nullptr
 		);
 	}
@@ -75,15 +75,15 @@ namespace pizda {
 		}
 		else {
 			while (true) {
-				auto time = esp_timer_get_time();
+//				auto time = esp_timer_get_time();
 				transmit(100'000);
-				auto txTime = esp_timer_get_time() - time;
+//				auto txTime = esp_timer_get_time() - time;
 				
-				time = esp_timer_get_time();
+//				time = esp_timer_get_time();
 				receive(100'000);
-				auto rxTime = esp_timer_get_time() - time;
+//				auto rxTime = esp_timer_get_time() - time;
 				
-				ESP_LOGI("PIZDA", "total time: %f, rx time: %f, txTime: %f", (float) (rxTime +  txTime), (float) rxTime, (float) txTime);
+//				ESP_LOGI("PIZDA", "total time: %f, rx time: %f, txTime: %f", (float) (rxTime +  txTime), (float) rxTime, (float) txTime);
 			}
 		}
 	}

@@ -42,12 +42,16 @@ namespace pizda {
 				// Seven segment
 				seven.setVerticalAlignment(Alignment::center);
 				seven.setMargin(Margin(6));
+				
 				seven.setDigitCount(digitCount);
+				seven.setDecimalSeparatorSpacing(2);
+				
 				seven.setSegmentThickness(1);
 				seven.setSegmentLength(6);
-				seven.setDigitCount(digitCount);
+				
 				seven.setInactiveColor(&Theme::bg5);
 				seven.setActiveColor(&Theme::fg1);
+				
 				backgroundAndSevenLayout += &seven;
 
 				backgroundAndSevenLayout.setMargin(Margin(0, 0, 0, button.getSize().getHeight() - button.getCornerRadius() * 2));

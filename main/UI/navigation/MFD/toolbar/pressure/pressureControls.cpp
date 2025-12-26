@@ -13,11 +13,12 @@ namespace pizda {
 		row.setSpacing(8);
 
 		// Pressure
-		pressure.seven.setValue(settings.controls.referencePressurePa / 100);
+		pressure.seven.setDecimalSeparatorIndex(0);
+		pressure.seven.setValue(settings.controls.referencePressurePa / 10);
 		pressure.button.setActive(settings.controls.referencePressureSTD);
 
 		pressure.rotated += [this, &settings] {
-			settings.controls.referencePressurePa = pressure.seven.getValue() * 100;
+			settings.controls.referencePressurePa = pressure.seven.getValue() * 10;
 			RC::getInstance().getSettings().controls.scheduleWrite();
 		};
 

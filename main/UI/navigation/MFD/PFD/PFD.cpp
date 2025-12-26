@@ -8,13 +8,13 @@
 namespace pizda {
 	PFDScene::PFDScene() {
 		setClipToBounds(true);
-
+		
 		auto& rc = RC::getInstance();
 		const auto& settings = rc.getSettings();
 		const auto& nd = rc.getNavigationData();
 
 		setFOV(toRadians(settings.interface.MFD.PFD.FOV));
-
+		
 		// Runways
 		for (const auto& airport : nd.airports) {
 			for (const auto& runway : airport.runways) {
@@ -62,6 +62,8 @@ namespace pizda {
 			horizonLeft,
 			horizonRight
 		);
+		
+		return;
 
 		Scene::onRender(renderer, bounds);
 
@@ -699,10 +701,9 @@ namespace pizda {
 		constexpr static uint8_t textOffset = 0;
 
 		const auto oldViewport = renderer->pushViewport(rectangleBounds);
-
-		if (value < 0)
-			value = 0;
-
+		
+		value = std::abs(value);
+		
 		auto uintValue = static_cast<uint32_t>(value);
 
 		// Assuming 4 is "widest" digit

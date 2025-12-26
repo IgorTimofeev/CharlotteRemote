@@ -28,7 +28,6 @@
 
 #include <utils/lowPassFilter.h>
 
-
 namespace pizda {
 	using namespace YOBA;
 
@@ -109,7 +108,7 @@ namespace pizda {
 			};
 
 			// Axis
-			uint64_t _axisTickTime = 0;
+			int64_t _axisTickTimeUs = 0;
 
 			Axis _leverLeft = Axis(
 				&config::adc::oneshotUnit,
@@ -166,7 +165,7 @@ namespace pizda {
 			// -------------------------------- Timings --------------------------------
 
 			uint32_t _tickDeltaTime = 0;
-			uint64_t _interpolationTickTime = 0;
+			int64_t _interpolationTickTime = 0;
 
 			// -------------------------------- Other shit --------------------------------
 

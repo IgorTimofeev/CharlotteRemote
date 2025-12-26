@@ -31,34 +31,34 @@ namespace pizda {
 		const auto& settings = rc.getSettings();
 
 		// Deleting
-		if (_PFD.get() && !settings.interface.MFD.PFD.visible)
-			_PFD.reset();
+		if (_PFD && !settings.interface.MFD.PFD.visible)
+			_PFD = nullptr;
 
-		if (_ND.get() && !settings.interface.MFD.ND.visible)
-			_ND.reset();
+		if (_ND && !settings.interface.MFD.ND.visible)
+			_ND = nullptr;
 
-		if (_mainControls.get() && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::main)
-			_mainControls.reset();
+		if (_mainControls && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::main)
+			_mainControls = nullptr;
 
-		if (_autopilotControls.get() && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::autopilot)
-			_autopilotControls.reset();
+		if (_autopilotControls && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::autopilot)
+			_autopilotControls = nullptr;
 
-		if (_pressureControls.get() && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::pressure)
-			_pressureControls.reset();
+		if (_pressureControls && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::pressure)
+			_pressureControls = nullptr;
 
 		// Creating
 		if (settings.interface.MFD.PFD.visible) {
-			if (!_PFD.get())
-				_PFD = std::make_unique<PFD>();
+			if (!_PFD)
+				_PFD = new PFD();
 
-			_rows += _PFD.get();
+			_rows += _PFD;
 		}
 
 		if (settings.interface.MFD.ND.visible) {
-			if (!_ND.get())
-				_ND = std::make_unique<ND>();
+			if (!_ND)
+				_ND = new ND();
 
-			_rows += _ND.get();
+			_rows += _ND;
 		}
 
 		if (_rows.getChildrenCount() > 1)
@@ -66,29 +66,29 @@ namespace pizda {
 
 		switch (settings.interface.MFD.toolbar.mode) {
 			case SettingsInterfaceMFDToolbarMode::main: {
-				if (!_mainControls.get())
-					_mainControls = std::make_unique<MainControls>();
+				if (!_mainControls)
+					_mainControls = new MainControls();
 
-				_rows.setAutoSize(_mainControls.get(), true);
-				_rows += _mainControls.get();
+				_rows.setAutoSize(_mainControls, true);
+				_rows += _mainControls;
 
 				break;
 			}
 			case SettingsInterfaceMFDToolbarMode::autopilot: {
-				if (!_autopilotControls.get())
-					_autopilotControls = std::make_unique<AutopilotControls>();
+				if (!_autopilotControls)
+					_autopilotControls = new AutopilotControls();
 
-				_rows.setAutoSize(_autopilotControls.get(), true);
-				_rows += _autopilotControls.get();
+				_rows.setAutoSize(_autopilotControls, true);
+				_rows += _autopilotControls;
 
 				break;
 			}
 			case SettingsInterfaceMFDToolbarMode::pressure: {
-				if (!_pressureControls.get())
-					_pressureControls = std::make_unique<PressureControls>();
+				if (!_pressureControls)
+					_pressureControls = new PressureControls();
 
-				_rows.setAutoSize(_pressureControls.get(), true);
-				_rows += _pressureControls.get();
+				_rows.setAutoSize(_pressureControls, true);
+				_rows += _pressureControls;
 
 				break;
 			}

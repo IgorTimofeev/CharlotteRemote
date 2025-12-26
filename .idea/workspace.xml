@@ -163,7 +163,20 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262Ex.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262Ex.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/rotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/rotaryControl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/pressure/pressureControls.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/pressure/pressureControls.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/pressure/pressureControls.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/pressure/pressureControls.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/utils/lowPassFilter.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/utils/lowPassFilter.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -232,11 +245,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1076,7 +1084,9 @@
       <workItem from="1766607010497" duration="6192000" />
       <workItem from="1766657472721" duration="12234000" />
       <workItem from="1766670109063" duration="10433000" />
-      <workItem from="1766684340823" duration="21045000" />
+      <workItem from="1766684340823" duration="21309000" />
+      <workItem from="1766741661302" duration="1579000" />
+      <workItem from="1766743280851" duration="6652000" />
     </task>
     <task id="LOCAL-00001" summary="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ">
       <option name="closed" value="true" />
@@ -1214,7 +1224,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766709785290</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="сука">
+      <option name="closed" value="true" />
+      <created>1766711781404</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1766711781404</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

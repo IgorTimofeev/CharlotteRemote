@@ -65,7 +65,7 @@ namespace pizda {
 		// Transceiver
 		if (!_transceiver.setup(false))
 			startErrorLoop("failed to setup XCVR");
-		
+
 		_transceiver.setPacketHandler(&_packetHandler);
 		_transceiver.start();
 		
@@ -91,7 +91,7 @@ namespace pizda {
 
 		// Main loop
 		while (true) {
-			const auto time = esp_timer_get_time();
+			const auto tickStartTime = esp_timer_get_time();
 
 			// High priority tasks
 			axisTick();
@@ -104,22 +104,28 @@ namespace pizda {
 			// Low priority tasks
 			_speaker.tick();
 
-// 			_tickDeltaTime = esp_timer_get_time() - time;
-//
-// 			// Skipping remaining tick time if any
-// 			if (_tickDeltaTime < constants::application::mainTickInterval) {
-// 				// FreeRTOS tasks can be only delayed by ms, so...
-// 				vTaskDelay(pdMS_TO_TICKS((constants::application::mainTickInterval - _tickDeltaTime) / 1000));
-//
-// //				ESP_LOGI("Main", "Skipping ticks for %lu ms", (constants::application::mainTickInterval - _tickDeltaTime) / 1000);
-// 			}
+ 			_tickDeltaTime = esp_timer_get_time() - tickStartTime;
+
+ 			// Skipping remaining tick time if any
+ 			if (_tickDeltaTime < config::application::UITickIntervalUs) {
+				// FreeRTOS tasks can be only delayed by ms, so...
+				const auto delayMs = (config::application::UITickIntervalUs - _tickDeltaTime) / 1000;
+				
+				if (delayMs >= portTICK_PERIOD_MS) {
+					vTaskDelay(pdMS_TO_TICKS(delayMs));
+				}
+				// Meh
+				else {
+					taskYIELD();
+				}
+ 			}
 		}
 	}
 
 	void RC::interpolationTick() {
-		const uint32_t deltaTime = esp_timer_get_time() - _interpolationTickTime;
+		const auto deltaTimeUs = esp_timer_get_time() - _interpolationTickTime;
 
-		if (deltaTime < config::application::interpolationTickInterval)
+		if (deltaTimeUs < config::application::dataInterpolationTickIntervalUs)
 			return;
 
 		// Principle of calculating the interpolation factor:
@@ -130,7 +136,7 @@ namespace pizda {
 		// factorPerTick = factorPerSecond * deltaTime / 1'000'000
 
 		// Roll / pitch / yaw / slip & skid, faster
-		float LPFFactor = 5.0f * static_cast<float>(deltaTime) / 1'000'000.f;
+		float LPFFactor = 5.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
 		LowPassFilter::apply(_aircraftData.computed.pitch, _aircraftData.pitchRad, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.roll, _aircraftData.rollRad, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.yaw, _aircraftData.yawRad, LPFFactor);
@@ -150,21 +156,24 @@ namespace pizda {
 		LowPassFilter::apply(_aircraftData.computed.flightDirectorRoll, _aircraftData.flightDirectorRoll, LPFFactor);
 
 		// Airspeed / altitude, normal
-		LPFFactor = 3.0f * static_cast<float>(deltaTime) / 1'000'000.f;
+		LPFFactor = 3.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
 		LowPassFilter::apply(_aircraftData.computed.airSpeed, _aircraftData.airSpeedKt, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.altitude, _aircraftData.altitudeFt, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.windDirection, _aircraftData.windDirection, LPFFactor);
-
+		
+//		ESP_LOGI("pizda", "deltaTime: %f, LPFFactor: %f", (float) deltaTime, LPFFactor);
+//		ESP_LOGI("pizda", "alt: %f, %f", _aircraftData.computed.altitude, _aircraftData.altitudeFt);
+		
 		// Trends, slower
-		LPFFactor = 1.0f * static_cast<float>(deltaTime) / 1'000'000.f;
+		LPFFactor = 1.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
 		LowPassFilter::apply(_aircraftData.computed.airSpeedTrend, _aircraftData.airSpeedTrend, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.altitudeTrend, _aircraftData.altitudeTrend, LPFFactor);
 
 		// Smooth as fuck
-		LPFFactor = 0.5f * static_cast<float>(deltaTime) / 1'000'000.f;
+		LPFFactor = 0.5f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
 		LowPassFilter::apply(_aircraftData.computed.transceiverRSSI, _transceiver.getRSSI(), LPFFactor);
 
-		_interpolationTickTime = esp_timer_get_time() + config::application::interpolationTickInterval;
+		_interpolationTickTime = esp_timer_get_time() + config::application::dataInterpolationTickIntervalUs;
 	}
 
 	// ------------------------- Data -------------------------
@@ -222,7 +231,7 @@ namespace pizda {
 	}
 
 	void RC::axisTick() {
-		if (esp_timer_get_time() < _axisTickTime)
+		if (esp_timer_get_time() < _axisTickTimeUs)
 			return;
 
 		_leverLeft.tick();
@@ -231,8 +240,8 @@ namespace pizda {
 		_joystickVertical.tick();
 		_ring.tick();
 		_battery.tick();
-
-		_axisTickTime = esp_timer_get_time() + config::axis::tickInterval;
+		
+		_axisTickTimeUs = esp_timer_get_time() + config::axis::tickIntervalUs;
 	}
 
 	void RC::NVSSetup() {

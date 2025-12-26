@@ -16,7 +16,7 @@ namespace pizda {
 		public:
 			explicit PressureControls();
 
-			RotaryControl<4, 900, 1100, false, 1, 1> pressure { L"STD" };
+			RotaryControl<5, 9000, 11000, false, 1, 10> pressure { L"STD" };
 			InstrumentIndicatorLayout pressureLayout { L"Baro", &pressure, false };
 
 			RotaryControl<4, 0, 15000, false, 1, 10> minimums { L"ON" };

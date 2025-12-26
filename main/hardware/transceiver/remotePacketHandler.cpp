@@ -60,7 +60,7 @@ namespace pizda {
 		const auto altitudeValue = stream.readUint16(altitudeBits);
 		const auto altitudeFactor = static_cast<float>(altitudeValue) / static_cast<float>(1 << altitudeBits);
 		ad.altitudeFt = altitudeMin + (altitudeMax - altitudeMin) * altitudeFactor;
-
+		
 //		ad.throttle = ...
 		
 		
@@ -89,9 +89,9 @@ namespace pizda {
 		// Trends
 		const auto deltaAltitude = ad.altitudeFt - oldAltitude;
 		
-		// Airspeed & altitude, 10 sec
-		ad.airSpeedTrend = (ad.airSpeedKt - oldSpeed) * 10'000'000.f / static_cast<float>(deltaTime);
-		ad.altitudeTrend = deltaAltitude * 10'000'000.f / static_cast<float>(deltaTime);
+		// Airspeed & altitude, 5 sec
+		ad.airSpeedTrend = (ad.airSpeedKt - oldSpeed) * 5'000'000.f / static_cast<float>(deltaTime);
+		ad.altitudeTrend = deltaAltitude * 5'000'000.f / static_cast<float>(deltaTime);
 		
 		// Vertical speed, 1 min
 		ad.verticalSpeed = deltaAltitude * 60'000'000.f / static_cast<float>(deltaTime);

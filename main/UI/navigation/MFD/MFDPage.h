@@ -26,12 +26,12 @@ namespace pizda {
 
 			RelativeStackLayout _rows {};
 
-			std::unique_ptr<PFD> _PFD {};
-			std::unique_ptr<ND> _ND {};
+			PFD* _PFD = nullptr;
+			ND* _ND = nullptr;
 
-			std::unique_ptr<MainControls> _mainControls {};
-			std::unique_ptr<AutopilotControls> _autopilotControls {};
-			std::unique_ptr<PressureControls> _pressureControls {};
+			MainControls* _mainControls = nullptr;
+			AutopilotControls* _autopilotControls = nullptr;
+			PressureControls* _pressureControls = nullptr;
 
 			void fromSettingsInstance();
 	};
