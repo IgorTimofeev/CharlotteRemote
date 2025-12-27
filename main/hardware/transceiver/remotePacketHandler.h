@@ -22,7 +22,12 @@ namespace pizda {
 			uint32_t _aircraftADIRSPacketTime = 0;
 			
 			bool readAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength);
+			bool readAircraftStatisticsPacket(BitStream& stream, uint8_t payloadLength);
+			bool readAircraftAutopilotPacket(BitStream& stream, uint8_t payloadLength);
+			
 			bool writeRemoteBaroPacket(BitStream& stream);
+			
+			static float readRadians(BitStream& stream, uint8_t bits);
 			
 			template<typename T>
 			static float sanitizeValue(T value, T min, T max) {

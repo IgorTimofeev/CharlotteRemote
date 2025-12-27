@@ -480,8 +480,16 @@ namespace pizda {
 		// Slip/skid indicator
 		renderer->renderFilledRectangle(
 			Bounds(
-				center.getX() + static_cast<int32_t>(static_cast<float>(PFD::turnCoordinatorOverlaySlipAndSkidIndicatorMaxValuePixels) * aircraftData.computed.
-					slipAndSkid) - PFD::turnCoordinatorOverlaySlipAndSkidIndicatorWidth / 2,
+				center.getX()
+					+ static_cast<int32_t>(
+						static_cast<float>(PFD::turnCoordinatorOverlaySlipAndSkidIndicatorMaxValuePixels)
+						* std::clamp<float>(
+							aircraftData.computed.slipAndSkidG,
+							-PFD::turnCoordinatorOverlaySlipAndSkidIndicatorMaxG,
+							PFD::turnCoordinatorOverlaySlipAndSkidIndicatorMaxG
+						)
+					)
+					- PFD::turnCoordinatorOverlaySlipAndSkidIndicatorWidth / 2,
 				rollTriangleY + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight + PFD::turnCoordinatorOverlaySlipAndSkidIndicatorOffset,
 				PFD::turnCoordinatorOverlaySlipAndSkidIndicatorWidth,
 				PFD::turnCoordinatorOverlaySlipAndSkidIndicatorHeight
@@ -1306,8 +1314,8 @@ namespace pizda {
 
 		// Current value
 		renderer->renderLine(
-			Point(bounds.getX(), centerY - static_cast<int32_t>(ad.computed.verticalSpeedFPM * static_cast<float>(verticalSpeedStepPixels) / static_cast<float>(verticalSpeedStepUnits))),
-			Point(bounds.getX2(), centerY - static_cast<int32_t>(ad.computed.verticalSpeedFPM * static_cast<float>(verticalSpeedStepPixelsRight) / static_cast<float>(verticalSpeedStepUnits))),
+			Point(bounds.getX(), centerY - static_cast<int32_t>(ad.computed.verticalSpeedFtPM * static_cast<float>(verticalSpeedStepPixels) / static_cast<float>(verticalSpeedStepUnits))),
+			Point(bounds.getX2(), centerY - static_cast<int32_t>(ad.computed.verticalSpeedFtPM * static_cast<float>(verticalSpeedStepPixelsRight) / static_cast<float>(verticalSpeedStepUnits))),
 			&Theme::green
 		);
 	}

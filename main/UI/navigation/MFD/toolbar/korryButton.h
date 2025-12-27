@@ -14,6 +14,7 @@ namespace pizda {
 			explicit KorryButton(std::wstring_view text) {
 				setSize(Size(24, 20));
 				
+				setDefaultBorderColor(&Theme::bg2);
 				setDefaultBackgroundColor(&Theme::bg2);
 				setDefaultTextColor(&Theme::fg2);
 

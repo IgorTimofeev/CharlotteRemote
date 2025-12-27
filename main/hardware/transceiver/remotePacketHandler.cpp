@@ -15,6 +15,12 @@ namespace pizda {
 			case PacketType::aircraftADIRS: {
 				return readAircraftADIRSPacket(stream, payloadLength);
 			}
+			case PacketType::aircraftStatistics: {
+				return readAircraftStatisticsPacket(stream, payloadLength);
+			}
+			case PacketType::aircraftAutopilot: {
+				return readAircraftAutopilotPacket(stream, payloadLength);
+			}
 			default: {
 				ESP_LOGE(_logTag, "failed to read packet: unsupported type %d", std::to_underlying(packetType));
 				
@@ -24,7 +30,16 @@ namespace pizda {
 	}
 	
 	bool RemotePacketHandler::readAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength) {
-		if (!validatePayloadChecksumAndLength(stream, 10 * 3 + 7 + 14, payloadLength))
+		if (!validatePayloadChecksumAndLength(
+			stream,
+			AircraftADIRSPacket::rollLengthBits
+				+ AircraftADIRSPacket::pitchLengthBits
+				+ AircraftADIRSPacket::yawLengthBits
+				+ AircraftADIRSPacket::slipAndSkidLengthBits
+				+ AircraftADIRSPacket::speedLengthBits
+				+ AircraftADIRSPacket::altitudeLengthBits,
+			payloadLength
+		))
 			return false;
 		
 		auto& rc = RC::getInstance();
@@ -34,46 +49,41 @@ namespace pizda {
 		const auto deltaTime = time - _aircraftADIRSPacketTime;
 		_aircraftADIRSPacketTime = time;
 		
-		const auto oldSpeed = ad.raw.airSpeedKt;
-		const auto oldAltitude = ad.raw.altitudeFt;
+		const auto oldSpeed = ad.raw.airSpeedMps;
+		const auto oldAltitude = ad.raw.geographicCoordinates.getAltitude();
 		
-		// Direct reading
-		auto readRadians = [&stream](uint8_t bits) {
-			auto value = static_cast<float>(stream.readUint16(bits)) / static_cast<float>(1 << bits);
-			value = value - 0.5f;
-			value = value * (2 * std::numbers::pi_v<float>);
-			
-			return sanitizeValue<float>(value, toRadians(-180), toRadians(180));
-		};
+		// Roll
+		ad.raw.rollRad = readRadians(stream, AircraftADIRSPacket::rollLengthBits);
 		
-		ad.raw.rollRad = readRadians(10);
-		ad.raw.pitchRad = readRadians(10);
-		ad.raw.yawRad = readRadians(10);
+		// Pitch
+		ad.raw.pitchRad = readRadians(stream, AircraftADIRSPacket::pitchLengthBits);
 		
-		ad.raw.airSpeedKt = static_cast<float>(sanitizeValue<uint8_t>(stream.readUint8(7), 0, 255));
+		// Yaw
+		ad.raw.yawRad = readRadians(stream, AircraftADIRSPacket::yawLengthBits);
+		
+		// Slip & skid
+		auto slipAndSkidFactor =
+			static_cast<float>(stream.readUint8(AircraftADIRSPacket::slipAndSkidLengthBits))
+			/ static_cast<float>(1 << AircraftADIRSPacket::slipAndSkidLengthBits);
+		
+		ad.raw.slipAndSkidG =
+			-static_cast<float>(AircraftADIRSPacket::slipAndSkidMaxG)
+			+ static_cast<float>(AircraftADIRSPacket::slipAndSkidMaxG) * 2
+			* slipAndSkidFactor;
+		
+		// Speed
+		ad.raw.airSpeedMps = static_cast<float>(stream.readUint8(AircraftADIRSPacket::speedLengthBits));
 		
 		// Altitude
-		constexpr static int16_t altitudeMin = -1'000;
-		constexpr static int16_t altitudeMax = 10'000;
-		constexpr static uint8_t altitudeBits = 14;
+		const auto altitudeFactor =
+			static_cast<float>(stream.readUint16(AircraftADIRSPacket::altitudeLengthBits))
+			/ static_cast<float>(1 << AircraftADIRSPacket::altitudeLengthBits);
 		
-		const auto altitudeValue = stream.readUint16(altitudeBits);
-		const auto altitudeFactor = static_cast<float>(altitudeValue) / static_cast<float>(1 << altitudeBits);
-		ad.raw.altitudeFt = altitudeMin + (altitudeMax - altitudeMin) * altitudeFactor;
+		ad.raw.geographicCoordinates.setAltitude(AircraftADIRSPacket::altitudeMin + (AircraftADIRSPacket::altitudeMax - AircraftADIRSPacket::altitudeMin) * altitudeFactor);
 
-//		ad.throttle = ...
-		
-		
 		// Value conversions
-//
-//		ad.raw.geographicCoordinates.setLatitude(packet->latitudeRad);
-//		ad.raw.geographicCoordinates.setLongitude(packet->longitudeRad);
-//		ad.raw.geographicCoordinates.setAltitude(packet->altitudeM);
-//
 //		ad.windSpeed = Units::convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 		
-		ad.raw.airSpeedKt = Units::convertSpeed(ad.raw.airSpeedKt, SpeedUnit::meterPerSecond, SpeedUnit::knot);
-		ad.raw.altitudeFt = Units::convertDistance(ad.raw.altitudeFt, DistanceUnit::meter, DistanceUnit::foot);
 //		ad.groundSpeedKt = Units::convertSpeed(packet->groundSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 
 //		ad.flightPathVectorPitch = packet->flightPathPitchRad;
@@ -87,14 +97,69 @@ namespace pizda {
 //		ad.windDirection = toRadians(packet->windDirectionDeg);
 		
 		// Trends
-		const auto deltaAltitude = ad.raw.altitudeFt - oldAltitude;
+		const auto deltaAltitude = ad.raw.geographicCoordinates.getAltitude() - oldAltitude;
 		
 		// Airspeed & altitude, 5 sec
-		ad.raw.airSpeedTrendFt = (ad.raw.airSpeedKt - oldSpeed) * 5'000'000.f / static_cast<float>(deltaTime);
-		ad.raw.altitudeTrendFt = deltaAltitude * 5'000'000.f / static_cast<float>(deltaTime);
+		ad.raw.airSpeedTrendMPS = (ad.raw.airSpeedMps - oldSpeed) * 5'000'000.f / static_cast<float>(deltaTime);
+		ad.raw.altitudeTrendM = deltaAltitude * 5'000'000.f / static_cast<float>(deltaTime);
 		
 		// Vertical speed, 1 min
-		ad.raw.verticalSpeed = deltaAltitude * 60'000'000.f / static_cast<float>(deltaTime);
+		ad.raw.verticalSpeedMPM = deltaAltitude * 60'000'000.f / static_cast<float>(deltaTime);
+		
+		return true;
+	}
+	
+	bool RemotePacketHandler::readAircraftStatisticsPacket(BitStream& stream, uint8_t payloadLength) {
+		if (!validatePayloadChecksumAndLength(
+			stream,
+			AircraftStatisticsPacket::throttleLengthBits
+				+ AircraftStatisticsPacket::latLengthBits
+				+ AircraftStatisticsPacket::lonLengthBits
+				+ AircraftStatisticsPacket::batteryLengthBits,
+			payloadLength
+		))
+			return false;
+		
+		auto& rc = RC::getInstance();
+		auto& ad = rc.getAircraftData();
+		
+		// Throttle
+		ad.raw.throttlePercent_0_255 = stream.readUint8(AircraftStatisticsPacket::throttleLengthBits) * 100 / (1 << AircraftStatisticsPacket::throttleLengthBits);
+
+		// Latitude
+		
+		// 25 bits per [-90; 90] deg
+		// [0.0; 1.0]
+		const auto latFactor = static_cast<float>(stream.readUint32(AircraftStatisticsPacket::latLengthBits)) / static_cast<float>(1 << AircraftStatisticsPacket::latLengthBits);
+		// [-pi / 2; pi / 2]
+		const auto lat = latFactor * std::numbers::pi_v<float> - std::numbers::pi_v<float> / 2.f;
+		ad.raw.geographicCoordinates.setLatitude(lat);
+		
+		// Longitude
+		
+		// 26 bits per [0; 360] deg
+		// [0.0; 1.0]
+		const auto lonFactor = static_cast<float>(stream.readUint32(AircraftStatisticsPacket::lonLengthBits)) / static_cast<float>(1 << AircraftStatisticsPacket::lonLengthBits);
+		// [-pi; pi]
+		const auto lon = lonFactor * std::numbers::pi_v<float> * 2;
+		ad.raw.geographicCoordinates.setLongitude(lon);
+		
+		// Battery
+		ad.raw.batteryVoltageV = static_cast<float>(stream.readUint16(AircraftStatisticsPacket::batteryLengthBits)) / 10.f;
+		
+		return true;
+	}
+	
+	bool RemotePacketHandler::readAircraftAutopilotPacket(BitStream& stream, uint8_t payloadLength) {
+		if (!validatePayloadChecksumAndLength(stream, 7 + 10 + 10, payloadLength))
+			return false;
+		
+		auto& rc = RC::getInstance();
+		auto& ad = rc.getAircraftData();
+		
+		
+		ad.raw.flightDirectorRollRad = readRadians(stream, 10);
+		ad.raw.flightDirectorPitchRad = readRadians(stream, 10);
 		
 		return true;
 	}
@@ -170,5 +235,13 @@ namespace pizda {
 			}
 			default: break;
 		}
+	}
+	
+	float RemotePacketHandler::readRadians(BitStream& stream, uint8_t bits) {
+		auto value = static_cast<float>(stream.readUint16(bits)) / static_cast<float>(1 << bits);
+		value = value - 0.5f;
+		value = value * (2 * std::numbers::pi_v<float>);
+		
+		return sanitizeValue<float>(value, toRadians(-180), toRadians(180));
 	}
 }

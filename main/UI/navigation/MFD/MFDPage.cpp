@@ -42,6 +42,15 @@ namespace pizda {
 
 		if (_baroToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::baro)
 			_baroToolbar = nullptr;
+		
+		if (_trimToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::trim)
+			_trimToolbar = nullptr;
+		
+		if (_lightsToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::lights)
+			_lightsToolbar = nullptr;
+		
+		if (_logToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::log)
+			_logToolbar = nullptr;
 
 		// Creating
 		switch (settings.interface.MFD.toolbar.mode) {
@@ -63,6 +72,33 @@ namespace pizda {
 				
 				break;
 			}
+			case SettingsInterfaceMFDToolbarMode::trim: {
+				if (!_trimToolbar)
+					_trimToolbar = new TrimToolbar();
+				
+				_rows.setAutoSize(_trimToolbar, true);
+				_rows += _trimToolbar;
+				
+				break;
+			}
+			case SettingsInterfaceMFDToolbarMode::lights: {
+				if (!_lightsToolbar)
+					_lightsToolbar = new LightsToolbar();
+				
+				_rows.setAutoSize(_lightsToolbar, true);
+				_rows += _lightsToolbar;
+				
+				break;
+			}
+			case SettingsInterfaceMFDToolbarMode::log: {
+				if (!_logToolbar)
+					_logToolbar = new LogToolbar();
+				
+				_rows.setAutoSize(_logToolbar, true);
+				_rows += _logToolbar;
+				
+				break;
+			}
 			default:
 				break;
 		}
@@ -81,20 +117,13 @@ namespace pizda {
 			_rows += _ND;
 		}
 
-//		if (settings.interface.MFD.PFD.visible && settings.interface.MFD.ND.visible)
-//			_rows.setRelativeSize(_PFD, static_cast<float>(settings.interface.MFD.splitPercent) / 100.f * 2.f);
+		if (settings.interface.MFD.PFD.visible && settings.interface.MFD.ND.visible)
+			_rows.setRelativeSize(_PFD, static_cast<float>(settings.interface.MFD.splitPercent) / 100.f * 2.f);
 		
 		// Main
 		_rows.setAutoSize(&_mainToolbar, true);
 		_rows += &_mainToolbar;
 		
-//		if (settings.interface.MFD.toolbar.mode == SettingsInterfaceMFDToolbarMode::none) {
-//			rc.getOpenMenuButton().applyBottomStyle();
-//		}
-//		else {
-//			rc.getOpenMenuButton().applyBottomRightStyle();
-//		}
-
 		invalidate();
 	}
 }

@@ -161,6 +161,7 @@ namespace pizda {
 			constexpr static uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorWidth = turnCoordinatorOverlayRollIndicatorTriangleWidth;
 			constexpr static uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorHeight = 2;
 			constexpr static uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorMaxValuePixels = 40;
+			constexpr static uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorMaxG = 2;
 
 			// Aircraft symbol
 			constexpr static uint8_t aircraftSymbolWidth = 30;

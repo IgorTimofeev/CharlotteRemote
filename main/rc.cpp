@@ -134,7 +134,7 @@ namespace pizda {
 		//
 		// factorPerTick = factorPerSecond * deltaTime / 1'000'000
 
-		// Roll / pitch / yaw / slip & skid, faster
+		// Fast
 		float LPFFactor = 5.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
 		
 		LowPassFilter::apply(_aircraftData.computed.pitchRad, _aircraftData.raw.pitchRad, LPFFactor);
@@ -142,7 +142,8 @@ namespace pizda {
 
 		_aircraftData.computed.headingDeg = normalizeAngle360(toDegrees(-_aircraftData.computed.yawRad));
 		
-		LowPassFilter::apply(_aircraftData.computed.slipAndSkid, _aircraftData.raw.slipAndSkid, LPFFactor);
+		auto slipAndSkid = 0;
+		LowPassFilter::apply(_aircraftData.computed.slipAndSkidG, _aircraftData.raw.slipAndSkidG, LPFFactor);
 
 		LowPassFilter::apply(_aircraftData.computed.flightPathVectorPitchRad, _aircraftData.raw.flightPathVectorPitchRad, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.flightPathVectorYawRad, _aircraftData.raw.flightPathVectorYawRad, LPFFactor);
@@ -150,30 +151,26 @@ namespace pizda {
 		LowPassFilter::apply(_aircraftData.computed.flightDirectorPitchRad, _aircraftData.raw.flightDirectorPitchRad, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.flightDirectorRollRad, _aircraftData.raw.flightDirectorRollRad, LPFFactor);
 
-		// Airspeed / altitude, normal
+		// Normal
 		LPFFactor = 3.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
 
 		LowPassFilter::apply(_aircraftData.computed.yawRad, _aircraftData.raw.yawRad, LPFFactor);
 		
-		LowPassFilter::apply(_aircraftData.computed.airSpeedKt, _aircraftData.raw.airSpeedKt, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.altitudeFt, _aircraftData.raw.altitudeFt, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.airSpeedKt, Units::convertSpeed(_aircraftData.raw.airSpeedMps, SpeedUnit::meterPerSecond, SpeedUnit::knot), LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.altitudeFt, Units::convertDistance(_aircraftData.raw.geographicCoordinates.getAltitude(), DistanceUnit::meter, DistanceUnit::foot), LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.windDirectionRad, _aircraftData.raw.windDirectionRad, LPFFactor);
 		
-//		ESP_LOGI("pizda", "deltaTime: %f, LPFFactor: %f", (float) deltaTimeUs, LPFFactor);
-//		ESP_LOGI("pizda", "alt: %f, %f", _aircraftData.computed.altitude, _aircraftData.altitudeFt);
-		
-		// Trends, slower
+		// Slower
 		LPFFactor = 1.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.airSpeedTrendKt, _aircraftData.raw.airSpeedTrendFt, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.altitudeTrendFt, _aircraftData.raw.altitudeTrendFt, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.airSpeedTrendKt, Units::convertSpeed(_aircraftData.raw.airSpeedTrendMPS, SpeedUnit::meterPerSecond, SpeedUnit::knot), LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.altitudeTrendFt, Units::convertDistance(_aircraftData.raw.altitudeTrendM, DistanceUnit::meter, DistanceUnit::foot), LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.verticalSpeedFtPM, Units::convertDistance(_aircraftData.raw.verticalSpeedMPM, DistanceUnit::meter, DistanceUnit::foot), LPFFactor);
 
 		// Smooth as fuck
 		LPFFactor = 0.5f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.transceiverRSSIDBm, _transceiver.getRSSI(), LPFFactor);
-		
-		//		_aircraftData.computed.pitch = _aircraftData.pitchRad;
-//		_aircraftData.computed.roll = _aircraftData.rollRad;
-//		_aircraftData.computed.yaw = _aircraftData.yawRad;
+		LowPassFilter::apply(_aircraftData.computed.throttlePercent01, static_cast<float>(_aircraftData.raw.throttlePercent_0_255) / 255.f, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.batteryVoltageV, _aircraftData.raw.batteryVoltageV, LPFFactor);
+		LowPassFilter::apply(_remoteData.computed.transceiverRSSIDBm, _transceiver.getRSSI(), LPFFactor);
 		
 		_interpolationTickTime = esp_timer_get_time();
 	}
@@ -183,7 +180,11 @@ namespace pizda {
 	Application& RC::getApplication() {
 		return _application;
 	}
-
+	
+	RemoteData& RC::getRemoteData() {
+		return _remoteData;
+	}
+	
 	AircraftData& RC::getAircraftData() {
 		return _aircraftData;
 	}

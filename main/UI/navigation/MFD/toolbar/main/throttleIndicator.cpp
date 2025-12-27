@@ -30,7 +30,7 @@ namespace pizda {
 			&Theme::bg6
 		);
 
-		const auto& renderOffsetLine = [&renderer, &bounds](int32_t pos, const Color* color) {
+		const auto& renderLine = [&renderer, &bounds](int32_t pos, const Color* color) {
 			renderer->renderVerticalLine(
 				Point(
 					pos,
@@ -41,35 +41,31 @@ namespace pizda {
 			);
 		};
 
-		// Secondary value
-		const auto secondaryValue = settings.autopilot.autoThrottle ? _remoteValue : _aircraftValue;
-
-		renderOffsetLine(
-			bounds.getX() + std::max(static_cast<uint16_t>(frameSize * secondaryValue / 0xFF), static_cast<uint16_t>(1)) - 1,
-			&Theme::fg5
+		// Remote value
+		renderLine(
+			bounds.getX() + std::max(static_cast<uint16_t>(frameSize * _remoteValue / 0xFF), static_cast<uint16_t>(1)) - 1,
+			&Theme::green
 		);
 
-		// Primary value
-		const auto primaryValue = settings.autopilot.autoThrottle ? _aircraftValue : _remoteValue;
-		const auto primaryValueSize = std::max(static_cast<uint16_t>(frameSize * primaryValue / 0xFF), static_cast<uint16_t>(1));
-		const auto primaryValueColor = settings.autopilot.autoThrottle ? &Theme::purple : &Theme::green;
+		// Aircraft value
+		const auto aircraftValueSize = std::max(static_cast<uint16_t>(frameSize * _aircraftValue / 0xFF), static_cast<uint16_t>(1));
 
-		if (primaryValueSize > 1) {
+		if (aircraftValueSize > 2) {
 			renderer->renderFilledRectangle(
 				Bounds(
 					bounds.getX(),
 					bounds.getY(),
-					primaryValueSize,
+					aircraftValueSize - 1,
 					bounds.getHeight()
 				),
 				&Theme::fg1
 			);
 		}
 
-		renderOffsetLine(bounds.getX() + primaryValueSize - 1, primaryValueColor);
+		renderLine(bounds.getX() + aircraftValueSize - 1, &Theme::purple);
 
 		// Aircraft value text
-		const auto text = std::format(L"{:03}", static_cast<int32_t>(primaryValue * 100 / 0xFF));
+		const auto text = std::format(L"{:03}", static_cast<int32_t>(_aircraftValue * 100 / 0xFF));
 
 		renderer->renderString(
 			Point(

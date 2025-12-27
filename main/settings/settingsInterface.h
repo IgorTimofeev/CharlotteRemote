@@ -32,7 +32,10 @@ namespace pizda {
 	enum class SettingsInterfaceMFDToolbarMode : uint8_t {
 		none,
 		autopilot,
-		baro
+		baro,
+		trim,
+		lights,
+		log
 	};
 
 	class SettingsInterfaceMFDToolbar {

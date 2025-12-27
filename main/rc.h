@@ -22,6 +22,7 @@
 #include "hardware/battery.h"
 
 #include "units.h"
+#include "types/remoteData.h"
 #include "types/aircraftData.h"
 #include "types/navigationData.h"
 #include "types/statistics.h"
@@ -58,7 +59,8 @@ namespace pizda {
 
 			const Route* getRoute() const;
 			void setRoute(const Route* route);
-
+			
+			RemoteData& getRemoteData();
 			AircraftData& getAircraftData();
 			NavigationData& getNavigationData();
 			Statistics& getStatistics();
@@ -162,8 +164,10 @@ namespace pizda {
 			const Route* _route = nullptr;
 
 			// -------------------------------- Other shit --------------------------------
-
+			
+			RemoteData _remoteData {};
 			AircraftData _aircraftData {};
+			
 			NavigationData _navigationData {};
 			Statistics _statistics {};
 			

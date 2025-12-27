@@ -8,6 +8,9 @@ namespace pizda::resources {
 	const MenuIconMFDNDImage Images::menuIconMFDND {};
 	const MenuIconMFDAutopilotImage Images::menuIconMFDAutopilot {};
 	const MenuIconMFDBaroImage Images::menuIconMFDBaro {};
+	const MenuIconMFDTrimImage Images::menuIconMFDTrim {};
+	const MenuIconMFDLightsImage Images::menuIconMFDLights {};
+	const MenuIconMFDLogImage Images::menuIconMFDLog {};
 
 	const MenuIconFlightPlanImage Images::menuIconFlightPlan {};
 	const MenuIconWaypointsImage Images::menuIconWaypointsImage {};
