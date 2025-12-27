@@ -142,7 +142,6 @@ namespace pizda {
 
 		_aircraftData.computed.headingDeg = normalizeAngle360(toDegrees(-_aircraftData.computed.yawRad));
 		
-		auto slipAndSkid = 0;
 		LowPassFilter::apply(_aircraftData.computed.slipAndSkidG, _aircraftData.raw.slipAndSkidG, LPFFactor);
 
 		LowPassFilter::apply(_aircraftData.computed.flightPathVectorPitchRad, _aircraftData.raw.flightPathVectorPitchRad, LPFFactor);

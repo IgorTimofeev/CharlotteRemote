@@ -43,15 +43,12 @@ namespace pizda {
 		if (_baroToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::baro)
 			_baroToolbar = nullptr;
 		
-		if (_trimToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::trim)
-			_trimToolbar = nullptr;
-		
 		if (_lightsToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::lights)
 			_lightsToolbar = nullptr;
 		
-		if (_logToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::log)
-			_logToolbar = nullptr;
-
+		if (_trimToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::trim)
+			_trimToolbar = nullptr;
+		
 		// Creating
 		switch (settings.interface.MFD.toolbar.mode) {
 			case SettingsInterfaceMFDToolbarMode::autopilot: {
@@ -72,15 +69,6 @@ namespace pizda {
 				
 				break;
 			}
-			case SettingsInterfaceMFDToolbarMode::trim: {
-				if (!_trimToolbar)
-					_trimToolbar = new TrimToolbar();
-				
-				_rows.setAutoSize(_trimToolbar, true);
-				_rows += _trimToolbar;
-				
-				break;
-			}
 			case SettingsInterfaceMFDToolbarMode::lights: {
 				if (!_lightsToolbar)
 					_lightsToolbar = new LightsToolbar();
@@ -90,12 +78,12 @@ namespace pizda {
 				
 				break;
 			}
-			case SettingsInterfaceMFDToolbarMode::log: {
-				if (!_logToolbar)
-					_logToolbar = new LogToolbar();
+			case SettingsInterfaceMFDToolbarMode::trim: {
+				if (!_trimToolbar)
+					_trimToolbar = new TrimToolbar();
 				
-				_rows.setAutoSize(_logToolbar, true);
-				_rows += _logToolbar;
+				_rows.setAutoSize(_trimToolbar, true);
+				_rows += _trimToolbar;
 				
 				break;
 			}

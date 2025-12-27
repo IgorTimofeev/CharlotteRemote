@@ -9,11 +9,37 @@ namespace pizda {
 		
 		auto& settings = RC::getInstance().getSettings();
 		
-		button.setMargin(Margin(8, 0, 0, 0));
-		button.setVerticalAlignment(Alignment::center);
-		button.setToggle(true);
-		button.setActive(false);
+		// Navigation
+		navigation.setToggle(true);
+		navigation.setActive(settings.controls.navigationLights);
 		
-		row += &button;
+		navigation.isActiveChanged += [this, &settings] {
+			settings.controls.navigationLights = navigation.isActive();
+			settings.controls.scheduleWrite();
+		};
+		
+		row += &navigation;
+		
+		// Strobe
+		strobe.setToggle(true);
+		strobe.setActive(settings.controls.strobeLights);
+		
+		strobe.isActiveChanged += [this, &settings] {
+			settings.controls.strobeLights = strobe.isActive();
+			settings.controls.scheduleWrite();
+		};
+		
+		row += &strobe;
+		
+		// Landing
+		landing.setToggle(true);
+		landing.setActive(settings.controls.landingLights);
+		
+		landing.isActiveChanged += [this, &settings] {
+			settings.controls.landingLights = landing.isActive();
+			settings.controls.scheduleWrite();
+		};
+		
+		row += &landing;
 	}
 }

@@ -11,7 +11,6 @@
 #include "toolbar/baro/baroToolbar.h"
 #include "toolbar/lights/lightsToolbar.h"
 #include "toolbar/trim/trimToolbar.h"
-#include "toolbar/log/logToolbar.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -37,7 +36,6 @@ namespace pizda {
 			BaroToolbar* _baroToolbar = nullptr;
 			LightsToolbar* _lightsToolbar = nullptr;
 			TrimToolbar* _trimToolbar = nullptr;
-			LogToolbar* _logToolbar = nullptr;
 
 			void fromSettingsInstance();
 	};

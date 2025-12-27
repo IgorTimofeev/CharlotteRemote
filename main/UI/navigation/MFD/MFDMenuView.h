@@ -34,16 +34,14 @@ namespace pizda {
 			MFDModeMenuViewButton
 				autopilotButton { &resources::Images::menuIconMFDAutopilot, L"A/P", SettingsInterfaceMFDToolbarMode::autopilot },
 				pressureButton { &resources::Images::menuIconMFDBaro, L"BARO", SettingsInterfaceMFDToolbarMode::baro },
-				trimButtonButton { &resources::Images::menuIconMFDTrim, L"Trim", SettingsInterfaceMFDToolbarMode::trim },
 				lightsButton { &resources::Images::menuIconMFDLights, L"Lights", SettingsInterfaceMFDToolbarMode::lights },
-				logButton { &resources::Images::menuIconMFDLog, L"Log", SettingsInterfaceMFDToolbarMode::log };
+				trimButtonButton { &resources::Images::menuIconMFDTrim, L"Trim", SettingsInterfaceMFDToolbarMode::trim };
 
-			std::array<MFDModeMenuViewButton*, 5> modeButtons {
+			std::array<MFDModeMenuViewButton*, 4> modeButtons {
 				&autopilotButton,
 				&pressureButton,
 				&trimButtonButton,
-				&lightsButton,
-				&logButton
+				&lightsButton
 			};
 
 			const Route* getRoute() override;

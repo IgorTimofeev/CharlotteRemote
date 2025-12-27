@@ -33,9 +33,8 @@ namespace pizda {
 		none,
 		autopilot,
 		baro,
-		trim,
 		lights,
-		log
+		trim
 	};
 
 	class SettingsInterfaceMFDToolbar {

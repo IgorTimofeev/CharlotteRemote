@@ -14,13 +14,13 @@ namespace pizda {
 		// Controls
 		ToolbarSection::setDefaultMargin(&_flightControlsIndicator, 4);
 		_flightControlsSection.setFocusable(false);
-		_flightControlsSection.setMargin(Margin(0, 0, 11, 0));
+		_flightControlsSection.setMargin(Margin(0, 0, 14, 0));
 		row += &_flightControlsSection;
 		
 		// Radio
 		ToolbarSection::setDefaultMargin(&_radio, 6);
 		_radioSection.setFocusable(false);
-		_radioSection.setMargin(Margin(11, 0, 0, 0));
+		_radioSection.setMargin(Margin(14, 0, 0, 0));
 		row += &_radioSection;
 		
 		// Battery

@@ -160,36 +160,34 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ХДЕ МОИ ИНТИКИ">
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/log/logToolbar.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/log/logToolbar.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimToolbar.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimToolbar.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/types/remoteData.h" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ЧОТА СДЕЛАЛ НО НЕ ВСЕ">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-BitStream" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-BitStream" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/korryButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/korryButton.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleSection.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleSection.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/log/logToolbar.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/log/logToolbar.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/resources/images.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/resources/images.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotImage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsImage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLogImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images/splashScreenImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/splashScreenImage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/settings/settingsControls.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settingsControls.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/settings/settingsInterface.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settingsInterface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/aircraftData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDAutopilot.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDAutopilot.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDAutopilot.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDAutopilot.psd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLights.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDLights.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLights.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDLights.psd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLog.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDTrim.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDTrim.psd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/splashScreen.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/splashScreen.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/splashScreen.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/splashScreen.psd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -237,27 +235,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.west.config.association.type.startup.service": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/UI/navigation/MFD/toolbar",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/UI/navigation/MFD/toolbar&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\toolbar" />
@@ -270,11 +268,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -966,33 +959,12 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="CMake Application.bootloader" />
-      <item itemvalue="CMake Application.efuse-common-table" />
-      <item itemvalue="CMake Application.efuse-custom-table" />
-      <item itemvalue="CMake Application.efuse_test_table" />
-      <item itemvalue="CMake Application.show-efuse-table" />
-      <item itemvalue="CMake Application.memory.ld" />
-      <item itemvalue="CMake Application.sections.ld.in" />
-      <item itemvalue="CMake Application.app" />
-      <item itemvalue="CMake Application.app-flash" />
-      <item itemvalue="CMake Application.bootloader-flash" />
-      <item itemvalue="CMake Application.erase_flash" />
-      <item itemvalue="CMake Application.flash" />
-      <item itemvalue="CMake Application.gen_project_binary" />
-      <item itemvalue="CMake Application.merge-bin" />
-      <item itemvalue="CMake Application.monitor" />
-      <item itemvalue="CMake Application.partition-table-flash" />
-      <item itemvalue="CMake Application.custom_bundle" />
-      <item itemvalue="CMake Application.apidoc" />
-      <item itemvalue="CMake Application.everest" />
-      <item itemvalue="CMake Application.p256m" />
-      <item itemvalue="CMake Application.lib" />
-      <item itemvalue="CMake Application.mbedcrypto" />
-      <item itemvalue="CMake Application.mbedtls" />
-      <item itemvalue="CMake Application.mbedx509" />
-      <item itemvalue="CMake Application.partition-table" />
-      <item itemvalue="CMake Application.partition_table_bin" />
-      <item itemvalue="CMake Application.app_check_size" />
+      <item itemvalue="CMake Application.Remote.elf" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-BitStream" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-NVSExtensions" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-SX1262" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-Units" />
+      <item itemvalue="CMake Application.__idf_YOBA" />
       <item itemvalue="CMake Application.__idf_app_trace" />
       <item itemvalue="CMake Application.__idf_app_update" />
       <item itemvalue="CMake Application.__idf_bootloader_support" />
@@ -1001,10 +973,6 @@
       <item itemvalue="CMake Application.__idf_cxx" />
       <item itemvalue="CMake Application.__idf_driver" />
       <item itemvalue="CMake Application.__idf_efuse" />
-      <item itemvalue="CMake Application.__idf_ESP-IDF-BitStream" />
-      <item itemvalue="CMake Application.__idf_ESP-IDF-NVSExtensions" />
-      <item itemvalue="CMake Application.__idf_ESP-IDF-SX1262" />
-      <item itemvalue="CMake Application.__idf_ESP-IDF-Units" />
       <item itemvalue="CMake Application.__idf_esp-tls" />
       <item itemvalue="CMake Application.__idf_esp_adc" />
       <item itemvalue="CMake Application.__idf_esp_app_format" />
@@ -1083,27 +1051,52 @@
       <item itemvalue="CMake Application.__idf_wifi_provisioning" />
       <item itemvalue="CMake Application.__idf_wpa_supplicant" />
       <item itemvalue="CMake Application.__idf_xtensa" />
-      <item itemvalue="CMake Application.__idf_YOBA" />
-      <item itemvalue="CMake Application.confserver" />
-      <item itemvalue="CMake Application.menuconfig" />
-      <item itemvalue="CMake Application.save-defconfig" />
       <item itemvalue="CMake Application.__ldgen_output_sections.ld" />
       <item itemvalue="CMake Application._project_elf_src" />
-      <item itemvalue="CMake Application.Remote.elf" />
-      <item itemvalue="CMake Application.size" />
-      <item itemvalue="CMake Application.size-components" />
-      <item itemvalue="CMake Application.size-files" />
-      <item itemvalue="CMake Application.uf2" />
-      <item itemvalue="CMake Application.uf2-app" />
+      <item itemvalue="CMake Application.apidoc" />
+      <item itemvalue="CMake Application.app-flash" />
+      <item itemvalue="CMake Application.app" />
+      <item itemvalue="CMake Application.app_check_size" />
+      <item itemvalue="CMake Application.bootloader-flash" />
+      <item itemvalue="CMake Application.bootloader" />
+      <item itemvalue="CMake Application.confserver" />
+      <item itemvalue="CMake Application.custom_bundle" />
+      <item itemvalue="CMake Application.efuse-common-table" />
+      <item itemvalue="CMake Application.efuse-custom-table" />
       <item itemvalue="CMake Application.efuse_common_table" />
       <item itemvalue="CMake Application.efuse_custom_table" />
+      <item itemvalue="CMake Application.efuse_test_table" />
       <item itemvalue="CMake Application.encrypted-app-flash" />
       <item itemvalue="CMake Application.encrypted-bootloader-flash" />
       <item itemvalue="CMake Application.encrypted-flash" />
       <item itemvalue="CMake Application.encrypted-partition-table-flash" />
-      <item itemvalue="CMake Application.partition_table" />
+      <item itemvalue="CMake Application.erase_flash" />
+      <item itemvalue="CMake Application.everest" />
+      <item itemvalue="CMake Application.flash" />
+      <item itemvalue="CMake Application.gen_project_binary" />
+      <item itemvalue="CMake Application.lib" />
+      <item itemvalue="CMake Application.mbedcrypto" />
+      <item itemvalue="CMake Application.mbedtls" />
+      <item itemvalue="CMake Application.mbedx509" />
+      <item itemvalue="CMake Application.memory.ld" />
+      <item itemvalue="CMake Application.menuconfig" />
+      <item itemvalue="CMake Application.merge-bin" />
+      <item itemvalue="CMake Application.monitor" />
+      <item itemvalue="CMake Application.p256m" />
+      <item itemvalue="CMake Application.partition-table-flash" />
+      <item itemvalue="CMake Application.partition-table" />
       <item itemvalue="CMake Application.partition_table-flash" />
+      <item itemvalue="CMake Application.partition_table" />
+      <item itemvalue="CMake Application.partition_table_bin" />
+      <item itemvalue="CMake Application.save-defconfig" />
+      <item itemvalue="CMake Application.sections.ld.in" />
+      <item itemvalue="CMake Application.show-efuse-table" />
       <item itemvalue="CMake Application.show_efuse_table" />
+      <item itemvalue="CMake Application.size-components" />
+      <item itemvalue="CMake Application.size-files" />
+      <item itemvalue="CMake Application.size" />
+      <item itemvalue="CMake Application.uf2-app" />
+      <item itemvalue="CMake Application.uf2" />
     </list>
   </component>
   <component name="TaskManager">
@@ -1124,7 +1117,9 @@
       <workItem from="1766741661302" duration="1579000" />
       <workItem from="1766743280851" duration="7772000" />
       <workItem from="1766751251310" duration="33140000" />
-      <workItem from="1766829250502" duration="18538000" />
+      <workItem from="1766829250502" duration="18746000" />
+      <workItem from="1766852638366" duration="5223000" />
+      <workItem from="1766859650461" duration="270000" />
     </task>
     <task id="LOCAL-00001" summary="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ">
       <option name="closed" value="true" />
@@ -1334,7 +1329,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766845238561</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="ЧОТА СДЕЛАЛ НО НЕ ВСЕ">
+      <option name="closed" value="true" />
+      <created>1766850278891</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1766850278891</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1393,6 +1396,7 @@
     <MESSAGE value="ахуй" />
     <MESSAGE value="нормас, можно в принципе пакетики хуярить уже" />
     <MESSAGE value="ХДЕ МОИ ИНТИКИ" />
-    <option name="LAST_COMMIT_MESSAGE" value="ХДЕ МОИ ИНТИКИ" />
+    <MESSAGE value="ЧОТА СДЕЛАЛ НО НЕ ВСЕ" />
+    <option name="LAST_COMMIT_MESSAGE" value="ЧОТА СДЕЛАЛ НО НЕ ВСЕ" />
   </component>
 </project>

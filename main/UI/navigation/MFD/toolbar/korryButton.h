@@ -58,4 +58,69 @@ namespace pizda {
 				);
 			}
 	};
+	
+	class KorryButton2 : public Button {
+		public:
+			explicit KorryButton2(std::wstring_view text, const Image* image) : _image(image) {
+				setFont(&Theme::fontSmall);
+				setText(text);
+			}
+		
+		protected:
+			Size onMeasure(const Size& availableSize) override {
+				return Size(
+					std::max(
+						_image->getSize().getWidth(),
+						Theme::fontSmall.getWidth(getText())
+					) + Toolbar::contentHorizontalMargin * 2,
+					
+					Theme::fontSmall.getHeight()
+					+ _image->getSize().getHeight()
+				);
+			}
+		
+			void onRender(Renderer* renderer, const Bounds& bounds) override {
+				renderer->renderFilledRectangle(
+					Bounds(bounds.getX(), bounds.getY(), bounds.getWidth(), Toolbar::topPanelHeight),
+					isActive() ? &Theme::bg3 : &Theme::bg2
+				);
+				
+				if (isActive()) {
+					renderer->renderFilledRectangle(
+						Bounds(bounds.getX(), bounds.getY() + Toolbar::topPanelHeight, bounds.getWidth(), bounds.getHeight() - Toolbar::topPanelHeight),
+						&Theme::bg2
+					);
+				}
+				
+				renderer->renderString(
+					Point(
+						bounds.getXCenter() - getFont()->getWidth(getText()) / 2,
+						bounds.getY()
+					),
+					getFont(),
+					isActive() ? &Theme::fg1 : &Theme::fg4,
+					getText()
+				);
+				
+				renderer->renderImage(
+					Point(
+						bounds.getXCenter() - _image->getSize().getWidth() / 2,
+						bounds.getYCenter() - _image->getSize().getHeight() / 2
+					),
+					_image
+				);
+				
+				renderer->renderHorizontalLine(
+					Point(
+						bounds.getX(),
+						bounds.getY2()
+					),
+					bounds.getWidth(),
+					&Theme::fg1
+				);
+			}
+			
+		private:
+			const Image* _image;
+	};
 }

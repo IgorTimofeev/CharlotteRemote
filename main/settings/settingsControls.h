@@ -21,8 +21,9 @@ namespace pizda {
 			uint32_t minimumAltitudeFt = 0;
 			bool minimumAltitudeEnabled = false;
 
-			bool landingGear = false;
+			bool navigationLights = false;
 			bool strobeLights = false;
+			bool landingLights = false;
 
 		protected:
 			const char* getNamespace() override {
@@ -38,8 +39,9 @@ namespace pizda {
 				minimumAltitudeFt = stream.readUint32(_minimumAltitudeFt, 350);
 				minimumAltitudeEnabled = stream.readBool(_minimumAltitudeEnabled, true);
 
-				landingGear = stream.readBool(_landingGear, true);
+				navigationLights = stream.readBool(_navigationLights, true);
 				strobeLights = stream.readBool(_strobeLights, true);
+				landingLights = stream.readBool(_landingLights, true);
 			}
 
 			void onWrite(const NVSStream& stream) override {
@@ -51,8 +53,9 @@ namespace pizda {
 				stream.writeUint32(_minimumAltitudeFt, minimumAltitudeFt);
 				stream.writeBool(_minimumAltitudeEnabled, minimumAltitudeEnabled);
 
-				stream.writeBool(_landingGear, landingGear);
+				stream.writeBool(_navigationLights, navigationLights);
 				stream.writeBool(_strobeLights, strobeLights);
+				stream.writeBool(_landingLights, landingLights);
 			}
 
 		private:
@@ -62,7 +65,9 @@ namespace pizda {
 			constexpr static const char* _referencePressureSTD = "rs";
 			constexpr static const char* _minimumAltitudeFt = "ma";
 			constexpr static const char* _minimumAltitudeEnabled = "me";
-			constexpr static const char* _landingGear = "lg";
+			constexpr static const char* _navigationLights = "nl";
 			constexpr static const char* _strobeLights = "sl";
+			constexpr static const char* _landingLights = "ll";
+			
 	};
 }
