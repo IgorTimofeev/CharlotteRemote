@@ -77,7 +77,6 @@ namespace pizda {
 		// UI
 		_application.setBackgroundColor(&Theme::bg1);
 		_application += &_pageLayout;
-		_openMenuButton.applyBottomStyle();
 		_application += &_openMenuButton;
 
 		setRoute(&Routes::MFD);

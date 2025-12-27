@@ -11,9 +11,9 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class BaroControls : public Toolbar {
+	class BaroToolbar : public Toolbar {
 		public:
-			explicit BaroControls();
+			explicit BaroToolbar();
 
 			RotaryControl<5, 9000, 11000, false, 1, 10> pressure { L"Baro", L"STD" };
 			RotaryControl<4, 0, 15000, false, 1, 10> minimums { L"Minimums", L"ON" };

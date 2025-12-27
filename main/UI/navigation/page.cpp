@@ -1,7 +1,5 @@
 #include "page.h"
 
-#include "rc.h"
-
 namespace pizda {
 	ScrollViewPage::ScrollViewPage() {
 		// Title
@@ -17,7 +15,5 @@ namespace pizda {
 		// Scroll views
 		Theme::apply(&scrollView);
 		*this += &scrollView;
-
-		RC::getInstance().getOpenMenuButton().applyBottomStyle();
 	}
 }

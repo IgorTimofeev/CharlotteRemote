@@ -12,9 +12,9 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class AutopilotControls : public Toolbar {
+	class AutopilotToolbar : public Toolbar {
 		public:
-			explicit AutopilotControls();
+			explicit AutopilotToolbar();
 			
 			KorryButton flightDirectorsButton { L"FD" };
 

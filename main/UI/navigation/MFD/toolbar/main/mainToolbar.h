@@ -14,9 +14,9 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class MainControls : public Toolbar {
+	class MainToolbar : public Toolbar {
 		public:
-			MainControls();
+			MainToolbar();
 
 		protected:
 			void onTick() override;

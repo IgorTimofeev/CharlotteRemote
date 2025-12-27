@@ -28,7 +28,7 @@ namespace pizda {
 				renderer->renderRectangle(Bounds(tipPosition, tipSize), &Theme::bg4);
 
 				// Fill
-				const auto fillWidth = static_cast<uint16_t>(static_cast<uint32_t>(frameSize - 2) * _charge / 0xFF);
+				const auto fillWidth = static_cast<uint16_t>(static_cast<uint32_t>(frameSize) * _charge / 0xFF);
 
 				if (fillWidth > 0) {
 					const Color* color;

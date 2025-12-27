@@ -1,11 +1,11 @@
-#include "baroControls.h"
+#include "baroToolbar.h"
 
 #include "rc.h"
 
 namespace pizda {
 	using namespace YOBA;
 
-	BaroControls::BaroControls() {
+	BaroToolbar::BaroToolbar() {
 		setHeight(36);
 		
 		auto& settings = RC::getInstance().getSettings();

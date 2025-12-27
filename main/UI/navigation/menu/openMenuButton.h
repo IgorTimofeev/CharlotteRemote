@@ -8,15 +8,11 @@ namespace pizda {
 
 	class OpenMenuButton : public Button {
 		public:
-			void applyBottomStyle();
-			void applyBottomRightStyle();
+			OpenMenuButton();
 
 		protected:
 			void onClick() override;
 
 		private:
-			constexpr static uint8_t _roundStyleSize = 36;
-
-			void applyRoundStyle();
 	};
 }

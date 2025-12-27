@@ -17,25 +17,26 @@ namespace pizda {
 	class RotaryControlButton : public Button {
 		public:
 			RotaryControlButton() {
-				setActiveBackgroundColor(&Theme::bg3);
-				
+				setDefaultBackgroundColor(&Theme::bg2);
 				setDefaultTextColor(&Theme::fg5);
-				setActiveTextColor(&Theme::fg2);
+				
+				setActiveBackgroundColor(&Theme::fg1);
+				setActiveTextColor(&Theme::bg1);
 				
 				setFont(&Theme::fontSmall);
-//				setContentMargin(Margin(0, 1, 0, 0));
+				setContentMargin(Margin(0, 1, 0, 0));
 				
 				setToggle(true);
 			}
 		
 		protected:
-			void onRender(Renderer* renderer, const Bounds& bounds) override {
-				Button::onRender(renderer, bounds);
-				
-				if (isActive()) {
-					renderer->renderHorizontalLine(bounds.getBottomLeft(), bounds.getWidth(), &Theme::fg1);
-				}
-			}
+//			void onRender(Renderer* renderer, const Bounds& bounds) override {
+//				Button::onRender(renderer, bounds);
+//
+//				if (isActive()) {
+//					renderer->renderHorizontalLine(bounds.getBottomLeft(), bounds.getWidth(), &Theme::fg1);
+//				}
+//			}
 	};
 	
 	template<uint8_t digitCount, uint32_t minimum, uint32_t maximum, bool cycling, uint16_t smallChange, uint16_t bigChange>
@@ -60,7 +61,7 @@ namespace pizda {
 				
 				// Button
 				button.setVerticalAlignment(Alignment::end);
-				button.setHeight(8);
+				button.setHeight(7);
 				button.setText(buttonText);
 				
 				*this += &button;

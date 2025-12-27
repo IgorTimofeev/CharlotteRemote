@@ -37,29 +37,29 @@ namespace pizda {
 		if (_ND && !settings.interface.MFD.ND.visible)
 			_ND = nullptr;
 		
-		if (_autopilotControls && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::autopilot)
-			_autopilotControls = nullptr;
+		if (_autopilotToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::autopilot)
+			_autopilotToolbar = nullptr;
 
-		if (_baroControls && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::baro)
-			_baroControls = nullptr;
+		if (_baroToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::baro)
+			_baroToolbar = nullptr;
 
 		// Creating
 		switch (settings.interface.MFD.toolbar.mode) {
 			case SettingsInterfaceMFDToolbarMode::autopilot: {
-				if (!_autopilotControls)
-					_autopilotControls = new AutopilotControls();
+				if (!_autopilotToolbar)
+					_autopilotToolbar = new AutopilotToolbar();
 				
-				_rows.setAutoSize(_autopilotControls, true);
-				_rows += _autopilotControls;
+				_rows.setAutoSize(_autopilotToolbar, true);
+				_rows += _autopilotToolbar;
 				
 				break;
 			}
 			case SettingsInterfaceMFDToolbarMode::baro: {
-				if (!_baroControls)
-					_baroControls = new BaroControls();
+				if (!_baroToolbar)
+					_baroToolbar = new BaroToolbar();
 				
-				_rows.setAutoSize(_baroControls, true);
-				_rows += _baroControls;
+				_rows.setAutoSize(_baroToolbar, true);
+				_rows += _baroToolbar;
 				
 				break;
 			}
@@ -85,14 +85,14 @@ namespace pizda {
 //			_rows.setRelativeSize(_PFD, static_cast<float>(settings.interface.MFD.splitPercent) / 100.f * 2.f);
 		
 		// Main
-		_rows.setAutoSize(&_mainControls, true);
-		_rows += &_mainControls;
+		_rows.setAutoSize(&_mainToolbar, true);
+		_rows += &_mainToolbar;
 		
 //		if (settings.interface.MFD.toolbar.mode == SettingsInterfaceMFDToolbarMode::none) {
 //			rc.getOpenMenuButton().applyBottomStyle();
 //		}
 //		else {
-			rc.getOpenMenuButton().applyBottomRightStyle();
+//			rc.getOpenMenuButton().applyBottomRightStyle();
 //		}
 
 		invalidate();

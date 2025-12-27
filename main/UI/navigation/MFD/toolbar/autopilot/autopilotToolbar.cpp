@@ -1,10 +1,10 @@
-#include "autopilotControls.h"
+#include "autopilotToolbar.h"
 #include "rc.h"
 
 namespace pizda {
 	using namespace YOBA;
 
-	AutopilotControls::AutopilotControls() {
+	AutopilotToolbar::AutopilotToolbar() {
 		auto& settings = RC::getInstance().getSettings();
 		setHeight(36);
 

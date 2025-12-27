@@ -1,11 +1,11 @@
-#include "mainControls.h"
+#include "mainToolbar.h"
 
 #include "rc.h"
 #include <resources/images.h>
 #include "UI/navigation/MFD/toolbar/toolbar.h"
 
 namespace pizda {
-	MainControls::MainControls() {
+	MainToolbar::MainToolbar() {
 		setHeight(36);
 		
 		// Throttle
@@ -14,15 +14,17 @@ namespace pizda {
 		// Controls
 		ToolbarSection::setDefaultMargin(&_flightControlsIndicator, 4);
 		_flightControlsSection.setFocusable(false);
+		_flightControlsSection.setMargin(Margin(0, 0, 11, 0));
 		row += &_flightControlsSection;
 		
 		// Radio
 		ToolbarSection::setDefaultMargin(&_radio, 6);
 		_radioSection.setFocusable(false);
+		_radioSection.setMargin(Margin(11, 0, 0, 0));
 		row += &_radioSection;
 		
 		// Battery
-		_batteryRows.setSpacing(2);
+		_batteryRows.setSpacing(3);
 		ToolbarSection::setDefaultMargin(&_batteryRows, 3);
 		_batteryRows += &_batteryIndicatorRC;
 		_batteryRows += &_batteryIndicatorAC;
@@ -30,7 +32,7 @@ namespace pizda {
 		row += &_batterySection;
 	}
 
-	void MainControls::onTick() {
+	void MainToolbar::onTick() {
 		Layout::onTick();
 
 		auto& rc = RC::getInstance();

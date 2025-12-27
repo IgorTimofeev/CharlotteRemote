@@ -15,12 +15,10 @@ namespace pizda {
 				setSize(Size(24, 20));
 				
 				setDefaultBackgroundColor(&Theme::bg2);
-				setDefaultBorderColor(&Theme::bg3);
-				setDefaultTextColor(&Theme::fg3);
+				setDefaultTextColor(&Theme::fg2);
 
 				setActiveBackgroundColor(&Theme::bg2);
-
-				setActiveBorderColor(&Theme::bg3);
+				setActiveBorderColor(&Theme::bg4);
 				setActiveTextColor(&Theme::fg1);
 
 				setFont(&Theme::fontSmall);
@@ -29,7 +27,9 @@ namespace pizda {
 
 			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				renderer->renderFilledRectangle(bounds, getCornerRadius(), isActive() ? getActiveBackgroundColor() : getDefaultBackgroundColor());
-
+				
+				renderer->renderRectangle(bounds, getCornerRadius(), isActive() ? getActiveBorderColor() : getDefaultBorderColor());
+				
 				renderer->renderString(
 					Point(
 						bounds.getXCenter() - getFont()->getWidth(getText()) / 2,
@@ -53,7 +53,7 @@ namespace pizda {
 						lineWidth,
 						lineHeight
 					),
-					isActive() ? &Theme::green : &Theme::bg3
+					isActive() ? &Theme::green : &Theme::bg4
 				);
 			}
 	};
