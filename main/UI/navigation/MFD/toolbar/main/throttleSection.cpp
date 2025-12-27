@@ -1,19 +1,20 @@
-#include "throttleIndicatorLayout.h"
+#include "throttleSection.h"
 
 #include "rc.h"
+#include "UI/navigation/MFD/toolbar/toolbar.h"
 
 namespace pizda {
-	ThrottleIndicatorLayout::ThrottleIndicatorLayout() : InstrumentIndicatorLayout(L"THR") {
+	ThrottleSection::ThrottleSection() : ToolbarSection(L"THR") {
 		row.setSpacing(7);
-		row.setMargin(Margin(0, 6, 0, 0));
+		ToolbarSection::setDefaultMargin(&row, 6);
 		
 		row += &throttleIndicator1;
 		row += &throttleIndicator2;
 
-		setContent(&row);
+		*this += &row;
 	}
 
-	void ThrottleIndicatorLayout::onTick() {
+	void ThrottleSection::onTick() {
 		Layout::onTick();
 
 		auto& rc = RC::getInstance();
@@ -28,8 +29,8 @@ namespace pizda {
 		throttleIndicator2.setAircraftValue(throttleIndicator1.getAircraftValue());
 	}
 
-	void ThrottleIndicatorLayout::onEventBeforeChildren(Event* event) {
-		InstrumentIndicatorLayout::onEventBeforeChildren(event);
+	void ThrottleSection::onEventBeforeChildren(Event* event) {
+		ToolbarSection::onEventBeforeChildren(event);
 
 		if (event->getTypeID() == EncoderValueChangedEvent::typeID) {
 			if (isFocused()) {

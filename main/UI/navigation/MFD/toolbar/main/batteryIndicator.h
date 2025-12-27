@@ -12,7 +12,7 @@ namespace pizda {
 	class BatteryIndicator : public Control {
 		public:
 			BatteryIndicator() {
-				setSize(Size(28, 10));
+				setSize(Size(28, 9));
 			}
 			
 			void onRender(Renderer* renderer, const Bounds& bounds) override {
@@ -45,10 +45,10 @@ namespace pizda {
 
 					renderer->renderFilledRectangle(
 						Bounds(
-							bounds.getX() + 1,
-							bounds.getY() + 1,
+							bounds.getX(),
+							bounds.getY(),
 							fillWidth,
-							bounds.getHeight() - 2
+							bounds.getHeight()
 						),
 						color
 					);

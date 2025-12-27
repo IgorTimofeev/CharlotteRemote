@@ -6,10 +6,8 @@ namespace pizda {
 	using namespace YOBA;
 
 	BaroControls::BaroControls() {
-		setHeight(38);
+		setHeight(36);
 		
-		row.setSpacing(6);
-
 		auto& settings = RC::getInstance().getSettings();
 
 		// Pressure

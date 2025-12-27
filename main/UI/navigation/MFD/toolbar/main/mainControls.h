@@ -3,13 +3,13 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "throttleIndicatorLayout.h"
+#include "throttleSection.h"
 #include "flightControlsIndicator.h"
 #include "batteryIndicator.h"
 #include "radioIndicator.h"
 
 #include <UI/navigation/MFD/toolbar/toolbar.h>
-#include <UI/navigation/MFD/toolbar/instrumentIndicatorLayout.h>
+#include <UI/navigation/MFD/toolbar/toolbarSection.h>
 
 namespace pizda {
 	using namespace YOBA;
@@ -22,17 +22,17 @@ namespace pizda {
 			void onTick() override;
 
 		private:
-			ThrottleIndicatorLayout _throttleIndicatorLayout {};
+			ThrottleSection _throttleIndicatorLayout {};
 
 			FlightControlsIndicator _flightControlsIndicator {};
-			InstrumentIndicatorLayout _flightControlsLayout = { L"FCTL", &_flightControlsIndicator };
+			ToolbarSection _flightControlsSection = { L"FCTL", &_flightControlsIndicator };
 
 			BatteryIndicator _batteryIndicatorRC {};
 			BatteryIndicator _batteryIndicatorAC {};
 			StackLayout _batteryRows {};
-			InstrumentIndicatorLayout _batteryLayout = { L"BAT", &_batteryRows };
+			ToolbarSection _batterySection = { L"BAT", &_batteryRows };
 
 			RadioIndicator _radio {};
-			InstrumentIndicatorLayout _radioLayout = { L"SIG", &_radio };
+			ToolbarSection _radioSection = { L"SIG", &_radio };
 	};
 }

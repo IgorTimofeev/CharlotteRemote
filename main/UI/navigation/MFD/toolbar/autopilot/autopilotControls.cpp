@@ -11,7 +11,6 @@ namespace pizda {
 //		row.setSpacing(6);
 
 		// FD
-		flightDirectorsButton.setSize(Size(24, 18));
 		flightDirectorsButton.setMargin(Margin(0, 0, 8, 0));
 		flightDirectorsButton.setVerticalAlignment(Alignment::center);
 		flightDirectorsButton.setToggle(true);
@@ -73,7 +72,6 @@ namespace pizda {
 		row += &altitude;
 		
 		// LNAV
-		LNAVButton.setSize(flightDirectorsButton.getSize());
 		LNAVButton.setMargin(Margin(8, 0, 0, 0));
 		LNAVButton.setVerticalAlignment(Alignment::center);
 		LNAVButton.setToggle(true);

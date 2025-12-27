@@ -35,6 +35,10 @@ namespace pizda {
 			sexuality = 3;
 			color = &Theme::fg1;
 		}
+		else if (rssi == 0) {
+			sexuality = 0;
+			color = &Theme::fg1;
+		}
 		else {
 			sexuality = 4;
 			color = &Theme::fg1;

@@ -5,7 +5,7 @@
 #include "UI/theme.h"
 
 #include "UI/navigation/MFD/toolbar/toolbar.h"
-#include "UI/navigation/MFD/toolbar/instrumentIndicatorLayout.h"
+#include "UI/navigation/MFD/toolbar/toolbarSection.h"
 #include "UI/navigation/MFD/toolbar/rotaryControl.h"
 
 namespace pizda {

@@ -6,7 +6,7 @@
 #include <YOBA/hardware/encoder.h>
 
 #include "UI/theme.h"
-#include "UI/navigation/MFD/toolbar/instrumentIndicatorLayout.h"
+#include "UI/navigation/MFD/toolbar/toolbarSection.h"
 #include "UI/navigation/MFD/toolbar/toolbar.h"
 
 namespace pizda {
@@ -14,13 +14,36 @@ namespace pizda {
 
 	class RC;
 
-	template<uint8_t digitCount, uint32_t minimum, uint32_t maximum, bool cycling, uint16_t smallChange, uint16_t bigChange>
-	class RotaryControl : public InstrumentIndicatorLayout {
+	class RotaryControlButton : public Button {
 		public:
-			explicit RotaryControl(std::wstring_view title, std::wstring_view buttonText) : InstrumentIndicatorLayout(title) {
+			RotaryControlButton() {
+				setActiveBackgroundColor(&Theme::bg3);
+				
+				setDefaultTextColor(&Theme::fg5);
+				setActiveTextColor(&Theme::fg2);
+				
+				setFont(&Theme::fontSmall);
+//				setContentMargin(Margin(0, 1, 0, 0));
+				
+				setToggle(true);
+			}
+		
+		protected:
+			void onRender(Renderer* renderer, const Bounds& bounds) override {
+				Button::onRender(renderer, bounds);
+				
+				if (isActive()) {
+					renderer->renderHorizontalLine(bounds.getBottomLeft(), bounds.getWidth(), &Theme::fg1);
+				}
+			}
+	};
+	
+	template<uint8_t digitCount, uint32_t minimum, uint32_t maximum, bool cycling, uint16_t smallChange, uint16_t bigChange>
+	class RotaryControl : public ToolbarSection {
+		public:
+			explicit RotaryControl(std::wstring_view title, std::wstring_view buttonText) : ToolbarSection(title) {
 				// Seven segment
 				seven.setAlignment(Alignment::center, Alignment::start);
-				seven.setMargin(Margin(0, 6, 0, 0));
 				
 				seven.setDigitCount(digitCount);
 				seven.setDecimalSeparatorSpacing(2);
@@ -31,40 +54,26 @@ namespace pizda {
 				seven.setInactiveColor(&Theme::bg5);
 				seven.setActiveColor(&Theme::fg1);
 				
-				sevenAndButtonLayout += &seven;
+				ToolbarSection::setDefaultMargin(&seven, 6);
+				
+				*this += &seven;
 				
 				// Button
 				button.setVerticalAlignment(Alignment::end);
-				button.setHeight(7);
-				button.setMargin(Margin(-Toolbar::contentHorizontalMargin, 0, -Toolbar::contentHorizontalMargin, 0));
-				
-				button.setDefaultBackgroundColor(&Theme::bg3);
-				button.setActiveBackgroundColor(&Theme::fg1);
-				
-				button.setDefaultTextColor(&Theme::fg5);
-				button.setActiveTextColor(&Theme::bg1);
-				
-				button.setFont(&Theme::fontSmall);
+				button.setHeight(8);
 				button.setText(buttonText);
-				button.setContentMargin(Margin(0, 1, 0, 0));
 				
-				button.setToggle(true);
-				
-				sevenAndButtonLayout += &button;
-				
-				setContent(&sevenAndButtonLayout);
+				*this += &button;
 			}
 
-			Layout sevenAndButtonLayout {};
-
 			SevenSegment seven {};
-			Button button {};
+			RotaryControlButton button {};
 
 			Callback<> rotated {};
 			Callback<> switched {};
 			
 			void onEventBeforeChildren(Event* event) override {
-				InstrumentIndicatorLayout::onEventBeforeChildren(event);
+				ToolbarSection::onEventBeforeChildren(event);
 				
 				if (event->getTypeID() == EncoderValueChangedEvent::typeID) {
 					if (!isFocused())

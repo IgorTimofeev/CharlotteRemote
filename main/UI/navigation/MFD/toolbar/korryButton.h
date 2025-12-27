@@ -4,12 +4,16 @@
 #include <YOBA/UI.h>
 #include "UI/theme.h"
 
+#include "UI/navigation/MFD/toolbar/toolbarSection.h"
+
 namespace pizda {
 	using namespace YOBA;
 
 	class KorryButton : public Button {
 		public:
 			explicit KorryButton(std::wstring_view text) {
+				setSize(Size(24, 20));
+				
 				setDefaultBackgroundColor(&Theme::bg2);
 				setDefaultBorderColor(&Theme::bg3);
 				setDefaultTextColor(&Theme::fg3);

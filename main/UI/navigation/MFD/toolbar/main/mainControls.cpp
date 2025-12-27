@@ -2,6 +2,7 @@
 
 #include "rc.h"
 #include <resources/images.h>
+#include "UI/navigation/MFD/toolbar/toolbar.h"
 
 namespace pizda {
 	MainControls::MainControls() {
@@ -11,22 +12,22 @@ namespace pizda {
 		row += &_throttleIndicatorLayout;
 
 		// Controls
-		_flightControlsIndicator.setMargin(Margin(0, 4, 0, 0));
-		_flightControlsLayout.setFocusable(false);
-		row += &_flightControlsLayout;
+		ToolbarSection::setDefaultMargin(&_flightControlsIndicator, 4);
+		_flightControlsSection.setFocusable(false);
+		row += &_flightControlsSection;
 		
 		// Radio
-		_radio.setMargin(Margin(0, 6, 0, 0));
-		_radioLayout.setFocusable(false);
-		row += &_radioLayout;
+		ToolbarSection::setDefaultMargin(&_radio, 6);
+		_radioSection.setFocusable(false);
+		row += &_radioSection;
 		
 		// Battery
 		_batteryRows.setSpacing(2);
-		_batteryRows.setMargin(Margin(0, 3, 0, 0));
+		ToolbarSection::setDefaultMargin(&_batteryRows, 3);
 		_batteryRows += &_batteryIndicatorRC;
 		_batteryRows += &_batteryIndicatorAC;
-		_batteryLayout.setFocusable(false);
-		row += &_batteryLayout;
+		_batterySection.setFocusable(false);
+		row += &_batterySection;
 	}
 
 	void MainControls::onTick() {

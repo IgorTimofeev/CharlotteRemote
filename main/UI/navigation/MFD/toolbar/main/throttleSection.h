@@ -1,14 +1,14 @@
 #pragma once
 
-#include "UI/navigation/MFD/toolbar/instrumentIndicatorLayout.h"
+#include "UI/navigation/MFD/toolbar/toolbarSection.h"
 #include "throttleIndicator.h"
 
 namespace pizda {
 	using namespace YOBA;
 
-	class ThrottleIndicatorLayout : public InstrumentIndicatorLayout {
+	class ThrottleSection : public ToolbarSection {
 		public:
-			explicit ThrottleIndicatorLayout();
+			explicit ThrottleSection();
 
 			StackLayout row {};
 			ThrottleIndicator throttleIndicator1 {};
