@@ -7,7 +7,7 @@ namespace pizda {
 	LightsToolbar::LightsToolbar() {
 		setHeight(36);
 		
-		row.setSpacing(2);
+		row.setSpacing(1);
 		
 		auto& rc = RC::getInstance();
 		auto& rd = rc.getRemoteData();

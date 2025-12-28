@@ -18,14 +18,15 @@ namespace pizda {
 			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				const auto yCenter = bounds.getYCenter();
 				const auto tipSize = Size(4, 5);
-				const auto tipPosition = Point(bounds.getX2() - tipSize.getWidth(), yCenter - tipSize.getHeight() / 2);
-				const uint16_t frameSize = bounds.getWidth() - tipSize.getWidth();
+				
+				// +1 because tip overlaps frame
+				const uint16_t frameSize = bounds.getWidth() - tipSize.getWidth() + 1;
 
-				// Border
+				// Frame
 				renderer->renderRectangle(Bounds(bounds.getX(), bounds.getY(), frameSize, bounds.getHeight()), &Theme::bg4);
 
 				// Tip
-				renderer->renderRectangle(Bounds(tipPosition, tipSize), &Theme::bg4);
+				renderer->renderRectangle(Bounds(Point(bounds.getX() + frameSize - 1, yCenter - tipSize.getHeight() / 2), tipSize), &Theme::bg4);
 
 				// Fill
 				const auto fillWidth = static_cast<uint16_t>(static_cast<uint32_t>(frameSize) * _charge / 0xFF);

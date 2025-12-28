@@ -3,10 +3,10 @@
 #include "rc.h"
 
 namespace pizda {
-	using namespace YOBA;
-
 	BaroToolbar::BaroToolbar() {
 		setHeight(36);
+		
+		row.setSpacing(1);
 		
 		auto& settings = RC::getInstance().getSettings();
 
@@ -24,7 +24,7 @@ namespace pizda {
 			settings.controls.referencePressureSTD = pressure.button.isActive();
 			RC::getInstance().getSettings().controls.scheduleWrite();
 		};
-
+		
 		row += &pressure;
 
 		// Minimums
@@ -40,7 +40,7 @@ namespace pizda {
 			settings.controls.minimumAltitudeEnabled = minimums.button.isActive();
 			RC::getInstance().getSettings().controls.scheduleWrite();
 		};
-
+		
 		row += &minimums;
 	}
 }

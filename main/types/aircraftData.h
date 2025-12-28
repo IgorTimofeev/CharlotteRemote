@@ -21,7 +21,7 @@ namespace pizda {
 			float windSpeed = 0;
 			uint8_t throttlePercent_0_255 = 0;
 			
-			float airSpeedMps = 0;
+			float airSpeedMPS = 0;
 			float airSpeedTrendMPS = 0;
 			
 			float altitudeTrendM = 0;
@@ -32,7 +32,7 @@ namespace pizda {
 			float pitchRad = 0;
 			float yawRad = 0;
 			
-			float slipAndSkidG = 0;
+			float slipAndSkidFactor = 0;
 			
 			float flightPathVectorPitchRad = 0;
 			float flightPathVectorYawRad = 0;
@@ -60,7 +60,7 @@ namespace pizda {
 			float yawRad = 0;
 			float headingDeg = 0;
 			
-			float slipAndSkidG = 0;
+			float slipAndSkidFactor = 0;
 			
 			float flightPathVectorPitchRad = 0;
 			float flightPathVectorYawRad = 0;
@@ -69,9 +69,7 @@ namespace pizda {
 			float flightDirectorRollRad = 0;
 			
 			float windDirectionRad = 0;
-			
 			float throttlePercent01 = 0;
-			float batteryVoltageV = 0;
 	};
 
 	class AircraftData {

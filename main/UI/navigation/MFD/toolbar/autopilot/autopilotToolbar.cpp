@@ -2,14 +2,13 @@
 #include "rc.h"
 
 namespace pizda {
-	using namespace YOBA;
-
 	AutopilotToolbar::AutopilotToolbar() {
-		auto& settings = RC::getInstance().getSettings();
 		setHeight(36);
-
-//		row.setSpacing(6);
+		
+		row.setSpacing(1);
 		row.setMargin(Margin(0, 0, (21 + Toolbar::contentHorizontalMargin * 2) / 2, 0));
+		
+		auto& settings = RC::getInstance().getSettings();
 
 		// FD
 		flightDirectorsButton.setActive(settings.interface.MFD.PFD.flightDirectors);
@@ -34,7 +33,7 @@ namespace pizda {
 			settings.autopilot.autoThrottle = speed.button.isActive();
 			settings.autopilot.scheduleWrite();
 		};
-
+		
 		row += &speed;
 
 		// Heading
@@ -50,7 +49,7 @@ namespace pizda {
 			settings.autopilot.headingHold = heading.button.isActive();
 			settings.autopilot.scheduleWrite();
 		};
-
+		
 		row += &heading;
 
 		// Altitude
@@ -66,7 +65,7 @@ namespace pizda {
 			settings.autopilot.levelChange = altitude.button.isActive();
 			settings.autopilot.scheduleWrite();
 		};
-
+		
 		row += &altitude;
 	}
 }

@@ -17,7 +17,10 @@ namespace pizda {
 	class RotaryControlButton : public Button {
 		public:
 			RotaryControlButton() {
-				setDefaultBackgroundColor(&Theme::bg2);
+				setVerticalAlignment(Alignment::end);
+				setHeight(7);
+				
+				setDefaultBackgroundColor(&Theme::bg3);
 				setDefaultTextColor(&Theme::fg5);
 				
 				setActiveBackgroundColor(&Theme::fg1);
@@ -60,8 +63,6 @@ namespace pizda {
 				*this += &seven;
 				
 				// Button
-				button.setVerticalAlignment(Alignment::end);
-				button.setHeight(7);
 				button.setText(buttonText);
 				
 				*this += &button;

@@ -22,6 +22,9 @@ namespace pizda {
 			void onTick() override;
 
 		private:
+			StackLayout leftRow {};
+			StackLayout rightRow {};
+			
 			ThrottleSection _throttleIndicatorLayout {};
 
 			FlightControlsIndicator _flightControlsIndicator {};

@@ -14,7 +14,7 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class AutopilotToolbar : public Toolbar {
+	class AutopilotToolbar : public RowToolbar {
 		public:
 			explicit AutopilotToolbar();
 			

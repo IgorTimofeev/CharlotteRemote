@@ -15,7 +15,7 @@ namespace pizda {
 	
 	class RemoteDataComputed {
 		public:
-			float transceiverRSSIDBm = 0;
+		
 	};
 
 	class RemoteData {

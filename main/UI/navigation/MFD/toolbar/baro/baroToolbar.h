@@ -11,11 +11,11 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class BaroToolbar : public Toolbar {
+	class BaroToolbar : public RowToolbar {
 		public:
 			explicit BaroToolbar();
 
 			RotaryControl<5, 9000, 11000, false, 1, 10> pressure { L"Baro", L"STD" };
-			RotaryControl<4, 0, 15000, false, 1, 10> minimums { L"Minimums", L"ON" };
+			RotaryControl<4, 0, 15000, false, 1, 10> minimums { L"Minimums", L"Show" };
 	};
 }

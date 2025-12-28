@@ -160,53 +160,33 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="КУДА БУЛЫ СУКА ДЕЛИСЬ">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ахуй, хорошо поработали, можно  наградить себя чепсосами">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-BitStream" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-BitStream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/math.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/math.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/korryButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/korryButton.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/batteryIndicator.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/batteryIndicator.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleSection.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleSection.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbarSection.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbarSection.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimToolbar.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimToolbar.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/navMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/navMenuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packetHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packetHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packetHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packetHandler.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbar.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbar.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsLandingImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsLandingImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsNavigationImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsNavigationImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsStrobeImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsStrobeImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/splashScreenImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/splashScreenImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/settingsControls.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settingsControls.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/settingsInterface.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settingsInterface.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/types/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/aircraftData.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/types/remoteData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/remoteData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLightsLanding.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDLightsLanding.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLightsLanding.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDLightsLanding.psd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLightsNavigation.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDLightsNavigation.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLightsNavigation.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDLightsNavigation.psd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLightsStrobe.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDLightsStrobe.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLightsStrobe.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDLightsStrobe.psd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/splashScreen.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/splashScreen.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/splashScreen.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/splashScreen.psd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/utils/lowPassFilter.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/utils/lowPassFilter.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -287,11 +267,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -762,6 +737,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="apidoc" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1143,7 +1123,8 @@
       <workItem from="1766751251310" duration="33140000" />
       <workItem from="1766829250502" duration="18746000" />
       <workItem from="1766852638366" duration="5223000" />
-      <workItem from="1766859650461" duration="19693000" />
+      <workItem from="1766859650461" duration="20096000" />
+      <workItem from="1766922065922" duration="30229000" />
     </task>
     <task id="LOCAL-00001" summary="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ">
       <option name="closed" value="true" />
@@ -1377,7 +1358,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766861181010</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="ахуй, хорошо поработали, можно  наградить себя чепсосами">
+      <option name="closed" value="true" />
+      <created>1766881728288</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1766881728288</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1439,6 +1428,7 @@
     <MESSAGE value="ЧОТА СДЕЛАЛ НО НЕ ВСЕ" />
     <MESSAGE value="НОРМАС НО МОЖНО ЛУЧШЕ" />
     <MESSAGE value="КУДА БУЛЫ СУКА ДЕЛИСЬ" />
-    <option name="LAST_COMMIT_MESSAGE" value="КУДА БУЛЫ СУКА ДЕЛИСЬ" />
+    <MESSAGE value="ахуй, хорошо поработали, можно  наградить себя чепсосами" />
+    <option name="LAST_COMMIT_MESSAGE" value="ахуй, хорошо поработали, можно  наградить себя чепсосами" />
   </component>
 </project>

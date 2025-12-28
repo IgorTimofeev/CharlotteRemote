@@ -13,7 +13,7 @@
 namespace pizda {
 	using namespace YOBA;
 	
-	class LightsToolbar : public Toolbar {
+	class LightsToolbar : public RowToolbar {
 		public:
 			explicit LightsToolbar();
 			

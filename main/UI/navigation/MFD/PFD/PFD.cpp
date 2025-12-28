@@ -483,11 +483,7 @@ namespace pizda {
 				center.getX()
 					+ static_cast<int32_t>(
 						static_cast<float>(PFD::turnCoordinatorOverlaySlipAndSkidIndicatorMaxValuePixels)
-						* std::clamp<float>(
-							aircraftData.computed.slipAndSkidG,
-							-PFD::turnCoordinatorOverlaySlipAndSkidIndicatorMaxG,
-							PFD::turnCoordinatorOverlaySlipAndSkidIndicatorMaxG
-						)
+						* aircraftData.computed.slipAndSkidFactor
 					)
 					- PFD::turnCoordinatorOverlaySlipAndSkidIndicatorWidth / 2,
 				rollTriangleY + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight + PFD::turnCoordinatorOverlaySlipAndSkidIndicatorOffset,
@@ -673,7 +669,7 @@ namespace pizda {
 		));
 	}
 
-	void PFD::renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, float value, bool left) {
+	void PFD::renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t digitCount, float value, bool left) {
 		int32_t y = centerY - currentValueHeight / 2;
 
 		// Triangle
@@ -710,21 +706,15 @@ namespace pizda {
 		
 		value = std::abs(value);
 		
-		auto uintValue = static_cast<uint32_t>(value);
-
 		// Assuming 4 is "widest" digit
 		const uint8_t maxDigitWidth = currentValueFont->getWidth(L'4');
 
 		int32_t x =
 			left
 			? bounds.getX2() - currentValueTriangleSize - textOffset
-			: bounds.getX() + currentValueTriangleSize + textOffset + maxDigitWidth * getDigitCount(uintValue);
+			: bounds.getX() + currentValueTriangleSize + textOffset + maxDigitWidth * digitCount;
 
 		y = y + currentValueHeight / 2 - currentValueFont->getHeight() / 2;
-
-		float integer;
-		const auto fractional = std::modf(value, &integer);
-		const int32_t scrolledY = y + static_cast<uint8_t>(fractional * static_cast<float>(currentValueFont->getHeight()));
 
 		const auto getAdjacentDigit = [&](uint8_t digit, bool plus) {
 			return
@@ -733,7 +723,7 @@ namespace pizda {
 				: (digit > 1 ? digit - 1 : 9);
 		};
 
-		const auto renderDigit = [&](int32_t digitY, uint8_t digit) {
+		const auto renderDigit = [&](int32_t digitY, uint8_t digit, bool adjacent) {
 			const wchar_t text = L'0' + digit;
 
 			renderer->renderChar(
@@ -742,29 +732,32 @@ namespace pizda {
 					digitY
 				),
 				currentValueFont,
-				&Theme::fg1,
+				adjacent ? &Theme::fg2 : &Theme::fg1,
 				text
 			);
 		};
 
-		auto shouldScroll = true;
-
-		do {
-			const uint8_t digit = uintValue % 10;
-
-			if (shouldScroll) {
-				renderDigit(scrolledY - currentValueFont->getHeight(), getAdjacentDigit(digit, true));
-				renderDigit(scrolledY, digit);
-				renderDigit(scrolledY + currentValueFont->getHeight(), getAdjacentDigit(digit, false));
+		
+		for (uint8_t digitIndex = 0; digitIndex < digitCount; ++digitIndex) {
+			const auto digit = static_cast<uint32_t>(value) % 10;
+			
+			// Roll
+			if (digitIndex == 0) {
+				float integer;
+				const auto fractional = std::modf(value, &integer);
+				const auto rolledY = y + static_cast<int32_t>(fractional * static_cast<float>(currentValueFont->getHeight()));
+				
+				renderDigit(rolledY - currentValueFont->getHeight(), getAdjacentDigit(digit, true), true);
+				renderDigit(rolledY, digit, false);
+				renderDigit(rolledY + currentValueFont->getHeight(), getAdjacentDigit(digit, false), true);
 			}
 			else {
-				renderDigit(y, digit);
+				renderDigit(y, digit, false);
 			}
 
 			x -= maxDigitWidth;
-			shouldScroll = digit == 9;
-			uintValue /= 10;
-		} while (uintValue > 0);
+			value = value / 10;
+		}
 
 		renderer->popViewport(oldViewport);
 	}
@@ -1089,6 +1082,7 @@ namespace pizda {
 			renderer,
 			bounds,
 			centerY,
+			speedMaximumDigits,
 			ad.computed.airSpeedKt,
 			true
 		);
@@ -1244,6 +1238,7 @@ namespace pizda {
 			renderer,
 			bounds,
 			centerY,
+			altitudeMaximumDigits,
 			altitude,
 			false
 		);

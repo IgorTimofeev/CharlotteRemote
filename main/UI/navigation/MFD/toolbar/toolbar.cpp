@@ -9,7 +9,9 @@ namespace pizda {
 		topPanel.setVerticalAlignment(Alignment::start);
 		topPanel.setFillColor(&Theme::bg2);
 		*this += &topPanel;
-
+	}
+	
+	RowToolbar::RowToolbar() {
 		// Row
 		row.setOrientation(Orientation::horizontal);
 		row.setHorizontalAlignment(Alignment::center);

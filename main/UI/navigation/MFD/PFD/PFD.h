@@ -61,7 +61,9 @@ namespace pizda {
 			constexpr static uint8_t speedStepPixels = 8;
 			constexpr static uint8_t speedStepUnits = 1;
 			constexpr static uint8_t speedStepUnitsBig = 5;
-
+			
+			constexpr static uint8_t speedMaximumDigits = 3;
+			
 			constexpr static uint16_t speedBarSize = 4;
 
 			constexpr static uint16_t speedFlapsMin = 15;
@@ -92,7 +94,8 @@ namespace pizda {
 			constexpr static uint8_t altitudeStepUnits = 10;
 			constexpr static uint8_t altitudeStepUnitsBig = 50;
 			constexpr static uint8_t altitudeStepPixels = 8;
-
+			
+			constexpr static uint8_t altitudeMaximumDigits = 4;
 			constexpr static uint8_t altitudeMinimumHorizontalOffset = 5;
 			constexpr static uint8_t altitudeMinimumTriangleWidth = 3;
 			constexpr static uint8_t altitudeMinimumTriangleHeight = 3;
@@ -161,7 +164,6 @@ namespace pizda {
 			constexpr static uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorWidth = turnCoordinatorOverlayRollIndicatorTriangleWidth;
 			constexpr static uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorHeight = 2;
 			constexpr static uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorMaxValuePixels = 40;
-			constexpr static uint8_t turnCoordinatorOverlaySlipAndSkidIndicatorMaxG = 2;
 
 			// Aircraft symbol
 			constexpr static uint8_t aircraftSymbolWidth = 30;
@@ -190,7 +192,7 @@ namespace pizda {
 
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left) ;
-			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, float value, bool left);
+			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t digitCount, float value, bool left);
 			static void renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value);
 			static void renderSpeed(Renderer* renderer, const Bounds& bounds);
 			static void renderAltitude(Renderer* renderer, const Bounds& bounds) ;

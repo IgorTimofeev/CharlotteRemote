@@ -24,6 +24,7 @@ namespace pizda {
 			void setPacketHandler(PacketHandler* value);
 			void start();
 			float getRSSI() const;
+			bool isConnected() const;
 		
 		private:
 			constexpr static const char* _logTag = "XCVR";

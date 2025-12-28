@@ -8,20 +8,30 @@ namespace pizda {
 	MainToolbar::MainToolbar() {
 		setHeight(36);
 		
+		// ----------------------------- Left -----------------------------
+		
+		leftRow.setOrientation(Orientation::horizontal);
+		leftRow.setHorizontalAlignment(Alignment::start);
+		*this += &leftRow;
+
 		// Throttle
-		row += &_throttleIndicatorLayout;
+		leftRow += &_throttleIndicatorLayout;
 
 		// Controls
 		ToolbarSection::setDefaultMargin(&_flightControlsIndicator, 4);
 		_flightControlsSection.setFocusable(false);
-		_flightControlsSection.setMargin(Margin(0, 0, 16, 0));
-		row += &_flightControlsSection;
+		leftRow += &_flightControlsSection;
+		
+		// ----------------------------- Right -----------------------------
+		
+		rightRow.setOrientation(Orientation::horizontal);
+		rightRow.setHorizontalAlignment(Alignment::end);
+		*this += &rightRow;
 		
 		// Radio
 		ToolbarSection::setDefaultMargin(&_radio, 7);
 		_radioSection.setFocusable(false);
-		_radioSection.setMargin(Margin(16, 0, 0, 0));
-		row += &_radioSection;
+		rightRow += &_radioSection;
 		
 		// Battery
 		_batteryRows.setSpacing(3);
@@ -29,7 +39,7 @@ namespace pizda {
 		_batteryRows += &_batteryIndicatorRC;
 		_batteryRows += &_batteryIndicatorAC;
 		_batterySection.setFocusable(false);
-		row += &_batterySection;
+		rightRow += &_batterySection;
 	}
 
 	void MainToolbar::onTick() {
@@ -41,7 +51,7 @@ namespace pizda {
 		_batteryIndicatorRC.setVoltage(rc.getBattery().getVoltage());
 		_batteryIndicatorRC.setCharge(rc.getBattery().getCharge());
 
-		_batteryIndicatorAC.setVoltage(static_cast<uint16_t>(rc.getAircraftData().computed.batteryVoltageV * 1000));
+		_batteryIndicatorAC.setVoltage(static_cast<uint16_t>(rc.getAircraftData().raw.batteryVoltageV * 1000));
 		_batteryIndicatorAC.setCharge(_batteryIndicatorAC.getVoltage() * 0xFF / 14800);
 	}
 }

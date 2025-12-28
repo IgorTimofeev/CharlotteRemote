@@ -49,7 +49,7 @@ namespace pizda {
 		const auto deltaTime = time - _aircraftADIRSPacketTime;
 		_aircraftADIRSPacketTime = time;
 		
-		const auto oldSpeed = ad.raw.airSpeedMps;
+		const auto oldSpeed = ad.raw.airSpeedMPS;
 		const auto oldAltitude = ad.raw.geographicCoordinates.getAltitude();
 		
 		const auto readRad = [&stream](uint8_t bits) {
@@ -66,17 +66,15 @@ namespace pizda {
 		ad.raw.yawRad = readRad(AircraftADIRSPacket::yawLengthBits);
 		
 		// Slip & skid
-		auto slipAndSkidFactor =
+		ad.raw.slipAndSkidFactor =
+			// [0.0, 1.0]
 			static_cast<float>(stream.readUint8(AircraftADIRSPacket::slipAndSkidLengthBits))
-			/ static_cast<float>((1 << AircraftADIRSPacket::slipAndSkidLengthBits) - 1);
-		
-		ad.raw.slipAndSkidG =
-			-static_cast<float>(AircraftADIRSPacket::slipAndSkidMaxG)
-			+ static_cast<float>(AircraftADIRSPacket::slipAndSkidMaxG) * 2
-			* slipAndSkidFactor;
+			/ static_cast<float>((1 << AircraftADIRSPacket::slipAndSkidLengthBits) - 1)
+			// [-1.0; 1.0]
+			* 2.f - 1.f;
 		
 		// Speed
-		ad.raw.airSpeedMps = static_cast<float>(stream.readUint8(AircraftADIRSPacket::speedLengthBits));
+		ad.raw.airSpeedMPS = static_cast<float>(stream.readUint8(AircraftADIRSPacket::speedLengthBits));
 		
 		// Altitude
 		const auto altitudeFactor =
@@ -99,14 +97,14 @@ namespace pizda {
 //		ad.windDirection = toRadians(packet->windDirectionDeg);
 		
 		// Trends
-		const auto deltaAltitude = ad.raw.geographicCoordinates.getAltitude() - oldAltitude;
+		const auto deltaAltitudeM = ad.raw.geographicCoordinates.getAltitude() - oldAltitude;
 		
 		// Airspeed & altitude, 5 sec
-		ad.raw.airSpeedTrendMPS = (ad.raw.airSpeedMps - oldSpeed) * 5'000'000.f / static_cast<float>(deltaTime);
-		ad.raw.altitudeTrendM = deltaAltitude * 5'000'000.f / static_cast<float>(deltaTime);
+		ad.raw.airSpeedTrendMPS = (ad.raw.airSpeedMPS - oldSpeed) * 5'000'000.f / static_cast<float>(deltaTime);
+		ad.raw.altitudeTrendM = deltaAltitudeM * 5'000'000.f / static_cast<float>(deltaTime);
 		
 		// Vertical speed, 1 min
-		ad.raw.verticalSpeedMPM = deltaAltitude * 60'000'000.f / static_cast<float>(deltaTime);
+		ad.raw.verticalSpeedMPM = deltaAltitudeM * 60'000'000.f / static_cast<float>(deltaTime);
 		
 		return true;
 	}

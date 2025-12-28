@@ -137,39 +137,123 @@ namespace pizda {
 		// Fast
 		float LPFFactor = 5.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
 		
-		LowPassFilter::apply(_aircraftData.computed.pitchRad, _aircraftData.raw.pitchRad, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.rollRad, _aircraftData.raw.rollRad, LPFFactor);
-
+		// Pitch
+		_aircraftData.computed.pitchRad = LowPassFilter::applyForAngleRad(
+			_aircraftData.computed.pitchRad,
+			_aircraftData.raw.pitchRad,
+			LPFFactor
+		);
+		
+		// Roll
+		_aircraftData.computed.rollRad = LowPassFilter::applyForAngleRad(
+			_aircraftData.computed.rollRad,
+			_aircraftData.raw.rollRad,
+			LPFFactor
+		);
+		
+		// Yaw
+		_aircraftData.computed.yawRad = LowPassFilter::applyForAngleRad(
+			_aircraftData.computed.yawRad,
+			_aircraftData.raw.yawRad,
+			LPFFactor
+		);
+		
+		// Heading
 		_aircraftData.computed.headingDeg = normalizeAngle360(toDegrees(-_aircraftData.computed.yawRad));
+//		ESP_LOGI("PIZDA", "raw: %f, raw deg: %f, computed: %f, deg: %f, heading: %f", _aircraftData.raw.yawRad, toDegrees(-_aircraftData.raw.yawRad), _aircraftData.computed.yawRad, toDegrees(_aircraftData.computed.yawRad), _aircraftData.computed.headingDeg);
+
+		// Slip & skid
+		_aircraftData.computed.slipAndSkidFactor = LowPassFilter::apply(
+			_aircraftData.computed.slipAndSkidFactor,
+			_aircraftData.raw.slipAndSkidFactor,
+			LPFFactor
+		);
+
+		// Flight path vector
+		_aircraftData.computed.flightPathVectorPitchRad = LowPassFilter::apply(
+			_aircraftData.computed.flightPathVectorPitchRad,
+			_aircraftData.raw.flightPathVectorPitchRad,
+			LPFFactor
+		);
 		
-		LowPassFilter::apply(_aircraftData.computed.slipAndSkidG, _aircraftData.raw.slipAndSkidG, LPFFactor);
-
-		LowPassFilter::apply(_aircraftData.computed.flightPathVectorPitchRad, _aircraftData.raw.flightPathVectorPitchRad, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.flightPathVectorYawRad, _aircraftData.raw.flightPathVectorYawRad, LPFFactor);
-
-		LowPassFilter::apply(_aircraftData.computed.flightDirectorPitchRad, _aircraftData.raw.flightDirectorPitchRad, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.flightDirectorRollRad, _aircraftData.raw.flightDirectorRollRad, LPFFactor);
-
+		_aircraftData.computed.flightPathVectorYawRad = LowPassFilter::apply(
+			_aircraftData.computed.flightPathVectorYawRad,
+			_aircraftData.raw.flightPathVectorYawRad,
+			LPFFactor
+		);
+		
+		// Flight directors
+		_aircraftData.computed.flightDirectorPitchRad = LowPassFilter::apply(
+			_aircraftData.computed.flightDirectorPitchRad,
+			_aircraftData.raw.flightDirectorPitchRad,
+			LPFFactor
+		);
+		
+		_aircraftData.computed.flightDirectorRollRad = LowPassFilter::apply(
+			_aircraftData.computed.flightDirectorRollRad,
+			_aircraftData.raw.flightDirectorRollRad,
+			LPFFactor
+		);
+		
 		// Normal
-		LPFFactor = 3.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
-
-		LowPassFilter::apply(_aircraftData.computed.yawRad, _aircraftData.raw.yawRad, LPFFactor);
+		LPFFactor = 3.f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
 		
-		LowPassFilter::apply(_aircraftData.computed.airSpeedKt, Units::convertSpeed(_aircraftData.raw.airSpeedMps, SpeedUnit::meterPerSecond, SpeedUnit::knot), LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.altitudeFt, Units::convertDistance(_aircraftData.raw.geographicCoordinates.getAltitude(), DistanceUnit::meter, DistanceUnit::foot), LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.windDirectionRad, _aircraftData.raw.windDirectionRad, LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.throttlePercent01, static_cast<float>(_aircraftData.raw.throttlePercent_0_255) / 255.f, LPFFactor);
+		// Air speed
+		_aircraftData.computed.airSpeedKt = LowPassFilter::apply(
+			_aircraftData.computed.airSpeedKt,
+			Units::convertSpeed(_aircraftData.raw.airSpeedMPS, SpeedUnit::meterPerSecond, SpeedUnit::knot),
+			LPFFactor
+		);
+		
+		// Altitude
+		_aircraftData.computed.altitudeFt = LowPassFilter::apply(
+			_aircraftData.computed.altitudeFt,
+			Units::convertDistance(_aircraftData.raw.geographicCoordinates.getAltitude(), DistanceUnit::meter, DistanceUnit::foot),
+			LPFFactor
+		);
+		
+		// Wind direction
+		_aircraftData.computed.windDirectionRad = LowPassFilter::apply(
+			_aircraftData.computed.windDirectionRad,
+			_aircraftData.raw.windDirectionRad,
+			LPFFactor
+		);
+		
+		// Throttle
+		_aircraftData.computed.throttlePercent01 = LowPassFilter::apply(
+			_aircraftData.computed.throttlePercent01,
+			static_cast<float>(_aircraftData.raw.throttlePercent_0_255) / 255.f,
+			LPFFactor
+		);
 		
 		// Slower
 		LPFFactor = 1.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.airSpeedTrendKt, Units::convertSpeed(_aircraftData.raw.airSpeedTrendMPS, SpeedUnit::meterPerSecond, SpeedUnit::knot), LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.altitudeTrendFt, Units::convertDistance(_aircraftData.raw.altitudeTrendM, DistanceUnit::meter, DistanceUnit::foot), LPFFactor);
-		LowPassFilter::apply(_aircraftData.computed.verticalSpeedFtPM, Units::convertDistance(_aircraftData.raw.verticalSpeedMPM, DistanceUnit::meter, DistanceUnit::foot), LPFFactor);
-
+		
+		// Air speed trend
+		_aircraftData.computed.airSpeedTrendKt = LowPassFilter::apply(
+			_aircraftData.computed.airSpeedTrendKt,
+			Units::convertSpeed(_aircraftData.raw.airSpeedTrendMPS, SpeedUnit::meterPerSecond, SpeedUnit::knot),
+			LPFFactor
+		);
+		
+		// Altitude trend
+		_aircraftData.computed.altitudeTrendFt = LowPassFilter::apply(
+			_aircraftData.computed.altitudeTrendFt,
+			Units::convertDistance(_aircraftData.raw.altitudeTrendM, DistanceUnit::meter, DistanceUnit::foot),
+			LPFFactor
+		);
+		
+		// Vertical speed
+		_aircraftData.computed.verticalSpeedFtPM = LowPassFilter::apply(
+			_aircraftData.computed.verticalSpeedFtPM,
+			Units::convertDistance(_aircraftData.raw.verticalSpeedMPM, DistanceUnit::meter, DistanceUnit::foot),
+			LPFFactor
+		);
+		
 		// Smooth as fuck
 		LPFFactor = 0.5f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.batteryVoltageV, _aircraftData.raw.batteryVoltageV, LPFFactor);
-		LowPassFilter::apply(_remoteData.computed.transceiverRSSIDBm, _transceiver.getRSSI(), LPFFactor);
+		
+		
 		
 		_interpolationTickTime = esp_timer_get_time();
 	}

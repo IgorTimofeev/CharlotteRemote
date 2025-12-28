@@ -61,6 +61,10 @@ namespace pizda {
 		return _RSSI;
 	}
 	
+	bool Transceiver::isConnected() const {
+		return _connectionState == TransceiverConnectionState::connected;
+	}
+	
 	[[noreturn]] void Transceiver::onStart() {
 		ESP_LOGI(_logTag, "started");
 		

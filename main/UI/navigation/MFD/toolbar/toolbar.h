@@ -11,10 +11,17 @@ namespace pizda {
 			Toolbar();
 
 			constexpr static uint8_t topPanelHeight = 7;
-			constexpr static uint8_t contentHorizontalMargin = 8;
+			constexpr static uint8_t contentHorizontalMargin = 7;
 
 		protected:
-			StackLayout row {};
 			Rectangle topPanel {};
+	};
+	
+	class RowToolbar : public Toolbar {
+		public:
+			RowToolbar();
+		
+		protected:
+			StackLayout row {};
 	};
 }
