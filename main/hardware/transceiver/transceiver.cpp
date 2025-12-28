@@ -80,7 +80,7 @@ namespace pizda {
 	bool Transceiver::transmit(uint32_t timeoutUs) {
 		uint8_t length = 0;
 		
-		if (!_packetHandler->write(_buffer, PacketType::remoteBaro, length))
+		if (!_packetHandler->writeNext(_buffer, length))
 			return false;
 
 //		ESP_LOGI(_logTag, "write length: %d", length);

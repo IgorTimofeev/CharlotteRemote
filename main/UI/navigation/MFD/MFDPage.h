@@ -10,7 +10,6 @@
 #include "toolbar/autopilot/autopilotToolbar.h"
 #include "toolbar/baro/baroToolbar.h"
 #include "toolbar/lights/lightsToolbar.h"
-#include "toolbar/trim/trimToolbar.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -35,7 +34,6 @@ namespace pizda {
 			AutopilotToolbar* _autopilotToolbar = nullptr;
 			BaroToolbar* _baroToolbar = nullptr;
 			LightsToolbar* _lightsToolbar = nullptr;
-			TrimToolbar* _trimToolbar = nullptr;
 
 			void fromSettingsInstance();
 	};

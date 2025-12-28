@@ -28,19 +28,17 @@ namespace pizda {
 			explicit MFDMenuView();
 
 			MenuViewButton
-				PFDButton = { &resources::Images::menuIconMFDPFD, L"PFD" },
-				NDButton = { &resources::Images::menuIconMFDND, L"ND" };
+				PFDButton = { &resources::images::menuIconMFDPFD, L"PFD" },
+				NDButton = { &resources::images::menuIconMFDND, L"ND" };
 
 			MFDModeMenuViewButton
-				autopilotButton { &resources::Images::menuIconMFDAutopilot, L"A/P", SettingsInterfaceMFDToolbarMode::autopilot },
-				pressureButton { &resources::Images::menuIconMFDBaro, L"BARO", SettingsInterfaceMFDToolbarMode::baro },
-				lightsButton { &resources::Images::menuIconMFDLights, L"Lights", SettingsInterfaceMFDToolbarMode::lights },
-				trimButtonButton { &resources::Images::menuIconMFDTrim, L"Trim", SettingsInterfaceMFDToolbarMode::trim };
+				autopilotButton { &resources::images::menuIconMFDAutopilot, L"A/P", SettingsInterfaceMFDToolbarMode::autopilot },
+				pressureButton { &resources::images::menuIconMFDBaro, L"BARO", SettingsInterfaceMFDToolbarMode::baro },
+				lightsButton { &resources::images::menuIconMFDLights, L"Lights", SettingsInterfaceMFDToolbarMode::lights };
 
-			std::array<MFDModeMenuViewButton*, 4> modeButtons {
+			std::array<MFDModeMenuViewButton*, 3> modeButtons {
 				&autopilotButton,
 				&pressureButton,
-				&trimButtonButton,
 				&lightsButton
 			};
 

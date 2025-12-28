@@ -7,39 +7,45 @@ namespace pizda {
 	LightsToolbar::LightsToolbar() {
 		setHeight(36);
 		
-		auto& settings = RC::getInstance().getSettings();
+		row.setSpacing(2);
+		
+		auto& rc = RC::getInstance();
+		auto& rd = rc.getRemoteData();
 		
 		// Navigation
-		navigation.setToggle(true);
-		navigation.setActive(settings.controls.navigationLights);
+		navigation.setActive(rd.raw.navigationLights);
 		
-		navigation.isActiveChanged += [this, &settings] {
-			settings.controls.navigationLights = navigation.isActive();
-			settings.controls.scheduleWrite();
+		navigation.isActiveChanged += [this, &rd] {
+			rd.raw.navigationLights = navigation.isActive();
 		};
 		
 		row += &navigation;
 		
 		// Strobe
-		strobe.setToggle(true);
-		strobe.setActive(settings.controls.strobeLights);
+		strobe.setActive(rd.raw.strobeLights);
 		
-		strobe.isActiveChanged += [this, &settings] {
-			settings.controls.strobeLights = strobe.isActive();
-			settings.controls.scheduleWrite();
+		strobe.isActiveChanged += [this, &rd] {
+			rd.raw.strobeLights = strobe.isActive();
 		};
 		
 		row += &strobe;
 		
 		// Landing
-		landing.setToggle(true);
-		landing.setActive(settings.controls.landingLights);
+		landing.setActive(rd.raw.landingLights);
 		
-		landing.isActiveChanged += [this, &settings] {
-			settings.controls.landingLights = landing.isActive();
-			settings.controls.scheduleWrite();
+		landing.isActiveChanged += [this, &rd] {
+			rd.raw.landingLights = landing.isActive();
 		};
 		
 		row += &landing;
+		
+		// Landing
+		cabin.setActive(rd.raw.cabinLights);
+		
+		cabin.isActiveChanged += [this, &rd] {
+			rd.raw.cabinLights = cabin.isActive();
+		};
+		
+		row += &cabin;
 	}
 }

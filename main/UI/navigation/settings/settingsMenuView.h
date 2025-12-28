@@ -21,12 +21,12 @@ namespace pizda {
 			static const Route* _lastRoute;
 
 			std::array<PageMenuViewButton, 4> _pageButtons {
-				PageMenuViewButton(&resources::Images::menuIconMFD, L"MFD", &Routes::settingsMFD),
-				PageMenuViewButton(&resources::Images::menuIconPersonalization, L"Prsnl", &Routes::settingsPersonalization),
-				PageMenuViewButton(&resources::Images::menuIconAxis, L"Axis", &Routes::settingsAxis),
-				PageMenuViewButton(&resources::Images::menuIconDev, L"Dev", &Routes::settingsDeveloper)
+				PageMenuViewButton(&resources::images::menuIconMFD, L"MFD", &Routes::settingsMFD),
+				PageMenuViewButton(&resources::images::menuIconPersonalization, L"Prsnl", &Routes::settingsPersonalization),
+				PageMenuViewButton(&resources::images::menuIconAxis, L"Axis", &Routes::settingsAxis),
+				PageMenuViewButton(&resources::images::menuIconDev, L"Dev", &Routes::settingsDeveloper)
 			};
 
-			MenuViewButton _powerButton = { &resources::Images::menuIconPower, L"Reboot" };
+			MenuViewButton _powerButton = { &resources::images::menuIconPower, L"Reboot" };
 	};
 }

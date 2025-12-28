@@ -55,7 +55,7 @@ namespace pizda {
 				}
 
 				// Text
-				const auto text = std::format(L"{:.1f}", static_cast<float>(_voltage) / 1000.f);
+				const auto text = std::format(L"{:.1f}", static_cast<float>(_voltageMV) / 1000.f);
 
 				renderer->renderString(
 					Point(
@@ -68,12 +68,12 @@ namespace pizda {
 				);
 			}
 
-			uint16_t getValue() const {
-				return _voltage;
+			uint16_t getVoltage() const {
+				return _voltageMV;
 			}
 
-			void setVoltage(uint16_t value) {
-				_voltage = value;
+			void setVoltage(uint16_t voltageMV) {
+				_voltageMV = voltageMV;
 
 				invalidate();
 			}
@@ -89,7 +89,7 @@ namespace pizda {
 			}
 
 		private:
-			uint16_t _voltage = 0;
+			uint16_t _voltageMV = 0;
 			uint8_t _charge = 0;
 	};
 }

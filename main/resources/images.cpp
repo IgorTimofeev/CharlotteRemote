@@ -1,24 +1,27 @@
 #include "images.h"
 
 namespace pizda::resources {
-	const SplashScreenImage Images::splashScreen {};
+	const SplashScreenImage images::splashScreen {};
 
-	const MenuIconMFDImage Images::menuIconMFD {};
-	const MenuIconMFDPFDImage Images::menuIconMFDPFD {};
-	const MenuIconMFDNDImage Images::menuIconMFDND {};
-	const MenuIconMFDAutopilotImage Images::menuIconMFDAutopilot {};
-	const MenuIconMFDBaroImage Images::menuIconMFDBaro {};
-	const MenuIconMFDTrimImage Images::menuIconMFDTrim {};
-	const MenuIconMFDLightsImage Images::menuIconMFDLights {};
-	const MenuIconMFDLightsNavigationImage Images::menuIconMFDLightsNavigation {};
-	const MenuIconMFDLightsStrobeImage Images::menuIconMFDLightsStrobe {};
-	const MenuIconMFDLightsLandingImage Images::menuIconMFDLightsLanding {};
+	const MenuIconMFDImage images::menuIconMFD {};
+	const MenuIconMFDPFDImage images::menuIconMFDPFD {};
+	const MenuIconMFDNDImage images::menuIconMFDND {};
+	const MenuIconMFDAutopilotImage images::menuIconMFDAutopilot {};
+	const MenuIconMFDAutopilotFlightDirectorsImage images::menuIconMFDAutopilotFlightDirectors {};
 	
-	const MenuIconFlightPlanImage Images::menuIconFlightPlan {};
-	const MenuIconWaypointsImage Images::menuIconWaypointsImage {};
+	const MenuIconMFDBaroImage images::menuIconMFDBaro {};
+	const MenuIconMFDTrimImage images::menuIconMFDTrim {};
+	const MenuIconMFDLightsImage images::menuIconMFDLights {};
+	const MenuIconMFDLightsNavigationImage images::menuIconMFDLightsNavigation {};
+	const MenuIconMFDLightsStrobeImage images::menuIconMFDLightsStrobe {};
+	const MenuIconMFDLightsLandingImage images::menuIconMFDLightsLanding {};
+	const MenuIconMFDLightsCabinImage images::menuIconMFDLightsCabin {};
+	
+	const MenuIconFlightPlanImage images::menuIconFlightPlan {};
+	const MenuIconWaypointsImage images::menuIconWaypointsImage {};
 
-	const MenuIconPersonalizationImage Images::menuIconPersonalization {};
-	const MenuIconAxisImage Images::menuIconAxis {};
-	const MenuIconDevImage Images::menuIconDev {};
-	const MenuIconPowerImage Images::menuIconPower {};
+	const MenuIconPersonalizationImage images::menuIconPersonalization {};
+	const MenuIconAxisImage images::menuIconAxis {};
+	const MenuIconDevImage images::menuIconDev {};
+	const MenuIconPowerImage images::menuIconPower {};
 }

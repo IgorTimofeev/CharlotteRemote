@@ -14,18 +14,18 @@ namespace pizda {
 		// Controls
 		ToolbarSection::setDefaultMargin(&_flightControlsIndicator, 4);
 		_flightControlsSection.setFocusable(false);
-		_flightControlsSection.setMargin(Margin(0, 0, 14, 0));
+		_flightControlsSection.setMargin(Margin(0, 0, 16, 0));
 		row += &_flightControlsSection;
 		
 		// Radio
-		ToolbarSection::setDefaultMargin(&_radio, 6);
+		ToolbarSection::setDefaultMargin(&_radio, 7);
 		_radioSection.setFocusable(false);
-		_radioSection.setMargin(Margin(14, 0, 0, 0));
+		_radioSection.setMargin(Margin(16, 0, 0, 0));
 		row += &_radioSection;
 		
 		// Battery
 		_batteryRows.setSpacing(3);
-		ToolbarSection::setDefaultMargin(&_batteryRows, 3);
+		ToolbarSection::setDefaultMargin(&_batteryRows, 4);
 		_batteryRows += &_batteryIndicatorRC;
 		_batteryRows += &_batteryIndicatorAC;
 		_batterySection.setFocusable(false);
@@ -41,7 +41,7 @@ namespace pizda {
 		_batteryIndicatorRC.setVoltage(rc.getBattery().getVoltage());
 		_batteryIndicatorRC.setCharge(rc.getBattery().getCharge());
 
-		_batteryIndicatorAC.setVoltage(14800);
-		_batteryIndicatorAC.setCharge(0xFF);
+		_batteryIndicatorAC.setVoltage(static_cast<uint16_t>(rc.getAircraftData().computed.batteryVoltageV * 1000));
+		_batteryIndicatorAC.setCharge(_batteryIndicatorAC.getVoltage() * 0xFF / 14800);
 	}
 }

@@ -9,11 +9,9 @@ namespace pizda {
 		setHeight(36);
 
 //		row.setSpacing(6);
+		row.setMargin(Margin(0, 0, (21 + Toolbar::contentHorizontalMargin * 2) / 2, 0));
 
 		// FD
-		flightDirectorsButton.setMargin(Margin(0, 0, 8, 0));
-		flightDirectorsButton.setVerticalAlignment(Alignment::center);
-		flightDirectorsButton.setToggle(true);
 		flightDirectorsButton.setActive(settings.interface.MFD.PFD.flightDirectors);
 		
 		flightDirectorsButton.isActiveChanged += [this, &settings] {
@@ -70,13 +68,5 @@ namespace pizda {
 		};
 
 		row += &altitude;
-		
-		// LNAV
-		LNAVButton.setMargin(Margin(8, 0, 0, 0));
-		LNAVButton.setVerticalAlignment(Alignment::center);
-		LNAVButton.setToggle(true);
-		LNAVButton.setActive(false);
-		
-		row += &LNAVButton;
 	}
 }

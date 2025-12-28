@@ -7,6 +7,7 @@
 #include "images/menuIconMFDNDImage.h"
 #include "images/menuIconMFDMainImage.h"
 #include "images/menuIconMFDAutopilotImage.h"
+#include "images/menuIconMFDAutopilotFlightDirectorsImage.h"
 #include "images/menuIconMFDBaroImage.h"
 #include "images/menuIconMFDTrimImage.h"
 
@@ -14,6 +15,7 @@
 #include "images/menuIconMFDLightsNavigationImage.h"
 #include "images/menuIconMFDLightsStrobeImage.h"
 #include "images/menuIconMFDLightsLandingImage.h"
+#include "images/menuIconMFDLightsCabinImage.h"
 
 #include "images/menuIconFlightPlanImage.h"
 #include "images/menuIconWaypointsImage.h"
@@ -24,7 +26,7 @@
 #include "images/menuIconPowerImage.h"
 
 namespace pizda::resources {
-	class Images {
+	class images {
 		public:
 			static const SplashScreenImage splashScreen;
 
@@ -32,12 +34,14 @@ namespace pizda::resources {
 			static const MenuIconMFDPFDImage menuIconMFDPFD;
 			static const MenuIconMFDNDImage menuIconMFDND;
 			static const MenuIconMFDAutopilotImage menuIconMFDAutopilot;
+			static const MenuIconMFDAutopilotFlightDirectorsImage menuIconMFDAutopilotFlightDirectors;
 			static const MenuIconMFDBaroImage menuIconMFDBaro;
 			static const MenuIconMFDTrimImage menuIconMFDTrim;
 			static const MenuIconMFDLightsImage menuIconMFDLights;
 			static const MenuIconMFDLightsNavigationImage menuIconMFDLightsNavigation;
 			static const MenuIconMFDLightsStrobeImage menuIconMFDLightsStrobe;
 			static const MenuIconMFDLightsLandingImage menuIconMFDLightsLanding;
+			static const MenuIconMFDLightsCabinImage menuIconMFDLightsCabin;
 			
 			static const MenuIconFlightPlanImage menuIconFlightPlan;
 			static const MenuIconWaypointsImage menuIconWaypointsImage;

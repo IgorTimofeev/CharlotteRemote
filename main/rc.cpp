@@ -34,7 +34,7 @@ namespace pizda {
 		// Rendering splash screen
 		Theme::setup(&_renderer);
 		_renderer.clear(&Theme::bg1);
-		_renderer.renderImage(Point(), &resources::Images::splashScreen);
+		_renderer.renderImage(Point(), &resources::images::splashScreen);
 		_renderer.flush();
 
 		// Turning display on
@@ -158,6 +158,7 @@ namespace pizda {
 		LowPassFilter::apply(_aircraftData.computed.airSpeedKt, Units::convertSpeed(_aircraftData.raw.airSpeedMps, SpeedUnit::meterPerSecond, SpeedUnit::knot), LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.altitudeFt, Units::convertDistance(_aircraftData.raw.geographicCoordinates.getAltitude(), DistanceUnit::meter, DistanceUnit::foot), LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.windDirectionRad, _aircraftData.raw.windDirectionRad, LPFFactor);
+		LowPassFilter::apply(_aircraftData.computed.throttlePercent01, static_cast<float>(_aircraftData.raw.throttlePercent_0_255) / 255.f, LPFFactor);
 		
 		// Slower
 		LPFFactor = 1.0f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
@@ -167,7 +168,6 @@ namespace pizda {
 
 		// Smooth as fuck
 		LPFFactor = 0.5f * static_cast<float>(deltaTimeUs) / 1'000'000.f;
-		LowPassFilter::apply(_aircraftData.computed.throttlePercent01, static_cast<float>(_aircraftData.raw.throttlePercent_0_255) / 255.f, LPFFactor);
 		LowPassFilter::apply(_aircraftData.computed.batteryVoltageV, _aircraftData.raw.batteryVoltageV, LPFFactor);
 		LowPassFilter::apply(_remoteData.computed.transceiverRSSIDBm, _transceiver.getRSSI(), LPFFactor);
 		

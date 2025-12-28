@@ -46,9 +46,6 @@ namespace pizda {
 		if (_lightsToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::lights)
 			_lightsToolbar = nullptr;
 		
-		if (_trimToolbar && settings.interface.MFD.toolbar.mode != SettingsInterfaceMFDToolbarMode::trim)
-			_trimToolbar = nullptr;
-		
 		// Creating
 		switch (settings.interface.MFD.toolbar.mode) {
 			case SettingsInterfaceMFDToolbarMode::autopilot: {
@@ -75,15 +72,6 @@ namespace pizda {
 				
 				_rows.setAutoSize(_lightsToolbar, true);
 				_rows += _lightsToolbar;
-				
-				break;
-			}
-			case SettingsInterfaceMFDToolbarMode::trim: {
-				if (!_trimToolbar)
-					_trimToolbar = new TrimToolbar();
-				
-				_rows.setAutoSize(_trimToolbar, true);
-				_rows += _trimToolbar;
 				
 				break;
 			}

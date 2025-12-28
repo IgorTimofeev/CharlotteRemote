@@ -1,15 +1,15 @@
 #pragma once
 
-#include "cstdint"
+#include <cstdint>
 
 namespace pizda {
 	#pragma pack(push, 1)
 	
 	enum class PacketType : uint8_t {
-		remoteChannelDataStructure,
-		remoteChannelData,
+		remoteChannelsDataStructure,
+		remoteChannelsData,
 		remoteMotorConfiguration,
-		remoteBaro,
+		remoteAuxiliary,
 		
 		aircraftADIRS,
 		aircraftStatistics,
@@ -22,6 +22,16 @@ namespace pizda {
 			constexpr static uint8_t checksumLengthBytes = 1;
 	};
 	
+	class RemoteChannelsPacket {
+		public:
+			constexpr static uint8_t motorLengthBits = 9;
+	};
+	
+	class RemoteAuxiliary0Packet {
+		public:
+			constexpr static uint8_t referencePressureLengthBits = 14;
+	};
+	
 	class AircraftADIRSPacket {
 		public:
 			// Roll / pitch / yaw
@@ -32,7 +42,7 @@ namespace pizda {
 			constexpr static uint8_t yawLengthBits = 10;
 			
 			// Slip & skid
-			// 8 bit = [-127; 127] ~= [-2G; 2G]
+			// 8 bit = [-127; 127]
 			constexpr static uint8_t slipAndSkidLengthBits = 8;
 			constexpr static uint8_t slipAndSkidMaxG = 2;
 			

@@ -5,8 +5,12 @@
 namespace pizda {
 	class RemoteDataRaw {
 		public:
-			float transceiverRSSIDBm = 0;
-			uint8_t batteryVoltageMV = 0;
+			uint8_t throttle_0_255 = 0;
+			
+			bool navigationLights = false;
+			bool strobeLights = false;
+			bool landingLights = false;
+			bool cabinLights = false;
 	};
 	
 	class RemoteDataComputed {

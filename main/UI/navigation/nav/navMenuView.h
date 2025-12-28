@@ -19,8 +19,8 @@ namespace pizda {
 			static const Route* _lastRoute;
 
 			std::array<PageMenuViewButton, 2> _buttons {
-				PageMenuViewButton(&resources::Images::menuIconFlightPlan, L"Flight plan", &Routes::navFlightPlan),
-				PageMenuViewButton(&resources::Images::menuIconWaypointsImage, L"Database", &Routes::navWaypoints)
+				PageMenuViewButton(&resources::images::menuIconFlightPlan, L"Flight plan", &Routes::navFlightPlan),
+				PageMenuViewButton(&resources::images::menuIconWaypointsImage, L"Database", &Routes::navWaypoints)
 			};
 	};
 }

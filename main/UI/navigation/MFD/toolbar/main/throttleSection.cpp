@@ -19,10 +19,11 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
+		const auto& rd = rc.getRemoteData();
 		const auto& settings = rc.getSettings();
 
 		// Throttles
-		throttleIndicator1.setRemoteValue(settings.controls.throttle);
+		throttleIndicator1.setRemoteValue(rd.raw.throttle_0_255);
 		throttleIndicator1.setAircraftValue(static_cast<uint8_t>(ad.computed.throttlePercent01 * 0xFF));
 		
 		throttleIndicator2.setRemoteValue(throttleIndicator1.getRemoteValue());
@@ -36,9 +37,8 @@ namespace pizda {
 			if (isFocused()) {
 				const auto rotateEvent = reinterpret_cast<EncoderValueChangedEvent*>(event);
 				
-				auto& settings = RC::getInstance().getSettings();
-				settings.controls.throttle = addSaturating(settings.controls.throttle, rotateEvent->getDPSFactor(60, 1, 10) * 0xFF / 100);
-				settings.controls.scheduleWrite();
+				auto& rd = RC::getInstance().getRemoteData();
+				rd.raw.throttle_0_255 = addSaturating(rd.raw.throttle_0_255, rotateEvent->getDPSFactor(60, 1, 10) * 0xFF / 100);
 
 				invalidate();
 

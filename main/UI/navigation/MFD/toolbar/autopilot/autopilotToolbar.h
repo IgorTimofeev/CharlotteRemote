@@ -9,6 +9,8 @@
 #include "UI/navigation/MFD/toolbar/korryButton.h"
 #include "UI/navigation/MFD/toolbar/rotaryControl.h"
 
+#include "resources/images.h"
+
 namespace pizda {
 	using namespace YOBA;
 
@@ -16,13 +18,11 @@ namespace pizda {
 		public:
 			explicit AutopilotToolbar();
 			
-			KorryButton flightDirectorsButton { L"FD" };
+			KorryButton flightDirectorsButton { L"FD", &resources::images::menuIconMFDAutopilotFlightDirectors };
 
 			RotaryControl<3, 0, 400, false, 1, 10> speed { L"Speed", L"A/T" };
 			RotaryControl<3, 0, 360, true, 1, 10> heading { L"Heading", L"HLD" };
 			RotaryControl<4, 0, 15000, false, 10, 100> altitude { L"Altitude", L"FLC" };
-			
-			KorryButton LNAVButton { L"LNAV" };
 		
 		private:
 

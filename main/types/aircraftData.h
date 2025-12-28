@@ -42,7 +42,7 @@ namespace pizda {
 			
 			float windDirectionRad = 0;
 			
-			uint8_t batteryVoltageV = 0;
+			float batteryVoltageV = 0;
 	};
 	
 	class AircraftDataComputed {
