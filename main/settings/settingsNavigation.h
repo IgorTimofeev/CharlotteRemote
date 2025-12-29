@@ -9,7 +9,7 @@
 
 #include <YOBA/main.h>
 
-#include <types/navigationData.h>
+#include "utils/navigationData.h"
 
 #include <NVSSettings.h>
 

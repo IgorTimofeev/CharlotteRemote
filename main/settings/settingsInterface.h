@@ -11,7 +11,7 @@ namespace pizda {
 		public:
 			bool visible = false;
 			uint8_t FOV = 0;
-			bool flightDirectors = false;
+			bool flightDirector = false;
 	};
 
 	enum class SettingsInterfaceMFDNDMode : uint8_t {
@@ -71,7 +71,7 @@ namespace pizda {
 			void onRead(const NVSStream& stream) override {
 				MFD.PFD.visible = stream.readBool(_MFDPFDVisible, true);
 				MFD.PFD.FOV = stream.readUint8(_MFDPFDFOV, 50);
-				MFD.PFD.flightDirectors = stream.readBool(_MFDPFDFlightDirectors, true);
+				MFD.PFD.flightDirector = stream.readBool(_MFDPFDFlightDirectors, true);
 
 				MFD.ND.visible = stream.readBool(_MFDNDVisible, true);
 				MFD.ND.mode = static_cast<SettingsInterfaceMFDNDMode>(stream.readUint8(_MFDNDMode, static_cast<uint8_t>(SettingsInterfaceMFDNDMode::arcHeadingUp)));
@@ -88,7 +88,7 @@ namespace pizda {
 			void onWrite(const NVSStream& stream) override {
 				stream.writeBool(_MFDPFDVisible, MFD.PFD.visible);
 				stream.writeUint8(_MFDPFDFOV, MFD.PFD.FOV);
-				stream.writeBool(_MFDPFDFlightDirectors, MFD.PFD.flightDirectors);
+				stream.writeBool(_MFDPFDFlightDirectors, MFD.PFD.flightDirector);
 
 				stream.writeBool(_MFDNDVisible, MFD.ND.visible);
 				stream.writeUint8(_MFDNDMode, static_cast<uint8_t>(MFD.ND.mode));

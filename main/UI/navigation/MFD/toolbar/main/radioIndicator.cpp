@@ -14,32 +14,42 @@ namespace pizda {
 	}
 
 	void RadioIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
-		const auto& transceiver = RC::getInstance().getTransceiver();
+		auto& rc = RC::getInstance();
+		auto& transceiver = rc.getTransceiver();
+		auto& packetHandler = rc.getPacketHandler();
+		
 		const auto rssi = static_cast<int32_t>(transceiver.getRSSI());
+		const auto snr = static_cast<int32_t>(transceiver.getSNR());
 
 		uint8_t sexuality;
 		const Color* color;
 		
 		// From worst to best
-		if (rssi < -80) {
-			sexuality = 0;
-			color = &Theme::bad2;
-		}
-		else if (rssi < -70) {
-			sexuality = 1;
-			color = &Theme::bad2;
-		}
-		else if (rssi < -60) {
-			sexuality = 2;
-			color = &Theme::fg1;
-		}
-		else if (rssi < -50) {
-			sexuality = 3;
-			color = &Theme::fg1;
+		if (packetHandler.isConnected()) {
+			if (rssi < -80) {
+				sexuality = 0;
+				color = &Theme::bad2;
+			}
+			else if (rssi < -70) {
+				sexuality = 1;
+				color = &Theme::bad2;
+			}
+			else if (rssi < -60) {
+				sexuality = 2;
+				color = &Theme::fg1;
+			}
+			else if (rssi < -50) {
+				sexuality = 3;
+				color = &Theme::fg1;
+			}
+			else {
+				sexuality = 4;
+				color = &Theme::fg1;
+			}
 		}
 		else {
-			sexuality = 4;
-			color = &Theme::fg1;
+			sexuality = _lineCount - 1;
+			color = &Theme::bad2;
 		}
 
 		// Lines
@@ -54,13 +64,7 @@ namespace pizda {
 			renderer->renderVerticalLine(
 				position,
 				lineHeight,
-				transceiver.isConnected()
-					? &Theme::bad2
-					: (
-						i <= sexuality
-						? color
-						: &Theme::fg4
-					)
+				i <= sexuality ? color : &Theme::fg4
 			);
 
 			position.setX(position.getX() + 1 + _lineSpacing);
@@ -75,8 +79,8 @@ namespace pizda {
 		renderer->renderString(
 			position,
 			&Theme::fontSmall,
-			&Theme::fg4,
-			transceiver.isConnected() ? std::format(L"R {}", rssi) : L"N/A"
+			packetHandler.isConnected() ? &Theme::fg4 : &Theme::bad1,
+			packetHandler.isConnected() ? std::format(L"R {}", rssi) : L"N/A"
 		);
 		
 		position.setY(position.getY() + Theme::fontSmall.getHeight());
@@ -85,8 +89,8 @@ namespace pizda {
 		renderer->renderString(
 			position,
 			&Theme::fontSmall,
-			&Theme::fg4,
-			transceiver.isConnected() ? std::format(L"S {}", rssi) : L"N/A"
+			packetHandler.isConnected() ? &Theme::fg4 : &Theme::bad1,
+			packetHandler.isConnected() ? std::format(L"S {}", snr) : L"N/A"
 		);
 	}
 }

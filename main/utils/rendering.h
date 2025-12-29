@@ -2,7 +2,8 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
-#include <types/navigationData.h>
+
+#include "utils/navigationData.h"
 
 namespace pizda {
 	using namespace YOBA;

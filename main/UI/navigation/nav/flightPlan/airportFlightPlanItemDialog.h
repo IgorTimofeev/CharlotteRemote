@@ -1,6 +1,6 @@
 #pragma once
 
-#include <types/navigationData.h>
+#include "utils/navigationData.h"
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 

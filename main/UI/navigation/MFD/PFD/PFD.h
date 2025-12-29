@@ -6,8 +6,8 @@
 
 #include "UI/theme.h"
 #include <units.h>
-#include <types/VSpeed.h>
-#include <types/aircraftData.h>
+#include "utils/VSpeed.h"
+#include "utils/aircraftData.h"
 
 namespace pizda {
 	using namespace YOBA;

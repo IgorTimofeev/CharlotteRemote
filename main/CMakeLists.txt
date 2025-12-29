@@ -8,3 +8,5 @@ idf_component_register(
     INCLUDE_DIRS "."
     REQUIRES esp_timer esp_driver_ledc driver nvs_flash esp_adc YOBA ESP-IDF-SX1262 ESP-IDF-NVSExtensions ESP-IDF-BitStream ESP-IDF-Units
 )
+
+include_directories(.)

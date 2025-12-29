@@ -6,6 +6,8 @@
 #include <YOBA/hardware/touchPanels/FT6336UTouchPanel.h>
 #include <YOBA/hardware/encoder.h>
 
+#include <units.h>
+
 #include "UI/theme.h"
 #include "UI/navigation/route.h"
 #include "UI/navigation/menu/openMenuButton.h"
@@ -21,11 +23,11 @@
 #include "hardware/axis.h"
 #include "hardware/battery.h"
 
-#include "units.h"
-#include "types/remoteData.h"
-#include "types/aircraftData.h"
-#include "types/navigationData.h"
-#include "types/statistics.h"
+#include "utils/remoteData.h"
+#include "utils/remoteData.h"
+#include "utils/aircraftData.h"
+#include "utils/navigationData.h"
+#include "utils/statistics.h"
 
 #include "utils/lowPassFilter.h"
 
@@ -51,7 +53,8 @@ namespace pizda {
 			Axis& getJoystickVertical();
 			Axis& getRing();
 			Battery& getBattery();
-			Transceiver& getTransceiver();
+			SX1262Transceiver& getTransceiver();
+			RemotePacketHandler& getPacketHandler();
 			
 			OpenMenuButton& getOpenMenuButton();
 
@@ -98,7 +101,7 @@ namespace pizda {
 			Speaker _speaker {};
 			
 			// Transceiver
-			Transceiver _transceiver {};
+			SX1262Transceiver _transceiver {};
 			RemotePacketHandler _packetHandler {};
 			
 			// Encoder

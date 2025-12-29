@@ -65,9 +65,9 @@ namespace pizda {
 		// Transceiver
 		if (!_transceiver.setup())
 			startErrorLoop("failed to setup XCVR");
-
-		_transceiver.setPacketHandler(&_packetHandler);
-		_transceiver.start();
+		
+		_packetHandler.setTransceiver(&_transceiver);
+		_packetHandler.start();
 		
 		// Application
 		_application.setRenderer(&_renderer);
@@ -182,7 +182,7 @@ namespace pizda {
 			LPFFactor
 		);
 		
-		// Flight directors
+		// Flight director
 		_aircraftData.computed.flightDirectorPitchRad = LowPassFilter::apply(
 			_aircraftData.computed.flightDirectorPitchRad,
 			_aircraftData.raw.flightDirectorPitchRad,
@@ -426,8 +426,12 @@ namespace pizda {
 		return _openMenuButton;
 	}
 
-	Transceiver& RC::getTransceiver() {
+	SX1262Transceiver& RC::getTransceiver() {
 		return _transceiver;
+	}
+	
+	RemotePacketHandler& RC::getPacketHandler() {
+		return _packetHandler;
 	}
 	
 	void RC::startErrorLoop(const char* error) {

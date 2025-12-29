@@ -22,7 +22,7 @@ namespace pizda {
 
 			RotaryControl<3, 0, 400, false, 1, 10> speed { L"Speed", L"A/T" };
 			RotaryControl<3, 0, 360, true, 1, 10> heading { L"Heading", L"HLD" };
-			RotaryControl<4, 0, 15000, false, 10, 100> altitude { L"Altitude", L"FLC" };
+			RotaryControl<4, 0, 15000, false, 1, 10> altitude { L"Altitude", L"FLC" };
 		
 		private:
 

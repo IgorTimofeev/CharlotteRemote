@@ -6,7 +6,7 @@
 #include <UI/elements/titler.h>
 #include <UI/elements/dialogs/scrollViewDialog.h>
 
-#include <types/navigationData.h>
+#include "utils/navigationData.h"
 #include <UI/elements/tabSelector.h>
 
 #include "waypointButton.h"

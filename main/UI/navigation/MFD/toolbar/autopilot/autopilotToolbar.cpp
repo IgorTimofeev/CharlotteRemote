@@ -11,10 +11,10 @@ namespace pizda {
 		auto& settings = RC::getInstance().getSettings();
 
 		// FD
-		flightDirectorsButton.setActive(settings.interface.MFD.PFD.flightDirectors);
+		flightDirectorsButton.setActive(settings.interface.MFD.PFD.flightDirector);
 		
 		flightDirectorsButton.isActiveChanged += [this, &settings] {
-			settings.interface.MFD.PFD.flightDirectors = flightDirectorsButton.isActive();
+			settings.interface.MFD.PFD.flightDirector = flightDirectorsButton.isActive();
 			settings.interface.scheduleWrite();
 		};
 		

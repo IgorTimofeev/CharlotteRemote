@@ -113,7 +113,7 @@ namespace pizda {
 			in series it escalates to [5.0; 8.4]V. But let's give it some safety margins like
 			[6.0; 8.4]V, because of tons of trash batteries on market
 	
-			2) In theory ADC should read up to 3.3V from GPIO, but Espressif docs says that ADC
+			2) In theory ADC should receive up to 3.3V from GPIO, but Espressif docs says that ADC
 			configured with 12 dB attenuation can accurately measure only [0.15; 2.45]V on ESP32
 			See: https://docs.espressif.com/projects/esp-idf/en/release-v4.3/esp32/api-reference/peripherals/adc.html
 	

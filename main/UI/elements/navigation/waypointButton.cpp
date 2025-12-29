@@ -1,7 +1,7 @@
 #include "waypointButton.h"
 
 #include "UI/theme.h"
-#include <types/navigationData.h>
+#include "utils/navigationData.h"
 #include <utils/rendering.h>
 #include "rc.h"
 

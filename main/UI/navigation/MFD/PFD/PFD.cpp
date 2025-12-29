@@ -157,7 +157,7 @@ namespace pizda {
 		}
 
 		// Flight director
-		if (settings.interface.MFD.PFD.flightDirectors) {
+		if (settings.interface.MFD.PFD.flightDirector) {
 			const uint16_t flightDirectorLength = static_cast<uint32_t>(std::min(bounds.getWidth(), bounds.getHeight())) * PFD::flightDirectorLengthFactor / 100;
 			const auto flightDirectorLengthHalfF = static_cast<float>(flightDirectorLength) / 2.f;
 
@@ -165,13 +165,13 @@ namespace pizda {
 			auto flightDirectorRectBounds = Bounds(
 				center.getX() - flightDirectorLength / 2,
 				center.getY()
-				- static_cast<int32_t>(std::clamp(
-					std::tanf(ad.computed.flightDirectorPitchRad) * projectionPlaneDistance,
-					-flightDirectorLengthHalfF,
-					flightDirectorLengthHalfF
-				))
-				- PFD::flightDirectorThickness / 2,
-				flightDirectorLength,
+					- static_cast<int32_t>(std::clamp(
+						std::tanf(ad.computed.flightDirectorPitchRad) * projectionPlaneDistance,
+						-flightDirectorLengthHalfF,
+						flightDirectorLengthHalfF
+					))
+					- PFD::flightDirectorThickness / 2,
+					flightDirectorLength,
 				PFD::flightDirectorThickness
 			);
 
@@ -180,12 +180,12 @@ namespace pizda {
 			// Vertical
 			flightDirectorRectBounds.setX(
 				center.getX()
-				+ static_cast<int32_t>(std::clamp(
-					std::tanf(ad.computed.flightDirectorRollRad) * projectionPlaneDistance,
-					-flightDirectorLengthHalfF,
-					flightDirectorLengthHalfF
-				))
-				- PFD::flightDirectorThickness / 2
+					+ static_cast<int32_t>(std::clamp(
+						std::tanf(ad.computed.flightDirectorRollRad) * projectionPlaneDistance,
+						-flightDirectorLengthHalfF,
+						flightDirectorLengthHalfF
+					))
+					- PFD::flightDirectorThickness / 2
 			);
 
 			flightDirectorRectBounds.setY(center.getY() - flightDirectorLength / 2);
