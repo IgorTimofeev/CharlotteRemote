@@ -41,9 +41,9 @@ namespace pizda {
 			
 			std::vector<PacketSequenceItem> _packetSequence {
 				PacketSequenceItem(RemotePacketType::remoteChannelsData, 3),
-				PacketSequenceItem(RemotePacketType::remoteAuxiliary, 1),
+				PacketSequenceItem(RemotePacketType::remoteAutopilot, 1, true),
 				PacketSequenceItem(RemotePacketType::remoteChannelsData, 3),
-				PacketSequenceItem(RemotePacketType::remoteAutopilot, 1, true)
+				PacketSequenceItem(RemotePacketType::remoteAuxiliary, 1),
 			};
 			
 			uint8_t _packetSequenceIndex = 0;
@@ -53,13 +53,13 @@ namespace pizda {
 
 			bool receiveAircraftCalibrationPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength);
-			bool receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftAutopilotPacket(BitStream& stream, uint8_t payloadLength);
+			bool receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength);
 			
 			bool transmitNOPPacket(BitStream& stream);
 			bool transmitRemoteChannelsDataPacket(BitStream& stream);
-			bool transmitRemoteAuxiliaryPacket(BitStream& stream);
 			bool transmitRemoteAutopilotPacket(BitStream& stream);
+			bool transmitRemoteAuxiliaryPacket(BitStream& stream);
 	
 			template<typename T>
 			static float sanitizeValue(T value, T min, T max) {

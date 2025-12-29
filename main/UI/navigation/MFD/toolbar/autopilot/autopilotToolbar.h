@@ -20,11 +20,8 @@ namespace pizda {
 			
 			KorryButton flightDirectorsButton { L"FD", &resources::images::menuIconMFDAutopilotFlightDirectors };
 
-			RotaryControl<3, 0, 400, false, 1, 10> speed { L"Speed", L"A/T" };
-			RotaryControl<3, 0, 360, true, 1, 10> heading { L"Heading", L"HLD" };
-			RotaryControl<4, 0, 15000, false, 1, 10> altitude { L"Altitude", L"FLC" };
-		
-		private:
-
+			RotaryControl<3, 0, 350, false, 1, 10> speed { L"Speed", L"A/T" };
+			RotaryControl<3, 0, 359, true, 1, 10> heading { L"Heading", L"HLD" };
+			RotaryControl<4, 0, 35000, false, 1, 10> altitude { L"Altitude", L"FLC" };
 	};
 }

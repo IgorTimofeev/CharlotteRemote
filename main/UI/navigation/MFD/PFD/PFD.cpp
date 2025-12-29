@@ -166,7 +166,7 @@ namespace pizda {
 				center.getX() - flightDirectorLength / 2,
 				center.getY()
 					- static_cast<int32_t>(std::clamp(
-						std::tanf(ad.computed.flightDirectorPitchRad) * projectionPlaneDistance,
+					std::tanf(ad.computed.autopilotPitchRad - ad.computed.pitchRad) * projectionPlaneDistance,
 						-flightDirectorLengthHalfF,
 						flightDirectorLengthHalfF
 					))
@@ -181,7 +181,7 @@ namespace pizda {
 			flightDirectorRectBounds.setX(
 				center.getX()
 					+ static_cast<int32_t>(std::clamp(
-					std::tanf(ad.computed.flightDirectorRollRad) * projectionPlaneDistance,
+					std::tanf(ad.computed.autopilotRollRad - ad.computed.rollRad) * projectionPlaneDistance,
 						-flightDirectorLengthHalfF,
 						flightDirectorLengthHalfF
 					))

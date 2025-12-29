@@ -197,15 +197,15 @@ namespace pizda {
 		);
 		
 		// Flight director
-		_aircraftData.computed.flightDirectorPitchRad = applyLPF(
-			_aircraftData.computed.flightDirectorPitchRad,
-			_aircraftData.raw.flightDirectorPitchRad,
+		_aircraftData.computed.autopilotPitchRad = applyLPF(
+			_aircraftData.computed.autopilotPitchRad,
+			_aircraftData.raw.autopilotPitchRad,
 			LPFFactor
 		);
 		
-		_aircraftData.computed.flightDirectorRollRad = applyLPF(
-			_aircraftData.computed.flightDirectorRollRad,
-			_aircraftData.raw.flightDirectorRollRad,
+		_aircraftData.computed.autopilotRollRad = applyLPF(
+			_aircraftData.computed.autopilotRollRad,
+			_aircraftData.raw.autopilotRollRad,
 			LPFFactor
 		);
 		
@@ -236,7 +236,7 @@ namespace pizda {
 		// Throttle
 		_aircraftData.computed.throttlePercent01 = applyLPF(
 			_aircraftData.computed.throttlePercent01,
-			static_cast<float>(_aircraftData.raw.throttlePercent_0_255) / 255.f,
+			static_cast<float>(_aircraftData.raw.throttle_0_255) / 255.f,
 			LPFFactor
 		);
 		

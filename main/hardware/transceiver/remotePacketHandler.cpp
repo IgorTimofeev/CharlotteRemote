@@ -54,12 +54,12 @@ namespace pizda {
 		switch (static_cast<AircraftPacketType>(packetType)) {
 			case AircraftPacketType::aircraftADIRS:
 				return receiveAircraftADIRSPacket(stream, payloadLength);
+			
+			case AircraftPacketType::aircraftAutopilot:
+				return receiveAircraftAutopilotPacket(stream, payloadLength);
 				
 			case AircraftPacketType::aircraftAuxiliary:
 				return receiveAircraftAuxiliaryPacket(stream, payloadLength);
-				
-			case AircraftPacketType::aircraftAutopilot:
-				return receiveAircraftAutopilotPacket(stream, payloadLength);
 				
 			case AircraftPacketType::aircraftCalibration:
 				return receiveAircraftCalibrationPacket(stream, payloadLength);
@@ -143,13 +143,12 @@ namespace pizda {
 		return true;
 	}
 	
-	bool RemotePacketHandler::receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength) {
+	bool RemotePacketHandler::receiveAircraftAutopilotPacket(BitStream& stream, uint8_t payloadLength) {
 		if (!validatePayloadChecksumAndLength(
 			stream,
 			AircraftAuxiliaryPacket::throttleLengthBits
-			+ AircraftAuxiliaryPacket::latLengthBits
-			+ AircraftAuxiliaryPacket::lonLengthBits
-			+ AircraftAuxiliaryPacket::batteryLengthBits,
+				+ AircraftAutopilotPacket::rollLengthBits
+				+ AircraftAutopilotPacket::pitchLengthBits,
 			payloadLength
 		))
 			return false;
@@ -157,10 +156,26 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		auto& ad = rc.getAircraftData();
 		
-		// -------------------------------- Throttle --------------------------------
+		ad.raw.throttle_0_255 = stream.readUint8(AircraftAuxiliaryPacket::throttleLengthBits) * 0xFF / ((1 << AircraftAuxiliaryPacket::throttleLengthBits) - 1);
+		ad.raw.autopilotRollRad = readRadians(stream, AircraftAutopilotPacket::rollRangeRad, AircraftAutopilotPacket::rollLengthBits);
+		ad.raw.autopilotPitchRad = readRadians(stream, AircraftAutopilotPacket::pitchRangeRad, AircraftAutopilotPacket::pitchLengthBits);
 		
-		ad.raw.throttlePercent_0_255 = stream.readUint8(AircraftAuxiliaryPacket::throttleLengthBits) * 0xFF / ((1 << AircraftAuxiliaryPacket::throttleLengthBits) - 1);
+		return true;
+	}
+	
+	bool RemotePacketHandler::receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength) {
+		if (!validatePayloadChecksumAndLength(
+			stream,
+			+ AircraftAuxiliaryPacket::latLengthBits
+				+ AircraftAuxiliaryPacket::lonLengthBits
+				+ AircraftAuxiliaryPacket::batteryLengthBits,
+			payloadLength
+		))
+			return false;
 		
+		auto& rc = RC::getInstance();
+		auto& ad = rc.getAircraftData();
+
 		// -------------------------------- Latitude --------------------------------
 		
 		// 25 bits per [-90; 90] deg
@@ -189,24 +204,6 @@ namespace pizda {
 		
 		const auto batteryVoltageDaV = stream.readUint16(AircraftAuxiliaryPacket::batteryLengthBits);
 		ad.raw.batteryVoltageV = static_cast<float>(batteryVoltageDaV) / 10.f;
-		
-		return true;
-	}
-	
-	bool RemotePacketHandler::receiveAircraftAutopilotPacket(BitStream& stream, uint8_t payloadLength) {
-		if (!validatePayloadChecksumAndLength(
-			stream,
-			AircraftAutopilotPacket::flightDirectorRollLengthBits
-				+ AircraftAutopilotPacket::flightDirectorPitchLengthBits,
-			payloadLength
-		))
-			return false;
-		
-		auto& rc = RC::getInstance();
-		auto& ad = rc.getAircraftData();
-		
-		ad.raw.flightDirectorRollRad = readRadians(stream, AircraftAutopilotPacket::flightDirectorRollRangeRad, AircraftAutopilotPacket::flightDirectorRollLengthBits);
-		ad.raw.flightDirectorPitchRad = readRadians(stream, AircraftAutopilotPacket::flightDirectorPitchRangeRad, AircraftAutopilotPacket::flightDirectorPitchLengthBits);
 		
 		return true;
 	}
@@ -273,12 +270,12 @@ namespace pizda {
 			
 			case RemotePacketType::remoteChannelsData:
 				return transmitRemoteChannelsDataPacket(stream);
-				
-			case RemotePacketType::remoteAuxiliary:
-				return transmitRemoteAuxiliaryPacket(stream);
 			
 			case RemotePacketType::remoteAutopilot:
 				return transmitRemoteAutopilotPacket(stream);
+				
+			case RemotePacketType::remoteAuxiliary:
+				return transmitRemoteAuxiliaryPacket(stream);
 				
 			default:
 				ESP_LOGE(_logTag, "failed to writeNext packet: unsupported type %d", packetType);
@@ -325,20 +322,6 @@ namespace pizda {
 		return true;
 	}
 	
-	bool RemotePacketHandler::transmitRemoteAuxiliaryPacket(BitStream& stream) {
-		auto& rc = RC::getInstance();
-		auto& settings = rc.getSettings();
-		
-		// 1 hectopascal ~= 7.88 meters ~= 30 feet of altitude, which is not good enough for low altitude RC aircraft
-		// So we'll be using decapascals. Cool fact: The maximum recorded atmospheric pressure on Earth, adjusted to sea level,
-		// is around 1085.7 hPa (32.09 inHg), occurring in Tonsontsengel, Mongolia (2001)
-		// So in theory 1100 daPa will be more than enough
-		// So 14 bits
-		stream.writeUint16(settings.controls.referencePressureSTD ? 10132 : settings.controls.referencePressurePa / 10, RemoteAuxiliaryPacket::referencePressureLengthBits);
-		
-		return true;
-	}
-	
 	bool RemotePacketHandler::transmitRemoteAutopilotPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		auto& settings = rc.getSettings();
@@ -349,7 +332,7 @@ namespace pizda {
 		stream.writeBool(settings.autopilot.autoThrottle);
 		
 		// Heading
-		stream.writeUint16(static_cast<uint8_t>(settings.autopilot.headingDeg), RemoteAutopilotPacket::headingLengthBits);
+		stream.writeUint16(settings.autopilot.headingDeg, RemoteAutopilotPacket::headingLengthBits);
 		stream.writeBool(settings.autopilot.headingHold);
 		
 		// Altitude
@@ -364,6 +347,20 @@ namespace pizda {
 		
 		stream.writeUint16(altitudeValue, RemoteAutopilotPacket::altitudeLengthBits);
 		stream.writeBool(settings.autopilot.levelChange);
+		
+		return true;
+	}
+	
+	bool RemotePacketHandler::transmitRemoteAuxiliaryPacket(BitStream& stream) {
+		auto& rc = RC::getInstance();
+		auto& settings = rc.getSettings();
+		
+		// 1 hectopascal ~= 7.88 meters ~= 30 feet of altitude, which is not good enough for low altitude RC aircraft
+		// So we'll be using decapascals. Cool fact: The maximum recorded atmospheric pressure on Earth, adjusted to sea level,
+		// is around 1085.7 hPa (32.09 inHg), occurring in Tonsontsengel, Mongolia (2001)
+		// So in theory 1100 daPa will be more than enough
+		// So 14 bits
+		stream.writeUint16(settings.controls.referencePressureSTD ? 10132 : settings.controls.referencePressurePa / 10, RemoteAuxiliaryPacket::referencePressureLengthBits);
 		
 		return true;
 	}
