@@ -6,22 +6,7 @@ namespace pizda {
 	DeveloperSettingsPage::DeveloperSettingsPage() {
 		// Page title
 		title.setText(L"Dev options");
-
-		// Debug overlay switch
-		Theme::apply(&_debugOverlaySwitch);
-		_debugOverlaySwitch.setCheckedColor(&Theme::sky);
-		_debugOverlaySwitch.setActive(RC::getInstance().getSettings().interface.developer.debugOverlay);
-
-		_debugOverlaySwitch.isActiveChanged += [this] {
-			auto& settings = RC::getInstance().getSettings();
-			settings.interface.developer.debugOverlay = _debugOverlaySwitch.isActive();
-			settings.interface.scheduleWrite();
-
-			RC::getInstance().updateDebugOverlayVisibility();
-		};
-
-		rows += &_debugOverlaySwitchTitle;
-
+		
 		// Button
 		Theme::applyPrimary(&_settingsNavigationResetButton);
 

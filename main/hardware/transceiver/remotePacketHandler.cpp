@@ -126,7 +126,7 @@ namespace pizda {
 //		ad.flightPathVectorYaw = packet->flightPathYawRad;
 //
 //		ad.flightDirectorPitch = packet->flightDirectorPitchRad;
-//		ad.flightDirectorRoll = packet->flightDirectorYawRad;
+//		ad.flightDirectorRoll = packet->flightDirectorRollRad;
 //
 //		ad.windDirection = toRadians(packet->windDirectionDeg);
 		

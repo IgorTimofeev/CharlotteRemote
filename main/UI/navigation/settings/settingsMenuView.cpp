@@ -9,15 +9,4 @@ namespace pizda {
 	}
 
 	const Route* SettingsMenuView::_lastRoute = nullptr;
-
-	void SettingsMenuView::setup() {
-		PagesMenuView::setup();
-
-		// Power
-		_powerButton.click += [] {
-			esp_restart();
-		};
-
-		*this += &_powerButton;
-	}
 }

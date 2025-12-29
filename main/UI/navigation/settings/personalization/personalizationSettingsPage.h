@@ -15,6 +15,7 @@ namespace pizda {
 			PersonalizationSettingsPage();
 
 		private:
-
+			Switcher _LPFSwitcher { L"Enable LPF" };
+			Switcher _debugOverlaySwitcher { L"Show debug overlay" };
 	};
 }

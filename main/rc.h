@@ -185,7 +185,10 @@ namespace pizda {
 			void NVSSetup();
 			
 			void startErrorLoop(const char* error);
-
+			
+			float applyLPF(float oldValue, float newValue, float factor);
+			float applyLPFForAngleRad(float oldValue, float newValue, float factor);
+			
 			void interpolationTick();
 	};
 }

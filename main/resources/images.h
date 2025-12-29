@@ -23,7 +23,6 @@
 #include "images/menuIconPersonalizationImage.h"
 #include "images/menuIconAxisImage.h"
 #include "images/menuIconDevImage.h"
-#include "images/menuIconPowerImage.h"
 
 namespace pizda::resources {
 	class images {
@@ -49,6 +48,5 @@ namespace pizda::resources {
 			static const MenuIconPersonalizationImage menuIconPersonalization;
 			static const MenuIconAxisImage menuIconAxis;
 			static const MenuIconDevImage menuIconDev;
-			static const MenuIconPowerImage menuIconPower;
 	};
 }

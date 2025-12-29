@@ -52,23 +52,19 @@ namespace pizda {
 				return PFD.visible || ND.visible;
 			}
 	};
-
-	class SettingsInterfaceDeveloper {
-		public:
-			bool debugOverlay = false;
-	};
-
 	class SettingsInterface : public NVSSettings {
 		public:
 			SettingsInterfaceMFD MFD {};
-			SettingsInterfaceDeveloper developer {};
-
+			bool LPF = false;
+			bool debugOverlay = false;
+		
 		protected:
 			const char* getNamespace() override {
 				return _namespace;
 			}
 
 			void onRead(const NVSStream& stream) override {
+				// MFD
 				MFD.PFD.visible = stream.readBool(_MFDPFDVisible, true);
 				MFD.PFD.FOV = stream.readUint8(_MFDPFDFOV, 50);
 				MFD.PFD.flightDirector = stream.readBool(_MFDPFDFlightDirectors, true);
@@ -81,11 +77,14 @@ namespace pizda {
 				MFD.toolbar.mode = static_cast<SettingsInterfaceMFDToolbarMode>(stream.readUint8(_MFDToolbarMode, static_cast<uint8_t>(SettingsInterfaceMFDToolbarMode::none)));
 				
 				MFD.splitPercent = stream.readUint8(_MFDSplitPercent, 60);
-
-				developer.debugOverlay = stream.readBool(_developerDebugOverlay, false);
+				
+				// Other
+				LPF = stream.readBool(_LPF, false);
+				debugOverlay = stream.readBool(_debugOverlay, false);
 			}
 
 			void onWrite(const NVSStream& stream) override {
+				// MFD
 				stream.writeBool(_MFDPFDVisible, MFD.PFD.visible);
 				stream.writeUint8(_MFDPFDFOV, MFD.PFD.FOV);
 				stream.writeBool(_MFDPFDFlightDirectors, MFD.PFD.flightDirector);
@@ -98,8 +97,10 @@ namespace pizda {
 				stream.writeUint8(_MFDToolbarMode, static_cast<uint8_t>(MFD.toolbar.mode));
 
 				stream.writeUint8(_MFDSplitPercent, MFD.splitPercent);
-
-				stream.writeBool(_developerDebugOverlay, developer.debugOverlay);
+				
+				// Other
+				stream.writeBool(_LPF, LPF);
+				stream.writeBool(_debugOverlay, debugOverlay);
 			}
 
 		private:
@@ -112,6 +113,8 @@ namespace pizda {
 			constexpr static auto _MFDNDEarth = "mnea";
 			constexpr static auto _MFDToolbarMode = "mtmd";
 			constexpr static auto _MFDSplitPercent = "msp";
-			constexpr static auto _developerDebugOverlay = "ddo";
+			
+			constexpr static auto _LPF = "lp";
+			constexpr static auto _debugOverlay = "do";
 	};
 }

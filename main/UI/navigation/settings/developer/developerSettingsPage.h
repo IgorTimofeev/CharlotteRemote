@@ -20,34 +20,31 @@ namespace pizda {
 			Text _speakerTitle {};
 
 			Slider _speakerFrequencySlider {};
-			Titler _speakerFrequencySliderTitle = Titler(L"Frequency (1 - 12 KHz)", &_speakerFrequencySlider);
+			Titler _speakerFrequencySliderTitle { L"Frequency (1 - 12 KHz)", &_speakerFrequencySlider };
 
 			Slider _speakerDurationSlider {};
-			Titler _speakerDurationSliderTitle = Titler(L"Duration (1 - 1000 ms)", &_speakerDurationSlider);
+			Titler _speakerDurationSliderTitle { L"Duration (1 - 1000 ms)", &_speakerDurationSlider };
 
 			Slider _speakerCountSlider {};
-			Titler _speakerCountSliderTitle = Titler(L"Count (1 - 5 times)", &_speakerCountSlider);
+			Titler _speakerCountSliderTitle { L"Count (1 - 5 times)", &_speakerCountSlider };
 			Text _speakerCountText {};
 
 			Button _speakerButton {};
 
 			// Text
 			Slider _textFontSizeSlider {};
-			Titler _textSliderTitle = Titler(L"Font size slider", &_textFontSizeSlider);
+			Titler _textSliderTitle { L"Font size slider", &_textFontSizeSlider };
 
 			Slider _textMarginSlider {};
-			Titler _textMarginSliderTitle = Titler(L"Margin slider", &_textMarginSlider);
+			Titler _textMarginSliderTitle { L"Margin slider", &_textMarginSlider };
 
 			Text _text {};
 
 			ProgressBar _progressBar {};
-			Titler _progressBarTitle = Titler(L"Progress bar", &_progressBar);
-
-			Switch _debugOverlaySwitch {};
-			Titler _debugOverlaySwitchTitle = Titler(L"Switch", &_debugOverlaySwitch);
+			Titler _progressBarTitle { L"Progress bar", &_progressBar };
 
 			TextField _textField {};
-			Titler textFieldTitle = Titler(L"Text", &_textField);
+			Titler textFieldTitle { L"Text", &_textField };
 
 	};
 }

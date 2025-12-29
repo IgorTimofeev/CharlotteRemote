@@ -23,5 +23,4 @@ namespace pizda::resources {
 	const MenuIconPersonalizationImage images::menuIconPersonalization {};
 	const MenuIconAxisImage images::menuIconAxis {};
 	const MenuIconDevImage images::menuIconDev {};
-	const MenuIconPowerImage images::menuIconPower {};
 }
