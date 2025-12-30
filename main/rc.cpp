@@ -197,15 +197,15 @@ namespace pizda {
 		);
 		
 		// Flight director
-		_aircraftData.computed.autopilotPitchRad = applyLPF(
-			_aircraftData.computed.autopilotPitchRad,
-			_aircraftData.raw.autopilotPitchRad,
-			LPFFactor
-		);
-		
 		_aircraftData.computed.autopilotRollRad = applyLPF(
 			_aircraftData.computed.autopilotRollRad,
 			_aircraftData.raw.autopilotRollRad,
+			LPFFactor
+		);
+		
+		_aircraftData.computed.autopilotPitchRad = applyLPF(
+			_aircraftData.computed.autopilotPitchRad,
+			_aircraftData.raw.autopilotPitchRad,
 			LPFFactor
 		);
 		
@@ -213,9 +213,9 @@ namespace pizda {
 		LPFFactor = LowPassFilter::getFactor(3.0f, deltaTimeUs);
 		
 		// Air speed
-		_aircraftData.computed.airSpeedKt = applyLPF(
-			_aircraftData.computed.airSpeedKt,
-			Units::convertSpeed(_aircraftData.raw.airSpeedMPS, SpeedUnit::meterPerSecond, SpeedUnit::knot),
+		_aircraftData.computed.airspeedKt = applyLPF(
+			_aircraftData.computed.airspeedKt,
+			Units::convertSpeed(_aircraftData.raw.airspeedMPS, SpeedUnit::meterPerSecond, SpeedUnit::knot),
 			LPFFactor
 		);
 		
@@ -234,8 +234,8 @@ namespace pizda {
 		);
 		
 		// Throttle
-		_aircraftData.computed.throttlePercent01 = applyLPF(
-			_aircraftData.computed.throttlePercent01,
+		_aircraftData.computed.throttle_0_1 = applyLPF(
+			_aircraftData.computed.throttle_0_1,
 			static_cast<float>(_aircraftData.raw.throttle_0_255) / 255.f,
 			LPFFactor
 		);
@@ -244,9 +244,9 @@ namespace pizda {
 		LPFFactor = LowPassFilter::getFactor(1.0f, deltaTimeUs);
 		
 		// Air speed trend
-		_aircraftData.computed.airSpeedTrendKt = applyLPF(
-			_aircraftData.computed.airSpeedTrendKt,
-			Units::convertSpeed(_aircraftData.raw.airSpeedTrendMPS, SpeedUnit::meterPerSecond, SpeedUnit::knot),
+		_aircraftData.computed.airspeedTrendKt = applyLPF(
+			_aircraftData.computed.airspeedTrendKt,
+			Units::convertSpeed(_aircraftData.raw.airspeedTrendMPS, SpeedUnit::meterPerSecond, SpeedUnit::knot),
 			LPFFactor
 		);
 		

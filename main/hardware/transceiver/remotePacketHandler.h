@@ -23,7 +23,7 @@ namespace pizda {
 			bool _useEnqueued;
 	};
 	
-	class RemotePacketHandler : public PacketHandler {
+	class RemotePacketHandler : public PacketHandler<RemoteState, RemotePacketType, AircraftState, AircraftPacketType> {
 		public:
 			void enqueue(RemotePacketType type) {
 				_packetQueue.push(type);
@@ -31,19 +31,17 @@ namespace pizda {
 			
 		protected:
 			[[noreturn]] void onStart() override;
-			uint8_t getTransmitPacketType() override;
-			bool onTransmit(BitStream& stream, uint8_t packetType) override;
-			bool onReceive(BitStream& stream, uint8_t packetType, uint8_t payloadLength) override;
+			RemotePacketType getTransmitPacketType() override;
+			bool onTransmit(BitStream& stream, RemotePacketType packetType) override;
+			bool onReceive(BitStream& stream, AircraftPacketType packetType, uint8_t payloadLength) override;
 			void onIsConnectedChanged() override;
 			
 		private:
 			int64_t _aircraftADIRSPacketTime = 0;
 			
 			std::vector<PacketSequenceItem> _packetSequence {
-				PacketSequenceItem(RemotePacketType::remoteChannelsData, 3),
-				PacketSequenceItem(RemotePacketType::remoteAutopilot, 1, true),
-				PacketSequenceItem(RemotePacketType::remoteChannelsData, 3),
-				PacketSequenceItem(RemotePacketType::remoteAuxiliary, 1),
+				PacketSequenceItem(RemotePacketType::channelsData, 3),
+				PacketSequenceItem(RemotePacketType::auxiliary, 1, true)
 			};
 			
 			uint8_t _packetSequenceIndex = 0;
@@ -53,12 +51,10 @@ namespace pizda {
 
 			bool receiveAircraftCalibrationPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength);
-			bool receiveAircraftAutopilotPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength);
 			
 			bool transmitNOPPacket(BitStream& stream);
 			bool transmitRemoteChannelsDataPacket(BitStream& stream);
-			bool transmitRemoteAutopilotPacket(BitStream& stream);
 			bool transmitRemoteAuxiliaryPacket(BitStream& stream);
 	
 			template<typename T>

@@ -160,15 +160,33 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="сука прикол директора ползают))) КРОСЕВА">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="фиксики закоптились">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleSection.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleSection.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbarSection.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbarSection.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packetHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packetHandler.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotFlightDirectorsImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsCabinImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsCabinImage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsLandingImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsLandingImage.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/utils/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/utils/aircraftData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDAutopilotFlightDirectors.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDAutopilotFlightDirectors.psd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLightsCabin.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDLightsCabin.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLightsCabin.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDLightsCabin.psd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLightsLanding.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDLightsLanding.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDLightsLanding.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDLightsLanding.psd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -721,6 +739,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="apidoc" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1110,7 +1133,9 @@
       <workItem from="1767002391495" duration="11558000" />
       <workItem from="1767018784637" duration="7619000" />
       <workItem from="1767032078358" duration="3326000" />
-      <workItem from="1767040018547" duration="4636000" />
+      <workItem from="1767040018547" duration="4705000" />
+      <workItem from="1767091074417" duration="4639000" />
+      <workItem from="1767096197073" duration="11335000" />
     </task>
     <task id="LOCAL-00001" summary="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ">
       <option name="closed" value="true" />
@@ -1376,7 +1401,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767026917156</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="фиксики закоптились">
+      <option name="closed" value="true" />
+      <created>1767045046894</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1767045046894</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1417,7 +1450,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ" />
     <MESSAGE value="пиздец блядь эти инклюды вонючие" />
     <MESSAGE value="еще и ресет этот ебаный блядь объединять с экраном" />
     <MESSAGE value="пизда тут хуйни серануло в логи" />
@@ -1442,6 +1474,7 @@
     <MESSAGE value="захуярил циклическую обработку уголков, а то чета говной воняет, когда с -pi на pi переходишь" />
     <MESSAGE value="ничего себе какая оказия! ебучие флайт директора ПАШУТ БАЛЯ" />
     <MESSAGE value="сука прикол директора ползают))) КРОСЕВА" />
-    <option name="LAST_COMMIT_MESSAGE" value="сука прикол директора ползают))) КРОСЕВА" />
+    <MESSAGE value="фиксики закоптились" />
+    <option name="LAST_COMMIT_MESSAGE" value="фиксики закоптились" />
   </component>
 </project>

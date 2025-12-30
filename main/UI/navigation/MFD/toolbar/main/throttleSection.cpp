@@ -24,7 +24,7 @@ namespace pizda {
 
 		// Throttles
 		throttleIndicator1.setRemoteValue(rd.raw.throttle_0_255);
-		throttleIndicator1.setAircraftValue(static_cast<uint8_t>(ad.computed.throttlePercent01 * 0xFF));
+		throttleIndicator1.setAircraftValue(static_cast<uint8_t>(ad.computed.throttle_0_1 * 0xFF));
 		
 		throttleIndicator2.setRemoteValue(throttleIndicator1.getRemoteValue());
 		throttleIndicator2.setAircraftValue(throttleIndicator1.getAircraftValue());

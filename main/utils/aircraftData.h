@@ -21,8 +21,8 @@ namespace pizda {
 			float windSpeed = 0;
 			uint8_t throttle_0_255 = 0;
 			
-			float airSpeedMPS = 0;
-			float airSpeedTrendMPS = 0;
+			float airspeedMPS = 0;
+			float airspeedTrendMPS = 0;
 			
 			float altitudeTrendM = 0;
 			
@@ -47,8 +47,8 @@ namespace pizda {
 	
 	class AircraftDataComputed {
 		public:
-			float airSpeedKt = 0;
-			float airSpeedTrendKt = 0;
+			float airspeedKt = 0;
+			float airspeedTrendKt = 0;
 			
 			float altitudeFt = 0;
 			float altitudeTrendFt = 0;
@@ -69,7 +69,7 @@ namespace pizda {
 			float autopilotRollRad = 0;
 			
 			float windDirectionRad = 0;
-			float throttlePercent01 = 0;
+			float throttle_0_1 = 0;
 	};
 
 	class AircraftData {

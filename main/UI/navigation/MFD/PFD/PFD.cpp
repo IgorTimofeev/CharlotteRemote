@@ -196,7 +196,7 @@ namespace pizda {
 		}
 
 		// Flight path vector
-		if (ad.computed.airSpeedKt > PFD::speedFlapsMin) {
+		if (ad.computed.airspeedKt > PFD::speedFlapsMin) {
 			const auto& FPVPosition = Point(
 				static_cast<int32_t>(horizonCenter.getX() + std::tanf(ad.computed.flightPathVectorYawRad) * projectionPlaneDistance),
 				static_cast<int32_t>(horizonCenter.getY() - std::tanf(ad.computed.flightPathVectorPitchRad) * projectionPlaneDistance)
@@ -892,7 +892,7 @@ namespace pizda {
 		const auto barX = bounds.getX2() + 1 - speedBarSize;
 
 		const auto renderBar = [&](int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) {
-			const int32_t fromY = centerY - static_cast<int32_t>((static_cast<float>(fromSpeed) - ad.computed.airSpeedKt) * static_cast<float>(speedStepPixels) / static_cast<float>(speedStepUnits));
+			const int32_t fromY = centerY - static_cast<int32_t>((static_cast<float>(fromSpeed) - ad.computed.airspeedKt) * static_cast<float>(speedStepPixels) / static_cast<float>(speedStepUnits));
 			const int32_t height = (toSpeed - fromSpeed) * speedStepPixels / speedStepUnits;
 
 			renderer->renderFilledRectangle(
@@ -970,7 +970,7 @@ namespace pizda {
 		);
 
 		// Lines
-		const float snapped = ad.computed.airSpeedKt / static_cast<float>(speedStepUnits);
+		const float snapped = ad.computed.airspeedKt / static_cast<float>(speedStepUnits);
 		const float snappedInteger = std::floorf(snapped);
 		const float snappedFractional = snapped - snappedInteger;
 
@@ -1029,14 +1029,14 @@ namespace pizda {
 			centerY,
 			speedStepUnits,
 			speedStepPixels,
-			ad.computed.airSpeedTrendKt
+			ad.computed.airspeedTrendKt
 		);
 
 		// V-speeds
 		for (const auto& VSpeed : VSpeeds) {
 			const auto& VSpeedBounds = Bounds(
 				bounds.getX2() + VSpeedMargin + VSpeedTriangleWidth,
-				centerY - static_cast<int32_t>((static_cast<float>(VSpeed.getValue()) - ad.computed.airSpeedKt) * static_cast<float>(speedStepPixels) / static_cast<float>(speedStepUnits)),
+				centerY - static_cast<int32_t>((static_cast<float>(VSpeed.getValue()) - ad.computed.airspeedKt) * static_cast<float>(speedStepPixels) / static_cast<float>(speedStepUnits)),
 				Theme::fontSmall.getWidth(VSpeed.getName()) + VSpeedTextOffset * 2,
 				Theme::fontSmall.getHeight() + VSpeedTextOffset * 2
 			);
@@ -1072,7 +1072,7 @@ namespace pizda {
 			centerY,
 			speedStepUnits,
 			speedStepPixels,
-			ad.computed.airSpeedKt,
+			ad.computed.airspeedKt,
 			rc.getSettings().autopilot.speedKt,
 			true
 		);
@@ -1083,7 +1083,7 @@ namespace pizda {
 			bounds,
 			centerY,
 			speedMaximumDigits,
-			ad.computed.airSpeedKt,
+			ad.computed.airspeedKt,
 			true
 		);
 	}

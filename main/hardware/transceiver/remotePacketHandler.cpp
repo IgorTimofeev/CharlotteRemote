@@ -50,18 +50,15 @@ namespace pizda {
 	
 	// -------------------------------- Receiving --------------------------------
 	
-	bool RemotePacketHandler::onReceive(BitStream& stream, uint8_t packetType, uint8_t payloadLength) {
-		switch (static_cast<AircraftPacketType>(packetType)) {
-			case AircraftPacketType::aircraftADIRS:
+	bool RemotePacketHandler::onReceive(BitStream& stream, AircraftPacketType packetType, uint8_t payloadLength) {
+		switch (packetType) {
+			case AircraftPacketType::ADIRS:
 				return receiveAircraftADIRSPacket(stream, payloadLength);
 			
-			case AircraftPacketType::aircraftAutopilot:
-				return receiveAircraftAutopilotPacket(stream, payloadLength);
-				
-			case AircraftPacketType::aircraftAuxiliary:
+			case AircraftPacketType::auxiliary:
 				return receiveAircraftAuxiliaryPacket(stream, payloadLength);
 				
-			case AircraftPacketType::aircraftCalibration:
+			case AircraftPacketType::calibration:
 				return receiveAircraftCalibrationPacket(stream, payloadLength);
 				
 			default:
@@ -79,7 +76,10 @@ namespace pizda {
 				+ AircraftADIRSPacket::yawLengthBits
 				+ AircraftADIRSPacket::slipAndSkidLengthBits
 				+ AircraftADIRSPacket::speedLengthBits
-				+ AircraftADIRSPacket::altitudeLengthBits,
+				+ AircraftADIRSPacket::altitudeLengthBits
+				+ AircraftADIRSPacket::throttleLengthBits
+				+ AircraftADIRSPacket::autopilotRollLengthBits
+				+ AircraftADIRSPacket::autopilotPitchLengthBits,
 			payloadLength
 		))
 			return false;
@@ -91,8 +91,8 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		auto& ad = rc.getAircraftData();
 		
-		const auto oldSpeed = ad.raw.airSpeedMPS;
-		const auto oldAltitude = ad.raw.geographicCoordinates.getAltitude();
+		const auto airspeedPrevMPS = ad.raw.airspeedMPS;
+		const auto altitudePrevM = ad.raw.geographicCoordinates.getAltitude();
 		
 		// Roll / pitch / yaw
 		ad.raw.rollRad = readRadians(stream, AircraftADIRSPacket::rollRangeRad, AircraftADIRSPacket::rollLengthBits);
@@ -108,7 +108,11 @@ namespace pizda {
 			* 2.f - 1.f;
 		
 		// Speed
-		ad.raw.airSpeedMPS = static_cast<float>(stream.readUint8(AircraftADIRSPacket::speedLengthBits));
+		const auto speedFactor =
+			static_cast<float>(stream.readUint8(AircraftADIRSPacket::speedLengthBits))
+			/ static_cast<float>((1 << AircraftADIRSPacket::speedLengthBits) - 1);
+		
+		ad.raw.airspeedMPS = static_cast<float>(AircraftADIRSPacket::speedMax) * speedFactor;
 		
 		// Altitude
 		const auto altitudeFactor =
@@ -116,7 +120,17 @@ namespace pizda {
 			/ static_cast<float>((1 << AircraftADIRSPacket::altitudeLengthBits) - 1);
 		
 		ad.raw.geographicCoordinates.setAltitude(AircraftADIRSPacket::altitudeMin + (AircraftADIRSPacket::altitudeMax - AircraftADIRSPacket::altitudeMin) * altitudeFactor);
-
+		
+		// Throttle
+		ad.raw.throttle_0_255 = stream.readUint8(AircraftADIRSPacket::throttleLengthBits) * 0xFF / ((1 << AircraftADIRSPacket::throttleLengthBits) - 1);
+		
+		// Autopilot roll
+		ad.raw.autopilotRollRad = readRadians(stream, AircraftADIRSPacket::autopilotRollRangeRad, AircraftADIRSPacket::autopilotRollLengthBits);
+		
+		// Autopilot pitch
+		ad.raw.autopilotPitchRad = readRadians(stream, AircraftADIRSPacket::autopilotPitchRangeRad, AircraftADIRSPacket::autopilotPitchLengthBits);
+		
+		
 		// Value conversions
 //		ad.windSpeed = Units::convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 		
@@ -131,34 +145,14 @@ namespace pizda {
 //		ad.windDirection = toRadians(packet->windDirectionDeg);
 		
 		// Trends
-		const auto deltaAltitudeM = ad.raw.geographicCoordinates.getAltitude() - oldAltitude;
+		const auto deltaAltitudeM = ad.raw.geographicCoordinates.getAltitude() - altitudePrevM;
 		
 		// Airspeed & altitude, 5 sec
-		ad.raw.airSpeedTrendMPS = (ad.raw.airSpeedMPS - oldSpeed) * 5'000'000.f / static_cast<float>(deltaTime);
+		ad.raw.airspeedTrendMPS = (ad.raw.airspeedMPS - airspeedPrevMPS) * 5'000'000.f / static_cast<float>(deltaTime);
 		ad.raw.altitudeTrendM = deltaAltitudeM * 5'000'000.f / static_cast<float>(deltaTime);
 		
 		// Vertical speed, 1 min
 		ad.raw.verticalSpeedMPM = deltaAltitudeM * 60'000'000.f / static_cast<float>(deltaTime);
-		
-		return true;
-	}
-	
-	bool RemotePacketHandler::receiveAircraftAutopilotPacket(BitStream& stream, uint8_t payloadLength) {
-		if (!validatePayloadChecksumAndLength(
-			stream,
-			AircraftAuxiliaryPacket::throttleLengthBits
-				+ AircraftAutopilotPacket::rollLengthBits
-				+ AircraftAutopilotPacket::pitchLengthBits,
-			payloadLength
-		))
-			return false;
-		
-		auto& rc = RC::getInstance();
-		auto& ad = rc.getAircraftData();
-		
-		ad.raw.throttle_0_255 = stream.readUint8(AircraftAuxiliaryPacket::throttleLengthBits) * 0xFF / ((1 << AircraftAuxiliaryPacket::throttleLengthBits) - 1);
-		ad.raw.autopilotRollRad = readRadians(stream, AircraftAutopilotPacket::rollRangeRad, AircraftAutopilotPacket::rollLengthBits);
-		ad.raw.autopilotPitchRad = readRadians(stream, AircraftAutopilotPacket::pitchRangeRad, AircraftAutopilotPacket::pitchLengthBits);
 		
 		return true;
 	}
@@ -220,10 +214,10 @@ namespace pizda {
 	
 	// -------------------------------- Transmitting --------------------------------
 	
-	uint8_t RemotePacketHandler::getTransmitPacketType() {
-		switch (getAircraftState()) {
+	RemotePacketType RemotePacketHandler::getTransmitPacketType() {
+		switch (getRemoteState()) {
 			case AircraftState::aircraftCalibrating: {
-				return std::to_underlying(RemotePacketType::NOP);
+				return RemotePacketType::NOP;
 			}
 			default: {
 				const auto& item = _packetSequence[_packetSequenceIndex];
@@ -249,7 +243,7 @@ namespace pizda {
 					
 					next();
 					
-					return std::to_underlying(packetType);
+					return packetType;
 				}
 				// Normal
 				else {
@@ -257,24 +251,21 @@ namespace pizda {
 					
 					next();
 					
-					return std::to_underlying(packetType);
+					return packetType;
 				}
 			}
 		}
 	}
 	
-	bool RemotePacketHandler::onTransmit(BitStream& stream, uint8_t packetType) {
-		switch (static_cast<RemotePacketType>(packetType)) {
+	bool RemotePacketHandler::onTransmit(BitStream& stream, RemotePacketType packetType) {
+		switch (packetType) {
 			case RemotePacketType::NOP:
 				return transmitNOPPacket(stream);
 			
-			case RemotePacketType::remoteChannelsData:
+			case RemotePacketType::channelsData:
 				return transmitRemoteChannelsDataPacket(stream);
-			
-			case RemotePacketType::remoteAutopilot:
-				return transmitRemoteAutopilotPacket(stream);
 				
-			case RemotePacketType::remoteAuxiliary:
+			case RemotePacketType::auxiliary:
 				return transmitRemoteAuxiliaryPacket(stream);
 				
 			default:
@@ -322,45 +313,44 @@ namespace pizda {
 		return true;
 	}
 	
-	bool RemotePacketHandler::transmitRemoteAutopilotPacket(BitStream& stream) {
-		auto& rc = RC::getInstance();
-		auto& settings = rc.getSettings();
-		
-		// Speed
-		const auto speedMPS = Units::convertSpeed(settings.autopilot.speedKt, SpeedUnit::knot, SpeedUnit::meterPerSecond);
-		stream.writeUint8(static_cast<uint8_t>(speedMPS), RemoteAutopilotPacket::speedLengthBits);
-		stream.writeBool(settings.autopilot.autoThrottle);
-		
-		// Heading
-		stream.writeUint16(settings.autopilot.headingDeg, RemoteAutopilotPacket::headingLengthBits);
-		stream.writeBool(settings.autopilot.headingHold);
-		
-		// Altitude
-		const auto altitudeM = Units::convertDistance(settings.autopilot.altitudeFt, DistanceUnit::foot, DistanceUnit::meter);
-		const auto altitudeClamped = std::clamp<float>(altitudeM, RemoteAutopilotPacket::altitudeMin, RemoteAutopilotPacket::altitudeMax);
-		
-		const auto altitudeFactor =
-			(altitudeClamped - static_cast<float>(RemoteAutopilotPacket::altitudeMin))
-			/ static_cast<float>(RemoteAutopilotPacket::altitudeMax - AircraftADIRSPacket::altitudeMin);
-		
-		const auto altitudeValue = static_cast<uint16_t>(altitudeFactor * static_cast<float>((1 << RemoteAutopilotPacket::altitudeLengthBits) - 1));
-		
-		stream.writeUint16(altitudeValue, RemoteAutopilotPacket::altitudeLengthBits);
-		stream.writeBool(settings.autopilot.levelChange);
-		
-		return true;
-	}
-	
 	bool RemotePacketHandler::transmitRemoteAuxiliaryPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		auto& settings = rc.getSettings();
 		
-		// 1 hectopascal ~= 7.88 meters ~= 30 feet of altitude, which is not good enough for low altitude RC aircraft
-		// So we'll be using decapascals. Cool fact: The maximum recorded atmospheric pressure on Earth, adjusted to sea level,
-		// is around 1085.7 hPa (32.09 inHg), occurring in Tonsontsengel, Mongolia (2001)
-		// So in theory 1100 daPa will be more than enough
-		// So 14 bits
+		// Reference pressure
 		stream.writeUint16(settings.controls.referencePressureSTD ? 10132 : settings.controls.referencePressurePa / 10, RemoteAuxiliaryPacket::referencePressureLengthBits);
+		
+		// -------------------------------- Autopilot --------------------------------
+		
+		// Speed
+		const auto speedFactor =
+			std::min<float>(
+				Units::convertSpeed(settings.autopilot.speedKt, SpeedUnit::knot, SpeedUnit::meterPerSecond),
+				RemoteAuxiliaryPacket::autopilotSpeedMax
+			)
+			/ static_cast<float>(RemoteAuxiliaryPacket::autopilotSpeedMax);
+		
+		const auto speedMapped = static_cast<float>((1 << RemoteAuxiliaryPacket::autopilotSpeedLengthBits) - 1) * speedFactor;
+		
+		stream.writeUint8(static_cast<uint8_t>(speedMapped), RemoteAuxiliaryPacket::autopilotSpeedLengthBits);
+		stream.writeBool(settings.autopilot.autoThrottle);
+		
+		// Heading
+		stream.writeUint16(settings.autopilot.headingDeg, RemoteAuxiliaryPacket::autopilotHeadingLengthBits);
+		stream.writeBool(settings.autopilot.headingHold);
+		
+		// Altitude
+		const auto altitudeM = Units::convertDistance(settings.autopilot.altitudeFt, DistanceUnit::foot, DistanceUnit::meter);
+		const auto altitudeClamped = std::clamp<float>(altitudeM, RemoteAuxiliaryPacket::autopilotAltitudeMin, RemoteAuxiliaryPacket::autopilotAltitudeMax);
+		
+		const auto altitudeFactor =
+			(altitudeClamped - static_cast<float>(RemoteAuxiliaryPacket::autopilotAltitudeMin))
+			/ static_cast<float>(RemoteAuxiliaryPacket::autopilotAltitudeMax - AircraftADIRSPacket::altitudeMin);
+		
+		const auto altitudeValue = static_cast<uint16_t>(altitudeFactor * static_cast<float>((1 << RemoteAuxiliaryPacket::autopilotAltitudeLengthBits) - 1));
+		
+		stream.writeUint16(altitudeValue, RemoteAuxiliaryPacket::autopilotAltitudeLengthBits);
+		stream.writeBool(settings.autopilot.levelChange);
 		
 		return true;
 	}

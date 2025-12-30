@@ -50,18 +50,12 @@ namespace pizda {
 				if (_buttonMode) {
 					setActive(!isActive());
 				}
-				else {
-				
-				}
 			}
 			
 			void onFocusChanged() override {
 				Element::onFocusChanged();
 				
-				if (_buttonMode) {
-				
-				}
-				else {
+				if (!_buttonMode) {
 					setActive(isFocused());
 				}
 			}

@@ -5,32 +5,32 @@ namespace pizda {
 	AutopilotToolbar::AutopilotToolbar() {
 		setHeight(36);
 		
-		row.setSpacing(1);
+//		row.setSpacing(1);
 		row.setMargin(Margin(0, 0, (21 + Toolbar::contentHorizontalMargin * 2) / 2, 0));
 		
 		auto& settings = RC::getInstance().getSettings();
 
 		// FD
-		flightDirectorsButton.setActive(settings.interface.MFD.PFD.flightDirector);
+		flightDirectorButton.setActive(settings.interface.MFD.PFD.flightDirector);
 		
-		flightDirectorsButton.isActiveChanged += [this, &settings] {
-			settings.interface.MFD.PFD.flightDirector = flightDirectorsButton.isActive();
+		flightDirectorButton.isActiveChanged += [this, &settings] {
+			settings.interface.MFD.PFD.flightDirector = flightDirectorButton.isActive();
 			settings.interface.scheduleWrite();
 		};
 		
-		row += &flightDirectorsButton;
+		row += &flightDirectorButton;
 
 		// Speed
 		speed.seven.setValue(settings.autopilot.speedKt);
-		speed.button.setActive(settings.autopilot.autoThrottle);
+		speed.setBottomActive(settings.autopilot.autoThrottle);
 
 		speed.rotated += [this, &settings] {
 			settings.autopilot.speedKt = speed.seven.getValue();
 			settings.autopilot.scheduleWrite();
 		};
 
-		speed.button.isActiveChanged += [this, &settings] {
-			settings.autopilot.autoThrottle = speed.button.isActive();
+		speed.bottomActiveChanged += [this, &settings] {
+			settings.autopilot.autoThrottle = speed.isBottomActive();
 			settings.autopilot.scheduleWrite();
 		};
 		
@@ -38,15 +38,15 @@ namespace pizda {
 
 		// Heading
 		heading.seven.setValue(settings.autopilot.headingDeg);
-		heading.button.setActive(settings.autopilot.headingHold);
+		heading.setBottomActive(settings.autopilot.headingHold);
 
 		heading.rotated += [this, &settings] {
 			settings.autopilot.headingDeg = heading.seven.getValue();
 			settings.autopilot.scheduleWrite();
 		};
 
-		heading.button.isActiveChanged += [this, &settings] {
-			settings.autopilot.headingHold = heading.button.isActive();
+		heading.bottomActiveChanged += [this, &settings] {
+			settings.autopilot.headingHold = heading.isBottomActive();
 			settings.autopilot.scheduleWrite();
 		};
 		
@@ -54,15 +54,15 @@ namespace pizda {
 
 		// Altitude
 		altitude.seven.setValue(settings.autopilot.altitudeFt);
-		altitude.button.setActive(settings.autopilot.levelChange);
+		altitude.setBottomActive(settings.autopilot.levelChange);
 
 		altitude.rotated += [this, &settings] {
 			settings.autopilot.altitudeFt = altitude.seven.getValue();
 			settings.autopilot.scheduleWrite();
 		};
 
-		altitude.button.isActiveChanged += [this, &settings] {
-			settings.autopilot.levelChange = altitude.button.isActive();
+		altitude.bottomActiveChanged += [this, &settings] {
+			settings.autopilot.levelChange = altitude.isBottomActive();
 			settings.autopilot.scheduleWrite();
 		};
 		

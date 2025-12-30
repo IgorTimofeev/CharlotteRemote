@@ -7,7 +7,7 @@
 #include "images/menuIconMFDNDImage.h"
 #include "images/menuIconMFDMainImage.h"
 #include "images/menuIconMFDAutopilotImage.h"
-#include "images/menuIconMFDAutopilotFlightDirectorsImage.h"
+#include "images/menuIconMFDAutopilotFlightDirectorImage.h"
 #include "images/menuIconMFDBaroImage.h"
 #include "images/menuIconMFDTrimImage.h"
 
@@ -33,7 +33,7 @@ namespace pizda::resources {
 			static const MenuIconMFDPFDImage menuIconMFDPFD;
 			static const MenuIconMFDNDImage menuIconMFDND;
 			static const MenuIconMFDAutopilotImage menuIconMFDAutopilot;
-			static const MenuIconMFDAutopilotFlightDirectorsImage menuIconMFDAutopilotFlightDirectors;
+			static const MenuIconMFDAutopilotFlightDirectorImage menuIconMFDAutopilotFlightDirector;
 			static const MenuIconMFDBaroImage menuIconMFDBaro;
 			static const MenuIconMFDTrimImage menuIconMFDTrim;
 			static const MenuIconMFDLightsImage menuIconMFDLights;

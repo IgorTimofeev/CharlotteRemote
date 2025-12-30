@@ -18,9 +18,9 @@ namespace pizda {
 		public:
 			explicit AutopilotToolbar();
 			
-			KorryButton flightDirectorsButton { L"FD", &resources::images::menuIconMFDAutopilotFlightDirectors };
+			KorryButton flightDirectorButton { L"FD", &resources::images::menuIconMFDAutopilotFlightDirector };
 
-			RotaryControl<3, 0, 350, false, 1, 10> speed { L"Speed", L"A/T" };
+			RotaryControl<3, 0, 350, false, 1, 1> speed { L"Speed", L"A/T" };
 			RotaryControl<3, 0, 359, true, 1, 10> heading { L"Heading", L"HLD" };
 			RotaryControl<4, 0, 35000, false, 1, 10> altitude { L"Altitude", L"FLC" };
 	};
