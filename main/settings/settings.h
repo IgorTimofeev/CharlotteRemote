@@ -9,7 +9,7 @@
 #include "settingsControls.h"
 #include "settingsAxis.h"
 #include "settingsAutopilot.h"
-#include "settingsInterface.h"
+#include "settingsPersonalization.h"
 #include "settingsNavigation.h"
 
 namespace pizda {
@@ -20,14 +20,14 @@ namespace pizda {
 			SettingsControls controls {};
 			SettingsAxis axis {};
 			SettingsAutopilot autopilot {};
-			SettingsInterface interface {};
+			SettingsPersonalization personalization {};
 			SettingsNavigation navigation {};
 
 			void readAll() {
 				controls.read();
 				axis.read();
 				autopilot.read();
-				interface.read();
+				personalization.read();
 				navigation.read();
 			}
 	};

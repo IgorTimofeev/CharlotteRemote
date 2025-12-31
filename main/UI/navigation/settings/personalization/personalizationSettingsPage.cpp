@@ -11,25 +11,35 @@ namespace pizda {
 		title.setText(L"Personalization");
 		
 		// LPF
-		_LPFSwitcher.getSwitch().setActive(rc.getSettings().interface.LPF);
+		_LPF.getSwitch().setActive(rc.getSettings().personalization.LPF);
 		
-		_LPFSwitcher.getSwitch().isActiveChanged += [this, &rc] {
-			rc.getSettings().interface.LPF = _LPFSwitcher.getSwitch().isActive();
-			rc.getSettings().interface.scheduleWrite();
+		_LPF.getSwitch().isActiveChanged += [this, &rc] {
+			rc.getSettings().personalization.LPF = _LPF.getSwitch().isActive();
+			rc.getSettings().personalization.scheduleWrite();
 		};
 		
-		rows += &_LPFSwitcher;
+		rows += &_LPF;
+		
+		// LPF
+		_audioFeedback.getSwitch().setActive(rc.getSettings().personalization.audioFeedback);
+		
+		_audioFeedback.getSwitch().isActiveChanged += [this, &rc] {
+			rc.getSettings().personalization.audioFeedback = _audioFeedback.getSwitch().isActive();
+			rc.getSettings().personalization.scheduleWrite();
+		};
+		
+		rows += &_audioFeedback;
 		
 		// Debug overlay
-		_debugOverlaySwitcher.getSwitch().setActive(rc.getSettings().interface.debugOverlay);
+		_debugOverlay.getSwitch().setActive(rc.getSettings().personalization.debugOverlay);
 		
-		_debugOverlaySwitcher.getSwitch().isActiveChanged += [this, &rc] {
-			rc.getSettings().interface.debugOverlay = _debugOverlaySwitcher.getSwitch().isActive();
-			rc.getSettings().interface.scheduleWrite();
+		_debugOverlay.getSwitch().isActiveChanged += [this, &rc] {
+			rc.getSettings().personalization.debugOverlay = _debugOverlay.getSwitch().isActive();
+			rc.getSettings().personalization.scheduleWrite();
 			
 			rc.updateDebugOverlayVisibility();
 		};
 		
-		rows += &_debugOverlaySwitcher;
+		rows += &_debugOverlay;
 	}
 }

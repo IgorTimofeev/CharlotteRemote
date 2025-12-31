@@ -19,7 +19,7 @@
 #include "hardware/transceiver/packet.h"
 #include "hardware/transceiver/remotePacketHandler.h"
 #include "hardware/transceiver/transceiver.h"
-#include "hardware/speaker/speaker.h"
+#include "hardware/audio/audioPlayer.h"
 #include "hardware/axis.h"
 #include "hardware/battery.h"
 
@@ -44,7 +44,7 @@ namespace pizda {
 
 			Settings& getSettings();
 
-			Speaker& getSpeaker();
+			AudioPlayer& getAudioPlayer();
 
 			Axis& getLeverLeft();
 			PushButtonEncoder& getEncoder();
@@ -97,8 +97,8 @@ namespace pizda {
 				config::screen::touch::RST,
 				config::screen::touch::INTR
 			);
-
-			Speaker _speaker {};
+			
+			AudioPlayer _audioPlayer {};
 			
 			// Transceiver
 			SX1262Transceiver _transceiver {};

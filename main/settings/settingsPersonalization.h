@@ -7,14 +7,14 @@
 namespace pizda {
 	using namespace YOBA;
 	
-	class SettingsInterfaceMFDPFD {
+	class SettingsPersonalizationMFDPFD {
 		public:
 			bool visible = false;
 			uint8_t FOV = 0;
 			bool flightDirector = false;
 	};
 
-	enum class SettingsInterfaceMFDNDMode : uint8_t {
+	enum class SettingsPersonalizationMFDNDMode : uint8_t {
 		arcHeadingUp,
 		mapHeadingUp,
 		mapNorthUp,
@@ -22,41 +22,43 @@ namespace pizda {
 		last = mapNorthUp
 	};
 
-	class SettingsInterfaceMFDND {
+	class SettingsPersonalizationMFDND {
 		public:
 			bool visible = true;
-			SettingsInterfaceMFDNDMode mode = SettingsInterfaceMFDNDMode::arcHeadingUp;
+			SettingsPersonalizationMFDNDMode mode = SettingsPersonalizationMFDNDMode::arcHeadingUp;
 			bool earth = true;
 	};
 
-	enum class SettingsInterfaceMFDToolbarMode : uint8_t {
+	enum class SettingsPersonalizationMFDToolbarMode : uint8_t {
 		none,
 		autopilot,
 		baro,
 		lights
 	};
 
-	class SettingsInterfaceMFDToolbar {
+	class SettingsPersonalizationMFDToolbar {
 		public:
-			SettingsInterfaceMFDToolbarMode mode = SettingsInterfaceMFDToolbarMode::none;
+			SettingsPersonalizationMFDToolbarMode mode = SettingsPersonalizationMFDToolbarMode::none;
 	};
 
-	class SettingsInterfaceMFD {
+	class SettingsPersonalizationMFD {
 		public:
-			SettingsInterfaceMFDPFD PFD {};
-			SettingsInterfaceMFDND ND {};
-			SettingsInterfaceMFDToolbar toolbar {};
+			SettingsPersonalizationMFDPFD PFD {};
+			SettingsPersonalizationMFDND ND {};
+			SettingsPersonalizationMFDToolbar toolbar {};
 			uint8_t splitPercent = 60;
 
 			bool isAnyPanelVisible() const {
 				return PFD.visible || ND.visible;
 			}
 	};
-	class SettingsInterface : public NVSSettings {
+	
+	class SettingsPersonalization : public NVSSettings {
 		public:
-			SettingsInterfaceMFD MFD {};
+			SettingsPersonalizationMFD MFD {};
 			bool LPF = false;
 			bool debugOverlay = false;
+			bool audioFeedback = false;
 		
 		protected:
 			const char* getNamespace() override {
@@ -70,16 +72,17 @@ namespace pizda {
 				MFD.PFD.flightDirector = stream.readBool(_MFDPFDFlightDirectors, true);
 
 				MFD.ND.visible = stream.readBool(_MFDNDVisible, true);
-				MFD.ND.mode = static_cast<SettingsInterfaceMFDNDMode>(stream.readUint8(_MFDNDMode, static_cast<uint8_t>(SettingsInterfaceMFDNDMode::arcHeadingUp)));
+				MFD.ND.mode = static_cast<SettingsPersonalizationMFDNDMode>(stream.readUint8(_MFDNDMode, static_cast<uint8_t>(SettingsPersonalizationMFDNDMode::arcHeadingUp)));
 
 				MFD.ND.earth = stream.readBool(_MFDNDEarth, true);
 
-				MFD.toolbar.mode = static_cast<SettingsInterfaceMFDToolbarMode>(stream.readUint8(_MFDToolbarMode, static_cast<uint8_t>(SettingsInterfaceMFDToolbarMode::none)));
+				MFD.toolbar.mode = static_cast<SettingsPersonalizationMFDToolbarMode>(stream.readUint8(_MFDToolbarMode, static_cast<uint8_t>(SettingsPersonalizationMFDToolbarMode::none)));
 				
 				MFD.splitPercent = stream.readUint8(_MFDSplitPercent, 60);
 				
 				// Other
-				LPF = stream.readBool(_LPF, false);
+				LPF = stream.readBool(_LPF, true);
+				audioFeedback = stream.readBool(_audioFeedback, true);
 				debugOverlay = stream.readBool(_debugOverlay, false);
 			}
 
@@ -100,11 +103,12 @@ namespace pizda {
 				
 				// Other
 				stream.writeBool(_LPF, LPF);
+				stream.writeBool(_audioFeedback, audioFeedback);
 				stream.writeBool(_debugOverlay, debugOverlay);
 			}
 
 		private:
-			constexpr static auto _namespace = "if";
+			constexpr static auto _namespace = "pe0";
 			constexpr static auto _MFDPFDVisible = "mpvi";
 			constexpr static auto _MFDPFDFOV = "mpfo";
 			constexpr static auto _MFDPFDFlightDirectors = "mpfd";
@@ -115,6 +119,7 @@ namespace pizda {
 			constexpr static auto _MFDSplitPercent = "msp";
 			
 			constexpr static auto _LPF = "lp";
+			constexpr static auto _audioFeedback = "af";
 			constexpr static auto _debugOverlay = "do";
 	};
 }

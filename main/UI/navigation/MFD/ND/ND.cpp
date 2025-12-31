@@ -17,13 +17,13 @@ namespace pizda {
 		addGovnoButton(&_viewModeButton, [this] {
 			auto& settings = RC::getInstance().getSettings();
 
-			uint8_t nextMode = static_cast<uint8_t>(settings.interface.MFD.ND.mode) + 1;
+			uint8_t nextMode = static_cast<uint8_t>(settings.personalization.MFD.ND.mode) + 1;
 
-			if (nextMode > static_cast<uint8_t>(SettingsInterfaceMFDNDMode::last))
+			if (nextMode > static_cast<uint8_t>(SettingsPersonalizationMFDNDMode::last))
 				nextMode = 0;
 
-			settings.interface.MFD.ND.mode = static_cast<SettingsInterfaceMFDNDMode>(nextMode);
-			settings.interface.scheduleWrite();
+			settings.personalization.MFD.ND.mode = static_cast<SettingsPersonalizationMFDNDMode>(nextMode);
+			settings.personalization.scheduleWrite();
 
 			updateViewModeButtonText();
 
@@ -69,14 +69,14 @@ namespace pizda {
 	void ND::updateViewModeButtonText() {
 		std::wstring text;
 
-		switch (RC::getInstance().getSettings().interface.MFD.ND.mode) {
-			case SettingsInterfaceMFDNDMode::arcHeadingUp:
+		switch (RC::getInstance().getSettings().personalization.MFD.ND.mode) {
+			case SettingsPersonalizationMFDNDMode::arcHeadingUp:
 				text = L"ARC";
 				break;
-			case SettingsInterfaceMFDNDMode::mapHeadingUp:
+			case SettingsPersonalizationMFDNDMode::mapHeadingUp:
 				text = L"MAP";
 				break;
-			case SettingsInterfaceMFDNDMode::mapNorthUp:
+			case SettingsPersonalizationMFDNDMode::mapNorthUp:
 				text = L"NUP";
 				break;
 		}

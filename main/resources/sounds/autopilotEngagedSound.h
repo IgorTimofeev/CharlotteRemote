@@ -1,22 +1,22 @@
 #pragma once
 
-#include "hardware/speaker/sound.h"
+#include <array>
+
+#include "hardware/audio/sound.h"
 
 namespace pizda {
 	class AutopilotEngagedSound : public Sound {
 		public:
-			constexpr AutopilotEngagedSound() : Sound(playables, playablesSize) {
+			constexpr AutopilotEngagedSound() : Sound(playables.data(), playables.size()) {
 			
 			}
 			
 		private:
-			constexpr static Note  p0 = { 4'000, 50'000 };
-			constexpr static Delay p1 = { 50'000 };
-			constexpr static Note  p2 = { 5'000, 50'000 };
+			constexpr static Note  p0 = { 5'000, 40'000 };
+			constexpr static Delay p1 = { 40'000 };
+			constexpr static Note  p2 = { 6'000, 40'000 };
 			
-			constexpr static uint8_t playablesSize = 3;
-			
-			constexpr static const Playable* playables[playablesSize] {
+			constexpr static std::array<const Playable*, 3> playables {
 				&p0,
 				&p1,
 				&p2

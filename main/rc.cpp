@@ -54,7 +54,7 @@ namespace pizda {
 		_encoder.setMinimumDelta(4);
 
 		_battery.setup();
-		_speaker.setup();
+		_audioPlayer.setup();
 
 		_leverLeft.setup();
 		_leverRight.setup();
@@ -86,7 +86,7 @@ namespace pizda {
 		vTaskDelay(pdMS_TO_TICKS(1000));
 
 		// Beep beep
-		_speaker.play(resources::sounds::boot);
+		_audioPlayer.play(resources::sounds::boot);
 
 		// Main loop
 		while (true) {
@@ -99,9 +99,6 @@ namespace pizda {
 			// UI
 			_application.tick();
 			_application.render();
-
-			// Low priority tasks
-			_speaker.tick();
 
  			_statistics.tickDeltaTime = esp_timer_get_time() - tickStartTime;
 
@@ -123,14 +120,14 @@ namespace pizda {
 	
 	float RC::applyLPF(float oldValue, float newValue, float factor) {
 		return
-			_settings.interface.LPF
+			_settings.personalization.LPF
 			? LowPassFilter::apply(oldValue, newValue, factor)
 			: newValue;
 	}
 	
 	float RC::applyLPFForAngleRad(float oldValue, float newValue, float factor) {
 		return
-			_settings.interface.LPF
+			_settings.personalization.LPF
 			? LowPassFilter::applyForAngleRad(oldValue, newValue, factor)
 			: newValue;
 	}
@@ -295,9 +292,9 @@ namespace pizda {
 	Settings& RC::getSettings() {
 		return _settings;
 	}
-
-	Speaker& RC::getSpeaker() {
-		return _speaker;
+	
+	AudioPlayer& RC::getAudioPlayer() {
+		return _audioPlayer;
 	}
 
 	Axis& RC::getLeverLeft() {
@@ -393,7 +390,7 @@ namespace pizda {
 	}
 
 	void RC::updateDebugOverlayVisibility() {
-		if (_settings.interface.debugOverlay) {
+		if (_settings.personalization.debugOverlay) {
 			if (_debugOverlay != nullptr)
 				return;
 

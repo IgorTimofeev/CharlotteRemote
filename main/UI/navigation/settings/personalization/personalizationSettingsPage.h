@@ -15,7 +15,8 @@ namespace pizda {
 			PersonalizationSettingsPage();
 
 		private:
-			Switcher _LPFSwitcher { L"Enable LPF" };
-			Switcher _debugOverlaySwitcher { L"Show debug overlay" };
+			Switcher _LPF { L"MFD low pass filter" };
+			Switcher _audioFeedback { L"Audio feedback" };
+			Switcher _debugOverlay { L"Debug overlay" };
 	};
 }

@@ -5,14 +5,14 @@
 #include "hardware/audio/sound.h"
 
 namespace pizda {
-	class TransceiverConnectSound : public Sound {
+	class FeedbackSound : public Sound {
 		public:
-			constexpr TransceiverConnectSound() : Sound(playables.data(), playables.size()) {
+			constexpr FeedbackSound() : Sound(playables.data(), playables.size()) {
 			
 			}
 			
 		private:
-			constexpr static Note  p0 = { 5500, 50'000 };
+			constexpr static Note p0 = { 12'000, 20'000 };
 			
 			constexpr static std::array<const Playable*, 1> playables {
 				&p0

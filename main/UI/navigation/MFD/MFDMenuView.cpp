@@ -8,9 +8,9 @@
 #include "MFDPage.h"
 
 namespace pizda {
-	MFDModeMenuViewButton::MFDModeMenuViewButton(const Image* image, std::wstring_view text, SettingsInterfaceMFDToolbarMode mode) : MenuViewButton(image, text), _mode(mode) {
+	MFDModeMenuViewButton::MFDModeMenuViewButton(const Image* image, std::wstring_view text, SettingsPersonalizationMFDToolbarMode mode) : MenuViewButton(image, text), _mode(mode) {
 		setToggle(true);
-		setActive(RC::getInstance().getSettings().interface.MFD.toolbar.mode == mode);
+		setActive(RC::getInstance().getSettings().personalization.MFD.toolbar.mode == mode);
 	}
 
 	void MFDModeMenuViewButton::onClick() {
@@ -19,14 +19,14 @@ namespace pizda {
 		const auto menuView = reinterpret_cast<MFDMenuView*>(getMenuView());
 
 		auto& settings = RC::getInstance().getSettings();
-		settings.interface.MFD.toolbar.mode = settings.interface.MFD.toolbar.mode == _mode ? SettingsInterfaceMFDToolbarMode::none : _mode;
+		settings.personalization.MFD.toolbar.mode = settings.personalization.MFD.toolbar.mode == _mode ? SettingsPersonalizationMFDToolbarMode::none : _mode;
 
 		for (const auto modeButton : menuView->modeButtons)
-			modeButton->setActive(modeButton->_mode == settings.interface.MFD.toolbar.mode);
+			modeButton->setActive(modeButton->_mode == settings.personalization.MFD.toolbar.mode);
 
 		MFDPage::fromSettings();
 
-		settings.interface.scheduleWrite();
+		settings.personalization.scheduleWrite();
 	}
 
 	MFDMenuView::MFDMenuView() {
@@ -36,17 +36,17 @@ namespace pizda {
 		PFDButton.setActiveBorderColor(&Theme::purple);
 		PFDButton.setActiveTextColor(&Theme::purple);
 		PFDButton.setToggle(true);
-		PFDButton.setActive(settings.interface.MFD.PFD.visible);
+		PFDButton.setActive(settings.personalization.MFD.PFD.visible);
 
 		PFDButton.click += [this, &settings] {
-			settings.interface.MFD.PFD.visible = !settings.interface.MFD.PFD.visible;
+			settings.personalization.MFD.PFD.visible = !settings.personalization.MFD.PFD.visible;
 
-			if (!settings.interface.MFD.isAnyPanelVisible())
-				settings.interface.MFD.PFD.visible = true;
+			if (!settings.personalization.MFD.isAnyPanelVisible())
+				settings.personalization.MFD.PFD.visible = true;
 
-			PFDButton.setActive(settings.interface.MFD.PFD.visible);
+			PFDButton.setActive(settings.personalization.MFD.PFD.visible);
 
-			settings.interface.scheduleWrite();
+			settings.personalization.scheduleWrite();
 
 			MFDPage::fromSettings();
 		};
@@ -57,17 +57,17 @@ namespace pizda {
 		NDButton.setActiveBorderColor(&Theme::purple);
 		NDButton.setActiveTextColor(&Theme::purple);
 		NDButton.setToggle(true);
-		NDButton.setActive(settings.interface.MFD.ND.visible);
+		NDButton.setActive(settings.personalization.MFD.ND.visible);
 
 		NDButton.click += [this, &settings] {
-			settings.interface.MFD.ND.visible = !settings.interface.MFD.ND.visible;
+			settings.personalization.MFD.ND.visible = !settings.personalization.MFD.ND.visible;
 
-			if (!settings.interface.MFD.isAnyPanelVisible())
-				settings.interface.MFD.ND.visible = true;
+			if (!settings.personalization.MFD.isAnyPanelVisible())
+				settings.personalization.MFD.ND.visible = true;
 
-			NDButton.setActive(settings.interface.MFD.ND.visible);
+			NDButton.setActive(settings.personalization.MFD.ND.visible);
 
-			settings.interface.scheduleWrite();
+			settings.personalization.scheduleWrite();
 
 			MFDPage::fromSettings();
 		};

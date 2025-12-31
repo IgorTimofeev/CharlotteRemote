@@ -41,10 +41,10 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		
 		if (isConnected()) {
-			rc.getSpeaker().play(resources::sounds::transceiverConnect);
+			rc.getAudioPlayer().play(resources::sounds::transceiverConnect);
 		}
 		else {
-			rc.getSpeaker().play(resources::sounds::transceiverDisconnect);
+			rc.getAudioPlayer().play(resources::sounds::transceiverDisconnect);
 		}
 	}
 	

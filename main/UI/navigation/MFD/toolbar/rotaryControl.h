@@ -5,8 +5,6 @@
 #include <YOBA/UI.h>
 #include <YOBA/hardware/encoder.h>
 
-#include <esp_timer.h>
-
 #include "UI/theme.h"
 #include "UI/navigation/MFD/toolbar/toolbarSection.h"
 #include "UI/navigation/MFD/toolbar/toolbar.h"
@@ -14,12 +12,10 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class RC;
-
 	template<uint8_t digitCount, uint32_t minimum, uint32_t maximum, bool cycling, uint16_t smallChange, uint16_t bigChange>
 	class RotaryControl : public ToolbarSection {
 		public:
-			explicit RotaryControl(std::wstring_view title, std::wstring_view buttonText) : ToolbarSection(title), _bottomText(buttonText) {
+			RotaryControl(std::wstring_view title, std::wstring_view buttonText) : ToolbarSection(title), _bottomText(buttonText) {
 				// Seven segment
 				seven.setAlignment(Alignment::center, Alignment::start);
 				

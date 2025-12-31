@@ -7,62 +7,75 @@ namespace pizda {
 		setHeight(36);
 		
 		auto& rc = RC::getInstance();
-		auto& settings = rc.getSettings();
 
 		// FD
-		flightDirectorButton.setActive(settings.interface.MFD.PFD.flightDirector);
+		flightDirectorButton.setActive(rc.getSettings().personalization.MFD.PFD.flightDirector);
 		
-		flightDirectorButton.isActiveChanged += [this, &settings] {
-			settings.interface.MFD.PFD.flightDirector = flightDirectorButton.isActive();
-			settings.interface.scheduleWrite();
+		flightDirectorButton.isActiveChanged += [this, &rc] {
+			rc.getSettings().personalization.MFD.PFD.flightDirector = flightDirectorButton.isActive();
+			rc.getSettings().personalization.scheduleWrite();
+			
+			rc.getAudioPlayer().playFeedback();
 		};
 		
 		row += &flightDirectorButton;
 
 		// Speed
-		speed.seven.setValue(settings.autopilot.speedKt);
-		speed.setActive(settings.autopilot.autoThrottle);
+		speed.seven.setValue(rc.getSettings().autopilot.speedKt);
+		speed.setActive(rc.getSettings().autopilot.autoThrottle);
 
-		speed.rotated += [this, &settings] {
-			settings.autopilot.speedKt = speed.seven.getValue();
-			settings.autopilot.scheduleWrite();
+		speed.rotated += [this, &rc] {
+			rc.getAudioPlayer().playFeedback();
+			
+			rc.getSettings().autopilot.speedKt = speed.seven.getValue();
+			rc.getSettings().autopilot.scheduleWrite();
 		};
 
-		speed.isActiveChanged += [this, &settings] {
-			settings.autopilot.autoThrottle = speed.isActive();
-			settings.autopilot.scheduleWrite();
+		speed.isActiveChanged += [this, &rc] {
+			rc.getSettings().autopilot.autoThrottle = speed.isActive();
+			rc.getSettings().autopilot.scheduleWrite();
+			
+			rc.getAudioPlayer().playFeedback();
 		};
 		
 		row += &speed;
 
 		// Heading
-		heading.seven.setValue(settings.autopilot.headingDeg);
-		heading.setActive(settings.autopilot.headingHold);
+		heading.seven.setValue(rc.getSettings().autopilot.headingDeg);
+		heading.setActive(rc.getSettings().autopilot.headingHold);
 
-		heading.rotated += [this, &settings] {
-			settings.autopilot.headingDeg = heading.seven.getValue();
-			settings.autopilot.scheduleWrite();
+		heading.rotated += [this, &rc] {
+			rc.getSettings().autopilot.headingDeg = heading.seven.getValue();
+			rc.getSettings().autopilot.scheduleWrite();
+			
+			rc.getAudioPlayer().playFeedback();
 		};
 
-		heading.isActiveChanged += [this, &settings] {
-			settings.autopilot.headingHold = heading.isActive();
-			settings.autopilot.scheduleWrite();
+		heading.isActiveChanged += [this, &rc] {
+			rc.getSettings().autopilot.headingHold = heading.isActive();
+			rc.getSettings().autopilot.scheduleWrite();
+			
+			rc.getAudioPlayer().playFeedback();
 		};
 		
 		row += &heading;
 
 		// Altitude
-		altitude.seven.setValue(settings.autopilot.altitudeFt);
-		altitude.setActive(settings.autopilot.levelChange);
+		altitude.seven.setValue(rc.getSettings().autopilot.altitudeFt);
+		altitude.setActive(rc.getSettings().autopilot.levelChange);
 
-		altitude.rotated += [this, &settings] {
-			settings.autopilot.altitudeFt = altitude.seven.getValue();
-			settings.autopilot.scheduleWrite();
+		altitude.rotated += [this, &rc] {
+			rc.getSettings().autopilot.altitudeFt = altitude.seven.getValue();
+			rc.getSettings().autopilot.scheduleWrite();
+			
+			RC::getInstance().getAudioPlayer().playFeedback();
 		};
 
-		altitude.isActiveChanged += [this, &settings] {
-			settings.autopilot.levelChange = altitude.isActive();
-			settings.autopilot.scheduleWrite();
+		altitude.isActiveChanged += [this, &rc] {
+			rc.getSettings().autopilot.levelChange = altitude.isActive();
+			rc.getSettings().autopilot.scheduleWrite();
+			
+			RC::getInstance().getAudioPlayer().playFeedback();
 		};
 		
 		row += &altitude;
@@ -71,14 +84,13 @@ namespace pizda {
 		engageButton.setActive(rc.getRemoteData().raw.autopilotEngaged);
 		
 		engageButton.isActiveChanged += [this, &rc] {
-			rc.getRemoteData().raw.autopilotEngaged = engageButton.isActive();
+			rc.getAudioPlayer().play(
+				engageButton.isActive()
+				? static_cast<const Sound&>(resources::sounds::autopilotEngaged)
+				: resources::sounds::autopilotDisengaged
+			);
 			
-			if (engageButton.isActive()) {
-				rc.getSpeaker().play(resources::sounds::autopilotEngaged);
-			}
-			else {
-				rc.getSpeaker().play(resources::sounds::autopilotDisengaged);
-			}
+			rc.getRemoteData().raw.autopilotEngaged = engageButton.isActive();
 		};
 		
 		row += &engageButton;

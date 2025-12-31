@@ -1,7 +1,6 @@
 #pragma once
 
-#include <cstdio>
-#include "vector"
+#include <stdint.h>
 
 namespace pizda {
 	#pragma pack(push, 1)
@@ -69,11 +68,11 @@ namespace pizda {
 
 	class Sound {
 		public:
-			constexpr Sound() : _playables(nullptr), _playablesLength(0) {
+			constexpr Sound(const Playable* const* playables, size_t playablesLength) : _playables(playables), _playablesLength(playablesLength) {
 			
 			}
 			
-			constexpr Sound(const Playable* const* playables, size_t playablesLength) : _playables(playables), _playablesLength(playablesLength) {
+			constexpr Sound() : Sound(nullptr, 0) {
 			
 			}
 			

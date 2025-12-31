@@ -13,7 +13,7 @@ namespace pizda {
 		const auto& settings = rc.getSettings();
 		const auto& nd = rc.getNavigationData();
 
-		setFOV(toRadians(settings.interface.MFD.PFD.FOV));
+		setFOV(toRadians(settings.personalization.MFD.PFD.FOV));
 		
 		// Runways
 		for (const auto& airport : nd.airports) {
@@ -93,7 +93,7 @@ namespace pizda {
 		);
 
 		// Yaw overlay
-		if (!settings.interface.MFD.ND.visible) {
+		if (!settings.personalization.MFD.ND.visible) {
 			renderYawOverlay(
 				renderer,
 				Bounds(
@@ -157,7 +157,7 @@ namespace pizda {
 		}
 
 		// Flight director
-		if (settings.interface.MFD.PFD.flightDirector) {
+		if (settings.personalization.MFD.PFD.flightDirector) {
 			const uint16_t flightDirectorLength = static_cast<uint32_t>(std::min(bounds.getWidth(), bounds.getHeight())) * PFD::flightDirectorLengthFactor / 100;
 			const auto flightDirectorLengthHalfF = static_cast<float>(flightDirectorLength) / 2.f;
 

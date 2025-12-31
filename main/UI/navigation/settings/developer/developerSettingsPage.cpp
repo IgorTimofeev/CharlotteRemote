@@ -75,7 +75,7 @@ namespace pizda {
 			_speakerSound.setPlayables(const_cast<const Playable**>(_speakerPlayables.data()));
 			_speakerSound.setPlayablesLength(count);
 			
-			rc.getSpeaker().play(_speakerSound);
+			rc.getAudioPlayer().play(_speakerSound);
 		};
 
 		rows += &_speakerButton;

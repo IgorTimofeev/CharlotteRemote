@@ -6,7 +6,7 @@
 #include <UI/navigation/page.h>
 #include <UI/elements/titler.h>
 
-#include "hardware/speaker/sound.h"
+#include "hardware/audio/sound.h"
 
 namespace pizda {
 	using namespace YOBA;

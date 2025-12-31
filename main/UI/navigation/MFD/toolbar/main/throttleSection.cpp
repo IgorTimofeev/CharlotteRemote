@@ -2,6 +2,7 @@
 
 #include "rc.h"
 #include "UI/navigation/MFD/toolbar/toolbar.h"
+#include "resources/sounds.h"
 
 namespace pizda {
 	ThrottleSection::ThrottleSection() : ToolbarSection(L"THR") {
@@ -32,18 +33,19 @@ namespace pizda {
 
 	void ThrottleSection::onEventBeforeChildren(Event* event) {
 		ToolbarSection::onEventBeforeChildren(event);
+		
+		if (event->getTypeID() != EncoderValueChangedEvent::typeID || !isFocused())
+			return;
+		
+		const auto rotateEvent = reinterpret_cast<EncoderValueChangedEvent*>(event);
+		
+		auto& rc = RC::getInstance();
 
-		if (event->getTypeID() == EncoderValueChangedEvent::typeID) {
-			if (isFocused()) {
-				const auto rotateEvent = reinterpret_cast<EncoderValueChangedEvent*>(event);
-				
-				auto& rd = RC::getInstance().getRemoteData();
-				rd.raw.throttle_0_255 = addSaturating(rd.raw.throttle_0_255, rotateEvent->getDPSFactor(60, 1, 10) * 0xFF / 100);
+		rc.getRemoteData().raw.throttle_0_255 = addSaturating(rc.getRemoteData().raw.throttle_0_255, rotateEvent->getDPSFactor(60, 1, 10) * 0xFF / 100);
+		rc.getAudioPlayer().playFeedback();
+		
+		invalidate();
 
-				invalidate();
-
-				event->setHandled(true);
-			}
-		}
+		event->setHandled(true);
 	}
 }

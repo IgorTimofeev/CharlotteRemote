@@ -1,11 +1,13 @@
 #pragma once
 
-#include "hardware/speaker/sound.h"
+#include <array>
+
+#include "hardware/audio/sound.h"
 
 namespace pizda {
 	class TransceiverDisconnectSound : public Sound {
 		public:
-			constexpr TransceiverDisconnectSound() : Sound(playables, playablesSize) {
+			constexpr TransceiverDisconnectSound() : Sound(playables.data(), playables.size()) {
 			
 			}
 			
@@ -14,9 +16,7 @@ namespace pizda {
 			constexpr static Delay p1 = { 50'000 };
 			constexpr static Note  p2 = { 900, 50'000 };
 			
-			constexpr static uint8_t playablesSize = 3;
-			
-			constexpr static const Playable* playables[playablesSize] {
+			constexpr static std::array<const Playable*, 3> playables {
 				&p0,
 				&p1,
 				&p2
