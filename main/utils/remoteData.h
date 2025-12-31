@@ -6,6 +6,7 @@ namespace pizda {
 	class RemoteDataRaw {
 		public:
 			uint8_t throttle_0_255 = 0;
+			bool autopilotEngaged = false;
 			
 			bool navigationLights = false;
 			bool strobeLights = false;

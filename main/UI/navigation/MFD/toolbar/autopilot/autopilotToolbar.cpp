@@ -1,14 +1,13 @@
 #include "autopilotToolbar.h"
 #include "rc.h"
+#include "resources/sounds.h"
 
 namespace pizda {
 	AutopilotToolbar::AutopilotToolbar() {
 		setHeight(36);
 		
-//		row.setSpacing(1);
-		row.setMargin(Margin(0, 0, (21 + Toolbar::contentHorizontalMargin * 2) / 2, 0));
-		
-		auto& settings = RC::getInstance().getSettings();
+		auto& rc = RC::getInstance();
+		auto& settings = rc.getSettings();
 
 		// FD
 		flightDirectorButton.setActive(settings.interface.MFD.PFD.flightDirector);
@@ -22,15 +21,15 @@ namespace pizda {
 
 		// Speed
 		speed.seven.setValue(settings.autopilot.speedKt);
-		speed.setBottomActive(settings.autopilot.autoThrottle);
+		speed.setActive(settings.autopilot.autoThrottle);
 
 		speed.rotated += [this, &settings] {
 			settings.autopilot.speedKt = speed.seven.getValue();
 			settings.autopilot.scheduleWrite();
 		};
 
-		speed.bottomActiveChanged += [this, &settings] {
-			settings.autopilot.autoThrottle = speed.isBottomActive();
+		speed.isActiveChanged += [this, &settings] {
+			settings.autopilot.autoThrottle = speed.isActive();
 			settings.autopilot.scheduleWrite();
 		};
 		
@@ -38,15 +37,15 @@ namespace pizda {
 
 		// Heading
 		heading.seven.setValue(settings.autopilot.headingDeg);
-		heading.setBottomActive(settings.autopilot.headingHold);
+		heading.setActive(settings.autopilot.headingHold);
 
 		heading.rotated += [this, &settings] {
 			settings.autopilot.headingDeg = heading.seven.getValue();
 			settings.autopilot.scheduleWrite();
 		};
 
-		heading.bottomActiveChanged += [this, &settings] {
-			settings.autopilot.headingHold = heading.isBottomActive();
+		heading.isActiveChanged += [this, &settings] {
+			settings.autopilot.headingHold = heading.isActive();
 			settings.autopilot.scheduleWrite();
 		};
 		
@@ -54,18 +53,34 @@ namespace pizda {
 
 		// Altitude
 		altitude.seven.setValue(settings.autopilot.altitudeFt);
-		altitude.setBottomActive(settings.autopilot.levelChange);
+		altitude.setActive(settings.autopilot.levelChange);
 
 		altitude.rotated += [this, &settings] {
 			settings.autopilot.altitudeFt = altitude.seven.getValue();
 			settings.autopilot.scheduleWrite();
 		};
 
-		altitude.bottomActiveChanged += [this, &settings] {
-			settings.autopilot.levelChange = altitude.isBottomActive();
+		altitude.isActiveChanged += [this, &settings] {
+			settings.autopilot.levelChange = altitude.isActive();
 			settings.autopilot.scheduleWrite();
 		};
 		
 		row += &altitude;
+		
+		// A/P
+		engageButton.setActive(rc.getRemoteData().raw.autopilotEngaged);
+		
+		engageButton.isActiveChanged += [this, &rc] {
+			rc.getRemoteData().raw.autopilotEngaged = engageButton.isActive();
+			
+			if (engageButton.isActive()) {
+				rc.getSpeaker().play(resources::sounds::autopilotEngaged);
+			}
+			else {
+				rc.getSpeaker().play(resources::sounds::autopilotDisengaged);
+			}
+		};
+		
+		row += &engageButton;
 	}
 }

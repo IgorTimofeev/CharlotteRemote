@@ -22,54 +22,38 @@ namespace pizda {
 				updateColors();
 			}
 			
-			Callback<> isActiveChanged {};
-			
 			ToolbarSection(std::wstring_view title, Element* element) : ToolbarSection(title) {
 				*this += element;
 			}
+			
+			Callback<> isActiveChanged {};
 			
 			static void setDefaultMargin(Element* element, uint8_t topOffset = 0) {
 				element->setMargin(Margin(Toolbar::contentHorizontalMargin, Toolbar::topPanelHeight + topOffset, Toolbar::contentHorizontalMargin, 0));
 			}
 			
-			bool isButtonMode() const {
-				return _buttonMode;
-			}
-			
-			void setButtonMode(bool buttonMode) {
-				_buttonMode = buttonMode;
-			}
-		
 		protected:
 			void onEventBeforeChildren(Event* event) override {
 				if (event->getTypeID() != PointerDownEvent::typeID)
 					return;
 				
 				setFocused(true);
-				
-				if (_buttonMode) {
-					setActive(!isActive());
-				}
 			}
 			
 			void onFocusChanged() override {
 				Element::onFocusChanged();
 				
-				if (!_buttonMode) {
-					setActive(isFocused());
-				}
+				updateColors();
 			}
 			
 			void onIsActiveChanged() override {
 				ActiveElement::onIsActiveChanged();
 				
-				updateColors();
-				
 				isActiveChanged();
 			}
 			
 			void onRender(Renderer* renderer, const Bounds& bounds) override {
-				if (isActive()) {
+				if (isFocused()) {
 					// Panel
 					renderer->renderFilledRectangle(
 						Bounds(bounds.getX(), bounds.getY(), bounds.getWidth(), Toolbar::topPanelHeight),
@@ -87,12 +71,12 @@ namespace pizda {
 			}
 
 		private:
-			bool _buttonMode = false;
-			
 			Text _title {};
 			
 			void updateColors() {
-				_title.setTextColor(isActive() ? &Theme::fg1 : &Theme::fg5);
+				_title.setTextColor(isFocused() ? &Theme::fg1 : &Theme::fg5);
 			}
 	};
+	
+	
 }

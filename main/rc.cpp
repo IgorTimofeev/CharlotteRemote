@@ -86,7 +86,7 @@ namespace pizda {
 		vTaskDelay(pdMS_TO_TICKS(1000));
 
 		// Beep beep
-		_speaker.play(resources::Sounds::boot());
+		_speaker.play(resources::sounds::boot);
 
 		// Main loop
 		while (true) {

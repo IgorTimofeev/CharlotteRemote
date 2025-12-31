@@ -41,10 +41,10 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		
 		if (isConnected()) {
-			rc.getSpeaker().play(resources::Sounds::transceiverConnect());
+			rc.getSpeaker().play(resources::sounds::transceiverConnect);
 		}
 		else {
-			rc.getSpeaker().play(resources::Sounds::transceiverDisconnect());
+			rc.getSpeaker().play(resources::sounds::transceiverDisconnect);
 		}
 	}
 	
@@ -129,7 +129,6 @@ namespace pizda {
 		
 		// Autopilot pitch
 		ad.raw.autopilotPitchRad = readRadians(stream, AircraftADIRSPacket::autopilotPitchRangeRad, AircraftADIRSPacket::autopilotPitchLengthBits);
-		
 		
 		// Value conversions
 //		ad.windSpeed = Units::convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
@@ -351,6 +350,9 @@ namespace pizda {
 		
 		stream.writeUint16(altitudeValue, RemoteAuxiliaryPacket::autopilotAltitudeLengthBits);
 		stream.writeBool(settings.autopilot.levelChange);
+		
+		// Engaged
+		stream.writeBool(rc.getRemoteData().raw.autopilotEngaged);
 		
 		return true;
 	}

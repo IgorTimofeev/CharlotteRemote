@@ -7,7 +7,7 @@
 
 namespace pizda {
 	ThrottleIndicator::ThrottleIndicator() {
-		setSize(Size(38, 5));
+		setSize(Size(42, 5));
 	}
 	
 	void ThrottleIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
@@ -17,8 +17,7 @@ namespace pizda {
 		constexpr static uint8_t lineOffset = 1;
 		
 		const uint16_t frameSize = bounds.getWidth() - textMaxSize - textOffset;
-		const auto& settings = RC::getInstance().getSettings();
-
+		
 		// Frame
 		renderer->renderRectangle(
 			Bounds(

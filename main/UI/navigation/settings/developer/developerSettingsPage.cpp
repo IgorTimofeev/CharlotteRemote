@@ -61,15 +61,21 @@ namespace pizda {
 			const auto count = static_cast<uint8_t>(1 + static_cast<uint32_t>(_speakerCountSlider.getValue()) * 5ul / 0xFFFFul);
 
 			ESP_LOGI("Debug", "Speaker test: %lu, %lu, %d", frequency, duration, count);
-
-			std::vector<Note> notes {};
-
+			
 			for (uint8_t i = 0; i < count; i++) {
-				notes.emplace_back(frequency, duration);
-				notes.push_back(Delay(duration));
+				_speakerNotes[i].setFrequency(frequency);
+				_speakerNotes[i].setDuration(duration);
+				
+				_speakerDelays[i].setDuration(duration);
+				
+				_speakerPlayables[i * 2] = &_speakerNotes[i];
+				_speakerPlayables[i * 2 + 1] = &_speakerDelays[i];
 			}
-
-			rc.getSpeaker().play(Sound(notes));
+			
+			_speakerSound.setPlayables(const_cast<const Playable**>(_speakerPlayables.data()));
+			_speakerSound.setPlayablesLength(count);
+			
+			rc.getSpeaker().play(_speakerSound);
 		};
 
 		rows += &_speakerButton;

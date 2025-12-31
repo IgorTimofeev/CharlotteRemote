@@ -40,28 +40,12 @@ namespace pizda {
 			SevenSegment seven {};
 
 			Callback<> rotated {};
-			Callback<> bottomActiveChanged {};
-			
-			bool isBottomActive() const {
-				return _bottomActive;
-			}
-			
-			void setBottomActive(bool bottomActive) {
-				if (bottomActive == _bottomActive)
-					return;
-				
-				_bottomActive = bottomActive;
-				
-				bottomActiveChanged();
-				
-				invalidate();
-			}
 		
 		protected:
 			void onEventBeforeChildren(Event* event) override {
 				if (event->getTypeID() == PointerDownEvent::typeID) {
 					if (isFocused()) {
-						setBottomActive(!_bottomActive);
+						setActive(!isActive());
 					}
 				}
 				
@@ -99,7 +83,7 @@ namespace pizda {
 					if (!isFocused())
 						return;
 					
-					setBottomActive(!_bottomActive);
+					setActive(!isActive());
 					
 					event->setHandled(true);
 				}
@@ -114,7 +98,7 @@ namespace pizda {
 				
 				renderer->renderFilledRectangle(
 					bottomBounds,
-					_bottomActive ? &Theme::fg1 : (isFocused() ? &Theme::bg4 : &Theme::bg3)
+					isActive() ? &Theme::fg1 : (isFocused() ? &Theme::bg4 : &Theme::bg3)
 				);
 				
 				renderer->renderString(
@@ -123,13 +107,12 @@ namespace pizda {
 						bottomBounds.getY() - 1
 					),
 					&Theme::fontSmall,
-					_bottomActive ? &Theme::bg1 : &Theme::fg4,
+					isActive() ? &Theme::bg1 : &Theme::fg4,
 					_bottomText
 				);
 			}
 			
 		private:
-			bool _bottomActive = false;
 			std::wstring _bottomText;
 	};
 }

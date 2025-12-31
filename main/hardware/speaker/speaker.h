@@ -1,9 +1,9 @@
 #pragma once
 
 #include <cstdio>
+
+#include <esp_err.h>
 #include <driver/ledc.h>
-#include "esp_err.h"
-#include "vector"
 
 #include "config.h"
 #include "sound.h"
@@ -14,7 +14,7 @@ namespace pizda {
 			void setup() const {
 				ledc_timer_config_t timerConfig {};
 				timerConfig.speed_mode = config::speaker::mode;
-				timerConfig.duty_resolution = LEDC_TIMER_13_BIT;
+				timerConfig.duty_resolution = LEDC_TIMER_12_BIT;
 				timerConfig.timer_num = config::speaker::timer;
 				timerConfig.freq_hz = 4000;
 				timerConfig.clk_cfg = LEDC_AUTO_CLK;
@@ -32,103 +32,74 @@ namespace pizda {
 			}
 
 			void play(const Sound& sound) {
-				_tracks.push_back(Track {
-					.sound = sound
-				});
+				_sound = &sound;
+				_playableIndex = 0;
+				_playableDeadline = 0;
 			}
 
 			void tick() {
-				// Playing only one sound per time, but still process other sounds timings
-				for (size_t i = 0; i < _tracks.size(); i++) {
-					auto& track = _tracks[i];
+				// Skipping track if we're already playing its note
+				if (!_sound || esp_timer_get_time() < _playableDeadline)
+					return;
 
-					// Skipping track if we're already playing its note
-					if (esp_timer_get_time() < track.noteDeadline)
-						continue;
-
-					auto& note = track.sound.getNotes()[track.sound.getNoteIndex()];
-
-					// First play
-					if (track.noteDeadline == 0) {
-//						ESP_LOGI("Speaker", "First play");
-
-						playNote(track, note);
+//				ESP_LOGI("Speaker", "_playableIndex: %d", _playableIndex);
+				
+				if (_playableIndex < _sound->getPlayablesLength()) {
+					const auto playable = _sound->getPlayables()[_playableIndex];
+					
+//					ESP_LOGI("Speaker", "duration: %d", playable->getDuration());
+					
+					if (playable->isDelay()) {
+//						ESP_LOGI("Speaker", "delay");
+						
+						setDuty(false);
 					}
-					// End of note
 					else {
-//						ESP_LOGI("Speaker", "End of note");
-
-						// Moving to next note
-						track.sound.setNoteIndex(track.sound.getNoteIndex() + 1);
-
-						// End of sound
-						if (track.sound.getNoteIndex() >= track.sound.getNotes().size()) {
-//							ESP_LOGI("Speaker", "End of track");
-
-							// Calling onFinish callback
-							track.sound.getOnFinish();
-
-							// If track repeating enabled
-							if (track.sound.isRepeating()) {
-								track.sound.setNoteIndex(0);
-								playNote(track);
-							}
-							// Erasing track otherwise
-							else {
-								auto it = _tracks.begin();
-								std::advance(it, i);
-								_tracks.erase(it);
-
-								i--;
-
-								// Turning off speaker if there are no tracks remaining
-								if (_tracks.empty())
-									setDuty(false);
-							}
-						}
-						// Playing note
-						else {
-//							ESP_LOGI("Speaker", "Next note");
-
-							playNote(track);
-						}
+						const auto note = reinterpret_cast<const Note*>(playable);
+						
+						setFrequency(note->getFrequency());
+						setDuty(true);
 					}
+					
+					_playableIndex = _playableIndex + 1;
+					_playableDeadline = esp_timer_get_time() + playable->getDuration();
+				}
+				else {
+//					ESP_LOGI("Speaker", "End of track");
+					
+					// Turning off speaker
+					_sound = nullptr;
+					_playableIndex = 0;
+					_playableDeadline = 0;
+					
+					setDuty(false);
 				}
 			}
 
 		private:
-			struct Track {
-				Sound sound;
-				uint32_t noteDeadline = 0;
-			};
-
-			std::vector<Track> _tracks {};
+			constexpr static uint8_t _resolutionBits = 12;
+			constexpr static uint32_t _dutyMax = (1 << _resolutionBits) / 2;
+			constexpr static uint32_t _frequencyMax = APB_CLK_FREQ / (1 << _resolutionBits);
+			
+			const Sound* _sound = nullptr;
+			size_t _playableIndex = 0;
+			uint32_t _playableDeadline = 0;
 
 			static void setDuty(bool value) {
-				ESP_ERROR_CHECK(ledc_set_duty(config::speaker::mode, config::speaker::channel, value ? 4096 : 0));
-				ESP_ERROR_CHECK(ledc_update_duty(config::speaker::mode, config::speaker::channel));
+//				ESP_LOGI("Speaker", "setDuty: %d", value);
+				
+				ESP_ERROR_CHECK_WITHOUT_ABORT(ledc_set_duty(config::speaker::mode, config::speaker::channel, value ? _dutyMax : 0));
+				ESP_ERROR_CHECK_WITHOUT_ABORT(ledc_update_duty(config::speaker::mode, config::speaker::channel));
 			}
 
 			void setFrequency(uint32_t value) {
-				ESP_ERROR_CHECK(ledc_set_freq(config::speaker::mode, config::speaker::timer, value));
-			}
-
-			void playNote(Track& track, const Note& note) {
-				// Regular note
-				if (note.getFrequency() > 0) {
-					setFrequency(note.getFrequency());
-					setDuty(true);
-				}
-				// Delay
-				else {
-					setDuty(false);
-				}
-
-				track.noteDeadline = esp_timer_get_time() + note.getDuration();
-			}
-
-			void playNote(Track& track) {
-				playNote(track, track.sound.getNotes()[track.sound.getNoteIndex()]);
+//				ESP_LOGI("Speaker", "setFrequency: %d", value);
+			
+				ESP_ERROR_CHECK_WITHOUT_ABORT(ledc_set_freq(
+					config::speaker::mode,
+					config::speaker::timer,
+					std::clamp<uint32_t>(value, 10, _frequencyMax)
+				));
 			}
 	};
 }

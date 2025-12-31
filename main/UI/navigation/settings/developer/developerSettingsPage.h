@@ -6,6 +6,8 @@
 #include <UI/navigation/page.h>
 #include <UI/elements/titler.h>
 
+#include "hardware/speaker/sound.h"
+
 namespace pizda {
 	using namespace YOBA;
 
@@ -29,6 +31,10 @@ namespace pizda {
 			Titler _speakerCountSliderTitle { L"Count (1 - 5 times)", &_speakerCountSlider };
 			Text _speakerCountText {};
 
+			std::array<Note, 8> _speakerNotes {};
+			std::array<Delay, 8> _speakerDelays {};
+			std::array<Playable*, 16> _speakerPlayables {};
+			Sound _speakerSound {};
 			Button _speakerButton {};
 
 			// Text

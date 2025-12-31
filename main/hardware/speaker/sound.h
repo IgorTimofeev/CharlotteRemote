@@ -4,78 +4,97 @@
 #include "vector"
 
 namespace pizda {
-	class Note {
+	#pragma pack(push, 1)
+	class Playable {
 		public:
-			Note(uint32_t frequency, uint32_t duration) : _frequency(frequency), _duration(duration) {
-
+			constexpr Playable(bool delay, uint32_t duration) : _delay(delay), _duration(duration) {
+			
 			}
-
-			uint32_t getFrequency() const {
-				return _frequency;
+			
+			void setDelay(bool delay) {
+				_delay = delay;
 			}
-
+			
+			bool isDelay() const {
+				return _delay;
+			}
+			
+			void setDuration(uint32_t duration) {
+				_duration = duration;
+			}
+			
 			uint32_t getDuration() const {
 				return _duration;
 			}
-
+			
 		private:
-			uint32_t _frequency;
+			bool _delay: 1;
 			uint32_t _duration;
 	};
 
-	class Delay : public Note {
+	class Delay : public Playable {
 		public:
-			explicit Delay(uint32_t duration) : Note(0, duration) {
+			constexpr Delay(uint32_t duration) : Playable(true, duration) {
 
 			}
+			
+			constexpr Delay() : Delay(0) {
+			
+			}
 	};
+	
+	class Note : public Playable {
+		public:
+			constexpr Note(uint32_t frequency, uint32_t duration) : Playable(false, duration), _frequency(frequency) {
+			
+			}
+			
+			constexpr Note() : Note(0, 0) {
+			
+			}
+			
+			uint32_t getFrequency() const {
+				return _frequency;
+			}
+			
+			void setFrequency(uint32_t frequency) {
+				_frequency = frequency;
+			}
+		
+		private:
+			uint32_t _frequency;
+	};
+	
+	#pragma pack(pop)
 
 	class Sound {
 		public:
-			Sound() : _notes({}) {
-
+			constexpr Sound() : _playables(nullptr), _playablesLength(0) {
+			
 			}
-
-			explicit Sound(const std::vector<Note>& notes) : _notes(notes) {
-
+			
+			constexpr Sound(const Playable* const* playables, size_t playablesLength) : _playables(playables), _playablesLength(playablesLength) {
+			
 			}
-
-			std::vector<Note>& getNotes() {
-				return _notes;
+			
+			const Playable* const* getPlayables() const {
+				return _playables;
 			}
-
-			void setNotes(const std::vector<Note>& value) {
-				_notes = value;
+			
+			void setPlayables(const Playable** playables) {
+				_playables = playables;
 			}
-
-			size_t getNoteIndex() const {
-				return _noteIndex;
+			
+			size_t getPlayablesLength() const {
+				return _playablesLength;
 			}
-
-			void setNoteIndex(size_t noteIndex) {
-				_noteIndex = noteIndex;
+			
+			void setPlayablesLength(size_t playablesLength) {
+				_playablesLength = playablesLength;
 			}
-
-			bool isRepeating() const {
-				return _repeating;
-			}
-
-			void setRepeating(bool value) {
-				_repeating = value;
-			}
-
-			const std::function<void()>& getOnFinish() const {
-				return _onFinish;
-			}
-
-			void setOnFinish(const std::function<void()>& value) {
-				_onFinish = value;
-			}
-
+		
 		private:
-			std::vector<Note> _notes;
-			size_t _noteIndex = 0;
-			bool _repeating = false;
-			std::function<void()> _onFinish;
+			const Playable* const* _playables;
+			size_t _playablesLength;
 	};
 }

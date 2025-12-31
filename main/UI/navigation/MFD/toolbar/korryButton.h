@@ -12,8 +12,6 @@ namespace pizda {
 	class KorryButton : public ToolbarSection {
 		public:
 			KorryButton(std::wstring_view title, const Image* image) : ToolbarSection(title) {
-				setButtonMode(true);
-				
 				_imageView.setMargin(Margin(Toolbar::contentHorizontalMargin, 2, Toolbar::contentHorizontalMargin, 0));
 				_imageView.setAlignment(Alignment::center);
 				_imageView.setImage(image);
@@ -21,6 +19,14 @@ namespace pizda {
 			}
 		
 		protected:
+			void onEventBeforeChildren(Event* event) override {
+				if (event->getTypeID() == PointerDownEvent::typeID && isFocused()) {
+					setActive(!isActive());
+				}
+				
+				ToolbarSection::onEventBeforeChildren(event);
+			}
+			
 			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				ToolbarSection::onRender(renderer, bounds);
 				
