@@ -331,7 +331,7 @@ namespace pizda {
 		
 		const auto speedMapped = static_cast<float>((1 << RemoteAuxiliaryPacket::autopilotSpeedLengthBits) - 1) * speedFactor;
 		
-		stream.writeUint8(static_cast<uint8_t>(speedMapped), RemoteAuxiliaryPacket::autopilotSpeedLengthBits);
+		stream.writeUint8(static_cast<uint8_t>(std::round(speedMapped)), RemoteAuxiliaryPacket::autopilotSpeedLengthBits);
 		stream.writeBool(settings.autopilot.autoThrottle);
 		
 		// Heading
@@ -346,7 +346,7 @@ namespace pizda {
 			(altitudeClamped - static_cast<float>(RemoteAuxiliaryPacket::autopilotAltitudeMin))
 			/ static_cast<float>(RemoteAuxiliaryPacket::autopilotAltitudeMax - AircraftADIRSPacket::altitudeMin);
 		
-		const auto altitudeValue = static_cast<uint16_t>(altitudeFactor * static_cast<float>((1 << RemoteAuxiliaryPacket::autopilotAltitudeLengthBits) - 1));
+		const auto altitudeValue = static_cast<uint16_t>(std::round(altitudeFactor * static_cast<float>((1 << RemoteAuxiliaryPacket::autopilotAltitudeLengthBits) - 1)));
 		
 		stream.writeUint16(altitudeValue, RemoteAuxiliaryPacket::autopilotAltitudeLengthBits);
 		stream.writeBool(settings.autopilot.levelChange);

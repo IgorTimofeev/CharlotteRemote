@@ -22,7 +22,7 @@ namespace pizda {
 			
 			RotaryControl<3, 0, 350, false, 1, 1> speed { L"IAS", L"A/T" };
 			RotaryControl<3, 0, 359, true, 1, 10> heading { L"HDG", L"HLD" };
-			RotaryControl<4, 0, 35000, false, 1, 10> altitude { L"ALT", L"FLC" };
+			RotaryControl<4, 0, 35000, false, 10, 10> altitude { L"ALT", L"FLC" };
 			
 			KorryButton engageButton { L"A/P", &resources::images::menuIconMFDAutopilotEngage };
 	};
