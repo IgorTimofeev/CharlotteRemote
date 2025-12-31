@@ -7,7 +7,7 @@ namespace pizda {
 
 	class MenuIconMFDLightsNavigationImage : public Image {
 		public:
-			MenuIconMFDLightsNavigationImage() : Image(
+			constexpr MenuIconMFDLightsNavigationImage() : Image(
 				ImageFlags::palette8Bit | ImageFlags::alpha1Bit,
 				Size(21, 6),
 				_bitmap

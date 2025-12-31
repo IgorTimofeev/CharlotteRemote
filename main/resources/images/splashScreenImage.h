@@ -7,7 +7,7 @@ namespace pizda {
 
 	class SplashScreenImage : public Image {
 		public:
-			SplashScreenImage() : Image(
+			constexpr SplashScreenImage() : Image(
 				ImageFlags::palette8Bit,
 				Size(240, 320),
 				_bitmap

@@ -1,45 +1,6 @@
 #include "theme.h"
 
 namespace pizda {
-	const Bit8PaletteColor Theme::bg1 = Bit8PaletteColor(0);
-	const Bit8PaletteColor Theme::bg2 = Bit8PaletteColor(1);
-	const Bit8PaletteColor Theme::bg3 = Bit8PaletteColor(2);
-	const Bit8PaletteColor Theme::bg4 = Bit8PaletteColor(3);
-	const Bit8PaletteColor Theme::bg5 = Bit8PaletteColor(4);
-	const Bit8PaletteColor Theme::bg6 = Bit8PaletteColor(5);
-	const Bit8PaletteColor Theme::bg7 = Bit8PaletteColor(6);
-
-	const Bit8PaletteColor Theme::fg1 = Bit8PaletteColor(7);
-	const Bit8PaletteColor Theme::fg2 = Bit8PaletteColor(8);
-	const Bit8PaletteColor Theme::fg3 = Bit8PaletteColor(9);
-	const Bit8PaletteColor Theme::fg4 = Bit8PaletteColor(10);
-	const Bit8PaletteColor Theme::fg5 = Bit8PaletteColor(11);
-	const Bit8PaletteColor Theme::fg6 = Bit8PaletteColor(12);
-	const Bit8PaletteColor Theme::fg7 = Bit8PaletteColor(13);
-
-	const Bit8PaletteColor Theme::accent1 = Bit8PaletteColor(14);
-	const Bit8PaletteColor Theme::accent2 = Bit8PaletteColor(15);
-
-	const Bit8PaletteColor Theme::good1 = Bit8PaletteColor(16);
-	const Bit8PaletteColor Theme::good2 = Bit8PaletteColor(17);
-
-	const Bit8PaletteColor Theme::bad1 = Bit8PaletteColor(18);
-	const Bit8PaletteColor Theme::bad2 = Bit8PaletteColor(19);
-
-	const Bit8PaletteColor Theme::red = Bit8PaletteColor(20);
-	const Bit8PaletteColor Theme::purple = Bit8PaletteColor(21);
-	const Bit8PaletteColor Theme::green = Bit8PaletteColor(22);
-	const Bit8PaletteColor Theme::greenSpeed = Bit8PaletteColor(23);
-	const Bit8PaletteColor Theme::yellow = Bit8PaletteColor(24);
-	const Bit8PaletteColor Theme::ocean = Bit8PaletteColor(25);
-	const Bit8PaletteColor Theme::ground = Bit8PaletteColor(26);
-	const Bit8PaletteColor Theme::ground2 = Bit8PaletteColor(27);
-	const Bit8PaletteColor Theme::sky = Bit8PaletteColor(28);
-	const Bit8PaletteColor Theme::sky2 = Bit8PaletteColor(29);
-
-	const PIXY10Font Theme::fontNormal = PIXY10Font();
-	const Vaticanus8Font Theme::fontSmall = Vaticanus8Font();
-
 	void Theme::setup(Bit8PaletteRenderer* renderer) {
 		renderer->setPaletteColors({
 			// Background
@@ -143,8 +104,8 @@ namespace pizda {
 
 	void Theme::applyPageTitle(Text* text) {
 		text->setTextColor(&Theme::fg1);
-		text->setFont(&Theme::fontNormal);
-		text->setFontScale(2);
+		text->setFont(&Theme::fontBig);
+//		text->setFontScale(2);
 	}
 
 	void Theme::applyTitle(Text* text) {

@@ -7,7 +7,7 @@ namespace pizda {
 
 	class MenuIconWaypointsImage : public Image {
 		public:
-			MenuIconWaypointsImage() : Image(
+			constexpr MenuIconWaypointsImage() : Image(
 				ImageFlags::palette8Bit | ImageFlags::alpha1Bit,
 				Size(45, 33),
 				_bitmap

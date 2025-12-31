@@ -7,7 +7,7 @@ namespace pizda {
 
 	class MenuIconMFDAutopilotFlightDirectorImage : public Image {
 		public:
-			MenuIconMFDAutopilotFlightDirectorImage() : Image(
+			constexpr MenuIconMFDAutopilotFlightDirectorImage() : Image(
 				ImageFlags::palette8Bit | ImageFlags::alpha1Bit,
 				Size(19, 13),
 				_bitmap

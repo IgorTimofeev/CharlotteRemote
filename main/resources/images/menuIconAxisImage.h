@@ -7,7 +7,7 @@ namespace pizda {
 
 	class MenuIconAxisImage : public Image {
 		public:
-			MenuIconAxisImage() : Image(
+			constexpr MenuIconAxisImage() : Image(
 				ImageFlags::palette8Bit | ImageFlags::alpha1Bit,
 				Size(45, 33),
 				_bitmap

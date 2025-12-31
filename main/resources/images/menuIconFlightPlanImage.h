@@ -7,7 +7,7 @@ namespace pizda {
 
 	class MenuIconFlightPlanImage : public Image {
 		public:
-			MenuIconFlightPlanImage() : Image(
+			constexpr MenuIconFlightPlanImage() : Image(
 				ImageFlags::palette8Bit | ImageFlags::alpha1Bit,
 				Size(45, 33),
 				_bitmap

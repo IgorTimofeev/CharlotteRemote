@@ -1,52 +1,52 @@
 #pragma once
 
-#include "images/splashScreenImage.h"
+#include "resources/images/splashScreenImage.h"
 
-#include "images/menuIconMFDImage.h"
-#include "images/menuIconMFDPFDImage.h"
-#include "images/menuIconMFDNDImage.h"
-#include "images/menuIconMFDMainImage.h"
-#include "images/menuIconMFDAutopilotImage.h"
-#include "images/menuIconMFDAutopilotFlightDirectorImage.h"
-#include "images/menuIconMFDAutopilotEngageImage.h"
-#include "images/menuIconMFDBaroImage.h"
+#include "resources/images/menuIconMFDImage.h"
+#include "resources/images/menuIconMFDPFDImage.h"
+#include "resources/images/menuIconMFDNDImage.h"
+#include "resources/images/menuIconMFDMainImage.h"
+#include "resources/images/menuIconMFDAutopilotImage.h"
+#include "resources/images/menuIconMFDAutopilotFlightDirectorImage.h"
+#include "resources/images/menuIconMFDAutopilotEngageImage.h"
+#include "resources/images/menuIconMFDBaroImage.h"
 
-#include "images/menuIconMFDLightsImage.h"
-#include "images/menuIconMFDLightsNavigationImage.h"
-#include "images/menuIconMFDLightsStrobeImage.h"
-#include "images/menuIconMFDLightsLandingImage.h"
-#include "images/menuIconMFDLightsCabinImage.h"
+#include "resources/images/menuIconMFDLightsImage.h"
+#include "resources/images/menuIconMFDLightsNavigationImage.h"
+#include "resources/images/menuIconMFDLightsStrobeImage.h"
+#include "resources/images/menuIconMFDLightsLandingImage.h"
+#include "resources/images/menuIconMFDLightsCabinImage.h"
 
-#include "images/menuIconFlightPlanImage.h"
-#include "images/menuIconWaypointsImage.h"
+#include "resources/images/menuIconFlightPlanImage.h"
+#include "resources/images/menuIconWaypointsImage.h"
 
-#include "images/menuIconPersonalizationImage.h"
-#include "images/menuIconAxisImage.h"
-#include "images/menuIconDevImage.h"
+#include "resources/images/menuIconPersonalizationImage.h"
+#include "resources/images/menuIconAxisImage.h"
+#include "resources/images/menuIconDevImage.h"
 
 namespace pizda::resources {
 	class images {
 		public:
-			static const SplashScreenImage splashScreen;
+			constexpr static SplashScreenImage splashScreen {};
 
-			static const MenuIconMFDImage menuIconMFD;
-			static const MenuIconMFDPFDImage menuIconMFDPFD;
-			static const MenuIconMFDNDImage menuIconMFDND;
-			static const MenuIconMFDAutopilotImage menuIconMFDAutopilot;
-			static const MenuIconMFDAutopilotFlightDirectorImage menuIconMFDAutopilotFlightDirector;
-			static const MenuIconMFDAutopilotEngageImage menuIconMFDAutopilotEngage;
-			static const MenuIconMFDBaroImage menuIconMFDBaro;
-			static const MenuIconMFDLightsImage menuIconMFDLights;
-			static const MenuIconMFDLightsNavigationImage menuIconMFDLightsNavigation;
-			static const MenuIconMFDLightsStrobeImage menuIconMFDLightsStrobe;
-			static const MenuIconMFDLightsLandingImage menuIconMFDLightsLanding;
-			static const MenuIconMFDLightsCabinImage menuIconMFDLightsCabin;
+			constexpr static MenuIconMFDImage menuIconMFD {};
+			constexpr static MenuIconMFDPFDImage menuIconMFDPFD {};
+			constexpr static MenuIconMFDNDImage menuIconMFDND {};
+			constexpr static MenuIconMFDAutopilotImage menuIconMFDAutopilot {};
+			constexpr static MenuIconMFDAutopilotFlightDirectorImage menuIconMFDAutopilotFlightDirector {};
+			constexpr static MenuIconMFDAutopilotEngageImage menuIconMFDAutopilotEngage {};
+			constexpr static MenuIconMFDBaroImage menuIconMFDBaro {};
+			constexpr static MenuIconMFDLightsImage menuIconMFDLights {};
+			constexpr static MenuIconMFDLightsNavigationImage menuIconMFDLightsNavigation {};
+			constexpr static MenuIconMFDLightsStrobeImage menuIconMFDLightsStrobe {};
+			constexpr static MenuIconMFDLightsLandingImage menuIconMFDLightsLanding {};
+			constexpr static MenuIconMFDLightsCabinImage menuIconMFDLightsCabin {};
 			
-			static const MenuIconFlightPlanImage menuIconFlightPlan;
-			static const MenuIconWaypointsImage menuIconWaypointsImage;
+			constexpr static MenuIconFlightPlanImage menuIconFlightPlan {};
+			constexpr static MenuIconWaypointsImage menuIconWaypointsImage {};
 
-			static const MenuIconPersonalizationImage menuIconPersonalization;
-			static const MenuIconAxisImage menuIconAxis;
-			static const MenuIconDevImage menuIconDev;
+			constexpr static MenuIconPersonalizationImage menuIconPersonalization {};
+			constexpr static MenuIconAxisImage menuIconAxis {};
+			constexpr static MenuIconDevImage menuIconDev {};
 	};
 }

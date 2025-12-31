@@ -7,7 +7,7 @@ namespace pizda {
 
 	class MenuIconWiFiImage : public Image {
 		public:
-			MenuIconWiFiImage() : Image(
+			constexpr MenuIconWiFiImage() : Image(
 				ImageFlags::palette8Bit | ImageFlags::alpha1Bit,
 				Size(45, 33),
 				_bitmap
