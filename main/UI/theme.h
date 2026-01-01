@@ -49,10 +49,9 @@ namespace pizda {
 
 			constexpr static PIXY10Font fontNormal {};
 			constexpr static Vaticanus8Font fontSmall {};
-			constexpr static unscii16Font fontBig {};
 
 			constexpr static uint16_t elementHeight = 27;
-			constexpr static uint16_t cornerRadius = 3;
+			constexpr static uint16_t cornerRadius = 0;
 			constexpr static uint16_t spacing = 9;
 
 			static void setup(Bit8PaletteRenderer* renderer);

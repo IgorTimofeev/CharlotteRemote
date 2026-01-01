@@ -104,8 +104,8 @@ namespace pizda {
 
 	void Theme::applyPageTitle(Text* text) {
 		text->setTextColor(&Theme::fg1);
-		text->setFont(&Theme::fontBig);
-//		text->setFontScale(2);
+		text->setFont(&Theme::fontNormal);
+		text->setFontScale(2);
 	}
 
 	void Theme::applyTitle(Text* text) {
@@ -166,7 +166,7 @@ namespace pizda {
 	}
 
 	void Theme::apply(Switch* sw) {
-		sw->setSize(Size(45, 18));
+		sw->setSize(Size(45, 20));
 		sw->setCornerRadius(9);
 
 		sw->setTrackColor(&Theme::bg3);
@@ -178,18 +178,18 @@ namespace pizda {
 	void Theme::apply(Slider* slider) {
 		slider->setHeight(14);
 
-		slider->setTrackSize(4);
-		slider->setTrackCornerRadius(2);
+		slider->setTrackSize(5);
+		slider->setTrackCornerRadius(3);
 		slider->setTrackColor(&Theme::bg3);
 		slider->setFillColor(&Theme::accent1);
 
-		slider->setHandleSize(14);
-		slider->setHandleCornerRadius(7);
+		slider->setHandleSize(slider->getSize().getHeight());
+		slider->setHandleCornerRadius(slider->getHandleSize() / 2);
 		slider->setHandleColor(&Theme::fg1);
 	}
 
 	void Theme::apply(ProgressBar* progressBar) {
-		progressBar->setHeight(4);
+		progressBar->setHeight(5);
 		progressBar->setCornerRadius(2);
 		progressBar->setTrackColor(&Theme::bg3);
 		progressBar->setFillColor(&Theme::accent1);

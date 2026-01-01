@@ -12,7 +12,7 @@ namespace pizda {
 		_flapsAxisEditor(AxisEditor(&RC::getInstance().getLeverRight()))
 	{
 		// Page title
-		title.setText(L"Axis calibration");
+		title.setText(L"Axis");
 
 		// Axis
 		rows += &_aileronsAxisEditorTitle;
