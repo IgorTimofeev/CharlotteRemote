@@ -11,6 +11,9 @@ namespace pizda {
 	}
 	
 	void ThrottleIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
+		auto& rc = RC::getInstance();
+		const auto isConnected = rc.getPacketHandler().isConnected();
+		
 		constexpr static uint8_t textMaxSize = 11;
 		constexpr static uint8_t textOffset = 4;
 		
@@ -26,7 +29,7 @@ namespace pizda {
 				frameSize,
 				bounds.getHeight()
 			),
-			&Theme::bg6
+			isConnected ? &Theme::bg6 : &Theme::bad1
 		);
 
 		const auto& renderLine = [&renderer, &bounds](int32_t pos, const Color* color) {
@@ -43,28 +46,33 @@ namespace pizda {
 		// Remote value
 		renderLine(
 			bounds.getX() + std::max(static_cast<uint16_t>(frameSize * _remoteValue / 0xFF), static_cast<uint16_t>(1)) - 1,
-			&Theme::green
+			isConnected ? &Theme::green : &Theme::bad3
 		);
 
 		// Aircraft value
-		const auto aircraftValueSize = std::max(static_cast<uint16_t>(frameSize * _aircraftValue / 0xFF), static_cast<uint16_t>(1));
-
-		if (aircraftValueSize > 2) {
-			renderer->renderFilledRectangle(
-				Bounds(
-					bounds.getX(),
-					bounds.getY(),
-					aircraftValueSize - 1,
-					bounds.getHeight()
-				),
-				&Theme::fg1
-			);
+		if (isConnected) {
+			const auto aircraftValueSize = std::max(static_cast<uint16_t>(frameSize * _aircraftValue / 0xFF), static_cast<uint16_t>(1));
+			
+			if (aircraftValueSize > 2) {
+				renderer->renderFilledRectangle(
+					Bounds(
+						bounds.getX(),
+						bounds.getY(),
+						aircraftValueSize - 1,
+						bounds.getHeight()
+					),
+					&Theme::fg1
+				);
+			}
+			
+			renderLine(bounds.getX() + aircraftValueSize - 1, &Theme::purple);
 		}
 
-		renderLine(bounds.getX() + aircraftValueSize - 1, &Theme::purple);
-
-		// Aircraft value text
-		const auto text = std::format(L"{:03}", static_cast<int32_t>(_aircraftValue * 100 / 0xFF));
+		// Text
+		const auto text =
+			isConnected
+			? std::format(L"{:03}", static_cast<int32_t>(_aircraftValue * 100 / 0xFF))
+			: L"---";
 
 		renderer->renderString(
 			Point(
@@ -72,7 +80,7 @@ namespace pizda {
 				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1
 			),
 			&Theme::fontSmall,
-			&Theme::fg2,
+			isConnected ? &Theme::fg2 : &Theme::bad3,
 			text
 		);
 	}

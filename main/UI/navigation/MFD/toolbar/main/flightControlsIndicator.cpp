@@ -54,7 +54,7 @@ namespace pizda {
 		const auto levL = rc.getLeverLeft().getMappedUint8Value() * maxLeverHeight / 0xFF;
 		const auto levR = rc.getLeverRight().getMappedUint8Value() * maxLeverHeight / 0xFF;
 
-		renderer->renderVerticalLine(Point(bounds.getX(), center.getY()), levL, &Theme::bad2);
-		renderer->renderVerticalLine(Point(bounds.getX2(), center.getY()), levR, &Theme::bad2);
+		renderer->renderVerticalLine(Point(bounds.getX(), center.getY()), levL, &Theme::bad3);
+		renderer->renderVerticalLine(Point(bounds.getX2(), center.getY()), levR, &Theme::bad3);
 	}
 }

@@ -234,7 +234,7 @@ namespace pizda {
 
 				_confirmButton.click += [this, &nd, &rc] {
 					if (_nameTextField.getText().size() == 0) {
-						_nameTextField.setDefaultBorderColor(&Theme::bad2);
+						_nameTextField.setDefaultBorderColor(&Theme::bad3);
 						return;
 					}
 

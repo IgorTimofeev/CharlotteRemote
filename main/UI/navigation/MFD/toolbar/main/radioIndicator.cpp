@@ -17,6 +17,7 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		auto& transceiver = rc.getTransceiver();
 		auto& packetHandler = rc.getPacketHandler();
+		const auto isConnected = packetHandler.isConnected();
 		
 		const auto rssi = static_cast<int32_t>(transceiver.getRSSI());
 		const auto snr = static_cast<int32_t>(transceiver.getSNR());
@@ -25,14 +26,14 @@ namespace pizda {
 		const Color* color;
 		
 		// From worst to best
-		if (packetHandler.isConnected()) {
+		if (isConnected) {
 			if (rssi < -80) {
 				sexuality = 0;
-				color = &Theme::bad2;
+				color = &Theme::bad3;
 			}
 			else if (rssi < -70) {
 				sexuality = 1;
-				color = &Theme::bad2;
+				color = &Theme::bad3;
 			}
 			else if (rssi < -60) {
 				sexuality = 2;
@@ -49,7 +50,7 @@ namespace pizda {
 		}
 		else {
 			sexuality = _lineCount - 1;
-			color = &Theme::bad2;
+			color = &Theme::bad1;
 		}
 
 		// Lines
@@ -79,8 +80,8 @@ namespace pizda {
 		renderer->renderString(
 			position,
 			&Theme::fontSmall,
-			packetHandler.isConnected() ? &Theme::fg4 : &Theme::bad1,
-			packetHandler.isConnected() ? std::format(L"R {}", rssi) : L"N/A"
+			isConnected ? &Theme::fg4 : &Theme::bad3,
+			isConnected ? std::format(L"R {}", rssi) : L"----"
 		);
 		
 		position.setY(position.getY() + Theme::fontSmall.getHeight());
@@ -89,8 +90,8 @@ namespace pizda {
 		renderer->renderString(
 			position,
 			&Theme::fontSmall,
-			packetHandler.isConnected() ? &Theme::fg4 : &Theme::bad1,
-			packetHandler.isConnected() ? std::format(L"S {}", snr) : L"N/A"
+			isConnected ? &Theme::fg4 : &Theme::bad3,
+			isConnected ? std::format(L"S {}", snr) : L"----"
 		);
 	}
 }

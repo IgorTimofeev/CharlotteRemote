@@ -219,7 +219,7 @@ namespace pizda {
 		// Altitude
 		_aircraftData.computed.altitudeFt = applyLPF(
 			_aircraftData.computed.altitudeFt,
-			Units::convertDistance(_aircraftData.raw.geographicCoordinates.getAltitude(), DistanceUnit::meter, DistanceUnit::foot),
+			Units::convertDistance(_aircraftData.raw.coordinates.getAltitude(), DistanceUnit::meter, DistanceUnit::foot),
 			LPFFactor
 		);
 		

@@ -92,7 +92,7 @@ namespace pizda {
 		auto& ad = rc.getAircraftData();
 		
 		const auto airspeedPrevMPS = ad.raw.airspeedMPS;
-		const auto altitudePrevM = ad.raw.geographicCoordinates.getAltitude();
+		const auto altitudePrevM = ad.raw.coordinates.getAltitude();
 		
 		// Roll / pitch / yaw
 		ad.raw.rollRad = readRadians(stream, AircraftADIRSPacket::rollRangeRad, AircraftADIRSPacket::rollLengthBits);
@@ -119,7 +119,7 @@ namespace pizda {
 			static_cast<float>(stream.readUint16(AircraftADIRSPacket::altitudeLengthBits))
 			/ static_cast<float>((1 << AircraftADIRSPacket::altitudeLengthBits) - 1);
 		
-		ad.raw.geographicCoordinates.setAltitude(AircraftADIRSPacket::altitudeMinM + (AircraftADIRSPacket::altitudeMaxM - AircraftADIRSPacket::altitudeMinM) * altitudeFactor);
+		ad.raw.coordinates.setAltitude(AircraftADIRSPacket::altitudeMinM + (AircraftADIRSPacket::altitudeMaxM - AircraftADIRSPacket::altitudeMinM) * altitudeFactor);
 		
 		// Throttle
 		ad.raw.throttle_0_255 = stream.readUint8(AircraftADIRSPacket::throttleLengthBits) * 0xFF / ((1 << AircraftADIRSPacket::throttleLengthBits) - 1);
@@ -144,7 +144,7 @@ namespace pizda {
 //		ad.windDirection = toRadians(packet->windDirectionDeg);
 		
 		// Trends
-		const auto deltaAltitudeM = ad.raw.geographicCoordinates.getAltitude() - altitudePrevM;
+		const auto deltaAltitudeM = ad.raw.coordinates.getAltitude() - altitudePrevM;
 		
 		// Airspeed & altitude, 5 sec
 		ad.raw.airspeedTrendMPS = (ad.raw.airspeedMPS - airspeedPrevMPS) * 5'000'000.f / static_cast<float>(deltaTime);
@@ -179,7 +179,7 @@ namespace pizda {
 		
 		// [-pi / 2; pi / 2]
 		const auto lat = latFactor * std::numbers::pi_v<float> - std::numbers::pi_v<float> / 2.f;
-		ad.raw.geographicCoordinates.setLatitude(lat);
+		ad.raw.coordinates.setLatitude(lat);
 		
 		// -------------------------------- Longitude --------------------------------
 		
@@ -191,7 +191,7 @@ namespace pizda {
 		
 		// [-pi; pi]
 		const auto lon = lonFactor * std::numbers::pi_v<float> * 2;
-		ad.raw.geographicCoordinates.setLongitude(lon);
+		ad.raw.coordinates.setLongitude(lon);
 		
 		// -------------------------------- Battery --------------------------------
 		

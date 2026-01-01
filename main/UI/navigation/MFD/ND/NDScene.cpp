@@ -40,8 +40,8 @@ namespace pizda {
 		if (_aircraftElement->isVisible()) {
 			_aircraftElement->setPosition(
 				GeographicCoordinates(
-					ad.raw.geographicCoordinates.getLatitude(),
-					ad.raw.geographicCoordinates.getLongitude(),
+					ad.raw.coordinates.getLatitude(),
+					ad.raw.coordinates.getLongitude(),
 					0
 				)
 				.toCartesian()
@@ -49,8 +49,8 @@ namespace pizda {
 		}
 
 		// Camera
-		_cameraCoordinates.setLatitude(ad.raw.geographicCoordinates.getLatitude() + _cameraOffset.getLatitude());
-		_cameraCoordinates.setLongitude(ad.raw.geographicCoordinates.getLongitude() + _cameraOffset.getLongitude());
+		_cameraCoordinates.setLatitude(ad.raw.coordinates.getLatitude() + _cameraOffset.getLatitude());
+		_cameraCoordinates.setLongitude(ad.raw.coordinates.getLongitude() + _cameraOffset.getLongitude());
 		_cameraCoordinates.setAltitude(_cameraOffset.getAltitude());
 
 		setCameraPosition(_cameraCoordinates.toCartesian());

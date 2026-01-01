@@ -48,21 +48,22 @@ namespace pizda {
 
 			constexpr static uint16_t lineSizeBig = 3;
 			constexpr static uint16_t lineSizeSmall = 2;
-			constexpr static uint16_t lineSizeTextOffset = 3;
+			constexpr static uint16_t lineTextOffset = 3;
 
 			constexpr static uint16_t currentValueHeight = 20;
 			constexpr static uint8_t currentValueTriangleSize = 8;
 			constexpr static const Font* currentValueFont = &Theme::fontSmall;
+			constexpr static uint8_t currentValueTextOffset = 5;
 
 			// Speed
-			constexpr static uint8_t speedWidth = 26;
+			constexpr static uint8_t speedWidth = 24;
 			constexpr static uint8_t speedStepPixels = 8;
 			constexpr static uint8_t speedStepUnits = 1;
 			constexpr static uint8_t speedStepUnitsBig = 5;
 			
 			constexpr static uint8_t speedMaximumDigits = 3;
 			
-			constexpr static uint16_t speedBarSize = 4;
+			constexpr static uint16_t speedBarSize = 2;
 
 			constexpr static uint16_t speedFlapsMin = 15;
 			constexpr static uint16_t speedFlapsMax = 25;
@@ -98,13 +99,16 @@ namespace pizda {
 			constexpr static uint8_t altitudeMinimumSafeUnitDelta = 50;
 
 			// Vertical speed
-			constexpr static uint8_t verticalSpeedWidth = 11;
+			constexpr static uint8_t verticalSpeedWidth = 9;
 			constexpr static uint16_t verticalSpeedStepUnits = 250;
 			constexpr static uint16_t verticalSpeedStepUnitsLimit = 2000;
 			constexpr static uint16_t verticalSpeedStepUnitsBig = 1000;
 			constexpr static uint16_t verticalSpeedStepPixels = 11;
 			constexpr static uint16_t verticalSpeedStepPixelsRight = 2;
-			constexpr static uint16_t verticalSpeedTextOffset = lineSizeTextOffset;
+			
+			constexpr static uint8_t verticalSpeedLineSizeBig = 2;
+			constexpr static uint8_t verticalSpeedLineSizeSmall = 1;
+			constexpr static uint8_t verticalSpeedLineTextOffset = lineTextOffset;
 
 			constexpr static const Font* verticalSpeedFont = &Theme::fontSmall;
 
@@ -188,17 +192,17 @@ namespace pizda {
 		private:
 			PFDScene _scene {};
 
-			static void renderVerticlAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
-			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left) ;
-			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t digitCount, float value, bool left);
+			static void renderVerticalAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left);
+			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left);
+			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, uint8_t digitCount, float value, bool left);
 			static void renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value);
 			static void renderSpeed(Renderer* renderer, const Bounds& bounds);
-			static void renderAltitude(Renderer* renderer, const Bounds& bounds) ;
-			static void renderVerticalSpeed(Renderer* renderer, const Bounds& bounds) ;
-			static void renderMiniPanel(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, std::wstring_view text, int8_t textXOffset) ;
-			static void renderPressure(Renderer* renderer, const Bounds& bounds) ;
-			static void renderAutopilotSpeed(Renderer* renderer, const Bounds& bounds) ;
-			static void renderAutopilotAltitude(Renderer* renderer, const Bounds& bounds) ;
+			static void renderAltitude(Renderer* renderer, const Bounds& bounds);
+			static void renderVerticalSpeed(Renderer* renderer, const Bounds& bounds);
+			static void renderMiniPanel(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, std::wstring_view text, int8_t textXOffset);
+			static void renderPressure(Renderer* renderer, const Bounds& bounds);
+			static void renderAutopilotSpeed(Renderer* renderer, const Bounds& bounds);
+			static void renderAutopilotAltitude(Renderer* renderer, const Bounds& bounds);
 			static void renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, uint16_t autopilotValue, bool autopilotValueEnabled, bool left);
 			static void renderGroundSpeed(Renderer* renderer, const Bounds& bounds);
 	};

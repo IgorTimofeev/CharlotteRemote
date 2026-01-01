@@ -688,12 +688,12 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
 
-		_scene.setCameraPosition(ad.raw.geographicCoordinates.toCartesian());
+		_scene.setCameraPosition(ad.raw.coordinates.toCartesian());
 
 		_scene.setWorldRotation(Vector3F(
-			toRadians(90) - ad.raw.geographicCoordinates.getLatitude(),
+			toRadians(90) - ad.raw.coordinates.getLatitude(),
 			0,
-			toRadians(90) + ad.raw.geographicCoordinates.getLongitude()
+			toRadians(90) + ad.raw.coordinates.getLongitude()
 		));
 
 		_scene.setCameraRotation(Vector3F(
@@ -758,100 +758,119 @@ namespace pizda {
 		));
 	}
 
-	void PFD::renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t digitCount, float value, bool left) {
-		int32_t y = centerY - currentValueHeight / 2;
-
+	void PFD::renderCurrentValue(Renderer* renderer, const Bounds& bounds, uint8_t digitCount, float value, bool left) {
+		const auto isConnected = RC::getInstance().getPacketHandler().isConnected();
+		const auto bg = isConnected ? &Theme::bg2 : &Theme::bad1;
+		const auto x2 = bounds.getX2();
+		const auto yCenter = bounds.getYCenter();
+		
+		// Rect
+		renderer->renderFilledRectangle(
+			Bounds(
+				left ? bounds.getX() : bounds.getX() + currentValueTriangleSize,
+				bounds.getY(),
+				bounds.getWidth() - currentValueTriangleSize,
+				bounds.getHeight()
+			),
+			bg
+		);
+		
 		// Triangle
 		renderer->renderFilledTriangle(
 			Point(
-				left ? bounds.getX2() - currentValueTriangleSize - 1 : bounds.getX() + currentValueTriangleSize - 1,
-				y
+				left ? x2 - currentValueTriangleSize + 1 : bounds.getX() + currentValueTriangleSize - 1,
+				bounds.getY()
 			),
 			Point(
-				left ? bounds.getX2() : bounds.getX(),
-				centerY
+				left ? x2 : bounds.getX(),
+				yCenter
 			),
 			Point(
-				left ? bounds.getX2() - currentValueTriangleSize - 1 : bounds.getX() + currentValueTriangleSize - 1,
-				y + currentValueHeight - 1
+				left ? x2 - currentValueTriangleSize + 1 : bounds.getX() + currentValueTriangleSize - 1,
+				bounds.getY2()
 			),
-			&Theme::bg2
+			bg
 		);
-
-		// Rect
-		const auto& rectangleBounds = Bounds(
-			left ? bounds.getX() : bounds.getX() + currentValueTriangleSize,
-			y,
-			bounds.getWidth() - currentValueTriangleSize,
-			currentValueHeight
-		);
-
-		renderer->renderFilledRectangle(rectangleBounds, &Theme::bg2);
 
 		// Text
-		constexpr static uint8_t textOffset = 0;
-
-		const auto oldViewport = renderer->pushViewport(rectangleBounds);
-		
-		value = std::abs(value);
+		const auto textY = yCenter - currentValueFont->getHeight() / 2;
 		
 		// Assuming 4 is "widest" digit
-		const uint8_t maxDigitWidth = currentValueFont->getWidth(L'4');
 
-		int32_t x =
-			left
-			? bounds.getX2() - currentValueTriangleSize - textOffset
-			: bounds.getX() + currentValueTriangleSize + textOffset + maxDigitWidth * digitCount;
-
-		y = y + currentValueHeight / 2 - currentValueFont->getHeight() / 2;
-
-		const auto getAdjacentDigit = [&](uint8_t digit, bool plus) {
-			return
-				plus
-				? (digit < 9 ? digit + 1 : 0)
-				: (digit > 1 ? digit - 1 : 9);
-		};
-
-		const auto renderDigit = [&](int32_t digitY, uint8_t digit, bool adjacent) {
-			const wchar_t text = L'0' + digit;
-
-			renderer->renderChar(
+		if (isConnected) {
+			const auto oldViewport = renderer->pushViewport(bounds);
+			
+			value = std::abs(value);
+			
+			const uint8_t maxDigitWidth = currentValueFont->getWidth(L'4');
+			
+			int32_t textX =
+				left
+				? x2 - speedBarSize - currentValueTextOffset - maxDigitWidth
+				: bounds.getX() + currentValueTextOffset + maxDigitWidth * (digitCount - 1) + 1;
+			
+			const auto getAdjacentDigit = [&](uint8_t digit, bool plus) {
+				return
+					plus
+					? (digit < 9 ? digit + 1 : 0)
+					: (digit > 1 ? digit - 1 : 9);
+			};
+			
+			const auto renderDigit = [&](int32_t digitY, uint8_t digit) {
+				const wchar_t text = L'0' + digit;
+				
+				renderer->renderChar(
+					Point(
+						textX,
+						digitY
+					),
+					currentValueFont,
+					&Theme::fg1,
+					text
+				);
+			};
+			
+			for (uint8_t digitIndex = 0; digitIndex < digitCount; ++digitIndex) {
+				const auto digit = static_cast<uint32_t>(value) % 10;
+				
+				// Roll
+				if (digitIndex == 0) {
+					float integer;
+					const auto fractional = std::modf(value, &integer);
+					const auto rolledY = textY + static_cast<int32_t>(fractional * static_cast<float>(currentValueFont->getHeight()));
+					
+					renderDigit(rolledY - currentValueFont->getHeight(), getAdjacentDigit(digit, true));
+					renderDigit(rolledY, digit);
+					renderDigit(rolledY + currentValueFont->getHeight(), getAdjacentDigit(digit, false));
+				}
+				else {
+					renderDigit(textY, digit);
+				}
+				
+				textX -= maxDigitWidth;
+				value = value / 10;
+			}
+			
+			renderer->popViewport(oldViewport);
+		}
+		else {
+			const auto text = L"---";
+			
+			renderer->renderString(
 				Point(
-					x - currentValueFont->getWidth(text),
-					digitY
+					left
+						? x2 - speedBarSize - currentValueTextOffset - Theme::fontSmall.getWidth(text)
+						: bounds.getX() + speedBarSize + currentValueTextOffset,
+					textY
 				),
-				currentValueFont,
-				adjacent ? &Theme::fg2 : &Theme::fg1,
+				&Theme::fontSmall,
+				&Theme::bad3,
 				text
 			);
-		};
-
-		
-		for (uint8_t digitIndex = 0; digitIndex < digitCount; ++digitIndex) {
-			const auto digit = static_cast<uint32_t>(value) % 10;
-			
-			// Roll
-			if (digitIndex == 0) {
-				float integer;
-				const auto fractional = std::modf(value, &integer);
-				const auto rolledY = y + static_cast<int32_t>(fractional * static_cast<float>(currentValueFont->getHeight()));
-				
-				renderDigit(rolledY - currentValueFont->getHeight(), getAdjacentDigit(digit, true), true);
-				renderDigit(rolledY, digit, false);
-				renderDigit(rolledY + currentValueFont->getHeight(), getAdjacentDigit(digit, false), true);
-			}
-			else {
-				renderDigit(y, digit, false);
-			}
-
-			x -= maxDigitWidth;
-			value = value / 10;
 		}
-
-		renderer->popViewport(oldViewport);
 	}
 
-	void PFD::renderVerticlAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) {
+	void PFD::renderVerticalAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) {
 		// Upper rect
 		renderer->renderFilledRectangle(
 			Bounds(
@@ -935,7 +954,7 @@ namespace pizda {
 			bounds.getY2()
 		);
 		
-		renderVerticlAutopilotValueIndicator(
+		renderVerticalAutopilotValueIndicator(
 			renderer,
 			Point(
 				left ? bounds.getX2() + 1 - autopilotIndicatorThickness : bounds.getX(),
@@ -1006,7 +1025,6 @@ namespace pizda {
 			);
 		};
 
-		// Not enough lift in any case
 		renderBar(
 			barX,
 			speedBarSize,
@@ -1015,43 +1033,22 @@ namespace pizda {
 			&Theme::red
 		);
 
-		// Flaps only
 		renderBar(
 			barX,
 			speedBarSize,
 			speedFlapsMin,
-			speedSmoothMin,
-			&Theme::fg1
-		);
-
-		// Flaps (& smooth)
-		renderBar(
-			barX,
-			speedBarSize / 2,
-			speedSmoothMin,
 			speedFlapsMax,
 			&Theme::fg1
 		);
 
-		// Smooth (& flaps)
-		renderBar(
-			barX + speedBarSize / 2,
-			speedBarSize / 2,
-			speedSmoothMin,
-			speedFlapsMax,
-			&Theme::greenSpeed
-		);
-
-		// Smooth (no flaps)
 		renderBar(
 			barX,
 			speedBarSize,
-			speedFlapsMax,
+			speedSmoothMin,
 			speedSmoothMax,
 			&Theme::greenSpeed
 		);
 
-		// Turbulent
 		renderBar(
 			barX,
 			speedBarSize,
@@ -1060,7 +1057,6 @@ namespace pizda {
 			&Theme::yellow
 		);
 
-		// Structural
 		renderBar(
 			barX,
 			speedBarSize,
@@ -1101,7 +1097,7 @@ namespace pizda {
 
 				renderer->renderString(
 					Point(
-						bounds.getX2() + 1 - speedBarSize - lineSizeBig - lineSizeTextOffset - currentValueFont->getWidth(text),
+						bounds.getX2() + 1 - speedBarSize - lineSizeBig - lineTextOffset - currentValueFont->getWidth(text),
 						y - currentValueFont->getHeight() / 2
 					),
 					currentValueFont,
@@ -1180,8 +1176,12 @@ namespace pizda {
 		// Current speed
 		renderCurrentValue(
 			renderer,
-			bounds,
-			centerY,
+			Bounds(
+				bounds.getX(),
+				centerY - currentValueHeight / 2,
+				bounds.getWidth(),
+				currentValueHeight
+			),
 			speedMaximumDigits,
 			ad.computed.airspeedKt,
 			true
@@ -1222,7 +1222,7 @@ namespace pizda {
 
 				// Text
 				renderer->renderString(
-					Point(x + lineSizeBig + lineSizeTextOffset, y - currentValueFont->getHeight() / 2),
+					Point(x + lineSizeBig + lineTextOffset, y - currentValueFont->getHeight() / 2),
 					currentValueFont,
 					lineColor,
 					std::to_wstring(lineValue)
@@ -1336,8 +1336,12 @@ namespace pizda {
 		// Current value
 		renderCurrentValue(
 			renderer,
-			bounds,
-			centerY,
+			Bounds(
+				bounds.getX(),
+				centerY - currentValueHeight / 2,
+				bounds.getWidth(),
+				currentValueHeight
+			),
 			altitudeMaximumDigits,
 			altitude,
 			false
@@ -1367,17 +1371,14 @@ namespace pizda {
 
 				if (isBig) {
 					renderer->renderHorizontalLine(
-						Point(
-							bounds.getX(),
-							y
-						),
-						lineSizeBig,
+						Point(bounds.getX(), y),
+						verticalSpeedLineSizeBig,
 						lineColor
 					);
 
 					renderer->renderString(
 						Point(
-							bounds.getX() + lineSizeBig + verticalSpeedTextOffset,
+							bounds.getX() + verticalSpeedLineSizeBig + verticalSpeedLineTextOffset,
 							y - verticalSpeedFont->getHeight() / 2
 						),
 						verticalSpeedFont,
@@ -1387,11 +1388,8 @@ namespace pizda {
 				}
 				else {
 					renderer->renderHorizontalLine(
-						Point(
-							bounds.getX(),
-							y
-						),
-						lineSizeSmall,
+						Point(bounds.getX(), y),
+						verticalSpeedLineSizeSmall,
 						lineColor
 					);
 				}

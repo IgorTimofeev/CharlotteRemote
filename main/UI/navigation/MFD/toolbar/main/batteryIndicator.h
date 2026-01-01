@@ -22,41 +22,54 @@ namespace pizda {
 				// +1 because tip overlaps frame
 				const uint16_t frameSize = bounds.getWidth() - tipSize.getWidth() + 1;
 
+				const auto frameColor = _voltageMV > 0 ? &Theme::bg4 : &Theme::bad1;
+				
 				// Frame
-				renderer->renderRectangle(Bounds(bounds.getX(), bounds.getY(), frameSize, bounds.getHeight()), &Theme::bg4);
+				renderer->renderRectangle(
+					Bounds(bounds.getX(), bounds.getY(), frameSize, bounds.getHeight()),
+					frameColor
+				);
 
 				// Tip
-				renderer->renderRectangle(Bounds(Point(bounds.getX() + frameSize - 1, yCenter - tipSize.getHeight() / 2), tipSize), &Theme::bg4);
-
+				renderer->renderRectangle(
+					Bounds(Point(bounds.getX() + frameSize - 1, yCenter - tipSize.getHeight() / 2), tipSize),
+					frameColor
+				);
+				
 				// Fill
-				const auto fillWidth = static_cast<uint16_t>(static_cast<uint32_t>(frameSize) * _charge / 0xFF);
-
-				if (fillWidth > 0) {
-					const Color* color;
-
-					if (_charge < 0xFF * 1 / 10) {
-						color = &Theme::bad2;
+				if (_voltageMV > 0) {
+					const auto fillWidth = static_cast<uint16_t>(static_cast<uint32_t>(frameSize) * _charge / 0xFF);
+					
+					if (fillWidth > 0) {
+						const Color* color;
+						
+						if (_charge < 0xFF * 1 / 10) {
+							color = &Theme::bad3;
+						}
+						else if (_charge < 0xFF * 2 / 10) {
+							color = &Theme::yellow;
+						}
+						else {
+							color = &Theme::good2;
+						}
+						
+						renderer->renderFilledRectangle(
+							Bounds(
+								bounds.getX(),
+								bounds.getY(),
+								fillWidth,
+								bounds.getHeight()
+							),
+							color
+						);
 					}
-					else if (_charge < 0xFF * 2 / 10) {
-						color = &Theme::yellow;
-					}
-					else {
-						color = &Theme::good2;
-					}
-
-					renderer->renderFilledRectangle(
-						Bounds(
-							bounds.getX(),
-							bounds.getY(),
-							fillWidth,
-							bounds.getHeight()
-						),
-						color
-					);
 				}
 
 				// Text
-				const auto text = std::format(L"{:.1f}", static_cast<float>(_voltageMV) / 1000.f);
+				const auto text =
+					_voltageMV > 0
+					? std::format(L"{:.1f}", static_cast<float>(_voltageMV) / 1000.f)
+					: L"---";
 
 				renderer->renderString(
 					Point(
@@ -64,7 +77,7 @@ namespace pizda {
 						bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1
 					),
 					&Theme::fontSmall,
-					&Theme::fg1,
+					_voltageMV > 0 ? &Theme::fg1 : &Theme::bad3,
 					text
 				);
 			}

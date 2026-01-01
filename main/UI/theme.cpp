@@ -32,8 +32,10 @@ namespace pizda {
 			RGB888Color(0x28DA69),
 
 			// Bad 1
-			RGB888Color(0x9f2d2d),
+			RGB888Color(0x4b1313),
 			// Bad 2
+			RGB888Color(0x962828),
+			// Bad 3
 			RGB888Color(0xf24949),
 
 			// Red
@@ -143,7 +145,7 @@ namespace pizda {
 		button->setHeight(elementHeight);
 		button->setCornerRadius(cornerRadius);
 
-		button->setDefaultBackgroundColor(&Theme::bad2);
+		button->setDefaultBackgroundColor(&Theme::bad3);
 		button->setDefaultTextColor(&Theme::fg1);
 
 		button->setActiveBackgroundColor(&Theme::bad1);

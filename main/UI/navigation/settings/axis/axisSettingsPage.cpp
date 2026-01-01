@@ -23,7 +23,7 @@ namespace pizda {
 
 		// Jittering slider
 		Theme::apply(&_jitteringCutoffFactorSlider);
-		_jitteringCutoffFactorSlider.setFillColor(&Theme::bad2);
+		_jitteringCutoffFactorSlider.setFillColor(&Theme::bad3);
 
 		_jitteringCutoffFactorSlider.setValue(RC::getInstance().getSettings().axis.jitteringCutoffValue * 0xFFFF / _jitteringCutoffMaxValue);
 

@@ -51,7 +51,7 @@ namespace pizda {
 		_batteryIndicatorRC.setVoltage(rc.getBattery().getVoltage());
 		_batteryIndicatorRC.setCharge(rc.getBattery().getCharge());
 
-		_batteryIndicatorAC.setVoltage(static_cast<uint16_t>(rc.getAircraftData().raw.batteryVoltageV * 1000));
+		_batteryIndicatorAC.setVoltage(rc.getPacketHandler().isConnected() ? static_cast<uint16_t>(rc.getAircraftData().raw.batteryVoltageV * 1000) : 0);
 		_batteryIndicatorAC.setCharge(_batteryIndicatorAC.getVoltage() * 0xFF / 14800);
 	}
 }
