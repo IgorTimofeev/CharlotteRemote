@@ -21,7 +21,7 @@ namespace pizda {
 	}
 
 	void MenuViewButton::onRender(Renderer* renderer, const Bounds& bounds) {
-		constexpr static uint8_t cornerRadius = 4;
+		constexpr static uint8_t cornerRadius = 3;
 
 		// Background
 		renderer->renderFilledRectangle(

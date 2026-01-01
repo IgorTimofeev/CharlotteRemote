@@ -6,8 +6,9 @@
 
 #include "UI/theme.h"
 #include <units.h>
-#include "utils/VSpeed.h"
+#include "utils/speedBug.h"
 #include "utils/aircraftData.h"
+#include "settings/settings.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -38,7 +39,7 @@ namespace pizda {
 
 			static void renderSyntheticVisionBackground(Renderer* renderer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight);
 			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds, const AircraftData& aircraftData);
-			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, const AircraftData& aircraftData);
+			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, const Settings& settings, const AircraftData& aircraftData);
 	};
 
 	class PFD : public Layout {
@@ -48,9 +49,6 @@ namespace pizda {
 			constexpr static uint16_t lineSizeBig = 3;
 			constexpr static uint16_t lineSizeSmall = 2;
 			constexpr static uint16_t lineSizeTextOffset = 3;
-
-			constexpr static uint8_t miniHeight = 16;
-			constexpr static const Font* miniFont = &Theme::fontSmall;
 
 			constexpr static uint16_t currentValueHeight = 20;
 			constexpr static uint8_t currentValueTriangleSize = 8;
@@ -70,23 +68,21 @@ namespace pizda {
 			constexpr static uint16_t speedFlapsMax = 25;
 
 			constexpr static uint16_t speedSmoothMin = 25;
-			constexpr static uint16_t speedSmoothMax = 38;
+			constexpr static uint16_t speedSmoothMax = 42;
 
 			constexpr static uint16_t speedTurbulentMin = speedSmoothMax;
-			constexpr static uint16_t speedTurbulentMax = 44;
+			constexpr static uint16_t speedTurbulentMax = speedTurbulentMin + 10;
 
 			constexpr static uint16_t speedStructuralMin = speedTurbulentMax;
 			constexpr static uint16_t speedStructuralMax = speedStructuralMin * 4;
 
-			// V-speeds
-			constexpr static uint8_t VSpeedMargin = 4;
-			constexpr static uint8_t VSpeedTextOffset = 2;
-			constexpr static uint8_t VSpeedTriangleWidth = 4;
+			// Speed bugs
+			constexpr static uint8_t speedBugOffset = 3;
+			constexpr static uint8_t speedBugTextOffset = 1;
+			constexpr static uint8_t speedBugTriangleWidth = 3;
 
-			constexpr static VSpeed VSpeeds[] = {
-				VSpeed(L"Y", 74),
-				VSpeed(L"G", 68),
-				VSpeed(L"R", 55)
+			constexpr static SpeedBug speedBugs[] = {
+				SpeedBug(L"Y", 32)
 			};
 
 			// Altitude
@@ -113,16 +109,18 @@ namespace pizda {
 			constexpr static const Font* verticalSpeedFont = &Theme::fontSmall;
 
 			// Autopilot indicator
-			constexpr static uint8_t autopilotIndicatorWidth = 4;
-			constexpr static uint8_t autopilotIndicatorHeight = miniHeight;
-			constexpr static uint8_t autopilotIndicatorHeightHalf = autopilotIndicatorHeight / 2;
+			constexpr static uint8_t autopilotIndicatorThickness = 4;
+			constexpr static uint8_t autopilotIndicatorSize = 16;
 
-			constexpr static uint8_t autopilotIndicatorTriangleVerticalMargin = 3;
-			constexpr static uint8_t autopilotIndicatorTriangleWidth = 3;
-			constexpr static uint8_t autopilotIndicatorTriangleHeight = autopilotIndicatorHeight - autopilotIndicatorTriangleVerticalMargin * 2;
+			constexpr static uint8_t autopilotIndicatorTriangleMargin = 3;
+			constexpr static uint8_t autopilotIndicatorTriangleThickness = 3;
+			constexpr static uint8_t autopilotIndicatorTriangleSize = autopilotIndicatorSize - autopilotIndicatorTriangleMargin * 2;
 
-			constexpr static uint8_t autopilotIndicatorRectangleWidth = autopilotIndicatorWidth - autopilotIndicatorTriangleWidth;
-
+			constexpr static uint8_t autopilotIndicatorRectangleThickness = autopilotIndicatorThickness - autopilotIndicatorTriangleThickness;
+			
+			constexpr static uint8_t miniHeight = autopilotIndicatorSize;
+			constexpr static const Font* miniFont = &Theme::fontSmall;
+			
 			// Pitch overlay
 			constexpr static uint8_t pitchOverlayMarginTop = 30;
 			constexpr static uint8_t pitchOverlayAngleStepDeg = 5;
@@ -190,7 +188,7 @@ namespace pizda {
 		private:
 			PFDScene _scene {};
 
-			static void renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
+			static void renderVerticlAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) ;
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left) ;
 			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t digitCount, float value, bool left);
 			static void renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value);

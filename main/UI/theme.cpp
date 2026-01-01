@@ -166,7 +166,7 @@ namespace pizda {
 	}
 
 	void Theme::apply(Switch* sw) {
-		sw->setSize(Size(45, 20));
+		sw->setSize(Size(43, 18));
 		sw->setCornerRadius(9);
 
 		sw->setTrackColor(&Theme::bg3);
@@ -179,7 +179,7 @@ namespace pizda {
 		slider->setHeight(14);
 
 		slider->setTrackSize(5);
-		slider->setTrackCornerRadius(3);
+		slider->setTrackCornerRadius(slider->getTrackSize() / 2);
 		slider->setTrackColor(&Theme::bg3);
 		slider->setFillColor(&Theme::accent1);
 

@@ -11,7 +11,7 @@ namespace pizda {
 		public:
 			Separator() {
 				setHeight(1);
-				setFillColor(&Theme::bg2);
+				setFillColor(&Theme::bg3);
 			}
 			
 			void onRender(Renderer* renderer, const Bounds& bounds) override {

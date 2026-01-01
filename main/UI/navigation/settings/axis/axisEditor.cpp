@@ -4,113 +4,6 @@
 #include "rc.h"
 
 namespace pizda {
-	void AxisEditorTrack::onRender(Renderer* renderer, const Bounds& bounds) {
-		const auto editor = getEditor();
-
-		// Track
-		renderer->renderFilledRectangle(bounds, Theme::cornerRadius, &Theme::bg2);
-		renderer->renderRectangle(bounds, Theme::cornerRadius, &Theme::bg3);
-
-		// Fill
-		const int32_t fromX = bounds.getX() + editor->getAxis()->getSettings()->from * bounds.getWidth() / Axis::maxValue;
-		const int32_t toX = bounds.getX() + editor->getAxis()->getSettings()->to * bounds.getWidth() / Axis::maxValue;
-		const uint16_t fillWidth = toX - fromX;
-
-		renderer->renderFilledRectangle(
-			Bounds(
-				fromX,
-				bounds.getY(),
-				fillWidth,
-				bounds.getHeight()
-			),
-			Theme::cornerRadius,
-			&Theme::bg3
-		);
-
-		// Middle line
-		renderer->renderVerticalLine(
-			Point(fromX + fillWidth / 2, bounds.getY()),
-			bounds.getHeight(),
-			&Theme::bg6
-		);
-
-		// Axis value thumb
-		constexpr uint16_t axisValueThumbWidth = 2;
-
-		renderer->renderFilledRectangle(
-			Bounds(
-				bounds.getX() + axisValueThumbWidth / 2 + editor->getAxis()->getRawValue() * (bounds.getWidth() - axisValueThumbWidth) / Axis::maxValue,
-				bounds.getY(),
-				axisValueThumbWidth,
-				bounds.getHeight()
-			),
-			&Theme::accent1
-		);
-
-		// Pins
-		const auto renderPin = [this, &renderer, &bounds](int32_t x, uint16_t settingsValue, bool to) {
-			const Color* bg;
-			const Color* fg;
-
-			if ((_selectedPin == SelectedPin::to && to) || (_selectedPin == SelectedPin::from && !to)) {
-				bg = &Theme::fg1;
-				fg = &Theme::bg1;
-			}
-			else {
-				bg = &Theme::bg6;
-				fg = &Theme::fg1;
-			}
-
-			// Line
-			renderer->renderVerticalLine(
-				Point(x, bounds.getY()),
-				bounds.getHeight() - Theme::cornerRadius,
-				bg
-			);
-
-			// Flag
-			const auto text = std::to_wstring(settingsValue * 100 / Axis::maxValue);
-			constexpr uint8_t textOffsetX = 4;
-			constexpr uint8_t textOffsetY = 1;
-
-			const auto flagSize = Size(
-				Theme::fontSmall.getWidth(text) + textOffsetX * 2,
-				Theme::fontSmall.getHeight() + textOffsetY * 2
-			);
-
-			const auto flagBounds = Bounds(
-				Point(
-					to ? x - flagSize.getWidth() + 1 : x,
-					bounds.getY() + bounds.getHeight() - flagSize.getHeight()
-				),
-				flagSize
-			);
-
-			renderer->renderFilledRectangle(flagBounds, bg);
-
-			renderer->renderString(
-				Point(flagBounds.getX() + textOffsetX, flagBounds.getY() + textOffsetY),
-				&Theme::fontSmall,
-				fg,
-				text
-			);
-		};
-
-		renderPin(
-			fromX,
-			editor->getAxis()->getSettings()->from,
-			false
-		);
-
-		renderPin(
-			toX,
-			editor->getAxis()->getSettings()->to,
-			true
-		);
-
-		Element::onRender(renderer, bounds);
-	}
-
 	void AxisEditorTrack::onEvent(Event* event) {
 		if (event->getTypeID() == PointerDownEvent::typeID) {
 			const auto editor = getEditor();
@@ -154,6 +47,113 @@ namespace pizda {
 
 			event->setHandled(true);
 		}
+	}
+	
+	void AxisEditorTrack::onRender(Renderer* renderer, const Bounds& bounds) {
+		const auto editor = getEditor();
+		
+		// Track
+		renderer->renderFilledRectangle(bounds, Theme::cornerRadius, &Theme::bg2);
+		renderer->renderRectangle(bounds, Theme::cornerRadius, &Theme::bg3);
+		
+		// Fill
+		const int32_t fromX = bounds.getX() + editor->getAxis()->getSettings()->from * bounds.getWidth() / Axis::maxValue;
+		const int32_t toX = bounds.getX() + editor->getAxis()->getSettings()->to * bounds.getWidth() / Axis::maxValue;
+		const uint16_t fillWidth = toX - fromX;
+		
+		renderer->renderFilledRectangle(
+			Bounds(
+				fromX,
+				bounds.getY(),
+				fillWidth,
+				bounds.getHeight()
+			),
+			Theme::cornerRadius,
+			&Theme::bg3
+		);
+		
+		// Middle line
+		renderer->renderVerticalLine(
+			Point(fromX + fillWidth / 2, bounds.getY()),
+			bounds.getHeight(),
+			&Theme::bg6
+		);
+		
+		// Axis value thumb
+		constexpr uint16_t axisValueThumbWidth = 1;
+		
+		renderer->renderFilledRectangle(
+			Bounds(
+				bounds.getX() + axisValueThumbWidth / 2 + editor->getAxis()->getRawValue() * (bounds.getWidth() - axisValueThumbWidth) / Axis::maxValue,
+				bounds.getY(),
+				axisValueThumbWidth,
+				bounds.getHeight()
+			),
+			&Theme::accent1
+		);
+		
+		// Pins
+		const auto renderPin = [this, &renderer, &bounds](int32_t x, uint16_t settingsValue, bool to) {
+			const Color* bg;
+			const Color* fg;
+			
+			if ((_selectedPin == SelectedPin::to && to) || (_selectedPin == SelectedPin::from && !to)) {
+				bg = &Theme::fg1;
+				fg = &Theme::bg1;
+			}
+			else {
+				bg = &Theme::bg6;
+				fg = &Theme::fg1;
+			}
+			
+			// Line
+			renderer->renderVerticalLine(
+				Point(x, bounds.getY()),
+				bounds.getHeight() - Theme::cornerRadius,
+				bg
+			);
+			
+			// Flag
+			const auto text = std::to_wstring(settingsValue * 100 / Axis::maxValue);
+			constexpr uint8_t textOffsetX = 4;
+			constexpr uint8_t textOffsetY = 1;
+			
+			const auto flagSize = Size(
+				Theme::fontSmall.getWidth(text) + textOffsetX * 2,
+				Theme::fontSmall.getHeight() + textOffsetY * 2
+			);
+			
+			const auto flagBounds = Bounds(
+				Point(
+					to ? x - flagSize.getWidth() + 1 : x,
+					bounds.getY() + bounds.getHeight() - flagSize.getHeight()
+				),
+				flagSize
+			);
+			
+			renderer->renderFilledRectangle(flagBounds, bg);
+			
+			renderer->renderString(
+				Point(flagBounds.getX() + textOffsetX, flagBounds.getY() + textOffsetY),
+				&Theme::fontSmall,
+				fg,
+				text
+			);
+		};
+		
+		renderPin(
+			fromX,
+			editor->getAxis()->getSettings()->from,
+			false
+		);
+		
+		renderPin(
+			toX,
+			editor->getAxis()->getSettings()->to,
+			true
+		);
+		
+		Element::onRender(renderer, bounds);
 	}
 
 	AxisEditor* AxisEditorTrack::getEditor() const {

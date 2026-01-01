@@ -102,6 +102,7 @@ namespace pizda {
 					bounds.getWidth(),
 					PFD::yawOverlayHeight
 				),
+				settings,
 				ad
 			);
 		}
@@ -497,6 +498,7 @@ namespace pizda {
 	void PFDScene::renderYawOverlay(
 		Renderer* renderer,
 		const Bounds& bounds,
+		const Settings& settings,
 		const AircraftData& aircraftData
 	) {
 		const auto viewport = renderer->pushViewport(bounds);
@@ -574,7 +576,94 @@ namespace pizda {
 			if (angle >= 360)
 				angle -= 360;
 		}
-
+		
+		// Autopilot value
+		{
+			auto deltaDeg = static_cast<float>(settings.autopilot.headingDeg) - aircraftData.computed.headingDeg;
+			
+			if (deltaDeg >= 180)
+				deltaDeg -= 360;
+			
+			const auto deltaPixels = deltaDeg / static_cast<float>(PFD::yawOverlayAngleStepUnits) * PFD::yawOverlayAngleStepPixels;
+			
+			// Clamped center of indicator - indicator width
+			x = std::clamp<int32_t>(
+				static_cast<int32_t>(centerX + deltaPixels),
+				bounds.getX(),
+				bounds.getX2()
+			)
+			- PFD::autopilotIndicatorSize / 2;
+			
+			const auto y = y2 - PFD::autopilotIndicatorThickness + 1;
+			
+			// Rect between
+			renderer->renderFilledRectangle(
+				Bounds(
+					x,
+					y2 - PFD::autopilotIndicatorRectangleThickness + 1,
+					PFD::autopilotIndicatorSize,
+					PFD::autopilotIndicatorRectangleThickness
+				),
+				&Theme::ocean
+			);
+			
+			// Left rect
+			renderer->renderFilledRectangle(
+				Bounds(
+					x,
+					y,
+					PFD::autopilotIndicatorTriangleMargin,
+					PFD::autopilotIndicatorTriangleThickness
+				),
+				&Theme::ocean
+			);
+			
+			// Right rect
+			renderer->renderFilledRectangle(
+				Bounds(
+					x + PFD::autopilotIndicatorSize - 1 - PFD::autopilotIndicatorTriangleMargin,
+					y,
+					PFD::autopilotIndicatorTriangleMargin,
+					PFD::autopilotIndicatorTriangleThickness
+				),
+				&Theme::ocean
+			);
+			
+			// Left triangle
+			renderer->renderFilledTriangle(
+				Point(
+					x + PFD::autopilotIndicatorTriangleMargin,
+					y
+				),
+				Point(
+					x + PFD::autopilotIndicatorTriangleMargin + PFD::currentValueTriangleSize - 1,
+					y + PFD::autopilotIndicatorTriangleThickness - 1
+				),
+				Point(
+					x + PFD::autopilotIndicatorTriangleMargin,
+					y + PFD::autopilotIndicatorTriangleThickness - 1
+				),
+				&Theme::ocean
+			);
+			
+			// Right triangle
+			renderer->renderFilledTriangle(
+				Point(
+					x + PFD::autopilotIndicatorSize - 1 - PFD::autopilotIndicatorTriangleMargin,
+					y
+				),
+				Point(
+					x + PFD::autopilotIndicatorSize - 1 - PFD::autopilotIndicatorTriangleMargin - PFD::currentValueTriangleSize + 1,
+					y + PFD::autopilotIndicatorTriangleThickness - 1
+				),
+				Point(
+					x + PFD::autopilotIndicatorSize - 1 - PFD::autopilotIndicatorTriangleMargin,
+					y + PFD::autopilotIndicatorTriangleThickness - 1
+				),
+				&Theme::ocean
+			);
+		}
+		
 		// Small triangle representing current heading
 		renderer->renderFilledTriangle(
 			Point(centerX, y2 - PFD::yawOverlayTriangleHeight),
@@ -762,36 +851,36 @@ namespace pizda {
 		renderer->popViewport(oldViewport);
 	}
 
-	void PFD::renderAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) {
-		// Upper
+	void PFD::renderVerticlAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) {
+		// Upper rect
 		renderer->renderFilledRectangle(
 			Bounds(
 				point.getX(),
 				point.getY(),
-				autopilotIndicatorWidth,
-				autopilotIndicatorTriangleVerticalMargin
+				autopilotIndicatorThickness,
+				autopilotIndicatorTriangleMargin
 			),
 			&Theme::ocean
 		);
 
-		// Lower
+		// Lower rect
 		renderer->renderFilledRectangle(
 			Bounds(
 				point.getX(),
-				point.getY() + autopilotIndicatorHeight - autopilotIndicatorTriangleVerticalMargin,
-				autopilotIndicatorWidth,
-				autopilotIndicatorTriangleVerticalMargin
+				point.getY() + autopilotIndicatorSize - autopilotIndicatorTriangleMargin,
+				autopilotIndicatorThickness,
+				autopilotIndicatorTriangleMargin
 			),
 			&Theme::ocean
 		);
 
-		// Rect
+		// Rect between
 		renderer->renderFilledRectangle(
 			Bounds(
-				left ? point.getX() + autopilotIndicatorTriangleWidth : point.getX(),
-				point.getY() + autopilotIndicatorTriangleVerticalMargin,
-				autopilotIndicatorRectangleWidth,
-				autopilotIndicatorTriangleHeight
+				left ? point.getX() + autopilotIndicatorTriangleThickness : point.getX(),
+				point.getY() + autopilotIndicatorTriangleMargin,
+				autopilotIndicatorRectangleThickness,
+				autopilotIndicatorTriangleSize
 			),
 			&Theme::ocean
 		);
@@ -799,16 +888,16 @@ namespace pizda {
 		// Upper triangle
 		renderer->renderFilledTriangle(
 			Point(
-				left ? point.getX() : point.getX() + autopilotIndicatorRectangleWidth,
-				point.getY() + autopilotIndicatorTriangleVerticalMargin
+				left ? point.getX() : point.getX() + autopilotIndicatorRectangleThickness,
+				point.getY() + autopilotIndicatorTriangleMargin
 			),
 			Point(
-				left ? point.getX() + autopilotIndicatorTriangleWidth - 1 : point.getX() + autopilotIndicatorWidth - 1,
-				point.getY() + autopilotIndicatorTriangleVerticalMargin
+				left ? point.getX() + autopilotIndicatorTriangleThickness - 1 : point.getX() + autopilotIndicatorThickness - 1,
+				point.getY() + autopilotIndicatorTriangleMargin
 			),
 			Point(
-				left ? point.getX() + autopilotIndicatorTriangleWidth - 1 : point.getX() + autopilotIndicatorRectangleWidth - 1,
-				point.getY() + autopilotIndicatorHeightHalf
+				left ? point.getX() + autopilotIndicatorTriangleThickness - 1 : point.getX() + autopilotIndicatorRectangleThickness - 1,
+				point.getY() + autopilotIndicatorSize / 2
 			),
 			&Theme::ocean
 		);
@@ -816,16 +905,16 @@ namespace pizda {
 		// Lower triangle
 		renderer->renderFilledTriangle(
 			Point(
-				left ? point.getX() + autopilotIndicatorTriangleWidth - 1 : point.getX() + autopilotIndicatorRectangleWidth,
-				point.getY() + autopilotIndicatorHeightHalf
+				left ? point.getX() + autopilotIndicatorTriangleThickness - 1 : point.getX() + autopilotIndicatorRectangleThickness,
+				point.getY() + autopilotIndicatorSize / 2
 			),
 			Point(
-				left ? point.getX() + autopilotIndicatorTriangleWidth - 1 : point.getX() + autopilotIndicatorWidth - 1,
-				point.getY() + autopilotIndicatorHeight - autopilotIndicatorTriangleVerticalMargin - 1
+				left ? point.getX() + autopilotIndicatorTriangleThickness - 1 : point.getX() + autopilotIndicatorThickness - 1,
+				point.getY() + autopilotIndicatorSize - autopilotIndicatorTriangleMargin - 1
 			),
 			Point(
-				left ? point.getX() : point.getX() + autopilotIndicatorRectangleWidth - 1,
-				point.getY() + autopilotIndicatorHeight - autopilotIndicatorTriangleVerticalMargin - 1
+				left ? point.getX() : point.getX() + autopilotIndicatorRectangleThickness - 1,
+				point.getY() + autopilotIndicatorSize - autopilotIndicatorTriangleMargin - 1
 			),
 			&Theme::ocean
 		);
@@ -834,12 +923,23 @@ namespace pizda {
 	void PFD::renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left) {
 		if (autopilotValue == 0)
 			return;
-
-		renderAutopilotValueIndicator(
+		
+		const auto indicatorCenterY = std::clamp<int32_t>(
+			centerY
+				- static_cast<int32_t>(
+					(static_cast<float>(autopilotValue) - currentValue)
+					* static_cast<float>(stepPixels)
+					/ static_cast<float>(unitStep)
+				),
+			bounds.getY(),
+			bounds.getY2()
+		);
+		
+		renderVerticlAutopilotValueIndicator(
 			renderer,
 			Point(
-				left ? bounds.getX2() + 1 - autopilotIndicatorWidth : bounds.getX(),
-				centerY + static_cast<int32_t>((currentValue - static_cast<float>(autopilotValue)) * static_cast<float>(stepPixels) / static_cast<float>(unitStep)) - autopilotIndicatorHeightHalf
+				left ? bounds.getX2() + 1 - autopilotIndicatorThickness : bounds.getX(),
+				indicatorCenterY - autopilotIndicatorSize / 2
 			),
 			left
 		);
@@ -1033,35 +1133,35 @@ namespace pizda {
 		);
 
 		// V-speeds
-		for (const auto& VSpeed : VSpeeds) {
-			const auto& VSpeedBounds = Bounds(
-				bounds.getX2() + VSpeedMargin + VSpeedTriangleWidth,
-				centerY - static_cast<int32_t>((static_cast<float>(VSpeed.getValue()) - ad.computed.airspeedKt) * static_cast<float>(speedStepPixels) / static_cast<float>(speedStepUnits)),
-				Theme::fontSmall.getWidth(VSpeed.getName()) + VSpeedTextOffset * 2,
-				Theme::fontSmall.getHeight() + VSpeedTextOffset * 2
+		for (const auto& bug : speedBugs) {
+			const auto& bugBounds = Bounds(
+				bounds.getX2() + 1 + speedBugOffset + speedBugTriangleWidth,
+				centerY - static_cast<int32_t>((static_cast<float>(bug.getValue()) - ad.computed.airspeedKt) * static_cast<float>(speedStepPixels) / static_cast<float>(speedStepUnits)),
+				Theme::fontSmall.getWidth(bug.getName()) + speedBugTextOffset * 2,
+				Theme::fontSmall.getHeight() + speedBugTextOffset * 2
 			);
 
 			// Rect
 			renderer->renderFilledRectangle(
-				VSpeedBounds,
+				bugBounds,
 				1,
 				&Theme::bg2
 			);
 
 			// Triangle
 			renderer->renderFilledTriangle(
-				VSpeedBounds.getTopLeft(),
-				VSpeedBounds.getBottomLeft(),
-				Point(VSpeedBounds.getX() - VSpeedTriangleWidth, VSpeedBounds.getYCenter()),
+				Point(bugBounds.getX(), bugBounds.getY()),
+				Point(bugBounds.getX(), bugBounds.getY2()),
+				Point(bugBounds.getX() - speedBugTriangleWidth, bugBounds.getYCenter()),
 				&Theme::bg2
 			);
 
 			// Text
 			renderer->renderString(
-				Point(VSpeedBounds.getX() + VSpeedTextOffset, VSpeedBounds.getY() + VSpeedTextOffset),
+				Point(bugBounds.getX() + speedBugTextOffset, bugBounds.getY() + speedBugTextOffset),
 				&Theme::fontSmall,
 				&Theme::green,
-				VSpeed.getName()
+				bug.getName()
 			);
 		}
 
@@ -1338,19 +1438,8 @@ namespace pizda {
 			bg,
 			fg,
 			autopilotValueEnabled ? std::to_wstring(autopilotValue) : L"----",
-			static_cast<int8_t>(left ? -autopilotIndicatorTriangleWidth : autopilotIndicatorTriangleWidth)
+			static_cast<int8_t>(left ? -autopilotIndicatorTriangleThickness : autopilotIndicatorTriangleThickness)
 		);
-
-		if (autopilotValueEnabled) {
-			renderAutopilotValueIndicator(
-				renderer,
-				Point(
-					left ? bounds.getX2() - autopilotIndicatorTriangleWidth : bounds.getX(),
-					bounds.getY()
-				),
-				left
-			);
-		}
 	}
 
 	void PFD::renderAutopilotSpeed(Renderer* renderer, const Bounds& bounds) {
@@ -1385,8 +1474,13 @@ namespace pizda {
 			fg = &Theme::bg1;
 		}
 		else {
-			text = std::to_wstring(static_cast<uint32_t>(Units::convertPressure(rc.getSettings().controls.referencePressurePa, PressureUnit::pascal,
-																		PressureUnit::hectopascal)));
+			text = std::to_wstring(static_cast<uint32_t>(
+				Units::convertPressure(
+					rc.getSettings().controls.referencePressurePa,
+					PressureUnit::pascal,
+					PressureUnit::hectopascal
+				)
+			));
 		}
 
 		renderMiniPanel(renderer, bounds, bg, fg, text, 0);
