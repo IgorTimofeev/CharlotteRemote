@@ -297,11 +297,11 @@ namespace pizda {
 			);
 		};
 		
-		writeAxis(rc.getJoystickHorizontal().getProcessedValue());
-		writeAxis(rc.getJoystickVertical().getProcessedValue());
-		writeAxis(rc.getRing().getProcessedValue());
-		writeAxis(rc.getLeverLeft().getProcessedValue());
-		writeAxis(rc.getLeverRight().getProcessedValue());
+		writeAxis(rc.getJoystickHorizontal().getValue());
+		writeAxis(rc.getJoystickVertical().getValue());
+		writeAxis(rc.getRing().getValue());
+		writeAxis(rc.getLeverRight().getValue());
+		writeAxis(rc.getLeverLeft().getValue());
 		
 		// Lights
 		stream.writeBool(rd.raw.navigationLights);

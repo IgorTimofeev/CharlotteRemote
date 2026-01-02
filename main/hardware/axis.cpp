@@ -47,20 +47,20 @@ namespace pizda {
 		return _rawValue;
 	}
 
-	uint16_t Axis::getProcessedValue() const {
+	uint16_t Axis::getValue() const {
 		return _processedValue;
 	}
 
-	float Axis::getMappedFloatValue() const {
-		return static_cast<float>(getProcessedValue()) / static_cast<float>(maxValue);
+	float Axis::getValueF() const {
+		return static_cast<float>(getValue()) / static_cast<float>(maxValue);
 	}
 
-	uint8_t Axis::getMappedUint8Value() const {
-		return getProcessedValue() * 0xFF / maxValue;
+	uint8_t Axis::getValueUint8() const {
+		return getValue() * 0xFF / maxValue;
 	}
 
-	uint16_t Axis::getMappedUint16Value() const {
-		return getProcessedValue() * 0xFFFF / maxValue;
+	uint16_t Axis::getValueUint16() const {
+		return getValue() * 0xFFFF / maxValue;
 	}
 
 	SettingsAxisData* Axis::getSettings() const {

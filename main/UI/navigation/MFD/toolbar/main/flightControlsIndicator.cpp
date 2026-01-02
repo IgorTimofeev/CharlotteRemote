@@ -29,8 +29,8 @@ namespace pizda {
 		renderer->renderVerticalLine(Point(center.getX(), center.getY() + 2), lineLength, &Theme::fg4);
 		
 		// Joys
-		const auto joyH = bounds.getX() + rc.getJoystickHorizontal().getMappedUint8Value() * bounds.getWidth() / 0xFF;
-		const auto joyV = bounds.getY() + (0xFF - rc.getJoystickVertical().getMappedUint8Value()) * bounds.getWidth() / 0xFF;
+		const auto joyH = bounds.getX() + rc.getJoystickHorizontal().getValueUint8() * bounds.getWidth() / 0xFF;
+		const auto joyV = bounds.getY() + (0xFF - rc.getJoystickVertical().getValueUint8()) * bounds.getWidth() / 0xFF;
 		
 		renderer->renderPixel(Point(joyH - 1, joyV), &Theme::yellow);
 		renderer->renderPixel(Point(joyH + 1, joyV), &Theme::yellow);
@@ -38,7 +38,7 @@ namespace pizda {
 		renderer->renderPixel(Point(joyH, joyV + 1), &Theme::yellow);
 		
 		// Ring
-		const auto ring = (rc.getRing().getMappedUint8Value() - 0xFF / 2) * bounds.getWidth() / 0xFF;
+		const auto ring = (rc.getRing().getValueUint8() - 0xFF / 2) * bounds.getWidth() / 0xFF;
 		renderer->renderHorizontalLine(
 			Point(
 				ring >= 0 ? center.getX() : center.getX() + ring,
@@ -51,8 +51,8 @@ namespace pizda {
 		// Levers
 		constexpr static uint8_t maxLeverHeight = 8;
 
-		const auto levL = rc.getLeverLeft().getMappedUint8Value() * maxLeverHeight / 0xFF;
-		const auto levR = rc.getLeverRight().getMappedUint8Value() * maxLeverHeight / 0xFF;
+		const auto levL = rc.getLeverLeft().getValueUint8() * maxLeverHeight / 0xFF;
+		const auto levR = rc.getLeverRight().getValueUint8() * maxLeverHeight / 0xFF;
 
 		renderer->renderVerticalLine(Point(bounds.getX(), center.getY()), levL, &Theme::bad3);
 		renderer->renderVerticalLine(Point(bounds.getX2(), center.getY()), levR, &Theme::bad3);

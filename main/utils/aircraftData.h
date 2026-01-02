@@ -11,11 +11,11 @@ namespace pizda {
 			// Kronshtadt airfield in Saint-Petersburg for UI testing
 			// ПРИВЕТУЛИ ФЕДИНОЙ ДАМЕ СЕРДЦА
 			// Upd 26.12.26: а он подарит ей колечко с солнцем! Никто об этом не узнает, никто
-			GeographicCoordinates coordinates = GeographicCoordinates(
+			GeographicCoordinates coordinates = {
 				toRadians(60.014581566191914f),
 				toRadians(29.70258579817704f),
 				0
-			);
+			};
 			
 			float groundSpeedKt = 0;
 			float windSpeed = 0;

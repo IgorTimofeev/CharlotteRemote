@@ -17,10 +17,10 @@ namespace pizda {
 			SettingsAxisData* getSettings() const;
 
 			uint16_t getRawValue() const;
-			uint16_t getProcessedValue() const;
-			float getMappedFloatValue() const;
-			uint8_t getMappedUint8Value() const;
-			uint16_t getMappedUint16Value() const;
+			uint16_t getValue() const;
+			float getValueF() const;
+			uint8_t getValueUint8() const;
+			uint16_t getValueUint16() const;
 
 		private:
 			adc_channel_t _channel;
