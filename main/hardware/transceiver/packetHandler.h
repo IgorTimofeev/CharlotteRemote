@@ -253,7 +253,7 @@ namespace pizda {
 			// ----------------------------- Connection state -----------------------------
 			
 			constexpr static uint32_t _connectionLostInterval = 5'000'000;
-			uint32_t _connectionLostTime = 0;
+			int64_t _connectionLostTime = 0;
 			ConnectionState _connectionState = ConnectionState::initial;
 			
 			void setConnectionState(ConnectionState state) {

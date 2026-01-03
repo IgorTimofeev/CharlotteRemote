@@ -21,7 +21,7 @@ namespace pizda {
 			TaskHandle_t _taskHandle = nullptr;
 			const Sound* _sound = nullptr;
 			size_t _playableIndex = 0;
-			uint32_t _playableDeadline = 0;
+			int64_t _playableDeadline = 0;
 			
 			[[noreturn]] void onStart();
 	};

@@ -160,14 +160,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="чета мелочевку всякую поделал, а ни хуя по итогу не нахуячил - ну по крайней мере теперь при дисконнекте симпотные красные зоны такие типа ААААААААААААААААААААААААААААААААААААААА ПИЗДА">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="по ходу пиды не понадобятся">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/flightControlsIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/flightControlsIndicator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/utils/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/utils/aircraftData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions/src/NVSSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions/src/NVSSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/audio/audioPlayer.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/audio/audioPlayer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packetHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packetHandler.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -179,7 +177,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/YOBA" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -1124,7 +1122,9 @@
       <workItem from="1767277936481" duration="13107000" />
       <workItem from="1767302071143" duration="2245000" />
       <workItem from="1767352007392" duration="8494000" />
-      <workItem from="1767371841270" duration="4697000" />
+      <workItem from="1767371841270" duration="5197000" />
+      <workItem from="1767437157900" duration="27000" />
+      <workItem from="1767483233171" duration="321000" />
     </task>
     <task id="LOCAL-00001" summary="ох пиздааа, КАЖИСЯ НАЧАЛОСЯ">
       <option name="closed" value="true" />
@@ -1470,7 +1470,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767292658715</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="по ходу пиды не понадобятся">
+      <option name="closed" value="true" />
+      <created>1767378297745</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1767378297745</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1511,7 +1519,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="сука" />
     <MESSAGE value="захуярил поддержку десятичных разрядов в семисегментник, а то гектопаскали хуй введешь нормально" />
     <MESSAGE value="оказывается, все это время тогглБатоныБулочкиКрендельки были СДОХШИМИ" />
     <MESSAGE value="ну-ка, бекапнем" />
@@ -1536,6 +1543,7 @@
     <MESSAGE value="хочу замутить какой-нибудь экспериментальный стиль без сраных ОБМЫЛКОВ, чтоб скругления были минимальны или вообще отсутствовали - просто это дженериковое говно с паддингами размером с хуй слона уже в печенках сидит, хочется чет нового и такого ммммммм" />
     <MESSAGE value="захуярил наконец индикатор hdg на оверлее синтетика, а то чет уже год прошел, А ЕГО НЕМА, СУКА" />
     <MESSAGE value="чета мелочевку всякую поделал, а ни хуя по итогу не нахуячил - ну по крайней мере теперь при дисконнекте симпотные красные зоны такие типа ААААААААААААААААААААААААААААААААААААААА ПИЗДА" />
-    <option name="LAST_COMMIT_MESSAGE" value="чета мелочевку всякую поделал, а ни хуя по итогу не нахуячил - ну по крайней мере теперь при дисконнекте симпотные красные зоны такие типа ААААААААААААААААААААААААААААААААААААААА ПИЗДА" />
+    <MESSAGE value="по ходу пиды не понадобятся" />
+    <option name="LAST_COMMIT_MESSAGE" value="по ходу пиды не понадобятся" />
   </component>
 </project>
