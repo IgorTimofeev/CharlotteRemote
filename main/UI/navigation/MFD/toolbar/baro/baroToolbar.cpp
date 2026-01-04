@@ -4,8 +4,6 @@
 
 namespace pizda {
 	BaroToolbar::BaroToolbar() {
-		setHeight(36);
-		
 		auto& settings = RC::getInstance().getSettings();
 
 		// Pressure

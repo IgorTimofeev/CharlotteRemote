@@ -38,7 +38,7 @@ namespace pizda {
 			constexpr static Bit8PaletteColor bad3 { 20 };
 
 			constexpr static Bit8PaletteColor red { 21 };
-			constexpr static Bit8PaletteColor purple { 22 };
+			constexpr static Bit8PaletteColor magenta { 22 };
 			constexpr static Bit8PaletteColor green { 23 };
 			constexpr static Bit8PaletteColor greenSpeed { 24 };
 			constexpr static Bit8PaletteColor yellow { 25 };

@@ -95,9 +95,9 @@ namespace pizda {
 			renderer,
 			Bounds(
 				bounds.getX(),
-				bounds.getY() + PFD::pitchOverlayMarginTop,
+				bounds.getY() + PFD::flightModeAnnunciatorTopOffset + PFD::flightModeAnnunciatorHeight + PFD::turnCoordinatorOverlayTopOffset + PFD::pitchOverlayVerticalOffset,
 				bounds.getWidth(),
-				bounds.getHeight() - PFD::pitchOverlayMarginTop - PFD::yawOverlayHeight
+				bounds.getHeight() - (PFD::flightModeAnnunciatorTopOffset + PFD::flightModeAnnunciatorHeight + PFD::turnCoordinatorOverlayTopOffset + PFD::pitchOverlayVerticalOffset + PFD::yawOverlayHeight)
 			),
 			ad,
 			pitchPixelOffsetProjected,
@@ -194,7 +194,7 @@ namespace pizda {
 				PFD::flightDirectorThickness
 			);
 
-			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::purple);
+			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta);
 
 			// Vertical
 			flightDirectorRectBounds.setX(
@@ -211,7 +211,7 @@ namespace pizda {
 			flightDirectorRectBounds.setWidth(PFD::flightDirectorThickness);
 			flightDirectorRectBounds.setHeight(flightDirectorLength);
 
-			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::purple);
+			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta);
 		}
 
 		// Flight path vector
@@ -528,7 +528,7 @@ namespace pizda {
 					yCenter - Theme::fontSmall.getHeight() / 2
 				),
 				&Theme::fontSmall,
-				ap ? &Theme::fg1 : &Theme::sky2,
+				ap ? &Theme::green : &Theme::sky2,
 				text
 			);
 			
@@ -1065,7 +1065,7 @@ namespace pizda {
 		renderer->renderVerticalLine(
 			Point(x, yMin),
 			yMax - yMin,
-			&Theme::purple
+			&Theme::magenta
 		);
 
 		renderer->renderFilledTriangle(
@@ -1081,7 +1081,7 @@ namespace pizda {
 				x + arrowSize,
 				yArrow
 			),
-			&Theme::purple
+			&Theme::magenta
 		);
 	}
 
@@ -1574,6 +1574,6 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		const auto& ad = rc.getAircraftData();
 
-		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::purple, std::to_wstring(static_cast<uint16_t>(ad.raw.groundSpeedKt)), 0);
+		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::magenta, std::to_wstring(static_cast<uint16_t>(ad.raw.groundSpeedKt)), 0);
 	}
 }

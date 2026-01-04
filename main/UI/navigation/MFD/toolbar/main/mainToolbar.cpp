@@ -6,8 +6,6 @@
 
 namespace pizda {
 	MainToolbar::MainToolbar() {
-		setHeight(36);
-		
 		// ----------------------------- Left -----------------------------
 		
 		leftRow.setOrientation(Orientation::horizontal);

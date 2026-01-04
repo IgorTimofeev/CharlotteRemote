@@ -48,8 +48,6 @@ namespace pizda {
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
-			const auto rotateEvent = reinterpret_cast<EncoderValueChangedEvent*>(event);
-			
 			auto& rc = RC::getInstance();
 			
 			rc.getRemoteData().autopilot.autothrottle = !rc.getRemoteData().autopilot.autothrottle;

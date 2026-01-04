@@ -127,7 +127,7 @@ namespace pizda {
 			constexpr static const Font* miniFont = &Theme::fontSmall;
 			
 			// Pitch overlay
-			constexpr static uint8_t pitchOverlayMarginTop = 30;
+			constexpr static uint8_t pitchOverlayVerticalOffset = 15;
 			constexpr static uint8_t pitchOverlayAngleStepDeg = 5;
 			constexpr static uint8_t pitchOverlayLineSmall = 10;
 			constexpr static uint8_t pitchOverlayLineBig = 20;
@@ -153,9 +153,9 @@ namespace pizda {
 			constexpr static const Color* yawOverlayColor = &Theme::ground2;
 
 			// Flight mode annunciator
-			constexpr static uint8_t flightModeAnnunciatorTopOffset = 2;
-			constexpr static uint8_t flightModeAnnunciatorHeight = 12;
-			constexpr static uint8_t flightModeAnnunciatorHorizontalOffset = 2;
+			constexpr static uint8_t flightModeAnnunciatorTopOffset = 1;
+			constexpr static uint8_t flightModeAnnunciatorHeight = 10;
+			constexpr static uint8_t flightModeAnnunciatorHorizontalOffset = 0;
 			
 			// Turn coordinator overlay
 			constexpr static uint8_t turnCoordinatorOverlayTopOffset = 3;

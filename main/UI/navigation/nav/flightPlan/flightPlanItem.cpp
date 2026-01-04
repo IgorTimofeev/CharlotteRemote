@@ -35,11 +35,11 @@ namespace pizda {
 
 		switch (waypointData.type) {
 			case NavigationWaypointType::route:
-				color = &Theme::purple;
+				color = &Theme::magenta;
 
 				break;
 			case NavigationWaypointType::terminal:
-				color = &Theme::purple;
+				color = &Theme::magenta;
 
 				break;
 			default:

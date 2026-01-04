@@ -4,6 +4,8 @@
 
 namespace pizda {
 	Toolbar::Toolbar() {
+		setHeight(36);
+		
 		// Top panel
 		topPanel.setHeight(topPanelHeight);
 		topPanel.setVerticalAlignment(Alignment::start);

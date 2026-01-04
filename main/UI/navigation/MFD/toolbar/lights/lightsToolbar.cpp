@@ -5,8 +5,6 @@ namespace pizda {
 	using namespace YOBA;
 
 	LightsToolbar::LightsToolbar() {
-		setHeight(36);
-		
 		row.setSpacing(1);
 		
 		auto& rc = RC::getInstance();

@@ -408,7 +408,7 @@ namespace pizda {
 		else if (event->getTypeID() == EncoderValueChangedEvent::typeID) {
 			if (isFocused()) {
 				const auto rotateEvent = static_cast<EncoderValueChangedEvent*>(event);
-				const auto scaleFactor = std::abs(rotateEvent->getDPS()) > 60 ? 1.5f : 1.25f;
+				const auto scaleFactor = std::abs(rotateEvent->getDPS()) > 80 ? 1.5f : 1.25f;
 
 				setCameraOffset(GeographicCoordinates(
 					_cameraOffset.getLatitude(),
@@ -553,7 +553,7 @@ namespace pizda {
 				addElement(new RouteElement(
 					nd.waypoints[waypointFromIndex].cartesianCoordinates,
 					nd.waypoints[leg.waypointIndex].cartesianCoordinates,
-					&Theme::purple
+					&Theme::magenta
 				));
 
 				waypointFromIndex = leg.waypointIndex;

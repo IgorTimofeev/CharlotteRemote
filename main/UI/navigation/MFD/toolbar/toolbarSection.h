@@ -2,6 +2,7 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
+#include <YOBA/hardware/encoder.h>
 
 #include "UI/theme.h"
 
@@ -34,10 +35,25 @@ namespace pizda {
 			
 		protected:
 			void onEventBeforeChildren(Event* event) override {
-				if (event->getTypeID() != PointerDownEvent::typeID)
-					return;
+				Layout::onEventBeforeChildren(event);
 				
-				setFocused(true);
+				if (event->getTypeID() == PointerDownEvent::typeID) {
+					if (isFocused()) {
+						pressed();
+					}
+					else {
+						setFocused(true);
+					}
+					
+					event->setHandled(true);
+				}
+				else if (event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
+					if (isFocused()) {
+						pressed();
+						
+						event->setHandled(true);
+					}
+				}
 			}
 			
 			void onFocusChanged() override {
@@ -62,6 +78,17 @@ namespace pizda {
 				}
 				
 				Layout::onRender(renderer, bounds);
+				
+				if (isActive()) {
+					renderer->renderHorizontalLine(
+						Point(
+							bounds.getX(),
+							bounds.getY2()
+						),
+						bounds.getWidth(),
+						&Theme::fg1
+					);
+				}
 			}
 
 		private:

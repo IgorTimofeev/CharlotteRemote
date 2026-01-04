@@ -17,30 +17,6 @@ namespace pizda {
 				_imageView.setImage(image);
 				*this += &_imageView;
 			}
-		
-		protected:
-			void onEventBeforeChildren(Event* event) override {
-				if (event->getTypeID() == PointerDownEvent::typeID && isFocused()) {
-					pressed();
-				}
-				
-				ToolbarSection::onEventBeforeChildren(event);
-			}
-			
-			void onRender(Renderer* renderer, const Bounds& bounds) override {
-				ToolbarSection::onRender(renderer, bounds);
-				
-				if (isActive()) {
-					renderer->renderHorizontalLine(
-						Point(
-							bounds.getX(),
-							bounds.getY2()
-						),
-						bounds.getWidth(),
-						&Theme::fg1
-					);
-				}
-			}
 			
 		private:
 			ImageView _imageView {};

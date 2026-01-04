@@ -4,8 +4,6 @@
 
 namespace pizda {
 	AutopilotToolbar::AutopilotToolbar() {
-		setHeight(36);
-		
 		auto& rc = RC::getInstance();
 	
 		// FD

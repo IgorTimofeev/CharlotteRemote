@@ -33,8 +33,8 @@ namespace pizda {
 		auto& settings = RC::getInstance().getSettings();
 
 		// PFD
-		PFDButton.setActiveBorderColor(&Theme::purple);
-		PFDButton.setActiveTextColor(&Theme::purple);
+		PFDButton.setActiveBorderColor(&Theme::magenta);
+		PFDButton.setActiveTextColor(&Theme::magenta);
 		PFDButton.setToggle(true);
 		PFDButton.setActive(settings.personalization.MFD.PFD.visible);
 
@@ -54,8 +54,8 @@ namespace pizda {
 		*this += &PFDButton;
 
 		// N/D
-		NDButton.setActiveBorderColor(&Theme::purple);
-		NDButton.setActiveTextColor(&Theme::purple);
+		NDButton.setActiveBorderColor(&Theme::magenta);
+		NDButton.setActiveTextColor(&Theme::magenta);
 		NDButton.setToggle(true);
 		NDButton.setActive(settings.personalization.MFD.ND.visible);
 

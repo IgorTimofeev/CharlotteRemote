@@ -15,7 +15,7 @@ namespace pizda {
 		public:
 			explicit BaroToolbar();
 
-			RotaryControl<5, 9000, 11000, false, 1, 10> pressure { L"Baro", L"STD" };
-			RotaryControl<4, 0, 15000, false, 1, 10> minimums { L"Minimums", L"Show" };
+			RotaryControl<5, 9000, 11000, false, 1, 10> pressure { L"Baro" };
+			RotaryControl<4, 0, 15000, false, 1, 10> minimums { L"Minimums" };
 	};
 }
