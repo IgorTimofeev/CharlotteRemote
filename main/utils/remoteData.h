@@ -2,26 +2,31 @@
 
 #include <cstdint>
 
+#include "types.h"
+
 namespace pizda {
-	class RemoteDataRaw {
+	class RemoteDataLights {
 		public:
-			uint8_t throttle_0_255 = 0;
-			bool autopilotEngaged = false;
-			
-			bool navigationLights = false;
-			bool strobeLights = false;
-			bool landingLights = false;
-			bool cabinLights = false;
+			bool navigation = false;
+			bool strobe = false;
+			bool landing = false;
+			bool cabin = false;
 	};
 	
-	class RemoteDataComputed {
+	class RemoteDataAutopilot {
 		public:
-		
+			AutopilotLateralMode lateralMode = AutopilotLateralMode::roll;
+			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::pitch;
+			
+			bool autothrottle = false;
+			bool autopilot = false;
 	};
-
+	
 	class RemoteData {
 		public:
-			RemoteDataRaw raw {};
-			RemoteDataComputed computed {};
+			uint8_t throttle_0_255 = 0;
+			
+			RemoteDataLights lights {};
+			RemoteDataAutopilot autopilot {};
 	};
 }

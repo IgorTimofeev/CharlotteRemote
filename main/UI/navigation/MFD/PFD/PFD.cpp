@@ -64,11 +64,29 @@ namespace pizda {
 		);
 		
 		Scene::onRender(renderer, bounds);
-
-		// Roll overlay
+		
+		// FMA
+		const auto FMAWidth = bounds.getWidth() - PFD::flightModeAnnunciatorHorizontalOffset * 2;
+		
+		renderFlightModeAnnunciatorOverlay(
+			renderer,
+			Bounds(
+				bounds.getXCenter() - FMAWidth / 2,
+				bounds.getY() + PFD::flightModeAnnunciatorTopOffset,
+				FMAWidth,
+				PFD::flightModeAnnunciatorHeight
+			)
+		);
+		
+		// Turn coordinator
 		renderTurnCoordinatorOverlay(
 			renderer,
-			bounds,
+			Bounds(
+				bounds.getX(),
+				bounds.getY() + PFD::flightModeAnnunciatorTopOffset + PFD::flightModeAnnunciatorHeight + PFD::turnCoordinatorOverlayTopOffset,
+				bounds.getWidth(),
+				bounds.getHeight() - PFD::flightModeAnnunciatorTopOffset - PFD::flightModeAnnunciatorHeight - PFD::turnCoordinatorOverlayTopOffset
+			),
 			ad
 		);
 
@@ -167,7 +185,7 @@ namespace pizda {
 				center.getX() - flightDirectorLength / 2,
 				center.getY()
 					- static_cast<int32_t>(std::clamp(
-						std::tanf(ad.computed.autopilotPitchRad - ad.computed.pitchRad) * projectionPlaneDistance,
+						std::tanf(ad.computed.autopilot.pitchRad - ad.computed.pitchRad) * projectionPlaneDistance,
 						-flightDirectorLengthHalfF,
 						flightDirectorLengthHalfF
 					))
@@ -182,7 +200,7 @@ namespace pizda {
 			flightDirectorRectBounds.setX(
 				center.getX()
 					+ static_cast<int32_t>(std::clamp(
-						(ad.computed.autopilotRollRad - ad.computed.rollRad) / toRadians(30) * flightDirectorLengthHalfF,
+						(ad.computed.autopilot.rollRad - ad.computed.rollRad) / toRadians(30) * flightDirectorLengthHalfF,
 						-flightDirectorLengthHalfF,
 						flightDirectorLengthHalfF
 					))
@@ -494,7 +512,75 @@ namespace pizda {
 			PFD::turnCoordinatorOverlayColor
 		);
 	}
-
+	
+	void PFDScene::renderFlightModeAnnunciatorOverlay(Renderer* renderer, const Bounds& bounds) {
+		const auto& ad = RC::getInstance().getAircraftData();
+		
+		constexpr static uint8_t sectionCount = 3;
+		const auto sectionWidth = bounds.getWidth() / sectionCount;
+		const auto yCenter = bounds.getYCenter();
+		auto x = bounds.getX();
+		
+		const auto renderText = [renderer, yCenter, &x, sectionWidth](std::wstring_view text, bool ap) {
+			renderer->renderString(
+				Point(
+					x + sectionWidth / 2 - Theme::fontSmall.getWidth(text) / 2,
+					yCenter - Theme::fontSmall.getHeight() / 2
+				),
+				&Theme::fontSmall,
+				ap ? &Theme::fg1 : &Theme::sky2,
+				text
+			);
+			
+			x += sectionWidth;
+		};
+		
+		const auto renderSeparator = [renderer, &x, &bounds]() {
+			renderer->renderVerticalLine(Point(x - 1, bounds.getY()), PFD::flightModeAnnunciatorHeight, &Theme::sky2);
+		};
+		
+		// Throttle
+		if (ad.raw.autopilot.autothrottle) {
+			renderText(L"A/T", true);
+			
+		}
+		else {
+			renderText(L"MAN", false);
+		}
+		
+		renderSeparator();
+		
+		// Lateral
+		switch (ad.raw.autopilot.lateralMode) {
+			case AutopilotLateralMode::roll: {
+				renderText(L"ROLL", false);
+				break;
+			}
+			case AutopilotLateralMode::heading: {
+				renderText(L"HDG", true);
+				break;
+			}
+		}
+		
+		renderSeparator();
+		
+		// Vertical
+		switch (ad.raw.autopilot.verticalMode) {
+			case AutopilotVerticalMode::pitch: {
+				renderText(L"PITCH", false);
+				break;
+			}
+			case AutopilotVerticalMode::hold: {
+				renderText(L"ALTS", true);
+				break;
+			}
+			case AutopilotVerticalMode::levelChange: {
+				renderText(L"FLC", true);
+				break;
+			}
+		}
+	}
+	
 	void PFDScene::renderYawOverlay(
 		Renderer* renderer,
 		const Bounds& bounds,
@@ -674,7 +760,7 @@ namespace pizda {
 
 		renderer->popViewport(viewport);
 	}
-
+	
 	PFD::PFD() {
 		setClipToBounds(true);
 

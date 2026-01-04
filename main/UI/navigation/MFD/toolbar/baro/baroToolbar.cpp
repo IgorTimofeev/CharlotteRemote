@@ -15,12 +15,22 @@ namespace pizda {
 
 		pressure.rotated += [this, &settings] {
 			settings.controls.referencePressurePa = pressure.seven.getValue() * 10;
-			RC::getInstance().getSettings().controls.scheduleWrite();
+			settings.controls.scheduleWrite();
+			
+			RC::getInstance().getPacketHandler().enqueue(RemotePacketType::baro);
+			
+			RC::getInstance().getAudioPlayer().playFeedback();
 		};
 
-		pressure.isActiveChanged += [this, &settings] {
+		pressure.pressed += [this, &settings] {
+			pressure.setActive(!pressure.isActive());
+			
 			settings.controls.referencePressureSTD = pressure.isActive();
-			RC::getInstance().getSettings().controls.scheduleWrite();
+			settings.controls.scheduleWrite();
+			
+			RC::getInstance().getPacketHandler().enqueue(RemotePacketType::baro);
+			
+			RC::getInstance().getAudioPlayer().playFeedback();
 		};
 		
 		row += &pressure;
@@ -31,12 +41,18 @@ namespace pizda {
 
 		minimums.rotated += [this, &settings] {
 			settings.controls.minimumAltitudeFt = minimums.seven.getValue();
-			RC::getInstance().getSettings().controls.scheduleWrite();
+			settings.controls.scheduleWrite();
+			
+			RC::getInstance().getAudioPlayer().playFeedback();
 		};
 
-		minimums.isActiveChanged += [this, &settings] {
-			settings.controls.minimumAltitudeEnabled = minimums.isActive();
-			RC::getInstance().getSettings().controls.scheduleWrite();
+		minimums.pressed += [this, &settings] {
+			minimums.setActive(!minimums.isActive());
+			
+			settings.controls.minimumAltitudeFt = minimums.isActive();
+			settings.controls.scheduleWrite();
+			
+			RC::getInstance().getAudioPlayer().playFeedback();
 		};
 		
 		row += &minimums;

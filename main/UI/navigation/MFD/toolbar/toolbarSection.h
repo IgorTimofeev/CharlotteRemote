@@ -26,7 +26,7 @@ namespace pizda {
 				*this += element;
 			}
 			
-			Callback<> isActiveChanged {};
+			Callback<> pressed {};
 			
 			static void setDefaultMargin(Element* element, uint8_t topOffset = 0) {
 				element->setMargin(Margin(Toolbar::contentHorizontalMargin, Toolbar::topPanelHeight + topOffset, Toolbar::contentHorizontalMargin, 0));
@@ -44,12 +44,6 @@ namespace pizda {
 				Element::onFocusChanged();
 				
 				updateColors();
-			}
-			
-			void onIsActiveChanged() override {
-				ActiveElement::onIsActiveChanged();
-				
-				isActiveChanged();
 			}
 			
 			void onRender(Renderer* renderer, const Bounds& bounds) override {

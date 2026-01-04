@@ -25,9 +25,7 @@ namespace pizda {
 	
 	class RemotePacketHandler : public PacketHandler<RemoteState, RemotePacketType, AircraftState, AircraftPacketType> {
 		public:
-			void enqueue(RemotePacketType type) {
-				_packetQueue.push(type);
-			}
+			void enqueue(RemotePacketType type);
 			
 		protected:
 			[[noreturn]] void onStart() override;
@@ -40,8 +38,8 @@ namespace pizda {
 			int64_t _aircraftADIRSPacketTime = 0;
 			
 			std::vector<PacketSequenceItem> _packetSequence {
-				PacketSequenceItem(RemotePacketType::channelsData, 3),
-				PacketSequenceItem(RemotePacketType::auxiliary, 1, true)
+				PacketSequenceItem(RemotePacketType::controls, 2),
+				PacketSequenceItem(RemotePacketType::controls, 1, true)
 			};
 			
 			uint8_t _packetSequenceIndex = 0;
@@ -54,8 +52,10 @@ namespace pizda {
 			bool receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength);
 			
 			bool transmitNOPPacket(BitStream& stream);
-			bool transmitRemoteChannelsDataPacket(BitStream& stream);
-			bool transmitRemoteAuxiliaryPacket(BitStream& stream);
+			bool transmitRemoteControlsPacket(BitStream& stream);
+			bool transmitRemoteLightsPacket(BitStream& stream);
+			bool transmitRemoteBaroPacket(BitStream& stream);
+			bool transmitRemoteAutopilotPacket(BitStream& stream);
 	
 			template<typename T>
 			static float sanitizeValue(T value, T min, T max) {

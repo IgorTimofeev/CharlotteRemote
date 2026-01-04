@@ -41,7 +41,7 @@ namespace pizda {
 			void onEventBeforeChildren(Event* event) override {
 				if (event->getTypeID() == PointerDownEvent::typeID) {
 					if (isFocused()) {
-						setActive(!isActive());
+						pressed();
 					}
 				}
 				
@@ -79,7 +79,7 @@ namespace pizda {
 					if (!isFocused())
 						return;
 					
-					setActive(!isActive());
+					pressed();
 					
 					event->setHandled(true);
 				}

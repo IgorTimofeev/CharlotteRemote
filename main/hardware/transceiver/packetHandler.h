@@ -12,30 +12,17 @@
 #include <esp_log.h>
 #include <esp_timer.h>
 
-#include <bitStream.h>
 #include <YOBA/main.h>
+#include <bitStream.h>
 
 #include "config.h"
-#include "packet.h"
+#include "types.h"
+
 #include "hardware/transceiver/SX1262Transceiver.h"
+#include "hardware/transceiver/packet.h"
 
 namespace pizda {
 	using namespace YOBA;
-	
-	enum class ConnectionState : uint8_t {
-		initial,
-		connected,
-		disconnected
-	};
-	
-	enum class RemoteState : uint8_t {
-		normal
-	};
-	
-	enum class AircraftState : uint8_t {
-		aircraftNormal,
-		aircraftCalibrating
-	};
 	
 	template<typename TLocalState, typename TLocalPacketType, typename TRemoteState, typename TRemotePacketType>
 	class PacketHandler {
@@ -78,7 +65,6 @@ namespace pizda {
 					}
 					
 					_connectionLostTime = esp_timer_get_time() + _connectionLostInterval;
-					
 				}
 				else {
 					if (_connectionState == ConnectionState::connected) {
@@ -89,7 +75,7 @@ namespace pizda {
 					
 					return false;
 				}
-				
+
 //		ESP_LOGI(_logTag, "-------- Begin --------");
 				
 				// Length check
@@ -223,7 +209,7 @@ namespace pizda {
 			virtual TLocalPacketType getTransmitPacketType() = 0;
 			virtual bool onTransmit(BitStream& stream, TLocalPacketType packetType) = 0;
 			virtual void onIsConnectedChanged() = 0;
-		
+			
 			void setLocalState(TLocalState localState) {
 				_localState = localState;
 			}
@@ -253,7 +239,7 @@ namespace pizda {
 			// ----------------------------- Connection state -----------------------------
 			
 			constexpr static uint32_t _connectionLostInterval = 5'000'000;
-			int64_t _connectionLostTime = 0;
+			uint32_t _connectionLostTime = 0;
 			ConnectionState _connectionState = ConnectionState::initial;
 			
 			void setConnectionState(ConnectionState state) {

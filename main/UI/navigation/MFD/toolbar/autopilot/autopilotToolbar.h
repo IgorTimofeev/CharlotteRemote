@@ -25,5 +25,8 @@ namespace pizda {
 			RotaryControl<4, 0, 35000, false, 10, 100> altitude { L"ALT", L"FLC" };
 			
 			KorryButton engageButton { L"A/P", &resources::images::menuIconMFDAutopilotEngage };
+		
+		protected:
+			void onTick() override;
 	};
 }

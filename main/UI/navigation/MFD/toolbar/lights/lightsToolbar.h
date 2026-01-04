@@ -16,13 +16,14 @@ namespace pizda {
 	class LightsToolbar : public RowToolbar {
 		public:
 			explicit LightsToolbar();
+		
+		protected:
+			void onTick() override;
 			
+		private:
 			KorryButton navigation { L"Nav", &resources::images::menuIconMFDLightsNavigation };
 			KorryButton strobe { L"Strobe", &resources::images::menuIconMFDLightsStrobe };
 			KorryButton landing { L"Landing", &resources::images::menuIconMFDLightsLanding };
 			KorryButton cabin { L"Cabin", &resources::images::menuIconMFDLightsCabin };
-		
-		private:
-
 	};
 }

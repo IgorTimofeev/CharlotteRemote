@@ -10,42 +10,60 @@ namespace pizda {
 		row.setSpacing(1);
 		
 		auto& rc = RC::getInstance();
-		auto& rd = rc.getRemoteData();
 		
 		// Navigation
-		navigation.setActive(rd.raw.navigationLights);
-		
-		navigation.isActiveChanged += [this, &rd] {
-			rd.raw.navigationLights = navigation.isActive();
+		navigation.pressed += [&rc] {
+			rc.getRemoteData().lights.navigation = !rc.getRemoteData().lights.navigation;
+			
+			rc.getPacketHandler().enqueue(RemotePacketType::lights);
+			
+			rc.getAudioPlayer().playFeedback();
 		};
 		
 		row += &navigation;
 		
 		// Strobe
-		strobe.setActive(rd.raw.strobeLights);
-		
-		strobe.isActiveChanged += [this, &rd] {
-			rd.raw.strobeLights = strobe.isActive();
+		strobe.pressed += [&rc] {
+			rc.getRemoteData().lights.strobe = !rc.getRemoteData().lights.strobe;
+			
+			rc.getPacketHandler().enqueue(RemotePacketType::lights);
+			
+			rc.getAudioPlayer().playFeedback();
 		};
 		
 		row += &strobe;
 		
 		// Landing
-		landing.setActive(rd.raw.landingLights);
-		
-		landing.isActiveChanged += [this, &rd] {
-			rd.raw.landingLights = landing.isActive();
+		landing.pressed += [&rc] {
+			rc.getRemoteData().lights.landing = !rc.getRemoteData().lights.landing;
+			
+			rc.getPacketHandler().enqueue(RemotePacketType::lights);
+			
+			rc.getAudioPlayer().playFeedback();
 		};
 		
 		row += &landing;
 		
 		// Landing
-		cabin.setActive(rd.raw.cabinLights);
-		
-		cabin.isActiveChanged += [this, &rd] {
-			rd.raw.cabinLights = cabin.isActive();
+		cabin.pressed += [&rc] {
+			rc.getRemoteData().lights.cabin = !rc.getRemoteData().lights.cabin;
+			
+			rc.getPacketHandler().enqueue(RemotePacketType::lights);
+			
+			rc.getAudioPlayer().playFeedback();
 		};
 		
 		row += &cabin;
+	}
+	
+	void LightsToolbar::onTick() {
+		Layout::onTick();
+		
+		auto& rc = RC::getInstance();
+		
+		navigation.setActive(rc.getAircraftData().raw.lights.navigation);
+		strobe.setActive(rc.getAircraftData().raw.lights.strobe);
+		landing.setActive(rc.getAircraftData().raw.lights.landing);
+		cabin.setActive(rc.getAircraftData().raw.lights.cabin);
 	}
 }

@@ -39,6 +39,7 @@ namespace pizda {
 
 			static void renderSyntheticVisionBackground(Renderer* renderer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight);
 			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds, const AircraftData& aircraftData);
+			static void renderFlightModeAnnunciatorOverlay(Renderer* renderer, const Bounds& bounds);
 			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, const Settings& settings, const AircraftData& aircraftData);
 	};
 
@@ -151,7 +152,13 @@ namespace pizda {
 			constexpr static const Font* yawOverlayFont = &Theme::fontSmall;
 			constexpr static const Color* yawOverlayColor = &Theme::ground2;
 
+			// Flight mode annunciator
+			constexpr static uint8_t flightModeAnnunciatorTopOffset = 2;
+			constexpr static uint8_t flightModeAnnunciatorHeight = 12;
+			constexpr static uint8_t flightModeAnnunciatorHorizontalOffset = 2;
+			
 			// Turn coordinator overlay
+			constexpr static uint8_t turnCoordinatorOverlayTopOffset = 3;
 			constexpr static const Color* turnCoordinatorOverlayColor = &Theme::sky2;
 			constexpr static uint8_t turnCoordinatorOverlayRollIndicatorRadius = 100;
 

@@ -3,8 +3,30 @@
 #include <cstdint>
 #include <YOBA/main.h>
 
+#include "types.h"
+
 namespace pizda {
 	using namespace YOBA;
+	
+	class AircraftDataRawAutopilot {
+		public:
+			float pitchRad = 0;
+			float rollRad = 0;
+			
+			AutopilotLateralMode lateralMode = AutopilotLateralMode::roll;
+			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::pitch;
+			
+			bool autothrottle = false;
+			bool autopilot = false;
+	};
+	
+	class AircraftDataRawLights {
+		public:
+			bool navigation = false;
+			bool strobe = false;
+			bool landing = false;
+			bool cabin = false;
+	};
 	
 	class AircraftDataRaw {
 		public:
@@ -37,12 +59,18 @@ namespace pizda {
 			float flightPathVectorPitchRad = 0;
 			float flightPathVectorYawRad = 0;
 			
-			float autopilotPitchRad = 0;
-			float autopilotRollRad = 0;
-			
 			float windDirectionRad = 0;
 			
 			float batteryVoltageV = 0;
+			
+			AircraftDataRawLights lights {};
+			AircraftDataRawAutopilot autopilot {};
+	};
+	
+	class AircraftDataComputedAutopilot {
+		public:
+			float pitchRad = 0;
+			float rollRad = 0;
 	};
 	
 	class AircraftDataComputed {
@@ -65,11 +93,10 @@ namespace pizda {
 			float flightPathVectorPitchRad = 0;
 			float flightPathVectorYawRad = 0;
 			
-			float autopilotPitchRad = 0;
-			float autopilotRollRad = 0;
-			
 			float windDirectionRad = 0;
 			float throttle_0_1 = 0;
+			
+			AircraftDataComputedAutopilot autopilot {};
 	};
 
 	class AircraftData {

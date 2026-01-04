@@ -185,7 +185,7 @@ namespace pizda {
 				const int32_t yawSnappedInt = static_cast<int32_t>(stepUnitsPerYawDegIntPart) * _compassTickMarkUnitsDeg;
 
 				for (int16_t angleDeg = tickAngleFromDeg; angleDeg <= tickAngleToDeg; angleDeg += _compassTickMarkUnitsDeg) {
-					const uint16_t shownAngleDeg = normalizeAngle360(yawSnappedInt + angleDeg);
+					const uint16_t shownAngleDeg = normalizeAngleDeg360(yawSnappedInt + angleDeg);
 					const auto isBig = shownAngleDeg % _compassTickMarkUnitsBigDeg == 0;
 
 					const auto angleEndVec = Vector2F(0, tickMarksRadius).rotate(-toRadians(angleDeg - stepUnitsPerYawDegFractPart * _compassTickMarkUnitsDeg));

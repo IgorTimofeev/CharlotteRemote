@@ -170,7 +170,7 @@ namespace pizda {
 		);
 		
 		// Heading
-		_aircraftData.computed.headingDeg = normalizeAngle360(toDegrees(-_aircraftData.computed.yawRad));
+		_aircraftData.computed.headingDeg = normalizeAngleDeg360(toDegrees(-_aircraftData.computed.yawRad));
 //		ESP_LOGI("PIZDA", "raw: %f, raw deg: %f, computed: %f, deg: %f, heading: %f", _aircraftData.raw.yawRad, toDegrees(-_aircraftData.raw.yawRad), _aircraftData.computed.yawRad, toDegrees(_aircraftData.computed.yawRad), _aircraftData.computed.headingDeg);
 
 		// Slip & skid
@@ -194,15 +194,15 @@ namespace pizda {
 		);
 		
 		// Flight director
-		_aircraftData.computed.autopilotRollRad = applyLPF(
-			_aircraftData.computed.autopilotRollRad,
-			_aircraftData.raw.autopilotRollRad,
+		_aircraftData.computed.autopilot.rollRad = applyLPF(
+			_aircraftData.computed.autopilot.rollRad,
+			_aircraftData.raw.autopilot.rollRad,
 			LPFFactor
 		);
 		
-		_aircraftData.computed.autopilotPitchRad = applyLPF(
-			_aircraftData.computed.autopilotPitchRad,
-			_aircraftData.raw.autopilotPitchRad,
+		_aircraftData.computed.autopilot.pitchRad = applyLPF(
+			_aircraftData.computed.autopilot.pitchRad,
+			_aircraftData.raw.autopilot.pitchRad,
 			LPFFactor
 		);
 		

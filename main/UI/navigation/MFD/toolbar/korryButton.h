@@ -21,7 +21,7 @@ namespace pizda {
 		protected:
 			void onEventBeforeChildren(Event* event) override {
 				if (event->getTypeID() == PointerDownEvent::typeID && isFocused()) {
-					setActive(!isActive());
+					pressed();
 				}
 				
 				ToolbarSection::onEventBeforeChildren(event);
