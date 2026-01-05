@@ -119,7 +119,6 @@ namespace pizda {
 
 			constexpr static uint8_t autopilotIndicatorTriangleMargin = 3;
 			constexpr static uint8_t autopilotIndicatorTriangleThickness = 3;
-			constexpr static uint8_t autopilotIndicatorTriangleSize = autopilotIndicatorSize - autopilotIndicatorTriangleMargin * 2;
 
 			constexpr static uint8_t autopilotIndicatorRectangleThickness = autopilotIndicatorThickness - autopilotIndicatorTriangleThickness;
 			
@@ -199,7 +198,6 @@ namespace pizda {
 		private:
 			PFDScene _scene {};
 
-			static void renderVerticalAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left);
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left);
 			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, uint8_t digitCount, float value, bool left);
 			static void renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value);

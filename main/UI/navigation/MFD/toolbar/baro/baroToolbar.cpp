@@ -9,7 +9,7 @@ namespace pizda {
 		// Pressure
 		pressure.seven.setDecimalSeparatorIndex(0);
 		pressure.seven.setValue(settings.controls.referencePressurePa / 10);
-		pressure.setActive(settings.controls.referencePressureSTD);
+		pressure.setMode(settings.controls.referencePressureSTD ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
 
 		pressure.rotated += [this, &settings] {
 			settings.controls.referencePressurePa = pressure.seven.getValue() * 10;
@@ -21,9 +21,9 @@ namespace pizda {
 		};
 
 		pressure.pressed += [this, &settings] {
-			pressure.setActive(!pressure.isActive());
+			pressure.setMode(pressure.getMode() == AutopilotValueMode::none ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
 			
-			settings.controls.referencePressureSTD = pressure.isActive();
+			settings.controls.referencePressureSTD = pressure.getMode() != AutopilotValueMode::none;
 			settings.controls.scheduleWrite();
 			
 			RC::getInstance().getPacketHandler().enqueue(RemotePacketType::baro);
@@ -35,7 +35,7 @@ namespace pizda {
 
 		// Minimums
 		minimums.seven.setValue(settings.controls.minimumAltitudeFt);
-		minimums.setActive(settings.controls.minimumAltitudeEnabled);
+		minimums.setMode(settings.controls.minimumAltitudeEnabled ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
 
 		minimums.rotated += [this, &settings] {
 			settings.controls.minimumAltitudeFt = minimums.seven.getValue();
@@ -45,9 +45,9 @@ namespace pizda {
 		};
 
 		minimums.pressed += [this, &settings] {
-			minimums.setActive(!minimums.isActive());
+			minimums.setMode(minimums.getMode() == AutopilotValueMode::none ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
 			
-			settings.controls.minimumAltitudeFt = minimums.isActive();
+			settings.controls.minimumAltitudeFt = minimums.getMode() != AutopilotValueMode::none;
 			settings.controls.scheduleWrite();
 			
 			RC::getInstance().getAudioPlayer().playFeedback();

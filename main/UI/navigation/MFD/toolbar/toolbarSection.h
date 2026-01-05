@@ -5,19 +5,20 @@
 #include <YOBA/hardware/encoder.h>
 
 #include "UI/theme.h"
+#include "UI/elements/autopilotValueModeElement.h"
 
 #include "toolbar.h"
 
 namespace pizda {
 	using namespace YOBA;
 
-	class ToolbarSection : public Layout, public ActiveElement {
+	class ToolbarSection : public Layout, public AutopilotValueModeElement {
 		public:
 			ToolbarSection(std::wstring_view title) {
 				_title.setHorizontalAlignment(Alignment::center);
 				_title.setMargin(Margin(Toolbar::contentHorizontalMargin, 0, Toolbar::contentHorizontalMargin, 0));
 				_title.setFont(&Theme::fontSmall);
-				_title.setText(title);
+				setTitle(title);
 				*this += &_title;
 				
 				updateColors();
@@ -28,6 +29,10 @@ namespace pizda {
 			}
 			
 			Callback<> pressed {};
+			
+			void setTitle(std::wstring_view title) {
+				_title.setText(title);
+			}
 			
 			static void setDefaultMargin(Element* element, uint8_t topOffset = 0) {
 				element->setMargin(Margin(Toolbar::contentHorizontalMargin, Toolbar::topPanelHeight + topOffset, Toolbar::contentHorizontalMargin, 0));
@@ -79,14 +84,14 @@ namespace pizda {
 				
 				Layout::onRender(renderer, bounds);
 				
-				if (isActive()) {
+				if (getMode() != AutopilotValueMode::none) {
 					renderer->renderHorizontalLine(
 						Point(
 							bounds.getX(),
 							bounds.getY2()
 						),
 						bounds.getWidth(),
-						&Theme::fg1
+						getMode() == AutopilotValueMode::acknowledged ? &Theme::fg1 : &Theme::yellow
 					);
 				}
 			}

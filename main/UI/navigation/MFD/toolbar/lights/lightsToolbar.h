@@ -6,7 +6,7 @@
 
 #include "UI/navigation/MFD/toolbar/toolbar.h"
 #include "UI/navigation/MFD/toolbar/toolbarSection.h"
-#include "UI/navigation/MFD/toolbar/korryButton.h"
+#include "UI/navigation/MFD/toolbar/toolbarButton.h"
 #include "UI/navigation/MFD/toolbar/rotaryControl.h"
 #include "resources/images.h"
 
@@ -21,9 +21,9 @@ namespace pizda {
 			void onTick() override;
 			
 		private:
-			KorryButton navigation { L"Nav", &resources::images::menuIconMFDLightsNavigation };
-			KorryButton strobe { L"Strobe", &resources::images::menuIconMFDLightsStrobe };
-			KorryButton landing { L"Landing", &resources::images::menuIconMFDLightsLanding };
-			KorryButton cabin { L"Cabin", &resources::images::menuIconMFDLightsCabin };
+			ToolbarButton navigation { L"Nav", &resources::images::menuIconMFDLightsNavigation };
+			ToolbarButton strobe { L"Strobe", &resources::images::menuIconMFDLightsStrobe };
+			ToolbarButton landing { L"Landing", &resources::images::menuIconMFDLightsLanding };
+			ToolbarButton cabin { L"Cabin", &resources::images::menuIconMFDLightsCabin };
 	};
 }

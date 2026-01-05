@@ -22,7 +22,7 @@ namespace pizda {
 				// +1 because tip overlaps frame
 				const uint16_t frameSize = bounds.getWidth() - tipSize.getWidth() + 1;
 
-				const auto frameColor = _voltageMV > 0 ? &Theme::bg4 : &Theme::bad1;
+				const auto frameColor = _voltageMV > 0 ? &Theme::bg4 : &Theme::bad3;
 				
 				// Frame
 				renderer->renderRectangle(
@@ -44,7 +44,7 @@ namespace pizda {
 						const Color* color;
 						
 						if (_charge < 0xFF * 1 / 10) {
-							color = &Theme::bad3;
+							color = &Theme::bad1;
 						}
 						else if (_charge < 0xFF * 2 / 10) {
 							color = &Theme::yellow;
@@ -77,7 +77,7 @@ namespace pizda {
 						bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1
 					),
 					&Theme::fontSmall,
-					_voltageMV > 0 ? &Theme::fg1 : &Theme::bad3,
+					_voltageMV > 0 ? &Theme::fg1 : &Theme::bad1,
 					text
 				);
 			}

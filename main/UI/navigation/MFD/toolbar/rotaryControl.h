@@ -28,7 +28,7 @@ namespace pizda {
 				seven.setInactiveColor(&Theme::bg5);
 				seven.setActiveColor(&Theme::fg1);
 				
-				ToolbarSection::setDefaultMargin(&seven, 9);
+				ToolbarSection::setDefaultMargin(&seven, 8);
 				
 				*this += &seven;
 			}

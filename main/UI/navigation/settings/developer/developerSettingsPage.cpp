@@ -37,7 +37,7 @@ namespace pizda {
 		rows += &_speakerFrequencySliderTitle;
 
 		// Duration
-		_speakerDurationSlider.setFillColor(&Theme::bad3);
+		_speakerDurationSlider.setFillColor(&Theme::bad1);
 		Theme::apply(&_speakerDurationSlider);
 		_speakerDurationSlider.setValue(0xFFFF * 50 / 100);
 
@@ -122,7 +122,7 @@ furnished to do so, subject to the following conditions)"
 		// Progress bar
 		Theme::apply(&_progressBar);
 		_progressBar.setValue(0xFFFF * 80 / 100);
-		_progressBar.setFillColor(&Theme::bad3);
+		_progressBar.setFillColor(&Theme::bad1);
 
 		rows += &_progressBarTitle;
 

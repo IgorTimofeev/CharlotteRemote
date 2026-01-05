@@ -2,23 +2,25 @@
 #include "rc.h"
 #include "resources/sounds.h"
 
+#include "UI/navigation/MFD/toolbar/autopilot/modeDialog.h"
+
 namespace pizda {
 	AutopilotToolbar::AutopilotToolbar() {
 		auto& rc = RC::getInstance();
 	
 		// FD
-		flightDirectorButton.setActive(rc.getSettings().personalization.MFD.PFD.flightDirector);
+		flightDirector.setMode(rc.getSettings().personalization.MFD.PFD.flightDirector ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
 		
-		flightDirectorButton.pressed += [this, &rc] {
-			flightDirectorButton.setActive(!flightDirectorButton.isActive());
+		flightDirector.pressed += [this, &rc] {
+			flightDirector.setMode(flightDirector.getMode() == AutopilotValueMode::acknowledged ? AutopilotValueMode::none : AutopilotValueMode::acknowledged);
 			
-			rc.getSettings().personalization.MFD.PFD.flightDirector = flightDirectorButton.isActive();
+			rc.getSettings().personalization.MFD.PFD.flightDirector = flightDirector.getMode() == AutopilotValueMode::acknowledged;
 			rc.getSettings().personalization.scheduleWrite();
 			
 			rc.getAudioPlayer().playFeedback();
 		};
 		
-		row += &flightDirectorButton;
+		row += &flightDirector;
 
 		// Speed
 		speed.seven.setValue(rc.getSettings().autopilot.speedKt);
@@ -33,9 +35,7 @@ namespace pizda {
 		};
 
 		speed.pressed += [&rc] {
-			rc.getRemoteData().autopilot.autothrottle = !rc.getRemoteData().autopilot.autothrottle;
-			
-			rc.getPacketHandler().enqueue(RemotePacketType::autopilot);
+			(new ModeDialog())->show();
 			
 			rc.getAudioPlayer().playFeedback();
 		};
@@ -55,18 +55,7 @@ namespace pizda {
 		};
 
 		heading.pressed += [&rc] {
-			switch (rc.getRemoteData().autopilot.lateralMode) {
-				case AutopilotLateralMode::roll: {
-					rc.getRemoteData().autopilot.lateralMode = AutopilotLateralMode::heading;
-					break;
-				}
-				default: {
-					rc.getRemoteData().autopilot.lateralMode = AutopilotLateralMode::roll;
-					break;
-				}
-			}
-			
-			rc.getPacketHandler().enqueue(RemotePacketType::autopilot);
+			(new ModeDialog())->show();
 			
 			rc.getAudioPlayer().playFeedback();
 		};
@@ -86,18 +75,7 @@ namespace pizda {
 		};
 		
 		altitude.pressed += [&rc] {
-			switch (rc.getRemoteData().autopilot.verticalMode) {
-				case AutopilotVerticalMode::pitch: {
-					rc.getRemoteData().autopilot.verticalMode = AutopilotVerticalMode::levelChange;
-					break;
-				}
-				default: {
-					rc.getRemoteData().autopilot.verticalMode = AutopilotVerticalMode::pitch;
-					break;
-				}
-			}
-			
-			rc.getPacketHandler().enqueue(RemotePacketType::autopilot);
+			(new ModeDialog())->show();
 			
 			rc.getAudioPlayer().playFeedback();
 		};
@@ -105,7 +83,7 @@ namespace pizda {
 		row += &altitude;
 		
 		// Autopilot
-		engageButton.pressed += [&rc] {
+		autopilot.pressed += [&rc] {
 			rc.getRemoteData().autopilot.autopilot = !rc.getRemoteData().autopilot.autopilot;
 			
 			rc.getPacketHandler().enqueue(RemotePacketType::autopilot);
@@ -117,7 +95,7 @@ namespace pizda {
 			);
 		};
 		
-		row += &engageButton;
+		row += &autopilot;
 	}
 	
 	void AutopilotToolbar::onTick() {
@@ -125,9 +103,52 @@ namespace pizda {
 		
 		auto& rc = RC::getInstance();
 		
-		speed.setActive(rc.getAircraftData().raw.autopilot.autothrottle);
-		heading.setActive(rc.getAircraftData().raw.autopilot.lateralMode == AutopilotLateralMode::heading);
-		altitude.setActive(rc.getAircraftData().raw.autopilot.verticalMode != AutopilotVerticalMode::pitch);
-		engageButton.setActive(rc.getAircraftData().raw.autopilot.autopilot);
+		if (rc.getRemoteData().autopilot.autothrottle) {
+			if (rc.getRemoteData().autopilot.autothrottle == rc.getAircraftData().raw.autopilot.autothrottle) {
+				speed.setMode(AutopilotValueMode::acknowledged);
+			}
+			else {
+				speed.setMode(AutopilotValueMode::selected);
+			}
+		}
+		else {
+			speed.setMode(AutopilotValueMode::none);
+		}
+		
+		if (rc.getRemoteData().autopilot.lateralMode == AutopilotLateralMode::man) {
+			heading.setMode(AutopilotValueMode::none);
+		}
+		else {
+			if (rc.getRemoteData().autopilot.lateralMode == rc.getAircraftData().raw.autopilot.lateralMode) {
+				heading.setMode(AutopilotValueMode::acknowledged);
+			}
+			else {
+				heading.setMode(AutopilotValueMode::selected);
+			}
+		}
+		
+		if (rc.getRemoteData().autopilot.verticalMode == AutopilotVerticalMode::man) {
+			altitude.setMode(AutopilotValueMode::none);
+		}
+		else {
+			if (rc.getRemoteData().autopilot.verticalMode == rc.getAircraftData().raw.autopilot.verticalMode) {
+				altitude.setMode(AutopilotValueMode::acknowledged);
+			}
+			else {
+				altitude.setMode(AutopilotValueMode::selected);
+			}
+		}
+		
+		if (rc.getRemoteData().autopilot.autopilot) {
+			if (rc.getRemoteData().autopilot.autopilot == rc.getAircraftData().raw.autopilot.autopilot) {
+				autopilot.setMode(AutopilotValueMode::acknowledged);
+			}
+			else {
+				autopilot.setMode(AutopilotValueMode::selected);
+			}
+		}
+		else {
+			autopilot.setMode(AutopilotValueMode::none);
+		}
 	}
 }

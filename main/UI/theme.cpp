@@ -32,25 +32,27 @@ namespace pizda {
 			RGB888Color(0x28DA69),
 
 			// Bad 1
-			RGB888Color(0x4b1313),
+			RGB888Color(0xf24949),
 			// Bad 2
 			RGB888Color(0x962828),
 			// Bad 3
-			RGB888Color(0xf24949),
+			RGB888Color(0x4b1313),
 
 			// Red
 			RGB888Color(0xff0000),
 			// Magenta (R.I.P. PURPLE)
 			RGB888Color(0xff00ff),
-			// Green
+			// Green 1
 			RGB888Color(0x00FF00),
+			// Green 2
+			RGB888Color(0x004400),
 			// Green speed
 			RGB888Color(0x008100),
 			// Yellow
 			RGB888Color(0xffd200),
 			// Ocean
 			RGB888Color(0x00ffff),
-			// Ground
+			// Ground 1
 			RGB888Color(0x97b838),
 			// Ground 2
 			RGB888Color(0xdef2a2),
@@ -145,10 +147,10 @@ namespace pizda {
 		button->setHeight(elementHeight);
 		button->setCornerRadius(cornerRadius);
 
-		button->setDefaultBackgroundColor(&Theme::bad3);
+		button->setDefaultBackgroundColor(&Theme::bad1);
 		button->setDefaultTextColor(&Theme::fg1);
 
-		button->setActiveBackgroundColor(&Theme::bad1);
+		button->setActiveBackgroundColor(&Theme::bad3);
 		button->setActiveTextColor(&Theme::fg1);
 
 		button->setFont(&Theme::fontNormal);

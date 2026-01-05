@@ -118,11 +118,12 @@ namespace pizda {
 		ad.raw.airspeedMPS = static_cast<float>(AircraftADIRSPacket::speedMaxMPS) * speedFactor;
 		
 		// Altitude
-		const auto altitudeFactor =
-			static_cast<float>(stream.readUint16(AircraftADIRSPacket::altitudeLengthBits))
-			/ static_cast<float>((1 << AircraftADIRSPacket::altitudeLengthBits) - 1);
-		
-		ad.raw.coordinates.setAltitude(AircraftADIRSPacket::altitudeMinM + (AircraftADIRSPacket::altitudeMaxM - AircraftADIRSPacket::altitudeMinM) * altitudeFactor);
+		ad.raw.coordinates.setAltitude(readAltitude(
+			stream,
+			AircraftADIRSPacket::altitudeLengthBits,
+			AircraftADIRSPacket::altitudeMinM,
+			AircraftADIRSPacket::altitudeMaxM
+		));
 		
 		// Autopilot roll
 		ad.raw.autopilot.rollRad = readRadians(stream, AircraftADIRSPacket::autopilotRollRangeRad, AircraftADIRSPacket::autopilotRollLengthBits);
@@ -167,6 +168,7 @@ namespace pizda {
 				+ 4
 				+ AircraftAuxiliaryPacket::autopilotLateralModeLengthBits
 				+ AircraftAuxiliaryPacket::autopilotVerticalModeLengthBits
+				+ AircraftAuxiliaryPacket::autopilotAltitudeLengthBits
 				// A/T
 				+ 1
 				// A/P
@@ -176,6 +178,7 @@ namespace pizda {
 			return false;
 		
 		auto& rc = RC::getInstance();
+		auto& rd = rc.getRemoteData();
 		auto& ad = rc.getAircraftData();
 		
 		// -------------------------------- Throttle --------------------------------
@@ -226,6 +229,14 @@ namespace pizda {
 		// Modes
 		ad.raw.autopilot.lateralMode = static_cast<AutopilotLateralMode>(stream.readUint8(AircraftAuxiliaryPacket::autopilotLateralModeLengthBits));
 		ad.raw.autopilot.verticalMode = static_cast<AutopilotVerticalMode>(stream.readUint8(AircraftAuxiliaryPacket::autopilotVerticalModeLengthBits));
+		
+		// Altitude for ALT/VNAV modes
+		ad.raw.autopilot.altitudeM = readAltitude(
+			stream,
+			AircraftAuxiliaryPacket::autopilotAltitudeLengthBits,
+			AircraftAuxiliaryPacket::autopilotAltitudeMinM,
+			AircraftAuxiliaryPacket::autopilotAltitudeMaxM
+		);
 		
 		// Autothrottle
 		ad.raw.autopilot.autothrottle = stream.readBool();
@@ -394,16 +405,18 @@ namespace pizda {
 		stream.writeUint16(settings.autopilot.headingDeg, RemoteAutopilotPacket::headingLengthBits);
 		
 		// Altitude
-		const auto altitudeM = Units::convertDistance(settings.autopilot.altitudeFt, DistanceUnit::foot, DistanceUnit::meter);
-		const auto altitudeClamped = std::clamp<float>(altitudeM, RemoteAutopilotPacket::altitudeMinM, RemoteAutopilotPacket::altitudeMaxM);
+		const auto altitudeFt =
+			rd.autopilot.verticalMode == AutopilotVerticalMode::alt
+			? rd.autopilot.altitudeHoldFt
+			: settings.autopilot.altitudeFt;
 		
-		const auto altitudeFactor =
-			(altitudeClamped - static_cast<float>(RemoteAutopilotPacket::altitudeMinM))
-			/ static_cast<float>(RemoteAutopilotPacket::altitudeMaxM - RemoteAutopilotPacket::altitudeMinM);
-		
-		const auto altitudeValue = static_cast<uint16_t>(std::round(altitudeFactor * static_cast<float>((1 << RemoteAutopilotPacket::altitudeLengthBits) - 1)));
-		
-		stream.writeUint16(altitudeValue, RemoteAutopilotPacket::altitudeLengthBits);
+		writeAltitude(
+			stream,
+			Units::convertDistance(altitudeFt, DistanceUnit::foot, DistanceUnit::meter),
+			RemoteAutopilotPacket::altitudeLengthBits,
+			RemoteAutopilotPacket::altitudeMinM,
+			RemoteAutopilotPacket::altitudeMaxM
+		);
 		
 		// Modes
 		stream.writeUint8(std::to_underlying(rd.autopilot.lateralMode), RemoteAutopilotPacket::lateralModeLengthBits);
@@ -416,19 +429,5 @@ namespace pizda {
 		stream.writeBool(rd.autopilot.autopilot);
 		
 		return true;
-	}
-	
-	float RemotePacketHandler::readRadians(BitStream& stream, float range, uint8_t bits) {
-		auto value = static_cast<float>(stream.readUint16(bits)) / static_cast<float>((1 << bits) - 1);
-		value = value - 0.5f;
-		value = value * range;
-		
-		return sanitizeValue<float>(value, toRadians(-180), toRadians(180));
-	}
-	
-	void RemotePacketHandler::writeRadians(BitStream& stream, float value, float range, uint8_t bits) {
-		const auto uintValue = static_cast<uint16_t>((value / range + 0.5f) * ((1 << bits) - 1));
-		
-		stream.writeUint16(uintValue, bits);
 	}
 }

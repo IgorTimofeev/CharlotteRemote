@@ -59,9 +59,9 @@ namespace pizda {
 		
 		auto& rc = RC::getInstance();
 		
-		navigation.setActive(rc.getAircraftData().raw.lights.navigation);
-		strobe.setActive(rc.getAircraftData().raw.lights.strobe);
-		landing.setActive(rc.getAircraftData().raw.lights.landing);
-		cabin.setActive(rc.getAircraftData().raw.lights.cabin);
+		navigation.setMode(rc.getAircraftData().raw.lights.navigation ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
+		strobe.setMode(rc.getAircraftData().raw.lights.strobe ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
+		landing.setMode(rc.getAircraftData().raw.lights.landing ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
+		cabin.setMode(rc.getAircraftData().raw.lights.cabin ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
 	}
 }

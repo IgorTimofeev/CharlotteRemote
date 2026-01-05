@@ -7,9 +7,9 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class Separator : public Shape {
+	class HorizontalSeparator : public Shape {
 		public:
-			Separator() {
+			HorizontalSeparator() {
 				setHeight(1);
 				setFillColor(&Theme::bg3);
 			}
@@ -19,6 +19,21 @@ namespace pizda {
 				
 				if (color)
 					renderer->renderHorizontalLine(bounds.getTopLeft(), bounds.getWidth(), color);
+			}
+	};
+	
+	class VerticalSeparator : public Shape {
+		public:
+			VerticalSeparator() {
+				setWidth(1);
+				setFillColor(&Theme::bg3);
+			}
+			
+			void onRender(Renderer* renderer, const Bounds& bounds) override {
+				auto color = getFillColor();
+				
+				if (color)
+					renderer->renderVerticalLine(bounds.getTopLeft(), bounds.getHeight(), color);
 			}
 	};
 }

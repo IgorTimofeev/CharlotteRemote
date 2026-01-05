@@ -29,11 +29,11 @@ namespace pizda {
 		if (isConnected) {
 			if (rssi < -80) {
 				sexuality = 0;
-				color = &Theme::bad3;
+				color = &Theme::bad1;
 			}
 			else if (rssi < -70) {
 				sexuality = 1;
-				color = &Theme::bad3;
+				color = &Theme::bad1;
 			}
 			else if (rssi < -60) {
 				sexuality = 2;
@@ -50,7 +50,7 @@ namespace pizda {
 		}
 		else {
 			sexuality = _lineCount - 1;
-			color = &Theme::bad1;
+			color = &Theme::bad3;
 		}
 
 		// Lines
@@ -80,7 +80,7 @@ namespace pizda {
 		renderer->renderString(
 			position,
 			&Theme::fontSmall,
-			isConnected ? &Theme::fg4 : &Theme::bad3,
+			isConnected ? &Theme::fg4 : &Theme::bad1,
 			isConnected ? std::format(L"R {}", rssi) : L"----"
 		);
 		
@@ -90,7 +90,7 @@ namespace pizda {
 		renderer->renderString(
 			position,
 			&Theme::fontSmall,
-			isConnected ? &Theme::fg4 : &Theme::bad3,
+			isConnected ? &Theme::fg4 : &Theme::bad1,
 			isConnected ? std::format(L"S {}", snr) : L"----"
 		);
 	}

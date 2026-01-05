@@ -39,14 +39,15 @@ namespace pizda {
 
 			constexpr static Bit8PaletteColor red { 21 };
 			constexpr static Bit8PaletteColor magenta { 22 };
-			constexpr static Bit8PaletteColor green { 23 };
-			constexpr static Bit8PaletteColor greenSpeed { 24 };
-			constexpr static Bit8PaletteColor yellow { 25 };
-			constexpr static Bit8PaletteColor ocean { 26 };
-			constexpr static Bit8PaletteColor ground { 27 };
-			constexpr static Bit8PaletteColor ground2 { 28 };
-			constexpr static Bit8PaletteColor sky { 29 };
-			constexpr static Bit8PaletteColor sky2 { 30 };
+			constexpr static Bit8PaletteColor green1 { 23 };
+			constexpr static Bit8PaletteColor green2 { 24 };
+			constexpr static Bit8PaletteColor greenSpeed { 25 };
+			constexpr static Bit8PaletteColor yellow { 26 };
+			constexpr static Bit8PaletteColor ocean { 27 };
+			constexpr static Bit8PaletteColor ground1 { 28 };
+			constexpr static Bit8PaletteColor ground2 { 29 };
+			constexpr static Bit8PaletteColor sky1 { 30 };
+			constexpr static Bit8PaletteColor sky2 { 31 };
 
 			constexpr static PIXY10Font fontNormal {};
 			constexpr static Vaticanus8Font fontSmall {};

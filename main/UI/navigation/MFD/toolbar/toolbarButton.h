@@ -9,9 +9,9 @@
 namespace pizda {
 	using namespace YOBA;
 	
-	class KorryButton : public ToolbarSection {
+	class ToolbarButton : public ToolbarSection {
 		public:
-			KorryButton(std::wstring_view title, const Image* image) : ToolbarSection(title) {
+			ToolbarButton(std::wstring_view title, const Image* image) : ToolbarSection(title) {
 				_imageView.setMargin(Margin(Toolbar::contentHorizontalMargin, 2, Toolbar::contentHorizontalMargin, 0));
 				_imageView.setAlignment(Alignment::center);
 				_imageView.setImage(image);

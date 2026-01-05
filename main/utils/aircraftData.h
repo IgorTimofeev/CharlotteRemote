@@ -13,8 +13,10 @@ namespace pizda {
 			float pitchRad = 0;
 			float rollRad = 0;
 			
-			AutopilotLateralMode lateralMode = AutopilotLateralMode::roll;
-			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::pitch;
+			AutopilotLateralMode lateralMode = AutopilotLateralMode::man;
+			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::man;
+			
+			int16_t altitudeM = 0;
 			
 			bool autothrottle = false;
 			bool autopilot = false;

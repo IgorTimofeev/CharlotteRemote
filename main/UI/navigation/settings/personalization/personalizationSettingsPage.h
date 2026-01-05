@@ -20,7 +20,7 @@ namespace pizda {
 			
 			Switcher _audioFeedback { L"Audio feedback" };
 			Switcher _debugOverlay { L"Debug overlay" };
-			Separator _generalSeparator {};
+			HorizontalSeparator _generalSeparator {};
 			
 			// -------------------------------- MFD --------------------------------
 			

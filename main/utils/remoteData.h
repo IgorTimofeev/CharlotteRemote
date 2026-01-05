@@ -15,8 +15,10 @@ namespace pizda {
 	
 	class RemoteDataAutopilot {
 		public:
-			AutopilotLateralMode lateralMode = AutopilotLateralMode::roll;
-			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::pitch;
+			float altitudeHoldFt = 0;
+			
+			AutopilotLateralMode lateralMode = AutopilotLateralMode::man;
+			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::man;
 			
 			bool autothrottle = false;
 			bool autopilot = false;

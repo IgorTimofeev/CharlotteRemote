@@ -307,7 +307,7 @@ namespace pizda {
 		const Point& horizonRight
 	) {
 		// Sky
-		renderer->renderFilledRectangle(bounds, &Theme::sky);
+		renderer->renderFilledRectangle(bounds, &Theme::sky1);
 
 		// Ground
 		const auto groundMaxY = std::max(horizonLeft.getY(), horizonRight.getY());
@@ -325,7 +325,7 @@ namespace pizda {
 				horizonRight.getX(),
 				groundMaxY
 			),
-			&Theme::ground
+			&Theme::ground1
 		);
 
 		// Rectangle
@@ -339,7 +339,7 @@ namespace pizda {
 					bounds.getWidth(),
 					bounds.getY2() - groundMaxY + 1
 				),
-				&Theme::ground
+				&Theme::ground1
 			);
 		}
 		// Left
@@ -351,7 +351,7 @@ namespace pizda {
 					horizonLeft.getX() - bounds.getX(),
 					bounds.getHeight()
 				),
-				&Theme::ground
+				&Theme::ground1
 			);
 		}
 		// Right
@@ -363,7 +363,7 @@ namespace pizda {
 					bounds.getX2() - horizonRight.getX(),
 					bounds.getHeight()
 				),
-				&Theme::ground
+				&Theme::ground1
 			);
 		}
 	}
@@ -528,7 +528,7 @@ namespace pizda {
 					yCenter - Theme::fontSmall.getHeight() / 2
 				),
 				&Theme::fontSmall,
-				ap ? &Theme::green : &Theme::sky2,
+				ap ? &Theme::green1 : &Theme::sky2,
 				text
 			);
 			
@@ -552,11 +552,11 @@ namespace pizda {
 		
 		// Lateral
 		switch (ad.raw.autopilot.lateralMode) {
-			case AutopilotLateralMode::roll: {
-				renderText(L"ROLL", false);
+			case AutopilotLateralMode::man: {
+				renderText(L"MAN", false);
 				break;
 			}
-			case AutopilotLateralMode::heading: {
+			case AutopilotLateralMode::hdg: {
 				renderText(L"HDG", true);
 				break;
 			}
@@ -566,15 +566,19 @@ namespace pizda {
 		
 		// Vertical
 		switch (ad.raw.autopilot.verticalMode) {
-			case AutopilotVerticalMode::pitch: {
-				renderText(L"PITCH", false);
+			case AutopilotVerticalMode::man: {
+				renderText(L"MAN", false);
 				break;
 			}
-			case AutopilotVerticalMode::hold: {
+			case AutopilotVerticalMode::alt: {
+				renderText(L"ALT", true);
+				break;
+			}
+			case AutopilotVerticalMode::alts: {
 				renderText(L"ALTS", true);
 				break;
 			}
-			case AutopilotVerticalMode::levelChange: {
+			case AutopilotVerticalMode::flc: {
 				renderText(L"FLC", true);
 				break;
 			}
@@ -672,17 +676,17 @@ namespace pizda {
 			
 			const auto deltaPixels = deltaDeg / static_cast<float>(PFD::yawOverlayAngleStepUnits) * PFD::yawOverlayAngleStepPixels;
 			
-			// Clamped center of indicator - indicator width
-			x = std::clamp<int32_t>(
+			const auto indicatorXCenter = std::clamp<int32_t>(
 				static_cast<int32_t>(centerX + deltaPixels),
 				bounds.getX(),
 				bounds.getX2()
-			)
-			- PFD::autopilotIndicatorSize / 2;
+			);
+			
+			x = indicatorXCenter - PFD::autopilotIndicatorSize / 2;
 			
 			const auto y = y2 - PFD::autopilotIndicatorThickness + 1;
 			
-			// Rect between
+			// Lower rect
 			renderer->renderFilledRectangle(
 				Bounds(
 					x,
@@ -707,7 +711,7 @@ namespace pizda {
 			// Right rect
 			renderer->renderFilledRectangle(
 				Bounds(
-					x + PFD::autopilotIndicatorSize - 1 - PFD::autopilotIndicatorTriangleMargin,
+					x + PFD::autopilotIndicatorSize - PFD::autopilotIndicatorTriangleMargin,
 					y,
 					PFD::autopilotIndicatorTriangleMargin,
 					PFD::autopilotIndicatorTriangleThickness
@@ -722,7 +726,7 @@ namespace pizda {
 					y
 				),
 				Point(
-					x + PFD::autopilotIndicatorTriangleMargin + PFD::currentValueTriangleSize - 1,
+					indicatorXCenter,
 					y + PFD::autopilotIndicatorTriangleThickness - 1
 				),
 				Point(
@@ -739,7 +743,7 @@ namespace pizda {
 					y
 				),
 				Point(
-					x + PFD::autopilotIndicatorSize - 1 - PFD::autopilotIndicatorTriangleMargin - PFD::currentValueTriangleSize + 1,
+					indicatorXCenter,
 					y + PFD::autopilotIndicatorTriangleThickness - 1
 				),
 				Point(
@@ -846,7 +850,7 @@ namespace pizda {
 
 	void PFD::renderCurrentValue(Renderer* renderer, const Bounds& bounds, uint8_t digitCount, float value, bool left) {
 		const auto isConnected = RC::getInstance().getPacketHandler().isConnected();
-		const auto bg = isConnected ? &Theme::bg2 : &Theme::bad1;
+		const auto bg = isConnected ? &Theme::bg2 : &Theme::bad3;
 		const auto x2 = bounds.getX2();
 		const auto yCenter = bounds.getYCenter();
 		
@@ -950,81 +954,12 @@ namespace pizda {
 					textY
 				),
 				&Theme::fontSmall,
-				&Theme::bad3,
+				&Theme::bad1,
 				text
 			);
 		}
 	}
-
-	void PFD::renderVerticalAutopilotValueIndicator(Renderer* renderer, const Point& point, bool left) {
-		// Upper rect
-		renderer->renderFilledRectangle(
-			Bounds(
-				point.getX(),
-				point.getY(),
-				autopilotIndicatorThickness,
-				autopilotIndicatorTriangleMargin
-			),
-			&Theme::ocean
-		);
-
-		// Lower rect
-		renderer->renderFilledRectangle(
-			Bounds(
-				point.getX(),
-				point.getY() + autopilotIndicatorSize - autopilotIndicatorTriangleMargin,
-				autopilotIndicatorThickness,
-				autopilotIndicatorTriangleMargin
-			),
-			&Theme::ocean
-		);
-
-		// Rect between
-		renderer->renderFilledRectangle(
-			Bounds(
-				left ? point.getX() + autopilotIndicatorTriangleThickness : point.getX(),
-				point.getY() + autopilotIndicatorTriangleMargin,
-				autopilotIndicatorRectangleThickness,
-				autopilotIndicatorTriangleSize
-			),
-			&Theme::ocean
-		);
-
-		// Upper triangle
-		renderer->renderFilledTriangle(
-			Point(
-				left ? point.getX() : point.getX() + autopilotIndicatorRectangleThickness,
-				point.getY() + autopilotIndicatorTriangleMargin
-			),
-			Point(
-				left ? point.getX() + autopilotIndicatorTriangleThickness - 1 : point.getX() + autopilotIndicatorThickness - 1,
-				point.getY() + autopilotIndicatorTriangleMargin
-			),
-			Point(
-				left ? point.getX() + autopilotIndicatorTriangleThickness - 1 : point.getX() + autopilotIndicatorRectangleThickness - 1,
-				point.getY() + autopilotIndicatorSize / 2
-			),
-			&Theme::ocean
-		);
-
-		// Lower triangle
-		renderer->renderFilledTriangle(
-			Point(
-				left ? point.getX() + autopilotIndicatorTriangleThickness - 1 : point.getX() + autopilotIndicatorRectangleThickness,
-				point.getY() + autopilotIndicatorSize / 2
-			),
-			Point(
-				left ? point.getX() + autopilotIndicatorTriangleThickness - 1 : point.getX() + autopilotIndicatorThickness - 1,
-				point.getY() + autopilotIndicatorSize - autopilotIndicatorTriangleMargin - 1
-			),
-			Point(
-				left ? point.getX() : point.getX() + autopilotIndicatorRectangleThickness - 1,
-				point.getY() + autopilotIndicatorSize - autopilotIndicatorTriangleMargin - 1
-			),
-			&Theme::ocean
-		);
-	}
-
+	
 	void PFD::renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left) {
 		if (autopilotValue == 0)
 			return;
@@ -1040,13 +975,74 @@ namespace pizda {
 			bounds.getY2()
 		);
 		
-		renderVerticalAutopilotValueIndicator(
-			renderer,
-			Point(
-				left ? bounds.getX2() + 1 - autopilotIndicatorThickness : bounds.getX(),
-				indicatorCenterY - autopilotIndicatorSize / 2
+		const auto x = left ? bounds.getX2() + 1 - autopilotIndicatorThickness : bounds.getX();
+		const auto y= indicatorCenterY - autopilotIndicatorSize / 2;
+				
+		// Common rect
+		renderer->renderFilledRectangle(
+			Bounds(
+				left ? x + autopilotIndicatorTriangleThickness : x,
+				y,
+				autopilotIndicatorRectangleThickness,
+				autopilotIndicatorSize
 			),
-			left
+			&Theme::ocean
+		);
+		
+		// Upper rect
+		renderer->renderFilledRectangle(
+			Bounds(
+				left ? x : x + autopilotIndicatorRectangleThickness,
+				y,
+				autopilotIndicatorThickness - autopilotIndicatorRectangleThickness,
+				autopilotIndicatorTriangleMargin
+			),
+			&Theme::ocean
+		);
+		
+		// Lower rect
+		renderer->renderFilledRectangle(
+			Bounds(
+				left ? x : x + autopilotIndicatorRectangleThickness,
+				y + autopilotIndicatorSize - autopilotIndicatorTriangleMargin,
+				autopilotIndicatorThickness - autopilotIndicatorRectangleThickness,
+				autopilotIndicatorTriangleMargin
+			),
+			&Theme::ocean
+		);
+		
+		// Upper triangle
+		renderer->renderFilledTriangle(
+			Point(
+				left ? x : x + autopilotIndicatorRectangleThickness,
+				y + autopilotIndicatorTriangleMargin
+			),
+			Point(
+				left ? x + autopilotIndicatorTriangleThickness - 1 : x + autopilotIndicatorThickness - 1,
+				y + autopilotIndicatorTriangleMargin
+			),
+			Point(
+				left ? x + autopilotIndicatorTriangleThickness - 1 : x + autopilotIndicatorRectangleThickness - 1,
+				y + autopilotIndicatorSize / 2
+			),
+			&Theme::ocean
+		);
+		
+		// Lower triangle
+		renderer->renderFilledTriangle(
+			Point(
+				left ? x + autopilotIndicatorTriangleThickness - 1 : x + autopilotIndicatorRectangleThickness,
+				y + autopilotIndicatorSize / 2
+			),
+			Point(
+				left ? x + autopilotIndicatorTriangleThickness - 1 : x + autopilotIndicatorThickness - 1,
+				y + autopilotIndicatorSize - autopilotIndicatorTriangleMargin - 1
+			),
+			Point(
+				left ? x : x + autopilotIndicatorRectangleThickness - 1,
+				y + autopilotIndicatorSize - autopilotIndicatorTriangleMargin - 1
+			),
+			&Theme::ocean
 		);
 	}
 
@@ -1242,7 +1238,7 @@ namespace pizda {
 			renderer->renderString(
 				Point(bugBounds.getX() + speedBugTextOffset, bugBounds.getY() + speedBugTextOffset),
 				&Theme::fontSmall,
-				&Theme::green,
+				&Theme::green1,
 				bug.getName()
 			);
 		}
@@ -1279,7 +1275,8 @@ namespace pizda {
 		const auto& ad = rc.getAircraftData();
 
 		const auto centerY = bounds.getYCenter();
-		const auto x = bounds.getX();
+		auto x = bounds.getX();
+		const auto x2 = bounds.getX2();
 
 		renderer->renderFilledRectangle(bounds, &Theme::bg1);
 
@@ -1354,14 +1351,14 @@ namespace pizda {
 				}
 
 				// 2
-				if (groundPoint2.getX() < bounds.getX2()) {
+				if (groundPoint2.getX() < x2) {
 					groundPoint2.setX(groundPoint2.getX() + groundSpacing);
 				}
 				else {
 					groundPoint2.setY(groundPoint2.getY() + groundSpacing);
 				}
 			}
-			while (groundPoint1.getX() < bounds.getX2() - groundSpacing);
+			while (groundPoint1.getX() < x2 - groundSpacing);
 		}
 
 		// Trend
@@ -1418,7 +1415,42 @@ namespace pizda {
 			rc.getSettings().autopilot.altitudeFt,
 			false
 		);
-
+		
+		// ALT bar
+		if (rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::alt) {
+			constexpr static uint8_t dashLength = 2;
+			constexpr static uint8_t arrowWidth = 4;
+			constexpr static uint8_t arrowHeight = 4;
+			
+			y =
+				centerY
+				- static_cast<int32_t>(
+					(
+						Units::convertDistance(static_cast<float>(rc.getAircraftData().raw.autopilot.altitudeM), DistanceUnit::meter, DistanceUnit::foot)
+						- altitude
+					)
+					* static_cast<float>(altitudeStepPixels)
+					/ static_cast<float>(altitudeStepUnits)
+				);
+			
+			// Left arrow
+			renderer->renderLine(
+				Point(bounds.getX(), y - arrowHeight / 2),
+				Point(bounds.getX() + arrowWidth, y),
+				&Theme::ocean
+			);
+			
+			renderer->renderLine(
+				Point(bounds.getX(), y + arrowHeight / 2),
+				Point(bounds.getX() + arrowWidth, y),
+				&Theme::ocean
+			);
+			
+			for (x = bounds.getX() + arrowWidth; x < x2 - dashLength + 1; x += dashLength * 2) {
+				renderer->renderHorizontalLine(Point(x, y), dashLength, &Theme::ocean);
+			}
+		}
+		
 		// Current value
 		renderCurrentValue(
 			renderer,
@@ -1495,7 +1527,7 @@ namespace pizda {
 		renderer->renderLine(
 			Point(bounds.getX(), centerY - static_cast<int32_t>(ad.computed.verticalSpeedFtPM * static_cast<float>(verticalSpeedStepPixels) / static_cast<float>(verticalSpeedStepUnits))),
 			Point(bounds.getX2(), centerY - static_cast<int32_t>(ad.computed.verticalSpeedFtPM * static_cast<float>(verticalSpeedStepPixelsRight) / static_cast<float>(verticalSpeedStepUnits))),
-			&Theme::green
+			&Theme::green1
 		);
 	}
 
