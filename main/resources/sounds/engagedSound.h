@@ -5,9 +5,9 @@
 #include "hardware/audio/sound.h"
 
 namespace pizda {
-	class AutopilotEngagedSound : public Sound {
+	class EngagedSound : public Sound {
 		public:
-			constexpr AutopilotEngagedSound() : Sound(playables.data(), playables.size()) {
+			constexpr EngagedSound() : Sound(playables.data(), playables.size()) {
 			
 			}
 			

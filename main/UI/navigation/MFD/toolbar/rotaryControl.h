@@ -1,9 +1,11 @@
 #pragma once
 
-#include <esp_log.h>
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 #include <YOBA/hardware/encoder.h>
+
+#include <esp_log.h>
+#include <esp_timer.h>
 
 #include "UI/theme.h"
 #include "UI/navigation/MFD/toolbar/toolbarSection.h"
@@ -11,61 +13,47 @@
 
 namespace pizda {
 	using namespace YOBA;
-
-	template<uint8_t digitCount, uint32_t minimum, uint32_t maximum, bool cycling, uint16_t smallChange, uint16_t bigChange>
+	
 	class RotaryControl : public ToolbarSection {
 		public:
-			RotaryControl(std::wstring_view title) : ToolbarSection(title) {
-				// Seven segment
-				seven.setAlignment(Alignment::center, Alignment::start);
-				
-				seven.setDigitCount(digitCount);
-				seven.setDecimalSeparatorSpacing(2);
-				
-				seven.setSegmentThickness(1);
-				seven.setSegmentLength(4);
-				
-				seven.setInactiveColor(&Theme::bg5);
-				seven.setActiveColor(&Theme::fg1);
-				
-				ToolbarSection::setDefaultMargin(&seven, 8);
-				
-				*this += &seven;
-			}
-
-			SevenSegment seven {};
-
-			Callback<> rotated {};
+			RotaryControl();
+			
+			uint8_t getVariantIndex() const;
+			bool isVariantSelectMode() const;
 		
 		protected:
-			void onEventBeforeChildren(Event* event) override {
-				ToolbarSection::onEventBeforeChildren(event);
-				
-				if (event->getTypeID() == EncoderValueChangedEvent::typeID && isFocused()) {
-					const auto rotateEvent = static_cast<EncoderValueChangedEvent*>(event);
-					const auto rps = rotateEvent->getDPS();
-					const int32_t change = (std::abs(rps) < 80 ? smallChange : bigChange) * (rps >= 0 ? 1 : -1);
-
-					int64_t newValue = static_cast<int64_t>(seven.getValue()) + change;
-
-					if (cycling) {
-						if (newValue > static_cast<int64_t>(maximum)) {
-							newValue = static_cast<int64_t>(minimum);
-						}
-						else if (newValue < static_cast<int64_t>(minimum)) {
-							newValue = static_cast<int64_t>(maximum);
-						}
-
-						seven.setValue(newValue);
-					}
-					else {
-						seven.setValue(std::clamp(newValue, static_cast<int64_t>(minimum), static_cast<int64_t>(maximum)));
-					}
-
-					rotated();
-
-					event->setHandled(true);
-				}
+			void onEventBeforeChildren(Event* event) override;
+			void onFocusChanged() override;
+			void onTick() override;
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			
+			virtual std::wstring_view variantIndexToTitle(uint8_t index) = 0;
+			virtual bool isVariantEditable(uint8_t index) = 0;
+			virtual void onLongPress();
+			virtual void onVariantChanged();
+			virtual void onRotate(bool clockwise, bool big);
+			
+			void updateVariantsVisibility();
+			void setVariantIndex(uint8_t value);
+			void setVariants(std::initializer_list<Element*> elements);
+			
+		private:
+			Layout variantsLayout {};
+			uint8_t variantIndex = 0xFF;
+			bool variantSelectMode = false;
+			
+			int64_t pressTime = 0;
+			int32_t pressX = -1;
+			bool preventModeSwitch = false;
+			bool wasFocusedOnDown = false;
+			
+			void onRotateOrDrag(bool clockwise, bool big);
+	};
+	
+	class RotaryControlRenderable : public Control {
+		public:
+			RotaryControlRenderable() {
+				setWidth(24);
 			}
 	};
 }

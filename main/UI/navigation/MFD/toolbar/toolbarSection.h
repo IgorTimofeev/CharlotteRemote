@@ -5,30 +5,30 @@
 #include <YOBA/hardware/encoder.h>
 
 #include "UI/theme.h"
-#include "UI/elements/autopilotValueModeElement.h"
 
 #include "toolbar.h"
 
 namespace pizda {
 	using namespace YOBA;
 
-	class ToolbarSection : public Layout, public AutopilotValueModeElement {
+	class ToolbarSection : public Layout, public BorderElement {
 		public:
-			ToolbarSection(std::wstring_view title) {
+			ToolbarSection() {
 				_title.setHorizontalAlignment(Alignment::center);
 				_title.setMargin(Margin(Toolbar::contentHorizontalMargin, 0, Toolbar::contentHorizontalMargin, 0));
 				_title.setFont(&Theme::fontSmall);
-				setTitle(title);
 				*this += &_title;
 				
 				updateColors();
 			}
 			
+			ToolbarSection(std::wstring_view title) : ToolbarSection() {
+				setTitle(title);
+			}
+			
 			ToolbarSection(std::wstring_view title, Element* element) : ToolbarSection(title) {
 				*this += element;
 			}
-			
-			Callback<> pressed {};
 			
 			void setTitle(std::wstring_view title) {
 				_title.setText(title);
@@ -42,22 +42,10 @@ namespace pizda {
 			void onEventBeforeChildren(Event* event) override {
 				Layout::onEventBeforeChildren(event);
 				
-				if (event->getTypeID() == PointerDownEvent::typeID) {
-					if (isFocused()) {
-						pressed();
-					}
-					else {
-						setFocused(true);
-					}
+				if (event->getTypeID() == PointerDownEvent::typeID && !isFocused()) {
+					setFocused(true);
 					
 					event->setHandled(true);
-				}
-				else if (event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
-					if (isFocused()) {
-						pressed();
-						
-						event->setHandled(true);
-					}
 				}
 			}
 			
@@ -84,14 +72,14 @@ namespace pizda {
 				
 				Layout::onRender(renderer, bounds);
 				
-				if (getMode() != AutopilotValueMode::none) {
+				if (getBorderColor()) {
 					renderer->renderHorizontalLine(
 						Point(
 							bounds.getX(),
 							bounds.getY2()
 						),
 						bounds.getWidth(),
-						getMode() == AutopilotValueMode::acknowledged ? &Theme::fg1 : &Theme::yellow
+						getBorderColor()
 					);
 				}
 			}
@@ -103,6 +91,5 @@ namespace pizda {
 				_title.setTextColor(isFocused() ? &Theme::fg1 : &Theme::fg5);
 			}
 	};
-	
 	
 }

@@ -10,8 +10,8 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		
 		// Navigation
-		navigation.pressed += [&rc] {
-			rc.getRemoteData().lights.navigation = !rc.getRemoteData().lights.navigation;
+		navigation.pressed += [this, &rc] {
+			rc.getRemoteData().lights.navigation = navigation.isActive();
 			
 			rc.getPacketHandler().enqueue(RemotePacketType::lights);
 			
@@ -21,8 +21,8 @@ namespace pizda {
 		row += &navigation;
 		
 		// Strobe
-		strobe.pressed += [&rc] {
-			rc.getRemoteData().lights.strobe = !rc.getRemoteData().lights.strobe;
+		strobe.pressed += [this, &rc] {
+			rc.getRemoteData().lights.strobe = strobe.isActive();
 			
 			rc.getPacketHandler().enqueue(RemotePacketType::lights);
 			
@@ -32,8 +32,8 @@ namespace pizda {
 		row += &strobe;
 		
 		// Landing
-		landing.pressed += [&rc] {
-			rc.getRemoteData().lights.landing = !rc.getRemoteData().lights.landing;
+		landing.pressed += [this, &rc] {
+			rc.getRemoteData().lights.landing = landing.isActive();
 			
 			rc.getPacketHandler().enqueue(RemotePacketType::lights);
 			
@@ -43,8 +43,8 @@ namespace pizda {
 		row += &landing;
 		
 		// Landing
-		cabin.pressed += [&rc] {
-			rc.getRemoteData().lights.cabin = !rc.getRemoteData().lights.cabin;
+		cabin.pressed += [this, &rc] {
+			rc.getRemoteData().lights.cabin = cabin.isActive();
 			
 			rc.getPacketHandler().enqueue(RemotePacketType::lights);
 			
@@ -59,9 +59,9 @@ namespace pizda {
 		
 		auto& rc = RC::getInstance();
 		
-		navigation.setMode(rc.getAircraftData().raw.lights.navigation ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
-		strobe.setMode(rc.getAircraftData().raw.lights.strobe ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
-		landing.setMode(rc.getAircraftData().raw.lights.landing ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
-		cabin.setMode(rc.getAircraftData().raw.lights.cabin ? AutopilotValueMode::acknowledged : AutopilotValueMode::none);
+		navigation.setActive(rc.getAircraftData().raw.lights.navigation);
+		strobe.setActive(rc.getAircraftData().raw.lights.strobe);
+		landing.setActive(rc.getAircraftData().raw.lights.landing);
+		cabin.setActive(rc.getAircraftData().raw.lights.cabin);
 	}
 }

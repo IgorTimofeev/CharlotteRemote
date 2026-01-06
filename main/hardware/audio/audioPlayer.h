@@ -13,6 +13,7 @@ namespace pizda {
 		public:
 			void setup();
 			void play(const Sound& sound);
+			void playFeedback(const Sound& sound);
 			void playFeedback();
 
 		private:

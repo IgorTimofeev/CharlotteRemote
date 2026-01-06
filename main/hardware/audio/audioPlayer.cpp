@@ -75,11 +75,15 @@ namespace pizda {
 		xTaskNotifyGive(_taskHandle);
 	}
 	
-	void AudioPlayer::playFeedback() {
+	void AudioPlayer::playFeedback(const Sound& sound) {
 		auto& rc = RC::getInstance();
 		
 		if (rc.getSettings().personalization.audioFeedback) {
-			play(resources::sounds::feedback);
+			play(sound);
 		}
+	}
+	
+	void AudioPlayer::playFeedback() {
+		playFeedback(resources::sounds::feedback);
 	}
 }
