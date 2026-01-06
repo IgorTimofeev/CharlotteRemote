@@ -20,7 +20,7 @@ namespace pizda {
 	
 	void RotaryControl::onEventBeforeChildren(Event* event) {
 		if (event->getTypeID() == PointerDownEvent::typeID) {
-			wasFocusedOnDown = isFocused();
+			wasFocusedOnLastDown = isFocused();
 		}
 		
 		ToolbarSection::onEventBeforeChildren(event);
@@ -28,61 +28,39 @@ namespace pizda {
 		if (!isFocused())
 			return;
 		
-		if (event->getTypeID() == PointerDownEvent::typeID || event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
-			if (event->getTypeID() == PointerDownEvent::typeID) {
-				auto downEvent = reinterpret_cast<PointerDownEvent*>(event);
-				pressX = downEvent->getPosition().getX();
+		if (event->getTypeID() == PointerDownEvent::typeID) {
+			if (wasFocusedOnLastDown) {
+				pressPos = reinterpret_cast<PointerDownEvent*>(event)->getPosition();
 				
 				setCaptured(true);
+				onAnyDown();
 			}
-			
-			pressTime = esp_timer_get_time();
 			
 			event->setHandled(true);
 		}
-		else if (event->getTypeID() == PointerUpEvent::typeID || event->getTypeID() == PushButtonEncoderUpEvent::typeID) {
-			if (event->getTypeID() == PointerUpEvent::typeID) {
-				setCaptured(false);
-			}
-			
-			pressTime = 0;
-			pressX = -1;
-			
-			if (event->getTypeID() != PointerUpEvent::typeID || wasFocusedOnDown) {
-				if (preventModeSwitch) {
-					preventModeSwitch = false;
-				}
-				else {
-					if (variantSelectMode) {
-						variantSelectMode = false;
-						
-						RC::getInstance().getAudioPlayer().playFeedback();
-					}
-					else {
-						if (variantsLayout.getChildrenCount() > 1) {
-							variantSelectMode = true;
-							
-							RC::getInstance().getAudioPlayer().playFeedback();
-						}
-					}
-				}
-			}
+		else if (event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
+			onAnyDown();
 			
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == PointerDragEvent::typeID) {
-			if (pressX >= 0 && wasFocusedOnDown) {
-				const auto dragX = reinterpret_cast<PointerDragEvent*>(event)->getPosition().getX();
-				const auto deltaX = dragX - pressX;
+			if (wasFocusedOnLastDown && pressPos.getX() >= 0) {
+				const auto dragPos = reinterpret_cast<PointerDragEvent*>(event)->getPosition();
+				const auto deltaPos = dragPos - pressPos;
 				
 				const uint8_t threshold = variantSelectMode ? 20 : 5;
 				
-				if (std::abs(deltaX) > threshold) {
-					pressTime = 0;
-					pressX = dragX;
-					preventModeSwitch = true;
+				// Resetting long press on any direction
+				if (deltaPos.getLength() >= threshold) {
+					longPressTime = 0;
+					callOnPress = false;
+				}
+				
+				// Rotating only on X
+				if (std::abs(deltaPos.getX()) >= threshold) {
+					pressPos = dragPos;
 					
-					onRotateOrDrag(deltaX > 0, std::abs(deltaX) > 20);
+					onAnyRotate(deltaPos.getX() > 0, std::abs(deltaPos.getX()) > 10);
 				}
 			}
 			
@@ -91,7 +69,23 @@ namespace pizda {
 		else if (event->getTypeID() == EncoderValueChangedEvent::typeID) {
 			const auto dps = static_cast<EncoderValueChangedEvent*>(event)->getDPS();
 			
-			onRotateOrDrag(dps > 0, std::abs(dps) > 80);
+			onAnyRotate(dps > 0, std::abs(dps) > 80);
+			
+			event->setHandled(true);
+		}
+		else if (event->getTypeID() == PointerUpEvent::typeID) {
+			if (wasFocusedOnLastDown) {
+				setCaptured(false);
+				
+				pressPos = { -1, -1 };
+				
+				onAnyUp();
+			}
+			
+			event->setHandled(true);
+		}
+		else if (event->getTypeID() == PushButtonEncoderUpEvent::typeID) {
+			onAnyUp();
 			
 			event->setHandled(true);
 		}
@@ -100,23 +94,23 @@ namespace pizda {
 	void RotaryControl::onFocusChanged() {
 		ToolbarSection::onFocusChanged();
 		
-		if (!isFocused()) {
-			variantSelectMode = false;
-			pressTime = 0;
-			preventModeSwitch = false;
-		}
+		if (isFocused())
+			return;
+		
+		pressPos = { -1, -1 };
+		longPressTime = 0;
+		callOnPress = true;
 	}
 	
 	void RotaryControl::onTick() {
 		Layout::onTick();
 		
-		if (pressTime == 0 || esp_timer_get_time() - pressTime < 700'000)
+		if (longPressTime == 0 || esp_timer_get_time() - longPressTime < 700'000)
 			return;
 		
-		pressTime = 0;
-		preventModeSwitch = true;
-		
-		onLongPress();
+		longPressTime = 0;
+		callOnPress = false;
+		variantSelectMode = !variantSelectMode;
 		
 		RC::getInstance().getAudioPlayer().playFeedback();
 	}
@@ -127,13 +121,32 @@ namespace pizda {
 		if (!variantSelectMode)
 			return;
 		
-		const auto y = bounds.getYCenter() + 4;
-		renderer->renderPixel(Point(bounds.getX() + 2, y), &Theme::fg1);
-		renderer->renderPixel(Point(bounds.getX2() - 2, y), &Theme::fg1);
-	}
-	
-	void RotaryControl::onLongPress() {
-	
+		const auto dotWidth = 1;
+		constexpr static uint8_t dotSpacing = 3;
+		const auto dotsWidth = variantsLayout.getChildrenCount() * (dotWidth + dotSpacing) - dotSpacing;
+		
+		auto x = bounds.getXCenter() - dotsWidth / 2;
+		const auto y = bounds.getY2() - 4;
+		
+		for (uint8_t i = 0; i < variantsLayout.getChildrenCount(); ++i) {
+			renderer->renderPixel(Point(x, y), variantIndex == i ? &Theme::fg1 : &Theme::fg3);
+			
+			x += dotWidth + dotSpacing;
+		}
+		
+//		constexpr static uint8_t offset = 1;
+//
+//		const auto y = bounds.getYCenter() + 4;
+//		auto x = bounds.getX() + offset;
+//
+//		renderer->renderPixel(Point(x + 1, y - 1), &Theme::fg1);
+//		renderer->renderPixel(Point(x, y), &Theme::fg1);
+//		renderer->renderPixel(Point(x + 1, y + 1), &Theme::fg1);
+//
+//		x = bounds.getX2() - offset;
+//		renderer->renderPixel(Point(x - 1, y - 1), &Theme::fg1);
+//		renderer->renderPixel(Point(x, y), &Theme::fg1);
+//		renderer->renderPixel(Point(x - 1, y + 1), &Theme::fg1);
 	}
 	
 	void RotaryControl::onVariantChanged() {
@@ -141,6 +154,10 @@ namespace pizda {
 	}
 	
 	void RotaryControl::onRotate(bool clockwise, bool big) {
+	
+	}
+	
+	void RotaryControl::onPress() {
 	
 	}
 	
@@ -168,7 +185,24 @@ namespace pizda {
 		setVariantIndex(0);
 	}
 	
-	void RotaryControl::onRotateOrDrag(bool clockwise, bool big) {
+	void RotaryControl::onAnyDown() {
+		callOnPress = true;
+		
+		if (variantsLayout.getChildrenCount() > 1)
+			longPressTime = esp_timer_get_time();
+	}
+	
+	void RotaryControl::onAnyUp() {
+		longPressTime = 0;
+		
+		if (callOnPress) {
+			onPress();
+			
+			RC::getInstance().getAudioPlayer().playFeedback();
+		}
+	}
+	
+	void RotaryControl::onAnyRotate(bool clockwise, bool big) {
 		if (variantSelectMode) {
 			const auto newIndex = std::clamp<int16_t>(static_cast<int16_t>(variantIndex) + (clockwise ? 1 : -1), 0, variantsLayout.getChildrenCount() - 1);
 			

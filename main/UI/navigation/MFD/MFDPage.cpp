@@ -93,8 +93,10 @@ namespace pizda {
 			_rows += _ND;
 		}
 
-		if (settings.personalization.MFD.PFD.visible && settings.personalization.MFD.ND.visible)
-			_rows.setRelativeSize(_PFD, static_cast<float>(settings.personalization.MFD.splitPercent) / 100.f * 2.f);
+		if (settings.personalization.MFD.PFD.visible && settings.personalization.MFD.ND.visible) {
+			_rows.setRelativeSize(_PFD, static_cast<float>(settings.personalization.MFD.splitPercent) / 100.f);
+			_rows.setRelativeSize(_ND, static_cast<float>(100 - settings.personalization.MFD.splitPercent) / 100.f);
+		}
 		
 		// Main
 		_rows.setAutoSize(&_mainToolbar, true);

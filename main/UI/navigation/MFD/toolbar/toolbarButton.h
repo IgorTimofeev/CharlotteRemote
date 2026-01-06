@@ -33,8 +33,6 @@ namespace pizda {
 				ToolbarSection::onEventBeforeChildren(event);
 				
 				if ((event->getTypeID() == PointerDownEvent::typeID || event->getTypeID() == PushButtonEncoderDownEvent::typeID) && isFocused()) {
-					setActive(!isActive());
-					
 					pressed();
 					
 					event->setHandled(true);

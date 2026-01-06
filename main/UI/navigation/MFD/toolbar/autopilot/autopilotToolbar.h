@@ -19,6 +19,9 @@ namespace pizda {
 		public:
 			explicit AutopilotToolbar();
 		
+		protected:
+			void onTick() override;
+		
 		private:
 			ImageToolbarButton flightDirector { L"FD", &resources::images::menuIconMFDAutopilotFlightDirector };
 			

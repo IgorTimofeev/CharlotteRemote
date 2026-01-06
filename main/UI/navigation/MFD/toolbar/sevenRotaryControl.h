@@ -44,7 +44,7 @@ namespace pizda {
 						seven.setValue(static_cast<uint32_t>(newValue));
 					}
 					else {
-						seven.setValue(std::clamp(static_cast<uint32_t>(newValue), minimum, maximum));
+						seven.setValue(static_cast<uint32_t>(std::clamp<int32_t>(newValue, minimum, maximum)));
 					}
 				}
 			}

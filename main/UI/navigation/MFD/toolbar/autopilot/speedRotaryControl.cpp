@@ -28,8 +28,8 @@ namespace pizda {
 		RC::getInstance().getPacketHandler().enqueue(RemotePacketType::autopilot);
 	}
 	
-	void SpeedRotaryControl::onLongPress() {
-		RotaryControl::onLongPress();
+	void SpeedRotaryControl::onPress() {
+		RotaryControl::onPress();
 
 		RC::getInstance().getRemoteData().autopilot.autothrottle = !RC::getInstance().getRemoteData().autopilot.autothrottle;
 		

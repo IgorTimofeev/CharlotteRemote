@@ -10,34 +10,10 @@ namespace pizda {
 
 	class LateralRotaryControlLNAV : public RotaryControlRenderable {
 		protected:
-			void onRender(Renderer* renderer, const Bounds& bounds) override {
-				auto text = L"ULLI";
-				
-				renderer->renderString(
-					Point(
-						bounds.getXCenter() - Theme::fontNormal.getWidth(text) / 2,
-						bounds.getYCenter() - Theme::fontNormal.getHeight()
-					),
-					&Theme::fontNormal,
-					&Theme::magenta,
-					text
-				);
-				
-				text = L"N14W31";
-				
-				renderer->renderString(
-					Point(
-						bounds.getXCenter() - Theme::fontNormal.getWidth(text) / 2,
-						bounds.getYCenter()
-					),
-					&Theme::fontNormal,
-					&Theme::fg1,
-					text
-				);
-			}
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
 	};
 	
-	class LateralRotaryControl : public SevenRotaryControl<3, 1, 359, true, 1, 10> {
+	class LateralRotaryControl : public SevenRotaryControl<3, 1, 360, true, 1, 10> {
 		public:
 			LateralRotaryControl();
 			
@@ -47,7 +23,7 @@ namespace pizda {
 			std::wstring_view variantIndexToTitle(uint8_t index) override;
 			bool isVariantEditable(uint8_t index) override;
 			void onTick() override;
-			void onLongPress() override;
+			void onPress() override;
 			void onRotate(bool clockwise, bool big) override;
 	};
 }

@@ -10,9 +10,11 @@ namespace pizda {
 		flightDirector.setActive(rc.getSettings().personalization.MFD.PFD.flightDirector);
 
 		flightDirector.pressed += [this, &rc] {
-			rc.getSettings().personalization.MFD.PFD.flightDirector = flightDirector.isActive();
+			rc.getSettings().personalization.MFD.PFD.flightDirector = !rc.getSettings().personalization.MFD.PFD.flightDirector;
 			rc.getSettings().personalization.scheduleWrite();
-
+			
+			flightDirector.setActive(rc.getSettings().personalization.MFD.PFD.flightDirector);
+			
 			rc.getAudioPlayer().playFeedback();
 		};
 
@@ -23,9 +25,9 @@ namespace pizda {
 		row += &vertical;
 
 		// Autopilot
-		autopilot.pressed += [this, &rc] {
-			rc.getRemoteData().autopilot.autopilot = autopilot.isActive();
-
+		autopilot.pressed += [&rc] {
+			rc.getRemoteData().autopilot.autopilot = !rc.getRemoteData().autopilot.autopilot;
+			
 			rc.getPacketHandler().enqueue(RemotePacketType::autopilot);
 
 			rc.getAudioPlayer().play(
@@ -36,5 +38,11 @@ namespace pizda {
 		};
 
 		row += &autopilot;
+	}
+	
+	void AutopilotToolbar::onTick() {
+		Layout::onTick();
+		
+		autopilot.setActive(RC::getInstance().getAircraftData().raw.autopilot.autopilot);
 	}
 }

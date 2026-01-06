@@ -32,8 +32,8 @@ namespace pizda {
 		RC::getInstance().getPacketHandler().enqueue(RemotePacketType::autopilot);
 	}
 	
-	void LateralRotaryControl::onLongPress() {
-		RotaryControl::onLongPress();
+	void LateralRotaryControl::onPress() {
+		RotaryControl::onPress();
 		
 		const auto newMode =
 			getVariantIndex() == 0
@@ -51,18 +51,40 @@ namespace pizda {
 	void LateralRotaryControl::onTick() {
 		RotaryControl::onTick();
 		
-		switch (RC::getInstance().getAircraftData().raw.autopilot.lateralMode) {
-			case AutopilotLateralMode::man:
-				setBorderColor(nullptr);
-				break;
-			
-			case AutopilotLateralMode::hdg:
-				setBorderColor(getVariantIndex() == 0 ? &Theme::fg1 : &Theme::yellow);
-				break;
-			
-			case AutopilotLateralMode::lnav:
-				setBorderColor(getVariantIndex() == 1 ? &Theme::fg1 : &Theme::yellow);
-				break;
-		}
+		setBorderColor(
+			RC::getInstance().getAircraftData().raw.autopilot.lateralMode == AutopilotLateralMode::man
+			? nullptr
+			: (
+				RC::getInstance().getAircraftData().raw.autopilot.lateralMode == RC::getInstance().getRemoteData().autopilot.lateralMode
+				? &Theme::fg1
+				: &Theme::yellow
+			)
+		);
+	}
+	
+	void LateralRotaryControlLNAV::onRender(Renderer* renderer, const Bounds& bounds) {
+		auto text = L"ULLI";
+		
+		renderer->renderString(
+			Point(
+				bounds.getXCenter() - Theme::fontNormal.getWidth(text) / 2,
+				bounds.getYCenter() - Theme::fontNormal.getHeight() + 1
+			),
+			&Theme::fontNormal,
+			&Theme::magenta,
+			text
+		);
+		
+		text = L"0.5NM";
+		
+		renderer->renderString(
+			Point(
+				bounds.getXCenter() - Theme::fontSmall.getWidth(text) / 2,
+				bounds.getYCenter()
+			),
+			&Theme::fontSmall,
+			&Theme::fg1,
+			text
+		);
 	}
 }

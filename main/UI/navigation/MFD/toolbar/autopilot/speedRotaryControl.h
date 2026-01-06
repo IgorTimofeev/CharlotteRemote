@@ -16,7 +16,7 @@ namespace pizda {
 			std::wstring_view variantIndexToTitle(uint8_t index) override;
 			bool isVariantEditable(uint8_t index) override;
 			void onRotate(bool clockwise, bool big) override;
-			void onLongPress() override;
+			void onPress() override;
 			void onTick() override;
 	};
 }
