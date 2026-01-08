@@ -30,13 +30,15 @@ namespace pizda {
 			
 		protected:
 			void onEventBeforeChildren(Event* event) override {
-				ToolbarSection::onEventBeforeChildren(event);
-				
-				if ((event->getTypeID() == PointerDownEvent::typeID || event->getTypeID() == PushButtonEncoderDownEvent::typeID) && isFocused()) {
-					pressed();
-					
-					event->setHandled(true);
+				if (event->getTypeID() == PointerDownEvent::typeID || event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
+					if (isFocused()) {
+						pressed();
+						
+						event->setHandled(true);
+					}
 				}
+				
+				ToolbarSection::onEventBeforeChildren(event);
 			}
 			
 			void onIsActiveChanged() override {

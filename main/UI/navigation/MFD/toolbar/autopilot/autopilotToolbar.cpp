@@ -26,7 +26,7 @@ namespace pizda {
 
 		// Autopilot
 		autopilot.pressed += [&rc] {
-			rc.getRemoteData().autopilot.autopilot = !rc.getRemoteData().autopilot.autopilot;
+			rc.getRemoteData().autopilot.autopilot = !RC::getInstance().getAircraftData().raw.autopilot.autopilot;
 			
 			rc.getPacketHandler().enqueue(RemotePacketType::autopilot);
 

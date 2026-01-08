@@ -160,13 +160,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="че блядь АНХУЯ оно сосет эспрессивскую репу">
-      <change beforePath="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/.gitmodules" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="захуярил экспоненциальные кривые для жопстиков, чтоб КРИВЕНЬКО управлялось))00">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbarButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbarButton.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -253,11 +252,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -728,6 +722,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="apidoc" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1142,15 +1141,8 @@
       <workItem from="1767734472519" duration="4552000" />
       <workItem from="1767810762764" duration="933000" />
       <workItem from="1767811723004" duration="2674000" />
-      <workItem from="1767865343262" duration="29426000" />
-    </task>
-    <task id="LOCAL-00003" summary="пиздец блядь эти инклюды вонючие">
-      <option name="closed" value="true" />
-      <created>1766595351680</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1766595351680</updated>
+      <workItem from="1767865343262" duration="29741000" />
+      <workItem from="1767900320210" duration="3215000" />
     </task>
     <task id="LOCAL-00004" summary="еще и ресет этот ебаный блядь объединять с экраном">
       <option name="closed" value="true" />
@@ -1536,7 +1528,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767891501949</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="захуярил экспоненциальные кривые для жопстиков, чтоб КРИВЕНЬКО управлялось))00">
+      <option name="closed" value="true" />
+      <created>1767897345269</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1767897345269</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1577,7 +1577,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="ХДЕ МОИ ИНТИКИ" />
     <MESSAGE value="ЧОТА СДЕЛАЛ НО НЕ ВСЕ" />
     <MESSAGE value="НОРМАС НО МОЖНО ЛУЧШЕ" />
     <MESSAGE value="КУДА БУЛЫ СУКА ДЕЛИСЬ" />
@@ -1602,6 +1601,7 @@
     <MESSAGE value="неплохо выглядит - надо только кастомный рендер прихуярить ко всем варикам" />
     <MESSAGE value="заебок, hold пашет" />
     <MESSAGE value="че блядь АНХУЯ оно сосет эспрессивскую репу" />
-    <option name="LAST_COMMIT_MESSAGE" value="че блядь АНХУЯ оно сосет эспрессивскую репу" />
+    <MESSAGE value="захуярил экспоненциальные кривые для жопстиков, чтоб КРИВЕНЬКО управлялось))00" />
+    <option name="LAST_COMMIT_MESSAGE" value="захуярил экспоненциальные кривые для жопстиков, чтоб КРИВЕНЬКО управлялось))00" />
   </component>
 </project>

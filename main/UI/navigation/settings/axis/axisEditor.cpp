@@ -140,39 +140,6 @@ namespace pizda {
 			&Theme::accent2
 		);
 		
-		// Thumb
-		const auto thumbX = bounds.getX() + editor->getAxis()->getRawValue() * bounds.getWidth() / Axis::valueMax;
-		const auto thumbInWorkingRange = thumbX >= fromX && thumbX <= toX;
-		
-		renderer->renderVerticalLine(
-			Point(
-				thumbX,
-				bounds.getY()
-			),
-			bounds.getHeight(),
-			thumbInWorkingRange ? &Theme::accent1 : &Theme::bad1
-		);
-		
-		if (thumbInWorkingRange) {
-			const auto oldViewport = renderer->pushViewport(Bounds(
-				fromX,
-				bounds.getY(),
-				fillWidth,
-				bounds.getHeight()
-			));
-			
-			renderer->renderFilledCircle(
-				Point(
-					thumbX,
-					bounds.getY2() - bounds.getHeight() * editor->getAxis()->mapValue(editor->getAxis()->getRawValue()) / Axis::valueMax
-				),
-				2,
-				&Theme::fg1
-			);
-			
-			renderer->popViewport(oldViewport);
-		}
-		
 		// Side pins
 		const auto renderSidePin = [this, &renderer, &bounds](int32_t x, uint16_t settingsValue, bool to) {
 			const Color* bg;
@@ -190,7 +157,7 @@ namespace pizda {
 			// Line
 			renderer->renderVerticalLine(
 				Point(x, bounds.getY()),
-				bounds.getHeight() - Theme::cornerRadius,
+				bounds.getHeight(),
 				bg
 			);
 			
@@ -234,6 +201,40 @@ namespace pizda {
 			true
 		);
 		
+		// Thumb
+		const auto thumbX = bounds.getX() + editor->getAxis()->getRawValue() * bounds.getWidth() / Axis::valueMax;
+		const auto thumbInWorkingRange = thumbX >= fromX && thumbX <= toX;
+		
+		renderer->renderVerticalLine(
+			Point(
+				thumbX,
+				bounds.getY()
+			),
+			bounds.getHeight(),
+			thumbInWorkingRange ? &Theme::accent1 : &Theme::bad1
+		);
+		
+		if (thumbInWorkingRange) {
+			const auto oldViewport = renderer->pushViewport(Bounds(
+				fromX,
+				bounds.getY(),
+				fillWidth,
+				bounds.getHeight()
+			));
+			
+			renderer->renderFilledCircle(
+				Point(
+					thumbX,
+					bounds.getY2() - bounds.getHeight() * editor->getAxis()->mapValue(editor->getAxis()->getRawValue()) / Axis::valueMax
+				),
+				2,
+				&Theme::fg1
+			);
+			
+			renderer->popViewport(oldViewport);
+		}
+		
+		
 		Element::onRender(renderer, bounds);
 	}
 
@@ -245,10 +246,10 @@ namespace pizda {
 		setHeight(Theme::elementHeight);
 
 		// Invert button
-		_invertButton.setWidth(getSize().getHeight());
+		_invertButton.setWidth(Theme::elementHeight);
 		_invertButton.setHorizontalAlignment(Alignment::end);
 		_invertButton.setCornerRadius(Theme::cornerRadius);
-		_invertButton.setContentMargin(Margin(Theme::cornerRadius, 0, 0, 0));
+		_invertButton.setContentMargin(Margin(_invertButton.getCornerRadius(), 0, 0, 0));
 
 		_invertButton.setDefaultBackgroundColor(&Theme::bg3);
 		_invertButton.setActiveBackgroundColor(&Theme::fg1);
@@ -271,7 +272,7 @@ namespace pizda {
 		*this += &_invertButton;
 
 		// Track
-		_track.setMargin(Margin(0, 0, getSize().getHeight() - Theme::cornerRadius - 1, 0));
+		_track.setMargin(Margin(0, 0, _invertButton.getSize().getWidth() - _invertButton.getCornerRadius() - 1, 0));
 		*this += &_track;
 	}
 
