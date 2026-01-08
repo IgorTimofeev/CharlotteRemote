@@ -4,8 +4,8 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
-#include "utils/navigationData.h"
-#include <settings/settings.h>
+#include "types/navigationData.h"
+#include "types/settings/settings.h"
 #include "UI/theme.h"
 #include "aircraft.h"
 

@@ -8,43 +8,69 @@ namespace pizda {
 		if (event->getTypeID() == PointerDownEvent::typeID) {
 			const auto editor = getEditor();
 			const auto& bounds = getBounds();
-
-			const auto pointerX = reinterpret_cast<PointerDownEvent*>(event)->getPosition().getX();
-			const int32_t pointerValue = (pointerX - bounds.getX()) * Axis::maxValue / bounds.getWidth();
-
-			_selectedPin = std::abs(pointerValue - editor->getAxis()->getSettings()->to) <= std::abs(pointerValue - editor->getAxis()->getSettings()->from) ? SelectedPin::to : SelectedPin::from;
+			
+			pointerDownX = reinterpret_cast<PointerDownEvent*>(event)->getPosition().getX();
+			const int32_t ADCValue = (pointerDownX - bounds.getX()) * Axis::maxValue / bounds.getWidth();
+			
+			const auto range = editor->getAxis()->getSettings()->to - editor->getAxis()->getSettings()->from;
+			const auto middle = editor->getAxis()->getSettings()->from + range / 2;
+			
+			const auto fromDelta = std::abs(ADCValue - editor->getAxis()->getSettings()->from);
+			const auto middleDelta = std::abs(ADCValue - middle);
+			const auto toDelta = std::abs(ADCValue - editor->getAxis()->getSettings()->to);
+			
+			_selectedPin =
+				fromDelta < toDelta
+				? (
+					fromDelta < middleDelta
+					? SelectedPin::from
+					: SelectedPin::middle
+				)
+				: (
+					toDelta < middleDelta
+					? SelectedPin::to
+					: SelectedPin::middle
+				);
 
 			setCaptured(true);
 
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == PointerDragEvent::typeID) {
-			const auto editor = getEditor();
-			const auto settings = editor->getAxis()->getSettings();
+			const auto settings = getEditor()->getAxis()->getSettings();
 			const auto pointerX = reinterpret_cast<PointerDragEvent*>(event)->getPosition().getX();
 
-			const auto& bounds = getBounds();
-			const int32_t clampedTouchX = std::clamp(pointerX - bounds.getX(), static_cast<int32_t>(0), static_cast<int32_t>(bounds.getWidth()));
-
 			// Updating settings
-			const uint16_t value = clampedTouchX * Axis::maxValue / bounds.getWidth();
-
-			if (_selectedPin == SelectedPin::to) {
-				settings->to = std::max(settings->from, value);
+			if (_selectedPin == SelectedPin::middle) {
+				const auto deltaX = pointerX - pointerDownX;
+				pointerDownX = pointerX;
+				
+				settings->sensitivity = static_cast<uint8_t>(std::clamp<int16_t>(static_cast<int16_t>(settings->sensitivity) + deltaX * 0xFF / 100, 0x00, 0xFF));
 			}
 			else {
-				settings->from = std::min(settings->to, value);
+				const auto& bounds = getBounds();
+				
+				const auto posClamped = std::clamp<int32_t>(pointerX - bounds.getX(), 0, bounds.getWidth());
+				const uint16_t ADCValue = posClamped * Axis::maxValue / bounds.getWidth();
+				
+				if (_selectedPin == SelectedPin::from) {
+					settings->from = std::min(ADCValue, settings->to);
+				}
+				else {
+					settings->to = std::max(ADCValue, settings->from);
+				}
 			}
 
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == PointerUpEvent::typeID) {
 			_selectedPin = SelectedPin::none;
-
-			RC::getInstance().getSettings().axis.scheduleWrite();
-
+			pointerDownX = -1;
+			
 			setCaptured(false);
-
+			
+			RC::getInstance().getSettings().axis.scheduleWrite();
+			
 			event->setHandled(true);
 		}
 	}
@@ -57,9 +83,10 @@ namespace pizda {
 		renderer->renderRectangle(bounds, Theme::cornerRadius, &Theme::bg3);
 		
 		// Fill
+		const auto settingsDelta = editor->getAxis()->getSettings()->to - editor->getAxis()->getSettings()->from;
 		const int32_t fromX = bounds.getX() + editor->getAxis()->getSettings()->from * bounds.getWidth() / Axis::maxValue;
 		const int32_t toX = bounds.getX() + editor->getAxis()->getSettings()->to * bounds.getWidth() / Axis::maxValue;
-		const uint16_t fillWidth = toX - fromX;
+		const uint16_t fillWidth = toX - fromX + 1;
 		
 		renderer->renderFilledRectangle(
 			Bounds(
@@ -72,28 +99,72 @@ namespace pizda {
 			&Theme::bg3
 		);
 		
+		// Curve
+		Point curvePos0 {};
+		
+		for (int32_t i = 0; i < fillWidth; ++i) {
+			const auto ADCValue =
+				editor->getAxis()->getSettings()->from
+				+ settingsDelta * i / fillWidth;
+			
+			Point curvePos1 {
+				fromX + i,
+				bounds.getY2() - bounds.getHeight() * editor->getAxis()->mapValue(ADCValue) / Axis::maxValue
+			};
+			
+			if (i > 0) {
+				renderer->renderLine(
+					curvePos0,
+					curvePos1,
+					_selectedPin == SelectedPin::middle ? &Theme::fg1 : &Theme::bg4
+				);
+			}
+			
+			curvePos0 = curvePos1;
+		}
+		
 		// Middle line
 		renderer->renderVerticalLine(
-			Point(fromX + fillWidth / 2, bounds.getY()),
-			bounds.getHeight(),
-			&Theme::bg6
+			Point(fromX + fillWidth / 2, bounds.getY() + 1),
+			bounds.getHeight() - 1,
+			&Theme::accent2
 		);
 		
-		// Axis value thumb
-		constexpr uint16_t axisValueThumbWidth = 1;
+		// Thumb
+		const auto thumbX = bounds.getX() + editor->getAxis()->getRawValue() * bounds.getWidth() / Axis::maxValue;
+		const auto thumbInWorkingRange = thumbX >= fromX && thumbX <= toX;
 		
-		renderer->renderFilledRectangle(
-			Bounds(
-				bounds.getX() + axisValueThumbWidth / 2 + editor->getAxis()->getRawValue() * (bounds.getWidth() - axisValueThumbWidth) / Axis::maxValue,
-				bounds.getY(),
-				axisValueThumbWidth,
-				bounds.getHeight()
+		renderer->renderVerticalLine(
+			Point(
+				thumbX,
+				bounds.getY()
 			),
-			&Theme::accent1
+			bounds.getHeight(),
+			thumbInWorkingRange ? &Theme::accent1 : &Theme::bad1
 		);
 		
-		// Pins
-		const auto renderPin = [this, &renderer, &bounds](int32_t x, uint16_t settingsValue, bool to) {
+		if (thumbInWorkingRange) {
+			const auto oldViewport = renderer->pushViewport(Bounds(
+				fromX,
+				bounds.getY(),
+				fillWidth,
+				bounds.getHeight()
+			));
+			
+			renderer->renderFilledCircle(
+				Point(
+					thumbX,
+					bounds.getY2() - bounds.getHeight() * editor->getAxis()->mapValue(editor->getAxis()->getRawValue()) / Axis::maxValue
+				),
+				2,
+				&Theme::fg1
+			);
+			
+			renderer->popViewport(oldViewport);
+		}
+		
+		// Side pins
+		const auto renderSidePin = [this, &renderer, &bounds](int32_t x, uint16_t settingsValue, bool to) {
 			const Color* bg;
 			const Color* fg;
 			
@@ -141,13 +212,13 @@ namespace pizda {
 			);
 		};
 		
-		renderPin(
+		renderSidePin(
 			fromX,
 			editor->getAxis()->getSettings()->from,
 			false
 		);
 		
-		renderPin(
+		renderSidePin(
 			toX,
 			editor->getAxis()->getSettings()->to,
 			true
@@ -164,19 +235,19 @@ namespace pizda {
 		setHeight(Theme::elementHeight);
 
 		// Invert button
-		_invertButton.setWidth(Theme::elementHeight);
+		_invertButton.setWidth(getSize().getHeight());
 		_invertButton.setHorizontalAlignment(Alignment::end);
-
 		_invertButton.setCornerRadius(Theme::cornerRadius);
+		_invertButton.setContentMargin(Margin(Theme::cornerRadius, 0, 0, 0));
 
 		_invertButton.setDefaultBackgroundColor(&Theme::bg3);
 		_invertButton.setActiveBackgroundColor(&Theme::fg1);
 
 		_invertButton.setDefaultTextColor(&Theme::bg7);
 		_invertButton.setActiveTextColor(&Theme::bg2);
-
+		
 		_invertButton.setFont(&Theme::fontSmall);
-		_invertButton.setText(L"INV");
+		_invertButton.setText(L"<->");
 
 		_invertButton.setToggle(true);
 		_invertButton.setActive(_axis->getSettings()->inverted);
@@ -190,7 +261,7 @@ namespace pizda {
 		*this += &_invertButton;
 
 		// Track
-		_track.setMargin(Margin(0, 0, Theme::elementHeight - Theme::cornerRadius - 1, 0));
+		_track.setMargin(Margin(0, 0, getSize().getHeight() - Theme::cornerRadius - 1, 0));
 		*this += &_track;
 	}
 

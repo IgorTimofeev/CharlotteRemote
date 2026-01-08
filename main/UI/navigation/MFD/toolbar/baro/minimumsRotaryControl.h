@@ -7,23 +7,19 @@
 
 namespace pizda {
 	using namespace YOBA;
-
-	class LateralRotaryControlLNAV : public RotaryControlRenderable {
-		protected:
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
-	};
 	
-	class LateralRotaryControl : public SevenRotaryControl<3, 1, 360, true, 1, 10> {
+	class MinimumsRotaryControl : public SevenRotaryControl<4, 0, 15000, false, 1, 10> {
 		public:
-			LateralRotaryControl();
-			
-//			LateralRotaryControlLNAV LNAV {};
+			MinimumsRotaryControl();
 		
 		protected:
 			std::wstring_view variantIndexToTitle(uint8_t index) override;
 			bool isVariantEditable(uint8_t index) override;
-			void onTick() override;
-			void onPress() override;
 			void onRotate(bool clockwise, bool big) override;
+			void onPress() override;
+			void onTick() override;
+			
+		private:
+			void updateColor();
 	};
 }

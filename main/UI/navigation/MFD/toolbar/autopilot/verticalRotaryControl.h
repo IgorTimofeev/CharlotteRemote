@@ -23,8 +23,8 @@ namespace pizda {
 			VerticalRotaryControl();
 			
 			VerticalRotaryControlALT ALT {};
-			VerticalRotaryControlVNAV VNAV {};
-			
+//			VerticalRotaryControlVNAV VNAV {};
+		
 		protected:
 			std::wstring_view variantIndexToTitle(uint8_t index) override;
 			bool isVariantEditable(uint8_t index) override;

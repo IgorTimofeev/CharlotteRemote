@@ -1,4 +1,5 @@
 #include "settingsNavigation.h"
+
 #include "rc.h"
 
 namespace pizda {

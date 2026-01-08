@@ -35,29 +35,41 @@ namespace pizda {
 		if (!isFocused())
 			return;
 		
+		if (event->getTypeID() == PointerDownEvent::typeID) {
+			pointerX = reinterpret_cast<PointerDownEvent*>(event)->getPosition().getX();
+			
+			setCaptured(true);
+		}
+		else if (event->getTypeID() == PointerDragEvent::typeID) {
+			if (pointerX >= 0) {
+				const auto dragX = reinterpret_cast<PointerDragEvent*>(event)->getPosition().getX();
+				const auto deltaX = dragX - pointerX;
+				
+				if (std::abs(deltaX) >= 5) {
+					pointerX = dragX;
+					
+					onAnyRotate((std::abs(deltaX) >= 10 ? 10 : 5) * (deltaX >= 0 ? 1 : -1));
+				}
+			}
+		}
+		else if (event->getTypeID() == PointerUpEvent::typeID) {
+			pointerX = -1;
+			
+			setCaptured(false);
+		}
 		if (event->getTypeID() == EncoderValueChangedEvent::typeID) {
-			const auto rotateEvent = reinterpret_cast<EncoderValueChangedEvent*>(event);
-			
-			auto& rc = RC::getInstance();
-			
-			rc.getRemoteData().throttle_0_255 = addSaturating(rc.getRemoteData().throttle_0_255, rotateEvent->getDPSFactor(60, 1, 10) * 0xFF / 100);
-			rc.getAudioPlayer().playFeedback();
-			
-			invalidate();
+			onAnyRotate(reinterpret_cast<EncoderValueChangedEvent*>(event)->getDPSFactor(60, 10, 1));
 			
 			event->setHandled(true);
 		}
-		else if (event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
-			auto& rc = RC::getInstance();
-			
-			rc.getRemoteData().autopilot.autothrottle = !rc.getRemoteData().autopilot.autothrottle;
-			rc.getPacketHandler().enqueue(RemotePacketType::autopilot);
-			
-			rc.getAudioPlayer().playFeedback();
-			
-			invalidate();
-			
-			event->setHandled(true);
-		}
+	}
+	
+	void ThrottleSection::onAnyRotate(int32_t change) {
+		auto& rc = RC::getInstance();
+		
+		rc.getRemoteData().throttle_0_255 = addSaturating(rc.getRemoteData().throttle_0_255, change * 0xFF / 100);
+		rc.getAudioPlayer().playFeedback();
+		
+		invalidate();
 	}
 }

@@ -100,12 +100,12 @@ namespace pizda {
 			_application.tick();
 			_application.render();
 
- 			_statistics.tickDeltaTime = esp_timer_get_time() - tickStartTime;
+ 			_tickDeltaTime = esp_timer_get_time() - tickStartTime;
 
  			// Skipping remaining tick time if any
- 			if (_statistics.tickDeltaTime < config::application::UITickIntervalUs) {
+ 			if (_tickDeltaTime < config::application::UITickIntervalUs) {
 				// FreeRTOS tasks can be only delayed by ms, so...
-				const auto delayMs = (config::application::UITickIntervalUs - _statistics.tickDeltaTime) / 1000;
+				const auto delayMs = (config::application::UITickIntervalUs - _tickDeltaTime) / 1000;
 				
 				if (delayMs >= portTICK_PERIOD_MS) {
 					vTaskDelay(pdMS_TO_TICKS(delayMs));
@@ -285,10 +285,10 @@ namespace pizda {
 		return _navigationData;
 	}
 	
-	Statistics& RC::getStatistics() {
-		return _statistics;
+	uint32_t RC::getTickDeltaTime() const {
+		return _tickDeltaTime;
 	}
-
+	
 	Settings& RC::getSettings() {
 		return _settings;
 	}

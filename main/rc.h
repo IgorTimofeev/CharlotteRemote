@@ -14,7 +14,7 @@
 #include "UI/elements/debugOverlay.h"
 
 #include "config.h"
-#include "settings/settings.h"
+#include "types/settings/settings.h"
 
 #include "hardware/transceiver/packet.h"
 #include "hardware/transceiver/remotePacketHandler.h"
@@ -23,11 +23,10 @@
 #include "hardware/axis.h"
 #include "hardware/battery.h"
 
-#include "utils/remoteData.h"
-#include "utils/remoteData.h"
-#include "utils/aircraftData.h"
-#include "utils/navigationData.h"
-#include "utils/statistics.h"
+#include "types/remoteData.h"
+#include "types/remoteData.h"
+#include "types/aircraftData.h"
+#include "types/navigationData.h"
 
 #include "utils/lowPassFilter.h"
 
@@ -66,8 +65,9 @@ namespace pizda {
 			RemoteData& getRemoteData();
 			AircraftData& getAircraftData();
 			NavigationData& getNavigationData();
-			Statistics& getStatistics();
-
+			
+			uint32_t getTickDeltaTime() const;
+		
 		private:
 			constexpr static const char* _logTag = "Main";
 			
@@ -172,7 +172,7 @@ namespace pizda {
 			AircraftData _aircraftData {};
 			
 			NavigationData _navigationData {};
-			Statistics _statistics {};
+			uint32_t _tickDeltaTime = 0;
 			
 			int64_t _interpolationTickTime = 0;
 			

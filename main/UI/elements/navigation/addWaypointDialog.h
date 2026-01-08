@@ -8,7 +8,7 @@
 #include "UI/theme.h"
 #include <UI/elements/titler.h>
 #include <UI/elements/tabSelector.h>
-#include "utils/navigationData.h"
+#include "types/navigationData.h"
 
 namespace pizda {
 	using namespace YOBA;

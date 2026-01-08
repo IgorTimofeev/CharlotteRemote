@@ -1,0 +1,58 @@
+#include "referencePressureRotaryControl.h"
+
+#include "rc.h"
+
+namespace pizda {
+	ReferencePressureRotaryControl::ReferencePressureRotaryControl() {
+		setVariants({
+			&seven
+		});
+		
+		seven.setDecimalSeparatorIndex(0);
+		seven.setValue(RC::getInstance().getSettings().controls.referencePressurePa / 10);
+		
+		updateColor();
+	}
+	
+	std::wstring_view ReferencePressureRotaryControl::variantIndexToTitle(uint8_t index) {
+		return L"Baro";
+	}
+	
+	bool ReferencePressureRotaryControl::isVariantEditable(uint8_t index) {
+		return index == 0;
+	}
+	
+	void ReferencePressureRotaryControl::onRotate(bool clockwise, bool big) {
+		SevenRotaryControl::onRotate(clockwise, big);
+		
+		RC::getInstance().getSettings().controls.referencePressurePa = static_cast<uint16_t>(seven.getValue()) * 10;
+		RC::getInstance().getSettings().controls.scheduleWrite();
+		
+		RC::getInstance().getPacketHandler().enqueue(RemotePacketType::baro);
+	}
+	
+	void ReferencePressureRotaryControl::onPress() {
+		RotaryControl::onPress();
+		
+		RC::getInstance().getSettings().controls.referencePressureSTD = !RC::getInstance().getSettings().controls.referencePressureSTD;
+		RC::getInstance().getSettings().controls.scheduleWrite();
+		
+		updateColor();
+		
+		RC::getInstance().getPacketHandler().enqueue(RemotePacketType::baro);
+	}
+	
+	void ReferencePressureRotaryControl::onTick() {
+		RotaryControl::onTick();
+		
+		updateColor();
+	}
+	
+	void ReferencePressureRotaryControl::updateColor() {
+		setBorderColor(
+			RC::getInstance().getSettings().controls.referencePressureSTD
+			? &Theme::fg1
+			: nullptr
+		);
+	}
+}

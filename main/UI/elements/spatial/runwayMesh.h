@@ -8,8 +8,8 @@
 #include <YOBA/UI/spatial.h>
 
 #include "rc.h"
-#include <settings/settings.h>
-#include "utils/navigationData.h"
+#include "types/settings/settings.h"
+#include "types/navigationData.h"
 
 namespace pizda {
 	using namespace YOBA;

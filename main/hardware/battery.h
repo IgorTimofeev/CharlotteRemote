@@ -50,8 +50,7 @@ namespace pizda {
 			void tick() {
 				// Multisampling
 				int sample;
-
-				// ESP_ERROR_CHECK(adc_oneshot_read(*_unitHandle, _channel, &sample));
+				
 				ESP_ERROR_CHECK(adc_oneshot_get_calibrated_result(*_unitHandle, _caliHandle, _channel, &sample));
 
 				_sampleSum += sample;

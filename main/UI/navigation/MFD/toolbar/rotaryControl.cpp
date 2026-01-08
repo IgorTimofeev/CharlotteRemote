@@ -1,6 +1,7 @@
 #include "rotaryControl.h"
 
 #include "rc.h"
+#include "resources/sounds.h"
 
 namespace pizda {
 	
@@ -112,7 +113,12 @@ namespace pizda {
 		callOnPress = false;
 		variantSelectMode = !variantSelectMode;
 		
-		RC::getInstance().getAudioPlayer().playFeedback();
+		if (variantSelectMode) {
+			RC::getInstance().getAudioPlayer().playFeedback(resources::sounds::engaged);
+		}
+		else {
+			RC::getInstance().getAudioPlayer().playFeedback(resources::sounds::disengaged);
+		}
 	}
 	
 	void RotaryControl::onRender(Renderer* renderer, const Bounds& bounds) {
@@ -196,9 +202,11 @@ namespace pizda {
 		longPressTime = 0;
 		
 		if (callOnPress) {
-			onPress();
+			variantSelectMode = false;
 			
 			RC::getInstance().getAudioPlayer().playFeedback();
+			
+			onPress();
 		}
 	}
 	

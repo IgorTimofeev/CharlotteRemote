@@ -5,7 +5,7 @@
 
 #include "UI/theme.h"
 #include "UI/elements/dialogs/dialog.h"
-#include <settings/settings.h>
+#include "types/settings/settings.h"
 
 #include "menuView.h"
 #include "menuTabButton.h"

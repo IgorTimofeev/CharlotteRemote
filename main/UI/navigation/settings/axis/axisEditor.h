@@ -13,18 +13,18 @@ namespace pizda {
 	enum class SelectedPin : uint8_t {
 		none,
 		from,
+		middle,
 		to
 	};
 
 	class AxisEditorTrack : public Control {
-		public:
-
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 			void onEvent(Event* event) override;
 
 		private:
 			SelectedPin _selectedPin = SelectedPin::none;
+			int32_t pointerDownX = -1;
 
 			AxisEditor* getEditor() const;
 	};

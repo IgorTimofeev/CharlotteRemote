@@ -560,10 +560,6 @@ namespace pizda {
 				renderText(L"HDG", true);
 				break;
 			}
-			case AutopilotLateralMode::lnav: {
-				renderText(L"LNAV", true);
-				break;
-			}
 		}
 		
 		renderSeparator();
@@ -584,10 +580,6 @@ namespace pizda {
 			}
 			case AutopilotVerticalMode::flc: {
 				renderText(L"FLC", true);
-				break;
-			}
-			case AutopilotVerticalMode::vnav: {
-				renderText(L"VNAV", true);
 				break;
 			}
 		}

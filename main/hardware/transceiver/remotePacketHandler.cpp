@@ -261,7 +261,7 @@ namespace pizda {
 	
 	RemotePacketType RemotePacketHandler::getTransmitPacketType() {
 		switch (getRemoteState()) {
-			case AircraftState::aircraftCalibrating: {
+			case AircraftState::calibrating: {
 				return RemotePacketType::NOP;
 			}
 			default: {
@@ -349,11 +349,11 @@ namespace pizda {
 			);
 		};
 		
-		writeAxis(rc.getJoystickHorizontal().getValue());
-		writeAxis(rc.getJoystickVertical().getValue());
-		writeAxis(rc.getRing().getValue());
-		writeAxis(rc.getLeverRight().getValue());
-		writeAxis(rc.getLeverLeft().getValue());
+		writeAxis(rc.getJoystickHorizontal().getMappedValue());
+		writeAxis(rc.getJoystickVertical().getMappedValue());
+		writeAxis(rc.getRing().getMappedValue());
+		writeAxis(rc.getLeverRight().getMappedValue());
+		writeAxis(rc.getLeverLeft().getMappedValue());
 		
 		return true;
 	}

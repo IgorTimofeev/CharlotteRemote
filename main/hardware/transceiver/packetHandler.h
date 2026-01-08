@@ -16,7 +16,7 @@
 #include <bitStream.h>
 
 #include "config.h"
-#include "types.h"
+#include "types/generic.h"
 
 #include "hardware/transceiver/SX1262Transceiver.h"
 #include "hardware/transceiver/packet.h"

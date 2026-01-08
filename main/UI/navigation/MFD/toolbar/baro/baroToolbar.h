@@ -5,8 +5,8 @@
 #include "UI/theme.h"
 
 #include "UI/navigation/MFD/toolbar/toolbar.h"
-#include "UI/navigation/MFD/toolbar/toolbarSection.h"
-#include "UI/navigation/MFD/toolbar/rotaryControl.h"
+#include "UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.h"
+#include "UI/navigation/MFD/toolbar/baro/minimumsRotaryControl.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -15,7 +15,7 @@ namespace pizda {
 		public:
 			explicit BaroToolbar();
 
-//			RotaryControl<5, 9000, 11000, false, 1, 10> pressure { L"Baro" };
-//			RotaryControl<4, 0, 15000, false, 1, 10> minimums { L"Minimums" };
+			ReferencePressureRotaryControl pressure {};
+			MinimumsRotaryControl minimums {};
 	};
 }

@@ -9,9 +9,10 @@ namespace pizda {
 
 		// Rows
 		rows.setSpacing(Theme::spacing);
-		rows.setMargin(Margin(15));
+		// Bottom margin should be greater for nav menu button
+		rows.setMargin(Margin(15, 15, 15, 25));
 		scrollView += &rows;
-
+		
 		// Scroll views
 		Theme::apply(&scrollView);
 		*this += &scrollView;

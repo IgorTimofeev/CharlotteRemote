@@ -1,7 +1,7 @@
 #pragma once
 
 #include "esp_adc/adc_oneshot.h"
-#include <settings/settings.h>
+#include "types/settings/settings.h"
 
 namespace pizda {
 	class Axis {
@@ -10,17 +10,20 @@ namespace pizda {
 			
 			constexpr static uint8_t maxValueLengthBits = 12;
 			constexpr static uint16_t maxValue = (1 << maxValueLengthBits) - 1;
+			
+			constexpr static uint8_t sensitivityMax = 0xFF;
 
 			void setup() const;
 			void tick();
 
 			SettingsAxisData* getSettings() const;
-
+			
+			uint16_t mapValue(uint16_t rawValue);
+			
 			uint16_t getRawValue() const;
-			uint16_t getValue() const;
-			float getValueF() const;
-			uint8_t getValueUint8() const;
-			uint16_t getValueUint16() const;
+			uint16_t getMappedValue() const;
+			uint8_t getMappedValueUint8() const;
+			float getMappedValueFloat() const;
 
 		private:
 			adc_channel_t _channel;
@@ -28,7 +31,7 @@ namespace pizda {
 			SettingsAxisData* _settings;
 
 			uint16_t _rawValue = 0xFFFF;
-			uint16_t _processedValue = 0;
+			uint16_t _mappedValue = 0;
 
 	};
 }

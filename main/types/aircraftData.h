@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <YOBA/main.h>
 
-#include "types.h"
+#include "types/generic.h"
 
 namespace pizda {
 	using namespace YOBA;

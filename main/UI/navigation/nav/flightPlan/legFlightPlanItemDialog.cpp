@@ -1,7 +1,7 @@
 #include "legFlightPlanItemDialog.h"
 
 #include "rc.h"
-#include "utils/navigationData.h"
+#include "types/navigationData.h"
 #include "UI/theme.h"
 #include <UI/elements/navigation/selectWaypointDialog.h>
 

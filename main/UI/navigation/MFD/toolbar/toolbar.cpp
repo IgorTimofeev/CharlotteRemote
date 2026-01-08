@@ -16,6 +16,7 @@ namespace pizda {
 	RowToolbar::RowToolbar() {
 		// Row
 		row.setOrientation(Orientation::horizontal);
+		row.setSpacing(1);
 		row.setHorizontalAlignment(Alignment::center);
 		*this += &row;
 	}

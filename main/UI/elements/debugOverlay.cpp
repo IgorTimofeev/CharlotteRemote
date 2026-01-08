@@ -16,12 +16,11 @@ namespace pizda {
 	void DebugOverlay::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 		auto& app = rc.getApplication();
-		auto& st = rc.getStatistics();
 		auto& packetHandler = rc.getPacketHandler();
 
 		int32_t y = 0;
 
-		const auto totalDeltaTime = st.tickDeltaTime;
+		const auto totalDeltaTime = rc.getTickDeltaTime();
 
 		const auto renderLine = [&renderer, &y](const std::wstring_view text, const Color* color = &Theme::magenta, uint8_t scale = 1) {
 			renderer->renderString(Point(10, y), &Theme::fontNormal, color, text, scale);
