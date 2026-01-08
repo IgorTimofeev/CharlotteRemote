@@ -8,8 +8,8 @@ namespace pizda {
 		public:
 			Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, SettingsAxisData* settings);
 			
-			constexpr static uint8_t maxValueLengthBits = 12;
-			constexpr static uint16_t maxValue = (1 << maxValueLengthBits) - 1;
+			constexpr static uint8_t valueLengthBits = 12;
+			constexpr static uint16_t valueMax = (1 << valueLengthBits) - 1;
 			
 			constexpr static uint8_t sensitivityMax = 0xFF;
 

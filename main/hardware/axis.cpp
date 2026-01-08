@@ -20,53 +20,46 @@ namespace pizda {
 	}
 
 	void Axis::tick() {
-		int valueRaw;
-		ESP_ERROR_CHECK(adc_oneshot_read(*_unitHandle, _channel, &valueRaw));
+		int rawValue;
+		ESP_ERROR_CHECK(adc_oneshot_read(*_unitHandle, _channel, &rawValue));
 
 		// Inverting axis if required
 		if (_settings->inverted)
-			valueRaw = maxValue - valueRaw;
+			rawValue = valueMax - rawValue;
 
 		const auto& settings = RC::getInstance().getSettings();
 
 		// Initial measurement
 		if (_rawValue == 0xFFFF) {
-			_rawValue = valueRaw;
+			_rawValue = rawValue;
 		}
 		// Subsequent
 		else {
 			// Skipping insignificant ADC oscillations
-			if (std::abs(valueRaw - _rawValue) < settings.axis.jitteringCutoffValue)
+			if (std::abs(rawValue - _rawValue) < settings.axis.jitteringCutoffValue)
 				return;
 			
 			// Applying low pass filter for buttery smooth landings
-			_rawValue = _rawValue * (0xFFFF - settings.axis.lowPassFactor) / 0xFFFF + valueRaw * settings.axis.lowPassFactor / 0xFFFF;
+			_rawValue = _rawValue * (0xFFFF - settings.axis.lowPassFactor) / 0xFFFF + rawValue * settings.axis.lowPassFactor / 0xFFFF;
 		}
 		
-		_mappedValue = mapValue(valueRaw);
+		_mappedValue = mapValue(rawValue);
 	}
 	
 	uint16_t Axis::mapValue(uint16_t rawValue) {
-		const auto settingsDelta = _settings->to - _settings->from;
-		const auto maxValueDiv2 = maxValue / 2;
-		
-		auto rawValueClamped = static_cast<int32_t>(std::clamp(rawValue, _settings->from, _settings->to));
-		rawValueClamped = rawValueClamped * maxValue / settingsDelta;
-		rawValueClamped = rawValueClamped - maxValueDiv2;
-		
 		// Exponential sensitivity correction formula
 		// power = 3 (any odd power of raw value)
 		// corrected = raw * (1 - sensitivityFactor) + raw^power * sensitivityFactor
-		//
-		// but floating point arithmetics sucks! so...
-		const auto sensitivityMappedToMaxValue = static_cast<int32_t>(_settings->sensitivity) * maxValue / 0xFF;
 		
-		const auto pizda =
-			// Linear part
-			rawValueClamped * (static_cast<int32_t>(maxValue) - sensitivityMappedToMaxValue) / static_cast<int32_t>(maxValue)
-			;
+		const auto valueClamped = std::clamp(rawValue, _settings->from, _settings->to);
+		const auto valueFactor = (static_cast<float>(valueClamped) - _settings->from) / static_cast<float>(_settings->to - _settings->from) * 2.f - 1.f;
+		const auto sensitivityFactor = static_cast<float>(_settings->sensitivity) / static_cast<float>(sensitivityMax);
 		
-		return static_cast<uint16_t>(maxValueDiv2 + pizda);
+		const auto valueCorrectedFactor =
+			valueFactor * (1 - sensitivityFactor)
+			+ valueFactor * valueFactor * valueFactor * sensitivityFactor;
+		
+		return static_cast<uint16_t>(static_cast<float>(valueMax) * ((valueCorrectedFactor + 1.f) / 2.f));
 	}
 
 	uint16_t Axis::getRawValue() const {
@@ -78,11 +71,11 @@ namespace pizda {
 	}
 
 	uint8_t Axis::getMappedValueUint8() const {
-		return getMappedValue() * 0xFF / maxValue;
+		return getMappedValue() * 0xFF / valueMax;
 	}
 	
 	float Axis::getMappedValueFloat() const {
-		return static_cast<float>(getMappedValue()) / static_cast<float>(maxValue);
+		return static_cast<float>(getMappedValue()) / static_cast<float>(valueMax);
 	}
 
 	SettingsAxisData* Axis::getSettings() const {

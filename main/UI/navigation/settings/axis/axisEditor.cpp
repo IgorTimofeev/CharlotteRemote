@@ -10,7 +10,7 @@ namespace pizda {
 			const auto& bounds = getBounds();
 			
 			pointerDownX = reinterpret_cast<PointerDownEvent*>(event)->getPosition().getX();
-			const int32_t ADCValue = (pointerDownX - bounds.getX()) * Axis::maxValue / bounds.getWidth();
+			const int32_t ADCValue = (pointerDownX - bounds.getX()) * Axis::valueMax / bounds.getWidth();
 			
 			const auto range = editor->getAxis()->getSettings()->to - editor->getAxis()->getSettings()->from;
 			const auto middle = editor->getAxis()->getSettings()->from + range / 2;
@@ -19,19 +19,29 @@ namespace pizda {
 			const auto middleDelta = std::abs(ADCValue - middle);
 			const auto toDelta = std::abs(ADCValue - editor->getAxis()->getSettings()->to);
 			
-			_selectedPin =
-				fromDelta < toDelta
-				? (
-					fromDelta < middleDelta
-					? SelectedPin::from
-					: SelectedPin::middle
-				)
-				: (
-					toDelta < middleDelta
-					? SelectedPin::to
-					: SelectedPin::middle
-				);
-
+			// Range check comes first to prevent deadlock on edges
+			if (ADCValue <= editor->getAxis()->getSettings()->from) {
+				_selectedPin = SelectedPin::from;
+			}
+			else if (ADCValue >= editor->getAxis()->getSettings()->to) {
+				_selectedPin = SelectedPin::to;
+			}
+			// Normal case
+			else {
+				_selectedPin =
+					fromDelta < toDelta
+					? (
+						fromDelta < middleDelta
+						? SelectedPin::from
+						: SelectedPin::middle
+					)
+					: (
+						toDelta < middleDelta
+						? SelectedPin::to
+						: SelectedPin::middle
+					);
+			}
+			
 			setCaptured(true);
 
 			event->setHandled(true);
@@ -51,7 +61,7 @@ namespace pizda {
 				const auto& bounds = getBounds();
 				
 				const auto posClamped = std::clamp<int32_t>(pointerX - bounds.getX(), 0, bounds.getWidth());
-				const uint16_t ADCValue = posClamped * Axis::maxValue / bounds.getWidth();
+				const uint16_t ADCValue = posClamped * Axis::valueMax / bounds.getWidth();
 				
 				if (_selectedPin == SelectedPin::from) {
 					settings->from = std::min(ADCValue, settings->to);
@@ -84,8 +94,8 @@ namespace pizda {
 		
 		// Fill
 		const auto settingsDelta = editor->getAxis()->getSettings()->to - editor->getAxis()->getSettings()->from;
-		const int32_t fromX = bounds.getX() + editor->getAxis()->getSettings()->from * bounds.getWidth() / Axis::maxValue;
-		const int32_t toX = bounds.getX() + editor->getAxis()->getSettings()->to * bounds.getWidth() / Axis::maxValue;
+		const int32_t fromX = bounds.getX() + editor->getAxis()->getSettings()->from * bounds.getWidth() / Axis::valueMax;
+		const int32_t toX = bounds.getX() + editor->getAxis()->getSettings()->to * bounds.getWidth() / Axis::valueMax;
 		const uint16_t fillWidth = toX - fromX + 1;
 		
 		renderer->renderFilledRectangle(
@@ -109,7 +119,7 @@ namespace pizda {
 			
 			Point curvePos1 {
 				fromX + i,
-				bounds.getY2() - bounds.getHeight() * editor->getAxis()->mapValue(ADCValue) / Axis::maxValue
+				bounds.getY2() - bounds.getHeight() * editor->getAxis()->mapValue(ADCValue) / Axis::valueMax
 			};
 			
 			if (i > 0) {
@@ -131,7 +141,7 @@ namespace pizda {
 		);
 		
 		// Thumb
-		const auto thumbX = bounds.getX() + editor->getAxis()->getRawValue() * bounds.getWidth() / Axis::maxValue;
+		const auto thumbX = bounds.getX() + editor->getAxis()->getRawValue() * bounds.getWidth() / Axis::valueMax;
 		const auto thumbInWorkingRange = thumbX >= fromX && thumbX <= toX;
 		
 		renderer->renderVerticalLine(
@@ -154,7 +164,7 @@ namespace pizda {
 			renderer->renderFilledCircle(
 				Point(
 					thumbX,
-					bounds.getY2() - bounds.getHeight() * editor->getAxis()->mapValue(editor->getAxis()->getRawValue()) / Axis::maxValue
+					bounds.getY2() - bounds.getHeight() * editor->getAxis()->mapValue(editor->getAxis()->getRawValue()) / Axis::valueMax
 				),
 				2,
 				&Theme::fg1
@@ -185,7 +195,7 @@ namespace pizda {
 			);
 			
 			// Flag
-			const auto text = std::to_wstring(settingsValue * 100 / Axis::maxValue);
+			const auto text = std::to_wstring(settingsValue * 100 / Axis::valueMax);
 			constexpr uint8_t textOffsetX = 4;
 			constexpr uint8_t textOffsetY = 1;
 			

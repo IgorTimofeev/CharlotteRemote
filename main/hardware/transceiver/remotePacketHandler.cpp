@@ -344,7 +344,7 @@ namespace pizda {
 		
 		const auto writeAxis = [&stream](uint16_t axisValue) {
 			stream.writeUint16(
-				static_cast<uint16_t>(axisValue * ((1 << RemoteControlsPacket::motorLengthBits) - 1) / Axis::maxValue),
+				static_cast<uint16_t>(axisValue * ((1 << RemoteControlsPacket::motorLengthBits) - 1) / Axis::valueMax),
 				RemoteControlsPacket::motorLengthBits
 			);
 		};
