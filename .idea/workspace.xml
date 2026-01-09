@@ -160,34 +160,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ну че, довольно сексапильные флажки вышли">
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimControls.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimControls.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimToolbar.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimToolbar.h" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="чота хз нужен ли трим на самом самбике или это хуйня">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/sevenRotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/sevenRotaryControl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions/src/NVSStream.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions/src/NVSStream.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDTrimImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDTrimImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/settings/settingsAxis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/settingsAxis.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/types/settings/settingsControls.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/settingsControls.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/settings/settingsPersonalization.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/settingsPersonalization.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDTrim.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDTrim.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconMFDTrim.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconMFDTrim.psd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1166,15 +1144,7 @@
       <workItem from="1767865343262" duration="29741000" />
       <workItem from="1767900320210" duration="3375000" />
       <workItem from="1767950385691" duration="4139000" />
-      <workItem from="1767954591533" duration="8935000" />
-    </task>
-    <task id="LOCAL-00005" summary="пизда тут хуйни серануло в логи">
-      <option name="closed" value="true" />
-      <created>1766607624865</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1766607624865</updated>
+      <workItem from="1767954591533" duration="11169000" />
     </task>
     <task id="LOCAL-00006" summary="РАБОТАИТТТ!!!!">
       <option name="closed" value="true" />
@@ -1560,7 +1530,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767903887701</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="чота хз нужен ли трим на самом самбике или это хуйня">
+      <option name="closed" value="true" />
+      <created>1767967491822</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1767967491823</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1601,7 +1579,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="НОРМАС НО МОЖНО ЛУЧШЕ" />
     <MESSAGE value="КУДА БУЛЫ СУКА ДЕЛИСЬ" />
     <MESSAGE value="ахуй, хорошо поработали, можно  наградить себя чепсосами" />
     <MESSAGE value="захуярил циклическую обработку уголков, а то чета говной воняет, когда с -pi на pi переходишь" />
@@ -1626,6 +1603,7 @@
     <MESSAGE value="че блядь АНХУЯ оно сосет эспрессивскую репу" />
     <MESSAGE value="захуярил экспоненциальные кривые для жопстиков, чтоб КРИВЕНЬКО управлялось))00" />
     <MESSAGE value="ну че, довольно сексапильные флажки вышли" />
-    <option name="LAST_COMMIT_MESSAGE" value="ну че, довольно сексапильные флажки вышли" />
+    <MESSAGE value="чота хз нужен ли трим на самом самбике или это хуйня" />
+    <option name="LAST_COMMIT_MESSAGE" value="чота хз нужен ли трим на самом самбике или это хуйня" />
   </component>
 </project>

@@ -363,10 +363,14 @@ namespace pizda {
 	bool RemotePacketHandler::transmitRemoteTrimPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		
-		const auto write = [&stream](int16_t settingsValue) {
-			stream.writeInt16(
-				// Mapping from [-100; 100] to [-bits; bits]
-				settingsValue * ((1 << RemoteTrimPacket::valueLengthBits) - 1) / 200,
+		const auto write = [&stream](int8_t settingsValue) {
+			stream.writeUint16(
+				// Mapping from [-100; 100] to [0; bits]
+				static_cast<uint16_t>(
+					(static_cast<int16_t>(settingsValue) + 100)
+					* ((1 << RemoteTrimPacket::valueLengthBits) - 1)
+					/ 200
+				),
 				RemoteTrimPacket::valueLengthBits
 			);
 		};
