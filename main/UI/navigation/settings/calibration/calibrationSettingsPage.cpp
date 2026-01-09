@@ -16,9 +16,9 @@ namespace pizda {
 		_descriptionText.setWrappingEnabled(true);
 		
 		_descriptionText.setText(
-			LR"(It is advisable to calibrate the accelerometer and gyroscope only after changing the location of the MCU in the fuselage.
+			LR"(It is advisable to calibrate the accelerometer and gyroscope only after changing the location of the MCU in the fuselage
 
-The magnetometer should be calibrated each time the geolocation changes to account for the influence of parasitic magnetic fields from nearby metal structures.)"
+The magnetometer should be calibrated each time before first takeoff in new geolocation to take into account the influence of parasitic magnetic fields from nearby metal structures)"
 		);
 		
 		rows += &_descriptionText;
@@ -60,9 +60,9 @@ The magnetometer should be calibrated each time the geolocation changes to accou
 		
 		auto& rc = RC::getInstance();
 		
-		const auto calibration = rc.getAircraftData().raw.state == AircraftState::calibration;
+		const auto inProgress = rc.getAircraftData().raw.calibration.isInProgress();
 		
-		if (calibration) {
+		if (inProgress) {
 			_progressBar.setValue(rc.getAircraftData().raw.calibration.progress * 0xFFFF / 0xFF);
 			
 			_progressText.setText(std::format(
@@ -74,10 +74,10 @@ The magnetometer should be calibrated each time the geolocation changes to accou
 			));
 		}
 		
-		_progressBar.setVisible(calibration);
-		_progressText.setVisible(calibration);
+		_progressBar.setVisible(inProgress);
+		_progressText.setVisible(inProgress);
 		
-		_accelAndGyroButton.setVisible(!calibration);
-		_magButton.setVisible(!calibration);
+		_accelAndGyroButton.setVisible(!inProgress);
+		_magButton.setVisible(!inProgress);
 	}
 }

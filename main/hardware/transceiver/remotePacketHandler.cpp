@@ -49,7 +49,11 @@ namespace pizda {
 	}
 	
 	void RemotePacketHandler::enqueue(RemotePacketType type) {
-		_packetQueue.push(type);
+		_enqueuedPackets.push(type);
+	}
+	
+	void RemotePacketHandler::enqueueOnce(RemotePacketType type) {
+		_enqueuedOncePackets.insert(type);
 	}
 	
 	// -------------------------------- Receiving --------------------------------
@@ -93,8 +97,6 @@ namespace pizda {
 		
 		auto& rc = RC::getInstance();
 		auto& ad = rc.getAircraftData();
-		
-		ad.raw.state = AircraftState::normal;
 		
 		const auto airspeedPrevMPS = ad.raw.airspeedMPS;
 		const auto altitudePrevM = ad.raw.coordinates.getAltitude();
@@ -182,8 +184,6 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		auto& ad = rc.getAircraftData();
 		
-		ad.raw.state = AircraftState::normal;
-		
 		// -------------------------------- Throttle --------------------------------
 		
 		ad.raw.throttle_0_255 =
@@ -262,7 +262,6 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		auto& ad = rc.getAircraftData();
 		
-		ad.raw.state = AircraftState::calibration;
 		ad.raw.calibration.system = static_cast<AircraftCalibrationSystem>(stream.readUint8(AircraftCalibrationPacket::systemLengthBits));
 		ad.raw.calibration.progress = stream.readUint8(AircraftCalibrationPacket::progressLengthBits) * 0xFF / ((1 << AircraftCalibrationPacket::progressLengthBits) - 1);
 		
@@ -274,54 +273,43 @@ namespace pizda {
 	// -------------------------------- Transmitting --------------------------------
 	
 	RemotePacketType RemotePacketHandler::getTransmitPacketType() {
-		switch (RC::getInstance().getAircraftData().raw.state) {
-			case AircraftState::normal: {
-				const auto& item = _packetSequence[_packetSequenceIndex];
-				
-				const auto next = [this, &item]() {
-					_packetSequenceItemCounter++;
-					
-					if (_packetSequenceItemCounter < item.getCount())
-						return;
-					
-					_packetSequenceItemCounter = 0;
-					
-					_packetSequenceIndex++;
-					
-					if (_packetSequenceIndex >= _packetSequence.size())
-						_packetSequenceIndex = 0;
-				};
-				
-				// Enqueued
-				if (item.useEnqueued() && !_packetQueue.empty()) {
-					const auto packetType = _packetQueue.front();
-					_packetQueue.pop();
-					
-					next();
-					
-					return packetType;
-				}
-					// Normal
-				else {
-					const auto packetType = item.getType();
-					
-					next();
-					
-					return packetType;
-				}
-				
-			}
-			default: {
-				return RemotePacketType::NOP;
-			}
+		const auto& item = _packetSequence[_packetSequenceIndex];
+		
+		const auto next = [this, &item]() {
+			_packetSequenceItemCounter++;
+			
+			if (_packetSequenceItemCounter < item.getCount())
+				return;
+			
+			_packetSequenceItemCounter = 0;
+			
+			_packetSequenceIndex++;
+			
+			if (_packetSequenceIndex >= _packetSequence.size())
+				_packetSequenceIndex = 0;
+		};
+		
+		// Enqueued
+		if (item.useEnqueued() && !_enqueuedPackets.empty()) {
+			const auto packetType = _enqueuedPackets.front();
+			_enqueuedPackets.pop();
+			
+			next();
+			
+			return packetType;
+		}
+		// Normal
+		else {
+			const auto packetType = item.getType();
+			
+			next();
+			
+			return packetType;
 		}
 	}
 	
 	bool RemotePacketHandler::onTransmit(BitStream& stream, RemotePacketType packetType) {
 		switch (packetType) {
-			case RemotePacketType::NOP:
-				break;
-			
 			case RemotePacketType::controls:
 				transmitRemoteControlsPacket(stream);
 				break;

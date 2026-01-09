@@ -514,7 +514,8 @@ namespace pizda {
 	}
 	
 	void PFDScene::renderFlightModeAnnunciatorOverlay(Renderer* renderer, const Bounds& bounds) {
-		const auto& ad = RC::getInstance().getAircraftData();
+		auto& rc = RC::getInstance();
+		auto& ad = rc.getAircraftData();
 		
 		constexpr static uint8_t sectionCount = 3;
 		const auto sectionWidth = bounds.getWidth() / sectionCount;
@@ -535,53 +536,71 @@ namespace pizda {
 			x += sectionWidth;
 		};
 		
+		const auto renderMissingText = [&renderText]() {
+			renderText(L"---", false);
+		};
+		
 		const auto renderSeparator = [renderer, &x, &bounds]() {
 			renderer->renderVerticalLine(Point(x - 1, bounds.getY()), PFD::flightModeAnnunciatorHeight, &Theme::sky2);
 		};
 		
 		// Throttle
-		if (ad.raw.autopilot.autothrottle) {
-			renderText(L"A/T", true);
-			
+		if (rc.getPacketHandler().isConnected()) {
+			if (ad.raw.autopilot.autothrottle) {
+				renderText(L"A/T", true);
+			}
+			else {
+				renderText(L"MAN", false);
+			}
 		}
 		else {
-			renderText(L"MAN", false);
+			renderMissingText();
 		}
 		
 		renderSeparator();
 		
 		// Lateral
-		switch (ad.raw.autopilot.lateralMode) {
-			case AutopilotLateralMode::man: {
-				renderText(L"MAN", false);
-				break;
+		if (rc.getPacketHandler().isConnected()) {
+			switch (ad.raw.autopilot.lateralMode) {
+				case AutopilotLateralMode::man: {
+					renderText(L"MAN", false);
+					break;
+				}
+				case AutopilotLateralMode::hdg: {
+					renderText(L"HDG", true);
+					break;
+				}
 			}
-			case AutopilotLateralMode::hdg: {
-				renderText(L"HDG", true);
-				break;
-			}
+		}
+		else {
+			renderMissingText();
 		}
 		
 		renderSeparator();
 		
 		// Vertical
-		switch (ad.raw.autopilot.verticalMode) {
-			case AutopilotVerticalMode::man: {
-				renderText(L"MAN", false);
-				break;
+		if (rc.getPacketHandler().isConnected()) {
+			switch (ad.raw.autopilot.verticalMode) {
+				case AutopilotVerticalMode::man: {
+					renderText(L"MAN", false);
+					break;
+				}
+				case AutopilotVerticalMode::alt: {
+					renderText(L"ALT", true);
+					break;
+				}
+				case AutopilotVerticalMode::alts: {
+					renderText(L"ALTS", true);
+					break;
+				}
+				case AutopilotVerticalMode::flc: {
+					renderText(L"FLC", true);
+					break;
+				}
 			}
-			case AutopilotVerticalMode::alt: {
-				renderText(L"ALT", true);
-				break;
-			}
-			case AutopilotVerticalMode::alts: {
-				renderText(L"ALTS", true);
-				break;
-			}
-			case AutopilotVerticalMode::flc: {
-				renderText(L"FLC", true);
-				break;
-			}
+		}
+		else {
+			renderMissingText();
 		}
 	}
 	

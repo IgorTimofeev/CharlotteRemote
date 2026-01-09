@@ -2,8 +2,8 @@
 
 #include "packetHandler.h"
 
-#include <cmath>
-#include <functional>
+#include <queue>
+#include <set>
 
 #include <esp_log.h>
 
@@ -26,6 +26,7 @@ namespace pizda {
 	class RemotePacketHandler : public PacketHandler<RemotePacketType, AircraftPacketType> {
 		public:
 			void enqueue(RemotePacketType type);
+			void enqueueOnce(RemotePacketType type);
 			
 		protected:
 			[[noreturn]] void onStart() override;
@@ -45,7 +46,8 @@ namespace pizda {
 			uint8_t _packetSequenceIndex = 0;
 			uint8_t _packetSequenceItemCounter = 0;
 			
-			std::queue<RemotePacketType> _packetQueue {};
+			std::queue<RemotePacketType> _enqueuedPackets {};
+			std::set<RemotePacketType> _enqueuedOncePackets {};
 
 			bool receiveAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength);

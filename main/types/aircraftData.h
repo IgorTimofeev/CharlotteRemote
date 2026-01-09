@@ -33,13 +33,15 @@ namespace pizda {
 	class AircraftDataRawCalibration {
 		public:
 			AircraftCalibrationSystem system = AircraftCalibrationSystem::accelAndGyro;
-			uint8_t progress = 0;
+			uint8_t progress = 0xFF;
+			
+			bool isInProgress() {
+				return progress < 0xFF;
+			}
 	};
 	
 	class AircraftDataRaw {
 		public:
-			AircraftState state = AircraftState::normal;
-			
 			// Kronshtadt airfield in Saint-Petersburg for UI testing
 			// ПРИВЕТУЛИ ФЕДИНОЙ ДАМЕ СЕРДЦА
 			// Upd 26.12.26: а он подарит ей колечко с солнцем! Никто об этом не узнает, никто
