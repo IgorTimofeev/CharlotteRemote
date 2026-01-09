@@ -160,14 +160,20 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="по ходу все-таки нужен, над тогда щас нвс этот проапдейтить под int8">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="фух бля заебался чета малеха">
+      <change afterPath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/sevenRotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/sevenRotaryControl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimControls.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimControls.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimControls.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimControls.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/settings/settingsAxis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/settingsAxis.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/routes.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/routes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packetHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packetHandler.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remotePacketHandler.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/aircraftData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/generic.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/generic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/remoteData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/remoteData.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -226,7 +232,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/UI/navigation/MFD/toolbar/trim",
+    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/UI/navigation/settings",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -239,11 +245,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\settings" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\toolbar\trim" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\toolbar\baro" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\toolbar" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\toolbar\autopilot" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\types\settings" />
@@ -724,11 +730,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="apidoc" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1146,15 +1147,8 @@
       <workItem from="1767865343262" duration="29741000" />
       <workItem from="1767900320210" duration="3375000" />
       <workItem from="1767950385691" duration="4139000" />
-      <workItem from="1767954591533" duration="14004000" />
-    </task>
-    <task id="LOCAL-00007" summary="РАБОТАИТТТ!!!!">
-      <option name="closed" value="true" />
-      <created>1766610655602</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1766610655602</updated>
+      <workItem from="1767954591533" duration="14456000" />
+      <workItem from="1767992895149" duration="4857000" />
     </task>
     <task id="LOCAL-00008" summary="РАБОТАИТТТ!!!!">
       <option name="closed" value="true" />
@@ -1540,7 +1534,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767969906907</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="фух бля заебался чета малеха">
+      <option name="closed" value="true" />
+      <created>1767972621567</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1767972621567</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1581,7 +1583,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="ахуй, хорошо поработали, можно  наградить себя чепсосами" />
     <MESSAGE value="захуярил циклическую обработку уголков, а то чета говной воняет, когда с -pi на pi переходишь" />
     <MESSAGE value="ничего себе какая оказия! ебучие флайт директора ПАШУТ БАЛЯ" />
     <MESSAGE value="сука прикол директора ползают))) КРОСЕВА" />
@@ -1606,6 +1607,7 @@
     <MESSAGE value="ну че, довольно сексапильные флажки вышли" />
     <MESSAGE value="чота хз нужен ли трим на самом самбике или это хуйня" />
     <MESSAGE value="по ходу все-таки нужен, над тогда щас нвс этот проапдейтить под int8" />
-    <option name="LAST_COMMIT_MESSAGE" value="по ходу все-таки нужен, над тогда щас нвс этот проапдейтить под int8" />
+    <MESSAGE value="фух бля заебался чета малеха" />
+    <option name="LAST_COMMIT_MESSAGE" value="фух бля заебался чета малеха" />
   </component>
 </project>

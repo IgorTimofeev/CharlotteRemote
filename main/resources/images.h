@@ -22,6 +22,7 @@
 #include "resources/images/menuIconWaypointsImage.h"
 
 #include "resources/images/menuIconPersonalizationImage.h"
+#include "resources/images/menuIconCalibrationImage.h"
 #include "resources/images/menuIconAxisImage.h"
 #include "resources/images/menuIconDevImage.h"
 
@@ -48,6 +49,7 @@ namespace pizda::resources {
 			constexpr static MenuIconWaypointsImage menuIconWaypointsImage {};
 
 			constexpr static MenuIconPersonalizationImage menuIconPersonalization {};
+			constexpr static MenuIconCalibrationImage menuIconCalibration {};
 			constexpr static MenuIconAxisImage menuIconAxis {};
 			constexpr static MenuIconDevImage menuIconDev {};
 	};

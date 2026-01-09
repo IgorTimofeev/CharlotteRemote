@@ -8,6 +8,7 @@
 #include <UI/navigation/nav/waypoints/waypointsPage.h>
 
 #include <UI/navigation/settings/personalization/personalizationSettingsPage.h>
+#include <UI/navigation/settings/calibration/calibrationSettingsPage.h>
 #include <UI/navigation/settings/axis/axisSettingsPage.h>
 #include <UI/navigation/settings/developer/developerSettingsPage.h>
 
@@ -20,6 +21,7 @@ namespace pizda {
 			constexpr static ElementRoute<WaypointsPage> navWaypoints {};
 
 			constexpr static ElementRoute<PersonalizationSettingsPage> settingsPersonalization {};
+			constexpr static ElementRoute<CalibrationSettingsPage> settingsCalibration {};
 			constexpr static ElementRoute<AxisSettingsPage> settingsAxis {};
 			constexpr static ElementRoute<DeveloperSettingsPage> settingsDeveloper {};
 	};

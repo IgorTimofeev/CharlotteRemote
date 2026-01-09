@@ -23,7 +23,7 @@ namespace pizda {
 			bool _useEnqueued;
 	};
 	
-	class RemotePacketHandler : public PacketHandler<RemoteState, RemotePacketType, AircraftState, AircraftPacketType> {
+	class RemotePacketHandler : public PacketHandler<RemotePacketType, AircraftPacketType> {
 		public:
 			void enqueue(RemotePacketType type);
 			
@@ -47,17 +47,15 @@ namespace pizda {
 			
 			std::queue<RemotePacketType> _packetQueue {};
 
-			bool receiveAircraftCalibrationPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength);
+			bool receiveAircraftCalibrationPacket(BitStream& stream, uint8_t payloadLength);
 			
-			bool transmitNOPPacket(BitStream& stream);
-			bool transmitRemoteControlsPacket(BitStream& stream);
-			bool transmitRemoteTrimPacket(BitStream& settingsValue);
-			bool transmitRemoteLightsPacket(BitStream& stream);
-			bool transmitRemoteBaroPacket(BitStream& stream);
-			bool transmitRemoteAutopilotPacket(BitStream& stream);
-	
-			
+			void transmitRemoteControlsPacket(BitStream& stream);
+			void transmitRemoteTrimPacket(BitStream& settingsValue);
+			void transmitRemoteLightsPacket(BitStream& stream);
+			void transmitRemoteBaroPacket(BitStream& stream);
+			void transmitRemoteAutopilotPacket(BitStream& stream);
+			void transmitRemoteCalibratePacket(BitStream& stream);
 	};
 }

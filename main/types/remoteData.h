@@ -30,5 +30,6 @@ namespace pizda {
 			
 			RemoteDataLights lights {};
 			RemoteDataAutopilot autopilot {};
+			AircraftCalibrationSystem calibrationSystem = AircraftCalibrationSystem::accelAndGyro;
 	};
 }
