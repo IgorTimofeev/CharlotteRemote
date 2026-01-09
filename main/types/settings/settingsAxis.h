@@ -48,7 +48,7 @@ namespace pizda {
 				joystickHorizontal.from = stream.readUint16(_joystickHorizontalFrom, 778);
 				joystickHorizontal.to = stream.readUint16(_joystickHorizontalTo, 2744);
 				joystickHorizontal.sensitivity = stream.readUint8(_joystickHorizontalSensitivity, 0);
-				joystickHorizontal.invertOutput = stream.readBool(_joystickHorizontalInverted, true);
+				joystickHorizontal.invertOutput = stream.readBool(_joystickHorizontalInverted, false);
 
 				joystickVertical.from = stream.readUint16(_joystickVerticalFrom, 1474);
 				joystickVertical.to = stream.readUint16(_joystickVerticalTo, 3031);
@@ -58,7 +58,7 @@ namespace pizda {
 				ring.from = stream.readUint16(_ringFrom, 0);
 				ring.to = stream.readUint16(_ringTo, 3768);
 				ring.sensitivity = stream.readUint8(_ringSensitivity, 0x00);
-				ring.invertOutput = stream.readBool(_ringInverted, true);
+				ring.invertOutput = stream.readBool(_ringInverted, false);
 
 				lowPassFactor = stream.readUint16(_lowPassFactor, 0xFFFF * 75 / 100);
 				jitteringCutoffValue = stream.readUint8(_jitteringCutoffValue, 30);

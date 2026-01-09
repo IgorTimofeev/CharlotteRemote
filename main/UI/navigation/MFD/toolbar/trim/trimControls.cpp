@@ -3,7 +3,7 @@
 #include "rc.h"
 
 namespace pizda {
-	TrimControl::TrimControl(std::wstring_view title, int16_t* settingsValue) : _title(title), _settingsValue(settingsValue) {
+	TrimControl::TrimControl(std::wstring_view title, int8_t* settingsValue) : _title(title), _settingsValue(settingsValue) {
 		seven.setSignVisible(true);
 		seven.setValue(*_settingsValue);
 		

@@ -35,10 +35,10 @@ namespace pizda {
 					
 					if (cycling) {
 						if (newValue > maximum) {
-							newValue = maximum;
+							newValue = minimum;
 						}
 						else if (newValue < minimum) {
-							newValue = minimum;
+							newValue = maximum;
 						}
 						
 						seven.setValue(newValue);

@@ -10,7 +10,7 @@ namespace pizda {
 	
 	class TrimControl : public SevenRotaryControl<4, -100, 100, false, 1, 10> {
 		public:
-			TrimControl(std::wstring_view title, int16_t* settingsValue);
+			TrimControl(std::wstring_view title, int8_t* settingsValue);
 			
 		protected:
 			std::wstring_view variantIndexToTitle(uint8_t index) override;
@@ -19,6 +19,6 @@ namespace pizda {
 			
 		private:
 			std::wstring _title;
-			int16_t* _settingsValue;
+			int8_t* _settingsValue;
 	};
 }
