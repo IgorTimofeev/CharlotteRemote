@@ -6,7 +6,12 @@
 #include "rc.h"
 
 namespace pizda {
-	Axis::Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, SettingsAxisData* settings) : _channel(channel), _unitHandle(unitHandle), _settings(settings) {
+	Axis::Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, bool invertInput, SettingsAxisData* settings) :
+		_channel(channel),
+		_unitHandle(unitHandle),
+		_invertInput(invertInput),
+		_settings(settings)
+	{
 
 	}
 
@@ -22,11 +27,11 @@ namespace pizda {
 	void Axis::tick() {
 		int rawValue;
 		ESP_ERROR_CHECK(adc_oneshot_read(*_unitHandle, _channel, &rawValue));
-
-		// Inverting axis if required
-		if (_settings->inverted)
+		
+		// Inverting input if required
+		if (_invertInput)
 			rawValue = valueMax - rawValue;
-
+		
 		const auto& settings = RC::getInstance().getSettings();
 
 		// Initial measurement
@@ -44,6 +49,10 @@ namespace pizda {
 		}
 		
 		_mappedValue = mapValue(rawValue);
+		
+		// Inverting output if required
+		if (_settings->invertOutput)
+			_mappedValue = valueMax - _mappedValue;
 	}
 	
 	uint16_t Axis::mapValue(uint16_t rawValue) {

@@ -34,11 +34,13 @@ namespace pizda {
 			MFDModeMenuViewButton
 				autopilotButton { &resources::images::menuIconMFDAutopilot, L"A/P", SettingsPersonalizationMFDToolbarMode::autopilot },
 				pressureButton { &resources::images::menuIconMFDBaro, L"BARO", SettingsPersonalizationMFDToolbarMode::baro },
+				trimButton { &resources::images::menuIconMFDTrim, L"Trim", SettingsPersonalizationMFDToolbarMode::trim },
 				lightsButton { &resources::images::menuIconMFDLights, L"Lights", SettingsPersonalizationMFDToolbarMode::lights };
 
-			std::array<MFDModeMenuViewButton*, 3> modeButtons {
+			std::array<MFDModeMenuViewButton*, 4> modeButtons {
 				&autopilotButton,
 				&pressureButton,
+				&trimButton,
 				&lightsButton
 			};
 

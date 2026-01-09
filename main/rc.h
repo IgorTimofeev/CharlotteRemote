@@ -114,47 +114,52 @@ namespace pizda {
 			// Axis
 			int64_t _axisTickTimeUs = 0;
 
-			Axis _leverLeft = Axis(
+			Axis _leverLeft {
 				&config::adc::oneshotUnit,
 				config::axis::leverLeft::channel,
+				config::axis::leverLeft::invertInput,
 				&_settings.axis.leverLeft
-			);
+			};
 
-			Axis _leverRight = Axis(
+			Axis _leverRight {
 				&config::adc::oneshotUnit,
 				config::axis::leverRight::channel,
+				config::axis::leverRight::invertInput,
 				&_settings.axis.leverRight
-			);
+			};
 
-			Axis _joystickHorizontal = Axis(
+			Axis _joystickHorizontal {
 				&config::adc::oneshotUnit,
 				config::axis::joystickHorizontal::channel,
+				config::axis::joystickHorizontal::invertInput,
 				&_settings.axis.joystickHorizontal
-			);
+			};
 
-			Axis _joystickVertical = Axis(
+			Axis _joystickVertical {
 				&config::adc::oneshotUnit,
 				config::axis::joystickVertical::channel,
+				config::axis::joystickVertical::invertInput,
 				&_settings.axis.joystickVertical
-			);
+			};
 
-			Axis _ring = Axis(
+			Axis _ring {
 				&config::adc::oneshotUnit,
 				config::axis::ring::channel,
+				config::axis::ring::invertInput,
 				&_settings.axis.ring
-			);
+			};
 
-			Battery _battery = Battery(
+			Battery _battery {
 				config::adc::unit,
 				&config::adc::oneshotUnit,
 				config::battery::channel,
-
+				
 				config::battery::voltageMin,
 				config::battery::voltageMax,
-
+				
 				config::battery::voltageDividerR1,
 				config::battery::voltageDividerR2
-			);
+			};
 
 			// -------------------------------- UI --------------------------------
 

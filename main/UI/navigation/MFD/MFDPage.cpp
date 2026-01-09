@@ -43,6 +43,9 @@ namespace pizda {
 		if (_baroToolbar && settings.personalization.MFD.toolbar.mode != SettingsPersonalizationMFDToolbarMode::baro)
 			_baroToolbar = nullptr;
 		
+		if (_trimToolbar && settings.personalization.MFD.toolbar.mode != SettingsPersonalizationMFDToolbarMode::trim)
+			_trimToolbar = nullptr;
+		
 		if (_lightsToolbar && settings.personalization.MFD.toolbar.mode != SettingsPersonalizationMFDToolbarMode::lights)
 			_lightsToolbar = nullptr;
 		
@@ -63,6 +66,15 @@ namespace pizda {
 				
 				_rows.setAutoSize(_baroToolbar, true);
 				_rows += _baroToolbar;
+				
+				break;
+			}
+			case SettingsPersonalizationMFDToolbarMode::trim: {
+				if (!_trimToolbar)
+					_trimToolbar = new TrimToolbar();
+				
+				_rows.setAutoSize(_trimToolbar, true);
+				_rows += _trimToolbar;
 				
 				break;
 			}

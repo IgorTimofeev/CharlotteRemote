@@ -6,7 +6,7 @@
 namespace pizda {
 	class Axis {
 		public:
-			Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, SettingsAxisData* settings);
+			Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, bool invertInput, SettingsAxisData* settings);
 			
 			constexpr static uint8_t valueLengthBits = 12;
 			constexpr static uint16_t valueMax = (1 << valueLengthBits) - 1;
@@ -28,6 +28,7 @@ namespace pizda {
 		private:
 			adc_channel_t _channel;
 			adc_oneshot_unit_handle_t* _unitHandle;
+			bool _invertInput;
 			SettingsAxisData* _settings;
 
 			uint16_t _rawValue = 0xFFFF;

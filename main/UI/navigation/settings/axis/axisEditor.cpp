@@ -261,10 +261,10 @@ namespace pizda {
 		_invertButton.setText(L"<->");
 
 		_invertButton.setToggle(true);
-		_invertButton.setActive(_axis->getSettings()->inverted);
+		_invertButton.setActive(_axis->getSettings()->invertOutput);
 
 		_invertButton.click += [this] {
-			_axis->getSettings()->inverted = _invertButton.isActive();
+			_axis->getSettings()->invertOutput = _invertButton.isActive();
 
 			RC::getInstance().getSettings().axis.scheduleWrite();
 		};

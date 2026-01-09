@@ -8,7 +8,7 @@
 namespace pizda {
 	using namespace YOBA;
 	
-	template<uint8_t digitCount, uint32_t minimum, uint32_t maximum, bool cycling, uint16_t smallChange, uint16_t bigChange>
+	template<uint8_t digitCount, int32_t minimum, int32_t maximum, bool cycling, uint16_t smallChange, uint16_t bigChange>
 	class SevenRotaryControl : public RotaryControl {
 		public:
 			SevenRotaryControl() {
@@ -31,20 +31,20 @@ namespace pizda {
 				if (getVariantIndex() == 0) {
 					const auto change = static_cast<int32_t>(big ? bigChange : smallChange) * (clockwise ? 1 : -1);
 					
-					auto newValue = static_cast<int32_t>(seven.getValue()) + change;
+					auto newValue = seven.getValue() + change;
 					
 					if (cycling) {
-						if (newValue > static_cast<int32_t>(maximum)) {
-							newValue = static_cast<int32_t>(minimum);
+						if (newValue > maximum) {
+							newValue = maximum;
 						}
-						else if (newValue < static_cast<int32_t>(minimum)) {
-							newValue = static_cast<int32_t>(maximum);
+						else if (newValue < minimum) {
+							newValue = minimum;
 						}
 						
-						seven.setValue(static_cast<uint32_t>(newValue));
+						seven.setValue(newValue);
 					}
 					else {
-						seven.setValue(static_cast<uint32_t>(std::clamp<int32_t>(newValue, minimum, maximum)));
+						seven.setValue(std::clamp(newValue, minimum, maximum));
 					}
 				}
 			}

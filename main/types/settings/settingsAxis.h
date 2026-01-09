@@ -16,7 +16,7 @@ namespace pizda {
 			uint16_t from = 0;
 			uint16_t to = 0;
 			uint8_t sensitivity = 0;
-			bool inverted = false;
+			bool invertOutput = false;
 	};
 
 	class SettingsAxis: public NVSSettings {
@@ -38,27 +38,27 @@ namespace pizda {
 				leverLeft.from = stream.readUint16(_leverLeftFrom, 0);
 				leverLeft.to = stream.readUint16(_leverLeftTo, 4096);
 				leverLeft.sensitivity = stream.readUint8(_leverLeftSensitivity, 0);
-				leverLeft.inverted = stream.readBool(_leverLeftInverted, false);
+				leverLeft.invertOutput = stream.readBool(_leverLeftInverted, false);
 
 				leverRight.from = stream.readUint16(_leverRightFrom, 0);
 				leverRight.to = stream.readUint16(_leverRightTo, 4096);
 				leverRight.sensitivity = stream.readUint8(_leverRightSensitivity, 0);
-				leverRight.inverted = stream.readBool(_leverRightInverted, false);
+				leverRight.invertOutput = stream.readBool(_leverRightInverted, false);
 
 				joystickHorizontal.from = stream.readUint16(_joystickHorizontalFrom, 778);
 				joystickHorizontal.to = stream.readUint16(_joystickHorizontalTo, 2744);
 				joystickHorizontal.sensitivity = stream.readUint8(_joystickHorizontalSensitivity, 0);
-				joystickHorizontal.inverted = stream.readBool(_joystickHorizontalInverted, true);
+				joystickHorizontal.invertOutput = stream.readBool(_joystickHorizontalInverted, true);
 
 				joystickVertical.from = stream.readUint16(_joystickVerticalFrom, 1474);
 				joystickVertical.to = stream.readUint16(_joystickVerticalTo, 3031);
 				joystickVertical.sensitivity = stream.readUint8(_joystickVerticalSensitivity, 0);
-				joystickVertical.inverted = stream.readBool(_joystickVerticalInverted, false);
+				joystickVertical.invertOutput = stream.readBool(_joystickVerticalInverted, false);
 
 				ring.from = stream.readUint16(_ringFrom, 0);
 				ring.to = stream.readUint16(_ringTo, 3768);
 				ring.sensitivity = stream.readUint8(_ringSensitivity, 0x00);
-				ring.inverted = stream.readBool(_ringInverted, true);
+				ring.invertOutput = stream.readBool(_ringInverted, true);
 
 				lowPassFactor = stream.readUint16(_lowPassFactor, 0xFFFF * 75 / 100);
 				jitteringCutoffValue = stream.readUint8(_jitteringCutoffValue, 30);
@@ -68,27 +68,27 @@ namespace pizda {
 				stream.writeUint16(_leverLeftFrom, leverLeft.from);
 				stream.writeUint16(_leverLeftTo, leverLeft.to);
 				stream.writeUint8(_leverLeftSensitivity, leverLeft.sensitivity);
-				stream.writeBool(_leverLeftInverted, leverLeft.inverted);
+				stream.writeBool(_leverLeftInverted, leverLeft.invertOutput);
 
 				stream.writeUint16(_leverRightFrom, leverRight.from);
 				stream.writeUint16(_leverRightTo, leverRight.to);
 				stream.writeUint8(_leverRightSensitivity, leverRight.sensitivity);
-				stream.writeBool(_leverRightInverted, leverRight.inverted);
+				stream.writeBool(_leverRightInverted, leverRight.invertOutput);
 
 				stream.writeUint16(_joystickHorizontalFrom, joystickHorizontal.from);
 				stream.writeUint16(_joystickHorizontalTo, joystickHorizontal.to);
 				stream.writeUint8(_joystickHorizontalSensitivity, joystickHorizontal.sensitivity);
-				stream.writeBool(_joystickHorizontalInverted, joystickHorizontal.inverted);
+				stream.writeBool(_joystickHorizontalInverted, joystickHorizontal.invertOutput);
 
 				stream.writeUint16(_joystickVerticalFrom, joystickVertical.from);
 				stream.writeUint16(_joystickVerticalTo, joystickVertical.to);
 				stream.writeUint8(_joystickVerticalSensitivity, joystickVertical.sensitivity);
-				stream.writeBool(_joystickVerticalInverted, joystickVertical.inverted);
+				stream.writeBool(_joystickVerticalInverted, joystickVertical.invertOutput);
 
 				stream.writeUint16(_ringFrom, ring.from);
 				stream.writeUint16(_ringTo, ring.to);
 				stream.writeUint8(_ringSensitivity, ring.sensitivity);
-				stream.writeBool(_ringInverted, ring.inverted);
+				stream.writeBool(_ringInverted, ring.invertOutput);
 
 				stream.writeUint16(_lowPassFactor, lowPassFactor);
 				stream.writeUint8(_jitteringCutoffValue, jitteringCutoffValue);

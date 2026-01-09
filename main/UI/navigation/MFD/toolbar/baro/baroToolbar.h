@@ -13,7 +13,10 @@ namespace pizda {
 
 	class BaroToolbar : public RowToolbar {
 		public:
-			explicit BaroToolbar();
+			BaroToolbar() {
+				row += &pressure;
+				row += &minimums;
+			}
 
 			ReferencePressureRotaryControl pressure {};
 			MinimumsRotaryControl minimums {};

@@ -53,6 +53,7 @@ namespace pizda {
 			
 			bool transmitNOPPacket(BitStream& stream);
 			bool transmitRemoteControlsPacket(BitStream& stream);
+			bool transmitRemoteTrimPacket(BitStream& settingsValue);
 			bool transmitRemoteLightsPacket(BitStream& stream);
 			bool transmitRemoteBaroPacket(BitStream& stream);
 			bool transmitRemoteAutopilotPacket(BitStream& stream);

@@ -76,26 +76,31 @@ namespace pizda {
 					class leverLeft {
 						public:
 							constexpr static adc_channel_t channel = ADC_CHANNEL_0;
+							constexpr static bool invertInput = true;
 					};
 
 					class leverRight {
 						public:
 							constexpr static adc_channel_t channel = ADC_CHANNEL_3;
+							constexpr static bool invertInput = true;
 					};
 
 					class joystickHorizontal {
 						public:
 							constexpr static adc_channel_t channel = ADC_CHANNEL_7;
+							constexpr static bool invertInput = true;
 					};
 
 					class joystickVertical {
 						public:
 							constexpr static adc_channel_t channel = ADC_CHANNEL_5;
+							constexpr static bool invertInput = false;
 					};
 
 					class ring {
 						public:
 							constexpr static adc_channel_t channel = ADC_CHANNEL_6;
+							constexpr static bool invertInput = true;
 					};
 			};
 	

@@ -9,6 +9,7 @@
 #include "toolbar/main/mainToolbar.h"
 #include "toolbar/autopilot/autopilotToolbar.h"
 #include "toolbar/baro/baroToolbar.h"
+#include "toolbar/trim/trimToolbar.h"
 #include "toolbar/lights/lightsToolbar.h"
 
 namespace pizda {
@@ -33,6 +34,7 @@ namespace pizda {
 			MainToolbar _mainToolbar {};
 			AutopilotToolbar* _autopilotToolbar = nullptr;
 			BaroToolbar* _baroToolbar = nullptr;
+			TrimToolbar* _trimToolbar = nullptr;
 			LightsToolbar* _lightsToolbar = nullptr;
 
 			void fromSettingsInstance();

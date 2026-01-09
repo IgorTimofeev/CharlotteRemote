@@ -310,6 +310,9 @@ namespace pizda {
 			case RemotePacketType::controls:
 				return transmitRemoteControlsPacket(stream);
 			
+			case RemotePacketType::trim:
+				return transmitRemoteTrimPacket(stream);
+			
 			case RemotePacketType::lights:
 				return transmitRemoteLightsPacket(stream);
 			
@@ -332,13 +335,12 @@ namespace pizda {
 	
 	bool RemotePacketHandler::transmitRemoteControlsPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
-		auto& rd = rc.getRemoteData();
 		
 		// Motors
 		
 		// Throttle
 		stream.writeUint16(
-			rd.throttle_0_255 * ((1 << RemoteControlsPacket::motorLengthBits) - 1) / 0xFF,
+			rc.getRemoteData().throttle_0_255 * ((1 << RemoteControlsPacket::motorLengthBits) - 1) / 0xFF,
 			RemoteControlsPacket::motorLengthBits
 		);
 		
@@ -354,6 +356,24 @@ namespace pizda {
 		writeAxis(rc.getRing().getMappedValue());
 		writeAxis(rc.getLeverRight().getMappedValue());
 		writeAxis(rc.getLeverLeft().getMappedValue());
+		
+		return true;
+	}
+	
+	bool RemotePacketHandler::transmitRemoteTrimPacket(BitStream& stream) {
+		auto& rc = RC::getInstance();
+		
+		const auto write = [&stream](int16_t settingsValue) {
+			stream.writeInt16(
+				// Mapping from [-100; 100] to [-bits; bits]
+				settingsValue * ((1 << RemoteTrimPacket::valueLengthBits) - 1) / 200,
+				RemoteTrimPacket::valueLengthBits
+			);
+		};
+		
+		write(rc.getSettings().controls.aileronsTrim);
+		write(rc.getSettings().controls.elevatorTrim);
+		write(rc.getSettings().controls.rudderTrim);
 		
 		return true;
 	}
