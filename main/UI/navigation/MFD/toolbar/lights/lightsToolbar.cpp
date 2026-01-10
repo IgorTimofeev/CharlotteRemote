@@ -13,7 +13,7 @@ namespace pizda {
 		navigation.pressed += [this, &rc] {
 			rc.getRemoteData().lights.navigation = !rc.getAircraftData().raw.lights.navigation;
 			
-			rc.getPacketHandler().enqueue(RemotePacketType::lights);
+			rc.getCommunicationManager().enqueue(RemotePacketType::lights);
 			
 			rc.getAudioPlayer().playFeedback();
 		};
@@ -24,7 +24,7 @@ namespace pizda {
 		strobe.pressed += [this, &rc] {
 			rc.getRemoteData().lights.strobe = !rc.getAircraftData().raw.lights.strobe;
 			
-			rc.getPacketHandler().enqueue(RemotePacketType::lights);
+			rc.getCommunicationManager().enqueue(RemotePacketType::lights);
 			
 			rc.getAudioPlayer().playFeedback();
 		};
@@ -35,7 +35,7 @@ namespace pizda {
 		landing.pressed += [this, &rc] {
 			rc.getRemoteData().lights.landing = !rc.getAircraftData().raw.lights.landing;
 			
-			rc.getPacketHandler().enqueue(RemotePacketType::lights);
+			rc.getCommunicationManager().enqueue(RemotePacketType::lights);
 			
 			rc.getAudioPlayer().playFeedback();
 		};
@@ -46,7 +46,7 @@ namespace pizda {
 		cabin.pressed += [this, &rc] {
 			rc.getRemoteData().lights.cabin = !rc.getAircraftData().raw.lights.cabin;
 			
-			rc.getPacketHandler().enqueue(RemotePacketType::lights);
+			rc.getCommunicationManager().enqueue(RemotePacketType::lights);
 			
 			rc.getAudioPlayer().playFeedback();
 		};

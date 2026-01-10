@@ -1,4 +1,4 @@
-#include "remotePacketHandler.h"
+#include "remoteCommunicationManager.h"
 
 #include <utility>
 
@@ -28,7 +28,7 @@ namespace pizda {
 	
 	// -------------------------------- Generic --------------------------------
 	
-	void RemotePacketHandler::onStart() {
+	void RemoteCommunicationManager::onStart() {
 		ESP_LOGI(_logTag, "started");
 		
 		while (true) {
@@ -37,28 +37,29 @@ namespace pizda {
 		}
 	}
 	
-	void RemotePacketHandler::onIsConnectedChanged() {
+	void RemoteCommunicationManager::onIsConnectedChanged() {
 		auto& rc = RC::getInstance();
 		
 		if (isConnected()) {
 			rc.getAudioPlayer().play(resources::sounds::transceiverConnect);
 		}
 		else {
+			RC::getInstance().getAircraftData().raw.calibration.checkValidTime();
+			
 			rc.getAudioPlayer().play(resources::sounds::transceiverDisconnect);
 		}
 	}
 	
-	void RemotePacketHandler::enqueue(RemotePacketType type) {
-		_enqueuedPackets.push(type);
-	}
 	
-	void RemotePacketHandler::enqueueOnce(RemotePacketType type) {
-		_enqueuedOncePackets.insert(type);
+	void RemoteCommunicationManager::enqueue(RemotePacketType type) {
+		_enqueuedPackets.insert(type);
 	}
 	
 	// -------------------------------- Receiving --------------------------------
 	
-	bool RemotePacketHandler::onReceive(BitStream& stream, AircraftPacketType packetType, uint8_t payloadLength) {
+	bool RemoteCommunicationManager::onReceive(BitStream& stream, AircraftPacketType packetType, uint8_t payloadLength) {
+		RC::getInstance().getAircraftData().raw.calibration.checkValidTime();
+		
 		switch (packetType) {
 			case AircraftPacketType::ADIRS:
 				return receiveAircraftADIRSPacket(stream, payloadLength);
@@ -76,7 +77,7 @@ namespace pizda {
 		}
 	}
 	
-	bool RemotePacketHandler::receiveAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength) {
+	bool RemoteCommunicationManager::receiveAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength) {
 		if (!validatePayloadChecksumAndLength(
 			stream,
 			AircraftADIRSPacket::rollLengthBits
@@ -161,7 +162,7 @@ namespace pizda {
 		return true;
 	}
 	
-	bool RemotePacketHandler::receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength) {
+	bool RemoteCommunicationManager::receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength) {
 		if (!validatePayloadChecksumAndLength(
 			stream,
 			AircraftAuxiliaryPacket::throttleLengthBits
@@ -191,8 +192,9 @@ namespace pizda {
 			* 0xFF
 			/ ((1 << AircraftAuxiliaryPacket::throttleLengthBits) - 1);
 		
-		// -------------------------------- Latitude --------------------------------
+		// -------------------------------- Latitude & longitude --------------------------------
 		
+		// Latitude
 		// 25 bits per [-90; 90] deg
 		// [0.0; 1.0]
 		const auto latFactor =
@@ -203,8 +205,7 @@ namespace pizda {
 		const auto lat = latFactor * std::numbers::pi_v<float> - std::numbers::pi_v<float> / 2.f;
 		ad.raw.coordinates.setLatitude(lat);
 		
-		// -------------------------------- Longitude --------------------------------
-		
+		// Longitude
 		// 26 bits per [0; 360] deg
 		// [0.0; 1.0]
 		const auto lonFactor =
@@ -234,7 +235,7 @@ namespace pizda {
 		ad.raw.autopilot.verticalMode = static_cast<AutopilotVerticalMode>(stream.readUint8(AircraftAuxiliaryPacket::autopilotVerticalModeLengthBits));
 		
 		// Altitude for ALT/VNAV modes
-		ad.raw.autopilot.altitudeM = readAltitude(
+		ad.raw.autopilot.targetAltitudeM = readAltitude(
 			stream,
 			AircraftAuxiliaryPacket::autopilotAltitudeLengthBits,
 			AircraftAuxiliaryPacket::autopilotAltitudeMinM,
@@ -250,7 +251,7 @@ namespace pizda {
 		return true;
 	}
 	
-	bool RemotePacketHandler::receiveAircraftCalibrationPacket(BitStream& stream, uint8_t payloadLength) {
+	bool RemoteCommunicationManager::receiveAircraftCalibrationPacket(BitStream& stream, uint8_t payloadLength) {
 		if (!validatePayloadChecksumAndLength(
 			stream,
 			AircraftCalibrationPacket::systemLengthBits
@@ -264,6 +265,7 @@ namespace pizda {
 		
 		ad.raw.calibration.system = static_cast<AircraftCalibrationSystem>(stream.readUint8(AircraftCalibrationPacket::systemLengthBits));
 		ad.raw.calibration.progress = stream.readUint8(AircraftCalibrationPacket::progressLengthBits) * 0xFF / ((1 << AircraftCalibrationPacket::progressLengthBits) - 1);
+		ad.raw.calibration.setCalibrating(ad.raw.calibration.progress < 0xFF);
 		
 //		ESP_LOGI(_logTag, "calibration progress: %d", ad.raw.calibration.progress * 100 / 0xFF);
 		
@@ -272,7 +274,7 @@ namespace pizda {
 	
 	// -------------------------------- Transmitting --------------------------------
 	
-	RemotePacketType RemotePacketHandler::getTransmitPacketType() {
+	RemotePacketType RemoteCommunicationManager::getTransmitPacketType() {
 		const auto& item = _packetSequence[_packetSequenceIndex];
 		
 		const auto next = [this, &item]() {
@@ -291,14 +293,14 @@ namespace pizda {
 		
 		// Enqueued
 		if (item.useEnqueued() && !_enqueuedPackets.empty()) {
-			const auto packetType = _enqueuedPackets.front();
-			_enqueuedPackets.pop();
+			const auto packetType = *_enqueuedPackets.begin();
+			_enqueuedPackets.erase(packetType);
 			
 			next();
 			
 			return packetType;
 		}
-		// Normal
+			// Normal
 		else {
 			const auto packetType = item.getType();
 			
@@ -308,7 +310,7 @@ namespace pizda {
 		}
 	}
 	
-	bool RemotePacketHandler::onTransmit(BitStream& stream, RemotePacketType packetType) {
+	bool RemoteCommunicationManager::onTransmit(BitStream& stream, RemotePacketType packetType) {
 		switch (packetType) {
 			case RemotePacketType::controls:
 				transmitRemoteControlsPacket(stream);
@@ -343,7 +345,7 @@ namespace pizda {
 		return true;
 	}
 	
-	void RemotePacketHandler::transmitRemoteControlsPacket(BitStream& stream) {
+	void RemoteCommunicationManager::transmitRemoteControlsPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		
 		// Motors
@@ -368,7 +370,7 @@ namespace pizda {
 		writeAxis(rc.getLeverLeft().getMappedValue());
 	}
 	
-	void RemotePacketHandler::transmitRemoteTrimPacket(BitStream& stream) {
+	void RemoteCommunicationManager::transmitRemoteTrimPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		
 		const auto write = [&stream](int8_t settingsValue) {
@@ -388,7 +390,7 @@ namespace pizda {
 		write(rc.getSettings().controls.rudderTrim);
 	}
 	
-	void RemotePacketHandler::transmitRemoteLightsPacket(BitStream& stream) {
+	void RemoteCommunicationManager::transmitRemoteLightsPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		auto& rd = rc.getRemoteData();
 		
@@ -398,7 +400,7 @@ namespace pizda {
 		stream.writeBool(rd.lights.cabin);
 	}
 	
-	void RemotePacketHandler::transmitRemoteBaroPacket(BitStream& stream) {
+	void RemoteCommunicationManager::transmitRemoteBaroPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		auto& settings = rc.getSettings();
 		auto& rd = rc.getRemoteData();
@@ -410,7 +412,7 @@ namespace pizda {
 		);
 	}
 	
-	void RemotePacketHandler::transmitRemoteAutopilotPacket(BitStream& stream) {
+	void RemoteCommunicationManager::transmitRemoteAutopilotPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		auto& settings = rc.getSettings();
 		auto& rd = rc.getRemoteData();
@@ -455,9 +457,11 @@ namespace pizda {
 		stream.writeBool(rd.autopilot.autopilot);
 	}
 	
-	void RemotePacketHandler::transmitRemoteCalibratePacket(BitStream& stream) {
+	void RemoteCommunicationManager::transmitRemoteCalibratePacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		
 		stream.writeUint8(std::to_underlying(rc.getRemoteData().calibrationSystem), RemoteCalibratePacket::systemLengthBits);
+		
+//		ESP_LOGI(_logTag, "Sending calibrate packet");
 	}
 }

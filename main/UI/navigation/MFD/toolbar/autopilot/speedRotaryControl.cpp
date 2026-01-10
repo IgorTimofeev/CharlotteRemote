@@ -25,7 +25,7 @@ namespace pizda {
 		RC::getInstance().getSettings().autopilot.speedKt = static_cast<uint16_t>(seven.getValue());
 		RC::getInstance().getSettings().autopilot.scheduleWrite();
 		
-		RC::getInstance().getPacketHandler().enqueue(RemotePacketType::autopilot);
+		RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::autopilot);
 	}
 	
 	void SpeedRotaryControl::onPress() {
@@ -33,7 +33,7 @@ namespace pizda {
 
 		RC::getInstance().getRemoteData().autopilot.autothrottle = !RC::getInstance().getRemoteData().autopilot.autothrottle;
 		
-		RC::getInstance().getPacketHandler().enqueue(RemotePacketType::autopilot);
+		RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::autopilot);
 	}
 	
 	void SpeedRotaryControl::onTick() {

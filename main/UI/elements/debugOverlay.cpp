@@ -16,7 +16,7 @@ namespace pizda {
 	void DebugOverlay::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 		auto& app = rc.getApplication();
-		auto& packetHandler = rc.getPacketHandler();
+		auto& communicationManager = rc.getCommunicationManager();
 
 		int32_t y = 0;
 
@@ -49,8 +49,8 @@ namespace pizda {
 		renderTimeLine(L"Render", app.getRenderDeltaTime());
 		renderTimeLine(L"Flush", app.getFlushDeltaTime());
 		
-		renderLine(std::format(L"RX: {} ms", packetHandler.getRxDurationUs() / 1000));
-		renderLine(std::format(L"TX: {} ms", packetHandler.getTxDurationUs() / 1000));
+		renderLine(std::format(L"RX: {} ms", communicationManager.getRxDurationUs() / 1000));
+		renderLine(std::format(L"TX: {} ms", communicationManager.getTxDurationUs() / 1000));
 
 		renderLine(std::format(L"Total: {} ms", totalDeltaTime / 1000));
 	}

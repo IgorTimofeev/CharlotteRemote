@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <YOBA/main.h>
 
+#include <esp_timer.h>
+
 #include "types/generic.h"
 
 namespace pizda {
@@ -16,7 +18,7 @@ namespace pizda {
 			AutopilotLateralMode lateralMode = AutopilotLateralMode::man;
 			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::man;
 			
-			int16_t altitudeM = 0;
+			int16_t targetAltitudeM = 0;
 			
 			bool autothrottle = false;
 			bool autopilot = false;
@@ -33,11 +35,28 @@ namespace pizda {
 	class AircraftDataRawCalibration {
 		public:
 			AircraftCalibrationSystem system = AircraftCalibrationSystem::accelAndGyro;
-			uint8_t progress = 0xFF;
+			uint8_t progress = 0;
 			
-			bool isInProgress() {
-				return progress < 0xFF;
+			bool isCalibrating() {
+				return _calibrating;
 			}
+			
+			void setCalibrating(bool state) {
+				_calibrating = state;
+				_validUntil = _calibrating ? esp_timer_get_time() + 1'000'000 : 0;
+			}
+			
+			void checkValidTime() {
+				if (_validUntil == 0 || esp_timer_get_time() < _validUntil)
+					return;
+				
+				_calibrating = false;
+				_validUntil = 0;
+			}
+			
+		private:
+			bool _calibrating = false;
+			int64_t _validUntil = 0;
 	};
 	
 	class AircraftDataRaw {

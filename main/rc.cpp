@@ -66,8 +66,8 @@ namespace pizda {
 		if (!_transceiver.setup())
 			startErrorLoop("failed to setup XCVR");
 		
-		_packetHandler.setTransceiver(&_transceiver);
-		_packetHandler.start();
+		_communicationManager.setTransceiver(&_transceiver);
+		_communicationManager.start();
 		
 		// Application
 		_application.setRenderer(&_renderer);
@@ -431,16 +431,12 @@ namespace pizda {
 			_pageLayout += _route->buildElement();
 	}
 
-	OpenMenuButton& RC::getOpenMenuButton() {
-		return _openMenuButton;
-	}
-
 	SX1262Transceiver& RC::getTransceiver() {
 		return _transceiver;
 	}
 	
-	RemotePacketHandler& RC::getPacketHandler() {
-		return _packetHandler;
+	RemoteCommunicationManager& RC::getCommunicationManager() {
+		return _communicationManager;
 	}
 	
 	void RC::startErrorLoop(const char* error) {

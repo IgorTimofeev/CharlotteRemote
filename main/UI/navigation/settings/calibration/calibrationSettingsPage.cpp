@@ -38,7 +38,7 @@ The magnetometer should be calibrated each time before first takeoff in new geol
 		
 		_accelAndGyroButton.click += []() {
 			RC::getInstance().getRemoteData().calibrationSystem = AircraftCalibrationSystem::accelAndGyro;
-			RC::getInstance().getPacketHandler().enqueue(RemotePacketType::calibrate);
+			RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::calibrate);
 		};
 		
 		rows += &_accelAndGyroButton;
@@ -49,7 +49,7 @@ The magnetometer should be calibrated each time before first takeoff in new geol
 		
 		_magButton.click += []() {
 			RC::getInstance().getRemoteData().calibrationSystem = AircraftCalibrationSystem::mag;
-			RC::getInstance().getPacketHandler().enqueue(RemotePacketType::calibrate);
+			RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::calibrate);
 		};
 		
 		rows += &_magButton;
@@ -60,9 +60,9 @@ The magnetometer should be calibrated each time before first takeoff in new geol
 		
 		auto& rc = RC::getInstance();
 		
-		const auto inProgress = rc.getAircraftData().raw.calibration.isInProgress();
+		const auto calibrating = rc.getAircraftData().raw.calibration.isCalibrating();
 		
-		if (inProgress) {
+		if (calibrating) {
 			_progressBar.setValue(rc.getAircraftData().raw.calibration.progress * 0xFFFF / 0xFF);
 			
 			_progressText.setText(std::format(
@@ -74,10 +74,10 @@ The magnetometer should be calibrated each time before first takeoff in new geol
 			));
 		}
 		
-		_progressBar.setVisible(inProgress);
-		_progressText.setVisible(inProgress);
+		_progressBar.setVisible(calibrating);
+		_progressText.setVisible(calibrating);
 		
-		_accelAndGyroButton.setVisible(!inProgress);
-		_magButton.setVisible(!inProgress);
+		_accelAndGyroButton.setVisible(!calibrating);
+		_magButton.setVisible(!calibrating);
 	}
 }

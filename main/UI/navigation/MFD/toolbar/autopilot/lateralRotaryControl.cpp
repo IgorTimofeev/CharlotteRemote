@@ -53,7 +53,7 @@ namespace pizda {
 		RC::getInstance().getSettings().autopilot.headingDeg = static_cast<uint16_t>(seven.getValue());
 		RC::getInstance().getSettings().autopilot.scheduleWrite();
 		
-		RC::getInstance().getPacketHandler().enqueue(RemotePacketType::autopilot);
+		RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::autopilot);
 	}
 	
 	void LateralRotaryControl::onPress() {
@@ -65,8 +65,8 @@ namespace pizda {
 			RC::getInstance().getRemoteData().autopilot.lateralMode == newMode
 			? AutopilotLateralMode::man
 			: newMode;
-			
-		RC::getInstance().getPacketHandler().enqueue(RemotePacketType::autopilot);
+		
+		RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::autopilot);
 	}
 	
 	void LateralRotaryControl::onTick() {

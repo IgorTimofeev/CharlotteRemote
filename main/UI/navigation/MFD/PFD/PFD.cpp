@@ -545,7 +545,7 @@ namespace pizda {
 		};
 		
 		// Throttle
-		if (rc.getPacketHandler().isConnected()) {
+		if (rc.getCommunicationManager().isConnected()) {
 			if (ad.raw.autopilot.autothrottle) {
 				renderText(L"A/T", true);
 			}
@@ -560,7 +560,7 @@ namespace pizda {
 		renderSeparator();
 		
 		// Lateral
-		if (rc.getPacketHandler().isConnected()) {
+		if (rc.getCommunicationManager().isConnected()) {
 			switch (ad.raw.autopilot.lateralMode) {
 				case AutopilotLateralMode::man: {
 					renderText(L"MAN", false);
@@ -579,7 +579,7 @@ namespace pizda {
 		renderSeparator();
 		
 		// Vertical
-		if (rc.getPacketHandler().isConnected()) {
+		if (rc.getCommunicationManager().isConnected()) {
 			switch (ad.raw.autopilot.verticalMode) {
 				case AutopilotVerticalMode::man: {
 					renderText(L"MAN", false);
@@ -868,7 +868,7 @@ namespace pizda {
 	}
 
 	void PFD::renderCurrentValue(Renderer* renderer, const Bounds& bounds, uint8_t digitCount, float value, bool left) {
-		const auto isConnected = RC::getInstance().getPacketHandler().isConnected();
+		const auto isConnected = RC::getInstance().getCommunicationManager().isConnected();
 		const auto bg = isConnected ? &Theme::bg2 : &Theme::bad3;
 		const auto x2 = bounds.getX2();
 		const auto yCenter = bounds.getYCenter();
@@ -1445,7 +1445,7 @@ namespace pizda {
 				centerY
 				- static_cast<int32_t>(
 					(
-						Units::convertDistance(static_cast<float>(rc.getAircraftData().raw.autopilot.altitudeM), DistanceUnit::meter, DistanceUnit::foot)
+						Units::convertDistance(static_cast<float>(rc.getAircraftData().raw.autopilot.targetAltitudeM), DistanceUnit::meter, DistanceUnit::foot)
 						- altitude
 					)
 					* static_cast<float>(altitudeStepPixels)

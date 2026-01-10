@@ -17,7 +17,7 @@
 #include "types/settings/settings.h"
 
 #include "hardware/transceiver/packet.h"
-#include "hardware/transceiver/remotePacketHandler.h"
+#include "hardware/transceiver/remoteCommunicationManager.h"
 #include "hardware/transceiver/transceiver.h"
 #include "hardware/audio/audioPlayer.h"
 #include "hardware/axis.h"
@@ -53,10 +53,8 @@ namespace pizda {
 			Axis& getRing();
 			Battery& getBattery();
 			SX1262Transceiver& getTransceiver();
-			RemotePacketHandler& getPacketHandler();
+			RemoteCommunicationManager& getCommunicationManager();
 			
-			OpenMenuButton& getOpenMenuButton();
-
 			void updateDebugOverlayVisibility();
 
 			const Route* getRoute() const;
@@ -102,7 +100,7 @@ namespace pizda {
 			
 			// Transceiver
 			SX1262Transceiver _transceiver {};
-			RemotePacketHandler _packetHandler {};
+			RemoteCommunicationManager _communicationManager {};
 			
 			// Encoder
 			PushButtonEncoder _encoder {
