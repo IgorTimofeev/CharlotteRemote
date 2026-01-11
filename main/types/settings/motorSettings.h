@@ -4,41 +4,24 @@
 
 #include <NVSSettings.h>
 
+#include "types/generic.h"
+
 namespace pizda {
 	using namespace YOBA;
 	
-	class SettingsMotor {
+	class MotorSettings : public NVSSettings {
 		public:
-			uint16_t min = 1000;
-			uint16_t max = 2000;
-			uint16_t startup = 1500;
-			int16_t offset = 0;
-			bool reverse = false;
+			MotorConfiguration throttle {};
+			MotorConfiguration noseWheel {};
 			
-			void sanitize() {
-				min = std::clamp<uint16_t>(min, 100, 2900);
-				max = std::clamp<uint16_t>(max, 100, 2900);
-				
-				if (max < min)
-					std::swap(max, min);
-				
-				startup = std::clamp(startup, min, max);
-			}
-	};
-	
-	class SettingsMotors : public NVSSettings {
-		public:
-			SettingsMotor throttle {};
-			SettingsMotor noseWheel {};
+			MotorConfiguration aileronLeft {};
+			MotorConfiguration aileronRight {};
 			
-			SettingsMotor aileronLeft {};
-			SettingsMotor aileronRight {};
+			MotorConfiguration flapRight {};
+			MotorConfiguration flapLeft {};
 			
-			SettingsMotor flapRight {};
-			SettingsMotor flapLeft {};
-			
-			SettingsMotor tailLeft {};
-			SettingsMotor tailRight {};
+			MotorConfiguration tailLeft {};
+			MotorConfiguration tailRight {};
 
 		protected:
 			const char* getNamespace() override {
@@ -278,7 +261,7 @@ namespace pizda {
 			
 			static void readMotor(
 				const NVSStream& stream,
-				SettingsMotor& motor,
+				MotorConfiguration& motor,
 				
 				const char* minKey,
 				const char* maxKey,
@@ -295,7 +278,7 @@ namespace pizda {
 			
 			static void writeMotor(
 				const NVSStream& stream,
-				const SettingsMotor& motor,
+				const MotorConfiguration& motor,
 				
 				const char* minKey,
 				const char* maxKey,

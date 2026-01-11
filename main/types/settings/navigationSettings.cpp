@@ -1,13 +1,13 @@
-#include "settingsNavigation.h"
+#include "navigationSettings.h"
 
 #include "rc.h"
 
 namespace pizda {
-	const char* SettingsNavigation::getNamespace() {
+	const char* NavigationSettings::getNamespace() {
 		return _namespace;
 	}
 
-	void SettingsNavigation::onRead(const NVSStream& stream) {
+	void NavigationSettings::onRead(const NVSStream& stream) {
 		auto& nd = RC::getInstance().getNavigationData();
 
 		nd.clear();
@@ -21,7 +21,7 @@ namespace pizda {
 				return;
 			}
 
-			const auto waypoints = std::make_unique<SettingsNavigationWaypoint[]>(waypointsSize);
+			const auto waypoints = std::make_unique<NavigationSettingsWaypoint[]>(waypointsSize);
 			stream.readObject(_waypointsList, waypoints.get(), waypointsSize);
 
 			nd.waypoints.reserve(waypointsSize);
@@ -42,7 +42,7 @@ namespace pizda {
 			const auto RNAVWaypointsSize = stream.readUint16(_RNAVWaypointsSize, 0);
 
 			if (RNAVWaypointsSize > 0) {
-				const auto RNAVWaypoints = std::make_unique<SettingsNavigationRNAVWaypoint[]>(RNAVWaypointsSize);
+				const auto RNAVWaypoints = std::make_unique<NavigationSettingsRNAVWaypoint[]>(RNAVWaypointsSize);
 				stream.readObject(_RNAVWaypointsList, RNAVWaypoints.get(), RNAVWaypointsSize);
 
 				nd.RNAVWaypoints.reserve(RNAVWaypointsSize);
@@ -62,7 +62,7 @@ namespace pizda {
 			const auto airportSize = stream.readUint16(_airportsSize, 0);
 
 			if (airportSize > 0) {
-				const auto airports = std::make_unique<SettingsNavigationAirport[]>(airportSize);
+				const auto airports = std::make_unique<NavigationSettingsAirport[]>(airportSize);
 				stream.readObject(_airportsList, airports.get(), airportSize);
 
 				nd.airports.reserve(airportSize);
@@ -83,7 +83,7 @@ namespace pizda {
 			const auto runwaysSize = stream.readUint32(_runwaysSize, 0);
 
 			if (runwaysSize > 0) {
-				const auto runways = std::make_unique<SettingsNavigationAirportRunway[]>(runwaysSize);
+				const auto runways = std::make_unique<NavigationSettingsAirportRunway[]>(runwaysSize);
 				stream.readObject(_runwaysList, runways.get(), runwaysSize);
 
 				for (uint32_t i = 0; i < runwaysSize; i++) {
@@ -136,19 +136,19 @@ namespace pizda {
 		}
 	}
 
-	void SettingsNavigation::onWrite(const NVSStream& stream) {
+	void NavigationSettings::onWrite(const NVSStream& stream) {
 		const auto& nd = RC::getInstance().getNavigationData();
 
 		// Waypoints
 		{
 			stream.writeUint16(_waypointsSize, nd.waypoints.size());
 
-			const auto waypoints = std::make_unique<SettingsNavigationWaypoint[]>(nd.waypoints.size());
+			const auto waypoints = std::make_unique<NavigationSettingsWaypoint[]>(nd.waypoints.size());
 
 			for (uint16_t i = 0; i < nd.waypoints.size(); i++) {
 				const auto& waypointData = nd.waypoints[i];
 
-				waypoints[i] = SettingsNavigationWaypoint(
+				waypoints[i] = NavigationSettingsWaypoint(
 					waypointData.type,
 					waypointData.name,
 					waypointData.geographicCoordinates
@@ -162,12 +162,12 @@ namespace pizda {
 		{
 			stream.writeUint16(_RNAVWaypointsSize, nd.RNAVWaypoints.size());
 
-			const auto RNAVWaypoints = std::make_unique<SettingsNavigationRNAVWaypoint[]>(nd.RNAVWaypoints.size());
+			const auto RNAVWaypoints = std::make_unique<NavigationSettingsRNAVWaypoint[]>(nd.RNAVWaypoints.size());
 
 			for (uint16_t i = 0; i < nd.RNAVWaypoints.size(); i++) {
 				const auto& RNAVWaypoint = nd.RNAVWaypoints[i];
 
-				RNAVWaypoints[i] = SettingsNavigationRNAVWaypoint(
+				RNAVWaypoints[i] = NavigationSettingsRNAVWaypoint(
 					RNAVWaypoint.waypointIndex
 				);
 			}
@@ -179,14 +179,14 @@ namespace pizda {
 		{
 			stream.writeUint16(_airportsSize, nd.airports.size());
 
-			const auto airports = std::make_unique<SettingsNavigationAirport[]>(nd.airports.size());
+			const auto airports = std::make_unique<NavigationSettingsAirport[]>(nd.airports.size());
 
 			size_t totalRunwaysSize = 0;
 
 			for (size_t ai = 0; ai < nd.airports.size(); ai++) {
 				const auto& airportData = nd.airports[ai];
 
-				airports[ai] = SettingsNavigationAirport(
+				airports[ai] = NavigationSettingsAirport(
 					airportData.waypointIndex
 				);
 
@@ -199,7 +199,7 @@ namespace pizda {
 			{
 				stream.writeUint32(_runwaysSize, totalRunwaysSize);
 
-				const auto runways = std::make_unique<SettingsNavigationAirportRunway[]>(totalRunwaysSize);
+				const auto runways = std::make_unique<NavigationSettingsAirportRunway[]>(totalRunwaysSize);
 
 				size_t runwayIndex = 0;
 
@@ -209,7 +209,7 @@ namespace pizda {
 					for (size_t ri = 0; ri < airportData.runways.size(); ri++) {
 						const auto& runwayData = airportData.runways[ri];
 
-						runways[runwayIndex] = SettingsNavigationAirportRunway(
+						runways[runwayIndex] = NavigationSettingsAirportRunway(
 							ai,
 							runwayData.geographicCoordinates,
 							runwayData.headingDeg,

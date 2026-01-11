@@ -1,15 +1,17 @@
 #include "motorsSettingsPage.h"
 
+#include <optional>
+
 #include "rc.h"
 #include "UI/theme.h"
 
 namespace pizda {
-	MotorEditor::MotorEditor(std::wstring_view title, SettingsMotor* settings) : Titler(title), _settings(settings) {
+	MotorEditor::MotorEditor(std::wstring_view title, MotorConfiguration* settings) : Titler(title), _settings(settings) {
 		*this += &_mainLayout;
 		
 		// Reverse
 		Theme::applySecondary(&_reverse);
-		_reverse.setHeight(14);
+		_reverse.setHeight(13);
 		_reverse.setVerticalAlignment(Alignment::end);
 		
 		_reverse.setDefaultBackgroundColor(&Theme::bg3);
@@ -18,57 +20,74 @@ namespace pizda {
 		_reverse.setActiveBackgroundColor(&Theme::fg1);
 		_reverse.setActiveTextColor(&Theme::bg1);
 		
-		_reverse.setContentMargin(Margin(0, Theme::cornerRadius / 2, 0, 0));
+		_reverse.setContentMargin(Margin(0, 2, 0, 0));
+		_reverse.setFont(&Theme::fontSmall);
 		_reverse.setText(L"Reverse");
 		_reverse.setToggle(true);
 		_reverse.setActive(_settings->reverse);
 		
+		_reverse.click += [this]() {
+			changed();
+		};
+		
 		_mainLayout += &_reverse;
 		
 		// Background rect
-		_rowsBackgroundRect.setMargin(Margin(0, 0, 0, _reverse.getSize().getHeight() - Theme::cornerRadius - 1));
-		_rowsBackgroundRect.setFillColor(&Theme::bg2);
-		_rowsBackgroundRect.setBorderColor(&Theme::bg3);
-		_rowsBackgroundRect.setCornerRadius(Theme::cornerRadius);
-		_mainLayout += &_rowsBackgroundRect;
+		_backgroundRect.setMargin(Margin(0, 0, 0, _reverse.getSize().getHeight() - Theme::cornerRadius - 1));
+		_backgroundRect.setFillColor(&Theme::bg2);
+		_backgroundRect.setBorderColor(&Theme::bg3);
+		_backgroundRect.setCornerRadius(Theme::cornerRadius);
+		_mainLayout += &_backgroundRect;
 		
-		// Rows
-		_rows.setSpacing(5);
-		_rows.setMargin(Margin(10, 10, 8, _rowsBackgroundRect.getMargin().getBottom() + 10));
-		_mainLayout += &_rows;
-		
-		// -------------------------------- row0 --------------------------------
-		
-		_row0.setOrientation(Orientation::horizontal);
-		_row0.setSpacing(Theme::spacing);
-		_rows += &_row0;
+		// Row
+		_row.setOrientation(Orientation::horizontal);
+		_row.setSpacing(5);
+		_row.setMargin(Margin(8, 2, 8, _backgroundRect.getMargin().getBottom() + 8));
+		_mainLayout += &_row;
 		
 		// Min
 		Theme::apply(&_min);
 		_min.setText(std::to_wstring(_settings->min));
-		_row0 += &_minTitle;
+		
+		_min.input += [this](Key key, std::optional<std::wstring_view> text) {
+			if (key == Key::enter)
+				changed();
+		};
+		
+		_row += &_minTitle;
 		
 		// Max
 		Theme::apply(&_max);
 		_max.setText(std::to_wstring(_settings->max));
-		_row0 += &_maxTitle;
 		
+		_max.input += [this](Key key, std::optional<std::wstring_view> text) {
+			if (key == Key::enter)
+				changed();
+		};
 		
-		_row1.setOrientation(Orientation::horizontal);
-		_row1.setSpacing(Theme::spacing);
-		_rows += &_row1;
-		
-		// -------------------------------- row1 --------------------------------
+		_row += &_maxTitle;
 		
 		// Startup
 		Theme::apply(&_startup);
 		_startup.setText(std::to_wstring(_settings->startup));
-		_row1 += &_startupTitle;
+		
+		_startup.input += [this](Key key, std::optional<std::wstring_view> text) {
+			if (key == Key::enter)
+				changed();
+		};
+		
+		_row += &_startupTitle;
 		
 		// Offset
 		Theme::apply(&_offset);
 		_offset.setText(std::to_wstring(_settings->offset));
-		_row1 += &_offsetTitle;
+		
+		_offset.input += [this](Key key, std::optional<std::wstring_view> text) {
+			if (key == Key::enter)
+				changed();
+		};
+		
+		_row += &_offsetTitle;
 	}
 	
 	void MotorEditor::toSettings() {
@@ -115,35 +134,27 @@ namespace pizda {
 		tailRight(L"Right tail", &RC::getInstance().getSettings().motors.tailRight)
 	{
 		// Page title
-		title.setText(L"Motors");
+		title.setText(L"Motor fine-tuning");
 		
 		// Content
-		rows += &throttle;
-		rows += &noseWheel;
-		rows += &aileronLeft;
-		rows += &aileronRight;
-		rows += &flapLeft;
-		rows += &flapRight;
-		rows += &tailLeft;
-		rows += &tailRight;
-		
-		// Confirm
-		Theme::applyPrimary(&confirmButton);
-		confirmButton.setText(L"Confirm");
-		
-		confirmButton.click += [this]() {
-			throttle.toSettings();
-			noseWheel.toSettings();
-			aileronLeft.toSettings();
-			aileronRight.toSettings();
-			flapLeft.toSettings();
-			flapRight.toSettings();
-			tailLeft.toSettings();
-			tailRight.toSettings();
-			
+		vaginoz(&throttle);
+		vaginoz(&noseWheel);
+		vaginoz(&aileronLeft);
+		vaginoz(&aileronRight);
+		vaginoz(&flapLeft);
+		vaginoz(&flapRight);
+		vaginoz(&tailLeft);
+		vaginoz(&tailRight);
+	}
+	
+	void MotorsSettingsPage::vaginoz(MotorEditor* motorEditor) {
+		motorEditor->changed += [motorEditor]() {
+			motorEditor->toSettings();
 			RC::getInstance().getSettings().motors.scheduleWrite();
 			
-			// FUCKING SEND
+			RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::motorConfiguration);
 		};
+		
+		rows += motorEditor;
 	}
 }

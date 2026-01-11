@@ -332,6 +332,10 @@ namespace pizda {
 				transmitRemoteAutopilotPacket(stream);
 				break;
 			
+			case RemotePacketType::motorConfiguration:
+				transmitRemoteMotorConfigurationPacket(stream);
+				break;
+				
 			case RemotePacketType::calibrate:
 				transmitRemoteCalibratePacket(stream);
 				break;
@@ -455,6 +459,27 @@ namespace pizda {
 		
 		// Autopilot
 		stream.writeBool(rd.autopilot.autopilot);
+	}
+	
+	void RemoteCommunicationManager::transmitRemoteMotorConfigurationPacket(BitStream& stream) {
+		const auto& motors = RC::getInstance().getSettings().motors;
+	
+		const auto write = [&stream](const MotorConfiguration& motor) {
+			stream.writeUint16(motor.min, RemoteMotorConfigurationPacket::minLengthBits);
+			stream.writeUint16(motor.max, RemoteMotorConfigurationPacket::maxLengthBits);
+			stream.writeUint16(motor.startup, RemoteMotorConfigurationPacket::startupLengthBits);
+			stream.writeInt16(motor.offset, RemoteMotorConfigurationPacket::offsetLengthBits);
+			stream.writeBool(motor.reverse);
+		};
+		
+		write(motors.throttle);
+		write(motors.noseWheel);
+		write(motors.aileronLeft);
+		write(motors.aileronRight);
+		write(motors.flapLeft);
+		write(motors.flapRight);
+		write(motors.tailLeft);
+		write(motors.tailRight);
 	}
 	
 	void RemoteCommunicationManager::transmitRemoteCalibratePacket(BitStream& stream) {

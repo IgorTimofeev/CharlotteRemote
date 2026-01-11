@@ -11,7 +11,7 @@
 namespace pizda {
 	using namespace YOBA;
 	
-	class SettingsControls : public NVSSettings {
+	class ControlSettings : public NVSSettings {
 		public:
 			uint32_t referencePressurePa = 0;
 			bool referencePressureSTD = false;

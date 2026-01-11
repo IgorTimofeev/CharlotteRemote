@@ -56,6 +56,7 @@ namespace pizda {
 			void transmitRemoteLightsPacket(BitStream& stream);
 			void transmitRemoteBaroPacket(BitStream& stream);
 			void transmitRemoteAutopilotPacket(BitStream& stream);
+			void transmitRemoteMotorConfigurationPacket(BitStream& stream);
 			void transmitRemoteCalibratePacket(BitStream& stream);
 	};
 }

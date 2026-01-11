@@ -57,7 +57,7 @@ namespace pizda {
 
 		setCameraRotation(Vector3F(
 			-_cameraCoordinates.getLatitude(),
-			settings.personalization.MFD.ND.mode == SettingsPersonalizationMFDNDMode::mapNorthUp ? 0 : -ad.computed.yawRad,
+			settings.personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::mapNorthUp ? 0 : -ad.computed.yawRad,
 			toRadians(90) + _cameraCoordinates.getLongitude()
 		));
 
@@ -94,7 +94,7 @@ namespace pizda {
 			const uint16_t circleMarginBottomPixels = bounds.getHeight() * _compassCircleMarginBottomPct / 100;
 
 			// Arc
-			if (settings.personalization.MFD.ND.mode == SettingsPersonalizationMFDNDMode::arcHeadingUp) {
+			if (settings.personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arcHeadingUp) {
 				circleRadius =
 					bounds.getHeight()
 					- circleMarginTopPixels
@@ -175,7 +175,7 @@ namespace pizda {
 			}
 
 			// North up
-			if (settings.personalization.MFD.ND.mode == SettingsPersonalizationMFDNDMode::mapNorthUp) {
+			if (settings.personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::mapNorthUp) {
 
 			}
 			else {
@@ -323,7 +323,7 @@ namespace pizda {
 //			ESP_LOGI("ND", "------------- Drag -------------");
 
 			auto& rc = RC::getInstance();
-			const auto yaw = rc.getSettings().personalization.MFD.ND.mode == SettingsPersonalizationMFDNDMode::mapNorthUp ? 0 : -rc.getAircraftData().computed.yawRad;
+			const auto yaw = rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::mapNorthUp ? 0 : -rc.getAircraftData().computed.yawRad;
 			const auto& deltaPixels = (pointerDragEventEvent->getPosition() - _pointerDownPosition).rotate(yaw);
 			_pointerDownPosition = pointerDragEventEvent->getPosition();
 			_cursorPosition = pointerDragEventEvent->getPosition() - getBounds().getPosition();
@@ -607,7 +607,7 @@ namespace pizda {
 		const auto& settings = rc.getSettings();
 
 		setPivotOffset(
-			settings.personalization.MFD.ND.mode == SettingsPersonalizationMFDNDMode::arcHeadingUp
+			settings.personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arcHeadingUp
 			? Point(0, bounds.getHeight() / 2 - bounds.getHeight() * _compassCircleMarginBottomPct / 100)
 			: Point()
 		);

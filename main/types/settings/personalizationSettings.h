@@ -7,14 +7,14 @@
 namespace pizda {
 	using namespace YOBA;
 	
-	class SettingsPersonalizationMFDPFD {
+	class PersonalizationSettingsMFDPFD {
 		public:
 			bool visible = false;
 			uint8_t FOV = 0;
 			bool flightDirector = false;
 	};
 
-	enum class SettingsPersonalizationMFDNDMode : uint8_t {
+	enum class PersonalizationSettingsMFDNDMode : uint8_t {
 		arcHeadingUp,
 		mapHeadingUp,
 		mapNorthUp,
@@ -22,14 +22,14 @@ namespace pizda {
 		last = mapNorthUp
 	};
 
-	class SettingsPersonalizationMFDND {
+	class PersonalizationSettingsMFDND {
 		public:
 			bool visible = true;
-			SettingsPersonalizationMFDNDMode mode = SettingsPersonalizationMFDNDMode::arcHeadingUp;
+			PersonalizationSettingsMFDNDMode mode = PersonalizationSettingsMFDNDMode::arcHeadingUp;
 			bool earth = true;
 	};
 
-	enum class SettingsPersonalizationMFDToolbarMode : uint8_t {
+	enum class PersonalizationSettingsMFDToolbarMode : uint8_t {
 		none,
 		autopilot,
 		baro,
@@ -37,16 +37,16 @@ namespace pizda {
 		lights
 	};
 
-	class SettingsPersonalizationMFDToolbar {
+	class PersonalizationSettingsMFDToolbar {
 		public:
-			SettingsPersonalizationMFDToolbarMode mode = SettingsPersonalizationMFDToolbarMode::none;
+			PersonalizationSettingsMFDToolbarMode mode = PersonalizationSettingsMFDToolbarMode::none;
 	};
 
-	class SettingsPersonalizationMFD {
+	class PersonalizationSettingsMFD {
 		public:
-			SettingsPersonalizationMFDPFD PFD {};
-			SettingsPersonalizationMFDND ND {};
-			SettingsPersonalizationMFDToolbar toolbar {};
+			PersonalizationSettingsMFDPFD PFD {};
+			PersonalizationSettingsMFDND ND {};
+			PersonalizationSettingsMFDToolbar toolbar {};
 			uint8_t splitPercent = 60;
 
 			bool isAnyPanelVisible() const {
@@ -54,9 +54,9 @@ namespace pizda {
 			}
 	};
 	
-	class SettingsPersonalization : public NVSSettings {
+	class PersonalizationSettings : public NVSSettings {
 		public:
-			SettingsPersonalizationMFD MFD {};
+			PersonalizationSettingsMFD MFD {};
 			bool LPF = false;
 			bool debugOverlay = false;
 			bool audioFeedback = false;
@@ -73,11 +73,11 @@ namespace pizda {
 				MFD.PFD.flightDirector = stream.readBool(_MFDPFDFlightDirectors, true);
 
 				MFD.ND.visible = stream.readBool(_MFDNDVisible, true);
-				MFD.ND.mode = static_cast<SettingsPersonalizationMFDNDMode>(stream.readUint8(_MFDNDMode, static_cast<uint8_t>(SettingsPersonalizationMFDNDMode::arcHeadingUp)));
+				MFD.ND.mode = static_cast<PersonalizationSettingsMFDNDMode>(stream.readUint8(_MFDNDMode, static_cast<uint8_t>(PersonalizationSettingsMFDNDMode::arcHeadingUp)));
 
 				MFD.ND.earth = stream.readBool(_MFDNDEarth, true);
 
-				MFD.toolbar.mode = static_cast<SettingsPersonalizationMFDToolbarMode>(stream.readUint8(_MFDToolbarMode, static_cast<uint8_t>(SettingsPersonalizationMFDToolbarMode::none)));
+				MFD.toolbar.mode = static_cast<PersonalizationSettingsMFDToolbarMode>(stream.readUint8(_MFDToolbarMode, static_cast<uint8_t>(PersonalizationSettingsMFDToolbarMode::none)));
 				
 				MFD.splitPercent = stream.readUint8(_MFDSplitPercent, 60);
 				

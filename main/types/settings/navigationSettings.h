@@ -16,11 +16,11 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class SettingsNavigationWaypoint {
+	class NavigationSettingsWaypoint {
 		public:
-			SettingsNavigationWaypoint() = default;
+			NavigationSettingsWaypoint() = default;
 
-			explicit SettingsNavigationWaypoint(
+			explicit NavigationSettingsWaypoint(
 				NavigationWaypointType type,
 				std::wstring_view name,
 				const GeographicCoordinates& geographicCoordinates
@@ -36,29 +36,29 @@ namespace pizda {
 			GeographicCoordinates geographicCoordinates;
 	};
 
-	class SettingsNavigationRNAVWaypoint : public NavigationWaypointDataIndexAware {
+	class NavigationSettingsRNAVWaypoint : public NavigationWaypointDataIndexAware {
 		public:
-			SettingsNavigationRNAVWaypoint() = default;
+			NavigationSettingsRNAVWaypoint() = default;
 
-			explicit SettingsNavigationRNAVWaypoint(uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {\
+			explicit NavigationSettingsRNAVWaypoint(uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {\
 
 			}
 	};
 
-	class SettingsNavigationAirport : public NavigationWaypointDataIndexAware {
+	class NavigationSettingsAirport : public NavigationWaypointDataIndexAware {
 		public:
-			SettingsNavigationAirport() = default;
+			NavigationSettingsAirport() = default;
 
-			explicit SettingsNavigationAirport(uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {
+			explicit NavigationSettingsAirport(uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {
 
 			}
 	};
 
-	class SettingsNavigationAirportRunway {
+	class NavigationSettingsAirportRunway {
 		public:
-			SettingsNavigationAirportRunway() = default;
+			NavigationSettingsAirportRunway() = default;
 
-			SettingsNavigationAirportRunway(
+			NavigationSettingsAirportRunway(
 				uint16_t airportIndex,
 				const GeographicCoordinates& geographicCoordinates,
 				uint16_t headingDeg,
@@ -93,7 +93,7 @@ namespace pizda {
 			}
 	};
 
-	class SettingsNavigation : public NVSSettings {
+	class NavigationSettings : public NVSSettings {
 		public:
 
 		protected:

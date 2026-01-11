@@ -19,10 +19,10 @@ namespace pizda {
 
 			uint8_t nextMode = static_cast<uint8_t>(settings.personalization.MFD.ND.mode) + 1;
 
-			if (nextMode > static_cast<uint8_t>(SettingsPersonalizationMFDNDMode::last))
+			if (nextMode > static_cast<uint8_t>(PersonalizationSettingsMFDNDMode::last))
 				nextMode = 0;
 
-			settings.personalization.MFD.ND.mode = static_cast<SettingsPersonalizationMFDNDMode>(nextMode);
+			settings.personalization.MFD.ND.mode = static_cast<PersonalizationSettingsMFDNDMode>(nextMode);
 			settings.personalization.scheduleWrite();
 
 			updateViewModeButtonText();
@@ -70,13 +70,13 @@ namespace pizda {
 		std::wstring text;
 
 		switch (RC::getInstance().getSettings().personalization.MFD.ND.mode) {
-			case SettingsPersonalizationMFDNDMode::arcHeadingUp:
+			case PersonalizationSettingsMFDNDMode::arcHeadingUp:
 				text = L"ARC";
 				break;
-			case SettingsPersonalizationMFDNDMode::mapHeadingUp:
+			case PersonalizationSettingsMFDNDMode::mapHeadingUp:
 				text = L"MAP";
 				break;
-			case SettingsPersonalizationMFDNDMode::mapNorthUp:
+			case PersonalizationSettingsMFDNDMode::mapNorthUp:
 				text = L"NUP";
 				break;
 		}

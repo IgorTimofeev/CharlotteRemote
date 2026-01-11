@@ -11,7 +11,7 @@
 namespace pizda {
 	using namespace YOBA;
 	
-	class SettingsAxisData {
+	class AxisSettingsData {
 		public:
 			uint16_t from = 0;
 			uint16_t to = 0;
@@ -19,13 +19,13 @@ namespace pizda {
 			bool invertOutput = false;
 	};
 
-	class SettingsAxis: public NVSSettings {
+	class AxisSettings: public NVSSettings {
 		public:
-			SettingsAxisData leverLeft {};
-			SettingsAxisData leverRight {};
-			SettingsAxisData joystickHorizontal  {};
-			SettingsAxisData joystickVertical {};
-			SettingsAxisData ring {};
+			AxisSettingsData leverLeft {};
+			AxisSettingsData leverRight {};
+			AxisSettingsData joystickHorizontal  {};
+			AxisSettingsData joystickVertical {};
+			AxisSettingsData ring {};
 			uint16_t lowPassFactor = 0;
 			uint8_t jitteringCutoffValue = 0;
 

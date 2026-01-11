@@ -11,7 +11,7 @@
 namespace pizda {
 	using namespace YOBA;
 	
-	class SettingsAutopilot : public NVSSettings {
+	class AutopilotSettings : public NVSSettings {
 		public:
 			uint16_t speedKt = 0;
 			uint16_t headingDeg = 0;

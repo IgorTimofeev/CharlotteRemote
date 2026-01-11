@@ -6,7 +6,7 @@
 #include "UI/navigation/page.h"
 #include "UI/elements/titler.h"
 
-#include "types/settings/settingsMotors.h"
+#include "types/generic.h"
 #include "utils/string.h"
 
 namespace pizda {
@@ -14,27 +14,26 @@ namespace pizda {
 	
 	class MotorEditor : public Titler {
 		public:
-			MotorEditor(std::wstring_view title, SettingsMotor* settings);
+			MotorEditor(std::wstring_view title, MotorConfiguration* settings);
 			
 			void toSettings();
 			
+			Callback<> changed {};
+			
 		private:
-			SettingsMotor* _settings;
+			MotorConfiguration* _settings;
 			
 			Layout _mainLayout {};
 			
-			Rectangle _rowsBackgroundRect {};
-			StackLayout _rows {};
+			Rectangle _backgroundRect {};
 			
-			RelativeStackLayout _row0 {};
+			RelativeStackLayout _row {};
 			
 			TextField _min {};
-			Titler _minTitle { L"Minimum", &_min };
+			Titler _minTitle { L"Min", &_min };
 			
 			TextField _max {};
-			Titler _maxTitle { L"Maximum", &_max };
-
-			RelativeStackLayout _row1 {};
+			Titler _maxTitle { L"Max", &_max };
 			
 			TextField _startup {};
 			Titler _startupTitle { L"Startup", &_startup };
@@ -59,6 +58,6 @@ namespace pizda {
 			MotorEditor tailLeft;
 			MotorEditor tailRight;
 			
-			Button confirmButton {};
+			void vaginoz(MotorEditor* motorEditor);
 	};
 }

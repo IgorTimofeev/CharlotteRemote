@@ -8,7 +8,7 @@
 #include "MFDPage.h"
 
 namespace pizda {
-	MFDModeMenuViewButton::MFDModeMenuViewButton(const Image* image, std::wstring_view text, SettingsPersonalizationMFDToolbarMode mode) : MenuViewButton(image, text), _mode(mode) {
+	MFDModeMenuViewButton::MFDModeMenuViewButton(const Image* image, std::wstring_view text, PersonalizationSettingsMFDToolbarMode mode) : MenuViewButton(image, text), _mode(mode) {
 		setToggle(true);
 		setActive(RC::getInstance().getSettings().personalization.MFD.toolbar.mode == mode);
 	}
@@ -19,7 +19,7 @@ namespace pizda {
 		const auto menuView = reinterpret_cast<MFDMenuView*>(getMenuView());
 
 		auto& settings = RC::getInstance().getSettings();
-		settings.personalization.MFD.toolbar.mode = settings.personalization.MFD.toolbar.mode == _mode ? SettingsPersonalizationMFDToolbarMode::none : _mode;
+		settings.personalization.MFD.toolbar.mode = settings.personalization.MFD.toolbar.mode == _mode ? PersonalizationSettingsMFDToolbarMode::none : _mode;
 
 		for (const auto modeButton : menuView->modeButtons)
 			modeButton->setActive(modeButton->_mode == settings.personalization.MFD.toolbar.mode);

@@ -6,7 +6,7 @@
 #include "rc.h"
 
 namespace pizda {
-	Axis::Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, bool invertInput, SettingsAxisData* settings) :
+	Axis::Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, bool invertInput, AxisSettingsData* settings) :
 		_channel(channel),
 		_unitHandle(unitHandle),
 		_invertInput(invertInput),
@@ -87,7 +87,7 @@ namespace pizda {
 		return static_cast<float>(getMappedValue()) / static_cast<float>(valueMax);
 	}
 
-	SettingsAxisData* Axis::getSettings() const {
+	AxisSettingsData* Axis::getSettings() const {
 		return _settings;
 	}
 }

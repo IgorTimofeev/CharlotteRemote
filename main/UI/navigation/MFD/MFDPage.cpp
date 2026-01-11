@@ -37,21 +37,21 @@ namespace pizda {
 		if (_ND && !settings.personalization.MFD.ND.visible)
 			_ND = nullptr;
 		
-		if (_autopilotToolbar && settings.personalization.MFD.toolbar.mode != SettingsPersonalizationMFDToolbarMode::autopilot)
+		if (_autopilotToolbar && settings.personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::autopilot)
 			_autopilotToolbar = nullptr;
 
-		if (_baroToolbar && settings.personalization.MFD.toolbar.mode != SettingsPersonalizationMFDToolbarMode::baro)
+		if (_baroToolbar && settings.personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::baro)
 			_baroToolbar = nullptr;
 		
-		if (_trimToolbar && settings.personalization.MFD.toolbar.mode != SettingsPersonalizationMFDToolbarMode::trim)
+		if (_trimToolbar && settings.personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::trim)
 			_trimToolbar = nullptr;
 		
-		if (_lightsToolbar && settings.personalization.MFD.toolbar.mode != SettingsPersonalizationMFDToolbarMode::lights)
+		if (_lightsToolbar && settings.personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::lights)
 			_lightsToolbar = nullptr;
 		
 		// Creating
 		switch (settings.personalization.MFD.toolbar.mode) {
-			case SettingsPersonalizationMFDToolbarMode::autopilot: {
+			case PersonalizationSettingsMFDToolbarMode::autopilot: {
 				if (!_autopilotToolbar)
 					_autopilotToolbar = new AutopilotToolbar();
 				
@@ -60,7 +60,7 @@ namespace pizda {
 				
 				break;
 			}
-			case SettingsPersonalizationMFDToolbarMode::baro: {
+			case PersonalizationSettingsMFDToolbarMode::baro: {
 				if (!_baroToolbar)
 					_baroToolbar = new BaroToolbar();
 				
@@ -69,7 +69,7 @@ namespace pizda {
 				
 				break;
 			}
-			case SettingsPersonalizationMFDToolbarMode::trim: {
+			case PersonalizationSettingsMFDToolbarMode::trim: {
 				if (!_trimToolbar)
 					_trimToolbar = new TrimToolbar();
 				
@@ -78,7 +78,7 @@ namespace pizda {
 				
 				break;
 			}
-			case SettingsPersonalizationMFDToolbarMode::lights: {
+			case PersonalizationSettingsMFDToolbarMode::lights: {
 				if (!_lightsToolbar)
 					_lightsToolbar = new LightsToolbar();
 				

@@ -19,10 +19,10 @@ namespace pizda {
 			static const Route* _lastRoute;
 			
 			std::array<PageMenuViewButton, 5> _pageButtons {
-				PageMenuViewButton(&resources::images::menuIconPersonalization, L"Perf", &Routes::settingsPersonalization),
-				PageMenuViewButton(&resources::images::menuIconCalibration, L"Cali", &Routes::settingsCalibration),
-				PageMenuViewButton(&resources::images::menuIconMotors, L"Motors", &Routes::settingsMotors),
+				PageMenuViewButton(&resources::images::menuIconPersonalization, L"Personal", &Routes::settingsPersonalization),
+				PageMenuViewButton(&resources::images::menuIconCalibration, L"Calibrate", &Routes::settingsCalibration),
 				PageMenuViewButton(&resources::images::menuIconAxis, L"Axis", &Routes::settingsAxis),
+				PageMenuViewButton(&resources::images::menuIconMotors, L"Motors", &Routes::settingsMotors),
 				PageMenuViewButton(&resources::images::menuIconDev, L"Dev", &Routes::settingsDeveloper)
 			};
 	};

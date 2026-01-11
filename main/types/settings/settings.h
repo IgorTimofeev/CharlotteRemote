@@ -1,21 +1,21 @@
 #pragma once
 
-#include "types/settings/settingsControls.h"
-#include "types/settings/settingsAxis.h"
-#include "types/settings/settingsAutopilot.h"
-#include "types/settings/settingsPersonalization.h"
-#include "types/settings/settingsNavigation.h"
-#include "types/settings/settingsMotors.h"
+#include "types/settings/controlSettings.h"
+#include "types/settings/axisSettings.h"
+#include "types/settings/autopilotSettings.h"
+#include "types/settings/personalizationSettings.h"
+#include "types/settings/navigationSettings.h"
+#include "types/settings/motorSettings.h"
 
 namespace pizda {
 	class Settings {
 		public:
-			SettingsControls controls {};
-			SettingsAxis axis {};
-			SettingsAutopilot autopilot {};
-			SettingsPersonalization personalization {};
-			SettingsNavigation navigation {};
-			SettingsMotors motors {};
+			ControlSettings controls {};
+			AxisSettings axis {};
+			AutopilotSettings autopilot {};
+			PersonalizationSettings personalization {};
+			NavigationSettings navigation {};
+			MotorSettings motors {};
 
 			void readAll() {
 				controls.read();
