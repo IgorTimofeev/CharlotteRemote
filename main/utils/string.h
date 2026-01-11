@@ -29,5 +29,12 @@ namespace pizda {
 
 				return converterX.to_bytes(source.data(), source.data() + source.size());
 			}
+			
+			static bool tryParseInt32(const std::wstring_view& source, int32_t& result) {
+				wchar_t* endPtr;
+				result = std::wcstol(source.data(), &endPtr, 10);
+				
+				return endPtr != source.data();
+			}
 	};
 }

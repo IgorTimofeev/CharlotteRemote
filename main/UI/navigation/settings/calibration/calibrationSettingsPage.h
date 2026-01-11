@@ -3,15 +3,15 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/navigation/page.h>
-#include <UI/elements/titler.h>
+#include "UI/navigation/page.h"
+#include "UI/elements/titler.h"
 
 namespace pizda {
 	using namespace YOBA;
 
 	class CalibrationSettingsPage : public ScrollViewPage {
 		public:
-			explicit CalibrationSettingsPage();
+			CalibrationSettingsPage();
 
 		protected:
 			void onTick() override;

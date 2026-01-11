@@ -3,11 +3,11 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/elements/titler.h>
-#include <UI/elements/dialogs/scrollViewDialog.h>
+#include "UI/elements/titler.h"
+#include "UI/elements/dialogs/scrollViewDialog.h"
 
 #include "types/navigationData.h"
-#include <UI/elements/tabSelector.h>
+#include "UI/elements/tabSelector.h"
 
 #include "waypointButton.h"
 

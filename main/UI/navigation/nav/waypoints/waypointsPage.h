@@ -3,9 +3,9 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/navigation/page.h>
-#include <UI/elements/tabSelector.h>
-#include <UI/elements/tabSelector.h>
+#include "UI/navigation/page.h"
+#include "UI/elements/tabSelector.h"
+#include "UI/elements/tabSelector.h"
 
 #include "waypointItem.h"
 

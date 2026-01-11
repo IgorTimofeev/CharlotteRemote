@@ -1,6 +1,6 @@
 #pragma once
 
-#include <UI/elements/navigation/waypointButton.h>
+#include "UI/elements/navigation/waypointButton.h"
 #include "waypointItemDialog.h"
 
 namespace pizda {

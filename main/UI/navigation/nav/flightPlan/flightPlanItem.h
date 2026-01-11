@@ -8,7 +8,7 @@
 #include "UI/theme.h"
 #include "types/navigationData.h"
 #include <utils/rendering.h>
-#include <UI/elements/navigation/waypointButton.h>
+#include "UI/elements/navigation/waypointButton.h"
 
 namespace pizda {
 	using namespace YOBA;

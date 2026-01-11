@@ -5,8 +5,8 @@
 
 #include "UI/theme.h"
 #include "types/settings/settings.h"
-#include <UI/navigation/page.h>
-#include <UI/navigation/route.h>
+#include "UI/navigation/page.h"
+#include "UI/navigation/route.h"
 
 namespace pizda {
 	using namespace YOBA;

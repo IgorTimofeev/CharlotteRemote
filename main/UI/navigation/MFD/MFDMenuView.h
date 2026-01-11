@@ -5,8 +5,8 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/navigation/menu/menuView.h>
-#include <UI/navigation/menu/menuViewButton.h>
+#include "UI/navigation/menu/menuView.h"
+#include "UI/navigation/menu/menuViewButton.h"
 #include <resources/images.h>
 
 namespace pizda {

@@ -3,7 +3,7 @@
 
 #include "rc.h"
 #include <units.h>
-#include <UI/elements/spatial/runwayMesh.h>
+#include "UI/elements/spatial/runwayMesh.h"
 
 namespace pizda {
 	PFDScene::PFDScene() {

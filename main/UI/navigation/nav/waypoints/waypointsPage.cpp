@@ -8,7 +8,7 @@
 
 #include <format>
 #include <esp_log.h>
-#include <UI/elements/navigation/addWaypointDialog.h>
+#include "UI/elements/navigation/addWaypointDialog.h"
 
 #include "waypointItem.h"
 

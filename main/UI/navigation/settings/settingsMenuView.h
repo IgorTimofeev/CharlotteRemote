@@ -3,9 +3,9 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/navigation/menu/pagesMenuView.h>
-#include <UI/navigation/menu/pageMenuViewButton.h>
-#include <UI/navigation/routes.h>
+#include "UI/navigation/menu/pagesMenuView.h"
+#include "UI/navigation/menu/pageMenuViewButton.h"
+#include "UI/navigation/routes.h"
 #include <resources/images.h>
 
 namespace pizda {
@@ -18,9 +18,10 @@ namespace pizda {
 		private:
 			static const Route* _lastRoute;
 			
-			std::array<PageMenuViewButton, 4> _pageButtons {
+			std::array<PageMenuViewButton, 5> _pageButtons {
 				PageMenuViewButton(&resources::images::menuIconPersonalization, L"Perf", &Routes::settingsPersonalization),
 				PageMenuViewButton(&resources::images::menuIconCalibration, L"Cali", &Routes::settingsCalibration),
+				PageMenuViewButton(&resources::images::menuIconMotors, L"Motors", &Routes::settingsMotors),
 				PageMenuViewButton(&resources::images::menuIconAxis, L"Axis", &Routes::settingsAxis),
 				PageMenuViewButton(&resources::images::menuIconDev, L"Dev", &Routes::settingsDeveloper)
 			};

@@ -3,7 +3,7 @@
 #include "UI/theme.h"
 #include "rc.h"
 
-#include <UI/navigation/menu/menu.h>
+#include "UI/navigation/menu/menu.h"
 
 namespace pizda {
 	OpenMenuButton::OpenMenuButton() {

@@ -4,7 +4,7 @@
 #include "rc.h"
 #include "types/settings/settings.h"
 
-#include <UI/navigation/routes.h>
+#include "UI/navigation/routes.h"
 #include "MFDPage.h"
 
 namespace pizda {

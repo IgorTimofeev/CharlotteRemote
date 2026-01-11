@@ -17,8 +17,8 @@
 #include "types/settings/settings.h"
 
 #include "hardware/transceiver/packet.h"
+#include "hardware/transceiver/SX1262Transceiver.h"
 #include "hardware/transceiver/remoteCommunicationManager.h"
-#include "hardware/transceiver/transceiver.h"
 #include "hardware/audio/audioPlayer.h"
 #include "hardware/axis.h"
 #include "hardware/battery.h"

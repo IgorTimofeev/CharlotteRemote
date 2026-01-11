@@ -5,7 +5,7 @@
 
 #include "menuView.h"
 #include "pageMenuViewButton.h"
-#include <UI/navigation/routes.h>
+#include "UI/navigation/routes.h"
 #include <resources/images.h>
 
 namespace pizda {

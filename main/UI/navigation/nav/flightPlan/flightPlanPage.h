@@ -3,7 +3,7 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/navigation/page.h>
+#include "UI/navigation/page.h"
 #include "UI/theme.h"
 
 #include "flightPlanItem.h"

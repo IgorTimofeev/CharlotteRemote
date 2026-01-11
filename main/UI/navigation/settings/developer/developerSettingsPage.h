@@ -3,8 +3,8 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/navigation/page.h>
-#include <UI/elements/titler.h>
+#include "UI/navigation/page.h"
+#include "UI/elements/titler.h"
 
 #include "hardware/audio/sound.h"
 
@@ -13,7 +13,7 @@ namespace pizda {
 
 	class DeveloperSettingsPage : public ScrollViewPage {
 		public:
-			explicit DeveloperSettingsPage();
+			DeveloperSettingsPage();
 
 		private:
 			Button _settingsNavigationResetButton {};

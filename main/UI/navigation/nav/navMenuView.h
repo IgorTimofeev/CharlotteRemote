@@ -3,9 +3,9 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <UI/navigation/menu/pagesMenuView.h>
-#include <UI/navigation/menu/pageMenuViewButton.h>
-#include <UI/navigation/routes.h>
+#include "UI/navigation/menu/pagesMenuView.h"
+#include "UI/navigation/menu/pageMenuViewButton.h"
+#include "UI/navigation/routes.h"
 #include <resources/images.h>
 
 namespace pizda {

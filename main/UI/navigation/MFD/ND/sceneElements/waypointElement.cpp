@@ -2,7 +2,7 @@
 
 #include "rc.h"
 #include "UI/theme.h"
-#include <UI/navigation/MFD/ND/NDScene.h>
+#include "UI/navigation/MFD/ND/NDScene.h"
 #include <utils/rendering.h>
 
 namespace pizda {

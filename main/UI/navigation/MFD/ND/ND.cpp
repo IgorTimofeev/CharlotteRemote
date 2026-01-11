@@ -1,6 +1,6 @@
 #include "ND.h"
 #include "rc.h"
-#include <UI/elements/navigation/addWaypointDialog.h>
+#include "UI/elements/navigation/addWaypointDialog.h"
 
 namespace pizda {
 	ND::ND() {

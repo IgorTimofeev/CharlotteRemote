@@ -4,13 +4,14 @@
 
 #include "MFD/MFDPage.h"
 
-#include <UI/navigation/nav/flightPlan/flightPlanPage.h>
-#include <UI/navigation/nav/waypoints/waypointsPage.h>
+#include "UI/navigation/nav/flightPlan/flightPlanPage.h"
+#include "UI/navigation/nav/waypoints/waypointsPage.h"
 
-#include <UI/navigation/settings/personalization/personalizationSettingsPage.h>
-#include <UI/navigation/settings/calibration/calibrationSettingsPage.h>
-#include <UI/navigation/settings/axis/axisSettingsPage.h>
-#include <UI/navigation/settings/developer/developerSettingsPage.h>
+#include "UI/navigation/settings/personalization/personalizationSettingsPage.h"
+#include "UI/navigation/settings/calibration/calibrationSettingsPage.h"
+#include "UI/navigation/settings/motors/motorsSettingsPage.h"
+#include "UI/navigation/settings/axis/axisSettingsPage.h"
+#include "UI/navigation/settings/developer/developerSettingsPage.h"
 
 namespace pizda {
 	class Routes {
@@ -22,6 +23,7 @@ namespace pizda {
 
 			constexpr static ElementRoute<PersonalizationSettingsPage> settingsPersonalization {};
 			constexpr static ElementRoute<CalibrationSettingsPage> settingsCalibration {};
+			constexpr static ElementRoute<MotorsSettingsPage> settingsMotors {};
 			constexpr static ElementRoute<AxisSettingsPage> settingsAxis {};
 			constexpr static ElementRoute<DeveloperSettingsPage> settingsDeveloper {};
 	};

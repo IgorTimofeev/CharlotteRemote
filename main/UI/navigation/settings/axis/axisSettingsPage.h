@@ -2,17 +2,18 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
-#include "axisEditor.h"
 
-#include <UI/navigation/page.h>
-#include <UI/elements/titler.h>
+#include "UI/navigation/page.h"
+#include "UI/elements/titler.h"
+
+#include "axisEditor.h"
 
 namespace pizda {
 	using namespace YOBA;
 
 	class AxisSettingsPage : public ScrollViewPage {
 		public:
-			explicit AxisSettingsPage();
+			AxisSettingsPage();
 
 		protected:
 			void onTick() override;
