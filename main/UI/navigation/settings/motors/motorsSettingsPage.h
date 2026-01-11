@@ -21,11 +21,27 @@ namespace pizda {
 		private:
 			SettingsMotor* _settings;
 			
-			RelativeStackLayout _row {};
+			Layout _mainLayout {};
+			
+			Rectangle _rowsBackgroundRect {};
+			StackLayout _rows {};
+			
+			RelativeStackLayout _row0 {};
+			
 			TextField _min {};
+			Titler _minTitle { L"Minimum", &_min };
+			
 			TextField _max {};
+			Titler _maxTitle { L"Maximum", &_max };
+
+			RelativeStackLayout _row1 {};
+			
 			TextField _startup {};
+			Titler _startupTitle { L"Startup", &_startup };
+			
 			TextField _offset {};
+			Titler _offsetTitle { L"Offset", &_offset };
+			
 			Button _reverse {};
 	};
 

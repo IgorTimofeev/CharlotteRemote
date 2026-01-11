@@ -5,40 +5,70 @@
 
 namespace pizda {
 	MotorEditor::MotorEditor(std::wstring_view title, SettingsMotor* settings) : Titler(title), _settings(settings) {
-		_row.setOrientation(Orientation::horizontal);
-		_row.setSpacing(5);
+		*this += &_mainLayout;
 		
-		*this += &_row;
+		// Reverse
+		Theme::applySecondary(&_reverse);
+		_reverse.setHeight(14);
+		_reverse.setVerticalAlignment(Alignment::end);
+		
+		_reverse.setDefaultBackgroundColor(&Theme::bg3);
+		_reverse.setDefaultTextColor(&Theme::fg2);
+		
+		_reverse.setActiveBackgroundColor(&Theme::fg1);
+		_reverse.setActiveTextColor(&Theme::bg1);
+		
+		_reverse.setContentMargin(Margin(0, Theme::cornerRadius / 2, 0, 0));
+		_reverse.setText(L"Reverse");
+		_reverse.setToggle(true);
+		_reverse.setActive(_settings->reverse);
+		
+		_mainLayout += &_reverse;
+		
+		// Background rect
+		_rowsBackgroundRect.setMargin(Margin(0, 0, 0, _reverse.getSize().getHeight() - Theme::cornerRadius - 1));
+		_rowsBackgroundRect.setFillColor(&Theme::bg2);
+		_rowsBackgroundRect.setBorderColor(&Theme::bg3);
+		_rowsBackgroundRect.setCornerRadius(Theme::cornerRadius);
+		_mainLayout += &_rowsBackgroundRect;
+		
+		// Rows
+		_rows.setSpacing(5);
+		_rows.setMargin(Margin(10, 10, 8, _rowsBackgroundRect.getMargin().getBottom() + 10));
+		_mainLayout += &_rows;
+		
+		// -------------------------------- row0 --------------------------------
+		
+		_row0.setOrientation(Orientation::horizontal);
+		_row0.setSpacing(Theme::spacing);
+		_rows += &_row0;
 		
 		// Min
 		Theme::apply(&_min);
 		_min.setText(std::to_wstring(_settings->min));
-		_row += &_min;
+		_row0 += &_minTitle;
 		
 		// Max
 		Theme::apply(&_max);
 		_max.setText(std::to_wstring(_settings->max));
-		_row += &_max;
+		_row0 += &_maxTitle;
+		
+		
+		_row1.setOrientation(Orientation::horizontal);
+		_row1.setSpacing(Theme::spacing);
+		_rows += &_row1;
+		
+		// -------------------------------- row1 --------------------------------
 		
 		// Startup
 		Theme::apply(&_startup);
 		_startup.setText(std::to_wstring(_settings->startup));
-		_row += &_startup;
+		_row1 += &_startupTitle;
 		
 		// Offset
 		Theme::apply(&_offset);
 		_offset.setText(std::to_wstring(_settings->offset));
-		_row += &_offset;
-		
-		// Reverse
-		Theme::applySecondary(&_reverse);
-		_reverse.setWidth(20);
-		_reverse.setText(L"<->");
-		_reverse.setToggle(true);
-		_reverse.setActive(_settings->reverse);
-		
-		_row.setAutoSize(&_reverse);
-		_row += &_reverse;
+		_row1 += &_offsetTitle;
 	}
 	
 	void MotorEditor::toSettings() {

@@ -160,53 +160,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="таймаут на калибровку заебенил, по идее даже если чет отвалится, то оно само в норму придет">
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/types/settings/settingsMotors.h" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="кек, ток ща заметил - если в лейаутах чиллит &gt; 1 текстфилда, то ивенты ловит последний, а не зафокушенный">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/textField.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/textField.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/dialogs/progressDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/dialogs/progressDialog.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/selectWaypointDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/selectWaypointDialog.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/ND.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/ND.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/NDRunwayMesh.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/NDRunwayMesh.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/menuRoutes.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/menuRoutes.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/menuTabButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/menuTabButton.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/menuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/menuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/menuViewButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/menuViewButton.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/openMenuButton.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/openMenuButton.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/pageMenuViewButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/pageMenuViewButton.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/airportFlightPlanItemDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/airportFlightPlanItemDialog.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/airportFlightPlanItemDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/airportFlightPlanItemDialog.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanItem.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanItem.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/legFlightPlanItemDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/legFlightPlanItemDialog.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/legFlightPlanItemDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/legFlightPlanItemDialog.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/placeholderButtons.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/placeholderButtons.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/navMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/navMenuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointItem.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointItem.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointItemDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointItemDialog.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/routes.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/routes.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisSettingsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/developer/developerSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/developer/developerSettingsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/SX1262Transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/SX1262Transceiver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/settings/settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/settings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/utils/string.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/utils/string.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -218,7 +176,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/YOBA" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -293,6 +251,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1183,15 +1146,7 @@
       <workItem from="1767954591533" duration="14456000" />
       <workItem from="1767992895149" duration="7751000" />
       <workItem from="1768045893176" duration="10471000" />
-      <workItem from="1768112941658" duration="6251000" />
-    </task>
-    <task id="LOCAL-00011" summary="пиздец оно СРЁТ">
-      <option name="closed" value="true" />
-      <created>1766667360442</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1766667360442</updated>
+      <workItem from="1768112941658" duration="8631000" />
     </task>
     <task id="LOCAL-00012" summary="чота медленновато пока">
       <option name="closed" value="true" />
@@ -1577,7 +1532,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768053360513</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="кек, ток ща заметил - если в лейаутах чиллит &gt; 1 текстфилда, то ивенты ловит последний, а не зафокушенный">
+      <option name="closed" value="true" />
+      <created>1768122858096</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1768122858096</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1618,7 +1581,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="фиксики закоптились" />
     <MESSAGE value="автопилик готов к труду и обороне!" />
     <MESSAGE value="опача, а эт че" />
     <MESSAGE value="вообще надо щас будет и пикчи на constexpr перехуячить" />
@@ -1643,6 +1605,7 @@
     <MESSAGE value="накалякал калибровку гирыча и мистера акксика" />
     <MESSAGE value="чет подустал, надо жимбимчиком налакаться перед сном" />
     <MESSAGE value="таймаут на калибровку заебенил, по идее даже если чет отвалится, то оно само в норму придет" />
-    <option name="LAST_COMMIT_MESSAGE" value="таймаут на калибровку заебенил, по идее даже если чет отвалится, то оно само в норму придет" />
+    <MESSAGE value="кек, ток ща заметил - если в лейаутах чиллит &gt; 1 текстфилда, то ивенты ловит последний, а не зафокушенный" />
+    <option name="LAST_COMMIT_MESSAGE" value="кек, ток ща заметил - если в лейаутах чиллит &gt; 1 текстфилда, то ивенты ловит последний, а не зафокушенный" />
   </component>
 </project>
