@@ -42,6 +42,22 @@ namespace pizda {
 			Titler _offsetTitle { L"Offset", &_offset };
 			
 			Button _reverse {};
+			
+			template<std::integral T>
+			void addTextField(Titler& titler, TextField& text, T value) {
+				titler.title.setTextColor(&Theme::fg5);
+				
+				Theme::apply(&text);
+				text.setTextMargin(5);
+				text.setText(std::to_wstring(value));
+				
+				text.input += [this](Key key, std::optional<std::wstring_view> text) {
+					if (key == Key::enter)
+						changed();
+				};
+				
+				_row += &titler;
+			}
 	};
 
 	class MotorsSettingsPage : public ScrollViewPage {

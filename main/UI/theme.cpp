@@ -209,6 +209,7 @@ namespace pizda {
 	void Theme::apply(TextField* textField) {
 		textField->setHeight(elementHeight);
 		textField->setCornerRadius(cornerRadius);
+		textField->setTextMargin(10);
 
 		textField->setDefaultBackgroundColor(&Theme::bg3);
 		textField->setFocusedBackgroundColor(&Theme::bg4);
@@ -218,10 +219,10 @@ namespace pizda {
 
 		textField->setDefaultBorderColor(&Theme::bg4);
 		textField->setFocusedBorderColor(&Theme::accent1);
-
+		
 		textField->setPlaceholderColor(&Theme::fg5);
 		textField->setCursorColor(&Theme::accent1);
-
+		
 		textField->setFont(&Theme::fontNormal);
 	}
 }

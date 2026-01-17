@@ -115,7 +115,7 @@ namespace pizda {
 				if (legsSize > 0) {
 					nd.flightPlan.legs.reserve(legsSize);
 
-					const auto legs = std::make_unique<SettingsNavigationFlightPlanLeg[]>(legsSize);
+					const auto legs = std::make_unique<NavigationSettingsFlightPlanLeg[]>(legsSize);
 					stream.readObject(_flightPlanLegsList, legs.get(), legsSize);
 
 					for (uint16_t i = 0; i < legsSize; i++) {
@@ -236,12 +236,12 @@ namespace pizda {
 			// Legs
 			stream.writeUint16(_flightPlanLegsSize, nd.flightPlan.legs.size());
 
-			const auto legs = std::make_unique<SettingsNavigationFlightPlanLeg[]>(nd.flightPlan.legs.size());
+			const auto legs = std::make_unique<NavigationSettingsFlightPlanLeg[]>(nd.flightPlan.legs.size());
 
 			for (uint16_t i = 0; i < nd.flightPlan.legs.size(); i++) {
 				const auto& leg = nd.flightPlan.legs[i];
 
-				legs[i] = SettingsNavigationFlightPlanLeg(
+				legs[i] = NavigationSettingsFlightPlanLeg(
 					leg.waypointIndex
 				);
 			}

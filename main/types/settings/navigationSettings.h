@@ -84,11 +84,11 @@ namespace pizda {
 			uint16_t widthM = 0;
 	};
 
-	class SettingsNavigationFlightPlanLeg : public NavigationWaypointDataIndexAware {
+	class NavigationSettingsFlightPlanLeg : public NavigationWaypointDataIndexAware {
 		public:
-			SettingsNavigationFlightPlanLeg() = default;
+			NavigationSettingsFlightPlanLeg() = default;
 
-			explicit SettingsNavigationFlightPlanLeg(uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {
+			explicit NavigationSettingsFlightPlanLeg(uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {
 
 			}
 	};

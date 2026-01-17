@@ -209,7 +209,7 @@ namespace pizda {
 			}
 
 		private:
-			constexpr static const char* _namespace = "mt1";
+			constexpr static const char* _namespace = "mt3";
 			
 			constexpr static const char* _throttleMin = "thm";
 			constexpr static const char* _throttleMax = "thx";

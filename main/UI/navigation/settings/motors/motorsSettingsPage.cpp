@@ -46,48 +46,16 @@ namespace pizda {
 		_mainLayout += &_row;
 		
 		// Min
-		Theme::apply(&_min);
-		_min.setText(std::to_wstring(_settings->min));
-		
-		_min.input += [this](Key key, std::optional<std::wstring_view> text) {
-			if (key == Key::enter)
-				changed();
-		};
-		
-		_row += &_minTitle;
+		addTextField(_minTitle, _min, _settings->min);
 		
 		// Max
-		Theme::apply(&_max);
-		_max.setText(std::to_wstring(_settings->max));
-		
-		_max.input += [this](Key key, std::optional<std::wstring_view> text) {
-			if (key == Key::enter)
-				changed();
-		};
-		
-		_row += &_maxTitle;
+		addTextField(_maxTitle, _max, _settings->max);
 		
 		// Startup
-		Theme::apply(&_startup);
-		_startup.setText(std::to_wstring(_settings->startup));
-		
-		_startup.input += [this](Key key, std::optional<std::wstring_view> text) {
-			if (key == Key::enter)
-				changed();
-		};
-		
-		_row += &_startupTitle;
+		addTextField(_startupTitle, _startup, _settings->startup);
 		
 		// Offset
-		Theme::apply(&_offset);
-		_offset.setText(std::to_wstring(_settings->offset));
-		
-		_offset.input += [this](Key key, std::optional<std::wstring_view> text) {
-			if (key == Key::enter)
-				changed();
-		};
-		
-		_row += &_offsetTitle;
+		addTextField(_offsetTitle, _offset, _settings->offset);
 	}
 	
 	void MotorEditor::toSettings() {
