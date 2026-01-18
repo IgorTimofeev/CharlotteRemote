@@ -381,7 +381,7 @@ namespace pizda {
 			stream.writeUint16(
 				// Mapping from [-100; 100] to [0; bits]
 				static_cast<uint16_t>(
-					(static_cast<int16_t>(settingsValue) + 100)
+					(static_cast<int32_t>(settingsValue) + 100)
 					* ((1 << RemoteTrimPacket::valueLengthBits) - 1)
 					/ 200
 				),
