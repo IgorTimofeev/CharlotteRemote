@@ -160,16 +160,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ну-ка, ну-ка, мб щас выпили к ебени матери эти флоаты килогерцовые">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="фух бля вроде почище выглядит">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262Ex.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/SX1262Transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/SX1262Transceiver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/communicationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/communicationManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/navMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/navMenuView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/navMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/navMenuView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -256,6 +255,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1155,15 +1159,7 @@
       <workItem from="1768753017383" duration="5587000" />
       <workItem from="1768762846361" duration="2471000" />
       <workItem from="1768766493145" duration="9000" />
-      <workItem from="1768766576422" duration="480000" />
-    </task>
-    <task id="LOCAL-00017" summary="сука">
-      <option name="closed" value="true" />
-      <created>1766709785290</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1766709785290</updated>
+      <workItem from="1768766576422" duration="2495000" />
     </task>
     <task id="LOCAL-00018" summary="сука">
       <option name="closed" value="true" />
@@ -1549,7 +1545,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768756581380</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="фух бля вроде почище выглядит">
+      <option name="closed" value="true" />
+      <created>1768767217807</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1768767217807</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1590,7 +1594,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="с новым годом, посоны и посонессы!!1" />
     <MESSAGE value="хочу замутить какой-нибудь экспериментальный стиль без сраных ОБМЫЛКОВ, чтоб скругления были минимальны или вообще отсутствовали - просто это дженериковое говно с паддингами размером с хуй слона уже в печенках сидит, хочется чет нового и такого ммммммм" />
     <MESSAGE value="захуярил наконец индикатор hdg на оверлее синтетика, а то чет уже год прошел, А ЕГО НЕМА, СУКА" />
     <MESSAGE value="чета мелочевку всякую поделал, а ни хуя по итогу не нахуячил - ну по крайней мере теперь при дисконнекте симпотные красные зоны такие типа ААААААААААААААААААААААААААААААААААААААА ПИЗДА" />
@@ -1615,6 +1618,7 @@
     <MESSAGE value="переделать бы их на какой-нибудь gptimer я хз, а то ledc лимитирован 8 каналами, не хватает на буззер" />
     <MESSAGE value="упростил конфиг мотиков-котиков, а то чет реально бредятина с оффсетами была" />
     <MESSAGE value="ну-ка, ну-ка, мб щас выпили к ебени матери эти флоаты килогерцовые" />
-    <option name="LAST_COMMIT_MESSAGE" value="ну-ка, ну-ка, мб щас выпили к ебени матери эти флоаты килогерцовые" />
+    <MESSAGE value="фух бля вроде почище выглядит" />
+    <option name="LAST_COMMIT_MESSAGE" value="фух бля вроде почище выглядит" />
   </component>
 </project>

@@ -13,8 +13,8 @@ namespace pizda {
 
 	class NavMenuView : public PagesMenuView {
 		public:
-			explicit NavMenuView();
-
+			void setup() override;
+		
 		private:
 			static const Route* _lastRoute;
 

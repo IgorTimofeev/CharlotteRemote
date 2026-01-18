@@ -4,9 +4,11 @@
 #include "rc.h"
 
 namespace pizda {
-	NavMenuView::NavMenuView() : PagesMenuView(_buttons.data(), _buttons.size(), &_lastRoute) {
-
-	}
-
 	const Route* NavMenuView::_lastRoute = nullptr;
+	
+	void NavMenuView::setup() {
+		MenuView::setup();
+		
+		setupButtons(_buttons.data(), _buttons.size(), &_lastRoute);
+	}
 }

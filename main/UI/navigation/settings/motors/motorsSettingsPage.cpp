@@ -10,7 +10,7 @@ namespace pizda {
 		*this += &_mainLayout;
 		
 		// Reverse
-		_reverse.setWidth(21);
+		_reverse.setWidth(18);
 		_reverse.setContentMargin(Margin(Theme::cornerRadius, 0, 0, 0));
 		_reverse.setHorizontalAlignment(Alignment::end);
 		_reverse.setCornerRadius(Theme::cornerRadius);
@@ -22,7 +22,7 @@ namespace pizda {
 		_reverse.setActiveTextColor(&Theme::bg1);
 		
 		_reverse.setFont(&Theme::fontSmall);
-		_reverse.setText(L"<->");
+		_reverse.setText(L"<>");
 		_reverse.setToggle(true);
 		
 		_reverse.setActive(_settings->reverse);

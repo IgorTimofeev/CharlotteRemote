@@ -13,13 +13,12 @@ namespace pizda {
 
 	class PagesMenuView : public MenuView {
 		public:
-			explicit PagesMenuView(PageMenuViewButton* buttons, uint8_t buttonCount, const Route** lastRoute);
-
-			void setup() override;
-
 			const Route* getRoute() override;
 			void setRoute(const Route* route) const;
-
+			
+		protected:
+			void setupButtons(PageMenuViewButton* buttons, uint8_t buttonCount, const Route** lastRoute);
+			
 		private:
 			const Route** _lastRoute;
 			PageMenuViewButton* _buttons;

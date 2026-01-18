@@ -13,12 +13,12 @@ namespace pizda {
 
 	class SettingsMenuView : public PagesMenuView {
 		public:
-			explicit SettingsMenuView();
-
+			void setup() override;
+		
 		private:
 			static const Route* _lastRoute;
 			
-			std::array<PageMenuViewButton, 5> _pageButtons {
+			std::array<PageMenuViewButton, 5> _buttons {
 				PageMenuViewButton(&resources::images::menuIconPersonalization, L"Personal", &Routes::settingsPersonalization),
 				PageMenuViewButton(&resources::images::menuIconCalibration, L"Calibrate", &Routes::settingsCalibration),
 				PageMenuViewButton(&resources::images::menuIconAxis, L"Axis", &Routes::settingsAxis),

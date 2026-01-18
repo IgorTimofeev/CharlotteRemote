@@ -4,9 +4,11 @@
 #include "rc.h"
 
 namespace pizda {
-	SettingsMenuView::SettingsMenuView() : PagesMenuView(_pageButtons.data(), _pageButtons.size(), &_lastRoute) {
-
-	}
-
 	const Route* SettingsMenuView::_lastRoute = nullptr;
+	
+	void SettingsMenuView::setup() {
+		MenuView::setup();
+		
+		setupButtons(_buttons.data(), _buttons.size(), &_lastRoute);
+	}
 }
