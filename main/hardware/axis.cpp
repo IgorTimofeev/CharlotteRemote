@@ -15,16 +15,18 @@ namespace pizda {
 
 	}
 
-	void Axis::setup() const {
+	void Axis::setup() {
 		constexpr adc_oneshot_chan_cfg_t channelConfig = {
 			.atten = ADC_ATTEN_DB_12,
 			.bitwidth = ADC_BITWIDTH_12
 		};
 
 		ESP_ERROR_CHECK(adc_oneshot_config_channel(*_unitHandle, _channel, &channelConfig));
+
+		read();
 	}
 
-	void Axis::tick() {
+	void Axis::read() {
 		int rawValue;
 		ESP_ERROR_CHECK(adc_oneshot_read(*_unitHandle, _channel, &rawValue));
 		
@@ -48,14 +50,14 @@ namespace pizda {
 			_rawValue = _rawValue * (0xFFFF - settings.axis.lowPassFactor) / 0xFFFF + rawValue * settings.axis.lowPassFactor / 0xFFFF;
 		}
 		
-		_mappedValue = mapValue(rawValue);
+		_filteredValue = applySensitivityFilter(_rawValue);
 		
 		// Inverting output if required
 		if (_settings->invertOutput)
-			_mappedValue = valueMax - _mappedValue;
+			_rawValue = valueMax - _rawValue;
 	}
 	
-	uint16_t Axis::mapValue(uint16_t rawValue) {
+	uint16_t Axis::applySensitivityFilter(uint16_t rawValue) {
 		// Exponential sensitivity correction formula
 		// power = 3 (any odd power of raw value)
 		// corrected = raw * (1 - sensitivityFactor) + raw^power * sensitivityFactor
@@ -75,16 +77,16 @@ namespace pizda {
 		return _rawValue;
 	}
 
-	uint16_t Axis::getMappedValue() const {
-		return _mappedValue;
+	uint16_t Axis::getFilteredValue() const {
+		return _filteredValue;
 	}
 
-	uint8_t Axis::getMappedValueUint8() const {
-		return getMappedValue() * 0xFF / valueMax;
+	uint8_t Axis::getFilteredValueUint8() const {
+		return getFilteredValue() * 0xFF / valueMax;
 	}
 	
-	float Axis::getMappedValueFloat() const {
-		return static_cast<float>(getMappedValue()) / static_cast<float>(valueMax);
+	float Axis::getFilteredValueFloat() const {
+		return static_cast<float>(getFilteredValue()) / static_cast<float>(valueMax);
 	}
 
 	AxisSettingsData* Axis::getSettings() const {

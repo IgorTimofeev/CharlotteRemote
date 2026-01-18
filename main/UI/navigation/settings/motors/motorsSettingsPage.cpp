@@ -10,9 +10,10 @@ namespace pizda {
 		*this += &_mainLayout;
 		
 		// Reverse
-		Theme::applySecondary(&_reverse);
-		_reverse.setHeight(13);
-		_reverse.setVerticalAlignment(Alignment::end);
+		_reverse.setWidth(21);
+		_reverse.setContentMargin(Margin(Theme::cornerRadius, 0, 0, 0));
+		_reverse.setHorizontalAlignment(Alignment::end);
+		_reverse.setCornerRadius(Theme::cornerRadius);
 		
 		_reverse.setDefaultBackgroundColor(&Theme::bg3);
 		_reverse.setDefaultTextColor(&Theme::fg2);
@@ -20,10 +21,10 @@ namespace pizda {
 		_reverse.setActiveBackgroundColor(&Theme::fg1);
 		_reverse.setActiveTextColor(&Theme::bg1);
 		
-		_reverse.setContentMargin(Margin(0, 2, 0, 0));
 		_reverse.setFont(&Theme::fontSmall);
-		_reverse.setText(L"Reverse");
+		_reverse.setText(L"<->");
 		_reverse.setToggle(true);
+		
 		_reverse.setActive(_settings->reverse);
 		
 		_reverse.click += [this]() {
@@ -33,16 +34,16 @@ namespace pizda {
 		_mainLayout += &_reverse;
 		
 		// Background rect
-		_backgroundRect.setMargin(Margin(0, 0, 0, _reverse.getSize().getHeight() - Theme::cornerRadius - 1));
+		_backgroundRect.setMargin(Margin(0, 0, _reverse.getSize().getWidth() - Theme::cornerRadius - 1, 0));
+		_backgroundRect.setCornerRadius(Theme::cornerRadius);
 		_backgroundRect.setFillColor(&Theme::bg2);
 		_backgroundRect.setBorderColor(&Theme::bg3);
-		_backgroundRect.setCornerRadius(Theme::cornerRadius);
 		_mainLayout += &_backgroundRect;
 		
 		// Row
 		_row.setOrientation(Orientation::horizontal);
-		_row.setSpacing(5);
-		_row.setMargin(Margin(8, 2, 8, _backgroundRect.getMargin().getBottom() + 8));
+		_row.setSpacing(8);
+		_row.setMargin(Margin(8, 3, 8 + _backgroundRect.getMargin().getRight(), 8));
 		_mainLayout += &_row;
 		
 		// Min
@@ -50,12 +51,6 @@ namespace pizda {
 		
 		// Max
 		addTextField(_maxTitle, _max, _settings->max);
-		
-		// Startup
-		addTextField(_startupTitle, _startup, _settings->startup);
-		
-		// Offset
-		addTextField(_offsetTitle, _offset, _settings->offset);
 	}
 	
 	void MotorEditor::toSettings() {
@@ -73,18 +68,6 @@ namespace pizda {
 		
 		_settings->max = static_cast<uint16_t>(result);
 		
-		// Startup
-		if (!StringUtils::tryParseInt32(_startup.getText(), result))
-			result = 1500;
-		
-		_settings->startup = static_cast<uint16_t>(result);
-		
-		// Offset
-		if (!StringUtils::tryParseInt32(_offset.getText(), result))
-			result = 0;
-		
-		_settings->offset = static_cast<int16_t>(result);
-		
 		// Reverse
 		_settings->reverse = _reverse.isActive();
 		
@@ -94,23 +77,29 @@ namespace pizda {
 	MotorsSettingsPage::MotorsSettingsPage() :
 		throttle(L"Throttle", &RC::getInstance().getSettings().motors.throttle),
 		noseWheel(L"Nose wheel", &RC::getInstance().getSettings().motors.noseWheel),
-		aileronLeft(L"Left aileron", &RC::getInstance().getSettings().motors.aileronLeft),
-		aileronRight(L"Right aileron", &RC::getInstance().getSettings().motors.aileronRight),
+		
 		flapLeft(L"Left flap", &RC::getInstance().getSettings().motors.flapLeft),
+		aileronLeft(L"Left aileron", &RC::getInstance().getSettings().motors.aileronLeft),
+		
 		flapRight(L"Right flap", &RC::getInstance().getSettings().motors.flapRight),
+		aileronRight(L"Right aileron", &RC::getInstance().getSettings().motors.aileronRight),
+		
 		tailLeft(L"Left tail", &RC::getInstance().getSettings().motors.tailLeft),
 		tailRight(L"Right tail", &RC::getInstance().getSettings().motors.tailRight)
 	{
 		// Page title
-		title.setText(L"Motor fine-tuning");
+		title.setText(L"Motors");
 		
 		// Content
 		vaginoz(&throttle);
 		vaginoz(&noseWheel);
-		vaginoz(&aileronLeft);
-		vaginoz(&aileronRight);
+
 		vaginoz(&flapLeft);
+		vaginoz(&aileronLeft);
+		
 		vaginoz(&flapRight);
+		vaginoz(&aileronRight);
+
 		vaginoz(&tailLeft);
 		vaginoz(&tailRight);
 	}

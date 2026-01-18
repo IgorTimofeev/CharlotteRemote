@@ -5,7 +5,7 @@
 #include "types/settings/autopilotSettings.h"
 #include "types/settings/personalizationSettings.h"
 #include "types/settings/navigationSettings.h"
-#include "types/settings/motorSettings.h"
+#include "types/settings/motorsSettings.h"
 
 namespace pizda {
 	class Settings {
@@ -15,7 +15,7 @@ namespace pizda {
 			AutopilotSettings autopilot {};
 			PersonalizationSettings personalization {};
 			NavigationSettings navigation {};
-			MotorSettings motors {};
+			MotorsSettings motors {};
 
 			void readAll() {
 				controls.read();

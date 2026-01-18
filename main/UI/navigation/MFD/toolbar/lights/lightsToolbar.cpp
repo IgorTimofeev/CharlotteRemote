@@ -7,10 +7,11 @@ namespace pizda {
 	LightsToolbar::LightsToolbar() {
 		row.setSpacing(1);
 		
-		auto& rc = RC::getInstance();
-		
 		// Navigation
-		navigation.pressed += [this, &rc] {
+		navigation.pressed += [this] {
+			auto& rc = RC::getInstance();
+			
+			copyAircraftToRemote();
 			rc.getRemoteData().lights.navigation = !rc.getAircraftData().raw.lights.navigation;
 			
 			rc.getCommunicationManager().enqueue(RemotePacketType::lights);
@@ -21,7 +22,10 @@ namespace pizda {
 		row += &navigation;
 		
 		// Strobe
-		strobe.pressed += [this, &rc] {
+		strobe.pressed += [this] {
+			auto& rc = RC::getInstance();
+			
+			copyAircraftToRemote();
 			rc.getRemoteData().lights.strobe = !rc.getAircraftData().raw.lights.strobe;
 			
 			rc.getCommunicationManager().enqueue(RemotePacketType::lights);
@@ -32,7 +36,10 @@ namespace pizda {
 		row += &strobe;
 		
 		// Landing
-		landing.pressed += [this, &rc] {
+		landing.pressed += [this] {
+			auto& rc = RC::getInstance();
+			
+			copyAircraftToRemote();
 			rc.getRemoteData().lights.landing = !rc.getAircraftData().raw.lights.landing;
 			
 			rc.getCommunicationManager().enqueue(RemotePacketType::lights);
@@ -43,7 +50,10 @@ namespace pizda {
 		row += &landing;
 		
 		// Landing
-		cabin.pressed += [this, &rc] {
+		cabin.pressed += [this] {
+			auto& rc = RC::getInstance();
+			
+			copyAircraftToRemote();
 			rc.getRemoteData().lights.cabin = !rc.getAircraftData().raw.lights.cabin;
 			
 			rc.getCommunicationManager().enqueue(RemotePacketType::lights);
@@ -63,5 +73,14 @@ namespace pizda {
 		strobe.setActive(rc.getAircraftData().raw.lights.strobe);
 		landing.setActive(rc.getAircraftData().raw.lights.landing);
 		cabin.setActive(rc.getAircraftData().raw.lights.cabin);
+	}
+	
+	void LightsToolbar::copyAircraftToRemote() {
+		auto& rc = RC::getInstance();
+		
+		rc.getRemoteData().lights.navigation = rc.getAircraftData().raw.lights.navigation;
+		rc.getRemoteData().lights.strobe = rc.getAircraftData().raw.lights.strobe;
+		rc.getRemoteData().lights.landing = rc.getAircraftData().raw.lights.landing;
+		rc.getRemoteData().lights.cabin = rc.getAircraftData().raw.lights.cabin;
 	}
 }

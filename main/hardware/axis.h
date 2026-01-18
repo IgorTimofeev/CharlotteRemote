@@ -13,17 +13,17 @@ namespace pizda {
 			
 			constexpr static uint8_t sensitivityMax = 0xFF;
 
-			void setup() const;
-			void tick();
+			void setup();
+			void read();
 
 			AxisSettingsData* getSettings() const;
 			
-			uint16_t mapValue(uint16_t rawValue);
+			uint16_t applySensitivityFilter(uint16_t rawValue);
 			
 			uint16_t getRawValue() const;
-			uint16_t getMappedValue() const;
-			uint8_t getMappedValueUint8() const;
-			float getMappedValueFloat() const;
+			uint16_t getFilteredValue() const;
+			uint8_t getFilteredValueUint8() const;
+			float getFilteredValueFloat() const;
 
 		private:
 			adc_channel_t _channel;
@@ -32,7 +32,7 @@ namespace pizda {
 			AxisSettingsData* _settings;
 
 			uint16_t _rawValue = 0xFFFF;
-			uint16_t _mappedValue = 0;
+			uint16_t _filteredValue = 0;
 
 	};
 }

@@ -160,15 +160,25 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ахэнна, конфиг моториков пашет">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="переделать бы их на какой-нибудь gptimer я хз, а то ledc лимитирован 8 каналами, не хватает на буззер">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/flightControlsIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/flightControlsIndicator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/theme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/theme.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/navigationData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/navigationData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/settings/motorSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/motorSettings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/settings/navigationSettings.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/navigationSettings.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/settings/navigationSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/navigationSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/communicationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/communicationManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/generic.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/generic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/motorSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/motorsSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/settings.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1147,15 +1157,10 @@
       <workItem from="1768045893176" duration="10471000" />
       <workItem from="1768112941658" duration="14340000" />
       <workItem from="1768599295642" duration="3297000" />
-      <workItem from="1768611175315" duration="266000" />
-    </task>
-    <task id="LOCAL-00014" summary="сэкономили бля пару битиков">
-      <option name="closed" value="true" />
-      <created>1766706575751</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1766706575751</updated>
+      <workItem from="1768611175315" duration="1321000" />
+      <workItem from="1768666041891" duration="1869000" />
+      <workItem from="1768674026311" duration="8800000" />
+      <workItem from="1768738271672" duration="2782000" />
     </task>
     <task id="LOCAL-00015" summary="сэкономили бля пару битиков">
       <option name="closed" value="true" />
@@ -1541,7 +1546,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768136336059</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="переделать бы их на какой-нибудь gptimer я хз, а то ledc лимитирован 8 каналами, не хватает на буззер">
+      <option name="closed" value="true" />
+      <created>1768612583426</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1768612583426</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1582,7 +1595,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="вообще надо щас будет и пикчи на constexpr перехуячить" />
     <MESSAGE value="добавил для слайдеров обработку ивентов попизже, а то тыкать каждый раз пальцем во вложенном скроллвью - галимая залупа какая-то" />
     <MESSAGE value="сделал АУДИАЛЬНЫЙ ИНТЫРФЕЙС для кнопачик и слудиков" />
     <MESSAGE value="с новым годом, посоны и посонессы!!1" />
@@ -1607,6 +1619,7 @@
     <MESSAGE value="кек, ток ща заметил - если в лейаутах чиллит &gt; 1 текстфилда, то ивенты ловит последний, а не зафокушенный" />
     <MESSAGE value="симпотно, но много места жрет, над покомпактнее как-то" />
     <MESSAGE value="ахэнна, конфиг моториков пашет" />
-    <option name="LAST_COMMIT_MESSAGE" value="ахэнна, конфиг моториков пашет" />
+    <MESSAGE value="переделать бы их на какой-нибудь gptimer я хз, а то ledc лимитирован 8 каналами, не хватает на буззер" />
+    <option name="LAST_COMMIT_MESSAGE" value="переделать бы их на какой-нибудь gptimer я хз, а то ledc лимитирован 8 каналами, не хватает на буззер" />
   </component>
 </project>

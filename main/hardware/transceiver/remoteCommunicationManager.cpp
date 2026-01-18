@@ -37,7 +37,7 @@ namespace pizda {
 		}
 	}
 	
-	void RemoteCommunicationManager::onIsConnectedChanged() {
+	void RemoteCommunicationManager::onConnectionStateChanged() {
 		auto& rc = RC::getInstance();
 		
 		if (isConnected()) {
@@ -367,11 +367,11 @@ namespace pizda {
 			);
 		};
 		
-		writeAxis(rc.getJoystickHorizontal().getMappedValue());
-		writeAxis(rc.getJoystickVertical().getMappedValue());
-		writeAxis(rc.getRing().getMappedValue());
-		writeAxis(rc.getLeverRight().getMappedValue());
-		writeAxis(rc.getLeverLeft().getMappedValue());
+		writeAxis(rc.getJoystickHorizontal().getFilteredValue());
+		writeAxis(rc.getJoystickVertical().getFilteredValue());
+		writeAxis(rc.getRing().getFilteredValue());
+		writeAxis(rc.getLeverRight().getFilteredValue());
+		writeAxis(rc.getLeverLeft().getFilteredValue());
 	}
 	
 	void RemoteCommunicationManager::transmitRemoteTrimPacket(BitStream& stream) {
@@ -396,18 +396,16 @@ namespace pizda {
 	
 	void RemoteCommunicationManager::transmitRemoteLightsPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
-		auto& rd = rc.getRemoteData();
 		
-		stream.writeBool(rd.lights.navigation);
-		stream.writeBool(rd.lights.strobe);
-		stream.writeBool(rd.lights.landing);
-		stream.writeBool(rd.lights.cabin);
+		stream.writeBool(rc.getRemoteData().lights.navigation);
+		stream.writeBool(rc.getRemoteData().lights.strobe);
+		stream.writeBool(rc.getRemoteData().lights.landing);
+		stream.writeBool(rc.getRemoteData().lights.cabin);
 	}
 	
 	void RemoteCommunicationManager::transmitRemoteBaroPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		auto& settings = rc.getSettings();
-		auto& rd = rc.getRemoteData();
 		
 		// Reference pressure
 		stream.writeUint16(
@@ -467,17 +465,18 @@ namespace pizda {
 		const auto write = [&stream](const MotorConfiguration& motor) {
 			stream.writeUint16(motor.min, RemoteMotorConfigurationPacket::minLengthBits);
 			stream.writeUint16(motor.max, RemoteMotorConfigurationPacket::maxLengthBits);
-			stream.writeUint16(motor.startup, RemoteMotorConfigurationPacket::startupLengthBits);
-			stream.writeInt16(motor.offset, RemoteMotorConfigurationPacket::offsetLengthBits);
 			stream.writeBool(motor.reverse);
 		};
 		
 		write(motors.throttle);
 		write(motors.noseWheel);
-		write(motors.aileronLeft);
-		write(motors.aileronRight);
+		
 		write(motors.flapLeft);
+		write(motors.aileronLeft);
+		
 		write(motors.flapRight);
+		write(motors.aileronRight);
+		
 		write(motors.tailLeft);
 		write(motors.tailRight);
 	}

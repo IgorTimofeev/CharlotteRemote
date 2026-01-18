@@ -35,12 +35,6 @@ namespace pizda {
 			TextField _max {};
 			Titler _maxTitle { L"Max", &_max };
 			
-			TextField _startup {};
-			Titler _startupTitle { L"Startup", &_startup };
-			
-			TextField _offset {};
-			Titler _offsetTitle { L"Offset", &_offset };
-			
 			Button _reverse {};
 			
 			template<std::integral T>
@@ -48,7 +42,6 @@ namespace pizda {
 				titler.title.setTextColor(&Theme::fg5);
 				
 				Theme::apply(&text);
-				text.setTextMargin(5);
 				text.setText(std::to_wstring(value));
 				
 				text.input += [this](Key key, std::optional<std::wstring_view> text) {
@@ -67,10 +60,13 @@ namespace pizda {
 		private:
 			MotorEditor throttle;
 			MotorEditor noseWheel;
-			MotorEditor aileronLeft;
-			MotorEditor aileronRight;
+			
 			MotorEditor flapLeft;
+			MotorEditor aileronLeft;
+
 			MotorEditor flapRight;
+			MotorEditor aileronRight;
+
 			MotorEditor tailLeft;
 			MotorEditor tailRight;
 			

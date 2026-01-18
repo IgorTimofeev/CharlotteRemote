@@ -32,7 +32,7 @@ namespace pizda {
 			RemotePacketType getTransmitPacketType() override;
 			bool onTransmit(BitStream& stream, RemotePacketType packetType) override;
 			bool onReceive(BitStream& stream, AircraftPacketType packetType, uint8_t payloadLength) override;
-			void onIsConnectedChanged() override;
+			void onConnectionStateChanged() override;
 			
 		private:
 			int64_t _aircraftADIRSPacketTime = 0;

@@ -328,12 +328,12 @@ namespace pizda {
 	void RC::axisTick() {
 		if (esp_timer_get_time() < _axisTickTimeUs)
 			return;
-
-		_leverLeft.tick();
-		_leverRight.tick();
-		_joystickHorizontal.tick();
-		_joystickVertical.tick();
-		_ring.tick();
+		
+		_leverLeft.read();
+		_leverRight.read();
+		_joystickHorizontal.read();
+		_joystickVertical.read();
+		_ring.read();
 		_battery.tick();
 		
 		_axisTickTimeUs = esp_timer_get_time() + config::axis::tickIntervalUs;

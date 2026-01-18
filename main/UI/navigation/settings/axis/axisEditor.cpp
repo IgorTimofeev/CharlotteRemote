@@ -119,7 +119,7 @@ namespace pizda {
 			
 			Point curvePos1 {
 				fromX + i,
-				bounds.getY2() - bounds.getHeight() * editor->getAxis()->mapValue(ADCValue) / Axis::valueMax
+				bounds.getY2() - bounds.getHeight() * editor->getAxis()->applySensitivityFilter(ADCValue) / Axis::valueMax
 			};
 			
 			if (i > 0) {
@@ -225,7 +225,7 @@ namespace pizda {
 			renderer->renderFilledCircle(
 				Point(
 					thumbX,
-					bounds.getY2() - bounds.getHeight() * editor->getAxis()->mapValue(editor->getAxis()->getRawValue()) / Axis::valueMax
+					bounds.getY2() - bounds.getHeight() * editor->getAxis()->applySensitivityFilter(editor->getAxis()->getRawValue()) / Axis::valueMax
 				),
 				2,
 				&Theme::fg1
@@ -233,7 +233,6 @@ namespace pizda {
 			
 			renderer->popViewport(oldViewport);
 		}
-		
 		
 		Element::onRender(renderer, bounds);
 	}
