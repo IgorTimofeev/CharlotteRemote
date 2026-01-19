@@ -10,7 +10,7 @@
 namespace pizda {
 	// -------------------------------- PacketSequenceItem --------------------------------
 	
-	PacketSequenceItem::PacketSequenceItem(RemotePacketType type, uint8_t count, bool useEnqueued) : _type(type), _count(count), _useEnqueued(useEnqueued) {
+	PacketSequenceItem::PacketSequenceItem(const RemotePacketType type, const uint8_t count, const bool useEnqueued) : _type(type), _count(count), _useEnqueued(useEnqueued) {
 	
 	}
 	
@@ -51,13 +51,13 @@ namespace pizda {
 	}
 	
 	
-	void RemoteCommunicationManager::enqueue(RemotePacketType type) {
+	void RemoteCommunicationManager::enqueue(const RemotePacketType type) {
 		_enqueuedPackets.insert(type);
 	}
 	
 	// -------------------------------- Receiving --------------------------------
 	
-	bool RemoteCommunicationManager::onReceive(BitStream& stream, AircraftPacketType packetType, uint8_t payloadLength) {
+	bool RemoteCommunicationManager::onReceive(BitStream& stream, const AircraftPacketType packetType, const uint8_t payloadLength) {
 		RC::getInstance().getAircraftData().raw.calibration.checkValidTime();
 		
 		switch (packetType) {
@@ -77,7 +77,7 @@ namespace pizda {
 		}
 	}
 	
-	bool RemoteCommunicationManager::receiveAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength) {
+	bool RemoteCommunicationManager::receiveAircraftADIRSPacket(BitStream& stream, const uint8_t payloadLength) {
 		if (!validatePayloadChecksumAndLength(
 			stream,
 			AircraftADIRSPacket::rollLengthBits
@@ -97,18 +97,17 @@ namespace pizda {
 		_aircraftADIRSPacketTime = time;
 		
 		auto& rc = RC::getInstance();
-		auto& ad = rc.getAircraftData();
-		
-		const auto airspeedPrevMPS = ad.raw.airspeedMPS;
-		const auto altitudePrevM = ad.raw.coordinates.getAltitude();
+
+		const auto airspeedPrevMPS = rc.getAircraftData().raw.airspeedMPS;
+		const auto altitudePrevM = rc.getAircraftData().raw.coordinates.getAltitude();
 		
 		// Roll / pitch / yaw
-		ad.raw.rollRad = readRadians(stream, AircraftADIRSPacket::rollRangeRad, AircraftADIRSPacket::rollLengthBits);
-		ad.raw.pitchRad = readRadians(stream, AircraftADIRSPacket::pitchRangeRad, AircraftADIRSPacket::pitchLengthBits);
-		ad.raw.yawRad = readRadians(stream, AircraftADIRSPacket::yawRangeRad, AircraftADIRSPacket::yawLengthBits);
+		rc.getAircraftData().raw.rollRad = readRadians(stream, AircraftADIRSPacket::rollRangeRad, AircraftADIRSPacket::rollLengthBits);
+		rc.getAircraftData().raw.pitchRad = readRadians(stream, AircraftADIRSPacket::pitchRangeRad, AircraftADIRSPacket::pitchLengthBits);
+		rc.getAircraftData().raw.yawRad = readRadians(stream, AircraftADIRSPacket::yawRangeRad, AircraftADIRSPacket::yawLengthBits);
 		
 		// Slip & skid
-		ad.raw.slipAndSkidFactor =
+		rc.getAircraftData().raw.slipAndSkidFactor =
 			// [0.0, 1.0]
 			static_cast<float>(stream.readUint8(AircraftADIRSPacket::slipAndSkidLengthBits))
 			/ static_cast<float>((1 << AircraftADIRSPacket::slipAndSkidLengthBits) - 1)
@@ -120,10 +119,10 @@ namespace pizda {
 			static_cast<float>(stream.readUint8(AircraftADIRSPacket::speedLengthBits))
 			/ static_cast<float>((1 << AircraftADIRSPacket::speedLengthBits) - 1);
 		
-		ad.raw.airspeedMPS = static_cast<float>(AircraftADIRSPacket::speedMaxMPS) * speedFactor;
+		rc.getAircraftData().raw.airspeedMPS = static_cast<float>(AircraftADIRSPacket::speedMaxMPS) * speedFactor;
 		
 		// Altitude
-		ad.raw.coordinates.setAltitude(readAltitude(
+		rc.getAircraftData().raw.coordinates.setAltitude(readAltitude(
 			stream,
 			AircraftADIRSPacket::altitudeLengthBits,
 			AircraftADIRSPacket::altitudeMinM,
@@ -131,10 +130,10 @@ namespace pizda {
 		));
 		
 		// Autopilot roll
-		ad.raw.autopilot.rollRad = readRadians(stream, AircraftADIRSPacket::autopilotRollRangeRad, AircraftADIRSPacket::autopilotRollLengthBits);
+		rc.getAircraftData().raw.autopilot.rollRad = readRadians(stream, AircraftADIRSPacket::autopilotRollRangeRad, AircraftADIRSPacket::autopilotRollLengthBits);
 		
 		// Autopilot pitch
-		ad.raw.autopilot.pitchRad = readRadians(stream, AircraftADIRSPacket::autopilotPitchRangeRad, AircraftADIRSPacket::autopilotPitchLengthBits);
+		rc.getAircraftData().raw.autopilot.pitchRad = readRadians(stream, AircraftADIRSPacket::autopilotPitchRangeRad, AircraftADIRSPacket::autopilotPitchLengthBits);
 		
 		// Value conversions
 //		ad.windSpeed = Units::convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
@@ -150,19 +149,19 @@ namespace pizda {
 //		ad.windDirection = toRadians(packet->windDirectionDeg);
 		
 		// Trends
-		const auto deltaAltitudeM = ad.raw.coordinates.getAltitude() - altitudePrevM;
+		const auto deltaAltitudeM = rc.getAircraftData().raw.coordinates.getAltitude() - altitudePrevM;
 		
 		// Airspeed & altitude, 5 sec
-		ad.raw.airspeedTrendMPS = (ad.raw.airspeedMPS - airspeedPrevMPS) * 5'000'000.f / static_cast<float>(deltaTime);
-		ad.raw.altitudeTrendM = deltaAltitudeM * 5'000'000.f / static_cast<float>(deltaTime);
+		rc.getAircraftData().raw.airspeedTrendMPS = (rc.getAircraftData().raw.airspeedMPS - airspeedPrevMPS) * 5'000'000.f / static_cast<float>(deltaTime);
+		rc.getAircraftData().raw.altitudeTrendM = deltaAltitudeM * 5'000'000.f / static_cast<float>(deltaTime);
 		
 		// Vertical speed, 1 min
-		ad.raw.verticalSpeedMPM = deltaAltitudeM * 60'000'000.f / static_cast<float>(deltaTime);
+		rc.getAircraftData().raw.verticalSpeedMPM = deltaAltitudeM * 60'000'000.f / static_cast<float>(deltaTime);
 		
 		return true;
 	}
 	
-	bool RemoteCommunicationManager::receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength) {
+	bool RemoteCommunicationManager::receiveAircraftAuxiliaryPacket(BitStream& stream, const uint8_t payloadLength) {
 		if (!validatePayloadChecksumAndLength(
 			stream,
 			AircraftAuxiliaryPacket::throttleLengthBits
@@ -251,7 +250,7 @@ namespace pizda {
 		return true;
 	}
 	
-	bool RemoteCommunicationManager::receiveAircraftCalibrationPacket(BitStream& stream, uint8_t payloadLength) {
+	bool RemoteCommunicationManager::receiveAircraftCalibrationPacket(BitStream& stream, const uint8_t payloadLength) {
 		if (!validatePayloadChecksumAndLength(
 			stream,
 			AircraftCalibrationPacket::systemLengthBits
@@ -261,11 +260,10 @@ namespace pizda {
 			return false;
 		
 		auto& rc = RC::getInstance();
-		auto& ad = rc.getAircraftData();
-		
-		ad.raw.calibration.system = static_cast<AircraftCalibrationSystem>(stream.readUint8(AircraftCalibrationPacket::systemLengthBits));
-		ad.raw.calibration.progress = stream.readUint8(AircraftCalibrationPacket::progressLengthBits) * 0xFF / ((1 << AircraftCalibrationPacket::progressLengthBits) - 1);
-		ad.raw.calibration.setCalibrating(ad.raw.calibration.progress < 0xFF);
+
+		rc.getAircraftData().raw.calibration.system = static_cast<AircraftCalibrationSystem>(stream.readUint8(AircraftCalibrationPacket::systemLengthBits));
+		rc.getAircraftData().raw.calibration.progress = stream.readUint8(AircraftCalibrationPacket::progressLengthBits) * 0xFF / ((1 << AircraftCalibrationPacket::progressLengthBits) - 1);
+		rc.getAircraftData().raw.calibration.setCalibrating(rc.getAircraftData().raw.calibration.progress < 0xFF);
 		
 //		ESP_LOGI(_logTag, "calibration progress: %d", ad.raw.calibration.progress * 100 / 0xFF);
 		
@@ -300,17 +298,16 @@ namespace pizda {
 			
 			return packetType;
 		}
-			// Normal
-		else {
-			const auto packetType = item.getType();
+
+		// Normal
+		const auto packetType = item.getType();
 			
-			next();
+		next();
 			
-			return packetType;
-		}
+		return packetType;
 	}
 	
-	bool RemoteCommunicationManager::onTransmit(BitStream& stream, RemotePacketType packetType) {
+	bool RemoteCommunicationManager::onTransmit(BitStream& stream, const RemotePacketType packetType) {
 		switch (packetType) {
 			case RemotePacketType::controls:
 				transmitRemoteControlsPacket(stream);
@@ -360,7 +357,7 @@ namespace pizda {
 			RemoteControlsPacket::motorLengthBits
 		);
 		
-		const auto writeAxis = [&stream](uint16_t axisValue) {
+		const auto writeAxis = [&stream](const uint16_t axisValue) {
 			stream.writeUint16(
 				static_cast<uint16_t>(axisValue * ((1 << RemoteControlsPacket::motorLengthBits) - 1) / Axis::valueMax),
 				RemoteControlsPacket::motorLengthBits
@@ -377,7 +374,7 @@ namespace pizda {
 	void RemoteCommunicationManager::transmitRemoteTrimPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		
-		const auto write = [&stream](int8_t settingsValue) {
+		const auto write = [&stream](const int8_t settingsValue) {
 			stream.writeUint16(
 				// Mapping from [-100; 100] to [0; bits]
 				static_cast<uint16_t>(
@@ -405,24 +402,21 @@ namespace pizda {
 	
 	void RemoteCommunicationManager::transmitRemoteBaroPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
-		auto& settings = rc.getSettings();
-		
+
 		// Reference pressure
 		stream.writeUint16(
-			settings.controls.referencePressureSTD ? 10132 : settings.controls.referencePressurePa / 10,
+			rc.getSettings().controls.referencePressureSTD ? 10132 : rc.getSettings().controls.referencePressurePa / 10,
 			RemoteBaroPacket::referencePressureLengthBits
 		);
 	}
 	
 	void RemoteCommunicationManager::transmitRemoteAutopilotPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
-		auto& settings = rc.getSettings();
-		auto& rd = rc.getRemoteData();
-		
+
 		// Speed
 		const auto speedFactor =
 			std::min<float>(
-				Units::convertSpeed(settings.autopilot.speedKt, SpeedUnit::knot, SpeedUnit::meterPerSecond),
+				Units::convertSpeed(rc.getSettings().autopilot.speedKt, SpeedUnit::knot, SpeedUnit::meterPerSecond),
 				RemoteAutopilotPacket::speedMaxMPS
 			)
 			/ static_cast<float>(RemoteAutopilotPacket::speedMaxMPS);
@@ -432,13 +426,13 @@ namespace pizda {
 		stream.writeUint8(static_cast<uint8_t>(std::round(speedMapped)), RemoteAutopilotPacket::speedLengthBits);
 		
 		// Heading
-		stream.writeUint16(settings.autopilot.headingDeg, RemoteAutopilotPacket::headingLengthBits);
+		stream.writeUint16(rc.getSettings().autopilot.headingDeg, RemoteAutopilotPacket::headingLengthBits);
 		
 		// Altitude
 		const auto altitudeFt =
-			rd.autopilot.verticalMode == AutopilotVerticalMode::alt
-			? rd.autopilot.altitudeHoldFt
-			: settings.autopilot.altitudeFt;
+			rc.getRemoteData().autopilot.verticalMode == AutopilotVerticalMode::alt
+			? rc.getRemoteData().autopilot.altitudeHoldFt
+			: rc.getSettings().autopilot.altitudeFt;
 		
 		writeAltitude(
 			stream,
@@ -449,14 +443,14 @@ namespace pizda {
 		);
 		
 		// Modes
-		stream.writeUint8(std::to_underlying(rd.autopilot.lateralMode), RemoteAutopilotPacket::lateralModeLengthBits);
-		stream.writeUint8(std::to_underlying(rd.autopilot.verticalMode), RemoteAutopilotPacket::verticalModeLengthBits);
+		stream.writeUint8(std::to_underlying(rc.getRemoteData().autopilot.lateralMode), RemoteAutopilotPacket::lateralModeLengthBits);
+		stream.writeUint8(std::to_underlying(rc.getRemoteData().autopilot.verticalMode), RemoteAutopilotPacket::verticalModeLengthBits);
 		
 		// Autothrottle
-		stream.writeBool(rd.autopilot.autothrottle);
+		stream.writeBool(rc.getRemoteData().autopilot.autothrottle);
 		
 		// Autopilot
-		stream.writeBool(rd.autopilot.autopilot);
+		stream.writeBool(rc.getRemoteData().autopilot.autopilot);
 	}
 	
 	void RemoteCommunicationManager::transmitRemoteMotorConfigurationPacket(BitStream& stream) {

@@ -37,11 +37,11 @@ namespace pizda {
 			AircraftCalibrationSystem system = AircraftCalibrationSystem::accelAndGyro;
 			uint8_t progress = 0;
 			
-			bool isCalibrating() {
+			bool isCalibrating() const {
 				return _calibrating;
 			}
 			
-			void setCalibrating(bool state) {
+			void setCalibrating(const bool state) {
 				_calibrating = state;
 				_validUntil = _calibrating ? esp_timer_get_time() + 1'000'000 : 0;
 			}

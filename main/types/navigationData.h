@@ -34,7 +34,7 @@ namespace pizda {
 		public:
 			explicit NavigationWaypointDataIndexAware() = default;
 
-			explicit NavigationWaypointDataIndexAware(uint16_t waypointIndex) : waypointIndex(waypointIndex) {
+			explicit NavigationWaypointDataIndexAware(const uint16_t waypointIndex) : waypointIndex(waypointIndex) {
 
 			}
 
@@ -45,7 +45,7 @@ namespace pizda {
 		public:
 			NavigationRNAVWaypointData() = default;
 
-			explicit NavigationRNAVWaypointData(uint16_t waypointIndex) :
+			explicit NavigationRNAVWaypointData(const uint16_t waypointIndex) :
 				NavigationWaypointDataIndexAware(waypointIndex)
 			{
 
@@ -102,7 +102,7 @@ namespace pizda {
 
 	class NavigationAirportData : public NavigationWaypointDataIndexAware {
 		public:
-			NavigationAirportData(uint16_t waypointIndex, std::initializer_list<NavigationRunwayData> runways) :
+			NavigationAirportData(const uint16_t waypointIndex, const std::initializer_list<NavigationRunwayData> runways) :
 				NavigationWaypointDataIndexAware(waypointIndex),
 				runways(runways)
 			{
@@ -114,7 +114,7 @@ namespace pizda {
 
 	class NavigationAirportAndRunwayIndicesData {
 		public:
-			NavigationAirportAndRunwayIndicesData(uint16_t airportIndex, uint8_t runwayIndex) :
+			NavigationAirportAndRunwayIndicesData(const uint16_t airportIndex, const uint8_t runwayIndex) :
 				airportIndex(airportIndex),
 				runwayIndex(runwayIndex)
 			{
@@ -127,7 +127,7 @@ namespace pizda {
 
 	class NavigationDataFlightPlanAirport : public NavigationAirportAndRunwayIndicesData {
 		public:
-			NavigationDataFlightPlanAirport(uint16_t airportIndex, uint16_t runwayIndex) :
+			NavigationDataFlightPlanAirport(const uint16_t airportIndex, const uint16_t runwayIndex) :
 				NavigationAirportAndRunwayIndicesData(airportIndex, runwayIndex)
 			{
 

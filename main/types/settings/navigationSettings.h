@@ -21,7 +21,7 @@ namespace pizda {
 			NavigationSettingsWaypoint() = default;
 
 			explicit NavigationSettingsWaypoint(
-				NavigationWaypointType type,
+				const NavigationWaypointType type,
 				std::wstring_view name,
 				const GeographicCoordinates& geographicCoordinates
 			) :
@@ -40,7 +40,7 @@ namespace pizda {
 		public:
 			NavigationSettingsRNAVWaypoint() = default;
 
-			explicit NavigationSettingsRNAVWaypoint(uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {\
+			explicit NavigationSettingsRNAVWaypoint(const uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {\
 
 			}
 	};
@@ -49,7 +49,7 @@ namespace pizda {
 		public:
 			NavigationSettingsAirport() = default;
 
-			explicit NavigationSettingsAirport(uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {
+			explicit NavigationSettingsAirport(const uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {
 
 			}
 	};
@@ -59,12 +59,12 @@ namespace pizda {
 			NavigationSettingsAirportRunway() = default;
 
 			NavigationSettingsAirportRunway(
-				uint16_t airportIndex,
+				const uint16_t airportIndex,
 				const GeographicCoordinates& geographicCoordinates,
-				uint16_t headingDeg,
-				NavigationRunwayDataAlignment alignment,
-				uint16_t lengthM,
-				uint16_t widthM
+				const uint16_t headingDeg,
+				const NavigationRunwayDataAlignment alignment,
+				const uint16_t lengthM,
+				const uint16_t widthM
 			) :
 				airportIndex(airportIndex),
 				geographicCoordinates(geographicCoordinates),
@@ -88,14 +88,12 @@ namespace pizda {
 		public:
 			NavigationSettingsFlightPlanLeg() = default;
 
-			explicit NavigationSettingsFlightPlanLeg(uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {
+			explicit NavigationSettingsFlightPlanLeg(const uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {
 
 			}
 	};
 
 	class NavigationSettings : public NVSSettings {
-		public:
-
 		protected:
 			const char* getNamespace() override;
 
@@ -128,7 +126,5 @@ namespace pizda {
 			constexpr static auto _flightPlanDestinationExists = "fde";
 			constexpr static auto _flightPlanDestinationAirportIndex = "fda";
 			constexpr static auto _flightPlanDestinationRunwayIndex = "fdr";
-
-			void fillTemplateData();
 	};
 }

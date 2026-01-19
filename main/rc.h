@@ -180,17 +180,17 @@ namespace pizda {
 			int64_t _interpolationTickTime = 0;
 			
 			void SPIBusSetup() const;
-			void GPIOSetup() const;
+			static void GPIOSetup();
 			static void ADCUnitsSetup();
 
 			void axisTick();
 
 			void NVSSetup();
+
+			[[noreturn]] static void startErrorLoop(const char* error);
 			
-			void startErrorLoop(const char* error);
-			
-			float applyLPF(float oldValue, float newValue, float factor);
-			float applyLPFForAngleRad(float oldValue, float newValue, float factor);
+			float applyLPF(float oldValue, float newValue, float factor) const;
+			float applyLPFForAngleRad(float oldValue, float newValue, float factor) const;
 			
 			void interpolationTick();
 	};

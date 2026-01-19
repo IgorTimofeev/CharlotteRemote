@@ -275,7 +275,7 @@ namespace pizda {
 		}
 
 		// Aircraft symbol
-		const auto& renderAircraftSymbolRect = [&renderer](const Point& position, uint16_t width) {
+		const auto& renderAircraftSymbolRect = [&renderer](const Point& position, const uint16_t width) {
 			renderer->renderFilledRectangle(
 				Bounds(
 					position.getX(),
@@ -325,8 +325,8 @@ namespace pizda {
 		Renderer* renderer,
 		const Bounds& bounds,
 		const AircraftData& ad,
-		float pitchPixelOffsetProjected,
-		float projectionPlaneDistance,
+		const float pitchPixelOffsetProjected,
+		const float projectionPlaneDistance,
 		const Point& horizonLeft,
 		const Point& horizonRight,
 		const Vector2F& horizonVec,
@@ -402,7 +402,7 @@ namespace pizda {
 			bounds.getY() + PFD::turnCoordinatorOverlayRollIndicatorRadius
 		);
 
-		const auto& renderLine = [&renderer, &center, &aircraftData](int8_t angle, bool isBig) {
+		const auto& renderLine = [&renderer, &center, &aircraftData](const int8_t angle, const bool isBig) {
 			const auto vec = Vector2F(0, PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(toRadians(angle) - aircraftData.computed.rollRad);
 			const auto lineFrom = center - static_cast<Point>(vec);
 
@@ -468,14 +468,13 @@ namespace pizda {
 	
 	void PFDScene::renderFlightModeAnnunciatorOverlay(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
-		auto& ad = rc.getAircraftData();
-		
+
 		constexpr static uint8_t sectionCount = 3;
 		const auto sectionWidth = bounds.getWidth() / sectionCount;
 		const auto yCenter = bounds.getYCenter();
 		auto x = bounds.getX();
 		
-		const auto renderText = [renderer, yCenter, &x, sectionWidth](std::wstring_view text, bool ap) {
+		const auto renderText = [renderer, yCenter, &x, sectionWidth](const std::wstring_view text, const bool ap) {
 			renderer->renderString(
 				Point(
 					x + sectionWidth / 2 - Theme::fontSmall.getWidth(text) / 2,
@@ -489,17 +488,17 @@ namespace pizda {
 			x += sectionWidth;
 		};
 		
-		const auto renderMissingText = [&renderText]() {
+		const auto renderMissingText = [&renderText] {
 			renderText(L"---", false);
 		};
 		
-		const auto renderSeparator = [renderer, &x, &bounds]() {
+		const auto renderSeparator = [renderer, &x, &bounds] {
 			renderer->renderVerticalLine(Point(x - 1, bounds.getY()), PFD::flightModeAnnunciatorHeight, &Theme::sky2);
 		};
 		
 		// Throttle
 		if (rc.getCommunicationManager().isConnected()) {
-			if (ad.raw.autopilot.autothrottle) {
+			if (rc.getAircraftData().raw.autopilot.autothrottle) {
 				renderText(L"A/T", true);
 			}
 			else {
@@ -514,7 +513,7 @@ namespace pizda {
 		
 		// Lateral
 		if (rc.getCommunicationManager().isConnected()) {
-			switch (ad.raw.autopilot.lateralMode) {
+			switch (rc.getAircraftData().raw.autopilot.lateralMode) {
 				case AutopilotLateralMode::man: {
 					renderText(L"MAN", false);
 					break;
@@ -533,7 +532,7 @@ namespace pizda {
 		
 		// Vertical
 		if (rc.getCommunicationManager().isConnected()) {
-			switch (ad.raw.autopilot.verticalMode) {
+			switch (rc.getAircraftData().raw.autopilot.verticalMode) {
 				case AutopilotVerticalMode::man: {
 					renderText(L"MAN", false);
 					break;
@@ -820,7 +819,7 @@ namespace pizda {
 		));
 	}
 
-	void PFD::renderCurrentValue(Renderer* renderer, const Bounds& bounds, uint8_t digitCount, float value, bool left) {
+	void PFD::renderCurrentValue(Renderer* renderer, const Bounds& bounds, const uint8_t digitCount, float value, const bool left) {
 		const auto isConnected = RC::getInstance().getCommunicationManager().isConnected();
 		const auto bg = isConnected ? &Theme::bg2 : &Theme::bad3;
 		const auto x2 = bounds.getX2();
@@ -871,14 +870,14 @@ namespace pizda {
 				? x2 - speedBarSize - currentValueTextOffset - maxDigitWidth
 				: bounds.getX() + currentValueTextOffset + maxDigitWidth * (digitCount - 1) + 1;
 			
-			const auto getAdjacentDigit = [&](uint8_t digit, bool plus) {
+			const auto getAdjacentDigit = [&](const uint8_t digit, const bool plus) {
 				return
 					plus
 					? (digit < 9 ? digit + 1 : 0)
 					: (digit > 1 ? digit - 1 : 9);
 			};
 			
-			const auto renderDigit = [&](int32_t digitY, uint8_t digit) {
+			const auto renderDigit = [&](const int32_t digitY, const uint8_t digit) {
 				const wchar_t text = L'0' + digit;
 				
 				renderer->renderChar(
@@ -932,7 +931,7 @@ namespace pizda {
 		}
 	}
 	
-	void PFD::renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left) {
+	void PFD::renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, const int32_t centerY, const uint8_t unitStep, const uint16_t stepPixels, const float currentValue, const uint16_t autopilotValue, const bool left) {
 		if (autopilotValue == 0)
 			return;
 		
@@ -1018,7 +1017,7 @@ namespace pizda {
 		);
 	}
 
-	void PFD::renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value) {
+	void PFD::renderTrendArrow(Renderer* renderer, const int32_t x, const int32_t y, const uint8_t unitStep, const uint16_t stepPixels, const float value) {
 		const auto length = static_cast<int32_t>(static_cast<float>(stepPixels) * value / static_cast<float>(unitStep));
 
 		if (std::abs(length) < unitStep)
@@ -1064,7 +1063,7 @@ namespace pizda {
 		// Bars
 		const auto barX = bounds.getX2() + 1 - speedBarSize;
 
-		const auto renderBar = [&](int32_t x, uint16_t width, uint16_t fromSpeed, uint16_t toSpeed, const Color* color) {
+		const auto renderBar = [&](const int32_t x, const uint16_t width, const uint16_t fromSpeed, const uint16_t toSpeed, const Color* color) {
 			const int32_t fromY = centerY - static_cast<int32_t>((static_cast<float>(fromSpeed) - ad.computed.airspeedKt) * static_cast<float>(speedStepPixels) / static_cast<float>(speedStepUnits));
 			const int32_t height = (toSpeed - fromSpeed) * speedStepPixels / speedStepUnits;
 
@@ -1455,7 +1454,7 @@ namespace pizda {
 
 		bool isBig;
 
-		auto renderLines = [&lineValue, &isBig, &renderer, lineColor, &bounds, &y](int32_t yAdder) {
+		auto renderLines = [&lineValue, &isBig, &renderer, lineColor, &bounds, &y](const int32_t yAdder) {
 			while (lineValue <= verticalSpeedStepUnitsLimit) {
 				isBig = lineValue % verticalSpeedStepUnitsBig == 0;
 
@@ -1503,7 +1502,7 @@ namespace pizda {
 		);
 	}
 
-	void PFD::renderMiniPanel(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, std::wstring_view text, int8_t textXOffset) {
+	void PFD::renderMiniPanel(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, const std::wstring_view text, const int8_t textXOffset) {
 		// Background
 		renderer->renderFilledRectangle(bounds, bg);
 
@@ -1519,7 +1518,7 @@ namespace pizda {
 		);
 	}
 
-	void PFD::renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, uint16_t autopilotValue, bool autopilotValueEnabled, bool left) {
+	void PFD::renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, const uint16_t autopilotValue, const bool autopilotValueEnabled, const bool left) {
 		renderMiniPanel(
 			renderer,
 			bounds,

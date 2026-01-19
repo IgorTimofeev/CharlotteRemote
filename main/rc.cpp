@@ -118,14 +118,14 @@ namespace pizda {
 		}
 	}
 	
-	float RC::applyLPF(float oldValue, float newValue, float factor) {
+	float RC::applyLPF(const float oldValue, const float newValue, const float factor) const {
 		return
 			_settings.personalization.LPF
 			? LowPassFilter::apply(oldValue, newValue, factor)
 			: newValue;
 	}
 	
-	float RC::applyLPFForAngleRad(float oldValue, float newValue, float factor) {
+	float RC::applyLPFForAngleRad(const float oldValue, const float newValue, const float factor) const {
 		return
 			_settings.personalization.LPF
 			? LowPassFilter::applyForAngleRad(oldValue, newValue, factor)
@@ -365,7 +365,7 @@ namespace pizda {
 		ESP_ERROR_CHECK(spi_bus_initialize(config::spi::device, &config, SPI_DMA_CH_AUTO));
 	}
 	
-	void RC::GPIOSetup() const {
+	void RC::GPIOSetup() {
 		// Slave selects
 		gpio_config_t g = {};
 		g.pin_bit_mask = (1ULL << config::screen::SS) | (1ULL << config::transceiver::SS);
@@ -438,8 +438,8 @@ namespace pizda {
 	RemoteCommunicationManager& RC::getCommunicationManager() {
 		return _communicationManager;
 	}
-	
-	void RC::startErrorLoop(const char* error) {
+
+	[[noreturn]] void RC::startErrorLoop(const char* error) {
 		ESP_LOGE(_logTag, "%s", error);
 		
 		while (true) {

@@ -12,7 +12,7 @@ namespace pizda {
 				return !std::ranges::search(
 					haystack,
 					needle,
-					[](wchar_t a, wchar_t b) {
+					[](const wchar_t a, const wchar_t b) {
 						return std::towlower(a) == std::towlower(b);
 					}
 				).empty();

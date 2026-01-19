@@ -30,7 +30,7 @@ namespace pizda {
 			TextField latitude {};
 			TextField longitude {};
 
-			void fromRadians(float lat, float lon) {
+			void fromRadians(const float lat, const float lon) {
 				latitude.setText(std::to_wstring(toDegrees(lat)));
 				longitude.setText(std::to_wstring(toDegrees(lon)));
 			}
