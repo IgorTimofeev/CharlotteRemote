@@ -55,14 +55,35 @@ namespace pizda {
 		const auto& horizonVecPerp = horizonVecNorm.counterClockwisePerpendicular();
 		const auto& horizonCenter = static_cast<Vector2F>(horizonLeft) + horizonVec / 2.0f;
 
-		// Background
-		renderSyntheticVisionBackground(
-			renderer,
-			bounds,
-			horizonLeft,
-			horizonRight
-		);
-		
+		// SVT background
+		{
+			if (horizonLeft.getY() >= bounds.getY2() && horizonRight.getY() >= bounds.getY2()) {
+				renderer->renderFilledRectangle(bounds, &Theme::sky1);
+			}
+			else if (horizonLeft.getY() <= bounds.getY() && horizonRight.getY() <= bounds.getY()) {
+				renderer->renderFilledRectangle(bounds, &Theme::ground1);
+			}
+			else {
+				renderer->renderFilledQuad(
+					horizonLeft - static_cast<Point>(horizonVecPerp * diagonal),
+					horizonRight - static_cast<Point>(horizonVecPerp * diagonal),
+					horizonRight,
+					horizonLeft,
+					&Theme::sky1
+				);
+
+				// Ground
+				renderer->renderFilledQuad(
+					horizonLeft,
+					horizonRight,
+					horizonRight + static_cast<Point>(horizonVecPerp * diagonal),
+					horizonLeft + static_cast<Point>(horizonVecPerp * diagonal),
+					&Theme::ground1
+				);
+			}
+		}
+
+		// SVT scene
 		Scene::onRender(renderer, bounds);
 		
 		// FMA
@@ -298,74 +319,6 @@ namespace pizda {
 			),
 			PFD::aircraftSymbolThickness
 		);
-	}
-
-	void PFDScene::renderSyntheticVisionBackground(
-		Renderer* renderer,
-		const Bounds& bounds,
-		const Point& horizonLeft,
-		const Point& horizonRight
-	) {
-		// Sky
-		renderer->renderFilledRectangle(bounds, &Theme::sky1);
-
-		// Ground
-		const auto groundMaxY = std::max(horizonLeft.getY(), horizonRight.getY());
-
-		// Triangle
-		renderer->renderFilledTriangle(
-			horizonLeft.getY() < horizonRight.getY()
-			? horizonLeft
-			: horizonRight,
-			Point(
-				horizonLeft.getX(),
-				groundMaxY
-			),
-			Point(
-				horizonRight.getX(),
-				groundMaxY
-			),
-			&Theme::ground1
-		);
-
-		// Rectangle
-
-		// Bottom
-		if (groundMaxY < bounds.getY2()) {
-			renderer->renderFilledRectangle(
-				Bounds(
-					bounds.getX(),
-					groundMaxY,
-					bounds.getWidth(),
-					bounds.getY2() - groundMaxY + 1
-				),
-				&Theme::ground1
-			);
-		}
-		// Left
-		else if (horizonLeft.getY() < bounds.getY() && horizonLeft.getX() > bounds.getX()) {
-			renderer->renderFilledRectangle(
-				Bounds(
-					bounds.getX(),
-					bounds.getY(),
-					horizonLeft.getX() - bounds.getX(),
-					bounds.getHeight()
-				),
-				&Theme::ground1
-			);
-		}
-		// Right
-		else if (horizonRight.getY() < bounds.getY() && horizonRight.getX() < bounds.getX2()) {
-			renderer->renderFilledRectangle(
-				Bounds(
-					horizonRight.getX(),
-					bounds.getY(),
-					bounds.getX2() - horizonRight.getX(),
-					bounds.getHeight()
-				),
-				&Theme::ground1
-			);
-		}
 	}
 
 	void PFDScene::renderPitchOverlay(

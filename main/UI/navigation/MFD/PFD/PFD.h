@@ -37,7 +37,6 @@ namespace pizda {
 				const Vector2F& horizonCenter
 			);
 
-			static void renderSyntheticVisionBackground(Renderer* renderer, const Bounds& bounds, const Point& horizonLeft, const Point& horizonRight);
 			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds, const AircraftData& aircraftData);
 			static void renderFlightModeAnnunciatorOverlay(Renderer* renderer, const Bounds& bounds);
 			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, const Settings& settings, const AircraftData& aircraftData);

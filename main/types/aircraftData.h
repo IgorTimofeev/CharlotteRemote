@@ -14,7 +14,7 @@ namespace pizda {
 		public:
 			float pitchRad = 0;
 			float rollRad = 0;
-			
+
 			AutopilotLateralMode lateralMode = AutopilotLateralMode::man;
 			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::man;
 			
