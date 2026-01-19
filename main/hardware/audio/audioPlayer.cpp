@@ -13,7 +13,7 @@ namespace pizda {
 		
 		xTaskCreate(
 			[](void* arg) {
-				reinterpret_cast<AudioPlayer*>(arg)->onStart();
+				static_cast<AudioPlayer*>(arg)->onStart();
 			},
 			"AudioPlayer",
 			4 * 1024,

@@ -20,7 +20,7 @@ namespace pizda {
 		RC::getInstance().setRoute(*_lastRoute);
 	}
 	
-	void PagesMenuView::setupButtons(PageMenuViewButton* buttons, uint8_t buttonCount, const Route** lastRoute) {
+	void PagesMenuView::setupButtons(PageMenuViewButton* buttons, const uint8_t buttonCount, const Route** lastRoute) {
 		_buttons = buttons;
 		_buttonCount = buttonCount;
 		_lastRoute = lastRoute;

@@ -6,11 +6,11 @@ namespace pizda {
 	#pragma pack(push, 1)
 	class Playable {
 		public:
-			constexpr Playable(bool delay, uint32_t duration) : _delay(delay), _duration(duration) {
+			constexpr Playable(const bool delay, const uint32_t duration) : _delay(delay), _duration(duration) {
 			
 			}
 			
-			void setDelay(bool delay) {
+			void setDelay(const bool delay) {
 				_delay = delay;
 			}
 			
@@ -18,7 +18,7 @@ namespace pizda {
 				return _delay;
 			}
 			
-			void setDuration(uint32_t duration) {
+			void setDuration(const uint32_t duration) {
 				_duration = duration;
 			}
 			
@@ -33,7 +33,7 @@ namespace pizda {
 
 	class Delay : public Playable {
 		public:
-			constexpr Delay(uint32_t duration) : Playable(true, duration) {
+			constexpr Delay(const uint32_t duration) : Playable(true, duration) {
 
 			}
 			
@@ -44,7 +44,7 @@ namespace pizda {
 	
 	class Note : public Playable {
 		public:
-			constexpr Note(uint32_t frequency, uint32_t duration) : Playable(false, duration), _frequency(frequency) {
+			constexpr Note(const uint32_t frequency, const uint32_t duration) : Playable(false, duration), _frequency(frequency) {
 			
 			}
 			
@@ -56,7 +56,7 @@ namespace pizda {
 				return _frequency;
 			}
 			
-			void setFrequency(uint32_t frequency) {
+			void setFrequency(const uint32_t frequency) {
 				_frequency = frequency;
 			}
 		
@@ -68,7 +68,7 @@ namespace pizda {
 
 	class Sound {
 		public:
-			constexpr Sound(const Playable* const* playables, size_t playablesLength) : _playables(playables), _playablesLength(playablesLength) {
+			constexpr Sound(const Playable* const* playables, const size_t playablesLength) : _playables(playables), _playablesLength(playablesLength) {
 			
 			}
 			
@@ -88,7 +88,7 @@ namespace pizda {
 				return _playablesLength;
 			}
 			
-			void setPlayablesLength(size_t playablesLength) {
+			void setPlayablesLength(const size_t playablesLength) {
 				_playablesLength = playablesLength;
 			}
 		

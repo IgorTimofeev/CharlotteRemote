@@ -35,7 +35,10 @@ namespace pizda {
 			void onConnectionStateChanged() override;
 			
 		private:
-			int64_t _aircraftADIRSPacketTime = 0;
+			constexpr static uint32_t _trendsInterval = 100'000;
+			int64_t _trendsTime = 0;
+			float _trendsAirspeedPrevMPS = 0;
+			float _trendsAltitudePrevM = 0;
 			
 			std::vector<PacketSequenceItem> _packetSequence {
 				PacketSequenceItem(RemotePacketType::controls, 2),

@@ -92,15 +92,8 @@ namespace pizda {
 		))
 			return false;
 		
-		const auto time = esp_timer_get_time();
-		const auto deltaTime = time - _aircraftADIRSPacketTime;
-		_aircraftADIRSPacketTime = time;
-		
 		auto& rc = RC::getInstance();
 
-		const auto airspeedPrevMPS = rc.getAircraftData().raw.airspeedMPS;
-		const auto altitudePrevM = rc.getAircraftData().raw.coordinates.getAltitude();
-		
 		// Roll / pitch / yaw
 		rc.getAircraftData().raw.rollRad = readRadians(stream, AircraftADIRSPacket::rollRangeRad, AircraftADIRSPacket::rollLengthBits);
 		rc.getAircraftData().raw.pitchRad = readRadians(stream, AircraftADIRSPacket::pitchRangeRad, AircraftADIRSPacket::pitchLengthBits);
@@ -136,28 +129,35 @@ namespace pizda {
 		rc.getAircraftData().raw.autopilot.pitchRad = readRadians(stream, AircraftADIRSPacket::autopilotPitchRangeRad, AircraftADIRSPacket::autopilotPitchLengthBits);
 		
 		// Value conversions
-//		ad.windSpeed = Units::convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+//		rc.getAircraftData().windSpeed = Units::convertSpeed(packet->windSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 		
-//		ad.groundSpeedKt = Units::convertSpeed(packet->groundSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
+//		rc.getAircraftData().groundSpeedKt = Units::convertSpeed(packet->groundSpeedMs, SpeedUnit::meterPerSecond, SpeedUnit::knot);
 
-//		ad.flightPathVectorPitch = packet->flightPathPitchRad;
-//		ad.flightPathVectorYaw = packet->flightPathYawRad;
+//		rc.getAircraftData().flightPathVectorPitch = packet->flightPathPitchRad;
+//		rc.getAircraftData().flightPathVectorYaw = packet->flightPathYawRad;
 //
-//		ad.flightDirectorPitch = packet->flightDirectorPitchRad;
-//		ad.flightDirectorRoll = packet->flightDirectorRollRad;
+//		rc.getAircraftData().flightDirectorPitch = packet->flightDirectorPitchRad;
+//		rc.getAircraftData().flightDirectorRoll = packet->flightDirectorRollRad;
 //
-//		ad.windDirection = toRadians(packet->windDirectionDeg);
+//		rc.getAircraftData().windDirection = toRadians(packet->windDirectionDeg);
 		
 		// Trends
-		const auto deltaAltitudeM = rc.getAircraftData().raw.coordinates.getAltitude() - altitudePrevM;
-		
-		// Airspeed & altitude, 5 sec
-		rc.getAircraftData().raw.airspeedTrendMPS = (rc.getAircraftData().raw.airspeedMPS - airspeedPrevMPS) * 5'000'000.f / static_cast<float>(deltaTime);
-		rc.getAircraftData().raw.altitudeTrendM = deltaAltitudeM * 5'000'000.f / static_cast<float>(deltaTime);
-		
-		// Vertical speed, 1 min
-		rc.getAircraftData().raw.verticalSpeedMPM = deltaAltitudeM * 60'000'000.f / static_cast<float>(deltaTime);
-		
+		const auto trendsDeltaTime = static_cast<float>(esp_timer_get_time() - _trendsTime);
+
+		if (trendsDeltaTime >= _trendsInterval) {
+			const auto trendsDeltaAltitudeM = rc.getAircraftData().raw.coordinates.getAltitude() - _trendsAltitudePrevM;
+			_trendsAltitudePrevM = rc.getAircraftData().raw.coordinates.getAltitude();
+
+			// Airspeed & altitude, 5 sec
+			rc.getAircraftData().raw.airspeedTrendMPS = (rc.getAircraftData().raw.airspeedMPS - _trendsAirspeedPrevMPS) * 5'000'000.f / trendsDeltaTime;
+			rc.getAircraftData().raw.altitudeTrendM = trendsDeltaAltitudeM * 5'000'000.f / trendsDeltaTime;
+
+			// Vertical speed, 1 min
+			rc.getAircraftData().raw.verticalSpeedMPM = trendsDeltaAltitudeM * 60'000'000.f / trendsDeltaTime;
+
+			_trendsTime = esp_timer_get_time();
+		}
+
 		return true;
 	}
 	
@@ -182,11 +182,10 @@ namespace pizda {
 			return false;
 		
 		auto& rc = RC::getInstance();
-		auto& ad = rc.getAircraftData();
 		
 		// -------------------------------- Throttle --------------------------------
 		
-		ad.raw.throttle_0_255 =
+		rc.getAircraftData().raw.throttle_0_255 =
 			stream.readUint8(AircraftAuxiliaryPacket::throttleLengthBits)
 			* 0xFF
 			/ ((1 << AircraftAuxiliaryPacket::throttleLengthBits) - 1);
@@ -202,7 +201,7 @@ namespace pizda {
 		
 		// [-pi / 2; pi / 2]
 		const auto lat = latFactor * std::numbers::pi_v<float> - std::numbers::pi_v<float> / 2.f;
-		ad.raw.coordinates.setLatitude(lat);
+		rc.getAircraftData().raw.coordinates.setLatitude(lat);
 		
 		// Longitude
 		// 26 bits per [0; 360] deg
@@ -213,28 +212,28 @@ namespace pizda {
 		
 		// [-pi; pi]
 		const auto lon = lonFactor * std::numbers::pi_v<float> * 2;
-		ad.raw.coordinates.setLongitude(lon);
+		rc.getAircraftData().raw.coordinates.setLongitude(lon);
 		
 		// -------------------------------- Battery --------------------------------
 		
 		const auto batteryVoltageDaV = stream.readUint16(AircraftAuxiliaryPacket::batteryLengthBits);
-		ad.raw.batteryVoltageV = static_cast<float>(batteryVoltageDaV) / 10.f;
+		rc.getAircraftData().raw.batteryVoltageV = static_cast<float>(batteryVoltageDaV) / 10.f;
 		
 		// -------------------------------- Lights --------------------------------
 		
-		ad.raw.lights.navigation = stream.readBool();
-		ad.raw.lights.strobe = stream.readBool();
-		ad.raw.lights.landing = stream.readBool();
-		ad.raw.lights.cabin = stream.readBool();
+		rc.getAircraftData().raw.lights.navigation = stream.readBool();
+		rc.getAircraftData().raw.lights.strobe = stream.readBool();
+		rc.getAircraftData().raw.lights.landing = stream.readBool();
+		rc.getAircraftData().raw.lights.cabin = stream.readBool();
 		
 		// -------------------------------- Autopilot --------------------------------
 		
 		// Modes
-		ad.raw.autopilot.lateralMode = static_cast<AutopilotLateralMode>(stream.readUint8(AircraftAuxiliaryPacket::autopilotLateralModeLengthBits));
-		ad.raw.autopilot.verticalMode = static_cast<AutopilotVerticalMode>(stream.readUint8(AircraftAuxiliaryPacket::autopilotVerticalModeLengthBits));
+		rc.getAircraftData().raw.autopilot.lateralMode = static_cast<AutopilotLateralMode>(stream.readUint8(AircraftAuxiliaryPacket::autopilotLateralModeLengthBits));
+		rc.getAircraftData().raw.autopilot.verticalMode = static_cast<AutopilotVerticalMode>(stream.readUint8(AircraftAuxiliaryPacket::autopilotVerticalModeLengthBits));
 		
 		// Altitude for ALT/VNAV modes
-		ad.raw.autopilot.targetAltitudeM = readAltitude(
+		rc.getAircraftData().raw.autopilot.targetAltitudeM = readAltitude(
 			stream,
 			AircraftAuxiliaryPacket::autopilotAltitudeLengthBits,
 			AircraftAuxiliaryPacket::autopilotAltitudeMinM,
@@ -242,10 +241,10 @@ namespace pizda {
 		);
 		
 		// Autothrottle
-		ad.raw.autopilot.autothrottle = stream.readBool();
+		rc.getAircraftData().raw.autopilot.autothrottle = stream.readBool();
 		
 		// Autopilot
-		ad.raw.autopilot.autopilot = stream.readBool();
+		rc.getAircraftData().raw.autopilot.autopilot = stream.readBool();
 		
 		return true;
 	}
@@ -265,7 +264,7 @@ namespace pizda {
 		rc.getAircraftData().raw.calibration.progress = stream.readUint8(AircraftCalibrationPacket::progressLengthBits) * 0xFF / ((1 << AircraftCalibrationPacket::progressLengthBits) - 1);
 		rc.getAircraftData().raw.calibration.setCalibrating(rc.getAircraftData().raw.calibration.progress < 0xFF);
 		
-//		ESP_LOGI(_logTag, "calibration progress: %d", ad.raw.calibration.progress * 100 / 0xFF);
+//		ESP_LOGI(_logTag, "calibration progress: %d", rc.getAircraftData().raw.calibration.progress * 100 / 0xFF);
 		
 		return true;
 	}

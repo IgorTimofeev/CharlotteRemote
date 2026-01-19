@@ -165,29 +165,31 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="сделал фон СИНТЕТИЧЕСКОГО ЗРЕНИЯ попроще, а то раньше костыльно рендерилось">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ЧИСТИМ ВИЛОЧКОЙ">
       <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-BitStream" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-BitStream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/spatial/scene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/spatial/scene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/textField.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/textField.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/vector3.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/vector3.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/paletteRenderer.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/paletteRenderer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/debugOverlay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/debugOverlay.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/communicationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/communicationManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/minimumsRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/minimumsRotaryControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleSection.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleSection.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/audio/audioPlayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/audio/audioPlayer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/audio/sound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/audio/sound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/audio/speaker.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/audio/speaker.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/battery.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/battery.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/aircraftData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/navigationData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/navigationData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/settings/navigationSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/navigationSettings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/utils/lowPassFilter.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/utils/lowPassFilter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/utils/string.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/utils/string.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,7 +201,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/ESP-IDF-SX1262" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -219,6 +221,9 @@
   </component>
   <component name="OCResolveContextSettings">
     <option name="configuration" value="0-Debug-__idf_main" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
@@ -1187,15 +1192,7 @@
       <workItem from="1768766576422" duration="2888000" />
       <workItem from="1768825156269" duration="863000" />
       <workItem from="1768827254650" duration="123000" />
-      <workItem from="1768827395557" duration="6281000" />
-    </task>
-    <task id="LOCAL-00020" summary="оказывается, все это время тогглБатоныБулочкиКрендельки были СДОХШИМИ">
-      <option name="closed" value="true" />
-      <created>1766759328080</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1766759328080</updated>
+      <workItem from="1768827395557" duration="9629000" />
     </task>
     <task id="LOCAL-00021" summary="ну-ка, бекапнем">
       <option name="closed" value="true" />
@@ -1581,7 +1578,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768831330938</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="ЧИСТИМ ВИЛОЧКОЙ">
+      <option name="closed" value="true" />
+      <created>1768836240632</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1768836240632</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1622,7 +1627,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="чета мелочевку всякую поделал, а ни хуя по итогу не нахуячил - ну по крайней мере теперь при дисконнекте симпотные красные зоны такие типа ААААААААААААААААААААААААААААААААААААААА ПИЗДА" />
     <MESSAGE value="по ходу пиды не понадобятся" />
     <MESSAGE value="ахахахах, бля, тут время в микриках в uint32 хранилось, и динамик тупо дох через 1.5 часа работы :D" />
     <MESSAGE value="ОГО! ПАРТИЯ ГОРДИТСЯ ОТЕЧЕСТВЕННОЙ АВИОНИКОЙ ALTS MAN" />
@@ -1647,6 +1651,7 @@
     <MESSAGE value="фух бля вроде почище выглядит" />
     <MESSAGE value="хд как оно вообще сигу не кидало ни разу" />
     <MESSAGE value="сделал фон СИНТЕТИЧЕСКОГО ЗРЕНИЯ попроще, а то раньше костыльно рендерилось" />
-    <option name="LAST_COMMIT_MESSAGE" value="сделал фон СИНТЕТИЧЕСКОГО ЗРЕНИЯ попроще, а то раньше костыльно рендерилось" />
+    <MESSAGE value="ЧИСТИМ ВИЛОЧКОЙ" />
+    <option name="LAST_COMMIT_MESSAGE" value="ЧИСТИМ ВИЛОЧКОЙ" />
   </component>
 </project>

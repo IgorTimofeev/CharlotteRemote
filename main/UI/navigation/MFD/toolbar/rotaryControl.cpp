@@ -126,8 +126,8 @@ namespace pizda {
 		
 		if (!variantSelectMode)
 			return;
-		
-		const auto dotWidth = 1;
+
+		constexpr static uint8_t dotWidth = 1;
 		constexpr static uint8_t dotSpacing = 3;
 		const auto dotsWidth = variantsLayout.getChildrenCount() * (dotWidth + dotSpacing) - dotSpacing;
 		
@@ -167,13 +167,13 @@ namespace pizda {
 	
 	}
 	
-	void RotaryControl::updateVariantsVisibility() {
+	void RotaryControl::updateVariantsVisibility() const {
 		for (uint8_t i = 0; i < variantsLayout.getChildrenCount(); ++i) {
 			variantsLayout[i]->setVisible(variantIndex == i);
 		}
 	}
 	
-	void RotaryControl::setVariantIndex(uint8_t value) {
+	void RotaryControl::setVariantIndex(const uint8_t value) {
 		if (value == variantIndex)
 			return;
 		
@@ -183,8 +183,8 @@ namespace pizda {
 		setTitle(variantIndexToTitle(variantIndex));
 	}
 	
-	void RotaryControl::setVariants(std::initializer_list<Element*> elements) {
-		for (auto element : elements) {
+	void RotaryControl::setVariants(const std::initializer_list<Element*> elements) {
+		for (const auto element : elements) {
 			variantsLayout += element;
 		}
 		
@@ -210,7 +210,7 @@ namespace pizda {
 		}
 	}
 	
-	void RotaryControl::onAnyRotate(bool clockwise, bool big) {
+	void RotaryControl::onAnyRotate(const bool clockwise, const bool big) {
 		if (variantSelectMode) {
 			const auto newIndex = std::clamp<int16_t>(static_cast<int16_t>(variantIndex) + (clockwise ? 1 : -1), 0, variantsLayout.getChildrenCount() - 1);
 			

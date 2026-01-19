@@ -44,7 +44,7 @@ namespace pizda {
 				Theme::apply(&text);
 				text.setText(std::to_wstring(value));
 				
-				text.input += [this](Key key, std::optional<std::wstring_view> text) {
+				text.input += [this](const Key key, std::optional<std::wstring_view> text) {
 					if (key == Key::enter)
 						changed();
 				};

@@ -32,7 +32,7 @@ namespace pizda {
 			isConnected ? &Theme::bg6 : &Theme::bad3
 		);
 
-		const auto& renderLine = [&renderer, &bounds](int32_t pos, const Color* color) {
+		const auto& renderLine = [&renderer, &bounds](const int32_t pos, const Color* color) {
 			renderer->renderVerticalLine(
 				Point(
 					pos,

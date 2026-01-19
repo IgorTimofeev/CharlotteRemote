@@ -15,8 +15,6 @@ namespace pizda {
 
 	void DebugOverlay::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
-		auto& app = rc.getApplication();
-		auto& communicationManager = rc.getCommunicationManager();
 
 		int32_t y = 0;
 
@@ -43,14 +41,14 @@ namespace pizda {
 			renderLine(std::format(L"{}: {} ms, {}%", key, time / 1000, totalDeltaTime > 0 ? time * 100 / totalDeltaTime : 0));
 		};
 
-		renderTimeLine(L"HID", app.getHIDTickDeltaTime());
-		renderTimeLine(L"Tick", app.getTickDeltaTime());
-		renderTimeLine(L"Layout", app.getLayoutDeltaTime());
-		renderTimeLine(L"Render", app.getRenderDeltaTime());
-		renderTimeLine(L"Flush", app.getFlushDeltaTime());
+		renderTimeLine(L"HID", rc.getApplication().getHIDTickDeltaTime());
+		renderTimeLine(L"Tick", rc.getApplication().getTickDeltaTime());
+		renderTimeLine(L"Layout", rc.getApplication().getLayoutDeltaTime());
+		renderTimeLine(L"Render", rc.getApplication().getRenderDeltaTime());
+		renderTimeLine(L"Flush", rc.getApplication().getFlushDeltaTime());
 		
-		renderLine(std::format(L"RX: {} ms", communicationManager.getRxDurationUs() / 1000));
-		renderLine(std::format(L"TX: {} ms", communicationManager.getTxDurationUs() / 1000));
+		renderLine(std::format(L"RX: {} ms", rc.getCommunicationManager().getRxDurationUs() / 1000));
+		renderLine(std::format(L"TX: {} ms", rc.getCommunicationManager().getTxDurationUs() / 1000));
 
 		renderLine(std::format(L"Total: {} ms", totalDeltaTime / 1000));
 	}

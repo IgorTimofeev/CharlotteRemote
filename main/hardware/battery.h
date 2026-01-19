@@ -10,13 +10,13 @@ namespace pizda {
 	class Battery {
 		public:
 			Battery(
-				adc_unit_t adcUnit,
+				const adc_unit_t adcUnit,
 				adc_oneshot_unit_handle_t* adcOneshotUnitHandle,
-				adc_channel_t adcChannel,
-				uint16_t voltageMin,
-				uint16_t voltageMax,
-				uint32_t voltageDividerR1,
-				uint32_t voltageDividerR2
+				const adc_channel_t adcChannel,
+				const uint16_t voltageMin,
+				const uint16_t voltageMax,
+				const uint32_t voltageDividerR1,
+				const uint32_t voltageDividerR2
 			) :
 				_unit(adcUnit),
 				_unitHandle(adcOneshotUnitHandle),

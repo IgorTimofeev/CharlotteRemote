@@ -18,11 +18,11 @@ namespace pizda {
 		return L"Baro";
 	}
 	
-	bool ReferencePressureRotaryControl::isVariantEditable(uint8_t index) {
+	bool ReferencePressureRotaryControl::isVariantEditable(const uint8_t index) {
 		return index == 0;
 	}
 	
-	void ReferencePressureRotaryControl::onRotate(bool clockwise, bool big) {
+	void ReferencePressureRotaryControl::onRotate(const bool clockwise, const bool big) {
 		SevenRotaryControl::onRotate(clockwise, big);
 		
 		RC::getInstance().getSettings().controls.referencePressurePa = static_cast<uint16_t>(seven.getValue()) * 10;

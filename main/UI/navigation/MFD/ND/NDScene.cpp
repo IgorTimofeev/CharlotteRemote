@@ -31,17 +31,15 @@ namespace pizda {
 		Scene::onTick();
 
 		auto& rc = RC::getInstance();
-		const auto& settings = rc.getSettings();
-		const auto& ad = rc.getAircraftData();
-
+		
 		// Aircraft
 		_aircraftElement->setVisible(isCameraShiftedLaterally());
 
 		if (_aircraftElement->isVisible()) {
 			_aircraftElement->setPosition(
 				GeographicCoordinates(
-					ad.raw.coordinates.getLatitude(),
-					ad.raw.coordinates.getLongitude(),
+					rc.getAircraftData().raw.coordinates.getLatitude(),
+					rc.getAircraftData().raw.coordinates.getLongitude(),
 					0
 				)
 				.toCartesian()
@@ -49,15 +47,15 @@ namespace pizda {
 		}
 
 		// Camera
-		_cameraCoordinates.setLatitude(ad.raw.coordinates.getLatitude() + _cameraOffset.getLatitude());
-		_cameraCoordinates.setLongitude(ad.raw.coordinates.getLongitude() + _cameraOffset.getLongitude());
+		_cameraCoordinates.setLatitude(rc.getAircraftData().raw.coordinates.getLatitude() + _cameraOffset.getLatitude());
+		_cameraCoordinates.setLongitude(rc.getAircraftData().raw.coordinates.getLongitude() + _cameraOffset.getLongitude());
 		_cameraCoordinates.setAltitude(_cameraOffset.getAltitude());
 
 		setCameraPosition(_cameraCoordinates.toCartesian());
 
 		setCameraRotation(Vector3F(
 			-_cameraCoordinates.getLatitude(),
-			settings.personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::mapNorthUp ? 0 : -ad.computed.yawRad,
+			rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::mapNorthUp ? 0 : -rc.getAircraftData().computed.yawRad,
 			toRadians(90) + _cameraCoordinates.getLongitude()
 		));
 
@@ -74,8 +72,6 @@ namespace pizda {
 		Scene::onRender(renderer, bounds);
 
 		auto& rc = RC::getInstance();
-		const auto& settings = rc.getSettings();
-		const auto& ad = rc.getAircraftData();
 
 		// Compass
 		{
@@ -94,7 +90,7 @@ namespace pizda {
 			const uint16_t circleMarginBottomPixels = bounds.getHeight() * _compassCircleMarginBottomPct / 100;
 
 			// Arc
-			if (settings.personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arcHeadingUp) {
+			if (rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arcHeadingUp) {
 				circleRadius =
 					bounds.getHeight()
 					- circleMarginTopPixels
@@ -175,13 +171,13 @@ namespace pizda {
 			}
 
 			// North up
-			if (settings.personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::mapNorthUp) {
+			if (rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::mapNorthUp) {
 
 			}
 			else {
 				// Tick marks
 				float stepUnitsPerYawDegIntPart;
-				const float stepUnitsPerYawDegFractPart = std::modff(ad.computed.headingDeg / _compassTickMarkUnitsDeg, &stepUnitsPerYawDegIntPart);
+				const float stepUnitsPerYawDegFractPart = std::modff(rc.getAircraftData().computed.headingDeg / _compassTickMarkUnitsDeg, &stepUnitsPerYawDegIntPart);
 				const int32_t yawSnappedInt = static_cast<int32_t>(stepUnitsPerYawDegIntPart) * _compassTickMarkUnitsDeg;
 
 				for (int16_t angleDeg = tickAngleFromDeg; angleDeg <= tickAngleToDeg; angleDeg += _compassTickMarkUnitsDeg) {
@@ -223,7 +219,7 @@ namespace pizda {
 				}
 
 				// Heading text
-				const auto yawDegText = std::format(L"{:03}", static_cast<int32_t>(ad.computed.headingDeg));
+				const auto yawDegText = std::format(L"{:03}", static_cast<int32_t>(rc.getAircraftData().computed.headingDeg));
 				const uint16_t yawDegTextWidth = Theme::fontNormal.getWidth(yawDegText);
 
 				y -= circleRadius + _compassCircleMarginTopPx + _compassHeadingTextVerticalLineHeight - 1;
@@ -512,7 +508,7 @@ namespace pizda {
 		//		));
 
 		// Sphere
-		if (settings.personalization.MFD.ND.earth)
+		if (rc.getSettings().personalization.MFD.ND.earth)
 			addElement(new LinearSphere(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg3));
 
 		// Flight plan
@@ -607,7 +603,7 @@ namespace pizda {
 		const auto& settings = rc.getSettings();
 
 		setPivotOffset(
-			settings.personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arcHeadingUp
+			rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arcHeadingUp
 			? Point(0, bounds.getHeight() / 2 - bounds.getHeight() * _compassCircleMarginBottomPct / 100)
 			: Point()
 		);

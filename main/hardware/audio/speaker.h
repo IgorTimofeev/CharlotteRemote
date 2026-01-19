@@ -31,14 +31,14 @@ namespace pizda {
 				ESP_ERROR_CHECK(ledc_channel_config(&channelConfig));
 			}
 			
-			static void setState(bool value) {
+			static void setState(const bool value) {
 //				ESP_LOGI("Speaker", "setDuty: %d", value);
 				
 				ESP_ERROR_CHECK_WITHOUT_ABORT(ledc_set_duty(config::speaker::mode, config::speaker::channel, value ? _dutyMax : 0));
 				ESP_ERROR_CHECK_WITHOUT_ABORT(ledc_update_duty(config::speaker::mode, config::speaker::channel));
 			}
 			
-			void setFrequency(uint32_t value) {
+			void setFrequency(const uint32_t value) {
 //				ESP_LOGI("Speaker", "setFrequency: %d", value);
 				
 				ESP_ERROR_CHECK_WITHOUT_ABORT(ledc_set_freq(

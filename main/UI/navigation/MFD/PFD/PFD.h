@@ -25,7 +25,6 @@ namespace pizda {
 			static void renderPitchOverlay(
 				Renderer* renderer,
 				const Bounds& bounds,
-				const AircraftData& ad,
 				float pitchPixelOffsetProjected,
 				float projectionPlaneDistance,
 				const Point& horizonLeft,
@@ -37,9 +36,9 @@ namespace pizda {
 				const Vector2F& horizonCenter
 			);
 
-			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds, const AircraftData& aircraftData);
+			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds);
 			static void renderFlightModeAnnunciatorOverlay(Renderer* renderer, const Bounds& bounds);
-			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds, const Settings& settings, const AircraftData& aircraftData);
+			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds);
 	};
 
 	class PFD : public Layout {

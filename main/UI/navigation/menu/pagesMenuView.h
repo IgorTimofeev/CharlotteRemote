@@ -20,8 +20,8 @@ namespace pizda {
 			void setupButtons(PageMenuViewButton* buttons, uint8_t buttonCount, const Route** lastRoute);
 			
 		private:
-			const Route** _lastRoute;
-			PageMenuViewButton* _buttons;
-			uint8_t _buttonCount;
+			const Route** _lastRoute = nullptr;
+			PageMenuViewButton* _buttons = nullptr;
+			uint8_t _buttonCount = 0;
 	};
 }

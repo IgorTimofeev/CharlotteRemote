@@ -33,7 +33,7 @@ namespace pizda {
 			virtual void onRotate(bool clockwise, bool big);
 			virtual void onPress();
 			
-			void updateVariantsVisibility();
+			void updateVariantsVisibility() const;
 			void setVariantIndex(uint8_t value);
 			void setVariants(std::initializer_list<Element*> elements);
 			

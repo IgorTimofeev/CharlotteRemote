@@ -16,11 +16,11 @@ namespace pizda {
 		return L"Minimums";
 	}
 	
-	bool MinimumsRotaryControl::isVariantEditable(uint8_t index) {
+	bool MinimumsRotaryControl::isVariantEditable(const uint8_t index) {
 		return index == 0;
 	}
 	
-	void MinimumsRotaryControl::onRotate(bool clockwise, bool big) {
+	void MinimumsRotaryControl::onRotate(const bool clockwise, const bool big) {
 		SevenRotaryControl::onRotate(clockwise, big);
 		
 		RC::getInstance().getSettings().controls.minimumAltitudeFt = static_cast<uint16_t>(seven.getValue());
