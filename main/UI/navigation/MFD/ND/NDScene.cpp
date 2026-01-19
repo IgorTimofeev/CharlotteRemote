@@ -485,8 +485,6 @@ namespace pizda {
 
 	void NDScene::createSceneElementsFromNavigationData() {
 		auto& rc = RC::getInstance();
-		const auto& settings = rc.getSettings();
-		const auto& nd = rc.getNavigationData();
 
 		// Axis
 		//		addElement(new SpatialLine(
@@ -517,14 +515,14 @@ namespace pizda {
 			uint16_t legIndex = 0;
 
 			// Origin
-			if (nd.flightPlan.origin.has_value()) {
-				if (nd.flightPlan.legs.size() > 0) {
-					const auto leg0WaypointIndex = nd.flightPlan.legs[0].waypointIndex;
+			if (rc.getNavigationData().flightPlan.origin.has_value()) {
+				if (rc.getNavigationData().flightPlan.legs.size() > 0) {
+					const auto leg0WaypointIndex = rc.getNavigationData().flightPlan.legs[0].waypointIndex;
 
 					// Origin -> leg 0
 					addElement(new RouteElement(
-						nd.airports[nd.flightPlan.origin.value().airportIndex].runways[nd.flightPlan.origin.value().runwayIndex].vertices[0],
-						nd.waypoints[leg0WaypointIndex].cartesianCoordinates,
+						rc.getNavigationData().airports[rc.getNavigationData().flightPlan.origin.value().airportIndex].runways[rc.getNavigationData().flightPlan.origin.value().runwayIndex].vertices[0],
+						rc.getNavigationData().waypoints[leg0WaypointIndex].cartesianCoordinates,
 						&Theme::fg1
 					));
 
@@ -532,23 +530,23 @@ namespace pizda {
 					legIndex = 1;
 				}
 				else {
-					waypointFromIndex = nd.airports[nd.flightPlan.origin.value().airportIndex].waypointIndex;
+					waypointFromIndex = rc.getNavigationData().airports[rc.getNavigationData().flightPlan.origin.value().airportIndex].waypointIndex;
 				}
 			}
 			else {
-				if (nd.flightPlan.legs.size() > 0) {
-					waypointFromIndex = nd.flightPlan.legs[0].waypointIndex;
+				if (rc.getNavigationData().flightPlan.legs.size() > 0) {
+					waypointFromIndex = rc.getNavigationData().flightPlan.legs[0].waypointIndex;
 					legIndex = 1;
 				}
 			}
 
 			// Legs
-			for (; legIndex < nd.flightPlan.legs.size(); legIndex++) {
-				const auto& leg = nd.flightPlan.legs[legIndex];
+			for (; legIndex < rc.getNavigationData().flightPlan.legs.size(); legIndex++) {
+				const auto& leg = rc.getNavigationData().flightPlan.legs[legIndex];
 
 				addElement(new RouteElement(
-					nd.waypoints[waypointFromIndex].cartesianCoordinates,
-					nd.waypoints[leg.waypointIndex].cartesianCoordinates,
+					rc.getNavigationData().waypoints[waypointFromIndex].cartesianCoordinates,
+					rc.getNavigationData().waypoints[leg.waypointIndex].cartesianCoordinates,
 					&Theme::magenta
 				));
 
@@ -556,17 +554,17 @@ namespace pizda {
 			}
 
 			// Destination
-			if (nd.flightPlan.destination.has_value() && waypointFromIndex > 0) {
+			if (rc.getNavigationData().flightPlan.destination.has_value() && waypointFromIndex > 0) {
 				addElement(new RouteElement(
-					nd.waypoints[waypointFromIndex].cartesianCoordinates,
-					nd.airports[nd.flightPlan.destination.value().airportIndex].runways[nd.flightPlan.destination.value().runwayIndex].vertices[0],
+					rc.getNavigationData().waypoints[waypointFromIndex].cartesianCoordinates,
+					rc.getNavigationData().airports[rc.getNavigationData().flightPlan.destination.value().airportIndex].runways[rc.getNavigationData().flightPlan.destination.value().runwayIndex].vertices[0],
 					&Theme::fg1
 				));
 			}
 		}
 
 		// Airports
-		for (const auto& airport : nd.airports) {
+		for (const auto& airport : rc.getNavigationData().airports) {
 			// Runways
 			for (const auto& runway : airport.runways) {
 				addElement(new NDRunwayMesh(&runway, &Theme::fg1));
@@ -576,11 +574,11 @@ namespace pizda {
 		}
 
 		// Waypoints
-		for (const auto& waypoint : nd.RNAVWaypoints) {
+		for (const auto& waypoint : rc.getNavigationData().RNAVWaypoints) {
 			addElement(new WaypointElement(waypoint.waypointIndex));
 		}
 
-		// for (const auto& waypoint : nd.waypoints) {
+		// for (const auto& waypoint : rc.getNavigationData().waypoints) {
 		// 	addElement(new WaypointElement(&waypoint));
 		// }
 
@@ -600,7 +598,6 @@ namespace pizda {
 	void NDScene::updatePivot() {
 		const auto& bounds = getBounds();
 		auto& rc = RC::getInstance();
-		const auto& settings = rc.getSettings();
 
 		setPivotOffset(
 			rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arcHeadingUp

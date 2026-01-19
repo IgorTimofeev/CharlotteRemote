@@ -35,7 +35,7 @@ namespace pizda {
 			void onConnectionStateChanged() override;
 			
 		private:
-			constexpr static uint32_t _trendsInterval = 100'000;
+			constexpr static uint32_t _trendsInterval = 500'000;
 			int64_t _trendsTime = 0;
 			float _trendsAirspeedPrevMPS = 0;
 			float _trendsAltitudePrevM = 0;

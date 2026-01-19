@@ -165,29 +165,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ЧИСТИМ ВИЛОЧКОЙ">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ЧИСТИМ ЛОЖЕЧКОЙ">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/paletteRenderer.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/paletteRenderer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/debugOverlay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/debugOverlay.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/minimumsRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/minimumsRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleSection.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleSection.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/pagesMenuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/audio/audioPlayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/audio/audioPlayer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/audio/sound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/audio/sound.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/audio/speaker.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/audio/speaker.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/battery.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/battery.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.h" afterDir="false" />
     </list>
@@ -1192,15 +1174,7 @@
       <workItem from="1768766576422" duration="2888000" />
       <workItem from="1768825156269" duration="863000" />
       <workItem from="1768827254650" duration="123000" />
-      <workItem from="1768827395557" duration="9629000" />
-    </task>
-    <task id="LOCAL-00021" summary="ну-ка, бекапнем">
-      <option name="closed" value="true" />
-      <created>1766767858834</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1766767858834</updated>
+      <workItem from="1768827395557" duration="10703000" />
     </task>
     <task id="LOCAL-00022" summary="ни хуя себе десигн">
       <option name="closed" value="true" />
@@ -1586,7 +1560,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768836240632</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="ЧИСТИМ ЛОЖЕЧКОЙ">
+      <option name="closed" value="true" />
+      <created>1768839600177</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1768839600177</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1627,7 +1609,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="по ходу пиды не понадобятся" />
     <MESSAGE value="ахахахах, бля, тут время в микриках в uint32 хранилось, и динамик тупо дох через 1.5 часа работы :D" />
     <MESSAGE value="ОГО! ПАРТИЯ ГОРДИТСЯ ОТЕЧЕСТВЕННОЙ АВИОНИКОЙ ALTS MAN" />
     <MESSAGE value="перебздел с менюхами, надо a/p режимы перенести в верхнюю панель, а то как-то неконсистентно выглядит" />
@@ -1652,6 +1633,7 @@
     <MESSAGE value="хд как оно вообще сигу не кидало ни разу" />
     <MESSAGE value="сделал фон СИНТЕТИЧЕСКОГО ЗРЕНИЯ попроще, а то раньше костыльно рендерилось" />
     <MESSAGE value="ЧИСТИМ ВИЛОЧКОЙ" />
-    <option name="LAST_COMMIT_MESSAGE" value="ЧИСТИМ ВИЛОЧКОЙ" />
+    <MESSAGE value="ЧИСТИМ ЛОЖЕЧКОЙ" />
+    <option name="LAST_COMMIT_MESSAGE" value="ЧИСТИМ ЛОЖЕЧКОЙ" />
   </component>
 </project>

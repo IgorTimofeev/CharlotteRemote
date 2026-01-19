@@ -28,29 +28,28 @@ namespace pizda {
 		_rows.removeChildren();
 
 		auto& rc = RC::getInstance();
-		const auto& settings = rc.getSettings();
 
 		// Deleting
-		if (_PFD && !settings.personalization.MFD.PFD.visible)
+		if (_PFD && !rc.getSettings().personalization.MFD.PFD.visible)
 			_PFD = nullptr;
 
-		if (_ND && !settings.personalization.MFD.ND.visible)
+		if (_ND && !rc.getSettings().personalization.MFD.ND.visible)
 			_ND = nullptr;
 		
-		if (_autopilotToolbar && settings.personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::autopilot)
+		if (_autopilotToolbar && rc.getSettings().personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::autopilot)
 			_autopilotToolbar = nullptr;
 
-		if (_baroToolbar && settings.personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::baro)
+		if (_baroToolbar && rc.getSettings().personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::baro)
 			_baroToolbar = nullptr;
 		
-		if (_trimToolbar && settings.personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::trim)
+		if (_trimToolbar && rc.getSettings().personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::trim)
 			_trimToolbar = nullptr;
 		
-		if (_lightsToolbar && settings.personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::lights)
+		if (_lightsToolbar && rc.getSettings().personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::lights)
 			_lightsToolbar = nullptr;
 		
 		// Creating
-		switch (settings.personalization.MFD.toolbar.mode) {
+		switch (rc.getSettings().personalization.MFD.toolbar.mode) {
 			case PersonalizationSettingsMFDToolbarMode::autopilot: {
 				if (!_autopilotToolbar)
 					_autopilotToolbar = new AutopilotToolbar();
@@ -91,23 +90,23 @@ namespace pizda {
 				break;
 		}
 
-		if (settings.personalization.MFD.PFD.visible) {
+		if (rc.getSettings().personalization.MFD.PFD.visible) {
 			if (!_PFD)
 				_PFD = new PFD();
 
 			_rows += _PFD;
 		}
 
-		if (settings.personalization.MFD.ND.visible) {
+		if (rc.getSettings().personalization.MFD.ND.visible) {
 			if (!_ND)
 				_ND = new ND();
 
 			_rows += _ND;
 		}
 
-		if (settings.personalization.MFD.PFD.visible && settings.personalization.MFD.ND.visible) {
-			_rows.setRelativeSize(_PFD, static_cast<float>(settings.personalization.MFD.splitPercent) / 100.f);
-			_rows.setRelativeSize(_ND, static_cast<float>(100 - settings.personalization.MFD.splitPercent) / 100.f);
+		if (rc.getSettings().personalization.MFD.PFD.visible && rc.getSettings().personalization.MFD.ND.visible) {
+			_rows.setRelativeSize(_PFD, static_cast<float>(rc.getSettings().personalization.MFD.splitPercent) / 100.f);
+			_rows.setRelativeSize(_ND, static_cast<float>(100 - rc.getSettings().personalization.MFD.splitPercent) / 100.f);
 		}
 		
 		// Main

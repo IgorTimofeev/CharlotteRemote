@@ -10,13 +10,11 @@ namespace pizda {
 		setClipToBounds(true);
 		
 		auto& rc = RC::getInstance();
-		const auto& settings = rc.getSettings();
-		const auto& nd = rc.getNavigationData();
 
 		setFOV(toRadians(rc.getSettings().personalization.MFD.PFD.FOV));
 		
 		// Runways
-		for (const auto& airport : nd.airports) {
+		for (const auto& airport : rc.getNavigationData().airports) {
 			for (const auto& runway : airport.runways) {
 				addElement(new RunwayMesh(
 					&runway,
