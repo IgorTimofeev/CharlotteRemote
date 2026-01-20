@@ -21,8 +21,8 @@ namespace pizda {
 	}
 
 	void Axis::tick() {
-		int rawValue;
-		const auto error = adc_oneshot_read(*_ADCOneshotUnit, _ADCChannel, &rawValue);
+		int readValue;
+		const auto error = adc_oneshot_read(*_ADCOneshotUnit, _ADCChannel, &readValue);
 
 		if (error != ESP_OK) {
 			ESP_ERROR_CHECK_WITHOUT_ABORT(error);
@@ -31,29 +31,28 @@ namespace pizda {
 
 		// Inverting input if required
 		if (_invertInput)
-			rawValue = valueMax - rawValue;
+			readValue = valueMax - readValue;
 		
 		const auto& axesSettings = RC::getInstance().getSettings();
 
-		// Skipping first reading
+		// First reading
 		if (_rawValue == 0xFFFF) {
-			_rawValue = rawValue;
-			return;
+			_rawValue = readValue;
+		}
+		else {
+			// Skipping insignificant ADC oscillations
+			if (std::abs(readValue - _rawValue) < axesSettings.axes.jitteringCutoffValue)
+				return;
+
+			// Applying low pass filter for buttery smooth landings
+			_rawValue = _rawValue * (0xFFFF - axesSettings.axes.lowPassFactor) / 0xFFFF + readValue * axesSettings.axes.lowPassFactor / 0xFFFF;
 		}
 
-		// Skipping insignificant ADC oscillations
-		if (std::abs(rawValue - _rawValue) < axesSettings.axes.jitteringCutoffValue)
-			return;
-			
-		// Applying low pass filter for buttery smooth landings
-		rawValue = _rawValue * (0xFFFF - axesSettings.axes.lowPassFactor) / 0xFFFF + rawValue * axesSettings.axes.lowPassFactor / 0xFFFF;
+		_filteredValue = applySensitivityFilter(_rawValue);
 
 		// Inverting output if required
 		if (_settings->invertOutput)
-			rawValue = valueMax - rawValue;
-
-		_rawValue = rawValue;
-		_filteredValue = applySensitivityFilter(rawValue);
+			_filteredValue = valueMax - _filteredValue;
 	}
 	
 	uint16_t Axis::applySensitivityFilter(const uint16_t rawValue) const {
