@@ -31,6 +31,5 @@ namespace pizda {
 
 			uint16_t _rawValue = 0xFFFF;
 			uint16_t _filteredValue = 0;
-
 	};
 }

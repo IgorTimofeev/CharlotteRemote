@@ -21,8 +21,15 @@ namespace pizda {
 	}
 
 	void Axis::read() {
+		if (xSemaphoreTake(RC::getInstance()._ADCUnit1Mutex, pdMS_TO_TICKS(100)) != pdTRUE) {
+			ESP_LOGI("axis", "read sem timeout");
+			return;
+		}
+
 		int rawValue;
 		const auto error = adc_oneshot_read(*_ADCOneshotUnit, _ADCChannel, &rawValue);
+
+		xSemaphoreGive(RC::getInstance()._ADCUnit1Mutex);
 
 		if (error != ESP_OK) {
 			ESP_ERROR_CHECK_WITHOUT_ABORT(error);

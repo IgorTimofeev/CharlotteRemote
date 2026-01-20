@@ -53,6 +53,7 @@ namespace pizda {
 		_encoder.setup();
 		_encoder.setMinimumDelta(4);
 
+
 		_axes.setup();
 		_battery.setup();
 		_audioPlayer.setup();
@@ -338,6 +339,8 @@ namespace pizda {
 	}
 
 	void RC::ADCSetup() {
+		_ADCUnit1Mutex = xSemaphoreCreateMutex();
+
 		adc_oneshot_unit_init_cfg_t unitConfig {};
 		unitConfig.unit_id = ADC_UNIT_1;
 		unitConfig.clk_src = ADC_RTC_CLK_SRC_DEFAULT;
