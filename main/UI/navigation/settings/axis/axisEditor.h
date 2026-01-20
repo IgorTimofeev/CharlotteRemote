@@ -3,7 +3,7 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include <hardware/axis.h>
+#include "hardware/axes/axis.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -31,7 +31,7 @@ namespace pizda {
 
 	class AxisEditor : public Layout {
 		public:
-			explicit AxisEditor(Axis* axis);
+			AxisEditor(Axis* axis);
 
 			Axis* getAxis() const;
 

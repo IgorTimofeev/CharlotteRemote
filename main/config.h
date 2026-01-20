@@ -68,7 +68,6 @@ namespace pizda {
 			class axis {
 				public:
 					constexpr static uint8_t tickRateHz = 30;
-					constexpr static uint32_t tickIntervalUs = 1'000'000 / tickRateHz;
 
 					class leverLeft {
 						public:

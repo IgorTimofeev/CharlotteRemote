@@ -6,16 +6,12 @@
 #include "rc.h"
 
 namespace pizda {
-	Axis::Axis(adc_oneshot_unit_handle_t* ADCOneshotUnit, const adc_channel_t ADCChannel, const bool invertInput, AxisSettingsData* settings) :
-		_ADCOneshotUnit(ADCOneshotUnit),
-		_ADCChannel(ADCChannel),
-		_invertInput(invertInput),
-		_settings(settings)
-	{
+	void Axis::setup(adc_oneshot_unit_handle_t* ADCOneshotUnit, const adc_channel_t ADCChannel, const bool invertInput, AxisSettingsData* settings) {
+		_ADCOneshotUnit = ADCOneshotUnit;
+		_ADCChannel = ADCChannel;
+		_invertInput = invertInput;
+		_settings = settings;
 
-	}
-
-	void Axis::setup() {
 		adc_oneshot_chan_cfg_t channelConfig {};
 		channelConfig.atten = ADC_ATTEN_DB_12;
 		channelConfig.bitwidth = ADC_BITWIDTH_12;
@@ -26,8 +22,13 @@ namespace pizda {
 
 	void Axis::read() {
 		int rawValue;
-		ESP_ERROR_CHECK(adc_oneshot_read(*_ADCOneshotUnit, _ADCChannel, &rawValue));
-		
+		const auto error = adc_oneshot_read(*_ADCOneshotUnit, _ADCChannel, &rawValue);
+
+		if (error != ESP_OK) {
+			ESP_ERROR_CHECK_WITHOUT_ABORT(error);
+			return;
+		}
+
 		// Inverting input if required
 		if (_invertInput)
 			rawValue = valueMax - rawValue;
@@ -55,7 +56,7 @@ namespace pizda {
 			_rawValue = valueMax - _rawValue;
 	}
 	
-	uint16_t Axis::applySensitivityFilter(const uint16_t rawValue) {
+	uint16_t Axis::applySensitivityFilter(const uint16_t rawValue) const {
 		// Exponential sensitivity correction formula
 		// power = 3 (any odd power of raw value)
 		// corrected = raw * (1 - sensitivityFactor) + raw^power * sensitivityFactor

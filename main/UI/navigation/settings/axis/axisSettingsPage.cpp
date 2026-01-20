@@ -5,11 +5,11 @@
 
 namespace pizda {
 	AxisSettingsPage::AxisSettingsPage() :
-		_aileronsAxisEditor(AxisEditor(&RC::getInstance().getJoystickHorizontal())),
-		_elevatorAxisEditor(AxisEditor(&RC::getInstance().getJoystickVertical())),
-		_rudderAxisEditor(AxisEditor(&RC::getInstance().getRing())),
-		_spoilersAxisEditor(AxisEditor(&RC::getInstance().getLeverLeft())),
-		_flapsAxisEditor(AxisEditor(&RC::getInstance().getLeverRight()))
+		_aileronsAxisEditor(AxisEditor(&RC::getInstance().getAxes().getJoystickHorizontal())),
+		_elevatorAxisEditor(AxisEditor(&RC::getInstance().getAxes().getJoystickVertical())),
+		_rudderAxisEditor(AxisEditor(&RC::getInstance().getAxes().getRing())),
+		_spoilersAxisEditor(AxisEditor(&RC::getInstance().getAxes().getLeverLeft())),
+		_flapsAxisEditor(AxisEditor(&RC::getInstance().getAxes().getLeverRight()))
 	{
 		// Page title
 		title.setText(L"Axis");

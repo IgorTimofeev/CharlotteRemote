@@ -53,14 +53,9 @@ namespace pizda {
 		_encoder.setup();
 		_encoder.setMinimumDelta(4);
 
+		_axes.setup();
 		_battery.setup();
 		_audioPlayer.setup();
-
-		_leverLeft.setup();
-		_leverRight.setup();
-		_joystickHorizontal.setup();
-		_joystickVertical.setup();
-		_ring.setup();
 
 		// Transceiver
 		if (!_transceiver.setup())
@@ -93,7 +88,6 @@ namespace pizda {
 			const auto tickStartTime = esp_timer_get_time();
 
 			// High priority tasks
-			axisTick();
 			interpolationTick();
 
 			// UI
@@ -297,43 +291,24 @@ namespace pizda {
 		return _audioPlayer;
 	}
 
-	Axis& RC::getLeverLeft() {
-		return _leverLeft;
-	}
-
 	PushButtonEncoder& RC::getEncoder() {
 		return _encoder;
 	}
 
-	Axis& RC::getLeverRight() {
-		return _leverRight;
+	Axes& RC::getAxes() {
+		return _axes;
 	}
 
-	Axis& RC::getJoystickHorizontal() {
-		return _joystickHorizontal;
-	}
-
-	Axis& RC::getJoystickVertical() {
-		return _joystickVertical;
-	}
-
-	Axis& RC::getRing() {
-		return _ring;
-	}
-
-
-
-	void RC::axisTick() {
-		if (esp_timer_get_time() < _axisTickTimeUs)
-			return;
-		
-		_leverLeft.read();
-		_leverRight.read();
-		_joystickHorizontal.read();
-		_joystickVertical.read();
-		_ring.read();
-
-		_axisTickTimeUs = esp_timer_get_time() + config::axis::tickIntervalUs;
+	Battery<
+		config::battery::remote::unit,
+		config::battery::remote::channel,
+		config::battery::remote::voltageMin,
+		config::battery::remote::voltageMax,
+		config::battery::remote::voltageDividerR1,
+		config::battery::remote::voltageDividerR2
+	>
+	RC::getBattery() const {
+		return _battery;
 	}
 
 	void RC::NVSSetup() {

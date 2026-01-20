@@ -49,11 +49,7 @@ namespace pizda {
 
 		// Remote
 		_batteryIndicatorRC.setVoltage(rc.getBattery().getVoltage());
-
-		_batteryIndicatorRC.setCharge(rc.getBattery().getCharge(
-			config::battery::remote::voltageMin,
-			config::battery::remote::voltageMax
-		));
+		_batteryIndicatorRC.setCharge(rc.getBattery().getCharge());
 
 		// Aircraft
 		_batteryIndicatorAC.setVoltage(
@@ -64,9 +60,10 @@ namespace pizda {
 
 		_batteryIndicatorAC.setCharge(
 			rc.getCommunicationManager().isConnected()
-			? rc.getBattery().getCharge(
-				config::battery::aircraft::voltageMin,
-				config::battery::aircraft::voltageMax
+			? static_cast<uint8_t>(
+				(rc.getAircraftData().raw.batteryVoltageMV - config::battery::aircraft::voltageMin)
+				* 0xFF
+				/ (config::battery::aircraft::voltageMax - config::battery::aircraft::voltageMin)
 			)
 			: 0
 		);

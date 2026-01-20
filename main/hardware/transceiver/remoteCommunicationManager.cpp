@@ -364,11 +364,11 @@ namespace pizda {
 			);
 		};
 		
-		writeAxis(rc.getJoystickHorizontal().getFilteredValue());
-		writeAxis(rc.getJoystickVertical().getFilteredValue());
-		writeAxis(rc.getRing().getFilteredValue());
-		writeAxis(rc.getLeverRight().getFilteredValue());
-		writeAxis(rc.getLeverLeft().getFilteredValue());
+		writeAxis(rc.getAxes().getJoystickHorizontal().getFilteredValue());
+		writeAxis(rc.getAxes().getJoystickVertical().getFilteredValue());
+		writeAxis(rc.getAxes().getRing().getFilteredValue());
+		writeAxis(rc.getAxes().getLeverRight().getFilteredValue());
+		writeAxis(rc.getAxes().getLeverLeft().getFilteredValue());
 	}
 	
 	void RemoteCommunicationManager::transmitRemoteTrimPacket(BitStream& stream) {

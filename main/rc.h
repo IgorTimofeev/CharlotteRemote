@@ -24,7 +24,7 @@
 #include "hardware/transceiver/SX1262Transceiver.h"
 #include "hardware/transceiver/remoteCommunicationManager.h"
 #include "hardware/audio/audioPlayer.h"
-#include "hardware/axis.h"
+#include "hardware/axes/axes.h"
 
 #include "types/remoteData.h"
 #include "types/remoteData.h"
@@ -43,17 +43,20 @@ namespace pizda {
 			[[noreturn]] void run();
 
 			Application& getApplication();
-
 			Settings& getSettings();
-
 			AudioPlayer& getAudioPlayer();
-
-			Axis& getLeverLeft();
 			PushButtonEncoder& getEncoder();
-			Axis& getLeverRight();
-			Axis& getJoystickHorizontal();
-			Axis& getJoystickVertical();
-			Axis& getRing();
+			Axes& getAxes();
+
+			Battery<
+				config::battery::remote::unit,
+				config::battery::remote::channel,
+				config::battery::remote::voltageMin,
+				config::battery::remote::voltageMax,
+				config::battery::remote::voltageDividerR1,
+				config::battery::remote::voltageDividerR2
+			>
+			getBattery() const;
 
 			SX1262Transceiver& getTransceiver();
 			RemoteCommunicationManager& getCommunicationManager();
@@ -68,7 +71,14 @@ namespace pizda {
 			NavigationData& getNavigationData();
 			
 			uint32_t getTickDeltaTime() const;
-		
+
+			constexpr adc_oneshot_unit_handle_t* getAssignedADCOneshotUnit(const adc_unit_t ADCUnit) {
+				switch (ADCUnit) {
+					case ADC_UNIT_1: return &_ADCOneshotUnit1;
+					default: startErrorLoop("failed to find assigned ADC oneshot unit");
+				}
+			}
+
 		private:
 			constexpr static const char* _logTag = "Main";
 			
@@ -112,43 +122,7 @@ namespace pizda {
 				config::encoder::sw
 			};
 
-			// Axis
-			int64_t _axisTickTimeUs = 0;
-
-			Axis _leverLeft {
-				getAssignedADCOneshotUnit(config::axis::leverLeft::unit),
-				config::axis::leverLeft::channel,
-				config::axis::leverLeft::invertInput,
-				&_settings.axis.leverLeft
-			};
-
-			Axis _leverRight {
-				getAssignedADCOneshotUnit(config::axis::leverRight::unit),
-				config::axis::leverRight::channel,
-				config::axis::leverRight::invertInput,
-				&_settings.axis.leverRight
-			};
-
-			Axis _joystickHorizontal {
-				getAssignedADCOneshotUnit(config::axis::joystickHorizontal::unit),
-				config::axis::joystickHorizontal::channel,
-				config::axis::joystickHorizontal::invertInput,
-				&_settings.axis.joystickHorizontal
-			};
-
-			Axis _joystickVertical {
-				getAssignedADCOneshotUnit(config::axis::joystickVertical::unit),
-				config::axis::joystickVertical::channel,
-				config::axis::joystickVertical::invertInput,
-				&_settings.axis.joystickVertical
-			};
-
-			Axis _ring {
-				getAssignedADCOneshotUnit(config::axis::ring::unit),
-				config::axis::ring::channel,
-				config::axis::ring::invertInput,
-				&_settings.axis.ring
-			};
+			Axes _axes {};
 
 			Battery<
 				config::battery::remote::unit,
@@ -159,7 +133,7 @@ namespace pizda {
 				config::battery::remote::voltageDividerR1,
 				config::battery::remote::voltageDividerR2
 			>
-			battery { getAssignedADCOneshotUnit(config::battery::remote::unit) };
+			_battery { getAssignedADCOneshotUnit(config::battery::remote::unit) };
 
 			// -------------------------------- UI --------------------------------
 
@@ -185,15 +159,7 @@ namespace pizda {
 			void SPIBusSetup() const;
 			void ADCSetup();
 
-			constexpr adc_oneshot_unit_handle_t* getAssignedADCOneshotUnit(const adc_unit_t ADCUnit) {
-				switch (ADCUnit) {
-					case ADC_UNIT_1: return &_ADCOneshotUnit1;
-					default: startErrorLoop("failed to find assigned ADC oneshot unit");
-				}
-			}
-
 			static void GPIOSetup();
-			void axisTick();
 			static void NVSSetup();
 
 			float applyLPF(float oldValue, float newValue, float factor) const;

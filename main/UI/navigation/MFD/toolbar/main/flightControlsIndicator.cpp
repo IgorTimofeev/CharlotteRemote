@@ -10,9 +10,9 @@ namespace pizda {
 
 	void FlightControlsIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
-		
-		auto center = bounds.getCenter();
-		auto radius = bounds.getWidth() / 2 - 2;
+
+		const auto center = bounds.getCenter();
+		const auto radius = bounds.getWidth() / 2 - 2;
 		
 		renderer->renderCircle(center, radius, &Theme::fg7);
 		
@@ -29,8 +29,8 @@ namespace pizda {
 		renderer->renderVerticalLine(Point(center.getX(), center.getY() + 2), lineLength, &Theme::fg4);
 		
 		// Joys
-		const auto joyH = bounds.getX() + rc.getJoystickHorizontal().getFilteredValueUint8() * bounds.getWidth() / 0xFF;
-		const auto joyV = bounds.getY() + (0xFF - rc.getJoystickVertical().getFilteredValueUint8()) * bounds.getWidth() / 0xFF;
+		const auto joyH = bounds.getX() + rc.getAxes().getJoystickHorizontal().getFilteredValueUint8() * bounds.getWidth() / 0xFF;
+		const auto joyV = bounds.getY() + (0xFF - rc.getAxes().getJoystickVertical().getFilteredValueUint8()) * bounds.getWidth() / 0xFF;
 		
 		renderer->renderPixel(Point(joyH - 1, joyV), &Theme::yellow);
 		renderer->renderPixel(Point(joyH + 1, joyV), &Theme::yellow);
@@ -38,7 +38,7 @@ namespace pizda {
 		renderer->renderPixel(Point(joyH, joyV + 1), &Theme::yellow);
 		
 		// Ring
-		const auto ring = (rc.getRing().getFilteredValueUint8() - 0xFF / 2) * bounds.getWidth() / 0xFF;
+		const auto ring = (rc.getAxes().getRing().getFilteredValueUint8() - 0xFF / 2) * bounds.getWidth() / 0xFF;
 		renderer->renderHorizontalLine(
 			Point(
 				ring >= 0 ? center.getX() : center.getX() + ring,
@@ -51,8 +51,8 @@ namespace pizda {
 		// Levers
 		constexpr static uint8_t maxLeverHeight = 8;
 
-		const auto levL = rc.getLeverLeft().getFilteredValueUint8() * maxLeverHeight / 0xFF;
-		const auto levR = rc.getLeverRight().getFilteredValueUint8() * maxLeverHeight / 0xFF;
+		const auto levL = rc.getAxes().getLeverLeft().getFilteredValueUint8() * maxLeverHeight / 0xFF;
+		const auto levR = rc.getAxes().getLeverRight().getFilteredValueUint8() * maxLeverHeight / 0xFF;
 
 		renderer->renderVerticalLine(Point(bounds.getX(), center.getY()), levL, &Theme::bad1);
 		renderer->renderVerticalLine(Point(bounds.getX2(), center.getY()), levR, &Theme::bad1);
