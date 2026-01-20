@@ -54,7 +54,7 @@ namespace pizda {
 			Axis& getJoystickHorizontal();
 			Axis& getJoystickVertical();
 			Axis& getRing();
-			Battery& getBattery();
+
 			SX1262Transceiver& getTransceiver();
 			RemoteCommunicationManager& getCommunicationManager();
 			
@@ -150,17 +150,16 @@ namespace pizda {
 				&_settings.axis.ring
 			};
 
-			Battery _battery {
-				config::battery::unit,
-				getAssignedADCOneshotUnit(config::battery::unit),
-				config::battery::channel,
+			Battery<
+				config::battery::remote::unit,
+				config::battery::remote::channel,
 
-				config::battery::voltageMin,
-				config::battery::voltageMax,
-				
-				config::battery::voltageDividerR1,
-				config::battery::voltageDividerR2
-			};
+				config::battery::remote::voltageMin,
+				config::battery::remote::voltageMax,
+				config::battery::remote::voltageDividerR1,
+				config::battery::remote::voltageDividerR2
+			>
+			battery { getAssignedADCOneshotUnit(config::battery::remote::unit) };
 
 			// -------------------------------- UI --------------------------------
 

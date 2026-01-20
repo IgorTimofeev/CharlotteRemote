@@ -129,14 +129,23 @@ namespace pizda {
 			*/
 			class battery {
 				public:
-					constexpr static adc_unit_t unit = ADC_UNIT_1;
-					constexpr static adc_channel_t channel = ADC_CHANNEL_4;
+					class remote {
+						public:
+							constexpr static adc_unit_t unit = ADC_UNIT_1;
+							constexpr static adc_channel_t channel = ADC_CHANNEL_4;
 
-					constexpr static uint32_t voltageMin = 6'000;
-					constexpr static uint32_t voltageMax = 8'200;
+							constexpr static uint32_t voltageMin = 2 * 3'000;
+							constexpr static uint32_t voltageMax = 2 * 4'200;
 
-					constexpr static uint32_t voltageDividerR1 = 1000'000;
-					constexpr static uint32_t voltageDividerR2 = 330'000;
+							constexpr static uint32_t voltageDividerR1 = 1000'000;
+							constexpr static uint32_t voltageDividerR2 = 330'000;
+					};
+
+					class aircraft {
+						public:
+							constexpr static uint32_t voltageMin = 4 * 3'000;
+							constexpr static uint32_t voltageMax = 4 * 4'200;
+					};
 			};
 	
 			class speaker {

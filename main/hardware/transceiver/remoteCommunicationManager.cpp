@@ -215,9 +215,10 @@ namespace pizda {
 		rc.getAircraftData().raw.coordinates.setLongitude(lon);
 		
 		// -------------------------------- Battery --------------------------------
-		
+
+		// Decavolts
 		const auto batteryVoltageDaV = stream.readUint16(AircraftAuxiliaryPacket::batteryLengthBits);
-		rc.getAircraftData().raw.batteryVoltageV = static_cast<float>(batteryVoltageDaV) / 10.f;
+		rc.getAircraftData().raw.batteryVoltageMV = batteryVoltageDaV * 100;
 		
 		// -------------------------------- Lights --------------------------------
 		

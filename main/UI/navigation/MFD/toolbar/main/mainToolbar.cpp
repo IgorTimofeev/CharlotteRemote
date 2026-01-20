@@ -45,11 +45,30 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 		
-		// Battery
-		_batteryIndicatorRC.setVoltage(rc.getBattery().getVoltage());
-		_batteryIndicatorRC.setCharge(rc.getBattery().getCharge());
+		// ----------------------------- Battery -----------------------------
 
-		_batteryIndicatorAC.setVoltage(rc.getCommunicationManager().isConnected() ? static_cast<uint16_t>(rc.getAircraftData().raw.batteryVoltageV * 1000) : 0);
-		_batteryIndicatorAC.setCharge(_batteryIndicatorAC.getVoltage() * 0xFF / 14800);
+		// Remote
+		_batteryIndicatorRC.setVoltage(rc.getBattery().getVoltage());
+
+		_batteryIndicatorRC.setCharge(rc.getBattery().getCharge(
+			config::battery::remote::voltageMin,
+			config::battery::remote::voltageMax
+		));
+
+		// Aircraft
+		_batteryIndicatorAC.setVoltage(
+			rc.getCommunicationManager().isConnected()
+			? rc.getAircraftData().raw.batteryVoltageMV
+			: BatteryIndicator::voltageNotAvailable
+		);
+
+		_batteryIndicatorAC.setCharge(
+			rc.getCommunicationManager().isConnected()
+			? rc.getBattery().getCharge(
+				config::battery::aircraft::voltageMin,
+				config::battery::aircraft::voltageMax
+			)
+			: 0
+		);
 	}
 }

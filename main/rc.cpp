@@ -321,9 +321,7 @@ namespace pizda {
 		return _ring;
 	}
 
-	Battery& RC::getBattery() {
-		return _battery;
-	}
+
 
 	void RC::axisTick() {
 		if (esp_timer_get_time() < _axisTickTimeUs)
@@ -334,8 +332,7 @@ namespace pizda {
 		_joystickHorizontal.read();
 		_joystickVertical.read();
 		_ring.read();
-		_battery.tick();
-		
+
 		_axisTickTimeUs = esp_timer_get_time() + config::axis::tickIntervalUs;
 	}
 

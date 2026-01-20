@@ -167,15 +167,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="заебумба">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="я хуею бля ЮНИТЫ ВАНШОТ ЮНИТЫ НЕТ БЛЯДЬ НОУСКОУП 360 У.У.УЛЛЛЬТРАКИЛЛ ЮНИТЫ">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery/src/battery.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery/src/battery.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/batteryIndicator.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/batteryIndicator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/aircraftData.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,7 +189,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/ESP-IDF-Battery" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -1188,14 +1190,6 @@
       <workItem from="1768910019301" duration="3911000" />
       <workItem from="1768914594458" duration="2860000" />
     </task>
-    <task id="LOCAL-00024" summary="ахуй">
-      <option name="closed" value="true" />
-      <created>1766833671385</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1766833671385</updated>
-    </task>
     <task id="LOCAL-00025" summary="нормас, можно в принципе пакетики хуярить уже">
       <option name="closed" value="true" />
       <created>1766835827502</created>
@@ -1580,7 +1574,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768914644255</updated>
     </task>
-    <option name="localTasksCounter" value="73" />
+    <task id="LOCAL-00073" summary="я хуею бля ЮНИТЫ ВАНШОТ ЮНИТЫ НЕТ БЛЯДЬ НОУСКОУП 360 У.У.УЛЛЛЬТРАКИЛЛ ЮНИТЫ">
+      <option name="closed" value="true" />
+      <created>1768921855142</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1768921855142</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1621,7 +1623,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="ОГО! ПАРТИЯ ГОРДИТСЯ ОТЕЧЕСТВЕННОЙ АВИОНИКОЙ ALTS MAN" />
     <MESSAGE value="перебздел с менюхами, надо a/p режимы перенести в верхнюю панель, а то как-то неконсистентно выглядит" />
     <MESSAGE value="неплохо выглядит - надо только кастомный рендер прихуярить ко всем варикам" />
     <MESSAGE value="заебок, hold пашет" />
@@ -1646,6 +1647,7 @@
     <MESSAGE value="ЧИСТИМ ВИЛОЧКОЙ" />
     <MESSAGE value="ЧИСТИМ ЛОЖЕЧКОЙ" />
     <MESSAGE value="заебумба" />
-    <option name="LAST_COMMIT_MESSAGE" value="заебумба" />
+    <MESSAGE value="я хуею бля ЮНИТЫ ВАНШОТ ЮНИТЫ НЕТ БЛЯДЬ НОУСКОУП 360 У.У.УЛЛЛЬТРАКИЛЛ ЮНИТЫ" />
+    <option name="LAST_COMMIT_MESSAGE" value="я хуею бля ЮНИТЫ ВАНШОТ ЮНИТЫ НЕТ БЛЯДЬ НОУСКОУП 360 У.У.УЛЛЛЬТРАКИЛЛ ЮНИТЫ" />
   </component>
 </project>

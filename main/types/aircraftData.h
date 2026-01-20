@@ -92,7 +92,7 @@ namespace pizda {
 			
 			float windDirectionRad = 0;
 			
-			float batteryVoltageV = 0;
+			uint16_t batteryVoltageMV = 0;
 			
 			AircraftDataRawLights lights {};
 			AircraftDataRawAutopilot autopilot {};

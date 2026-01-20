@@ -14,15 +14,19 @@ namespace pizda {
 			BatteryIndicator() {
 				setSize(Size(28, 9));
 			}
+
+			constexpr static uint16_t voltageNotAvailable = std::numeric_limits<uint16_t>::max();
 			
 			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				const auto yCenter = bounds.getYCenter();
-				const auto tipSize = Size(4, 5);
+				constexpr auto tipSize = Size(4, 5);
+				
+				const auto available = _voltageMV < voltageNotAvailable;
 				
 				// +1 because tip overlaps frame
 				const uint16_t frameSize = bounds.getWidth() - tipSize.getWidth() + 1;
 
-				const auto frameColor = _voltageMV > 0 ? &Theme::bg4 : &Theme::bad3;
+				const auto frameColor = available ? &Theme::bg4 : &Theme::bad3;
 				
 				// Frame
 				renderer->renderRectangle(
@@ -37,7 +41,7 @@ namespace pizda {
 				);
 				
 				// Fill
-				if (_voltageMV > 0) {
+				if (available) {
 					const auto fillWidth = static_cast<uint16_t>(static_cast<uint32_t>(frameSize) * _charge / 0xFF);
 					
 					if (fillWidth > 0) {
@@ -67,7 +71,7 @@ namespace pizda {
 
 				// Text
 				const auto text =
-					_voltageMV > 0
+					available
 					? std::format(L"{:.1f}", static_cast<float>(_voltageMV) / 1000.f)
 					: L"---";
 
@@ -77,7 +81,7 @@ namespace pizda {
 						bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1
 					),
 					&Theme::fontSmall,
-					_voltageMV > 0 ? &Theme::fg1 : &Theme::bad1,
+					available ? &Theme::fg1 : &Theme::bad1,
 					text
 				);
 			}
@@ -86,7 +90,7 @@ namespace pizda {
 				return _voltageMV;
 			}
 
-			void setVoltage(uint16_t voltageMV) {
+			void setVoltage(const uint16_t voltageMV) {
 				_voltageMV = voltageMV;
 
 				invalidate();
@@ -96,14 +100,14 @@ namespace pizda {
 				return _charge;
 			}
 
-			void setCharge(uint8_t charge) {
+			void setCharge(const uint8_t charge) {
 				_charge = charge;
 
 				invalidate();
 			}
 
 		private:
-			uint16_t _voltageMV = 0;
+			uint16_t _voltageMV = 0xFF;
 			uint8_t _charge = 0;
 	};
 }
