@@ -21,7 +21,5 @@ namespace pizda {
 			Axis _joystickHorizontal {};
 			Axis _joystickVertical {};
 			Axis _ring {};
-
-			int64_t _tickTime = 0;
 	};
 }

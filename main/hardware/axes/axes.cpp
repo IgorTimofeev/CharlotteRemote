@@ -69,15 +69,10 @@ namespace pizda {
 	}
 
 	void Axes::tick() {
-		if (esp_timer_get_time() < _tickTime)
-			return;
-
 		_leverLeft.tick();
 		_leverRight.tick();
 		_joystickHorizontal.tick();
 		_joystickVertical.tick();
 		_ring.tick();
-
-		_tickTime = esp_timer_get_time() + 1'000'000 / config::axis::tickRateHz;
 	}
 }

@@ -61,9 +61,13 @@ namespace pizda {
 		_batteryIndicatorAC.setCharge(
 			rc.getCommunicationManager().isConnected()
 			? static_cast<uint8_t>(
-				(rc.getAircraftData().raw.batteryVoltageMV - config::battery::aircraft::voltageMin)
-				* 0xFF
-				/ (config::battery::aircraft::voltageMax - config::battery::aircraft::voltageMin)
+				rc.getAircraftData().raw.batteryVoltageMV < config::battery::aircraft::voltageMin
+				? 0
+				: (
+					(rc.getAircraftData().raw.batteryVoltageMV - config::battery::aircraft::voltageMin)
+					* 0xFF
+					/ (config::battery::aircraft::voltageMax - config::battery::aircraft::voltageMin)
+				)
 			)
 			: 0
 		);

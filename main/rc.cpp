@@ -53,9 +53,8 @@ namespace pizda {
 		_encoder.setup();
 		_encoder.setMinimumDelta(4);
 
-
 		_axes.setup();
-		// _battery.setup();
+		_battery.setup();
 		_audioPlayer.setup();
 
 		// Transceiver
