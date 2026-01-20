@@ -1,5 +1,8 @@
 #pragma once
 
+#include <esp_log.h>
+#include <esp_adc/adc_oneshot.h>
+
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 #include <YOBA/hardware/displays/ILI9341Display.h>
@@ -113,35 +116,35 @@ namespace pizda {
 			int64_t _axisTickTimeUs = 0;
 
 			Axis _leverLeft {
-				config::axis::ring::unit,
+				getAssignedADCOneshotUnit(config::axis::leverLeft::unit),
 				config::axis::leverLeft::channel,
 				config::axis::leverLeft::invertInput,
 				&_settings.axis.leverLeft
 			};
 
 			Axis _leverRight {
-				config::axis::ring::unit,
+				getAssignedADCOneshotUnit(config::axis::leverRight::unit),
 				config::axis::leverRight::channel,
 				config::axis::leverRight::invertInput,
 				&_settings.axis.leverRight
 			};
 
 			Axis _joystickHorizontal {
-				config::axis::ring::unit,
+				getAssignedADCOneshotUnit(config::axis::joystickHorizontal::unit),
 				config::axis::joystickHorizontal::channel,
 				config::axis::joystickHorizontal::invertInput,
 				&_settings.axis.joystickHorizontal
 			};
 
 			Axis _joystickVertical {
-				config::axis::ring::unit,
+				getAssignedADCOneshotUnit(config::axis::joystickVertical::unit),
 				config::axis::joystickVertical::channel,
 				config::axis::joystickVertical::invertInput,
 				&_settings.axis.joystickVertical
 			};
 
 			Axis _ring {
-				config::axis::ring::unit,
+				getAssignedADCOneshotUnit(config::axis::ring::unit),
 				config::axis::ring::channel,
 				config::axis::ring::invertInput,
 				&_settings.axis.ring
@@ -149,8 +152,9 @@ namespace pizda {
 
 			Battery _battery {
 				config::battery::unit,
+				getAssignedADCOneshotUnit(config::battery::unit),
 				config::battery::channel,
-				
+
 				config::battery::voltageMin,
 				config::battery::voltageMax,
 				
@@ -172,22 +176,31 @@ namespace pizda {
 			
 			RemoteData _remoteData {};
 			AircraftData _aircraftData {};
-			
 			NavigationData _navigationData {};
+
+			adc_oneshot_unit_handle_t _ADCOneshotUnit1 {};
+
 			uint32_t _tickDeltaTime = 0;
-			
 			int64_t _interpolationTickTime = 0;
 			
 			void SPIBusSetup() const;
+			void ADCSetup();
+
+			constexpr adc_oneshot_unit_handle_t* getAssignedADCOneshotUnit(const adc_unit_t ADCUnit) {
+				switch (ADCUnit) {
+					case ADC_UNIT_1: return &_ADCOneshotUnit1;
+					default: startErrorLoop("failed to find assigned ADC oneshot unit");
+				}
+			}
+
 			static void GPIOSetup();
 			void axisTick();
 			static void NVSSetup();
 
-			[[noreturn]] static void startErrorLoop(const char* error);
-			
 			float applyLPF(float oldValue, float newValue, float factor) const;
 			float applyLPFForAngleRad(float oldValue, float newValue, float factor) const;
-			
 			void interpolationTick();
+
+			[[noreturn]] static void startErrorLoop(const char* error);
 	};
 }

@@ -42,6 +42,7 @@ namespace pizda {
 
 		// NVS is required by settings & Wi-Fi
 		NVSSetup();
+		ADCSetup();
 
 		// Settings contain calibration data for the ADC axes, so they should be read first
 		_settings.readAll();
@@ -363,7 +364,15 @@ namespace pizda {
 
 		ESP_ERROR_CHECK(spi_bus_initialize(config::spi::device, &config, SPI_DMA_CH_AUTO));
 	}
-	
+
+	void RC::ADCSetup() {
+		adc_oneshot_unit_init_cfg_t unitConfig {};
+		unitConfig.unit_id = ADC_UNIT_1;
+		unitConfig.clk_src = ADC_RTC_CLK_SRC_DEFAULT;
+		unitConfig.ulp_mode = ADC_ULP_MODE_DISABLE;
+		ESP_ERROR_CHECK(adc_oneshot_new_unit(&unitConfig, &_ADCOneshotUnit1));
+	}
+
 	void RC::GPIOSetup() {
 		// Slave selects
 		gpio_config_t g = {};

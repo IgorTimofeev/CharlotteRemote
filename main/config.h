@@ -20,7 +20,7 @@ namespace pizda {
 					constexpr static gpio_num_t MISO = GPIO_NUM_19;
 					constexpr static gpio_num_t SCK = GPIO_NUM_18;
 			};
-	
+
 			class i2c {
 				public:
 					constexpr static gpio_num_t SDA = GPIO_NUM_21;

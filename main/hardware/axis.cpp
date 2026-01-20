@@ -6,8 +6,8 @@
 #include "rc.h"
 
 namespace pizda {
-	Axis::Axis(const adc_unit_t ADCUnit, const adc_channel_t ADCChannel, const bool invertInput, AxisSettingsData* settings) :
-		_ADCUnit(ADCUnit),
+	Axis::Axis(adc_oneshot_unit_handle_t* ADCOneshotUnit, const adc_channel_t ADCChannel, const bool invertInput, AxisSettingsData* settings) :
+		_ADCOneshotUnit(ADCOneshotUnit),
 		_ADCChannel(ADCChannel),
 		_invertInput(invertInput),
 		_settings(settings)
@@ -16,23 +16,17 @@ namespace pizda {
 	}
 
 	void Axis::setup() {
-		adc_oneshot_unit_init_cfg_t ADC1UnitConfig {};
-		ADC1UnitConfig.unit_id = _ADCUnit;
-		ADC1UnitConfig.clk_src = ADC_RTC_CLK_SRC_DEFAULT;
-		ADC1UnitConfig.ulp_mode = ADC_ULP_MODE_DISABLE;
-		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &_ADCOneshotUnitHandle));
-
 		adc_oneshot_chan_cfg_t channelConfig {};
 		channelConfig.atten = ADC_ATTEN_DB_12;
 		channelConfig.bitwidth = ADC_BITWIDTH_12;
-		ESP_ERROR_CHECK(adc_oneshot_config_channel(_ADCOneshotUnitHandle, _ADCChannel, &channelConfig));
+		ESP_ERROR_CHECK(adc_oneshot_config_channel(*_ADCOneshotUnit, _ADCChannel, &channelConfig));
 
 		read();
 	}
 
 	void Axis::read() {
 		int rawValue;
-		ESP_ERROR_CHECK(adc_oneshot_read(_ADCOneshotUnitHandle, _ADCChannel, &rawValue));
+		ESP_ERROR_CHECK(adc_oneshot_read(*_ADCOneshotUnit, _ADCChannel, &rawValue));
 		
 		// Inverting input if required
 		if (_invertInput)
