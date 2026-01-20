@@ -1,8 +1,7 @@
 #pragma once
 
-#include <atomic>
+#include <esp_adc/adc_oneshot.h>
 
-#include "esp_adc/adc_oneshot.h"
 #include "types/settings/settings.h"
 
 namespace pizda {
@@ -31,8 +30,8 @@ namespace pizda {
 			bool _invertInput = false;
 			AxisSettingsData* _settings = nullptr;
 
-			std::atomic<uint16_t> _rawValue = 0xFFFF;
-			std::atomic<uint16_t> _filteredValue = 0;
+			uint16_t _rawValue = 0xFFFF;
+			uint16_t _filteredValue = 0;
 
 	};
 }

@@ -33,7 +33,7 @@ namespace pizda {
 		if (_invertInput)
 			rawValue = valueMax - rawValue;
 		
-		const auto& settings = RC::getInstance().getSettings();
+		const auto& axesSettings = RC::getInstance().getSettings();
 
 		// Skipping first reading
 		if (_rawValue == 0xFFFF) {
@@ -42,11 +42,11 @@ namespace pizda {
 		}
 
 		// Skipping insignificant ADC oscillations
-		if (std::abs(rawValue - _rawValue) < settings.axis.jitteringCutoffValue)
+		if (std::abs(rawValue - _rawValue) < axesSettings.axes.jitteringCutoffValue)
 			return;
 			
 		// Applying low pass filter for buttery smooth landings
-		rawValue = _rawValue * (0xFFFF - settings.axis.lowPassFactor) / 0xFFFF + rawValue * settings.axis.lowPassFactor / 0xFFFF;
+		rawValue = _rawValue * (0xFFFF - axesSettings.axes.lowPassFactor) / 0xFFFF + rawValue * axesSettings.axes.lowPassFactor / 0xFFFF;
 
 		// Inverting output if required
 		if (_settings->invertOutput)

@@ -11,9 +11,9 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class AxisSettingsPage : public ScrollViewPage {
+	class AxesSettingsPage : public ScrollViewPage {
 		public:
-			AxisSettingsPage();
+			AxesSettingsPage();
 
 		protected:
 			void onTick() override;

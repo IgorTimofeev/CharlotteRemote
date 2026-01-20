@@ -10,7 +10,7 @@
 #include "UI/navigation/settings/personalization/personalizationSettingsPage.h"
 #include "UI/navigation/settings/calibration/calibrationSettingsPage.h"
 #include "UI/navigation/settings/motors/motorsSettingsPage.h"
-#include "UI/navigation/settings/axis/axisSettingsPage.h"
+#include "UI/navigation/settings/axis/axesSettingsPage.h"
 #include "UI/navigation/settings/developer/developerSettingsPage.h"
 
 namespace pizda {
@@ -24,7 +24,7 @@ namespace pizda {
 			constexpr static ElementRoute<PersonalizationSettingsPage> settingsPersonalization {};
 			constexpr static ElementRoute<CalibrationSettingsPage> settingsCalibration {};
 			constexpr static ElementRoute<MotorsSettingsPage> settingsMotors {};
-			constexpr static ElementRoute<AxisSettingsPage> settingsAxis {};
+			constexpr static ElementRoute<AxesSettingsPage> settingsAxes {};
 			constexpr static ElementRoute<DeveloperSettingsPage> settingsDeveloper {};
 	};
 }

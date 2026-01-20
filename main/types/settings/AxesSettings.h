@@ -19,7 +19,7 @@ namespace pizda {
 			bool invertOutput = false;
 	};
 
-	class AxisSettings: public NVSSettings {
+	class AxesSettings: public NVSSettings {
 		public:
 			AxisSettingsData leverLeft {};
 			AxisSettingsData leverRight {};

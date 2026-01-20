@@ -79,7 +79,7 @@ namespace pizda {
 			
 			setCaptured(false);
 			
-			RC::getInstance().getSettings().axis.scheduleWrite();
+			RC::getInstance().getSettings().axes.scheduleWrite();
 			
 			event->setHandled(true);
 		}
@@ -265,7 +265,7 @@ namespace pizda {
 		_invertButton.click += [this] {
 			_axis->getSettings()->invertOutput = _invertButton.isActive();
 
-			RC::getInstance().getSettings().axis.scheduleWrite();
+			RC::getInstance().getSettings().axes.scheduleWrite();
 		};
 
 		*this += &_invertButton;

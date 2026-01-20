@@ -1,10 +1,10 @@
-#include "axisSettingsPage.h"
+#include "axesSettingsPage.h"
 
 #include "rc.h"
 #include "UI/theme.h"
 
 namespace pizda {
-	AxisSettingsPage::AxisSettingsPage() :
+	AxesSettingsPage::AxesSettingsPage() :
 		_aileronsAxisEditor(AxisEditor(&RC::getInstance().getAxes().getJoystickHorizontal())),
 		_elevatorAxisEditor(AxisEditor(&RC::getInstance().getAxes().getJoystickVertical())),
 		_rudderAxisEditor(AxisEditor(&RC::getInstance().getAxes().getRing())),
@@ -25,13 +25,13 @@ namespace pizda {
 		Theme::apply(&_jitteringCutoffFactorSlider);
 		_jitteringCutoffFactorSlider.setFillColor(&Theme::bad1);
 
-		_jitteringCutoffFactorSlider.setValue(RC::getInstance().getSettings().axis.jitteringCutoffValue * 0xFFFF / _jitteringCutoffMaxValue);
+		_jitteringCutoffFactorSlider.setValue(RC::getInstance().getSettings().axes.jitteringCutoffValue * 0xFFFF / _jitteringCutoffMaxValue);
 
 		_jitteringCutoffFactorSlider.valueChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 
-			settings.axis.jitteringCutoffValue = _jitteringCutoffFactorSlider.getValue() * _jitteringCutoffMaxValue / 0xFFFF;
-			settings.axis.scheduleWrite();
+			settings.axes.jitteringCutoffValue = _jitteringCutoffFactorSlider.getValue() * _jitteringCutoffMaxValue / 0xFFFF;
+			settings.axes.scheduleWrite();
 		};
 
 		rows += &_jitteringValueSliderTitle;
@@ -40,19 +40,19 @@ namespace pizda {
 		Theme::apply(&_lowPassFactorSlider);
 		_lowPassFactorSlider.setFillColor(&Theme::good2);
 
-		_lowPassFactorSlider.setValue(RC::getInstance().getSettings().axis.lowPassFactor);
+		_lowPassFactorSlider.setValue(RC::getInstance().getSettings().axes.lowPassFactor);
 
 		_lowPassFactorSlider.valueChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 
-			settings.axis.lowPassFactor = _lowPassFactorSlider.getValue();
-			settings.axis.scheduleWrite();
+			settings.axes.lowPassFactor = _lowPassFactorSlider.getValue();
+			settings.axes.scheduleWrite();
 		};
 
 		rows += &_lowPassFactorSliderTitle;
 	}
 
-	void AxisSettingsPage::onTick() {
+	void AxesSettingsPage::onTick() {
 		Layout::onTick();
 
 		invalidate();

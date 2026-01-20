@@ -16,35 +16,35 @@ namespace pizda {
 			rc.getAssignedADCOneshotUnit(config::axis::leverLeft::unit),
 			config::axis::leverLeft::channel,
 			config::axis::leverLeft::invertInput,
-			&rc.getSettings().axis.leverLeft
+			&rc.getSettings().axes.leverLeft
 		);
 
 		_leverRight.setup(
 			rc.getAssignedADCOneshotUnit(config::axis::leverRight::unit),
 			config::axis::leverRight::channel,
 			config::axis::leverRight::invertInput,
-			&rc.getSettings().axis.leverRight
+			&rc.getSettings().axes.leverRight
 		);
 
 		_joystickHorizontal.setup(
 			rc.getAssignedADCOneshotUnit(config::axis::joystickHorizontal::unit),
 			config::axis::joystickHorizontal::channel,
 			config::axis::joystickHorizontal::invertInput,
-			&rc.getSettings().axis.joystickHorizontal
+			&rc.getSettings().axes.joystickHorizontal
 		);
 
 		_joystickVertical.setup(
 			rc.getAssignedADCOneshotUnit(config::axis::joystickVertical::unit),
 			config::axis::joystickVertical::channel,
 			config::axis::joystickVertical::invertInput,
-			&rc.getSettings().axis.joystickVertical
+			&rc.getSettings().axes.joystickVertical
 		);
 
 		_ring.setup(
 			rc.getAssignedADCOneshotUnit(config::axis::ring::unit),
 			config::axis::ring::channel,
 			config::axis::ring::invertInput,
-			&rc.getSettings().axis.ring
+			&rc.getSettings().axes.ring
 		);
 	}
 
