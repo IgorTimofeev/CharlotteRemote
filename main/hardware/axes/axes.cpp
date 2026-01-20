@@ -4,6 +4,7 @@
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
+#include <esp_timer.h>
 
 #include "rc.h"
 
@@ -45,28 +46,38 @@ namespace pizda {
 			config::axis::ring::invertInput,
 			&rc.getSettings().axis.ring
 		);
-
-		xTaskCreate(
-			[](void* arg) {
-				static_cast<Axes*>(arg)->onStart();
-			},
-			"Battery",
-			2 * 1024,
-			this,
-			1,
-			nullptr
-		);
 	}
 
-	[[noreturn]] void Axes::onStart() {
-		while (true) {
-			_leverLeft.read();
-			_leverRight.read();
-			_joystickHorizontal.read();
-			_joystickVertical.read();
-			_ring.read();
+	Axis& Axes::getLeverLeft() {
+		return _leverLeft;
+	}
 
-			vTaskDelay(pdMS_TO_TICKS(std::max<uint16_t>(1'000 / config::axis::tickRateHz, portTICK_PERIOD_MS)));
-		}
+	Axis& Axes::getLeverRight() {
+		return _leverRight;
+	}
+
+	Axis& Axes::getJoystickHorizontal() {
+		return _joystickHorizontal;
+	}
+
+	Axis& Axes::getJoystickVertical() {
+		return _joystickVertical;
+	}
+
+	Axis& Axes::getRing() {
+		return _ring;
+	}
+
+	void Axes::tick() {
+		if (esp_timer_get_time() < _tickTime)
+			return;
+
+		_leverLeft.tick();
+		_leverRight.tick();
+		_joystickHorizontal.tick();
+		_joystickVertical.tick();
+		_ring.tick();
+
+		_tickTime = esp_timer_get_time() + 1'000'000 / config::axis::tickRateHz;
 	}
 }

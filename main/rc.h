@@ -78,8 +78,6 @@ namespace pizda {
 					default: startErrorLoop("failed to find assigned ADC oneshot unit");
 				}
 			}
-			SemaphoreHandle_t _ADCUnit1Mutex = nullptr;
-
 
 		private:
 			constexpr static const char* _logTag = "Main";
@@ -136,8 +134,7 @@ namespace pizda {
 				config::battery::remote::voltageDividerR2
 			>
 			_battery {
-				getAssignedADCOneshotUnit(config::battery::remote::unit),
-				&_ADCUnit1Mutex
+				getAssignedADCOneshotUnit(config::battery::remote::unit)
 			};
 
 			// -------------------------------- UI --------------------------------
@@ -160,7 +157,7 @@ namespace pizda {
 
 			uint32_t _tickDeltaTime = 0;
 			int64_t _interpolationTickTime = 0;
-			
+
 			void SPIBusSetup() const;
 			void ADCSetup();
 

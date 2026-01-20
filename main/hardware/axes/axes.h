@@ -7,25 +7,13 @@ namespace pizda {
 		public:
 			void setup();
 
-			Axis& getLeverLeft() {
-				return _leverLeft;
-			}
+			Axis& getLeverLeft();
+			Axis& getLeverRight();
+			Axis& getJoystickHorizontal();
+			Axis& getJoystickVertical();
+			Axis& getRing();
 
-			Axis& getLeverRight() {
-				return _leverRight;
-			}
-
-			Axis& getJoystickHorizontal() {
-				return _joystickHorizontal;
-			}
-
-			Axis& getJoystickVertical() {
-				return _joystickVertical;
-			}
-
-			Axis& getRing() {
-				return _ring;
-			}
+			void tick();
 
 		private:
 			Axis _leverLeft {};
@@ -34,6 +22,6 @@ namespace pizda {
 			Axis _joystickVertical {};
 			Axis _ring {};
 
-			[[noreturn]] void onStart();
+			int64_t _tickTime = 0;
 	};
 }

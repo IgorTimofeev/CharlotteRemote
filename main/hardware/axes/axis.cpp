@@ -17,19 +17,12 @@ namespace pizda {
 		channelConfig.bitwidth = ADC_BITWIDTH_12;
 		ESP_ERROR_CHECK(adc_oneshot_config_channel(*_ADCOneshotUnit, _ADCChannel, &channelConfig));
 
-		read();
+		tick();
 	}
 
-	void Axis::read() {
-		if (xSemaphoreTake(RC::getInstance()._ADCUnit1Mutex, pdMS_TO_TICKS(100)) != pdTRUE) {
-			ESP_LOGI("axis", "read sem timeout");
-			return;
-		}
-
+	void Axis::tick() {
 		int rawValue;
 		const auto error = adc_oneshot_read(*_ADCOneshotUnit, _ADCChannel, &rawValue);
-
-		xSemaphoreGive(RC::getInstance()._ADCUnit1Mutex);
 
 		if (error != ESP_OK) {
 			ESP_ERROR_CHECK_WITHOUT_ABORT(error);
@@ -42,25 +35,25 @@ namespace pizda {
 		
 		const auto& settings = RC::getInstance().getSettings();
 
-		// Initial measurement
+		// Skipping first reading
 		if (_rawValue == 0xFFFF) {
 			_rawValue = rawValue;
+			return;
 		}
-		// Subsequent
-		else {
-			// Skipping insignificant ADC oscillations
-			if (std::abs(rawValue - _rawValue) < settings.axis.jitteringCutoffValue)
-				return;
+
+		// Skipping insignificant ADC oscillations
+		if (std::abs(rawValue - _rawValue) < settings.axis.jitteringCutoffValue)
+			return;
 			
-			// Applying low pass filter for buttery smooth landings
-			_rawValue = _rawValue * (0xFFFF - settings.axis.lowPassFactor) / 0xFFFF + rawValue * settings.axis.lowPassFactor / 0xFFFF;
-		}
-		
-		_filteredValue = applySensitivityFilter(_rawValue);
-		
+		// Applying low pass filter for buttery smooth landings
+		rawValue = _rawValue * (0xFFFF - settings.axis.lowPassFactor) / 0xFFFF + rawValue * settings.axis.lowPassFactor / 0xFFFF;
+
 		// Inverting output if required
 		if (_settings->invertOutput)
-			_rawValue = valueMax - _rawValue;
+			rawValue = valueMax - rawValue;
+
+		_rawValue = rawValue;
+		_filteredValue = applySensitivityFilter(rawValue);
 	}
 	
 	uint16_t Axis::applySensitivityFilter(const uint16_t rawValue) const {

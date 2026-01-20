@@ -170,9 +170,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ебать че происходит сука при чтении adc с тасок внезапно появились какие-то интерференции, словно оси взаимно друг на друга влияют - ПЕРДЁЖ ЕБАНЫЙ БЛЯДЬЬ">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery/src/battery.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery/src/battery.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axes.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axes/axes.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axes.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axes/axes.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/axes/axis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axes/axis.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/hardware/axes/axis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axes/axis.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
@@ -188,7 +190,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/ESP-IDF-Battery" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -1188,15 +1190,7 @@
       <workItem from="1768827395557" duration="10750000" />
       <workItem from="1768910019301" duration="3911000" />
       <workItem from="1768914594458" duration="2860000" />
-      <workItem from="1768931817437" duration="7979000" />
-    </task>
-    <task id="LOCAL-00028" summary="НОРМАС НО МОЖНО ЛУЧШЕ">
-      <option name="closed" value="true" />
-      <created>1766859935523</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1766859935523</updated>
+      <workItem from="1768931817437" duration="12105000" />
     </task>
     <task id="LOCAL-00029" summary="КУДА БУЛЫ СУКА ДЕЛИСЬ">
       <option name="closed" value="true" />
@@ -1582,7 +1576,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768939879654</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="ебать че происходит сука при чтении adc с тасок внезапно появились какие-то интерференции, словно оси взаимно друг на друга влияют - ПЕРДЁЖ ЕБАНЫЙ БЛЯДЬЬ">
+      <option name="closed" value="true" />
+      <created>1768940424444</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1768940424444</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

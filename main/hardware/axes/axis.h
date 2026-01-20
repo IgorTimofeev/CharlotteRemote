@@ -1,5 +1,7 @@
 #pragma once
 
+#include <atomic>
+
 #include "esp_adc/adc_oneshot.h"
 #include "types/settings/settings.h"
 
@@ -12,7 +14,7 @@ namespace pizda {
 			constexpr static uint8_t sensitivityMax = 0xFF;
 
 			void setup(adc_oneshot_unit_handle_t* ADCOneshotUnit, adc_channel_t ADCChannel, bool invertInput, AxisSettingsData* settings);
-			void read();
+			void tick();
 
 			AxisSettingsData* getSettings() const;
 			
@@ -29,7 +31,8 @@ namespace pizda {
 			bool _invertInput = false;
 			AxisSettingsData* _settings = nullptr;
 
-			uint16_t _rawValue = 0xFFFF;
-			uint16_t _filteredValue = 0;
+			std::atomic<uint16_t> _rawValue = 0xFFFF;
+			std::atomic<uint16_t> _filteredValue = 0;
+
 	};
 }

@@ -55,7 +55,7 @@ namespace pizda {
 
 
 		_axes.setup();
-		_battery.setup();
+		// _battery.setup();
 		_audioPlayer.setup();
 
 		// Transceiver
@@ -89,6 +89,8 @@ namespace pizda {
 			const auto tickStartTime = esp_timer_get_time();
 
 			// High priority tasks
+			_axes.tick();
+			_battery.tick();
 			interpolationTick();
 
 			// UI
@@ -339,8 +341,6 @@ namespace pizda {
 	}
 
 	void RC::ADCSetup() {
-		_ADCUnit1Mutex = xSemaphoreCreateMutex();
-
 		adc_oneshot_unit_init_cfg_t unitConfig {};
 		unitConfig.unit_id = ADC_UNIT_1;
 		unitConfig.clk_src = ADC_RTC_CLK_SRC_DEFAULT;
