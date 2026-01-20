@@ -26,12 +26,6 @@ namespace pizda {
 					constexpr static gpio_num_t SDA = GPIO_NUM_21;
 					constexpr static gpio_num_t SCL = GPIO_NUM_22;
 			};
-			
-			class adc {
-				public:
-					constexpr static adc_unit_t unit = ADC_UNIT_1;
-					static adc_oneshot_unit_handle_t oneshotUnit;
-			};
 
 			class ota {
 				public:
@@ -55,7 +49,7 @@ namespace pizda {
 			class transceiver {
 				public:
 					// SX1262 supports up to 16 MHz, but with long wires (10+ cm) there will be troubles, so
-					constexpr static uint32_t SPIFrequencyHz = 4'000'000;
+					constexpr static uint32_t SPIFrequencyHz = 10'000'000;
 					
 					constexpr static gpio_num_t SS = GPIO_NUM_14;
 					constexpr static gpio_num_t RST = GPIO_NUM_NC;
@@ -78,30 +72,35 @@ namespace pizda {
 
 					class leverLeft {
 						public:
+							constexpr static adc_unit_t unit = ADC_UNIT_1;
 							constexpr static adc_channel_t channel = ADC_CHANNEL_0;
 							constexpr static bool invertInput = false;
 					};
 
 					class leverRight {
 						public:
+							constexpr static adc_unit_t unit = ADC_UNIT_1;
 							constexpr static adc_channel_t channel = ADC_CHANNEL_3;
 							constexpr static bool invertInput = false;
 					};
 
 					class joystickHorizontal {
 						public:
+							constexpr static adc_unit_t unit = ADC_UNIT_1;
 							constexpr static adc_channel_t channel = ADC_CHANNEL_7;
 							constexpr static bool invertInput = true;
 					};
 
 					class joystickVertical {
 						public:
+							constexpr static adc_unit_t unit = ADC_UNIT_1;
 							constexpr static adc_channel_t channel = ADC_CHANNEL_5;
 							constexpr static bool invertInput = false;
 					};
 
 					class ring {
 						public:
+							constexpr static adc_unit_t unit = ADC_UNIT_1;
 							constexpr static adc_channel_t channel = ADC_CHANNEL_6;
 							constexpr static bool invertInput = true;
 					};
@@ -130,6 +129,7 @@ namespace pizda {
 			*/
 			class battery {
 				public:
+					constexpr static adc_unit_t unit = ADC_UNIT_1;
 					constexpr static adc_channel_t channel = ADC_CHANNEL_4;
 
 					constexpr static uint32_t voltageMin = 6'000;

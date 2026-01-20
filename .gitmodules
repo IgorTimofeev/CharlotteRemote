@@ -13,3 +13,6 @@
 [submodule "components/ESP-IDF-BitStream"]
 	path = components/ESP-IDF-BitStream
 	url = https://github.com/IgorTimofeev/ESP-IDF-BitStream.git
+[submodule "components/ESP-IDF-Battery"]
+	path = components/ESP-IDF-Battery
+	url = https://github.com/IgorTimofeev/ESP-IDF-Battery.git

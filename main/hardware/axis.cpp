@@ -6,9 +6,9 @@
 #include "rc.h"
 
 namespace pizda {
-	Axis::Axis(adc_oneshot_unit_handle_t* unitHandle, adc_channel_t channel, bool invertInput, AxisSettingsData* settings) :
-		_channel(channel),
-		_unitHandle(unitHandle),
+	Axis::Axis(const adc_unit_t ADCUnit, const adc_channel_t ADCChannel, const bool invertInput, AxisSettingsData* settings) :
+		_ADCUnit(ADCUnit),
+		_ADCChannel(ADCChannel),
 		_invertInput(invertInput),
 		_settings(settings)
 	{
@@ -16,19 +16,23 @@ namespace pizda {
 	}
 
 	void Axis::setup() {
-		constexpr adc_oneshot_chan_cfg_t channelConfig = {
-			.atten = ADC_ATTEN_DB_12,
-			.bitwidth = ADC_BITWIDTH_12
-		};
+		adc_oneshot_unit_init_cfg_t ADC1UnitConfig {};
+		ADC1UnitConfig.unit_id = _ADCUnit;
+		ADC1UnitConfig.clk_src = ADC_RTC_CLK_SRC_DEFAULT;
+		ADC1UnitConfig.ulp_mode = ADC_ULP_MODE_DISABLE;
+		ESP_ERROR_CHECK(adc_oneshot_new_unit(&ADC1UnitConfig, &_ADCOneshotUnitHandle));
 
-		ESP_ERROR_CHECK(adc_oneshot_config_channel(*_unitHandle, _channel, &channelConfig));
+		adc_oneshot_chan_cfg_t channelConfig {};
+		channelConfig.atten = ADC_ATTEN_DB_12;
+		channelConfig.bitwidth = ADC_BITWIDTH_12;
+		ESP_ERROR_CHECK(adc_oneshot_config_channel(_ADCOneshotUnitHandle, _ADCChannel, &channelConfig));
 
 		read();
 	}
 
 	void Axis::read() {
 		int rawValue;
-		ESP_ERROR_CHECK(adc_oneshot_read(*_unitHandle, _channel, &rawValue));
+		ESP_ERROR_CHECK(adc_oneshot_read(_ADCOneshotUnitHandle, _ADCChannel, &rawValue));
 		
 		// Inverting input if required
 		if (_invertInput)
@@ -57,7 +61,7 @@ namespace pizda {
 			_rawValue = valueMax - _rawValue;
 	}
 	
-	uint16_t Axis::applySensitivityFilter(uint16_t rawValue) {
+	uint16_t Axis::applySensitivityFilter(const uint16_t rawValue) {
 		// Exponential sensitivity correction formula
 		// power = 3 (any odd power of raw value)
 		// corrected = raw * (1 - sensitivityFactor) + raw^power * sensitivityFactor

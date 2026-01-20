@@ -7,6 +7,7 @@
 #include <YOBA/hardware/encoder.h>
 
 #include <units.h>
+#include <battery.h>
 
 #include "UI/theme.h"
 #include "UI/navigation/route.h"
@@ -21,7 +22,6 @@
 #include "hardware/transceiver/remoteCommunicationManager.h"
 #include "hardware/audio/audioPlayer.h"
 #include "hardware/axis.h"
-#include "hardware/battery.h"
 
 #include "types/remoteData.h"
 #include "types/remoteData.h"
@@ -113,43 +113,42 @@ namespace pizda {
 			int64_t _axisTickTimeUs = 0;
 
 			Axis _leverLeft {
-				&config::adc::oneshotUnit,
+				config::axis::ring::unit,
 				config::axis::leverLeft::channel,
 				config::axis::leverLeft::invertInput,
 				&_settings.axis.leverLeft
 			};
 
 			Axis _leverRight {
-				&config::adc::oneshotUnit,
+				config::axis::ring::unit,
 				config::axis::leverRight::channel,
 				config::axis::leverRight::invertInput,
 				&_settings.axis.leverRight
 			};
 
 			Axis _joystickHorizontal {
-				&config::adc::oneshotUnit,
+				config::axis::ring::unit,
 				config::axis::joystickHorizontal::channel,
 				config::axis::joystickHorizontal::invertInput,
 				&_settings.axis.joystickHorizontal
 			};
 
 			Axis _joystickVertical {
-				&config::adc::oneshotUnit,
+				config::axis::ring::unit,
 				config::axis::joystickVertical::channel,
 				config::axis::joystickVertical::invertInput,
 				&_settings.axis.joystickVertical
 			};
 
 			Axis _ring {
-				&config::adc::oneshotUnit,
+				config::axis::ring::unit,
 				config::axis::ring::channel,
 				config::axis::ring::invertInput,
 				&_settings.axis.ring
 			};
 
 			Battery _battery {
-				config::adc::unit,
-				&config::adc::oneshotUnit,
+				config::battery::unit,
 				config::battery::channel,
 				
 				config::battery::voltageMin,
@@ -181,11 +180,8 @@ namespace pizda {
 			
 			void SPIBusSetup() const;
 			static void GPIOSetup();
-			static void ADCUnitsSetup();
-
 			void axisTick();
-
-			void NVSSetup();
+			static void NVSSetup();
 
 			[[noreturn]] static void startErrorLoop(const char* error);
 			

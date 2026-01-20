@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="8" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="5" type="long" />
+    <option name="/Default/Environment/UserInterface/HierarchyView/ViewStyle/@EntryValue" value="SuperTypes" type="string" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
   </component>
@@ -152,6 +153,7 @@
       <config projectName="Remote" targetName="__idf_esp_vfs_console" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-BitStream" />
       <config projectName="Remote" targetName="__idf_esp_phy" />
+      <config projectName="Remote" targetName="__idf_ESP-IDF-Battery" />
       <config projectName="Remote" targetName="__idf_unity" />
       <config projectName="Remote" targetName="__idf_nvs_sec_provider" />
       <config projectName="Remote" targetName="mbedcrypto" />
@@ -165,13 +167,26 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ЧИСТИМ ЛОЖЕЧКОЙ">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="заебумба">
+      <change afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery/src/battery.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery/src/battery.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-BitStream" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-BitStream" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-BitStream/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-BitStream/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencies.lock" beforeDir="false" afterPath="$PROJECT_DIR$/dependencies.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/config.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axis.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/battery.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/SX1262Transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/transceiver/SX1262Transceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -238,25 +253,25 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/types/settings",
+    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/components/ESP-IDF-Battery",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "CPPToolchains",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
     "structure.view.defaults.are.configured": "true",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-Battery" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\types\settings" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\settings" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\toolbar\trim" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\toolbar\baro" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\toolbar" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\types\settings" />
@@ -268,6 +283,11 @@
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_ESP-IDF-Battery" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_ESP-IDF-Battery" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -1100,6 +1120,7 @@
       <item itemvalue="CMake Application.size-files" />
       <item itemvalue="CMake Application.size" />
       <item itemvalue="CMake Application.uf2-app" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-Battery" />
       <item itemvalue="CMake Application.uf2" />
     </list>
   </component>
@@ -1174,23 +1195,9 @@
       <workItem from="1768766576422" duration="2888000" />
       <workItem from="1768825156269" duration="863000" />
       <workItem from="1768827254650" duration="123000" />
-      <workItem from="1768827395557" duration="10703000" />
-    </task>
-    <task id="LOCAL-00022" summary="ни хуя себе десигн">
-      <option name="closed" value="true" />
-      <created>1766777148775</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1766777148775</updated>
-    </task>
-    <task id="LOCAL-00023" summary="ахуй">
-      <option name="closed" value="true" />
-      <created>1766788999576</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1766788999576</updated>
+      <workItem from="1768827395557" duration="10750000" />
+      <workItem from="1768910019301" duration="3911000" />
+      <workItem from="1768914594458" duration="2860000" />
     </task>
     <task id="LOCAL-00024" summary="ахуй">
       <option name="closed" value="true" />
@@ -1568,7 +1575,23 @@
       <option name="project" value="LOCAL" />
       <updated>1768839600177</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="заебумба">
+      <option name="closed" value="true" />
+      <created>1768840664883</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1768840664884</updated>
+    </task>
+    <task id="LOCAL-00072" summary="заебумба">
+      <option name="closed" value="true" />
+      <created>1768914644255</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1768914644255</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1609,7 +1632,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="ахахахах, бля, тут время в микриках в uint32 хранилось, и динамик тупо дох через 1.5 часа работы :D" />
     <MESSAGE value="ОГО! ПАРТИЯ ГОРДИТСЯ ОТЕЧЕСТВЕННОЙ АВИОНИКОЙ ALTS MAN" />
     <MESSAGE value="перебздел с менюхами, надо a/p режимы перенести в верхнюю панель, а то как-то неконсистентно выглядит" />
     <MESSAGE value="неплохо выглядит - надо только кастомный рендер прихуярить ко всем варикам" />
@@ -1634,6 +1656,7 @@
     <MESSAGE value="сделал фон СИНТЕТИЧЕСКОГО ЗРЕНИЯ попроще, а то раньше костыльно рендерилось" />
     <MESSAGE value="ЧИСТИМ ВИЛОЧКОЙ" />
     <MESSAGE value="ЧИСТИМ ЛОЖЕЧКОЙ" />
-    <option name="LAST_COMMIT_MESSAGE" value="ЧИСТИМ ЛОЖЕЧКОЙ" />
+    <MESSAGE value="заебумба" />
+    <option name="LAST_COMMIT_MESSAGE" value="заебумба" />
   </component>
 </project>
