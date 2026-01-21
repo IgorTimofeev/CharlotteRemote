@@ -58,6 +58,7 @@ namespace pizda {
 		spatialVertices[1] = cornerToVertex(waypoint.geographicCoordinates, corner1Rad);
 		spatialVertices[2] = cornerToVertex(waypoint.geographicCoordinates, -corner0Rad);
 		spatialVertices[3] = cornerToVertex(waypoint.geographicCoordinates, -corner1Rad);
+		spatialVertices[4] = waypoint.geographicCoordinates.toCartesian();
 	}
 
 	Vector3F NavigationRunwayData::cornerToVertex(const GeographicCoordinates& geographicCoordinates, const Vector2F& cornerRad) const {

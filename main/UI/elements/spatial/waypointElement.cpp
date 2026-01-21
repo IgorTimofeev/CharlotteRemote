@@ -6,11 +6,14 @@
 #include <utils/rendering.h>
 
 namespace pizda {
-	WaypointElement::WaypointElement(uint16_t waypointIndex) : waypointIndex(waypointIndex) {
+	WaypointElement::WaypointElement(const uint16_t waypointIndex) : waypointIndex(waypointIndex) {
 
 	}
 
 	void WaypointElement::onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) {
+		if (projectedVertices[0].getZ() < scene.getNearPlaneDistance())
+			return;
+
 		const auto& waypointData = RC::getInstance().getNavigationData().waypoints[waypointIndex];
 
 		const auto center = Point(

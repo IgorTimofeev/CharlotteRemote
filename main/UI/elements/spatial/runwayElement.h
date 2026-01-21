@@ -12,15 +12,9 @@ namespace pizda {
 
 	class RunwayElement : public LinearMesh {
 		public:
-			explicit RunwayElement(const NavigationRunwayData* runwayData, const Color* color) : _runwayData(runwayData) {
-				setVertices(_runwayData->spatialVertices);
-				setVertexCount(4);
+			explicit RunwayElement(uint16_t runwayIndex, const Color* color);
 
-				setLineVertexIndices(_lineVertexIndices);
-				setLineVertexIndicesCount(8);
-
-				setColor(color);
-			}
+			uint16_t getRunwayIndex() const;
 
 		private:
 			constexpr static uint16_t _lineVertexIndices[] = {
@@ -30,6 +24,6 @@ namespace pizda {
 				0, 3
 			};
 
-			const NavigationRunwayData* _runwayData;
+			const uint16_t _runwayIndex;
 	};
 }

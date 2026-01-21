@@ -6,7 +6,7 @@
 #include <format>
 #include <esp_log.h>
 #include "sceneElements/NDRunwayElement.h"
-#include "sceneElements/waypointElement.h"
+#include "../../../elements/spatial/waypointElement.h"
 #include "sceneElements/routeElement.h"
 
 namespace pizda {
@@ -511,33 +511,28 @@ namespace pizda {
 
 		// Flight plan
 		{
-			uint16_t waypointFromIndex = 0;
-			uint16_t legIndex = 0;
+			if (rc.getNavigationData().flightPlan.legs.size() > 1) {
+				// First
+				uint16_t waypointFromIndex = rc.getNavigationData().flightPlan.legs[0].waypointIndex;
 
-			// Origin
-			if (rc.getNavigationData().flightPlan.legs.size() > 0) {
-				waypointFromIndex = rc.getNavigationData().flightPlan.legs[0].waypointIndex;
-				legIndex = 1;
-			}
+				// Subsequent
+				for (uint16_t legIndex = 1; legIndex < rc.getNavigationData().flightPlan.legs.size(); legIndex++) {
+					const auto& leg = rc.getNavigationData().flightPlan.legs[legIndex];
 
-			// Legs
-			for (; legIndex < rc.getNavigationData().flightPlan.legs.size(); legIndex++) {
-				const auto& leg = rc.getNavigationData().flightPlan.legs[legIndex];
+					addElement(new RouteElement(
+						rc.getNavigationData().waypoints[waypointFromIndex].cartesianCoordinates,
+						rc.getNavigationData().waypoints[leg.waypointIndex].cartesianCoordinates,
+						&Theme::magenta
+					));
 
-				addElement(new RouteElement(
-					rc.getNavigationData().waypoints[waypointFromIndex].cartesianCoordinates,
-					rc.getNavigationData().waypoints[leg.waypointIndex].cartesianCoordinates,
-					&Theme::magenta
-				));
-
-				waypointFromIndex = leg.waypointIndex;
+					waypointFromIndex = leg.waypointIndex;
+				}
 			}
 		}
 
 		// Runways
-		for (const auto& runway : rc.getNavigationData().runways) {
-			addElement(new NDRunwayElement(&runway, &Theme::fg1));
-			addElement(new WaypointElement(runway.waypointIndex));
+		for (uint16_t i = 0; i < rc.getNavigationData().runways.size(); ++i) {
+			addElement(new NDRunwayElement(i));
 		}
 
 		// Enroute waypoints

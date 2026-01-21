@@ -63,7 +63,7 @@ namespace pizda {
 			uint16_t headingDeg = 0;
 			uint16_t lengthM = 0;
 			uint16_t widthM = 0;
-			Vector3F spatialVertices[4];
+			Vector3F spatialVertices[5];
 
 			uint8_t getShortHeading() const {
 				return (headingDeg % 10 >= 5 ? headingDeg + 10 : headingDeg) / 10;

@@ -3,7 +3,8 @@
 
 #include "rc.h"
 #include <units.h>
-#include "UI/elements/spatial/runwayElement.h"
+#include "UI/elements/spatial/waypointElement.h"
+#include "UI/navigation/MFD/PFD/PFDRunwayElement.h"
 
 namespace pizda {
 	PFDScene::PFDScene() {
@@ -12,13 +13,10 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		setFOV(toRadians(rc.getSettings().personalization.MFD.PFD.FOV));
-		
+
 		// Runways
-		for (const auto& runway : rc.getNavigationData().runways) {
-			addElement(new RunwayElement(
-				&runway,
-				&Theme::bg1
-			));
+		for (uint16_t i = 0; i < rc.getNavigationData().runways.size(); ++i) {
+			addElement(new PFDRunwayElement(i));
 		}
 	}
 
@@ -301,14 +299,14 @@ namespace pizda {
 			PFD::aircraftSymbolWidth
 		);
 
-		// Dot
-		renderAircraftSymbolRect(
-			Point(
-				center.getX() - PFD::aircraftSymbolThickness / 2,
-				center.getY() - PFD::aircraftSymbolThickness / 2
-			),
-			PFD::aircraftSymbolThickness
-		);
+		// // Dot
+		// renderAircraftSymbolRect(
+		// 	Point(
+		// 		center.getX() - PFD::aircraftSymbolThickness / 2,
+		// 		center.getY() - PFD::aircraftSymbolThickness / 2
+		// 	),
+		// 	PFD::aircraftSymbolThickness
+		// );
 	}
 
 	void PFDScene::renderPitchOverlay(

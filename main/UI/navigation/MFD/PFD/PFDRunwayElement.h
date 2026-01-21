@@ -10,8 +10,10 @@ namespace pizda {
 	using namespace YOBA;
 	using namespace YOBA::spatial;
 
-	class NDRunwayElement : public RunwayElement {
+	class PFDRunwayElement : public RunwayElement {
 		public:
-			NDRunwayElement(uint16_t runwayIndex);
+			PFDRunwayElement(uint16_t runwayIndex);
+
+			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) override;
 	};
 }
