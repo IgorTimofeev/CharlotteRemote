@@ -3,7 +3,7 @@
 
 #include "rc.h"
 #include <units.h>
-#include "UI/elements/spatial/runwayMesh.h"
+#include "UI/elements/spatial/runwayElement.h"
 
 namespace pizda {
 	PFDScene::PFDScene() {
@@ -14,13 +14,11 @@ namespace pizda {
 		setFOV(toRadians(rc.getSettings().personalization.MFD.PFD.FOV));
 		
 		// Runways
-		for (const auto& airport : rc.getNavigationData().airports) {
-			for (const auto& runway : airport.runways) {
-				addElement(new RunwayMesh(
-					&runway,
-					&Theme::bg1
-				));
-			}
+		for (const auto& runway : rc.getNavigationData().runways) {
+			addElement(new RunwayElement(
+				&runway,
+				&Theme::bg1
+			));
 		}
 	}
 

@@ -21,11 +21,11 @@ namespace pizda {
 		title.setText(L"Nav database");
 
 		// Type selector
-		_airportTypeItem.setText(L"Airport");
-		_typeSelector.addItem(&_airportTypeItem);
+		_enrouteTypeItem.setText(L"Enroute");
+		_typeSelector.addItem(&_enrouteTypeItem);
 
-		_waypointTypeItem.setText(L"Waypoint");
-		_typeSelector.addItem(&_waypointTypeItem);
+		_runwayTypeItem.setText(L"Runway");
+		_typeSelector.addItem(&_runwayTypeItem);
 
 		_typeSelector.setSelectedIndex(0);
 
@@ -94,7 +94,7 @@ namespace pizda {
 			const auto& waypointData = nd.waypoints[i];
 
 			if (
-				(_typeSelector.getSelectedIndex() == 0) == (waypointData.type == NavigationWaypointType::airport)
+				(_typeSelector.getSelectedIndex() == 1) == (waypointData.type == NavigationWaypointType::runway)
 				&& (
 					text.length() == 0
 					|| StringUtils::containsIgnoreCase(waypointData.name, text)

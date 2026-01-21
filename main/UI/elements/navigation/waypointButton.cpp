@@ -2,7 +2,7 @@
 
 #include "UI/theme.h"
 #include "types/navigationData.h"
-#include <utils/rendering.h>
+#include "utils/rendering.h"
 #include "rc.h"
 
 namespace pizda {
@@ -10,7 +10,7 @@ namespace pizda {
 		setHeight(height);
 	}
 
-	WaypointButton::WaypointButton(uint32_t waypointIndex): WaypointButton() {
+	WaypointButton::WaypointButton(const uint32_t waypointIndex): WaypointButton() {
 		setWaypointIndex(waypointIndex);
 	}
 
@@ -18,7 +18,7 @@ namespace pizda {
 		return _waypointIndex;
 	}
 
-	void WaypointButton::setWaypointIndex(int32_t value) {
+	void WaypointButton::setWaypointIndex(const int32_t value) {
 		_waypointIndex = value;
 
 		if (_waypointIndex >= 0) {
@@ -67,14 +67,11 @@ namespace pizda {
 		const Color* color;
 
 		switch (waypointData.type) {
-			case NavigationWaypointType::route:
+			case NavigationWaypointType::enroute:
 				color = &Theme::magenta;
 
 				break;
-			case NavigationWaypointType::terminal:
-				color = &Theme::magenta;
 
-				break;
 			default:
 				color = &Theme::ocean;
 

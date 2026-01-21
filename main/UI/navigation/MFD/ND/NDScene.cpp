@@ -5,7 +5,7 @@
 #include <numbers>
 #include <format>
 #include <esp_log.h>
-#include "sceneElements/NDRunwayMesh.h"
+#include "sceneElements/NDRunwayElement.h"
 #include "sceneElements/waypointElement.h"
 #include "sceneElements/routeElement.h"
 
@@ -487,23 +487,23 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		// Axis
-		//		addElement(new SpatialLine(
-		//			Vector3F(0, 0, 0),
-		//			Vector3F(GeographicCoordinates::equatorialRadiusMeters, 0, 0),
-		//			&Theme::red
-		//		));
-		//
-		//		addElement(new SpatialLine(
-		//			Vector3F(0, 0, 0),
-		//			Vector3F(0, GeographicCoordinates::equatorialRadiusMeters, 0),
-		//			&Theme::green
-		//		));
-		//
-		//		addElement(new SpatialLine(
-		//			Vector3F(0, 0, 0),
-		//			Vector3F(0, 0, GeographicCoordinates::equatorialRadiusMeters),
-		//			&Theme::blue
-		//		));
+		addElement(new Line(
+			Vector3F(0, 0, 0),
+			Vector3F(GeographicCoordinates::equatorialRadiusMeters, 0, 0),
+			&Theme::red
+		));
+
+		addElement(new Line(
+			Vector3F(0, 0, 0),
+			Vector3F(0, GeographicCoordinates::equatorialRadiusMeters, 0),
+			&Theme::green1
+		));
+
+		addElement(new Line(
+			Vector3F(0, 0, 0),
+			Vector3F(0, 0, GeographicCoordinates::equatorialRadiusMeters),
+			&Theme::sky1
+		));
 
 		// Sphere
 		if (rc.getSettings().personalization.MFD.ND.earth)
@@ -515,29 +515,9 @@ namespace pizda {
 			uint16_t legIndex = 0;
 
 			// Origin
-			if (rc.getNavigationData().flightPlan.origin.has_value()) {
-				if (rc.getNavigationData().flightPlan.legs.size() > 0) {
-					const auto leg0WaypointIndex = rc.getNavigationData().flightPlan.legs[0].waypointIndex;
-
-					// Origin -> leg 0
-					addElement(new RouteElement(
-						rc.getNavigationData().airports[rc.getNavigationData().flightPlan.origin.value().airportIndex].runways[rc.getNavigationData().flightPlan.origin.value().runwayIndex].vertices[0],
-						rc.getNavigationData().waypoints[leg0WaypointIndex].cartesianCoordinates,
-						&Theme::fg1
-					));
-
-					waypointFromIndex = leg0WaypointIndex;
-					legIndex = 1;
-				}
-				else {
-					waypointFromIndex = rc.getNavigationData().airports[rc.getNavigationData().flightPlan.origin.value().airportIndex].waypointIndex;
-				}
-			}
-			else {
-				if (rc.getNavigationData().flightPlan.legs.size() > 0) {
-					waypointFromIndex = rc.getNavigationData().flightPlan.legs[0].waypointIndex;
-					legIndex = 1;
-				}
+			if (rc.getNavigationData().flightPlan.legs.size() > 0) {
+				waypointFromIndex = rc.getNavigationData().flightPlan.legs[0].waypointIndex;
+				legIndex = 1;
 			}
 
 			// Legs
@@ -552,29 +532,16 @@ namespace pizda {
 
 				waypointFromIndex = leg.waypointIndex;
 			}
-
-			// Destination
-			if (rc.getNavigationData().flightPlan.destination.has_value() && waypointFromIndex > 0) {
-				addElement(new RouteElement(
-					rc.getNavigationData().waypoints[waypointFromIndex].cartesianCoordinates,
-					rc.getNavigationData().airports[rc.getNavigationData().flightPlan.destination.value().airportIndex].runways[rc.getNavigationData().flightPlan.destination.value().runwayIndex].vertices[0],
-					&Theme::fg1
-				));
-			}
 		}
 
-		// Airports
-		for (const auto& airport : rc.getNavigationData().airports) {
-			// Runways
-			for (const auto& runway : airport.runways) {
-				addElement(new NDRunwayMesh(&runway, &Theme::fg1));
-			}
-
-			addElement(new WaypointElement(airport.waypointIndex));
+		// Runways
+		for (const auto& runway : rc.getNavigationData().runways) {
+			addElement(new NDRunwayElement(&runway, &Theme::fg1));
+			addElement(new WaypointElement(runway.waypointIndex));
 		}
 
-		// Waypoints
-		for (const auto& waypoint : rc.getNavigationData().RNAVWaypoints) {
+		// Enroute waypoints
+		for (const auto& waypoint : rc.getNavigationData().enrouteWaypoints) {
 			addElement(new WaypointElement(waypoint.waypointIndex));
 		}
 

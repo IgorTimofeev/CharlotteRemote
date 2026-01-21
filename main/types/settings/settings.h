@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types/settings/controlSettings.h"
-#include "types/settings/AxesSettings.h"
+#include "types/settings/axesSettings.h"
 #include "types/settings/autopilotSettings.h"
 #include "types/settings/personalizationSettings.h"
 #include "types/settings/navigationSettings.h"

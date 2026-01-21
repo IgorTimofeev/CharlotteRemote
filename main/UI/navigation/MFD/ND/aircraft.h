@@ -20,13 +20,13 @@ namespace pizda {
 				return 1;
 			}
 
-			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* vertices) override {
-				if (vertices[0].getZ() < scene.getNearPlaneDistance())
+			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) override {
+				if (projectedVertices[0].getZ() < scene.getNearPlaneDistance())
 					return;
 
 				render(renderer, Point(
-					static_cast<int32_t>(vertices[0].getX()),
-					static_cast<int32_t>(vertices[0].getY())
+					static_cast<int32_t>(projectedVertices[0].getX()),
+					static_cast<int32_t>(projectedVertices[0].getY())
 				));
 			}
 

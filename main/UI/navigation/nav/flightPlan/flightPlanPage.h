@@ -4,10 +4,8 @@
 #include <YOBA/UI.h>
 
 #include "UI/navigation/page.h"
-#include "UI/theme.h"
 
-#include "flightPlanItem.h"
-#include "placeholderButtons.h"
+#include "legPlaceholderButton.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -26,17 +24,8 @@ namespace pizda {
 
 			StackLayout _itemsLayout {};
 
-			Text _originTitle {};
-			AirportFlightPlanItem _originItem { false };
-			AirportPlaceholderButton _originPlaceholderItem { false };
-
-			Text _legsTitle {};
 			StackLayout _legsLayout {};
-			LegPlaceholderButton _legPlaceholderButton {};
-
-			Text _destinationTitle {};
-			AirportFlightPlanItem _destinationItem { true };
-			AirportPlaceholderButton _destinationPlaceholderItem { true };
+			LegPlaceholderButton _addLegButton {};
 
 			static void applyTitleStyle(Text& text);
 	};

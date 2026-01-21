@@ -12,7 +12,7 @@ namespace pizda {
 		public:
 			static void renderWaypoint(Renderer* renderer, const Point& center, const Color* color, const NavigationWaypointData& waypointData) {
 				switch (waypointData.type) {
-					case NavigationWaypointType::route: {
+					case NavigationWaypointType::enroute: {
 						renderer->renderRectangle(
 							Bounds(
 								center.getX() - 1,
@@ -60,17 +60,7 @@ namespace pizda {
 						);
 						break;
 					}
-					case NavigationWaypointType::terminal: {
-						renderer->renderTriangle(
-							Point(center.getX(), center.getY() - 3),
-							Point(center.getX() - 3, center.getY() + 2),
-							Point(center.getX() + 3, center.getY() + 2),
-							color
-						);
-
-						break;
-					}
-					case NavigationWaypointType::airport: {
+					case NavigationWaypointType::runway: {
 						renderer->renderCircle(
 							center,
 							4,

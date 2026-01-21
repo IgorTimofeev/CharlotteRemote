@@ -8,9 +8,9 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class LegFlightPlanItemDialog : public ScrollViewDialog {
+	class FlightPlanItemDialog : public ScrollViewDialog {
 		public:
-			explicit LegFlightPlanItemDialog(uint16_t legIndex);
+			explicit FlightPlanItemDialog(uint16_t legIndex);
 
 			static void showWaypointSelectionDialogToInsertAt(
 				std::wstring_view title,

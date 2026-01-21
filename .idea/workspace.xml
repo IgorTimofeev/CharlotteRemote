@@ -10,6 +10,7 @@
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppFormatterOtherPage" type="string" />
+    <option name="/Default/Housekeeping/RefactoringsMru/RenameRefactoring/DoRenameFile/@EntryValue" value="false" type="bool" />
     <option name="/Default/Housekeeping/RefactoringsMru/RenameRefactoring/DoRenameType/@EntryValue" value="false" type="bool" />
     <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
   </component>
@@ -172,16 +173,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="оказывается, я малёха проебался и вообще не делал ОБРЕЗАНИЕ ДЕТИШЕК в лейаутах для экранных ивентов - поэтому в скроллвьюверах за пределами вьюпорта они всегда ловили тачи, даже если их, бля, на экране не видно">
+      <change afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/NDRunwayElement.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/legPlaceholderButton.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery/src/battery.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery/src/battery.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axes.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axes/axes.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axes.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axes/axes.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axes/axis.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axes/axis.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/spatial/line.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/spatial/line.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/spatial/line.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/spatial/line.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/spatial/linearMesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/spatial/linearMesh.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/spatial/linearMesh.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/spatial/linearMesh.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/spatial/sceneElement.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/spatial/sceneElement.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/selectWaypointDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/selectWaypointDialog.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/selectWaypointDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/selectWaypointDialog.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/waypointButton.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/waypointButton.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/spatial/runwayMesh.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/spatial/runwayElement.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/aircraft.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/aircraft.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/NDRunwayMesh.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/NDRunwayMesh.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/NDRunwayElement.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/routeElement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/routeElement.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/routeElement.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/routeElement.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/airportFlightPlanItemDialog.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/airportFlightPlanItemDialog.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanItem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanItem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanItem.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanItem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanPage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/legFlightPlanItemDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanItemDialog.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/legFlightPlanItemDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/flightPlanItemDialog.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/placeholderButtons.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/placeholderButtons.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/flightPlan/legPlaceholderButton.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/nav/waypoints/waypointsPage.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/navigationData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/navigationData.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/navigationData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/navigationData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/AxesSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/axesSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/navigationSettings.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/navigationSettings.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/navigationSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/navigationSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/settings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/utils/rendering.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/utils/rendering.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

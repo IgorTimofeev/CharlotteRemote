@@ -4,16 +4,15 @@
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
-#include "types/settings/settings.h"
 #include "types/navigationData.h"
-#include "UI/elements/spatial/runwayMesh.h"
+#include "UI/elements/spatial/runwayElement.h"
 
 namespace pizda {
 	using namespace YOBA;
 	using namespace YOBA::spatial;
 
-	class NDRunwayMesh : public RunwayMesh {
+	class NDRunwayElement : public RunwayElement {
 		public:
-			NDRunwayMesh(const NavigationRunwayData* runwayData, const Color* color);
+			NDRunwayElement(const NavigationRunwayData* runwayData, const Color* color);
 	};
 }

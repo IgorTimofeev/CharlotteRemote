@@ -2,12 +2,16 @@
 
 #include "rc.h"
 
-#include "airportFlightPlanItemDialog.h"
-#include "legFlightPlanItemDialog.h"
+#include "flightPlanItemDialog.h"
+#include "utils/rendering.h"
 
 namespace pizda {
-	FlightPlanItem::FlightPlanItem() {
+	FlightPlanItem::FlightPlanItem(const uint16_t legIndex): _legIndex(legIndex) {
+		setWaypointIndex(RC::getInstance().getNavigationData().flightPlan.legs[legIndex].waypointIndex);
+	}
 
+	void FlightPlanItem::onClick() {
+		(new FlightPlanItemDialog(_legIndex))->show();
 	}
 
 	void FlightPlanItem::onRender(Renderer* renderer, const Bounds& bounds) {
@@ -34,14 +38,11 @@ namespace pizda {
 		const Color* color;
 
 		switch (waypointData.type) {
-			case NavigationWaypointType::route:
+			case NavigationWaypointType::enroute:
 				color = &Theme::magenta;
 
 				break;
-			case NavigationWaypointType::terminal:
-				color = &Theme::magenta;
 
-				break;
 			default:
 				color = &Theme::ocean;
 
@@ -64,7 +65,7 @@ namespace pizda {
 			),
 			&Theme::fontNormal,
 			&Theme::fg1,
-			getNameForRendering(waypointData)
+			waypointData.name
 		);
 
 		// Distance
@@ -84,50 +85,5 @@ namespace pizda {
 			&Theme::fg4,
 			coordsText
 		);
-	}
-
-	std::wstring FlightPlanItem::getNameForRendering(const NavigationWaypointData& waypointData) const {
-		return waypointData.name;
-	}
-
-	AirportFlightPlanItem::AirportFlightPlanItem(bool destination) : _destination(destination) {
-
-	}
-
-	const std::optional<NavigationAirportAndRunwayIndicesData>& AirportFlightPlanItem::getAirportAndRunway() const {
-		return _airportAndRunway;
-	}
-
-	void AirportFlightPlanItem::setAirportAndRunway(const std::optional<NavigationAirportAndRunwayIndicesData>& airportAndRunway) {
-		_airportAndRunway = airportAndRunway;
-
-		const auto& nd = RC::getInstance().getNavigationData();
-
-		setWaypointIndex(
-			_airportAndRunway.has_value()
-			? nd.airports[_airportAndRunway.value().airportIndex].waypointIndex
-			: -1
-		);
-
-		invalidate();
-	}
-
-	void AirportFlightPlanItem::onClick() {
-		(new AirportFlightPlanItemDialog(_airportAndRunway.value(), _destination))->show();
-	}
-
-	std::wstring AirportFlightPlanItem::getNameForRendering(const NavigationWaypointData& waypointData) const {
-		const auto& nd = RC::getInstance().getNavigationData();
-		const auto& airport = nd.airports[_airportAndRunway.value().airportIndex];
-
-		return std::format(L"{} / {}", waypointData.name, airport.runways[_airportAndRunway.value().runwayIndex].getFormattedName());
-	}
-
-	LegFlightPlanItem::LegFlightPlanItem(uint16_t legIndex): _legIndex(legIndex) {
-		setWaypointIndex(RC::getInstance().getNavigationData().flightPlan.legs[legIndex].waypointIndex);
-	}
-
-	void LegFlightPlanItem::onClick() {
-		(new LegFlightPlanItemDialog(_legIndex))->show();
 	}
 }

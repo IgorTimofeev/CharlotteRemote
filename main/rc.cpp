@@ -94,7 +94,7 @@ namespace pizda {
 
  			_tickDeltaTime = esp_timer_get_time() - tickStartTime;
 
-			taskYIELD();
+			vTaskDelay(1);
 		}
 	}
 	

@@ -10,15 +10,15 @@ namespace pizda {
 
 	}
 
-	void WaypointElement::onRender(Renderer* renderer, const Scene& scene, const Vector3F* vertices) {
+	void WaypointElement::onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) {
 		const auto& waypointData = RC::getInstance().getNavigationData().waypoints[waypointIndex];
 
 		const auto center = Point(
-			static_cast<int32_t>(vertices[0].getX()),
-			static_cast<int32_t>(vertices[0].getY())
+			static_cast<int32_t>(projectedVertices[0].getX()),
+			static_cast<int32_t>(projectedVertices[0].getY())
 		);
 
-		const auto color = waypointData.type == NavigationWaypointType::airport ? &Theme::ocean : &Theme::fg1;
+		const auto color = waypointData.type == NavigationWaypointType::runway ? &Theme::ocean : &Theme::fg1;
 
 		RenderingUtils::renderWaypoint(
 			renderer,

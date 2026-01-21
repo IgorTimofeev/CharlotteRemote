@@ -1,17 +1,14 @@
 #pragma once
 
-#include <cstdint>
-#include <esp_timer.h>
-#include <esp_log.h>
 #include <memory>
 #include <cstring>
 #include <ranges>
 
 #include <YOBA/main.h>
 
-#include "types/navigationData.h"
-
 #include <NVSSettings.h>
+
+#include "types/navigationData.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -36,50 +33,34 @@ namespace pizda {
 			GeographicCoordinates geographicCoordinates;
 	};
 
-	class NavigationSettingsRNAVWaypoint : public NavigationWaypointDataIndexAware {
+	class NavigationSettingsEnrouteWaypoint : public NavigationWaypointDataIndexAware {
 		public:
-			NavigationSettingsRNAVWaypoint() = default;
+			NavigationSettingsEnrouteWaypoint() = default;
 
-			explicit NavigationSettingsRNAVWaypoint(const uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {\
+			explicit NavigationSettingsEnrouteWaypoint(const uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {\
 
 			}
 	};
 
-	class NavigationSettingsAirport : public NavigationWaypointDataIndexAware {
+	class NavigationSettingsRunway : public NavigationWaypointDataIndexAware {
 		public:
-			NavigationSettingsAirport() = default;
+			NavigationSettingsRunway() = default;
 
-			explicit NavigationSettingsAirport(const uint16_t waypointIndex) : NavigationWaypointDataIndexAware(waypointIndex) {
-
-			}
-	};
-
-	class NavigationSettingsAirportRunway {
-		public:
-			NavigationSettingsAirportRunway() = default;
-
-			NavigationSettingsAirportRunway(
-				const uint16_t airportIndex,
-				const GeographicCoordinates& geographicCoordinates,
+			explicit NavigationSettingsRunway(
+				const uint16_t waypointIndex,
 				const uint16_t headingDeg,
-				const NavigationRunwayDataAlignment alignment,
 				const uint16_t lengthM,
 				const uint16_t widthM
 			) :
-				airportIndex(airportIndex),
-				geographicCoordinates(geographicCoordinates),
+				NavigationWaypointDataIndexAware(waypointIndex),
 				headingDeg(headingDeg),
-				alignment(alignment),
 				lengthM(lengthM),
 				widthM(widthM)
 			{
 
 			}
 
-			uint16_t airportIndex = 0;
-			GeographicCoordinates geographicCoordinates;
 			uint16_t headingDeg = 0;
-			NavigationRunwayDataAlignment alignment;
 			uint16_t lengthM = 0;
 			uint16_t widthM = 0;
 	};
@@ -98,33 +79,14 @@ namespace pizda {
 			const char* getNamespace() override;
 
 			void onRead(const NVSStream& stream) override;
-
 			void onWrite(const NVSStream& stream) override;
 
 		private:
-			constexpr static auto _namespace = "nv";
+			constexpr static auto _namespace = "nv2";
 
-			constexpr static auto _waypointsSize = "ws";
-			constexpr static auto _waypointsList = "wl";
-
-			constexpr static auto _RNAVWaypointsSize = "vs";
-			constexpr static auto _RNAVWaypointsList = "vl";
-
-			constexpr static auto _airportsSize = "as";
-			constexpr static auto _airportsList = "al";
-
-			constexpr static auto _runwaysSize = "rs";
-			constexpr static auto _runwaysList = "rl";
-
-			constexpr static auto _flightPlanOriginExists = "foe";
-			constexpr static auto _flightPlanOriginAirportIndex = "foa";
-			constexpr static auto _flightPlanOriginRunwayIndex = "for";
-
-			constexpr static auto _flightPlanLegsSize = "fls";
-			constexpr static auto _flightPlanLegsList = "fll";
-
-			constexpr static auto _flightPlanDestinationExists = "fde";
-			constexpr static auto _flightPlanDestinationAirportIndex = "fda";
-			constexpr static auto _flightPlanDestinationRunwayIndex = "fdr";
+			constexpr static auto _waypointsList = "wpl";
+			constexpr static auto _enrouteWaypointsList = "wpe";
+			constexpr static auto _runwaysList = "wpr";
+			constexpr static auto _flightPlanLegsList = "fpl";
 	};
 }

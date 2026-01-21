@@ -1,4 +1,4 @@
-#include "legFlightPlanItemDialog.h"
+#include "flightPlanItemDialog.h"
 
 #include "rc.h"
 #include "types/navigationData.h"
@@ -8,12 +8,11 @@
 #include "flightPlanPage.h"
 
 namespace pizda {
-	LegFlightPlanItemDialog::LegFlightPlanItemDialog(uint16_t legIndex) {
+	FlightPlanItemDialog::FlightPlanItemDialog(uint16_t legIndex) {
 		auto& rc = RC::getInstance();
-		auto& nd = rc.getNavigationData();
 
-		const auto& leg = nd.flightPlan.legs[legIndex];
-		const auto& waypointData = nd.waypoints[leg.waypointIndex];
+		const auto& leg = rc.getNavigationData().flightPlan.legs[legIndex];
+		const auto& waypointData = rc.getNavigationData().waypoints[leg.waypointIndex];
 
 		title.setText(waypointData.name);
 
@@ -25,12 +24,9 @@ namespace pizda {
 			rc.getApplication().scheduleOnTick([&rc, this, &leg, legIndex, &waypointData] {
 				SelectWaypointDialog::edit(
 					std::format(L"Change {}", waypointData.name),
-					WaypointDialogSelectedItem(leg.waypointIndex, std::nullopt),
-					[legIndex](const WaypointDialogSelectedItem& selectedItem) {
-						auto& rc = RC::getInstance();
-						auto& nd = rc.getNavigationData();
-
-						nd.flightPlan.legs[legIndex] = NavigationDataFlightPlanLeg(selectedItem.waypointIndex);
+					WaypointDialogSelectedItem(leg.waypointIndex),
+					[legIndex, &rc](const WaypointDialogSelectedItem& selectedItem) {
+						rc.getNavigationData().flightPlan.legs[legIndex] = NavigationDataFlightPlanLeg(selectedItem.waypointIndex);
 
 						const auto page = FlightPlanPage::getInstance();
 
@@ -76,9 +72,9 @@ namespace pizda {
 		Theme::applyCritical(&_removeButton);
 		_removeButton.setText(L"Delete");
 
-		_removeButton.click += [&rc, &nd, this, &leg, legIndex] {
-			rc.getApplication().scheduleOnTick([&rc, &nd, this, &leg, legIndex] {
-				nd.flightPlan.legs.erase(nd.flightPlan.legs.begin() + legIndex);
+		_removeButton.click += [&rc, this, legIndex] {
+			rc.getApplication().scheduleOnTick([&rc, this, legIndex] {
+				rc.getNavigationData().flightPlan.legs.erase(rc.getNavigationData().flightPlan.legs.begin() + legIndex);
 
 				const auto page = FlightPlanPage::getInstance();
 
@@ -93,15 +89,16 @@ namespace pizda {
 		rows += &_removeButton;
 	}
 
-	void LegFlightPlanItemDialog::showWaypointSelectionDialogToInsertAt(std::wstring_view title, size_t insertAt) {
+	void FlightPlanItemDialog::showWaypointSelectionDialogToInsertAt(const std::wstring_view title, size_t insertAt) {
 		SelectWaypointDialog::select(
 			title,
-			false,
 			[insertAt](const WaypointDialogSelectedItem& selectedItem) {
 				auto& rc = RC::getInstance();
-				auto& nd = rc.getNavigationData();
 
-				nd.flightPlan.legs.insert(nd.flightPlan.legs.begin() + insertAt, NavigationDataFlightPlanLeg(selectedItem.waypointIndex));
+				rc.getNavigationData().flightPlan.legs.insert(
+					rc.getNavigationData().flightPlan.legs.begin() + insertAt,
+					NavigationDataFlightPlanLeg(selectedItem.waypointIndex)
+				);
 
 				const auto page = FlightPlanPage::getInstance();
 
@@ -111,7 +108,7 @@ namespace pizda {
 		);
 	}
 
-	void LegFlightPlanItemDialog::insertOnButtonClick(const std::wstring& title, uint16_t insertAt) {
+	void FlightPlanItemDialog::insertOnButtonClick(const std::wstring& title, uint16_t insertAt) {
 		RC::getInstance().getApplication().scheduleOnTick([this, insertAt, title] {
 			showWaypointSelectionDialogToInsertAt(title, insertAt);
 

@@ -24,8 +24,8 @@ namespace pizda {
 		private:
 			static WaypointsPage* _instance;
 
-			TabSelectorItem _airportTypeItem {};
-			TabSelectorItem _waypointTypeItem {};
+			TabSelectorItem _runwayTypeItem {};
+			TabSelectorItem _enrouteTypeItem {};
 			TabSelector _typeSelector {};
 
 			RelativeStackLayout _searchAndAddRow {};

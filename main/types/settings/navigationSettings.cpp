@@ -14,19 +14,19 @@ namespace pizda {
 
 		// Waypoints
 		{
-			const auto waypointsSize = stream.readUint16(_waypointsSize, 0);
+			const uint16_t waypointsLength = stream.readObjectLength<NavigationSettingsWaypoint>(_waypointsList);
 
-			if (waypointsSize == 0) {
+			if (waypointsLength == 0) {
 				nd.addTemplateData();
 				return;
 			}
 
-			const auto waypoints = std::make_unique<NavigationSettingsWaypoint[]>(waypointsSize);
-			stream.readObject(_waypointsList, waypoints.get(), waypointsSize);
+			const auto waypoints = std::make_unique<NavigationSettingsWaypoint[]>(waypointsLength);
+			stream.readObject(_waypointsList, waypoints.get(), waypointsLength);
 
-			nd.waypoints.reserve(waypointsSize);
+			nd.waypoints.reserve(waypointsLength);
 
-			for (uint16_t i = 0; i < waypointsSize; i++) {
+			for (uint16_t i = 0; i < waypointsLength; i++) {
 				const auto& waypoint = waypoints[i];
 
 				nd.waypoints.push_back(NavigationWaypointData(
@@ -39,40 +39,19 @@ namespace pizda {
 
 		// RNAV
 		{
-			const auto RNAVWaypointsSize = stream.readUint16(_RNAVWaypointsSize, 0);
+			const uint16_t enrouteWaypointsLength = stream.readObjectLength<NavigationSettingsEnrouteWaypoint>(_enrouteWaypointsList);
 
-			if (RNAVWaypointsSize > 0) {
-				const auto RNAVWaypoints = std::make_unique<NavigationSettingsRNAVWaypoint[]>(RNAVWaypointsSize);
-				stream.readObject(_RNAVWaypointsList, RNAVWaypoints.get(), RNAVWaypointsSize);
+			if (enrouteWaypointsLength > 0) {
+				const auto RNAVWaypoints = std::make_unique<NavigationSettingsEnrouteWaypoint[]>(enrouteWaypointsLength);
+				stream.readObject(_enrouteWaypointsList, RNAVWaypoints.get(), enrouteWaypointsLength);
 
-				nd.RNAVWaypoints.reserve(RNAVWaypointsSize);
+				nd.enrouteWaypoints.reserve(enrouteWaypointsLength);
 
-				for (uint16_t i = 0; i < RNAVWaypointsSize; i++) {
+				for (uint16_t i = 0; i < enrouteWaypointsLength; i++) {
 					const auto& RNAVWaypoint = RNAVWaypoints[i];
 
-					nd.RNAVWaypoints.push_back(NavigationRNAVWaypointData(
+					nd.enrouteWaypoints.push_back(NavigationEnrouteWaypointData(
 						RNAVWaypoint.waypointIndex
-					));
-				}
-			}
-		}
-
-		// Airports
-		{
-			const auto airportSize = stream.readUint16(_airportsSize, 0);
-
-			if (airportSize > 0) {
-				const auto airports = std::make_unique<NavigationSettingsAirport[]>(airportSize);
-				stream.readObject(_airportsList, airports.get(), airportSize);
-
-				nd.airports.reserve(airportSize);
-
-				for (uint16_t i = 0; i < airportSize; i++) {
-					const auto& airport = airports[i];
-
-					nd.airports.push_back(NavigationAirportData(
-						airport.waypointIndex,
-						{}
 					));
 				}
 			}
@@ -80,19 +59,20 @@ namespace pizda {
 
 		// Runways
 		{
-			const auto runwaysSize = stream.readUint32(_runwaysSize, 0);
+			const uint16_t runwaysLength = stream.readObjectLength<NavigationSettingsRunway>(_runwaysList);
 
-			if (runwaysSize > 0) {
-				const auto runways = std::make_unique<NavigationSettingsAirportRunway[]>(runwaysSize);
-				stream.readObject(_runwaysList, runways.get(), runwaysSize);
+			if (runwaysLength > 0) {
+				const auto runways = std::make_unique<NavigationSettingsRunway[]>(runwaysLength);
+				stream.readObject(_runwaysList, runways.get(), runwaysLength);
 
-				for (uint32_t i = 0; i < runwaysSize; i++) {
+				nd.runways.reserve(runwaysLength);
+
+				for (uint16_t i = 0; i < runwaysLength; i++) {
 					const auto& runway = runways[i];
 
-					nd.airports[runway.airportIndex].runways.push_back(NavigationRunwayData(
-						runway.geographicCoordinates,
+					nd.runways.push_back(NavigationRunwayData(
+						runway.waypointIndex,
 						runway.headingDeg,
-						runway.alignment,
 						runway.lengthM,
 						runway.widthM
 					));
@@ -102,23 +82,17 @@ namespace pizda {
 
 		// Flight plan
 		{
-			// Origin
-			nd.flightPlan.origin =
-				stream.readBool(_flightPlanOriginExists)
-				? std::optional(NavigationDataFlightPlanAirport(stream.readUint16(_flightPlanOriginAirportIndex), stream.readUint8(_flightPlanOriginRunwayIndex)))
-				: std::nullopt;
-
 			// Legs
 			{
-				const auto legsSize = stream.readUint16(_flightPlanLegsSize);
+				const uint16_t legsLength = stream.readObjectLength<NavigationSettingsFlightPlanLeg>(_flightPlanLegsList);
 
-				if (legsSize > 0) {
-					nd.flightPlan.legs.reserve(legsSize);
+				if (legsLength > 0) {
+					nd.flightPlan.legs.reserve(legsLength);
 
-					const auto legs = std::make_unique<NavigationSettingsFlightPlanLeg[]>(legsSize);
-					stream.readObject(_flightPlanLegsList, legs.get(), legsSize);
+					const auto legs = std::make_unique<NavigationSettingsFlightPlanLeg[]>(legsLength);
+					stream.readObject(_flightPlanLegsList, legs.get(), legsLength);
 
-					for (uint16_t i = 0; i < legsSize; i++) {
+					for (uint16_t i = 0; i < legsLength; i++) {
 						const auto& leg = legs[i];
 
 						nd.flightPlan.legs.push_back(NavigationDataFlightPlanLeg(
@@ -127,12 +101,6 @@ namespace pizda {
 					}
 				}
 			}
-
-			// Destination
-			nd.flightPlan.destination =
-				stream.readBool(_flightPlanDestinationExists)
-				? std::optional(NavigationDataFlightPlanAirport(stream.readUint16(_flightPlanDestinationAirportIndex), stream.readUint8(_flightPlanDestinationRunwayIndex)))
-				: std::nullopt;
 		}
 	}
 
@@ -141,8 +109,6 @@ namespace pizda {
 
 		// Waypoints
 		{
-			stream.writeUint16(_waypointsSize, nd.waypoints.size());
-
 			const auto waypoints = std::make_unique<NavigationSettingsWaypoint[]>(nd.waypoints.size());
 
 			for (uint16_t i = 0; i < nd.waypoints.size(); i++) {
@@ -158,84 +124,42 @@ namespace pizda {
 			stream.writeObject(_waypointsList, waypoints.get(), nd.waypoints.size());
 		}
 
-		// RNAV
+		// Enroute
 		{
-			stream.writeUint16(_RNAVWaypointsSize, nd.RNAVWaypoints.size());
+			const auto enrouteWaypoints = std::make_unique<NavigationSettingsEnrouteWaypoint[]>(nd.enrouteWaypoints.size());
 
-			const auto RNAVWaypoints = std::make_unique<NavigationSettingsRNAVWaypoint[]>(nd.RNAVWaypoints.size());
+			for (uint16_t i = 0; i < nd.enrouteWaypoints.size(); i++) {
+				const auto& enrouteWaypoint = nd.enrouteWaypoints[i];
 
-			for (uint16_t i = 0; i < nd.RNAVWaypoints.size(); i++) {
-				const auto& RNAVWaypoint = nd.RNAVWaypoints[i];
-
-				RNAVWaypoints[i] = NavigationSettingsRNAVWaypoint(
-					RNAVWaypoint.waypointIndex
+				enrouteWaypoints[i] = NavigationSettingsEnrouteWaypoint(
+					enrouteWaypoint.waypointIndex
 				);
 			}
 
-			stream.writeObject(_RNAVWaypointsList, RNAVWaypoints.get(), nd.RNAVWaypoints.size());
+			stream.writeObject(_enrouteWaypointsList, enrouteWaypoints.get(), nd.enrouteWaypoints.size());
 		}
 
-		// Airports
+		// Runways
 		{
-			stream.writeUint16(_airportsSize, nd.airports.size());
+			const auto runways = std::make_unique<NavigationSettingsRunway[]>(nd.runways.size());
 
-			const auto airports = std::make_unique<NavigationSettingsAirport[]>(nd.airports.size());
+			for (size_t i = 0; i < nd.runways.size(); i++) {
+				const auto& runwayData = nd.runways[i];
 
-			size_t totalRunwaysSize = 0;
-
-			for (size_t ai = 0; ai < nd.airports.size(); ai++) {
-				const auto& airportData = nd.airports[ai];
-
-				airports[ai] = NavigationSettingsAirport(
-					airportData.waypointIndex
+				runways[i] = NavigationSettingsRunway(
+					runwayData.waypointIndex,
+					runwayData.headingDeg,
+					runwayData.lengthM,
+					runwayData.widthM
 				);
-
-				totalRunwaysSize += airportData.runways.size();
 			}
 
-			stream.writeObject(_airportsList, airports.get(), nd.airports.size());
-
-			// Runways
-			{
-				stream.writeUint32(_runwaysSize, totalRunwaysSize);
-
-				const auto runways = std::make_unique<NavigationSettingsAirportRunway[]>(totalRunwaysSize);
-
-				size_t runwayIndex = 0;
-
-				for (size_t ai = 0; ai < nd.airports.size(); ai++) {
-					const auto& airportData = nd.airports[ai];
-
-					for (size_t ri = 0; ri < airportData.runways.size(); ri++) {
-						const auto& runwayData = airportData.runways[ri];
-
-						runways[runwayIndex] = NavigationSettingsAirportRunway(
-							ai,
-							runwayData.geographicCoordinates,
-							runwayData.headingDeg,
-							runwayData.alignment,
-							runwayData.lengthM,
-							runwayData.widthM
-						);
-
-						runwayIndex++;
-					}
-				}
-
-				stream.writeObject(_runwaysList, runways.get(), totalRunwaysSize);
-			}
+			stream.writeObject(_runwaysList, runways.get(), nd.runways.size());
 		}
 
 		// Flight plan
 		{
-			// Origin
-			stream.writeBool(_flightPlanOriginExists, nd.flightPlan.origin.has_value());
-			stream.writeUint16(_flightPlanOriginAirportIndex, nd.flightPlan.origin.has_value() ? nd.flightPlan.origin.value().airportIndex : 0);
-			stream.writeUint8(_flightPlanOriginRunwayIndex, nd.flightPlan.origin.has_value() ? nd.flightPlan.origin.value().runwayIndex : 0);
-
 			// Legs
-			stream.writeUint16(_flightPlanLegsSize, nd.flightPlan.legs.size());
-
 			const auto legs = std::make_unique<NavigationSettingsFlightPlanLeg[]>(nd.flightPlan.legs.size());
 
 			for (uint16_t i = 0; i < nd.flightPlan.legs.size(); i++) {
@@ -247,11 +171,6 @@ namespace pizda {
 			}
 
 			stream.writeObject(_flightPlanLegsList, legs.get(), nd.flightPlan.legs.size());
-
-			// Destination
-			stream.writeBool(_flightPlanDestinationExists, nd.flightPlan.destination.has_value());
-			stream.writeUint16(_flightPlanDestinationAirportIndex, nd.flightPlan.destination.has_value() ? nd.flightPlan.destination.value().airportIndex : 0);
-			stream.writeUint8(_flightPlanDestinationRunwayIndex, nd.flightPlan.destination.has_value() ? nd.flightPlan.destination.value().runwayIndex : 0);
 		}
 	}
 }

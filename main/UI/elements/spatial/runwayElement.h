@@ -1,24 +1,19 @@
 #pragma once
 
-#include <numbers>
-#include <esp_log.h>
-
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 #include <YOBA/UI/spatial.h>
 
-#include "rc.h"
-#include "types/settings/settings.h"
 #include "types/navigationData.h"
 
 namespace pizda {
 	using namespace YOBA;
 	using namespace YOBA::spatial;
 
-	class RunwayMesh : public LinearMesh {
+	class RunwayElement : public LinearMesh {
 		public:
-			explicit RunwayMesh(const NavigationRunwayData* runwayData, const Color* color) : _runwayData(runwayData) {
-				setVertices(_runwayData->vertices + 1);
+			explicit RunwayElement(const NavigationRunwayData* runwayData, const Color* color) : _runwayData(runwayData) {
+				setVertices(_runwayData->spatialVertices);
 				setVertexCount(4);
 
 				setLineVertexIndices(_lineVertexIndices);
