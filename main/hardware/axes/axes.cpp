@@ -13,37 +13,37 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		
 		_leverLeft.setup(
-			rc.getAssignedADCOneshotUnit(config::axis::leverLeft::unit),
-			config::axis::leverLeft::channel,
-			config::axis::leverLeft::invertInput,
+			rc.getAssignedADCOneshotUnit(config::axes::leverLeft::unit),
+			config::axes::leverLeft::channel,
+			config::axes::leverLeft::invertInput,
 			&rc.getSettings().axes.leverLeft
 		);
 
 		_leverRight.setup(
-			rc.getAssignedADCOneshotUnit(config::axis::leverRight::unit),
-			config::axis::leverRight::channel,
-			config::axis::leverRight::invertInput,
+			rc.getAssignedADCOneshotUnit(config::axes::leverRight::unit),
+			config::axes::leverRight::channel,
+			config::axes::leverRight::invertInput,
 			&rc.getSettings().axes.leverRight
 		);
 
 		_joystickHorizontal.setup(
-			rc.getAssignedADCOneshotUnit(config::axis::joystickHorizontal::unit),
-			config::axis::joystickHorizontal::channel,
-			config::axis::joystickHorizontal::invertInput,
+			rc.getAssignedADCOneshotUnit(config::axes::joystickHorizontal::unit),
+			config::axes::joystickHorizontal::channel,
+			config::axes::joystickHorizontal::invertInput,
 			&rc.getSettings().axes.joystickHorizontal
 		);
 
 		_joystickVertical.setup(
-			rc.getAssignedADCOneshotUnit(config::axis::joystickVertical::unit),
-			config::axis::joystickVertical::channel,
-			config::axis::joystickVertical::invertInput,
+			rc.getAssignedADCOneshotUnit(config::axes::joystickVertical::unit),
+			config::axes::joystickVertical::channel,
+			config::axes::joystickVertical::invertInput,
 			&rc.getSettings().axes.joystickVertical
 		);
 
 		_ring.setup(
-			rc.getAssignedADCOneshotUnit(config::axis::ring::unit),
-			config::axis::ring::channel,
-			config::axis::ring::invertInput,
+			rc.getAssignedADCOneshotUnit(config::axes::ring::unit),
+			config::axes::ring::channel,
+			config::axes::ring::invertInput,
 			&rc.getSettings().axes.ring
 		);
 	}
@@ -69,6 +69,13 @@ namespace pizda {
 	}
 
 	void Axes::tick() {
+		const auto time = esp_timer_get_time();
+
+		if (time < _tickTime)
+			return;
+
+		_tickTime = time + 1'000'000 / config::axes::tickRateHz;
+
 		_leverLeft.tick();
 		_leverRight.tick();
 		_joystickHorizontal.tick();

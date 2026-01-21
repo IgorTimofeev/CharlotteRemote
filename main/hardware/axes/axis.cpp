@@ -21,6 +21,7 @@ namespace pizda {
 	}
 
 	void Axis::tick() {
+		// Reading value
 		int readValue;
 		const auto error = adc_oneshot_read(*_ADCOneshotUnit, _ADCChannel, &readValue);
 
@@ -32,7 +33,7 @@ namespace pizda {
 		// Inverting input if required
 		if (_invertInput)
 			readValue = valueMax - readValue;
-		
+
 		const auto& axesSettings = RC::getInstance().getSettings();
 
 		// First reading

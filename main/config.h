@@ -65,7 +65,7 @@ namespace pizda {
 					constexpr static uint16_t preambleLength = 8;
 			};
 	
-			class axis {
+			class axes {
 				public:
 					constexpr static uint8_t tickRateHz = 30;
 
@@ -158,9 +158,8 @@ namespace pizda {
 			class application {
 				public:
 					// 30 FPS are barely achievable on SPI displays, so let's take them for max tick rate
-					constexpr static uint8_t UITickRateHz = 30;
-					constexpr static uint32_t UITickIntervalUs = 1'000'000 / UITickRateHz;
-					
+					constexpr static uint8_t interfaceTickRateHz = 30;
+
 					constexpr static uint8_t dataInterpolationTickRateHz = 30;
 					constexpr static uint32_t dataInterpolationTickIntervalUs = 1'000'000 / dataInterpolationTickRateHz;
 			};

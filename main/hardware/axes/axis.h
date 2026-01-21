@@ -3,6 +3,7 @@
 #include <esp_adc/adc_oneshot.h>
 
 #include "types/settings/settings.h"
+#include "config.h"
 
 namespace pizda {
 	class Axis {
@@ -16,9 +17,7 @@ namespace pizda {
 			void tick();
 
 			AxisSettingsData* getSettings() const;
-			
 			uint16_t applySensitivityFilter(uint16_t rawValue) const;
-			
 			uint16_t getRawValue() const;
 			uint16_t getFilteredValue() const;
 			uint8_t getFilteredValueUint8() const;

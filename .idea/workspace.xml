@@ -171,18 +171,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="...">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="оказывается, я малёха проебался и вообще не делал ОБРЕЗАНИЕ ДЕТИШЕК в лейаутах для экранных ивентов - поэтому в скроллвьюверах за пределами вьюпорта они всегда ловили тачи, даже если их, бля, на экране не видно">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/application.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/application.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/application.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/application.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/control.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/control.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/control.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/control.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/element.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/element.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/layout.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/layout.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/layout.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/layout.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/bounds.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/bounds.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/bounds.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/bounds.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/size.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/size.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery/src/battery.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery/src/battery.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axes.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axes/axes.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axes.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axes/axes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axes/axis.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/hardware/axes/axis.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,7 +193,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/YOBA" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -1195,15 +1194,7 @@
       <workItem from="1768910019301" duration="3911000" />
       <workItem from="1768914594458" duration="2860000" />
       <workItem from="1768931817437" duration="12605000" />
-      <workItem from="1768999816062" duration="5228000" />
-    </task>
-    <task id="LOCAL-00033" summary="сука прикол директора ползают))) КРОСЕВА">
-      <option name="closed" value="true" />
-      <created>1767026917156</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1767026917156</updated>
+      <workItem from="1768999816062" duration="9333000" />
     </task>
     <task id="LOCAL-00034" summary="фиксики закоптились">
       <option name="closed" value="true" />
@@ -1589,7 +1580,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768951144073</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="оказывается, я малёха проебался и вообще не делал ОБРЕЗАНИЕ ДЕТИШЕК в лейаутах для экранных ивентов - поэтому в скроллвьюверах за пределами вьюпорта они всегда ловили тачи, даже если их, бля, на экране не видно">
+      <option name="closed" value="true" />
+      <created>1769006885440</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1769006885441</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1630,7 +1629,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="чота хз нужен ли трим на самом самбике или это хуйня" />
     <MESSAGE value="по ходу все-таки нужен, над тогда щас нвс этот проапдейтить под int8" />
     <MESSAGE value="фух бля заебался чета малеха" />
     <MESSAGE value="накалякал калибровку гирыча и мистера акксика" />
@@ -1655,6 +1653,7 @@
     <MESSAGE value="СУКА ЧЕТО ЯВНО НЕ ТАК Я ЩАС ПСИХАНУ" />
     <MESSAGE value="пиздец" />
     <MESSAGE value="..." />
-    <option name="LAST_COMMIT_MESSAGE" value="..." />
+    <MESSAGE value="оказывается, я малёха проебался и вообще не делал ОБРЕЗАНИЕ ДЕТИШЕК в лейаутах для экранных ивентов - поэтому в скроллвьюверах за пределами вьюпорта они всегда ловили тачи, даже если их, бля, на экране не видно" />
+    <option name="LAST_COMMIT_MESSAGE" value="оказывается, я малёха проебался и вообще не делал ОБРЕЗАНИЕ ДЕТИШЕК в лейаутах для экранных ивентов - поэтому в скроллвьюверах за пределами вьюпорта они всегда ловили тачи, даже если их, бля, на экране не видно" />
   </component>
 </project>

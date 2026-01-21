@@ -87,30 +87,14 @@ namespace pizda {
 		while (true) {
 			const auto tickStartTime = esp_timer_get_time();
 
-			// High priority tasks
 			_axes.tick();
 			_battery.tick();
 			interpolationTick();
-
-			// UI
-			_application.tick();
-			_application.render();
+			UITick();
 
  			_tickDeltaTime = esp_timer_get_time() - tickStartTime;
 
- 			// Skipping remaining tick time if any
- 			if (_tickDeltaTime < config::application::UITickIntervalUs) {
-				// FreeRTOS tasks can be only delayed by ms, so...
-				const auto delayMs = (config::application::UITickIntervalUs - _tickDeltaTime) / 1000;
-				
-				if (delayMs >= portTICK_PERIOD_MS) {
-					vTaskDelay(pdMS_TO_TICKS(delayMs));
-				}
-				// Meh
-				else {
-					taskYIELD();
-				}
- 			}
+			taskYIELD();
 		}
 	}
 	
@@ -133,6 +117,8 @@ namespace pizda {
 
 		if (deltaTimeUs < config::application::dataInterpolationTickIntervalUs)
 			return;
+
+		_interpolationTickTime = esp_timer_get_time();
 
 		// Principle of calculating the interpolation factor:
 		//
@@ -259,8 +245,18 @@ namespace pizda {
 		
 		// Smooth as fuck
 		LPFFactor = LowPassFilter::getFactor(0.5f, deltaTimeUs);
-		
-		_interpolationTickTime = esp_timer_get_time();
+	}
+
+	void RC::UITick() {
+		const auto time = esp_timer_get_time();
+
+		if (time < _interfaceTickTime)
+			return;
+
+		_interfaceTickTime = time + 1'000'000 / config::application::interfaceTickRateHz;
+
+		_application.tick();
+		_application.render();
 	}
 
 	// ------------------------- Data -------------------------

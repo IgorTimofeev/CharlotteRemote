@@ -16,6 +16,8 @@ namespace pizda {
 			void tick();
 
 		private:
+			int64_t _tickTime = 0;
+
 			Axis _leverLeft {};
 			Axis _leverRight {};
 			Axis _joystickHorizontal {};
