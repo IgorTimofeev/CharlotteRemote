@@ -12,17 +12,17 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class WaypointsPage : public ScrollViewPage {
+	class DatabasePage : public ScrollViewPage {
 		public:
-			explicit WaypointsPage();
-			~WaypointsPage() override;
+			explicit DatabasePage();
+			~DatabasePage() override;
 
-			static WaypointsPage* getInstance();
+			static DatabasePage* getInstance();
 
 			void updateFromNavigationData();
 
 		private:
-			static WaypointsPage* _instance;
+			static DatabasePage* _instance;
 
 			TabSelectorItem _runwayTypeItem {};
 			TabSelectorItem _enrouteTypeItem {};

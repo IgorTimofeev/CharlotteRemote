@@ -37,21 +37,21 @@ namespace pizda {
 			}
 		}
 
-		// RNAV
+		// Enroute
 		{
 			const uint16_t enrouteWaypointsLength = stream.readObjectLength<NavigationSettingsEnrouteWaypoint>(_enrouteWaypointsList);
 
 			if (enrouteWaypointsLength > 0) {
-				const auto RNAVWaypoints = std::make_unique<NavigationSettingsEnrouteWaypoint[]>(enrouteWaypointsLength);
-				stream.readObject(_enrouteWaypointsList, RNAVWaypoints.get(), enrouteWaypointsLength);
+				const auto enrouteWaypoints = std::make_unique<NavigationSettingsEnrouteWaypoint[]>(enrouteWaypointsLength);
+				stream.readObject(_enrouteWaypointsList, enrouteWaypoints.get(), enrouteWaypointsLength);
 
 				nd.enrouteWaypoints.reserve(enrouteWaypointsLength);
 
 				for (uint16_t i = 0; i < enrouteWaypointsLength; i++) {
-					const auto& RNAVWaypoint = RNAVWaypoints[i];
+					const auto& enrouteWaypoint = enrouteWaypoints[i];
 
 					nd.enrouteWaypoints.push_back(NavigationEnrouteWaypointData(
-						RNAVWaypoint.waypointIndex
+						enrouteWaypoint.waypointIndex
 					));
 				}
 			}

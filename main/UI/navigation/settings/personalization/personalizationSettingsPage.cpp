@@ -7,94 +7,115 @@ namespace pizda {
 	PersonalizationSettingsPage::PersonalizationSettingsPage() {
 		auto& rc = RC::getInstance();
 		auto& settings = rc.getSettings();
-		
+
+		// ----------------------------- General -----------------------------
+
 		title.setText(L"General");
-		
+
 		// Audio feedback
-		_audioFeedback.getSwitch().setActive(settings.personalization.audioFeedback);
+		_generalAudioFeedback.getSwitch().setActive(settings.personalization.audioFeedback);
 		
-		_audioFeedback.getSwitch().isActiveChanged += [this, &settings] {
-			settings.personalization.audioFeedback = _audioFeedback.getSwitch().isActive();
+		_generalAudioFeedback.getSwitch().isActiveChanged += [this, &settings] {
+			settings.personalization.audioFeedback = _generalAudioFeedback.getSwitch().isActive();
 			settings.personalization.scheduleWrite();
 		};
 		
-		rows += &_audioFeedback;
+		rows += &_generalAudioFeedback;
 		
 		// LPF
-		_MFDLPF.getSwitch().setActive(settings.personalization.LPF);
+		_generalDataInterpolation.getSwitch().setActive(settings.personalization.LPF);
 		
-		_MFDLPF.getSwitch().isActiveChanged += [this, &settings] {
-			settings.personalization.LPF = _MFDLPF.getSwitch().isActive();
+		_generalDataInterpolation.getSwitch().isActiveChanged += [this, &settings] {
+			settings.personalization.LPF = _generalDataInterpolation.getSwitch().isActive();
 			settings.personalization.scheduleWrite();
 		};
 		
-		rows += &_MFDLPF;
+		rows += &_generalDataInterpolation;
 		
 		// Debug overlay
-		_debugOverlay.getSwitch().setActive(settings.personalization.debugOverlay);
+		_generalDebugOverlay.getSwitch().setActive(settings.personalization.debugOverlay);
 		
-		_debugOverlay.getSwitch().isActiveChanged += [this, &rc, &settings] {
-			settings.personalization.debugOverlay = _debugOverlay.getSwitch().isActive();
+		_generalDebugOverlay.getSwitch().isActiveChanged += [this, &rc, &settings] {
+			settings.personalization.debugOverlay = _generalDebugOverlay.getSwitch().isActive();
 			settings.personalization.scheduleWrite();
 			
 			rc.updateDebugOverlayVisibility();
 		};
 		
-		rows += &_debugOverlay;
+		rows += &_generalDebugOverlay;
 		
 		// Separator
 		rows += &_generalSeparator;
 		
-		// -------------------------------- MFD --------------------------------
-		
-		Theme::applyPageTitle(&_MFDTitle);
-		_MFDTitle.setText(L"MFD");
-		rows += &_MFDTitle;
+		// -------------------------------- PFD --------------------------------
+
+		Theme::applyPageTitle(&_PFDTitle);
+		_PFDTitle.setText(L"PFD");
+		rows += &_PFDTitle;
 				
 		// FOV
-		Theme::apply(&_MFDFOVSlider);
-		_MFDFOVSlider.setValue(0xFFFF * (settings.personalization.MFD.PFD.FOV - _MFDFOVMin) / (_MFDFOVMax - _MFDFOVMin));
+		Theme::apply(&_PFDFOVSlider);
+		_PFDFOVSlider.setValue(0xFFFF * (settings.personalization.MFD.PFD.FOV - _PFDFOVMin) / (_PFDFOVMax - _PFDFOVMin));
 		
-		_MFDFOVSlider.valueChanged += [this, &settings] {
-			settings.personalization.MFD.PFD.FOV = _MFDFOVMin + _MFDFOVSlider.getValue() * (_MFDFOVMax - _MFDFOVMin) / 0xFFFF;
+		_PFDFOVSlider.valueChanged += [this, &settings] {
+			settings.personalization.MFD.PFD.FOV = _PFDFOVMin + _PFDFOVSlider.getValue() * (_PFDFOVMax - _PFDFOVMin) / 0xFFFF;
 			settings.personalization.scheduleWrite();
 			
-			updateMFDFOVTitle();
+			updatePFDFOVTitle();
 		};
 		
-		updateMFDFOVTitle();
-		rows += &_MFDFOVTitle;
+		updatePFDFOVTitle();
+		rows += &_PFDFOVTitle;
 		
 		// Height
-		Theme::apply(&_MFDSplitSlider);
-		_MFDSplitSlider.setValue(0xFFFF * (settings.personalization.MFD.splitPercent - _MFDSplitMin) / (_MFDSplitMax - _MFDSplitMin));
+		Theme::apply(&_PFDSplitSlider);
+		_PFDSplitSlider.setValue(0xFFFF * (settings.personalization.MFD.splitPercent - _PFDSplitMin) / (_PFDSplitMax - _PFDSplitMin));
 		
-		_MFDSplitSlider.valueChanged += [this, &settings] {
-			settings.personalization.MFD.splitPercent = _MFDSplitMin + _MFDSplitSlider.getValue() * (_MFDSplitMax - _MFDSplitMin) / 0xFFFF;
+		_PFDSplitSlider.valueChanged += [this, &settings] {
+			settings.personalization.MFD.splitPercent = _PFDSplitMin + _PFDSplitSlider.getValue() * (_PFDSplitMax - _PFDSplitMin) / 0xFFFF;
 			settings.personalization.scheduleWrite();
 			
-			updateMFDHeightTitle();
+			updatePFDSplitTitle();
 		};
 		
-		updateMFDHeightTitle();
-		rows += &_MFDSplitTitle;
+		updatePFDSplitTitle();
+		rows += &_PFDSplitTitle;
+
+		// Waypoint labels
+		_PFDWaypointLabels.getSwitch().setActive(settings.personalization.MFD.PFD.waypointLabels);
+
+		_PFDWaypointLabels.getSwitch().isActiveChanged += [this, &settings] {
+			settings.personalization.MFD.PFD.waypointLabels = _PFDWaypointLabels.getSwitch().isActive();
+			settings.personalization.scheduleWrite();
+		};
+
+		rows += &_PFDWaypointLabels;
+
+		// Separator
+		rows += &_PFDSeparator;
+
+		// -------------------------------- ND --------------------------------
+
+		Theme::applyPageTitle(&_NDTitle);
+		_NDTitle.setText(L"ND");
+		rows += &_NDTitle;
+
+		// Earth grid
+		_NDEarthGrid.getSwitch().setActive(settings.personalization.MFD.ND.earth);
 		
-		// Sphere
-		_MFDSphereSwitcher.getSwitch().setActive(settings.personalization.MFD.ND.earth);
-		
-		_MFDSphereSwitcher.getSwitch().isActiveChanged += [this, &settings] {
-			settings.personalization.MFD.ND.earth = _MFDSphereSwitcher.getSwitch().isActive();
+		_NDEarthGrid.getSwitch().isActiveChanged += [this, &settings] {
+			settings.personalization.MFD.ND.earth = _NDEarthGrid.getSwitch().isActive();
 			settings.personalization.scheduleWrite();
 		};
 		
-		rows += &_MFDSphereSwitcher;
+		rows += &_NDEarthGrid;
 	}
 	
-	void PersonalizationSettingsPage::updateMFDHeightTitle() {
-		_MFDSplitTitle.title.setText(std::format(L"Split view ratio ({}%)", RC::getInstance().getSettings().personalization.MFD.splitPercent));
+	void PersonalizationSettingsPage::updatePFDSplitTitle() {
+		_PFDSplitTitle.title.setText(std::format(L"Split view height ({}%)", RC::getInstance().getSettings().personalization.MFD.splitPercent));
 	}
 	
-	void PersonalizationSettingsPage::updateMFDFOVTitle() {
-		_MFDFOVTitle.title.setText(std::format(L"PFD field of view ({} deg)", RC::getInstance().getSettings().personalization.MFD.PFD.FOV));
+	void PersonalizationSettingsPage::updatePFDFOVTitle() {
+		_PFDFOVTitle.title.setText(std::format(L"Field of view ({} deg)", RC::getInstance().getSettings().personalization.MFD.PFD.FOV));
 	}
 }

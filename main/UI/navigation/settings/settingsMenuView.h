@@ -6,7 +6,7 @@
 #include "UI/navigation/menu/pagesMenuView.h"
 #include "UI/navigation/menu/pageMenuViewButton.h"
 #include "UI/navigation/routes.h"
-#include <resources/images.h>
+#include "resources/images.h"
 
 namespace pizda {
 	using namespace YOBA;

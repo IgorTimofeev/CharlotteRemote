@@ -16,25 +16,23 @@ namespace pizda {
 
 		const auto& waypointData = RC::getInstance().getNavigationData().waypoints[waypointIndex];
 
-		const auto center = Point(
+		const auto& waypointPosition = Point(
 			static_cast<int32_t>(projectedVertices[0].getX()),
 			static_cast<int32_t>(projectedVertices[0].getY())
 		);
 
-		const auto color = waypointData.type == NavigationWaypointType::runway ? &Theme::ocean : &Theme::fg1;
-
-		RenderingUtils::renderWaypoint(
+		RenderingUtils::renderWaypointIcon(
 			renderer,
-			center,
-			color,
+			waypointPosition,
+			&Theme::fg1,
 			waypointData
 		);
 
-		renderer->renderString(
-			Point(center.getX() + 7, center.getY() - 7),
-			&Theme::fontSmall,
-			color,
-			waypointData.name
+		RenderingUtils::renderWaypointName(
+			renderer,
+			waypointPosition,
+			&Theme::fg1,
+			waypointData
 		);
 	}
 

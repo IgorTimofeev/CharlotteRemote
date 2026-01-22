@@ -486,24 +486,24 @@ namespace pizda {
 	void NDScene::createSceneElementsFromNavigationData() {
 		auto& rc = RC::getInstance();
 
-		// Axis
-		addElement(new Line(
-			Vector3F(0, 0, 0),
-			Vector3F(GeographicCoordinates::equatorialRadiusMeters, 0, 0),
-			&Theme::red
-		));
-
-		addElement(new Line(
-			Vector3F(0, 0, 0),
-			Vector3F(0, GeographicCoordinates::equatorialRadiusMeters, 0),
-			&Theme::green1
-		));
-
-		addElement(new Line(
-			Vector3F(0, 0, 0),
-			Vector3F(0, 0, GeographicCoordinates::equatorialRadiusMeters),
-			&Theme::sky1
-		));
+		// // Axes
+		// addElement(new Line(
+		// 	Vector3F(0, 0, 0),
+		// 	Vector3F(GeographicCoordinates::equatorialRadiusMeters, 0, 0),
+		// 	&Theme::red
+		// ));
+		//
+		// addElement(new Line(
+		// 	Vector3F(0, 0, 0),
+		// 	Vector3F(0, GeographicCoordinates::equatorialRadiusMeters, 0),
+		// 	&Theme::green1
+		// ));
+		//
+		// addElement(new Line(
+		// 	Vector3F(0, 0, 0),
+		// 	Vector3F(0, 0, GeographicCoordinates::equatorialRadiusMeters),
+		// 	&Theme::sky1
+		// ));
 
 		// Sphere
 		if (rc.getSettings().personalization.MFD.ND.earth)

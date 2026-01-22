@@ -5,6 +5,7 @@
 #include "types/navigationData.h"
 
 #include "flightPlanItemDialog.h"
+#include "rc.h"
 
 namespace pizda {
 	LegPlaceholderButton::LegPlaceholderButton() {
@@ -16,6 +17,6 @@ namespace pizda {
 	void LegPlaceholderButton::onClick() {
 		Button::onClick();
 
-		FlightPlanItemDialog::showWaypointSelectionDialogToInsertAt(getText(), 0);
+		FlightPlanItemDialog::showWaypointSelectionDialogToInsertAt(getText(), RC::getInstance().getNavigationData().flightPlan.legs.size());
 	}
 }

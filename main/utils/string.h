@@ -29,11 +29,33 @@ namespace pizda {
 
 				return converterX.to_bytes(source.data(), source.data() + source.size());
 			}
+
+			static std::wstring toWString(const float value) {
+				auto result = std::to_wstring(value);
+
+				// I love C++
+
+				// Erasing trailing zeros
+				result.erase(result.find_last_not_of(L'0') + 1);
+
+				// If the last character is a decimal point, removing it
+				if (result.back() == L'.')
+					result.pop_back();
+
+				return result;
+			}
 			
 			static bool tryParseInt32(const std::wstring_view& source, int32_t& result) {
 				wchar_t* endPtr;
 				result = std::wcstol(source.data(), &endPtr, 10);
 				
+				return endPtr != source.data();
+			}
+
+			static bool tryParseFloat(const std::wstring_view& source, float& result) {
+				wchar_t* endPtr;
+				result = std::wcstof(source.data(), &endPtr);
+
 				return endPtr != source.data();
 			}
 	};

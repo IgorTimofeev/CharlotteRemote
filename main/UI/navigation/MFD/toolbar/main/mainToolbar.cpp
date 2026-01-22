@@ -1,7 +1,7 @@
 #include "mainToolbar.h"
 
 #include "rc.h"
-#include <resources/images.h>
+#include "resources/images.h"
 #include "UI/navigation/MFD/toolbar/toolbar.h"
 
 namespace pizda {
@@ -12,13 +12,13 @@ namespace pizda {
 		leftRow.setHorizontalAlignment(Alignment::start);
 		*this += &leftRow;
 
-		// Throttle
-		leftRow += &_throttleIndicatorLayout;
-
 		// Controls
 		ToolbarSection::setDefaultMargin(&_flightControlsIndicator, 4);
 		_flightControlsSection.setFocusable(false);
 		leftRow += &_flightControlsSection;
+
+		// Throttle
+		leftRow += &_throttleSection;
 		
 		// ----------------------------- Right -----------------------------
 		
@@ -27,7 +27,7 @@ namespace pizda {
 		*this += &rightRow;
 		
 		// Radio
-		ToolbarSection::setDefaultMargin(&_radio, 7);
+		ToolbarSection::setDefaultMargin(&_radio, 8);
 		_radioSection.setFocusable(false);
 		rightRow += &_radioSection;
 		

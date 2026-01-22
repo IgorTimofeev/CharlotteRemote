@@ -1,4 +1,4 @@
-#include "waypointsPage.h"
+#include "databasePage.h"
 
 #include "rc.h"
 #include "types/navigationData.h"
@@ -13,9 +13,9 @@
 #include "waypointItem.h"
 
 namespace pizda {
-	WaypointsPage* WaypointsPage::_instance = nullptr;
+	DatabasePage* DatabasePage::_instance = nullptr;
 
-	WaypointsPage::WaypointsPage() {
+	DatabasePage::DatabasePage() {
 		_instance = this;
 
 		title.setText(L"Nav database");
@@ -74,17 +74,17 @@ namespace pizda {
 		updateFromNavigationData();
 	}
 
-	WaypointsPage::~WaypointsPage() {
+	DatabasePage::~DatabasePage() {
 		_itemsLayout.removeAndDeleteChildren();
 
 		_instance = nullptr;
 	}
 
-	WaypointsPage* WaypointsPage::getInstance() {
+	DatabasePage* DatabasePage::getInstance() {
 		return _instance;
 	}
 
-	void WaypointsPage::updateFromNavigationData() {
+	void DatabasePage::updateFromNavigationData() {
 		const auto& nd = RC::getInstance().getNavigationData();
 		const auto text = _searchTextField.getText();
 

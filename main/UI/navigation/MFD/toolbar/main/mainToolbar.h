@@ -25,7 +25,7 @@ namespace pizda {
 			StackLayout leftRow {};
 			StackLayout rightRow {};
 			
-			ThrottleSection _throttleIndicatorLayout {};
+			ThrottleSection _throttleSection {};
 
 			FlightControlsIndicator _flightControlsIndicator {};
 			ToolbarSection _flightControlsSection = { L"FCTL", &_flightControlsIndicator };

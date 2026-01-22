@@ -274,11 +274,12 @@ namespace pizda {
 				&Theme::bg1
 			);
 
-			renderer->renderHorizontalLine(Point(position.getX() - 1, position.getY() - 1), width + 2, &Theme::fg1);
-			renderer->renderHorizontalLine(Point(position.getX() - 1, position.getY() + PFD::aircraftSymbolThickness), width + 2, &Theme::fg1);
-
-			renderer->renderVerticalLine(Point(position.getX() - 1, position.getY()), PFD::aircraftSymbolThickness, &Theme::fg1);
-			renderer->renderVerticalLine(Point(position.getX() + width, position.getY()), PFD::aircraftSymbolThickness, &Theme::fg1);
+			// Outline
+			// renderer->renderHorizontalLine(Point(position.getX() - 1, position.getY() - 1), width + 2, &Theme::fg1);
+			// renderer->renderHorizontalLine(Point(position.getX() - 1, position.getY() + PFD::aircraftSymbolThickness), width + 2, &Theme::fg1);
+			//
+			// renderer->renderVerticalLine(Point(position.getX() - 1, position.getY()), PFD::aircraftSymbolThickness, &Theme::fg1);
+			// renderer->renderVerticalLine(Point(position.getX() + width, position.getY()), PFD::aircraftSymbolThickness, &Theme::fg1);
 		};
 
 		// Left
@@ -299,14 +300,14 @@ namespace pizda {
 			PFD::aircraftSymbolWidth
 		);
 
-		// // Dot
-		// renderAircraftSymbolRect(
-		// 	Point(
-		// 		center.getX() - PFD::aircraftSymbolThickness / 2,
-		// 		center.getY() - PFD::aircraftSymbolThickness / 2
-		// 	),
-		// 	PFD::aircraftSymbolThickness
-		// );
+		// Dot
+		renderAircraftSymbolRect(
+			Point(
+				center.getX() - PFD::aircraftSymbolThickness / 2,
+				center.getY() - PFD::aircraftSymbolThickness / 2
+			),
+			PFD::aircraftSymbolThickness
+		);
 	}
 
 	void PFDScene::renderPitchOverlay(

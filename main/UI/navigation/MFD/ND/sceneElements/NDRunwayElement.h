@@ -13,5 +13,7 @@ namespace pizda {
 	class NDRunwayElement : public RunwayElement {
 		public:
 			NDRunwayElement(uint16_t runwayIndex);
+
+			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) override;
 	};
 }

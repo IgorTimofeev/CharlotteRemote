@@ -64,21 +64,10 @@ namespace pizda {
 
 		auto x = bounds.getX() + 15;
 		const auto y = bounds.getYCenter();
-		const Color* color;
 
-		switch (waypointData.type) {
-			case NavigationWaypointType::enroute:
-				color = &Theme::magenta;
+		const auto color = RenderingUtils::getWaypointColor(waypointData);
 
-				break;
-
-			default:
-				color = &Theme::ocean;
-
-				break;
-		}
-
-		RenderingUtils::renderWaypoint(
+		RenderingUtils::renderWaypointIcon(
 			renderer,
 			Point(x, y),
 			color,

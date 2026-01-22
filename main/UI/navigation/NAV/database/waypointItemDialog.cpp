@@ -4,14 +4,13 @@
 #include "types/navigationData.h"
 #include "UI/theme.h"
 
-#include "waypointsPage.h"
+#include "databasePage.h"
 
 namespace pizda {
 	WaypointItemDialog::WaypointItemDialog(uint16_t waypointIndex) {
 		auto& rc = RC::getInstance();
-		auto& nd = rc.getNavigationData();
 
-		const auto& waypointData = nd.waypoints[waypointIndex];
+		const auto& waypointData = rc.getNavigationData().waypoints[waypointIndex];
 
 		title.setText(waypointData.name);
 
@@ -19,14 +18,14 @@ namespace pizda {
 		Theme::applyCritical(&_removeButton);
 		_removeButton.setText(L"Delete");
 
-		_removeButton.click += [&rc, &nd, waypointIndex, this] {
-			rc.getApplication().scheduleOnTick([&rc, &nd, waypointIndex, this] {
+		_removeButton.click += [&rc, waypointIndex, this] {
+			rc.getApplication().scheduleOnTick([&rc, waypointIndex, this] {
 				hide();
 				delete this;
 
-				nd.removeWaypointAt(waypointIndex);
+				rc.getNavigationData().removeWaypointAt(waypointIndex);
 
-				const auto page = WaypointsPage::getInstance();
+				const auto page = DatabasePage::getInstance();
 
 				if (page)
 					page->updateFromNavigationData();

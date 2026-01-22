@@ -9,30 +9,44 @@ namespace pizda {
 	}
 
 	void PFDRunwayElement::onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) {
-		RunwayElement::onRender(renderer, scene, projectedVertices);
+		const auto& waypointVertex = projectedVertices[4];
 
-		const auto& nameVertex = projectedVertices[4];
-
-		if (nameVertex.getZ() < scene.getNearPlaneDistance())
+		if (waypointVertex.getZ() < scene.getNearPlaneDistance())
 			return;
 
-		const auto& nd = RC::getInstance().getNavigationData();
-		const auto& runway = nd.runways[getRunwayIndex()];
-		const auto& waypoint = nd.waypoints[runway.waypointIndex];
+		auto& rc = RC::getInstance();
+
+		// Close enough, rendering runway mesh
+		if (waypointVertex.getZ() <= 16'000) {
+			RunwayElement::onRender(renderer, scene, projectedVertices);
+		}
+
+		// Waypoint labels
+		if (!rc.getSettings().personalization.MFD.PFD.waypointLabels || waypointVertex.getZ() < 1'000)
+			return;
+
+		const auto& runway = rc.getNavigationData().runways[getRunwayIndex()];
+		const auto& waypoint = rc.getNavigationData().waypoints[runway.waypointIndex];
 
 		constexpr static uint8_t lineLength = 25;
 		constexpr static uint8_t textOffset = 2;
 
 		renderer->renderVerticalLine(
-			Point(nameVertex.getX(), nameVertex.getY() - lineLength),
-			lineLength,
-			&Theme::fg1
+			Point(waypointVertex.getX(), waypointVertex.getY() - lineLength),
+			lineLength - 1,
+			&Theme::ground2
+		);
+
+		renderer->renderFilledCircle(
+			Point(waypointVertex.getX(), waypointVertex.getY()),
+			2,
+			&Theme::ground2
 		);
 
 		renderer->renderString(
 			Point(
-				nameVertex.getX() - Theme::fontNormal.getWidth(waypoint.name) / 2,
-				nameVertex.getY() - lineLength - textOffset - Theme::fontNormal.getHeight()
+				waypointVertex.getX() - Theme::fontNormal.getWidth(waypoint.name) / 2,
+				waypointVertex.getY() - lineLength - textOffset - Theme::fontNormal.getHeight()
 			),
 			&Theme::fontNormal,
 			&Theme::fg1,

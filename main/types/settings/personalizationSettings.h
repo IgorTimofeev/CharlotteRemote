@@ -12,6 +12,7 @@ namespace pizda {
 			bool visible = false;
 			uint8_t FOV = 0;
 			bool flightDirector = false;
+			bool waypointLabels = true;
 	};
 
 	enum class PersonalizationSettingsMFDNDMode : uint8_t {
@@ -71,6 +72,7 @@ namespace pizda {
 				MFD.PFD.visible = stream.readBool(_MFDPFDVisible, true);
 				MFD.PFD.FOV = stream.readUint8(_MFDPFDFOV, 50);
 				MFD.PFD.flightDirector = stream.readBool(_MFDPFDFlightDirectors, true);
+				MFD.PFD.waypointLabels = stream.readBool(_MFDPFDWaypointLabels, true);
 
 				MFD.ND.visible = stream.readBool(_MFDNDVisible, true);
 				MFD.ND.mode = static_cast<PersonalizationSettingsMFDNDMode>(stream.readUint8(_MFDNDMode, static_cast<uint8_t>(PersonalizationSettingsMFDNDMode::arcHeadingUp)));
@@ -92,6 +94,7 @@ namespace pizda {
 				stream.writeBool(_MFDPFDVisible, MFD.PFD.visible);
 				stream.writeUint8(_MFDPFDFOV, MFD.PFD.FOV);
 				stream.writeBool(_MFDPFDFlightDirectors, MFD.PFD.flightDirector);
+				stream.writeBool(_MFDPFDWaypointLabels, MFD.PFD.waypointLabels);
 
 				stream.writeBool(_MFDNDVisible, MFD.ND.visible);
 				stream.writeUint8(_MFDNDMode, static_cast<uint8_t>(MFD.ND.mode));
@@ -113,6 +116,7 @@ namespace pizda {
 			constexpr static auto _MFDPFDVisible = "mpvi";
 			constexpr static auto _MFDPFDFOV = "mpfo";
 			constexpr static auto _MFDPFDFlightDirectors = "mpfd";
+			constexpr static auto _MFDPFDWaypointLabels = "mpwl";
 			constexpr static auto _MFDNDVisible = "mnvi";
 			constexpr static auto _MFDNDMode = "mnmd";
 			constexpr static auto _MFDNDEarth = "mnea";

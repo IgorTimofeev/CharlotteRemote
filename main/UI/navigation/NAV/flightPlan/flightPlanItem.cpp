@@ -49,7 +49,7 @@ namespace pizda {
 				break;
 		}
 
-		RenderingUtils::renderWaypoint(
+		RenderingUtils::renderWaypointIcon(
 			renderer,
 			Point(x, y),
 			color,

@@ -124,7 +124,7 @@ namespace pizda {
 	void NavigationData::addTemplateData() {
 		// Pulkovo 10 left
 		addRunway(
-			L"ULLI10L",
+			L"ULLI",
 			GeographicCoordinates(toRadians(59.805114621892f), toRadians(30.276415586255f), 0),
 			// 10 L
 			106,
@@ -150,7 +150,7 @@ namespace pizda {
 			20
 		);
 
-		// RNAV waypoints
+		// Enroute waypoints
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
 			L"OMEGA",

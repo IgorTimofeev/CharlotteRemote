@@ -155,6 +155,25 @@ namespace pizda {
 		_aircraftData.computed.headingDeg = normalizeAngleDeg360(toDegrees(-_aircraftData.computed.yawRad));
 //		ESP_LOGI("PIZDA", "raw: %f, raw deg: %f, computed: %f, deg: %f, heading: %f", _aircraftData.raw.yawRad, toDegrees(-_aircraftData.raw.yawRad), _aircraftData.computed.yawRad, toDegrees(_aircraftData.computed.yawRad), _aircraftData.computed.headingDeg);
 
+		// Coordinates
+		_aircraftData.computed.coordinates.setLatitude(applyLPF(
+			_aircraftData.computed.coordinates.getLatitude(),
+			_aircraftData.raw.coordinates.getLatitude(),
+			LPFFactor
+		));
+
+		_aircraftData.computed.coordinates.setLongitude(applyLPF(
+			_aircraftData.computed.coordinates.getLongitude(),
+			_aircraftData.raw.coordinates.getLongitude(),
+			LPFFactor
+		));
+
+		_aircraftData.computed.coordinates.setAltitude(applyLPF(
+			_aircraftData.computed.coordinates.getAltitude(),
+			_aircraftData.raw.coordinates.getAltitude(),
+			LPFFactor
+		));
+
 		// Slip & skid
 		_aircraftData.computed.slipAndSkidFactor = applyLPF(
 			_aircraftData.computed.slipAndSkidFactor,

@@ -35,24 +35,24 @@ namespace pizda {
 			return;
 		
 		if (event->getTypeID() == PointerDownEvent::typeID) {
-			pointerX = reinterpret_cast<PointerDownEvent*>(event)->getPosition().getX();
+			_pointerX = reinterpret_cast<PointerDownEvent*>(event)->getPosition().getX();
 			
 			setCaptured(true);
 		}
 		else if (event->getTypeID() == PointerDragEvent::typeID) {
-			if (pointerX >= 0) {
+			if (_pointerX >= 0) {
 				const auto dragX = reinterpret_cast<PointerDragEvent*>(event)->getPosition().getX();
-				const auto deltaX = dragX - pointerX;
+				const auto deltaX = dragX - _pointerX;
 				
 				if (std::abs(deltaX) >= 5) {
-					pointerX = dragX;
+					_pointerX = dragX;
 					
-					onAnyRotate((std::abs(deltaX) >= 10 ? 10 : 5) * (deltaX >= 0 ? 1 : -1));
+					onAnyRotate((std::abs(deltaX) >= 10 ? 15 : 5) * (deltaX >= 0 ? 1 : -1));
 				}
 			}
 		}
 		else if (event->getTypeID() == PointerUpEvent::typeID) {
-			pointerX = -1;
+			_pointerX = -1;
 			
 			setCaptured(false);
 		}

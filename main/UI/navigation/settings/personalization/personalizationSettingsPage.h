@@ -18,36 +18,43 @@ namespace pizda {
 		private:
 			// -------------------------------- General --------------------------------
 			
-			Switcher _audioFeedback { L"Audio feedback" };
-			Switcher _debugOverlay { L"Debug overlay" };
+			Switcher _generalAudioFeedback { L"Audio feedback" };
+			Switcher _generalDebugOverlay { L"Debug overlay" };
+			Switcher _generalDataInterpolation { L"Data interpolation" };
 			HorizontalSeparator _generalSeparator {};
-			
-			// -------------------------------- MFD --------------------------------
-			
-			Text _MFDTitle {};
-			
+
+			// -------------------------------- PFD --------------------------------
+
+			Text _PFDTitle {};
+
 			// Split
-			Slider _MFDSplitSlider {};
-			Titler _MFDSplitTitle = Titler(&_MFDSplitSlider);
-			
-			constexpr static uint8_t _MFDSplitMin = 20;
-			constexpr static uint8_t _MFDSplitMax = 80;
-			
-			void updateMFDHeightTitle();
+			constexpr static uint8_t _PFDSplitMin = 20;
+			constexpr static uint8_t _PFDSplitMax = 80;
+
+			Slider _PFDSplitSlider {};
+			Titler _PFDSplitTitle = Titler(&_PFDSplitSlider);
+
+			void updatePFDSplitTitle();
 			
 			// FOV
-			Slider _MFDFOVSlider {};
-			Titler _MFDFOVTitle = Titler(&_MFDFOVSlider);
-			
-			constexpr static uint8_t _MFDFOVMin = 20;
-			constexpr static uint8_t _MFDFOVMax = 120;
-			
-			void updateMFDFOVTitle();
-			
-			// LPF
-			Switcher _MFDLPF { L"Low pass filter" };
-			
+			constexpr static uint8_t _PFDFOVMin = 20;
+			constexpr static uint8_t _PFDFOVMax = 120;
+
+			Slider _PFDFOVSlider {};
+			Titler _PFDFOVTitle = Titler(&_PFDFOVSlider);
+
+			void updatePFDFOVTitle();
+
+			// Waypoint labels
+			Switcher _PFDWaypointLabels { L"Waypoint labels" };
+
+			HorizontalSeparator _PFDSeparator {};
+
+			// -------------------------------- ND --------------------------------
+
+			Text _NDTitle {};
+
 			// Earth grid
-			Switcher _MFDSphereSwitcher { L"ND earth grid" };
+			Switcher _NDEarthGrid { L"Earth grid" };
 	};
 }

@@ -19,7 +19,7 @@ namespace pizda {
 			void onTick() override;
 			
 		private:
-			int32_t pointerX = -1;
+			int32_t _pointerX = -1;
 			
 			void onAnyRotate(int32_t change);
 	};

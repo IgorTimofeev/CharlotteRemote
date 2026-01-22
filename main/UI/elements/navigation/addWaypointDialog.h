@@ -10,6 +10,7 @@
 #include "UI/elements/titler.h"
 #include "UI/elements/tabSelector.h"
 #include "types/navigationData.h"
+#include "utils/string.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -31,13 +32,16 @@ namespace pizda {
 			TextField longitude {};
 
 			void fromRadians(const float lat, const float lon) {
-				latitude.setText(std::to_wstring(toDegrees(lat)));
-				longitude.setText(std::to_wstring(toDegrees(lon)));
+				latitude.setText(StringUtils::toWString(toDegrees(lat)));
+				longitude.setText(StringUtils::toWString(toDegrees(lon)));
 			}
 
 			void toRadians(float& lat, float& lon) const {
-				lat = YOBA::toRadians(std::wcstof(latitude.getText().data(), nullptr));
-				lon = YOBA::toRadians(std::wcstof(longitude.getText().data(), nullptr));
+				if (!StringUtils::tryParseFloat(latitude.getText().data(), lat))
+					lat = 0;
+
+				if (!StringUtils::tryParseFloat(longitude.getText().data(), lon))
+					lon = 0;
 			}
 	};
 
@@ -94,8 +98,6 @@ namespace pizda {
 				// Confirm
 				Theme::applyPrimary(&_confirmButton);
 				_confirmButton.setText(L"Confirm");
-				// _confirmButton.setCornerRadius(0);
-				// _confirmButton.setMargin(Margin(-15, 0, -15, -15));
 
 				_confirmButton.click += [this, &nd, &rc] {
 					if (_nameTextField.getText().size() == 0) {
