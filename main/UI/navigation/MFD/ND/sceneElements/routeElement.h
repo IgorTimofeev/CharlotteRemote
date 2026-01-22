@@ -13,14 +13,14 @@ namespace pizda {
 
 	class RouteElement : public SceneElement {
 		public:
-			RouteElement(const Vector3F& from, const Vector3F& to, const Color* color);
+			RouteElement(uint16_t legIndex);
 
 			const Vector3F* getVertices() override;
 			uint16_t getVertexCount() override;
 			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) override;
 
 		private:
+			uint16_t _legIndex;
 			Vector3F _vertices[2];
-			const Color* _color;
 	};
 }

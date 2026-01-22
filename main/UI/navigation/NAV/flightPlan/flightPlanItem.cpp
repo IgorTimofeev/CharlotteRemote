@@ -6,7 +6,7 @@
 #include "utils/rendering.h"
 
 namespace pizda {
-	FlightPlanItem::FlightPlanItem(const uint16_t legIndex): _legIndex(legIndex) {
+	FlightPlanItem::FlightPlanItem(const uint16_t legIndex) : _legIndex(legIndex) {
 		setWaypointIndex(RC::getInstance().getNavigationData().flightPlan.legs[legIndex].waypointIndex);
 	}
 
@@ -20,48 +20,41 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 		const auto& waypointData = rc.getNavigationData().waypoints[getWaypointIndex()];
+		const auto isActiveLeg = rc.getNavigationData().flightPlan.activeLegIndex == _legIndex;
 
+		// Background
 		renderer->renderFilledRectangle(
 			bounds,
 			Theme::cornerRadius,
 			isActive() ? &Theme::bg4 : &Theme::bg3
 		);
 
+		// Frame
 		renderer->renderRectangle(
 			bounds,
 			Theme::cornerRadius,
-			isActive() ? &Theme::fg1 : &Theme::bg4
+			isActiveLeg ? &Theme::magenta : (isActive() ? &Theme::fg1 : &Theme::bg4)
 		);
 
 		auto x = bounds.getX() + 15;
-		const auto y = bounds.getYCenter();
-		const Color* color;
+		const auto yCenter = bounds.getYCenter();
+		const auto color = RenderingUtils::getWaypointColor(waypointData);
 
-		switch (waypointData.type) {
-			case NavigationWaypointType::enroute:
-				color = &Theme::magenta;
-
-				break;
-
-			default:
-				color = &Theme::ocean;
-
-				break;
-		}
-
+		// Icon
 		RenderingUtils::renderWaypointIcon(
 			renderer,
-			Point(x, y),
+			Point(x, yCenter),
 			color,
 			waypointData
 		);
 
 		x += 15;
 
+		// Name
 		renderer->renderString(
 			Point(
 				x,
-				y - Theme::fontNormal.getHeight() / 2
+				yCenter - Theme::fontNormal.getHeight() / 2
 			),
 			&Theme::fontNormal,
 			&Theme::fg1,
@@ -79,11 +72,36 @@ namespace pizda {
 		renderer->renderString(
 			Point(
 				x,
-				y - Theme::fontNormal.getHeight() / 2
+				yCenter - Theme::fontNormal.getHeight() / 2
 			),
 			&Theme::fontNormal,
 			&Theme::fg4,
 			coordsText
 		);
+
+		// Active leg
+		if (isActiveLeg && _legIndex > 0) {
+			constexpr static uint8_t lineWidth = 5;
+			constexpr static uint8_t arrowWidth = 4;
+			constexpr static uint8_t arrowHeightDiv2 = 2;
+
+			const auto lineHeight = bounds.getHeight() + 5;
+			const auto yPrev = yCenter - lineHeight;
+
+			x = bounds.getX() - lineWidth - arrowWidth;
+
+			renderer->renderHorizontalLine(Point(x, yPrev), lineWidth, &Theme::magenta);
+			renderer->renderVerticalLine(Point(x, yPrev + 1), lineHeight - 1, &Theme::magenta);
+			renderer->renderHorizontalLine(Point(x, yCenter), lineWidth, &Theme::magenta);
+
+			x += lineWidth;
+
+			renderer->renderFilledTriangle(
+				Point(x, yCenter - arrowHeightDiv2),
+				Point(x + arrowWidth, yCenter),
+				Point(x, yCenter + arrowHeightDiv2),
+				&Theme::magenta
+			);
+		}
 	}
 }

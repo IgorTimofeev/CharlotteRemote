@@ -18,6 +18,7 @@ namespace pizda {
 			);
 
 		private:
+			Button _activateLegButton {};
 			Button _editButton {};
 			Button _insertBeforeButton {};
 			Button _insertAfterButton {};

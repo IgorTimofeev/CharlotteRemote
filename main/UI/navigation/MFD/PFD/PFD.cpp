@@ -3,7 +3,7 @@
 
 #include "rc.h"
 #include <units.h>
-#include "UI/elements/spatial/waypointElement.h"
+#include "../ND/sceneElements/waypointElement.h"
 #include "UI/navigation/MFD/PFD/PFDRunwayElement.h"
 
 namespace pizda {

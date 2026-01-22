@@ -4,11 +4,11 @@
 #include "rc.h"
 
 namespace pizda {
-	RouteElement::RouteElement(const Vector3F& from, const Vector3F& to, const Color* color) :
-		_color(color)
-	{
-		_vertices[0] = from;
-		_vertices[1] = to;
+	RouteElement::RouteElement(const uint16_t legIndex) : _legIndex(legIndex) {
+		const auto& nd = RC::getInstance().getNavigationData();
+
+		_vertices[0] = nd.waypoints[nd.flightPlan.legs[_legIndex - 1].waypointIndex].cartesianCoordinates;
+		_vertices[1] = nd.waypoints[nd.flightPlan.legs[_legIndex].waypointIndex].cartesianCoordinates;
 	}
 
 	const Vector3F* RouteElement::getVertices() {
@@ -28,6 +28,8 @@ namespace pizda {
 		)
 			return;
 
+		const auto& nd = RC::getInstance().getNavigationData();
+
 		renderer->renderLine(
 			Point(
 				static_cast<int32_t>(projectedVertices[0].getX()),
@@ -37,7 +39,13 @@ namespace pizda {
 				static_cast<int32_t>(projectedVertices[1].getX()),
 				static_cast<int32_t>(projectedVertices[1].getY())
 			),
-			_color
+			_legIndex == nd.flightPlan.activeLegIndex
+				? &Theme::magenta
+				: (
+					_legIndex < nd.flightPlan.activeLegIndex
+					? &Theme::fg3
+					: &Theme::fg1
+				)
 		);
 	}
 }

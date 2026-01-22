@@ -2,8 +2,6 @@
 
 #include "NDScene.h"
 
-#include <esp_log.h>
-
 #include "UI/theme.h"
 
 namespace pizda {

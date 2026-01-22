@@ -88,6 +88,7 @@ namespace pizda {
 	class NavigationDataFlightPlan {
 		public:
 			std::vector<NavigationDataFlightPlanLeg> legs {};
+			uint16_t activeLegIndex = 0;
 	};
 
 	class NavigationData {

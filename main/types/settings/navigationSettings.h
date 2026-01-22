@@ -84,9 +84,10 @@ namespace pizda {
 		private:
 			constexpr static auto _namespace = "nv2";
 
-			constexpr static auto _waypointsList = "wpl";
-			constexpr static auto _enrouteWaypointsList = "wpe";
-			constexpr static auto _runwaysList = "wpr";
-			constexpr static auto _flightPlanLegsList = "fpl";
+			constexpr static auto _waypointsList = "wpll";
+			constexpr static auto _enrouteWaypointsList = "wpel";
+			constexpr static auto _runwaysList = "wprl";
+			constexpr static auto _flightPlanLegsList = "fpll";
+			constexpr static auto _flightPlanActiveLegIndex = "fpal";
 	};
 }

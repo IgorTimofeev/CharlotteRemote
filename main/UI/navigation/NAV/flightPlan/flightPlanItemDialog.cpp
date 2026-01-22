@@ -16,9 +16,29 @@ namespace pizda {
 
 		title.setText(waypointData.name);
 
+		// Activate leg
+		Theme::applyPrimary(&_activateLegButton);
+		_activateLegButton.setText(L"Activate leg");
+
+		_activateLegButton.click += [this, &rc, legIndex] {
+			rc.getApplication().scheduleOnTick([this, &rc, legIndex] {
+				rc.getNavigationData().flightPlan.activeLegIndex = legIndex;
+
+				const auto page = FlightPlanPage::getInstance();
+
+				if (page)
+					page->updateFromNavigationData();
+
+				hide();
+				delete this;
+			});
+		};
+
+		rows += &_activateLegButton;
+
 		// Edit
 		Theme::applySecondary(&_editButton);
-		_editButton.setText(L"Change");
+		_editButton.setText(L"Replace");
 
 		_editButton.click += [this, &waypointData, legIndex, &leg, &rc] {
 			rc.getApplication().scheduleOnTick([&rc, this, &leg, legIndex, &waypointData] {

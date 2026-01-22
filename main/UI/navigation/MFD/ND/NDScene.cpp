@@ -2,12 +2,12 @@
 
 #include "rc.h"
 
-#include <numbers>
 #include <format>
 #include <esp_log.h>
-#include "sceneElements/NDRunwayElement.h"
-#include "../../../elements/spatial/waypointElement.h"
-#include "sceneElements/routeElement.h"
+
+#include "UI/navigation/MFD/ND/sceneElements/NDRunwayElement.h"
+#include "UI/navigation/MFD/ND/sceneElements/waypointElement.h"
+#include "UI/navigation/MFD/ND/sceneElements/routeElement.h"
 
 namespace pizda {
 	NDScene::NDScene() {
@@ -512,20 +512,11 @@ namespace pizda {
 		// Flight plan
 		{
 			if (rc.getNavigationData().flightPlan.legs.size() > 1) {
-				// First
-				uint16_t waypointFromIndex = rc.getNavigationData().flightPlan.legs[0].waypointIndex;
-
 				// Subsequent
 				for (uint16_t legIndex = 1; legIndex < rc.getNavigationData().flightPlan.legs.size(); legIndex++) {
 					const auto& leg = rc.getNavigationData().flightPlan.legs[legIndex];
 
-					addElement(new RouteElement(
-						rc.getNavigationData().waypoints[waypointFromIndex].cartesianCoordinates,
-						rc.getNavigationData().waypoints[leg.waypointIndex].cartesianCoordinates,
-						&Theme::magenta
-					));
-
-					waypointFromIndex = leg.waypointIndex;
+					addElement(new RouteElement(legIndex));
 				}
 			}
 		}

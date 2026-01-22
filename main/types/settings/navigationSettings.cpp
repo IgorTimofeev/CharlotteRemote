@@ -101,6 +101,9 @@ namespace pizda {
 					}
 				}
 			}
+
+			// Active leg index
+			nd.flightPlan.activeLegIndex = stream.readUint16(_flightPlanActiveLegIndex, 0);
 		}
 	}
 
@@ -160,17 +163,22 @@ namespace pizda {
 		// Flight plan
 		{
 			// Legs
-			const auto legs = std::make_unique<NavigationSettingsFlightPlanLeg[]>(nd.flightPlan.legs.size());
+			{
+				const auto legs = std::make_unique<NavigationSettingsFlightPlanLeg[]>(nd.flightPlan.legs.size());
 
-			for (uint16_t i = 0; i < nd.flightPlan.legs.size(); i++) {
-				const auto& leg = nd.flightPlan.legs[i];
+				for (uint16_t i = 0; i < nd.flightPlan.legs.size(); i++) {
+					const auto& leg = nd.flightPlan.legs[i];
 
-				legs[i] = NavigationSettingsFlightPlanLeg(
-					leg.waypointIndex
-				);
+					legs[i] = NavigationSettingsFlightPlanLeg(
+						leg.waypointIndex
+					);
+				}
+
+				stream.writeObject(_flightPlanLegsList, legs.get(), nd.flightPlan.legs.size());
 			}
 
-			stream.writeObject(_flightPlanLegsList, legs.get(), nd.flightPlan.legs.size());
+			// Active leg index
+			stream.writeUint16(_flightPlanActiveLegIndex, nd.flightPlan.activeLegIndex);
 		}
 	}
 }

@@ -24,24 +24,23 @@ namespace pizda {
 			static_cast<int32_t>(waypointVertex.getY())
 		);
 
-		// Too far, rendering icon instead of mesh
-		if (waypointVertex.getZ() > 16'000) {
-			RenderingUtils::renderWaypointIcon(
-				renderer,
-				waypointPosition,
-				&Theme::fg1,
-				waypointData
-			);
-		}
+		const auto waypointColor = RenderingUtils::getWaypointColor(waypointData);
+
 		// Close enough, rendering runway mesh
-		else {
+		if (waypointVertex.getZ() <= 16'000)
 			RunwayElement::onRender(renderer, scene, projectedVertices);
-		}
+
+		RenderingUtils::renderWaypointIcon(
+			renderer,
+			waypointPosition,
+			waypointColor,
+			waypointData
+		);
 
 		RenderingUtils::renderWaypointName(
 			renderer,
 			waypointPosition,
-			&Theme::fg1,
+			waypointColor,
 			waypointData
 		);
 	}
