@@ -2,7 +2,7 @@
 
 #include <esp_adc/adc_oneshot.h>
 
-#include "types/settings/settings.h"
+#include "settings/settings.h"
 #include "config.h"
 
 namespace pizda {

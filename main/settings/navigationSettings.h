@@ -20,7 +20,7 @@ namespace pizda {
 			explicit NavigationSettingsWaypoint(
 				const NavigationWaypointType type,
 				std::wstring_view name,
-				const GeographicCoordinates& geographicCoordinates
+				const GeoCoordinates& geographicCoordinates
 			) :
 				type(type),
 				geographicCoordinates(geographicCoordinates)
@@ -30,7 +30,7 @@ namespace pizda {
 
 			NavigationWaypointType type;
 			wchar_t name[16] {};
-			GeographicCoordinates geographicCoordinates;
+			GeoCoordinates geographicCoordinates;
 	};
 
 	class NavigationSettingsEnrouteWaypoint : public NavigationWaypointDataIndexAware {

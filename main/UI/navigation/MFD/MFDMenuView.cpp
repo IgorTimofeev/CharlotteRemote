@@ -2,7 +2,7 @@
 
 #include "UI/theme.h"
 #include "rc.h"
-#include "types/settings/settings.h"
+#include "settings/settings.h"
 
 #include "UI/navigation/routes.h"
 #include "MFDPage.h"

@@ -13,8 +13,8 @@
 
 #include "types/generic.h"
 
-#include "hardware/transceiver/SX1262Transceiver.h"
-#include "hardware/transceiver/packet.h"
+#include "systems/transceiver/SX1262Transceiver.h"
+#include "systems/transceiver/packet.h"
 
 namespace pizda {
 	using namespace YOBA;

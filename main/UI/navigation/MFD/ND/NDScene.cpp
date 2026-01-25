@@ -21,7 +21,7 @@ namespace pizda {
 		deleteSceneElements();
 	}
 
-	GeographicCoordinates NDScene::_cameraOffset = {
+	GeoCoordinates NDScene::_cameraOffset = {
 		0,
 		0,
 		2500
@@ -37,7 +37,7 @@ namespace pizda {
 
 		if (_aircraftElement->isVisible()) {
 			_aircraftElement->setPosition(
-				GeographicCoordinates(
+				GeoCoordinates(
 					rc.getAircraftData().raw.coordinates.getLatitude(),
 					rc.getAircraftData().raw.coordinates.getLongitude(),
 					0
@@ -339,7 +339,7 @@ namespace pizda {
 
 	//			ESP_LOGI("ND", "deltaDeg: %f lat, %f lon", toDegrees(deltaRadLat), toDegrees(deltaRadLon));
 
-			setCameraOffset(GeographicCoordinates(
+			setCameraOffset(GeoCoordinates(
 				_cameraOffset.getLatitude() + deltaRadLat,
 				_cameraOffset.getLongitude() - deltaRadLon,
 				_cameraOffset.getAltitude()
@@ -384,7 +384,7 @@ namespace pizda {
 			const auto pinchFactor = _pinchLength / pinchLength;
 			_pinchLength = pinchLength;
 
-			setCameraOffset(GeographicCoordinates(
+			setCameraOffset(GeoCoordinates(
 				_cameraOffset.getLatitude(),
 				_cameraOffset.getLongitude(),
 				std::clamp(
@@ -406,7 +406,7 @@ namespace pizda {
 				const auto rotateEvent = static_cast<EncoderValueChangedEvent*>(event);
 				const auto scaleFactor = std::abs(rotateEvent->getDPS()) > 80 ? 1.5f : 1.25f;
 
-				setCameraOffset(GeographicCoordinates(
+				setCameraOffset(GeoCoordinates(
 					_cameraOffset.getLatitude(),
 					_cameraOffset.getLongitude(),
 					std::clamp(
@@ -439,7 +439,7 @@ namespace pizda {
 
 		// First, we need to find out how many times the length of the equator of this sphere is
 		// greater than the length of the earth's equator
-		const auto radiusFactor = _cameraOffset.getAltitude() / GeographicCoordinates::equatorialRadiusMeters;
+		const auto radiusFactor = _cameraOffset.getAltitude() / GeoCoordinates::equatorialRadiusMeters;
 //		ESP_LOGI("ND", "radiusFactor: %f", radiusFactor);
 
 		// Since the length of the equator is calculated using 2 * pi * r, the dependence here is linear.
@@ -454,22 +454,22 @@ namespace pizda {
 		return viewportRad / static_cast<float>(getBounds().getWidth());
 	}
 
-	const GeographicCoordinates& NDScene::getCameraOffset() const {
+	const GeoCoordinates& NDScene::getCameraOffset() const {
 		return _cameraOffset;
 	}
 
-	GeographicCoordinates NDScene::getCameraCoordinates() const {
+	GeoCoordinates NDScene::getCameraCoordinates() const {
 		return _cameraCoordinates;
 	}
 
-	void NDScene::setCameraOffset(const GeographicCoordinates& value) {
+	void NDScene::setCameraOffset(const GeoCoordinates& value) {
 		_cameraOffset = value;
 
 		invalidate();
 	}
 
 	void NDScene::resetCameraLateralOffset() {
-		setCameraOffset(GeographicCoordinates(0, 0, _cameraOffset.getAltitude()));
+		setCameraOffset(GeoCoordinates(0, 0, _cameraOffset.getAltitude()));
 	}
 
 	bool NDScene::isCameraShiftedLaterally() const {
@@ -507,7 +507,7 @@ namespace pizda {
 
 		// Sphere
 		if (rc.getSettings().personalization.MFD.ND.earth)
-			addElement(new LinearSphere(Vector3F(), GeographicCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg3));
+			addElement(new LinearSphere(Vector3F(), GeoCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg3));
 
 		// Flight plan
 		{

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hardware/axes/axis.h"
+#include "systems/axes/axis.h"
 
 namespace pizda {
 	class Axes {

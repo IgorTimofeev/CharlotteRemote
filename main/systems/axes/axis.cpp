@@ -1,8 +1,12 @@
 #include "axis.h"
 
 #include <limits>
-#include <esp_timer.h>
 #include <algorithm>
+
+#include <esp_timer.h>
+
+#include <lowPassFilter.h>
+
 #include "rc.h"
 
 namespace pizda {
@@ -46,7 +50,7 @@ namespace pizda {
 				return;
 
 			// Applying low pass filter for buttery smooth landings
-			_rawValue = _rawValue * (0xFFFF - axesSettings.axes.lowPassFactor) / 0xFFFF + readValue * axesSettings.axes.lowPassFactor / 0xFFFF;
+			_rawValue = LowPassFilter::apply(_rawValue, readValue, axesSettings.axes.lowPassFactor);
 		}
 
 		_filteredValue = applySensitivityFilter(_rawValue);

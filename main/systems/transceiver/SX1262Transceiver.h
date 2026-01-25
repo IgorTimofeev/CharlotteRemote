@@ -9,7 +9,7 @@
 
 #include <SX1262.h>
 
-#include "hardware/transceiver/transceiver.h"
+#include "systems/transceiver/transceiver.h"
 #include "config.h"
 
 namespace pizda {

@@ -21,19 +21,17 @@ namespace pizda {
 			static_cast<int32_t>(projectedVertices[0].getY())
 		);
 
-		const auto waypointColor = RenderingUtils::getWaypointColor(waypointData);
-
 		RenderingUtils::renderWaypointIcon(
 			renderer,
 			waypointPosition,
-			waypointColor,
+			&Theme::fg1,
 			waypointData
 		);
 
 		RenderingUtils::renderWaypointName(
 			renderer,
 			waypointPosition,
-			waypointColor,
+			&Theme::fg1,
 			waypointData
 		);
 	}

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="7" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="8" type="long" />
     <option name="/Default/Environment/UserInterface/HierarchyView/ViewStyle/@EntryValue" value="SuperTypes" type="string" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
@@ -31,6 +31,7 @@
       <config projectName="Remote" targetName="show_efuse_table" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-NVSExtensions" />
       <config projectName="Remote" targetName="__idf_wear_levelling" />
+      <config projectName="Remote" targetName="__idf_ESP-IDF-LowPassFilter" />
       <config projectName="Remote" targetName="_project_elf_src" />
       <config projectName="Remote" targetName="__idf_esp_driver_mcpwm" />
       <config projectName="Remote" targetName="__idf_esp_adc" />
@@ -172,23 +173,66 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="захуярил клиппинг ранвеев, а то че они постоянно рендерятся">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="прикостылил визуализацию активной НОЖКИ (ппалущщи по ебалу за horny thoughts)">
+      <change afterPath="$PROJECT_DIR$/components/ESP-IDF-LowPassFilter" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/spatial/waypointElement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/spatial/waypointElement.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/ND.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/ND.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/geographicCoordinates.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/geoCoordinates.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencies.lock" beforeDir="false" afterPath="$PROJECT_DIR$/dependencies.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/NDRunwayElement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/NDRunwayElement.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/routeElement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/routeElement.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/NDScene.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/routeElement.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/routeElement.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/NAV/database/databasePage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/NAV/database/databasePage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/NAV/flightPlan/flightPlanItem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/NAV/flightPlan/flightPlanItem.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/NAV/flightPlan/flightPlanItemDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/NAV/flightPlan/flightPlanItemDialog.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/NAV/flightPlan/flightPlanItemDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/NAV/flightPlan/flightPlanItemDialog.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/waypointElement.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/menu.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/menu.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/menuTabButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/menuTabButton.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/menu/menuViewButton.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/menu/menuViewButton.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/developer/developerSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/developer/developerSettingsPage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/audio/audioPlayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/audio/audioPlayer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/audio/audioPlayer.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/audio/audioPlayer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/audio/sound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/audio/sound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/audio/speaker.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/audio/speaker.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axes.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/axes/axes.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axes.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/axes/axes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/axes/axis.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/axes/axis.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/axes/axis.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/SX1262Transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/SX1262Transceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/communicationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/communicationManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/packet.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteCommunicationManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/remoteCommunicationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteCommunicationManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/hardware/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/idf_component.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/sounds/bootSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/sounds/bootSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/sounds/disengagedSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/sounds/disengagedSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/sounds/engagedSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/sounds/engagedSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/sounds/feedbackSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/sounds/feedbackSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/sounds/transceiverConnectSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/sounds/transceiverConnectSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/sounds/transceiverDisconnectSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/sounds/transceiverDisconnectSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/aircraftData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/navigationData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/navigationData.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/types/navigationData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/navigationData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/settings/navigationSettings.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/navigationSettings.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/settings/navigationSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/settings/navigationSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/autopilotSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/autopilotSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/axesSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/axesSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/controlSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/controlSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/motorsSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/motorsSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/navigationSettings.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/navigationSettings.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/navigationSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/navigationSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/personalizationSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/personalizationSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/settings/settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/utils/lowPassFilter.h" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,7 +299,7 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/UI/navigation/MFD/PFD&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/components/ESP-IDF-LowPassFilter&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -269,26 +313,21 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-LowPassFilter" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\PFD" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\elements\spatial" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\hardware\axes" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-Battery" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\types\settings" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-LowPassFilter\src" />
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\ND\sceneElements" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\elements\spatial" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\hardware\axes" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\types\settings" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\types" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -300,6 +339,11 @@
       </method>
     </configuration>
     <configuration name="__idf_ESP-IDF-BitStream" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_ESP-IDF-BitStream" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_ESP-IDF-LowPassFilter" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_ESP-IDF-LowPassFilter" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -764,6 +808,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="apidoc" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1000,6 +1049,7 @@
       <item itemvalue="CMake Application.__idf_cxx" />
       <item itemvalue="CMake Application.__idf_driver" />
       <item itemvalue="CMake Application.__idf_efuse" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-LowPassFilter" />
       <item itemvalue="CMake Application.__idf_esp-tls" />
       <item itemvalue="CMake Application.__idf_esp_adc" />
       <item itemvalue="CMake Application.__idf_esp_app_format" />
@@ -1204,15 +1254,10 @@
       <workItem from="1768999816062" duration="9333000" />
       <workItem from="1769036344002" duration="2167000" />
       <workItem from="1769090151807" duration="10508000" />
-      <workItem from="1769106160531" duration="6251000" />
-    </task>
-    <task id="LOCAL-00037" summary="вообще надо щас будет и пикчи на constexpr перехуячить">
-      <option name="closed" value="true" />
-      <created>1767191155294</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1767191155294</updated>
+      <workItem from="1769106160531" duration="6597000" />
+      <workItem from="1769301948274" duration="885000" />
+      <workItem from="1769341236478" duration="1662000" />
+      <workItem from="1769342970401" duration="314000" />
     </task>
     <task id="LOCAL-00038" summary="добавил для слайдеров обработку ивентов попизже, а то тыкать каждый раз пальцем во вложенном скроллвью - галимая залупа какая-то">
       <option name="closed" value="true" />
@@ -1598,7 +1643,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769114694361</updated>
     </task>
-    <option name="localTasksCounter" value="86" />
+    <task id="LOCAL-00086" summary="прикостылил визуализацию активной НОЖКИ (ппалущщи по ебалу за horny thoughts)">
+      <option name="closed" value="true" />
+      <created>1769121211335</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1769121211335</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1639,7 +1692,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="чет подустал, надо жимбимчиком налакаться перед сном" />
     <MESSAGE value="таймаут на калибровку заебенил, по идее даже если чет отвалится, то оно само в норму придет" />
     <MESSAGE value="кек, ток ща заметил - если в лейаутах чиллит &gt; 1 текстфилда, то ивенты ловит последний, а не зафокушенный" />
     <MESSAGE value="симпотно, но много места жрет, над покомпактнее как-то" />
@@ -1664,6 +1716,7 @@
     <MESSAGE value="пизда я тут навдату отрефакторил" />
     <MESSAGE value="секс, теперь названия ранвеев пишет оверлеем на SVT" />
     <MESSAGE value="захуярил клиппинг ранвеев, а то че они постоянно рендерятся" />
-    <option name="LAST_COMMIT_MESSAGE" value="захуярил клиппинг ранвеев, а то че они постоянно рендерятся" />
+    <MESSAGE value="прикостылил визуализацию активной НОЖКИ (ппалущщи по ебалу за horny thoughts)" />
+    <option name="LAST_COMMIT_MESSAGE" value="прикостылил визуализацию активной НОЖКИ (ппалущщи по ебалу за horny thoughts)" />
   </component>
 </project>

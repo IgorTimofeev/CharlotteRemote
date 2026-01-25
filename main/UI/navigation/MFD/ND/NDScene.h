@@ -5,7 +5,7 @@
 #include <YOBA/UI/spatial.h>
 
 #include "types/navigationData.h"
-#include "types/settings/settings.h"
+#include "settings/settings.h"
 #include "UI/theme.h"
 #include "aircraft.h"
 
@@ -19,11 +19,11 @@ namespace pizda {
 			~NDScene() override;
 
 			constexpr static uint32_t cameraAltitudeMinimum = 50;
-			constexpr static uint32_t cameraAltitudeMaximum = GeographicCoordinates::equatorialRadiusMeters * 2;
+			constexpr static uint32_t cameraAltitudeMaximum = GeoCoordinates::equatorialRadiusMeters * 2;
 
-			const GeographicCoordinates& getCameraOffset() const;
-			GeographicCoordinates getCameraCoordinates() const;
-			void setCameraOffset(const GeographicCoordinates& value);
+			const GeoCoordinates& getCameraOffset() const;
+			GeoCoordinates getCameraCoordinates() const;
+			void setCameraOffset(const GeoCoordinates& value);
 			void resetCameraLateralOffset();
 			bool isCameraShiftedLaterally() const;
 			void deleteSceneElements();
@@ -56,8 +56,8 @@ namespace pizda {
 			constexpr static uint16_t _compassArcViewportDeg = _compassTickMarkUnitsDeg * 10;
 			constexpr static uint16_t _compassArcViewportHalfDeg = _compassArcViewportDeg / 2;
 
-			static GeographicCoordinates _cameraOffset;
-			GeographicCoordinates _cameraCoordinates {};
+			static GeoCoordinates _cameraOffset;
+			GeoCoordinates _cameraCoordinates {};
 
 			float _pinchLength = 0;
 			Point _pointerDownPosition {};

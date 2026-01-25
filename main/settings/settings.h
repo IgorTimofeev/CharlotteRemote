@@ -1,11 +1,11 @@
 #pragma once
 
-#include "types/settings/controlSettings.h"
-#include "types/settings/axesSettings.h"
-#include "types/settings/autopilotSettings.h"
-#include "types/settings/personalizationSettings.h"
-#include "types/settings/navigationSettings.h"
-#include "types/settings/motorsSettings.h"
+#include "settings/controlSettings.h"
+#include "settings/axesSettings.h"
+#include "settings/autopilotSettings.h"
+#include "settings/personalizationSettings.h"
+#include "settings/navigationSettings.h"
+#include "settings/motorsSettings.h"
 
 namespace pizda {
 	class Settings {

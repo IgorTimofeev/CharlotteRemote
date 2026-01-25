@@ -3,7 +3,7 @@
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
-#include "hardware/axes/axis.h"
+#include "systems/axes/axis.h"
 
 namespace pizda {
 	using namespace YOBA;

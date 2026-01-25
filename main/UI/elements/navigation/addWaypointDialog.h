@@ -47,7 +47,7 @@ namespace pizda {
 
 	class AddWaypointDialog : public ScrollViewDialog {
 		public:
-			static void create(const GeographicCoordinates& coordinates, const std::function<void()>& onConfirm) {
+			static void create(const GeoCoordinates& coordinates, const std::function<void()>& onConfirm) {
 				const auto dialog = new AddWaypointDialog(coordinates, onConfirm);
 				dialog->show();
 			}
@@ -69,7 +69,7 @@ namespace pizda {
 
 			Button _confirmButton {};
 
-			explicit AddWaypointDialog(const GeographicCoordinates& coordinates, const std::function<void()>& onConfirm) : _onConfirm(onConfirm) {
+			explicit AddWaypointDialog(const GeoCoordinates& coordinates, const std::function<void()>& onConfirm) : _onConfirm(onConfirm) {
 				auto& rc = RC::getInstance();
 				auto& nd = rc.getNavigationData();
 
@@ -112,7 +112,7 @@ namespace pizda {
 						nd.addEnrouteWaypoint(
 							NavigationWaypointType::enroute,
 							_nameTextField.getText(),
-							GeographicCoordinates(latitudeRad, longitudeRad, 0)
+							GeoCoordinates(latitudeRad, longitudeRad, 0)
 						);
 
 						_onConfirm();

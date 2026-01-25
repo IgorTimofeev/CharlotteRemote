@@ -5,8 +5,8 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
-#include "hardware/audio/speaker.h"
-#include "hardware/audio/sound.h"
+#include "systems/audio/speaker.h"
+#include "systems/audio/sound.h"
 
 namespace pizda {
 	class AudioPlayer {

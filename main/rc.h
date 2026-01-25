@@ -11,6 +11,7 @@
 
 #include <units.h>
 #include <battery.h>
+#include <lowPassFilter.h>
 
 #include "UI/theme.h"
 #include "UI/navigation/route.h"
@@ -18,20 +19,18 @@
 #include "UI/elements/debugOverlay.h"
 
 #include "config.h"
-#include "types/settings/settings.h"
+#include "settings/settings.h"
 
-#include "hardware/transceiver/packet.h"
-#include "hardware/transceiver/SX1262Transceiver.h"
-#include "hardware/transceiver/remoteCommunicationManager.h"
-#include "hardware/audio/audioPlayer.h"
-#include "hardware/axes/axes.h"
+#include "systems/transceiver/packet.h"
+#include "systems/transceiver/SX1262Transceiver.h"
+#include "systems/transceiver/remoteCommunicationManager.h"
+#include "systems/audio/audioPlayer.h"
+#include "systems/axes/axes.h"
 
 #include "types/remoteData.h"
 #include "types/remoteData.h"
 #include "types/aircraftData.h"
 #include "types/navigationData.h"
-
-#include "utils/lowPassFilter.h"
 
 namespace pizda {
 	using namespace YOBA;

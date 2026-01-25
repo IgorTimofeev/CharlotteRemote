@@ -7,7 +7,7 @@ namespace pizda {
 	NavigationWaypointData::NavigationWaypointData(
 		const NavigationWaypointType type,
 		const std::wstring_view name,
-		const GeographicCoordinates& coordinates
+		const GeoCoordinates& coordinates
 	) :
 		type(type),
 		name(name),
@@ -43,8 +43,8 @@ namespace pizda {
 		const auto& headingVectorNorm = Vector2F(std::sinf(headingRad), std::cosf(headingRad));
 		const auto center01M = headingVectorNorm * (static_cast<float>(this->lengthM) / 2.f);
 		const auto corner0OffsetM = headingVectorNorm.counterClockwisePerpendicular() * (static_cast<float>(this->widthM) / 2.f);
-		const auto corner0Rad = (center01M + corner0OffsetM) * GeographicCoordinates::equatorialRadiansPerMeter;
-		const auto corner1Rad = (center01M - corner0OffsetM) * GeographicCoordinates::equatorialRadiansPerMeter;
+		const auto corner0Rad = (center01M + corner0OffsetM) * GeoCoordinates::equatorialRadiansPerMeter;
+		const auto corner1Rad = (center01M - corner0OffsetM) * GeoCoordinates::equatorialRadiansPerMeter;
 
 		// ESP_LOGI("Runway", "---------------------");
 		// ESP_LOGI("Runway", "heading (deg): %d", _runway->headingDeg);
@@ -61,10 +61,10 @@ namespace pizda {
 		spatialVertices[4] = waypoint.geographicCoordinates.toCartesian();
 	}
 
-	Vector3F NavigationRunwayData::cornerToVertex(const GeographicCoordinates& geographicCoordinates, const Vector2F& cornerRad) const {
+	Vector3F NavigationRunwayData::cornerToVertex(const GeoCoordinates& geographicCoordinates, const Vector2F& cornerRad) const {
 		const auto lat = geographicCoordinates.getLatitude() + cornerRad.getY();
 
-		return GeographicCoordinates(
+		return GeoCoordinates(
 			lat,
 			geographicCoordinates.getLongitude() + cornerRad.getX() / std::cosf(lat),
 			geographicCoordinates.getAltitude()
@@ -79,7 +79,7 @@ namespace pizda {
 
 	void NavigationData::addRunway(
 		const std::wstring_view name,
-		const GeographicCoordinates& coordinates,
+		const GeoCoordinates& coordinates,
 		const uint16_t headingDeg,
 		const uint16_t lengthM,
 		const uint16_t widthM
@@ -101,7 +101,7 @@ namespace pizda {
 	void NavigationData::addEnrouteWaypoint(
 		const NavigationWaypointType type,
 		const std::wstring_view name,
-		const GeographicCoordinates& coordinates
+		const GeoCoordinates& coordinates
 	) {
 		waypoints.push_back(NavigationWaypointData(
 			type,
@@ -125,7 +125,7 @@ namespace pizda {
 		// Pulkovo 10 left
 		addRunway(
 			L"ULLI",
-			GeographicCoordinates(toRadians(59.805114621892f), toRadians(30.276415586255f), 0),
+			GeoCoordinates(toRadians(59.805114621892f), toRadians(30.276415586255f), 0),
 			// 10 L
 			106,
 			3780,
@@ -135,7 +135,7 @@ namespace pizda {
 		// Kronshtadt
 		addRunway(
 			L"ULLY",
-			GeographicCoordinates(toRadians(60.014568277272f), toRadians(29.702727704862f), 0),
+			GeoCoordinates(toRadians(60.014568277272f), toRadians(29.702727704862f), 0),
 			95,
 			500,
 			30
@@ -144,7 +144,7 @@ namespace pizda {
 		// Gostilitsy
 		addRunway(
 			L"ULSG",
-			GeographicCoordinates(toRadians(59.725833f), toRadians(29.640278f), 0),
+			GeoCoordinates(toRadians(59.725833f), toRadians(29.640278f), 0),
 			154,
 			711,
 			20
@@ -154,37 +154,37 @@ namespace pizda {
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
 			L"OMEGA",
-			GeographicCoordinates(toRadians(59.983333f), toRadians(30.133333f), 0)
+			GeoCoordinates(toRadians(59.983333f), toRadians(30.133333f), 0)
 		);
 
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
 			L"ABREL",
-			GeographicCoordinates(toRadians(59.913056f), toRadians(31.335f), 0)
+			GeoCoordinates(toRadians(59.913056f), toRadians(31.335f), 0)
 		);
 
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
 			L"SAPKI",
-			GeographicCoordinates(toRadians(59.604722f), toRadians(31.180833f), 0)
+			GeoCoordinates(toRadians(59.604722f), toRadians(31.180833f), 0)
 		);
 
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
 			L"LI754",
-			GeographicCoordinates(toRadians(59.516944f), toRadians(31.0225f), 0)
+			GeoCoordinates(toRadians(59.516944f), toRadians(31.0225f), 0)
 		);
 
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
 			L"OBARI",
-			GeographicCoordinates(toRadians(59.599722f), toRadians(30.679167f), 0)
+			GeoCoordinates(toRadians(59.599722f), toRadians(30.679167f), 0)
 		);
 
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
 			L"BIPRI",
-			GeographicCoordinates(toRadians(59.747778f), toRadians(30.565556f), 0)
+			GeoCoordinates(toRadians(59.747778f), toRadians(30.565556f), 0)
 		);
 
 		// Flight plan

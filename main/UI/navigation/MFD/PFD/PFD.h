@@ -8,7 +8,7 @@
 #include <units.h>
 #include "types/speedBug.h"
 #include "types/aircraftData.h"
-#include "types/settings/settings.h"
+#include "settings/settings.h"
 
 namespace pizda {
 	using namespace YOBA;
