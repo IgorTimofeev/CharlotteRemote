@@ -26,6 +26,7 @@
 #include "resources/images/menuIconMotorsImage.h"
 #include "resources/images/menuIconAxesImage.h"
 #include "resources/images/menuIconDevImage.h"
+#include "resources/images/menuIconSpectrumScanImage.h"
 
 namespace pizda::resources {
 	class images {
@@ -54,5 +55,6 @@ namespace pizda::resources {
 			constexpr static MenuIconMotorsImage menuIconMotors {};
 			constexpr static MenuIconAxesImage menuIconAxes {};
 			constexpr static MenuIconDevImage menuIconDev {};
+			constexpr static MenuIconSpectrumScanImage menuIconSpectrumScan {};
 	};
 }

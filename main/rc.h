@@ -21,9 +21,8 @@
 #include "config.h"
 #include "settings/settings.h"
 
-#include "systems/transceiver/packet.h"
 #include "systems/transceiver/SX1262Transceiver.h"
-#include "systems/transceiver/remoteCommunicationManager.h"
+#include "systems/communicationManager/remoteCommunicationManager.h"
 #include "systems/audio/audioPlayer.h"
 #include "systems/axes/axes.h"
 

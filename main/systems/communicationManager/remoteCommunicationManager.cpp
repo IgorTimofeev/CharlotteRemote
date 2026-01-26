@@ -1,6 +1,7 @@
-#include "remoteCommunicationManager.h"
+#include "systems/communicationManager/remoteCommunicationManager.h"
 
 #include <utility>
+#include <algorithm>
 
 #include <esp_timer.h>
 
@@ -27,19 +28,73 @@ namespace pizda {
 	}
 	
 	// -------------------------------- Generic --------------------------------
-	
+
+	void RemoteCommunicationManager::onSpectrumScanning() {
+		auto& ss = RC::getInstance().getRemoteData().radio.spectrumScanning;
+
+		// None -> requested
+		if (ss.state == RemoteDataRadioSpectrumScanningState::requested) {
+			ESP_LOGI(_logTag, "onSpectrumScanning() started, from: %lu, to: %lu, step: %lu", ss.frequency.from, ss.frequency.to, ss.frequency.step);
+
+			ss.state = RemoteDataRadioSpectrumScanningState::inProgress;
+
+			_transceiver->beginSpectrumScanning();
+		}
+
+		ESP_LOGI(_logTag, "onSpectrumScanning() moving to freq: %lu", ss.frequency.value);
+
+		int8_t RSSI = 0;
+		if (_transceiver->getSpectrumScanningRSSI(ss.frequency.value, RSSI)) {
+			ESP_LOGI(_logTag, "onSpectrumScanning() received RSSI: %d", RSSI);
+
+			const auto historyIndex = std::min<uint32_t>(
+				(ss.frequency.value - ss.frequency.from)
+					* ss.history.size()
+					/ (ss.frequency.to - ss.frequency.from),
+				ss.history.size() - 1
+			);
+
+			ESP_LOGI(_logTag, "onSpectrumScanning() history index: %d", historyIndex);
+
+			// Keeping record
+			ss.history[historyIndex] = RSSI;
+
+			// Moving to next frequency
+			ss.frequency.value += ss.frequency.step;
+
+			if (ss.frequency.value >= ss.frequency.to) {
+				ss.state = RemoteDataRadioSpectrumScanningState::none;
+			}
+		}
+		else {
+			ss.state = RemoteDataRadioSpectrumScanningState::none;
+		}
+
+		// Any -> none
+		if (ss.state == RemoteDataRadioSpectrumScanningState::none) {
+			ESP_LOGI(_logTag, "onSpectrumScanning() finished");
+
+			_transceiver->finishSpectrumScanning();
+		}
+	}
+
 	void RemoteCommunicationManager::onStart() {
-		ESP_LOGI(_logTag, "started");
-		
+		auto& rc = RC::getInstance();
+
 		while (true) {
-			transmit(100'000);
-			receive(100'000);
+			if (rc.getRemoteData().radio.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::none) {
+				transmit(100'000);
+				receive(100'000);
+			}
+			else {
+				onSpectrumScanning();
+			}
 		}
 	}
 	
 	void RemoteCommunicationManager::onConnectionStateChanged() {
 		auto& rc = RC::getInstance();
-		
+
 		if (isConnected()) {
 			rc.getAudioPlayer().play(resources::sounds::transceiverConnect);
 		}
@@ -275,7 +330,7 @@ namespace pizda {
 	RemotePacketType RemoteCommunicationManager::getTransmitPacketType() {
 		const auto& item = _packetSequence[_packetSequenceIndex];
 		
-		const auto next = [this, &item]() {
+		const auto next = [this, &item] {
 			_packetSequenceItemCounter++;
 			
 			if (_packetSequenceItemCounter < item.getCount())

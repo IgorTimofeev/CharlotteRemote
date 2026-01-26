@@ -14,7 +14,7 @@
 #include "types/generic.h"
 
 #include "systems/transceiver/SX1262Transceiver.h"
-#include "systems/transceiver/packet.h"
+#include "systems/communicationManager/packet.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -30,9 +30,9 @@ namespace pizda {
 						static_cast<CommunicationManager*>(arg)->onStart();
 					},
 					"CommunicationManager",
-					8 * 1024,
+					16 * 1024,
 					this,
-					10,
+					configMAX_PRIORITIES - 1,
 					nullptr
 				);
 			}
@@ -127,6 +127,8 @@ namespace pizda {
 
 		protected:
 			constexpr static const char* _logTag = "CommunicationManager";
+
+			Transceiver* _transceiver = nullptr;
 
 			static uint8_t getCRC8(const uint8_t* buffer, const size_t length) {
 				uint8_t crc = 0xff;
@@ -226,8 +228,6 @@ namespace pizda {
 			virtual void onConnectionStateChanged() = 0;
 
 		private:
-			Transceiver* _transceiver = nullptr;
-
 			constexpr static uint16_t _bufferLength = 255;
 			uint8_t _buffer[_bufferLength] {};
 

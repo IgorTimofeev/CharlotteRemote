@@ -27,7 +27,7 @@ namespace pizda {
 					config::transceiver::busy,
 					config::transceiver::DIO1,
 					
-					config::transceiver::RFFrequencyMHz,
+					config::transceiver::RFFrequencyHz,
 					config::transceiver::bandwidth,
 					config::transceiver::spreadingFactor,
 					config::transceiver::codingRate,
@@ -44,7 +44,7 @@ namespace pizda {
 				
 				return true;
 			}
-			
+
 			float getSNR() const {
 				return _SNR;
 			}
@@ -79,9 +79,16 @@ namespace pizda {
 					//		for (int i = 0; i < length; ++i) {
 					//			ESP_LOGI(_logTag, "read buffer[%d]: %d", i, _buffer[i]);
 					//		}
+
+					// Updating RSSI and SNR
 					if (esp_timer_get_time() > _RSSIAndSNRUpdateTimeUs) {
-						_SX.getRSSI(_RSSI);
-						_SX.getSNR(_SNR);
+						float valueF;
+
+						if (_SX.getRSSI(valueF) == SX1262Error::none)
+							_RSSI = static_cast<int8_t>(valueF);
+
+						if (_SX.getSNR(valueF) == SX1262Error::none)
+							_SNR = static_cast<int8_t>(valueF);
 
 						_RSSIAndSNRUpdateTimeUs = esp_timer_get_time() + _RSSIAndSNRUpdateIntervalUs;
 					}
@@ -94,6 +101,91 @@ namespace pizda {
 				return false;
 			}
 
+			bool beginSpectrumScanning() override {
+				// Switching to standby
+				const auto error = _SX.setStandby();
+
+				if (error != SX1262Error::none) {
+					logError("setSpectrumScanningMode() error", error);
+					return false;
+				}
+
+				return true;
+			}
+
+			bool getSpectrumScanningRSSI(const uint32_t frequencyHz, int8_t& RSSI) override {
+				ESP_LOGI("getSpectrumScanningRSSI()", "1");
+
+				// Switching to standby
+				auto error = _SX.setStandby();
+
+				if (error != SX1262Error::none) {
+					logError("setNormalMode() error", error);
+					return false;
+				}
+
+				error = _SX.clearIRQStatus();
+				if (error != SX1262Error::none) {
+					logError("setNormalMode() error", error);
+					return false;
+				}
+
+				// Setting desired frequency
+				error = _SX.setRFFrequency(frequencyHz);
+
+				if (error != SX1262Error::none) {
+					logError("getSpectrumScanningRSSI() error", error);
+					return false;
+				}
+
+				ESP_LOGI("getSpectrumScanningRSSI()", "2");
+
+				// Switching to RX
+				error = _SX.setRX(10'000);
+
+				if (error != SX1262Error::none && error != SX1262Error::timeout) {
+					logError("getSpectrumScanningRSSI() error", error);
+					return false;
+				}
+
+				ESP_LOGI("getSpectrumScanningRSSI()", "3");
+
+				// Getting RSSI
+				float RSSIF = 0;
+				error = _SX.getRSSI(RSSIF);
+
+				if (error != SX1262Error::none) {
+					logError("getSpectrumScanningRSSI() error", error);
+					return false;
+				}
+
+				ESP_LOGI("getSpectrumScanningRSSI()", "4");
+
+				RSSI = static_cast<int8_t>(RSSIF);
+
+				return true;
+			}
+
+			bool finishSpectrumScanning() override {
+				// Switching to standby
+				auto error = _SX.setStandby();
+
+				if (error != SX1262Error::none) {
+					logError("setNormalMode() error", error);
+					return false;
+				}
+
+				// Setting normal RX/TX frequency
+				error = _SX.setRFFrequency(config::transceiver::RFFrequencyHz);
+
+				if (error != SX1262Error::none) {
+					logError("setNormalMode() error", error);
+					return false;
+				}
+
+				return true;
+			}
+
 		private:
 			constexpr static const char* _logTag = "XCVR";
 
@@ -102,8 +194,8 @@ namespace pizda {
 			int64_t _RSSIAndSNRUpdateTimeUs = 0;
 
 			SX1262 _SX {};
-			float _RSSI = 0;
-			float _SNR = 0;
+			int8_t _RSSI = 0;
+			int8_t _SNR = 0;
 
 			static void logError(const char* key, const SX1262Error error) {
 				if (error == SX1262Error::timeout)

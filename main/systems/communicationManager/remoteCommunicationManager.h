@@ -1,6 +1,6 @@
 #pragma once
 
-#include "communicationManager.h"
+#include "systems/communicationManager/communicationManager.h"
 
 #include <queue>
 #include <set>
@@ -49,7 +49,7 @@ namespace pizda {
 			uint8_t _packetSequenceItemCounter = 0;
 			
 			std::set<RemotePacketType> _enqueuedPackets {};
-			
+
 			bool receiveAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftCalibrationPacket(BitStream& stream, uint8_t payloadLength);
@@ -61,5 +61,7 @@ namespace pizda {
 			void transmitRemoteAutopilotPacket(BitStream& stream);
 			void transmitRemoteMotorConfigurationPacket(BitStream& stream);
 			void transmitRemoteCalibratePacket(BitStream& stream);
+
+			void onSpectrumScanning();
 	};
 }
