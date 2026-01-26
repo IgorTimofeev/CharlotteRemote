@@ -47,14 +47,14 @@ namespace pizda {
 		if (_transceiver->getSpectrumScanningRSSI(ss.frequency.value, RSSI)) {
 			ESP_LOGI(_logTag, "onSpectrumScanning() received RSSI: %d", RSSI);
 
-			const auto historyIndex = std::min<uint32_t>(
-				(ss.frequency.value - ss.frequency.from)
-					* ss.history.size()
-					/ (ss.frequency.to - ss.frequency.from),
+			const auto historyIndex = std::min<uint64_t>(
+				static_cast<uint64_t>(ss.frequency.value - ss.frequency.from)
+					* static_cast<uint64_t>(ss.history.size())
+					/ static_cast<uint64_t>(ss.frequency.to - ss.frequency.from),
 				ss.history.size() - 1
 			);
 
-			ESP_LOGI(_logTag, "onSpectrumScanning() history index: %d", historyIndex);
+			ESP_LOGI(_logTag, "onSpectrumScanning() history index: %f", (float) historyIndex);
 
 			// Keeping record
 			ss.history[historyIndex] = RSSI;
@@ -62,9 +62,8 @@ namespace pizda {
 			// Moving to next frequency
 			ss.frequency.value += ss.frequency.step;
 
-			if (ss.frequency.value >= ss.frequency.to) {
+			if (ss.frequency.value >= ss.frequency.to)
 				ss.state = RemoteDataRadioSpectrumScanningState::none;
-			}
 		}
 		else {
 			ss.state = RemoteDataRadioSpectrumScanningState::none;

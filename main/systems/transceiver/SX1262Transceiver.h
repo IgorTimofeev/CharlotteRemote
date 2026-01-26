@@ -114,52 +114,15 @@ namespace pizda {
 			}
 
 			bool getSpectrumScanningRSSI(const uint32_t frequencyHz, int8_t& RSSI) override {
-				ESP_LOGI("getSpectrumScanningRSSI()", "1");
+				float RSSIF;
 
 				// Switching to standby
-				auto error = _SX.setStandby();
-
-				if (error != SX1262Error::none) {
-					logError("setNormalMode() error", error);
-					return false;
-				}
-
-				error = _SX.clearIRQStatus();
-				if (error != SX1262Error::none) {
-					logError("setNormalMode() error", error);
-					return false;
-				}
-
-				// Setting desired frequency
-				error = _SX.setRFFrequency(frequencyHz);
+				auto error = _SX.spectrumScan(frequencyHz, RSSIF);
 
 				if (error != SX1262Error::none) {
 					logError("getSpectrumScanningRSSI() error", error);
 					return false;
 				}
-
-				ESP_LOGI("getSpectrumScanningRSSI()", "2");
-
-				// Switching to RX
-				error = _SX.setRX(10'000);
-
-				if (error != SX1262Error::none && error != SX1262Error::timeout) {
-					logError("getSpectrumScanningRSSI() error", error);
-					return false;
-				}
-
-				ESP_LOGI("getSpectrumScanningRSSI()", "3");
-
-				// Getting RSSI
-				float RSSIF = 0;
-				error = _SX.getRSSI(RSSIF);
-
-				if (error != SX1262Error::none) {
-					logError("getSpectrumScanningRSSI() error", error);
-					return false;
-				}
-
-				ESP_LOGI("getSpectrumScanningRSSI()", "4");
 
 				RSSI = static_cast<int8_t>(RSSIF);
 

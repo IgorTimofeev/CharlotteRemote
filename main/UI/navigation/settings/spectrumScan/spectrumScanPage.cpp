@@ -48,11 +48,16 @@ namespace pizda {
 			&Theme::red
 		};
 
-		const auto frequencyDelta = ss.frequency.to - ss.frequency.from;
+		const uint64_t frequencyDelta = ss.frequency.to - ss.frequency.from;
 
-		for (int32_t x = 0; x < bounds.getWidth(); x++) {
-			const auto frequency = ss.frequency.from + x * frequencyDelta / bounds.getWidth();
-			const auto historyIndex = x * ss.history.size() / bounds.getWidth();
+		for (uint16_t localX = 0; localX < bounds.getWidth(); localX++) {
+			const auto frequency =
+				static_cast<uint64_t>(ss.frequency.from)
+				+ static_cast<uint64_t>(localX)
+				* frequencyDelta
+				/ static_cast<uint64_t>(bounds.getWidth());
+
+			const auto historyIndex = static_cast<uint64_t>(localX) * static_cast<uint64_t>(ss.history.size()) / static_cast<uint64_t>(bounds.getWidth());
 
 			if (frequency < ss.frequency.value) {
 				const auto RSSI = std::clamp<int8_t>(ss.history[historyIndex], RSSIMin, RSSIMax);
@@ -66,14 +71,14 @@ namespace pizda {
 				const auto lineHeight = std::abs(RSSI - RSSIMin) * bounds.getHeight() / std::abs(RSSIMax - RSSIMin);
 
 				renderer->renderVerticalLine(
-					Point(bounds.getX() + x, bounds.getY2() - lineHeight),
+					Point(bounds.getX() + localX, bounds.getY2() - lineHeight),
 					lineHeight,
 					color
 				);
 			}
 			else {
 				renderer->renderVerticalLine(
-					Point(bounds.getX() + x, bounds.getY()),
+					Point(bounds.getX() + localX, bounds.getY()),
 					bounds.getHeight(),
 					&Theme::fg1
 				);
@@ -99,17 +104,17 @@ namespace pizda {
 
 		// From
 		Theme::apply(&frequencyFromTextField);
-		frequencyFromTextField.setText(L"420");
+		frequencyFromTextField.setText(L"909");
 		frequencyRow += &frequencyFromTitle;
 
 		// To
 		Theme::apply(&frequencyToTextField);
-		frequencyToTextField.setText(L"440");
+		frequencyToTextField.setText(L"918");
 		frequencyRow += &frequencyToTitle;
 
 		// Step
 		Theme::apply(&frequencyStepTextField);
-		frequencyStepTextField.setText(L"12");
+		frequencyStepTextField.setText(L"10");
 		frequencyRow += &frequencyStepTitle;
 
 		// Start button
@@ -118,6 +123,8 @@ namespace pizda {
 
 		startButton.click += [this] {
 			auto& rc = RC::getInstance();
+
+			tryParse();
 
 			rc.getRemoteData().radio.spectrumScanning.frequency.from = frequencyFrom;
 			rc.getRemoteData().radio.spectrumScanning.frequency.to = frequencyTo;
