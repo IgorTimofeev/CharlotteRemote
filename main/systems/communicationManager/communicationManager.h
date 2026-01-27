@@ -30,7 +30,7 @@ namespace pizda {
 						static_cast<CommunicationManager*>(arg)->onStart();
 					},
 					"CommunicationManager",
-					16 * 1024,
+					8 * 1024,
 					this,
 					configMAX_PRIORITIES - 1,
 					nullptr

@@ -113,7 +113,7 @@ namespace pizda {
 				return true;
 			}
 
-			bool getSpectrumScanningRecord(const uint32_t frequencyHz, int8_t& RSSI, uint8_t& saturation) override {
+			bool getSpectrumScanningRecord(const uint32_t frequencyHz, int8_t& RSSI) override {
 				// Changing frequency
 				auto error = _SX.setRFFrequency(frequencyHz);
 				if (error != SX1262Error::none) {
@@ -121,22 +121,23 @@ namespace pizda {
 					return false;
 				}
 
-				// vTaskDelay(pdMS_TO_TICKS(10));
+				vTaskDelay(pdMS_TO_TICKS(10));
 
 				// Moving to RX single mode
-				error = _SX.setRX(10'000);
+				error = _SX.setRX();
 
 				if (error != SX1262Error::none) {
 					logError("getSpectrumScanningRSSI() error", error);
 					return false;
 				}
 
-				_SX.waitForDIO1Semaphore(10'000);
+				// _SX.waitForDIO1Semaphore(10'000);
 
 				// Applying RSSI inst multisampling
 				float RSSIF;
 				constexpr static uint8_t samplesLength = 32;
 				int8_t samples[samplesLength];
+				// int64_t samplesSum = 0;
 
 				for (uint8_t i = 0; i < samplesLength; i++) {
 					error = _SX.getRSSIInst(RSSIF);
@@ -147,20 +148,15 @@ namespace pizda {
 					}
 
 					samples[i] = static_cast<int8_t>(RSSIF);
+					// samplesSum += static_cast<int8_t>(RSSIF);
+
+					// vTaskDelay(pdMS_TO_TICKS(10));
 				}
 
 				// RSSI median value
 				std::ranges::sort(samples, std::greater<int8_t>());
 				RSSI = samples[samplesLength / 2];
-
-				// Computing signal saturation
-				uint8_t saturatedCount = 0;
-
-				for (uint8_t i = 0; i < samplesLength; i++)
-					if (samples[i] >= RSSI)
-						saturatedCount++;
-
-				saturation = saturatedCount * 0xFF / samplesLength;
+				// RSSI = samplesSum / samplesLength;
 
 				return true;
 			}

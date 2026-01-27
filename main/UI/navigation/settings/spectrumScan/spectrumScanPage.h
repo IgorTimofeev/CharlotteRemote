@@ -1,13 +1,34 @@
 #pragma once
 
+#include <functional>
+
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
 #include "UI/navigation/page.h"
 #include "UI/elements/titler.h"
+#include "UI/elements/dialogs/scrollViewDialog.h"
 
 namespace pizda {
 	using namespace YOBA;
+
+	class SpectrumScanningFrequencyPresetsDialog : public ScrollViewDialog {
+		public:
+			SpectrumScanningFrequencyPresetsDialog(const std::function<void(const std::wstring_view from, const std::wstring_view to)>& onConfirm);
+
+		private:
+			Button button430_440 {};
+			Button button470_510 {};
+			Button button779_787 {};
+			Button button863_870 {};
+			Button button902_928 {};
+
+			Button confirmButton {};
+
+			std::function<void(const std::wstring_view from, const std::wstring_view to)> onConfirm;
+
+			void growPodzalupnik(Button& button, const std::wstring_view buttonText, const std::wstring_view from, const std::wstring_view to);
+	};
 
 	class SpectrumScanningChart : public Control {
 		protected:
@@ -17,6 +38,10 @@ namespace pizda {
 
 		private:
 			Point _pointerPos { -1, -1 };
+			int32_t _pinchLength = -1;
+
+			constexpr static int8_t _RSSIMin = -100;
+			int8_t _RSSIMax = -20;
 
 			void updatePointerPos(const Point& pointerEventPos);
 	};
@@ -27,7 +52,7 @@ namespace pizda {
 
 		protected:
 			void onTick() override;
-		
+
 		private:
 			SpectrumScanningChart chart {};
 
@@ -42,13 +67,10 @@ namespace pizda {
 			TextField frequencyStepTextField {};
 			Titler frequencyStepTitle { L"Step (KHz)", &frequencyStepTextField };
 
-			RelativeStackLayout frequencyShortcutRow {};
-			Button frequencyShortcut430_440Button {};
-			Button frequencyShortcut470_510Button {};
-			Button frequencyShortcut779_787Button {};
-			Button frequencyShortcut863_870Button {};
-			Button frequencyShortcut902_928Button {};
+			Button frequencyPresetsButton {};
 
-			Button beginButton {};
+			Button confirmButton {};
+
+			void updateConfirmButtonText();
 	};
 }

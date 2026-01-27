@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <array>
+#include <limits>
 
 #include "types/generic.h"
 
@@ -26,22 +27,24 @@ namespace pizda {
 	};
 
 	enum class RemoteDataRadioSpectrumScanningState {
-		none,
-		requested,
-		inProgress
-	};
-
-	class RemoteDataRadioSpectrumScanningHistoryRecord {
-		public:
-			int8_t RSSI;
-			uint8_t saturation;
+		stopped,
+		startRequested,
+		started,
+		stopRequested
 	};
 
 	class RemoteDataRadioSpectrumScanning {
 		public:
-			RemoteDataRadioSpectrumScanningState state = RemoteDataRadioSpectrumScanningState::none;
+			RemoteDataRadioSpectrumScanning() {
+				// Clearing history
+				for (auto& record : history) {
+					record = std::numeric_limits<int8_t>::min();
+				}
+			}
+
+			RemoteDataRadioSpectrumScanningState state = RemoteDataRadioSpectrumScanningState::stopped;
 			uint32_t frequency = 0;
-			std::array<RemoteDataRadioSpectrumScanningHistoryRecord, 512> history {};
+			std::array<int8_t, 255> history {};
 	};
 
 	class RemoteDataRadio {
