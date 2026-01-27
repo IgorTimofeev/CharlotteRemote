@@ -20,7 +20,7 @@ namespace pizda {
 
 		const auto totalDeltaTime = rc.getTickDeltaTime();
 
-		const auto renderLine = [&renderer, &y](const std::wstring_view text, const Color* color = &Theme::magenta, uint8_t scale = 1) {
+		const auto renderLine = [&renderer, &y](const std::wstring_view text, const Color* color = &Theme::magenta1, uint8_t scale = 1) {
 			renderer->renderString(Point(10, y), &Theme::fontNormal, color, text, scale);
 
 			y += Theme::fontNormal.getHeight(scale) + 2;

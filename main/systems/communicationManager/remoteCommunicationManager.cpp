@@ -30,13 +30,20 @@ namespace pizda {
 	// -------------------------------- Generic --------------------------------
 
 	void RemoteCommunicationManager::onSpectrumScanning() {
-		auto& ss = RC::getInstance().getRemoteData().radio.spectrumScanning;
+		auto& rc = RC::getInstance();
+		auto& st = rc.getSettings().transceiver.spectrumScanning;
+		auto& rd = RC::getInstance().getRemoteData().transceiver.spectrumScanning;
 
 		// None -> requested
-		if (ss.state == RemoteDataRadioSpectrumScanningState::requested) {
-			ESP_LOGI(_logTag, "onSpectrumScanning() started, from: %lu, to: %lu, step: %lu", ss.frequency.from, ss.frequency.to, ss.frequency.step);
+		if (rd.state == RemoteDataRadioSpectrumScanningState::requested) {
+			ESP_LOGI(_logTag, "onSpectrumScanning() started, from: %lu, to: %lu, step: %lu", st.frequency.from, st.frequency.to, st.frequency.step);
 
-			ss.state = RemoteDataRadioSpectrumScanningState::inProgress;
+			rd.state = RemoteDataRadioSpectrumScanningState::inProgress;
+
+			_spectrumScanningHistoryIndex = 0;
+			_spectrumScanningRSSISum = 0;
+			_spectrumScanningSaturationSum = 0;
+			_spectrumScanningCount = 0;
 
 			_transceiver->beginSpectrumScanning();
 		}
@@ -44,33 +51,62 @@ namespace pizda {
 		// ESP_LOGI(_logTag, "onSpectrumScanning() moving to freq: %lu", ss.frequency.value);
 
 		int8_t RSSI = 0;
-		if (_transceiver->getSpectrumScanningRSSI(ss.frequency.value, RSSI)) {
+		uint8_t saturation = 0;
+
+		if (_transceiver->getSpectrumScanningRecord(rd.frequency, RSSI, saturation)) {
 			// ESP_LOGI(_logTag, "onSpectrumScanning() received RSSI: %d", RSSI);
 
-			const auto historyIndex = std::min<uint64_t>(
-				static_cast<uint64_t>(ss.frequency.value - ss.frequency.from)
-					* static_cast<uint64_t>(ss.history.size())
-					/ static_cast<uint64_t>(ss.frequency.to - ss.frequency.from),
-				ss.history.size() - 1
+			const auto newHistoryIndex = std::min<uint64_t>(
+				static_cast<uint64_t>(rd.frequency - st.frequency.from)
+					* static_cast<uint64_t>(rd.history.size())
+					/ static_cast<uint64_t>(st.frequency.to - st.frequency.from),
+				rd.history.size() - 1
 			);
 
-			// ESP_LOGI(_logTag, "onSpectrumScanning() history index: %f", (float) historyIndex);
+			// ESP_LOGI(_logTag, "onSpectrumScanning() history index: %f", (float) newHistoryIndex);
 
-			// Keeping record
-			ss.history[historyIndex] = RSSI;
+			rd.history[newHistoryIndex].RSSI = RSSI;
+			rd.history[newHistoryIndex].saturation = saturation;
+
+			// // Keeping record
+			// if (newHistoryIndex > _spectrumScanningHistoryIndex) {
+			// 	// Computing average values for prev
+			// 	_spectrumScanningRSSISum = _spectrumScanningCount > 0 ? _spectrumScanningRSSISum / _spectrumScanningCount : 0;
+			// 	_spectrumScanningSaturationSum = _spectrumScanningCount > 0 ? _spectrumScanningSaturationSum / _spectrumScanningCount : 0;
+			//
+			// 	// Filling [prev; current)
+			// 	for (uint16_t i = _spectrumScanningHistoryIndex; i < newHistoryIndex; ++i) {
+			// 		rd.history[i].RSSI = _spectrumScanningRSSISum;
+			// 		rd.history[i].saturation = _spectrumScanningSaturationSum;
+			// 	}
+			//
+			// 	_spectrumScanningHistoryIndex = newHistoryIndex;
+			//
+			// 	_spectrumScanningRSSISum = RSSI;
+			// 	_spectrumScanningSaturationSum = saturation;
+			// 	_spectrumScanningCount = 1;
+			// }
+			// else {
+			// 	_spectrumScanningRSSISum += RSSI;
+			// 	_spectrumScanningSaturationSum += saturation;
+			// 	_spectrumScanningCount++;
+			// }
 
 			// Moving to next frequency
-			ss.frequency.value += ss.frequency.step;
+			rd.frequency += st.frequency.step;
 
-			if (ss.frequency.value >= ss.frequency.to)
-				ss.state = RemoteDataRadioSpectrumScanningState::none;
+			if (rd.frequency >= st.frequency.to)
+				rd.state = RemoteDataRadioSpectrumScanningState::none;
+
+			if (newHistoryIndex % 2 == 0)
+				vTaskDelay(pdMS_TO_TICKS(10));
 		}
 		else {
-			ss.state = RemoteDataRadioSpectrumScanningState::none;
+			rd.state = RemoteDataRadioSpectrumScanningState::none;
 		}
 
 		// Any -> none
-		if (ss.state == RemoteDataRadioSpectrumScanningState::none) {
+		if (rd.state == RemoteDataRadioSpectrumScanningState::none) {
 			ESP_LOGI(_logTag, "onSpectrumScanning() finished");
 
 			_transceiver->finishSpectrumScanning();
@@ -81,7 +117,7 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		while (true) {
-			if (rc.getRemoteData().radio.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::none) {
+			if (rc.getRemoteData().transceiver.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::none) {
 				transmit(100'000);
 				receive(100'000);
 			}

@@ -65,7 +65,7 @@ namespace pizda {
 				);
 			}
 			
-			renderLine(bounds.getX() + aircraftValueSize - 1, &Theme::magenta);
+			renderLine(bounds.getX() + aircraftValueSize - 1, &Theme::magenta1);
 		}
 
 		// Text

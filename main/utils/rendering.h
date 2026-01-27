@@ -13,7 +13,7 @@ namespace pizda {
 			static const Color* getWaypointColor(const NavigationWaypointData& waypointData) {
 				switch (waypointData.type) {
 					case NavigationWaypointType::enroute: {
-						return &Theme::magenta;
+						return &Theme::magenta1;
 					}
 					default: {
 						return &Theme::ocean;

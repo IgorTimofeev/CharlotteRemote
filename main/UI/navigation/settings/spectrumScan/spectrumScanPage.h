@@ -33,20 +33,22 @@ namespace pizda {
 
 			RelativeStackLayout frequencyRow {};
 
-			uint32_t frequencyFrom = 0;
 			TextField frequencyFromTextField {};
 			Titler frequencyFromTitle { L"From (MHz)", &frequencyFromTextField };
 
-			uint32_t frequencyTo = 0;
 			TextField frequencyToTextField {};
 			Titler frequencyToTitle { L"To (MHz)", &frequencyToTextField };
 
-			uint32_t frequencyStep = 0;
 			TextField frequencyStepTextField {};
 			Titler frequencyStepTitle { L"Step (KHz)", &frequencyStepTextField };
 
-			Button startButton {};
+			RelativeStackLayout frequencyShortcutRow {};
+			Button frequencyShortcut430_440Button {};
+			Button frequencyShortcut470_510Button {};
+			Button frequencyShortcut779_787Button {};
+			Button frequencyShortcut863_870Button {};
+			Button frequencyShortcut902_928Button {};
 
-			void tryParse();
+			Button beginButton {};
 	};
 }

@@ -21,44 +21,39 @@ namespace pizda {
 			RGB888Color(0x666666),
 			RGB888Color(0x555555),
 
-			// Accent 1
+			// Accent
 			RGB888Color(0xffd200),
-			// Accent 2
 			RGB888Color(0x997e53),
 
-			// Good 1
+			// Good
 			RGB888Color(0x1db153),
-			// Good 2
 			RGB888Color(0x28DA69),
 
-			// Bad 1
+			// Bad
 			RGB888Color(0xf24949),
-			// Bad 2
 			RGB888Color(0x962828),
-			// Bad 3
 			RGB888Color(0x4b1313),
 
 			// Red
 			RGB888Color(0xff0000),
-			// Magenta (R.I.P. PURPLE)
-			RGB888Color(0xff00ff),
-			// Green 1
+			// Green
 			RGB888Color(0x00FF00),
-			// Green 2
-			RGB888Color(0x004400),
-			// Green speed
-			RGB888Color(0x008100),
+			RGB888Color(0x007F00),
+			// Blue
+			RGB888Color(0x0000FF),
+			// Magenta (R.I.P. PURPLE)
+			RGB888Color(0xFF00FF),
+			RGB888Color(0x7F007F),
+			// Ocean
+			RGB888Color(0x00FFFF),
+
 			// Yellow
 			RGB888Color(0xffd200),
-			// Ocean
-			RGB888Color(0x00ffff),
-			// Ground 1
+			// Ground
 			RGB888Color(0x97b838),
-			// Ground 2
 			RGB888Color(0xdef2a2),
 			// Sky
 			RGB888Color(0x317fcb),
-			// Sky 2
 			RGB888Color(0xaed1f2),
 		});
 

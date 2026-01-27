@@ -203,7 +203,7 @@ namespace pizda {
 				PFD::flightDirectorThickness
 			);
 
-			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta);
+			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta1);
 
 			// Vertical
 			flightDirectorRectBounds.setX(
@@ -220,7 +220,7 @@ namespace pizda {
 			flightDirectorRectBounds.setWidth(PFD::flightDirectorThickness);
 			flightDirectorRectBounds.setHeight(flightDirectorLength);
 
-			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta);
+			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta1);
 		}
 
 		// Flight path vector
@@ -1026,7 +1026,7 @@ namespace pizda {
 		renderer->renderVerticalLine(
 			Point(x, yMin),
 			yMax - yMin,
-			&Theme::magenta
+			&Theme::magenta1
 		);
 
 		renderer->renderFilledTriangle(
@@ -1042,7 +1042,7 @@ namespace pizda {
 				x + arrowSize,
 				yArrow
 			),
-			&Theme::magenta
+			&Theme::magenta1
 		);
 	}
 
@@ -1092,7 +1092,7 @@ namespace pizda {
 			speedBarSize,
 			speedSmoothMin,
 			speedSmoothMax,
-			&Theme::greenSpeed
+			&Theme::green2
 		);
 
 		renderBar(
@@ -1567,6 +1567,6 @@ namespace pizda {
 	void PFD::renderGroundSpeed(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 
-		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::magenta, std::to_wstring(static_cast<uint16_t>(rc.getAircraftData().raw.groundSpeedKt)), 0);
+		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::magenta1, std::to_wstring(static_cast<uint16_t>(rc.getAircraftData().raw.groundSpeedKt)), 0);
 	}
 }

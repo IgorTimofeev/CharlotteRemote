@@ -46,7 +46,7 @@ namespace pizda {
 				bounds.getYCenter() - Theme::fontNormal.getHeight() + 1
 			),
 			&Theme::fontNormal,
-			&Theme::magenta,
+			&Theme::magenta1,
 			text
 		);
 		

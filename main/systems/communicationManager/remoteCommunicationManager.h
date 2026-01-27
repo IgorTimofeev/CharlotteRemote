@@ -62,6 +62,11 @@ namespace pizda {
 			void transmitRemoteMotorConfigurationPacket(BitStream& stream);
 			void transmitRemoteCalibratePacket(BitStream& stream);
 
+			uint16_t _spectrumScanningHistoryIndex = 0;
+			int64_t _spectrumScanningRSSISum = 0;
+			uint64_t _spectrumScanningSaturationSum = 0;
+			uint32_t _spectrumScanningCount = 0;
+
 			void onSpectrumScanning();
 	};
 }

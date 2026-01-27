@@ -14,7 +14,7 @@
 
 namespace pizda {
 	using namespace YOBA;
-	
+
 	class SX1262Transceiver : public Transceiver {
 		public:
 			bool setup() {
@@ -113,18 +113,54 @@ namespace pizda {
 				return true;
 			}
 
-			bool getSpectrumScanningRSSI(const uint32_t frequencyHz, int8_t& RSSI) override {
-				float RSSIF;
+			bool getSpectrumScanningRecord(const uint32_t frequencyHz, int8_t& RSSI, uint8_t& saturation) override {
+				// Changing frequency
+				auto error = _SX.setRFFrequency(frequencyHz);
+				if (error != SX1262Error::none) {
+					logError("getSpectrumScanningRSSI() error", error);
+					return false;
+				}
 
-				// Switching to standby
-				auto error = _SX.spectrumScan(frequencyHz, RSSIF);
+				// vTaskDelay(pdMS_TO_TICKS(10));
+
+				// Moving to RX single mode
+				error = _SX.setRX(10'000);
 
 				if (error != SX1262Error::none) {
 					logError("getSpectrumScanningRSSI() error", error);
 					return false;
 				}
 
-				RSSI = static_cast<int8_t>(RSSIF);
+				_SX.waitForDIO1Semaphore(10'000);
+
+				// Applying RSSI inst multisampling
+				float RSSIF;
+				constexpr static uint8_t samplesLength = 32;
+				int8_t samples[samplesLength];
+
+				for (uint8_t i = 0; i < samplesLength; i++) {
+					error = _SX.getRSSIInst(RSSIF);
+
+					if (error != SX1262Error::none) {
+						logError("getSpectrumScanningRSSI() error", error);
+						return false;
+					}
+
+					samples[i] = static_cast<int8_t>(RSSIF);
+				}
+
+				// RSSI median value
+				std::ranges::sort(samples, std::greater<int8_t>());
+				RSSI = samples[samplesLength / 2];
+
+				// Computing signal saturation
+				uint8_t saturatedCount = 0;
+
+				for (uint8_t i = 0; i < samplesLength; i++)
+					if (samples[i] >= RSSI)
+						saturatedCount++;
+
+				saturation = saturatedCount * 0xFF / samplesLength;
 
 				return true;
 			}

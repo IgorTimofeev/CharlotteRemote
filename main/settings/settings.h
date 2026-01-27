@@ -6,6 +6,7 @@
 #include "settings/personalizationSettings.h"
 #include "settings/navigationSettings.h"
 #include "settings/motorsSettings.h"
+#include "settings/transceiverSettings.h"
 
 namespace pizda {
 	class Settings {
@@ -16,6 +17,7 @@ namespace pizda {
 			PersonalizationSettings personalization {};
 			NavigationSettings navigation {};
 			MotorsSettings motors {};
+			TransceiverSettings transceiver {};
 
 			void readAll() {
 				controls.read();
@@ -24,6 +26,7 @@ namespace pizda {
 				personalization.read();
 				navigation.read();
 				motors.read();
+				transceiver.read();
 			}
 	};
 }

@@ -40,7 +40,7 @@ namespace pizda {
 				static_cast<int32_t>(projectedVertices[1].getY())
 			),
 			_legIndex == nd.flightPlan.activeLegIndex
-				? &Theme::magenta
+				? &Theme::magenta1
 				: (
 					_legIndex < nd.flightPlan.activeLegIndex
 					? &Theme::fg3

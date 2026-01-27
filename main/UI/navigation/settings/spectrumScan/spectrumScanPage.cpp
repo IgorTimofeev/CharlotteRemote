@@ -11,7 +11,7 @@ namespace pizda {
 	void SpectrumScanningChart::onTick() {
 		Control::onTick();
 
-		if (RC::getInstance().getRemoteData().radio.spectrumScanning.state != RemoteDataRadioSpectrumScanningState::none)
+		if (RC::getInstance().getRemoteData().transceiver.spectrumScanning.state != RemoteDataRadioSpectrumScanningState::none)
 			invalidate();
 	}
 
@@ -48,16 +48,17 @@ namespace pizda {
 		constexpr static uint8_t textHOffset = 4;
 		constexpr static uint8_t textVOffset = 1;
 
-		constexpr static int8_t colorMapLength = 5;
-		constexpr static const Color* colorMap[colorMapLength] {
-			&Theme::magenta,
+		constexpr static std::array<const Color*, 5> colorMap {
+			&Theme::blue,
 			&Theme::ocean,
 			&Theme::green1,
 			&Theme::yellow,
 			&Theme::red
 		};
 
-		auto& ss = RC::getInstance().getRemoteData().radio.spectrumScanning;
+		auto& rc = RC::getInstance();
+		auto& st = rc.getSettings().transceiver.spectrumScanning;
+		auto& rd = RC::getInstance().getRemoteData().transceiver.spectrumScanning;
 
 		renderer->renderFilledRectangle(
 			bounds,
@@ -78,23 +79,23 @@ namespace pizda {
 		);
 
 		// History
-		const auto& getFrequency = [&ss, &bounds](const uint16_t localX) {
+		const auto& getFrequency = [&st, &bounds](const uint16_t localX) {
 			return
-				static_cast<uint64_t>(ss.frequency.from)
+				static_cast<uint64_t>(st.frequency.from)
 				+ static_cast<uint64_t>(localX)
-				* static_cast<uint64_t>(ss.frequency.to - ss.frequency.from)
+				* static_cast<uint64_t>(st.frequency.to - st.frequency.from)
 				/ static_cast<uint64_t>(bounds.getWidth());
 		};
 
-		const auto& getHistoryIndex = [&ss, &bounds](const uint16_t localX) {
+		const auto& getHistoryIndex = [&rd, &bounds](const uint16_t localX) {
 			return
 				static_cast<uint64_t>(localX)
-				* static_cast<uint64_t>(ss.history.size())
+				* static_cast<uint64_t>(rd.history.size())
 				/ static_cast<uint64_t>(bounds.getWidth());
 		};
 
-		const auto& getRSSI = [&ss](const uint16_t historyIndex) {
-			return std::clamp<int8_t>(ss.history[historyIndex], RSSIMin, RSSIMax);
+		const auto& getRSSI = [&rd](const uint16_t historyIndex) {
+			return std::clamp<int8_t>(rd.history[historyIndex].RSSI, RSSIMin, RSSIMax);
 		};
 
 		const auto& getRSSIHeight = [&bounds](const int8_t RSSI) {
@@ -157,35 +158,42 @@ namespace pizda {
 		}
 
 		// History
+		auto scanningLineNotRendered = true;
+
 		for (uint16_t localX = 0; localX < bounds.getWidth(); localX++) {
 			const auto frequency = getFrequency(localX);
 			const auto historyIndex = getHistoryIndex(localX);
+			const auto RSSI = getRSSI(historyIndex);
+			const auto lineHeight = getRSSIHeight(RSSI);
 
-			if (frequency < ss.frequency.value) {
-				const auto RSSI = getRSSI(historyIndex);
-				const auto lineHeight = getRSSIHeight(RSSI);
+			const Color* color;
 
-				const auto colorIndex = std::min(
-					std::abs(RSSI - RSSIMin) * colorMapLength / std::abs(RSSIMax - RSSIMin),
-					colorMapLength - 1
+			if (frequency <= rd.frequency) {
+				const auto colorIndex = std::min<uint32_t>(
+					static_cast<uint32_t>(rd.history[historyIndex].saturation) * colorMap.size() / 0xFF,
+					colorMap.size() - 1
 				);
 
-				const auto color = colorMap[colorIndex];
-
-				renderer->renderVerticalLine(
-					Point(bounds.getX() + localX, bounds.getY2() - lineHeight),
-					lineHeight,
-					color
-				);
+				color = colorMap[colorIndex];
 			}
 			else {
+				color = &Theme::fg6;
+			}
+
+			renderer->renderVerticalLine(
+				Point(bounds.getX() + localX, bounds.getY2() - lineHeight),
+				lineHeight,
+				color
+			);
+
+			if (scanningLineNotRendered && frequency > rd.frequency) {
 				renderer->renderVerticalLine(
 					Point(bounds.getX() + localX, bounds.getY()),
 					bounds.getHeight(),
 					&Theme::fg1
 				);
 
-				break;
+				scanningLineNotRendered = false;
 			}
 		}
 
@@ -247,42 +255,82 @@ namespace pizda {
 
 		// From
 		Theme::apply(&frequencyFromTextField);
-		frequencyFromTextField.setText(L"430");
+		frequencyFromTextField.setText(std::to_wstring(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.from / 1'000'000));
 		frequencyRow += &frequencyFromTitle;
 
 		// To
 		Theme::apply(&frequencyToTextField);
-		frequencyToTextField.setText(L"440");
+		frequencyToTextField.setText(std::to_wstring(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.to / 1'000'000));
 		frequencyRow += &frequencyToTitle;
 
 		// Step
 		Theme::apply(&frequencyStepTextField);
-		frequencyStepTextField.setText(L"10");
+		frequencyStepTextField.setText(std::to_wstring(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.step / 1'000));
 		frequencyRow += &frequencyStepTitle;
 
 		// Start button
-		Theme::applyPrimary(&startButton);
-		startButton.setText(L"Scan");
+		Theme::applyPrimary(&beginButton);
+		beginButton.setText(L"Begin");
 
-		startButton.click += [this] {
-			auto& rc = RC::getInstance();
+		// -------------------------------- Shortcuts --------------------------------
 
-			tryParse();
+		frequencyShortcutRow.setOrientation(Orientation::horizontal);
+		frequencyShortcutRow.setSpacing(5);
+		rows += &frequencyShortcutRow;
 
-			rc.getRemoteData().radio.spectrumScanning.frequency.from = frequencyFrom;
-			rc.getRemoteData().radio.spectrumScanning.frequency.to = frequencyTo;
-			rc.getRemoteData().radio.spectrumScanning.frequency.step = frequencyStep;
-			rc.getRemoteData().radio.spectrumScanning.frequency.value = frequencyFrom;
-			rc.getRemoteData().radio.spectrumScanning.state = RemoteDataRadioSpectrumScanningState::requested;
+		const auto growPodzalupnik = [this](Button& button, const std::wstring_view buttonText, const std::wstring_view fromText, const std::wstring_view toText) {
+			Theme::applySecondary(&button);
+
+			button.setText(buttonText);
+
+			button.click += [this, fromText, toText] {
+				frequencyFromTextField.setText(fromText);
+				frequencyToTextField.setText(toText);
+			};
+
+			frequencyShortcutRow += &button;
 		};
 
-		rows += &startButton;
+		growPodzalupnik(frequencyShortcut430_440Button, L"430", L"430", L"440");
+		growPodzalupnik(frequencyShortcut470_510Button, L"470", L"470", L"510");
+		growPodzalupnik(frequencyShortcut779_787Button, L"779", L"779", L"787");
+		growPodzalupnik(frequencyShortcut863_870Button, L"863", L"863", L"870");
+		growPodzalupnik(frequencyShortcut902_928Button, L"902", L"902", L"928");
+
+		// -------------------------------- Begin button --------------------------------
+
+		beginButton.click += [this] {
+			auto& rc = RC::getInstance();
+
+			int32_t result;
+
+			if (StringUtils::tryParseInt32(frequencyFromTextField.getText(), result))
+				rc.getSettings().transceiver.spectrumScanning.frequency.from = std::clamp<uint32_t>(result, 0, 1000) * 1'000'000;
+
+			if (StringUtils::tryParseInt32(frequencyToTextField.getText(), result))
+				rc.getSettings().transceiver.spectrumScanning.frequency.to = std::clamp<uint32_t>(result, 0, 1000) * 1'000'000;
+
+			if (rc.getSettings().transceiver.spectrumScanning.frequency.from > rc.getSettings().transceiver.spectrumScanning.frequency.to)
+				std::swap(rc.getSettings().transceiver.spectrumScanning.frequency.from, rc.getSettings().transceiver.spectrumScanning.frequency.to);
+
+			if (StringUtils::tryParseInt32(frequencyStepTextField.getText(), result))
+				rc.getSettings().transceiver.spectrumScanning.frequency.step = std::clamp<uint32_t>(result, 0, 1000) * 1'000;
+
+			rc.getSettings().transceiver.scheduleWrite();
+
+			rc.getRemoteData().transceiver.spectrumScanning.frequency = rc.getSettings().transceiver.spectrumScanning.frequency.from;
+			rc.getRemoteData().transceiver.spectrumScanning.state = RemoteDataRadioSpectrumScanningState::requested;
+		};
+
+		rows += &beginButton;
+
+		// -------------------------------- Initialization --------------------------------
 
 		// Clearing history
-		for (auto& value : RC::getInstance().getRemoteData().radio.spectrumScanning.history)
-			value = std::numeric_limits<int8_t>::min();
-
-		tryParse();
+		for (auto& value : RC::getInstance().getRemoteData().transceiver.spectrumScanning.history) {
+			value.RSSI = std::numeric_limits<int8_t>::min();
+			value.saturation = 0;
+		}
 	}
 
 	void SpectrumScanPage::onTick() {
@@ -290,24 +338,7 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 
-		startButton.setEnabled(rc.getRemoteData().radio.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::none);
+		beginButton.setEnabled(rc.getRemoteData().transceiver.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::none);
 	}
 
-	void SpectrumScanPage::tryParse() {
-		int32_t result;
-
-		if (StringUtils::tryParseInt32(frequencyFromTextField.getText(), result))
-			frequencyFrom = std::clamp<uint32_t>(result, 0, 1000) * 1'000'000;
-
-		if (StringUtils::tryParseInt32(frequencyToTextField.getText(), result))
-			frequencyTo = std::clamp<uint32_t>(result, 0, 1000) * 1'000'000;
-
-		if (frequencyTo < frequencyFrom)
-			std::swap(frequencyFrom, frequencyTo);
-
-		if (StringUtils::tryParseInt32(frequencyStepTextField.getText(), result))
-			frequencyStep = std::clamp<uint32_t>(result, 0, 1000) * 1'000;
-
-		ESP_LOGI("SpectrumScanPage::tryParse()", "from: %lu, to: %lu, step %lu", frequencyFrom, frequencyTo, frequencyStep);
-	}
 }

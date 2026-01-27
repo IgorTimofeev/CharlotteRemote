@@ -25,25 +25,23 @@ namespace pizda {
 			bool autopilot = false;
 	};
 
-	class RemoteDataRadioSpectrumScanningFrequency {
-		public:
-			uint32_t from = 0;
-			uint32_t to = 0;
-			uint16_t step = 0;
-			uint32_t value = 0;
-	};
-
 	enum class RemoteDataRadioSpectrumScanningState {
 		none,
 		requested,
 		inProgress
 	};
 
+	class RemoteDataRadioSpectrumScanningHistoryRecord {
+		public:
+			int8_t RSSI;
+			uint8_t saturation;
+	};
+
 	class RemoteDataRadioSpectrumScanning {
 		public:
 			RemoteDataRadioSpectrumScanningState state = RemoteDataRadioSpectrumScanningState::none;
-			RemoteDataRadioSpectrumScanningFrequency frequency {};
-			std::array<int8_t, 512> history {};
+			uint32_t frequency = 0;
+			std::array<RemoteDataRadioSpectrumScanningHistoryRecord, 512> history {};
 	};
 
 	class RemoteDataRadio {
@@ -58,6 +56,6 @@ namespace pizda {
 			RemoteDataLights lights {};
 			RemoteDataAutopilot autopilot {};
 			AircraftCalibrationSystem calibrationSystem = AircraftCalibrationSystem::accelAndGyro;
-			RemoteDataRadio radio {};
+			RemoteDataRadio transceiver {};
 	};
 }
