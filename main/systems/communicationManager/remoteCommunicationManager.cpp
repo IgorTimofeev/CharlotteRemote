@@ -41,11 +41,11 @@ namespace pizda {
 			_transceiver->beginSpectrumScanning();
 		}
 
-		ESP_LOGI(_logTag, "onSpectrumScanning() moving to freq: %lu", ss.frequency.value);
+		// ESP_LOGI(_logTag, "onSpectrumScanning() moving to freq: %lu", ss.frequency.value);
 
 		int8_t RSSI = 0;
 		if (_transceiver->getSpectrumScanningRSSI(ss.frequency.value, RSSI)) {
-			ESP_LOGI(_logTag, "onSpectrumScanning() received RSSI: %d", RSSI);
+			// ESP_LOGI(_logTag, "onSpectrumScanning() received RSSI: %d", RSSI);
 
 			const auto historyIndex = std::min<uint64_t>(
 				static_cast<uint64_t>(ss.frequency.value - ss.frequency.from)
@@ -54,7 +54,7 @@ namespace pizda {
 				ss.history.size() - 1
 			);
 
-			ESP_LOGI(_logTag, "onSpectrumScanning() history index: %f", (float) historyIndex);
+			// ESP_LOGI(_logTag, "onSpectrumScanning() history index: %f", (float) historyIndex);
 
 			// Keeping record
 			ss.history[historyIndex] = RSSI;

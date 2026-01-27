@@ -10,15 +10,15 @@ namespace pizda {
 	using namespace YOBA;
 
 	class SpectrumScanningChart : public Control {
-		public:
-			SpectrumScanningChart() {
-
-			}
-
 		protected:
 			void onTick() override;
-
+			void onEvent(Event* event) override;
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
+
+		private:
+			Point _pointerPos { -1, -1 };
+
+			void updatePointerPos(const Point& pointerEventPos);
 	};
 
 	class SpectrumScanPage : public ScrollViewPage {
