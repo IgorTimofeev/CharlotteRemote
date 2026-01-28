@@ -1,7 +1,8 @@
-#include "systems/communicationManager/remoteCommunicationManager.h"
+#include "systems/transceiver/remoteTransceiver.h"
 
 #include <utility>
 #include <algorithm>
+#include <limits>
 
 #include <esp_timer.h>
 
@@ -29,86 +30,147 @@ namespace pizda {
 	
 	// -------------------------------- Generic --------------------------------
 
-	void RemoteCommunicationManager::onSpectrumScanning() {
+	bool RemoteTransceiver::stopSpectrumScanning() {
+		RC::getInstance().getRemoteData().transceiver.spectrumScanning.state = RemoteDataRadioSpectrumScanningState::stopped;
+
+		// Switching to standby
+		auto error = _SX.setStandby();
+
+		if (error != SX1262Error::none) {
+			logSXError("setNormalMode() error", error);
+			return false;
+		}
+
+		// Setting normal RX/TX frequency
+		error = _SX.setRFFrequency(config::transceiver::RFFrequencyHz);
+
+		if (error != SX1262Error::none) {
+			logSXError("setNormalMode() error", error);
+			return false;
+		}
+
+		return true;
+	}
+
+	void RemoteTransceiver::onSpectrumScanning() {
 		auto& rc = RC::getInstance();
 		auto& st = rc.getSettings().transceiver.spectrumScanning;
-		auto& rd = RC::getInstance().getRemoteData().transceiver.spectrumScanning;
+		auto& rd = rc.getRemoteData().transceiver.spectrumScanning;
 
 		// None -> requested
 		if (rd.state == RemoteDataRadioSpectrumScanningState::startRequested) {
 			ESP_LOGI(_logTag, "onSpectrumScanning() started, from: %lu, to: %lu, step: %lu", st.frequency.from, st.frequency.to, st.frequency.step);
 
 			rd.state = RemoteDataRadioSpectrumScanningState::started;
+			rd.historyMin = 0;
+			rd.historyMax = std::numeric_limits<int8_t>::min();
 
 			_spectrumScanningHistoryIndex = 0;
 			_spectrumScanningSampleRSSISum = 0;
 			_spectrumScanningSampleQuantity = 0;
 
-			_transceiver->beginSpectrumScanning();
+			// Switching to standby
+			const auto error = _SX.setStandby();
+
+			if (error != SX1262Error::none) {
+				logSXError("setSpectrumScanningMode() error", error);
+				stopSpectrumScanning();
+
+				return;
+			}
+		}
+		else if (rd.state == RemoteDataRadioSpectrumScanningState::stopRequested) {
+			stopSpectrumScanning();
+
+			return;
 		}
 
 		// ESP_LOGI(_logTag, "onSpectrumScanning() moving to freq: %lu", ss.frequency.value);
 
-		int8_t RSSI = 0;
+		// Changing frequency
+		auto error = _SX.setRFFrequency(rd.frequency);
+		if (error != SX1262Error::none) {
+			logSXError("getSpectrumScanningRSSI() error", error);
+			stopSpectrumScanning();
 
-		if (_transceiver->getSpectrumScanningRecord(rd.frequency, RSSI)) {
-			// ESP_LOGI(_logTag, "onSpectrumScanning() received RSSI: %d", RSSI);
+			return;
+		}
 
-			const auto newHistoryIndex = std::min<uint64_t>(
-				static_cast<uint64_t>(rd.frequency - st.frequency.from)
-					* static_cast<uint64_t>(rd.history.size())
-					/ static_cast<uint64_t>(st.frequency.to - st.frequency.from),
-				rd.history.size() - 1
-			);
+		vTaskDelay(pdMS_TO_TICKS(10));
 
-			// ESP_LOGI(_logTag, "onSpectrumScanning() history index: %f", (float) newHistoryIndex);
+		// Moving to RX single mode
+		error = _SX.setRX();
 
-			// rd.history[newHistoryIndex].RSSI = RSSI;
-			// rd.history[newHistoryIndex].saturation = saturation;
+		if (error != SX1262Error::none) {
+			logSXError("getSpectrumScanningRSSI() error", error);
+			stopSpectrumScanning();
 
-			if (newHistoryIndex <= _spectrumScanningHistoryIndex) {
-				// Accumulating samples
-				_spectrumScanningSampleRSSISum += RSSI;
-				_spectrumScanningSampleQuantity++;
-			}
-			else {
-				// Computing average values for prev
-				_spectrumScanningSampleRSSISum = _spectrumScanningSampleQuantity > 0 ? _spectrumScanningSampleRSSISum / _spectrumScanningSampleQuantity : std::numeric_limits<int8_t>::min();
+			return;
+		}
 
-				// Filling prev
-				rd.history[_spectrumScanningHistoryIndex] = _spectrumScanningSampleRSSISum;
+		// Applying RSSI inst multisampling
+		float RSSIF;
+		constexpr static uint8_t samplesLength = 32;
+		int8_t samples[samplesLength];
 
-				// Clearing what remains between prev & next (for subsequent scans)
-				for (uint16_t i = _spectrumScanningHistoryIndex + 1; i < newHistoryIndex; ++i) {
-					rd.history[i] = std::numeric_limits<int8_t>::min();
-				}
+		for (uint8_t i = 0; i < samplesLength; i++) {
+			error = _SX.getRSSIInst(RSSIF);
 
-				_spectrumScanningHistoryIndex = newHistoryIndex;
-				_spectrumScanningSampleRSSISum = RSSI;
-				_spectrumScanningSampleQuantity = 1;
+			if (error != SX1262Error::none) {
+				logSXError("getSpectrumScanningRSSI() error", error);
+				stopSpectrumScanning();
+
+				return;
 			}
 
-			// Moving to next frequency
-			rd.frequency += st.frequency.step;
+			samples[i] = static_cast<int8_t>(RSSIF);
 
-			if (rd.frequency >= st.frequency.to)
-				rd.state = RemoteDataRadioSpectrumScanningState::stopRequested;
+			// vTaskDelay(pdMS_TO_TICKS(10));
+		}
+
+		// RSSI median value
+		std::ranges::sort(samples, std::greater<int8_t>());
+		const auto RSSI = samples[samplesLength / 2];
+
+		// Adding history record
+		const auto newHistoryIndex = std::min<uint64_t>(
+			static_cast<uint64_t>(rd.frequency - st.frequency.from)
+				* static_cast<uint64_t>(rd.history.size())
+				/ static_cast<uint64_t>(st.frequency.to - st.frequency.from),
+			rd.history.size() - 1
+		);
+
+		if (newHistoryIndex <= _spectrumScanningHistoryIndex) {
+			// Accumulating samples
+			_spectrumScanningSampleRSSISum += RSSI;
+			_spectrumScanningSampleQuantity++;
 		}
 		else {
-			rd.state = RemoteDataRadioSpectrumScanningState::stopRequested;
+			// Computing average values for prev
+			_spectrumScanningSampleRSSISum = _spectrumScanningSampleQuantity > 0 ? _spectrumScanningSampleRSSISum / _spectrumScanningSampleQuantity : std::numeric_limits<int8_t>::min();
+
+			// Filling prev
+			rd.history[_spectrumScanningHistoryIndex] = _spectrumScanningSampleRSSISum;
+			rd.historyMin = std::min<int8_t>(rd.historyMin, _spectrumScanningSampleRSSISum);
+			rd.historyMax = std::max<int8_t>(rd.historyMax, _spectrumScanningSampleRSSISum);
+
+			// Clearing what remains between prev & next (for subsequent scans)
+			for (uint16_t i = _spectrumScanningHistoryIndex + 1; i < newHistoryIndex; ++i)
+				rd.history[i] = std::numeric_limits<int8_t>::min();
+
+			_spectrumScanningHistoryIndex = newHistoryIndex;
+			_spectrumScanningSampleRSSISum = RSSI;
+			_spectrumScanningSampleQuantity = 1;
 		}
 
-		// Stop requested
-		if (rd.state == RemoteDataRadioSpectrumScanningState::stopRequested) {
-			ESP_LOGI(_logTag, "onSpectrumScanning() finished");
+		// Moving to next frequency
+		rd.frequency += st.frequency.step;
 
-			rd.state = RemoteDataRadioSpectrumScanningState::stopped;
-
-			_transceiver->finishSpectrumScanning();
-		}
+		if (rd.frequency >= st.frequency.to)
+			stopSpectrumScanning();
 	}
 
-	void RemoteCommunicationManager::onStart() {
+	void RemoteTransceiver::onStart() {
 		auto& rc = RC::getInstance();
 
 		while (true) {
@@ -122,7 +184,7 @@ namespace pizda {
 		}
 	}
 	
-	void RemoteCommunicationManager::onConnectionStateChanged() {
+	void RemoteTransceiver::onConnectionStateChanged() {
 		auto& rc = RC::getInstance();
 
 		if (isConnected()) {
@@ -136,13 +198,13 @@ namespace pizda {
 	}
 	
 	
-	void RemoteCommunicationManager::enqueue(const RemotePacketType type) {
+	void RemoteTransceiver::enqueue(const RemotePacketType type) {
 		_enqueuedPackets.insert(type);
 	}
 	
 	// -------------------------------- Receiving --------------------------------
 	
-	bool RemoteCommunicationManager::onReceive(BitStream& stream, const AircraftPacketType packetType, const uint8_t payloadLength) {
+	bool RemoteTransceiver::onReceive(BitStream& stream, const AircraftPacketType packetType, const uint8_t payloadLength) {
 		RC::getInstance().getAircraftData().raw.calibration.checkValidTime();
 		
 		switch (packetType) {
@@ -162,7 +224,7 @@ namespace pizda {
 		}
 	}
 	
-	bool RemoteCommunicationManager::receiveAircraftADIRSPacket(BitStream& stream, const uint8_t payloadLength) {
+	bool RemoteTransceiver::receiveAircraftADIRSPacket(BitStream& stream, const uint8_t payloadLength) {
 		if (!validatePayloadChecksumAndLength(
 			stream,
 			AircraftADIRSPacket::rollLengthBits
@@ -246,7 +308,7 @@ namespace pizda {
 		return true;
 	}
 	
-	bool RemoteCommunicationManager::receiveAircraftAuxiliaryPacket(BitStream& stream, const uint8_t payloadLength) {
+	bool RemoteTransceiver::receiveAircraftAuxiliaryPacket(BitStream& stream, const uint8_t payloadLength) {
 		if (!validatePayloadChecksumAndLength(
 			stream,
 			AircraftAuxiliaryPacket::throttleLengthBits
@@ -335,7 +397,7 @@ namespace pizda {
 		return true;
 	}
 	
-	bool RemoteCommunicationManager::receiveAircraftCalibrationPacket(BitStream& stream, const uint8_t payloadLength) {
+	bool RemoteTransceiver::receiveAircraftCalibrationPacket(BitStream& stream, const uint8_t payloadLength) {
 		if (!validatePayloadChecksumAndLength(
 			stream,
 			AircraftCalibrationPacket::systemLengthBits
@@ -357,7 +419,7 @@ namespace pizda {
 	
 	// -------------------------------- Transmitting --------------------------------
 	
-	RemotePacketType RemoteCommunicationManager::getTransmitPacketType() {
+	RemotePacketType RemoteTransceiver::getTransmitPacketType() {
 		const auto& item = _packetSequence[_packetSequenceIndex];
 		
 		const auto next = [this, &item] {
@@ -392,7 +454,7 @@ namespace pizda {
 		return packetType;
 	}
 	
-	bool RemoteCommunicationManager::onTransmit(BitStream& stream, const RemotePacketType packetType) {
+	bool RemoteTransceiver::onTransmit(BitStream& stream, const RemotePacketType packetType) {
 		switch (packetType) {
 			case RemotePacketType::controls:
 				transmitRemoteControlsPacket(stream);
@@ -431,7 +493,7 @@ namespace pizda {
 		return true;
 	}
 	
-	void RemoteCommunicationManager::transmitRemoteControlsPacket(BitStream& stream) {
+	void RemoteTransceiver::transmitRemoteControlsPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		
 		// Motors
@@ -456,7 +518,7 @@ namespace pizda {
 		writeAxis(rc.getAxes().getLeverLeft().getFilteredValue());
 	}
 	
-	void RemoteCommunicationManager::transmitRemoteTrimPacket(BitStream& stream) {
+	void RemoteTransceiver::transmitRemoteTrimPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		
 		const auto write = [&stream](const int8_t settingsValue) {
@@ -476,7 +538,7 @@ namespace pizda {
 		write(rc.getSettings().controls.rudderTrim);
 	}
 	
-	void RemoteCommunicationManager::transmitRemoteLightsPacket(BitStream& stream) {
+	void RemoteTransceiver::transmitRemoteLightsPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		
 		stream.writeBool(rc.getRemoteData().lights.navigation);
@@ -485,7 +547,7 @@ namespace pizda {
 		stream.writeBool(rc.getRemoteData().lights.cabin);
 	}
 	
-	void RemoteCommunicationManager::transmitRemoteBaroPacket(BitStream& stream) {
+	void RemoteTransceiver::transmitRemoteBaroPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 
 		// Reference pressure
@@ -495,7 +557,7 @@ namespace pizda {
 		);
 	}
 	
-	void RemoteCommunicationManager::transmitRemoteAutopilotPacket(BitStream& stream) {
+	void RemoteTransceiver::transmitRemoteAutopilotPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 
 		// Speed
@@ -538,7 +600,7 @@ namespace pizda {
 		stream.writeBool(rc.getRemoteData().autopilot.autopilot);
 	}
 	
-	void RemoteCommunicationManager::transmitRemoteMotorConfigurationPacket(BitStream& stream) {
+	void RemoteTransceiver::transmitRemoteMotorConfigurationPacket(BitStream& stream) {
 		const auto& motors = RC::getInstance().getSettings().motors;
 	
 		const auto write = [&stream](const MotorConfiguration& motor) {
@@ -560,7 +622,7 @@ namespace pizda {
 		write(motors.tailRight);
 	}
 	
-	void RemoteCommunicationManager::transmitRemoteCalibratePacket(BitStream& stream) {
+	void RemoteTransceiver::transmitRemoteCalibratePacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 		
 		stream.writeUint8(std::to_underlying(rc.getRemoteData().calibrationSystem), RemoteCalibratePacket::systemLengthBits);

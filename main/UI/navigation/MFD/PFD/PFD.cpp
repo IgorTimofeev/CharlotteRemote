@@ -493,7 +493,7 @@ namespace pizda {
 		};
 		
 		// Throttle
-		if (rc.getCommunicationManager().isConnected()) {
+		if (rc.getTransceiver().isConnected()) {
 			if (rc.getAircraftData().raw.autopilot.autothrottle) {
 				renderText(L"A/T", true);
 			}
@@ -508,7 +508,7 @@ namespace pizda {
 		renderSeparator();
 		
 		// Lateral
-		if (rc.getCommunicationManager().isConnected()) {
+		if (rc.getTransceiver().isConnected()) {
 			switch (rc.getAircraftData().raw.autopilot.lateralMode) {
 				case AutopilotLateralMode::man: {
 					renderText(L"MAN", false);
@@ -527,7 +527,7 @@ namespace pizda {
 		renderSeparator();
 		
 		// Vertical
-		if (rc.getCommunicationManager().isConnected()) {
+		if (rc.getTransceiver().isConnected()) {
 			switch (rc.getAircraftData().raw.autopilot.verticalMode) {
 				case AutopilotVerticalMode::man: {
 					renderText(L"MAN", false);
@@ -814,7 +814,7 @@ namespace pizda {
 	}
 
 	void PFD::renderCurrentValue(Renderer* renderer, const Bounds& bounds, const uint8_t digitCount, float value, const bool left) {
-		const auto isConnected = RC::getInstance().getCommunicationManager().isConnected();
+		const auto isConnected = RC::getInstance().getTransceiver().isConnected();
 		const auto bg = isConnected ? &Theme::bg2 : &Theme::bad3;
 		const auto x2 = bounds.getX2();
 		const auto yCenter = bounds.getYCenter();

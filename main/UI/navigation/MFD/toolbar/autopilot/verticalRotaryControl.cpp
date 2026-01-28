@@ -89,7 +89,7 @@ namespace pizda {
 		RC::getInstance().getSettings().autopilot.altitudeFt = static_cast<uint16_t>(seven.getValue());
 		RC::getInstance().getSettings().autopilot.scheduleWrite();
 		
-		RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::autopilot);
+		RC::getInstance().getTransceiver().enqueue(RemotePacketType::autopilot);
 	}
 	
 	void VerticalRotaryControl::onPress() {
@@ -114,7 +114,7 @@ namespace pizda {
 			? AutopilotVerticalMode::man
 			: newMode;
 		
-		RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::autopilot);
+		RC::getInstance().getTransceiver().enqueue(RemotePacketType::autopilot);
 	}
 	
 	void VerticalRotaryControl::onTick() {

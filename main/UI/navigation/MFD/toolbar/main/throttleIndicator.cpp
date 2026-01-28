@@ -12,7 +12,7 @@ namespace pizda {
 	
 	void ThrottleIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
-		const auto isConnected = rc.getCommunicationManager().isConnected();
+		const auto isConnected = rc.getTransceiver().isConnected();
 		
 		constexpr static uint8_t textMaxSize = 11;
 		constexpr static uint8_t textOffset = 4;

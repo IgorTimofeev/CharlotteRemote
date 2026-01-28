@@ -38,7 +38,7 @@ The magnetometer should be calibrated each time before first takeoff in new geol
 		
 		_accelAndGyroButton.click += []() {
 			RC::getInstance().getRemoteData().calibrationSystem = AircraftCalibrationSystem::accelAndGyro;
-			RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::calibrate);
+			RC::getInstance().getTransceiver().enqueue(RemotePacketType::calibrate);
 		};
 		
 		rows += &_accelAndGyroButton;
@@ -49,7 +49,7 @@ The magnetometer should be calibrated each time before first takeoff in new geol
 		
 		_magButton.click += []() {
 			RC::getInstance().getRemoteData().calibrationSystem = AircraftCalibrationSystem::mag;
-			RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::calibrate);
+			RC::getInstance().getTransceiver().enqueue(RemotePacketType::calibrate);
 		};
 		
 		rows += &_magButton;

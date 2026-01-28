@@ -145,42 +145,50 @@ namespace pizda {
 			_pointerPos = bounds.getCenter() - bounds.getTopLeft();
 
 		// History
-		auto scanningLineNotRendered = true;
+		auto shouldRenderScanline = rd.frequency > 0;
 
 		for (uint16_t localX = 0; localX < bounds.getWidth(); localX++) {
 			const auto frequency = getFrequency(localX);
-			const auto historyIndex = getHistoryIndex(localX);
-			const auto RSSI = getRSSI(historyIndex);
-			const auto lineHeight = getRSSIHeight(RSSI);
 
-			const Color* color;
-
-			if (frequency <= rd.frequency) {
-				const auto colorIndex = std::min<uint32_t>(
-					static_cast<uint32_t>(std::abs(rd.history[historyIndex] - _RSSIMin)) * colorMap.size() / std::abs(_RSSIMax - _RSSIMin),
-					colorMap.size() - 1
-				);
-
-				color = colorMap[colorIndex];
-			}
-			else {
-				color = &Theme::fg6;
-			}
-
-			renderer->renderVerticalLine(
-				Point(bounds.getX() + localX, bounds.getY2() - lineHeight + 1),
-				lineHeight,
-				color
-			);
-
-			if (scanningLineNotRendered && frequency > rd.frequency) {
+			if (shouldRenderScanline && frequency > rd.frequency) {
 				renderer->renderVerticalLine(
 					Point(bounds.getX() + localX, bounds.getY()),
 					bounds.getHeight(),
 					&Theme::fg1
 				);
 
-				scanningLineNotRendered = false;
+				shouldRenderScanline = false;
+			}
+			else {
+				const auto historyIndex = getHistoryIndex(localX);
+				const auto RSSI = getRSSI(historyIndex);
+				const auto lineHeight = getRSSIHeight(RSSI);
+
+				if (lineHeight > 0) {
+					const Color* color;
+
+					if (frequency < rd.frequency) {
+						const auto colorIndex = std::min<uint32_t>(
+							 rd.historyMax == rd.historyMin
+								? 0
+								: static_cast<uint32_t>(std::abs(rd.history[historyIndex] - rd.historyMin))
+									* colorMap.size()
+									/ std::abs(rd.historyMax - rd.historyMin),
+							colorMap.size() - 1
+						);
+
+						color = colorMap[colorIndex];
+					}
+					else {
+						color = &Theme::fg6;
+					}
+
+					renderer->renderVerticalLine(
+						Point(bounds.getX() + localX, bounds.getY2() - lineHeight + 1),
+						lineHeight,
+						color
+					);
+				}
 			}
 		}
 

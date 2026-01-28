@@ -26,6 +26,6 @@ namespace pizda {
 		*_settingsValue = seven.getValue();
 		RC::getInstance().getSettings().controls.scheduleWrite();
 		
-		RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::trim);
+		RC::getInstance().getTransceiver().enqueue(RemotePacketType::trim);
 	}
 }

@@ -37,14 +37,15 @@ namespace pizda {
 		public:
 			RemoteDataRadioSpectrumScanning() {
 				// Clearing history
-				for (auto& record : history) {
+				for (auto& record : history)
 					record = std::numeric_limits<int8_t>::min();
-				}
 			}
 
 			RemoteDataRadioSpectrumScanningState state = RemoteDataRadioSpectrumScanningState::stopped;
 			uint32_t frequency = 0;
 			std::array<int8_t, 255> history {};
+			int8_t historyMin = 0;
+			int8_t historyMax = std::numeric_limits<int8_t>::min();
 	};
 
 	class RemoteDataRadio {

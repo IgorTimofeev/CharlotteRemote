@@ -28,7 +28,7 @@ namespace pizda {
 		RC::getInstance().getSettings().controls.referencePressurePa = static_cast<uint16_t>(seven.getValue()) * 10;
 		RC::getInstance().getSettings().controls.scheduleWrite();
 		
-		RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::baro);
+		RC::getInstance().getTransceiver().enqueue(RemotePacketType::baro);
 	}
 	
 	void ReferencePressureRotaryControl::onPress() {
@@ -39,7 +39,7 @@ namespace pizda {
 		
 		updateColor();
 		
-		RC::getInstance().getCommunicationManager().enqueue(RemotePacketType::baro);
+		RC::getInstance().getTransceiver().enqueue(RemotePacketType::baro);
 	}
 	
 	void ReferencePressureRotaryControl::onTick() {

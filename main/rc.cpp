@@ -61,9 +61,6 @@ namespace pizda {
 		if (!_transceiver.setup())
 			startErrorLoop("failed to setup XCVR");
 		
-		_communicationManager.setTransceiver(&_transceiver);
-		_communicationManager.start();
-		
 		// Application
 		_application.setRenderer(&_renderer);
 		_application.addHID(&_touchPanel);
@@ -78,7 +75,7 @@ namespace pizda {
 		updateDebugOverlayVisibility();
 
 		// This shit is blazingly 🔥 fast 🚀, so letting user enjoy logo for a few moments
-		vTaskDelay(pdMS_TO_TICKS(1000));
+		vTaskDelay(pdMS_TO_TICKS(500));
 
 		// Beep beep
 		_audioPlayer.play(resources::sounds::boot);
@@ -417,13 +414,9 @@ namespace pizda {
 		if (_route)
 			_pageLayout += _route->buildElement();
 	}
-
-	SX1262Transceiver& RC::getTransceiver() {
-		return _transceiver;
-	}
 	
-	RemoteCommunicationManager& RC::getCommunicationManager() {
-		return _communicationManager;
+	RemoteTransceiver& RC::getTransceiver() {
+		return _transceiver;
 	}
 
 	[[noreturn]] void RC::startErrorLoop(const char* error) {

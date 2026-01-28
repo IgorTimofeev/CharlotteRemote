@@ -173,15 +173,33 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="заебися">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="захуярил щипковые жесты для масштабирования графика радиоскана">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/element.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/element.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/debugOverlay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/debugOverlay.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/lateralRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/lateralRotaryControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/speedRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/speedRotaryControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/verticalRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/verticalRotaryControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/radioIndicator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleIndicator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimControls.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimControls.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/communicationManager/communicationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/communicationManager/communicationManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/communicationManager/remoteCommunicationManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/communicationManager/remoteCommunicationManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/communicationManager/remoteCommunicationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/communicationManager/remoteCommunicationManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/SX1262Transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/SX1262Transceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/communicationManager/communicationManager.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/communicationManager/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/packet.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/communicationManager/remoteCommunicationManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/communicationManager/remoteCommunicationManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/SX1262Transceiver.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/types/remoteData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/remoteData.h" afterDir="false" />
     </list>
@@ -237,31 +255,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.RadMigrateCodeStyle": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "RunOnceActivity.west.config.association.type.startup.service": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/settings",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.sourceCode.C++",
-    "structure.view.defaults.are.configured": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/settings&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C++&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\settings" />
@@ -271,14 +289,19 @@
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\elements\spatial" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\systems\transceiver" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\systems\communicationManager" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-LowPassFilter\src" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\ND\sceneElements" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\elements\spatial" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -759,11 +782,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="apidoc" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1213,15 +1231,8 @@
       <workItem from="1769346346702" duration="4234000" />
       <workItem from="1769424611425" duration="3000" />
       <workItem from="1769442612020" duration="31234000" />
-      <workItem from="1769513460154" duration="32841000" />
-    </task>
-    <task id="LOCAL-00043" summary="чета мелочевку всякую поделал, а ни хуя по итогу не нахуячил - ну по крайней мере теперь при дисконнекте симпотные красные зоны такие типа ААААААААААААААААААААААААААААААААААААААА ПИЗДА">
-      <option name="closed" value="true" />
-      <created>1767292658715</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1767292658715</updated>
+      <workItem from="1769513460154" duration="32891000" />
+      <workItem from="1769597689596" duration="7861000" />
     </task>
     <task id="LOCAL-00044" summary="по ходу пиды не понадобятся">
       <option name="closed" value="true" />
@@ -1607,7 +1618,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769531273883</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="захуярил щипковые жесты для масштабирования графика радиоскана">
+      <option name="closed" value="true" />
+      <created>1769556438509</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1769556438509</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1648,7 +1667,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="упростил конфиг мотиков-котиков, а то чет реально бредятина с оффсетами была" />
     <MESSAGE value="ну-ка, ну-ка, мб щас выпили к ебени матери эти флоаты килогерцовые" />
     <MESSAGE value="фух бля вроде почище выглядит" />
     <MESSAGE value="хд как оно вообще сигу не кидало ни разу" />
@@ -1673,6 +1691,7 @@
     <MESSAGE value="а не, ниче, пашет - надо только выкорчевать этот мусор из SX и перенести в транссивер" />
     <MESSAGE value="ахуй выглядит, надо завтра будет захуярить чета типа signal saturation или я хз" />
     <MESSAGE value="заебися" />
-    <option name="LAST_COMMIT_MESSAGE" value="заебися" />
+    <MESSAGE value="захуярил щипковые жесты для масштабирования графика радиоскана" />
+    <option name="LAST_COMMIT_MESSAGE" value="захуярил щипковые жесты для масштабирования графика радиоскана" />
   </component>
 </project>

@@ -53,13 +53,13 @@ namespace pizda {
 
 		// Aircraft
 		_batteryIndicatorAC.setVoltage(
-			rc.getCommunicationManager().isConnected()
+			rc.getTransceiver().isConnected()
 			? rc.getAircraftData().raw.batteryVoltageMV
 			: BatteryIndicator::voltageNotAvailable
 		);
 
 		_batteryIndicatorAC.setCharge(
-			rc.getCommunicationManager().isConnected()
+			rc.getTransceiver().isConnected()
 			? static_cast<uint8_t>(
 				rc.getAircraftData().raw.batteryVoltageMV < config::battery::aircraft::voltageMin
 				? 0

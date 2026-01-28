@@ -16,8 +16,8 @@ namespace pizda {
 	void RadioIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 		auto& transceiver = rc.getTransceiver();
-		auto& communicationManager = rc.getCommunicationManager();
-		const auto isConnected = communicationManager.isConnected();
+		auto& Transceiver = rc.getTransceiver();
+		const auto isConnected = Transceiver.isConnected();
 		
 		const auto rssi = static_cast<int32_t>(transceiver.getRSSI());
 		const auto snr = static_cast<int32_t>(transceiver.getSNR());

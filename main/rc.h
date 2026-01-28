@@ -21,8 +21,8 @@
 #include "config.h"
 #include "settings/settings.h"
 
-#include "systems/transceiver/SX1262Transceiver.h"
-#include "systems/communicationManager/remoteCommunicationManager.h"
+#include "systems/transceiver/transceiver.h"
+#include "systems/transceiver/remoteTransceiver.h"
 #include "systems/audio/audioPlayer.h"
 #include "systems/axes/axes.h"
 
@@ -56,8 +56,7 @@ namespace pizda {
 			>
 			getBattery() const;
 
-			SX1262Transceiver& getTransceiver();
-			RemoteCommunicationManager& getCommunicationManager();
+			RemoteTransceiver& getTransceiver();
 			
 			void updateDebugOverlayVisibility();
 
@@ -110,8 +109,7 @@ namespace pizda {
 			AudioPlayer _audioPlayer {};
 			
 			// Transceiver
-			SX1262Transceiver _transceiver {};
-			RemoteCommunicationManager _communicationManager {};
+			RemoteTransceiver _transceiver {};
 			
 			// Encoder
 			PushButtonEncoder _encoder {

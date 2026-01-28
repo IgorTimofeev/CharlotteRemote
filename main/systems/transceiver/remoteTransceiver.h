@@ -1,13 +1,11 @@
 #pragma once
 
-#include "systems/communicationManager/communicationManager.h"
-
 #include <queue>
 #include <set>
 
-#include <esp_log.h>
-
 #include <bitStream.h>
+
+#include "systems/transceiver/transceiver.h"
 
 namespace pizda {
 	class PacketSequenceItem {
@@ -23,7 +21,7 @@ namespace pizda {
 			bool _useEnqueued;
 	};
 	
-	class RemoteCommunicationManager : public CommunicationManager<RemotePacketType, AircraftPacketType> {
+	class RemoteTransceiver : public Transceiver<RemotePacketType, AircraftPacketType> {
 		public:
 			void enqueue(RemotePacketType type);
 			
@@ -65,6 +63,8 @@ namespace pizda {
 			uint16_t _spectrumScanningHistoryIndex = 0;
 			int64_t _spectrumScanningSampleRSSISum = 0;
 			uint32_t _spectrumScanningSampleQuantity = 0;
+
+			bool stopSpectrumScanning();
 
 			void onSpectrumScanning();
 	};
