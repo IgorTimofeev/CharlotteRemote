@@ -174,18 +174,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="захуярил визуализацию PID-тюнинга, но чета пока говной воняет, надо попизже будет">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="захуярил растеризацию сплайна катмулла-рома, чтоб PID-чартик посексуальнее выглядел">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ESP-IDF-PIDController" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-PIDController" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ESP-IDF-PIDController/src/PIDController.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-PIDController/src/PIDController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/renderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/renderer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/renderer.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/renderer.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,7 +190,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/YOBA" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/ESP-IDF-PIDController" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -1226,15 +1219,7 @@
       <workItem from="1769597689596" duration="17914000" />
       <workItem from="1769634752036" duration="16800000" />
       <workItem from="1769687786324" duration="2844000" />
-      <workItem from="1769696101519" duration="11604000" />
-    </task>
-    <task id="LOCAL-00047" summary="ОГО! ПАРТИЯ ГОРДИТСЯ ОТЕЧЕСТВЕННОЙ АВИОНИКОЙ ALTS MAN">
-      <option name="closed" value="true" />
-      <created>1767557588682</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1767557588682</updated>
+      <workItem from="1769696101519" duration="11902000" />
     </task>
     <task id="LOCAL-00048" summary="перебздел с менюхами, надо a/p режимы перенести в верхнюю панель, а то как-то неконсистентно выглядит">
       <option name="closed" value="true" />
@@ -1620,7 +1605,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769652378464</updated>
     </task>
-    <option name="localTasksCounter" value="96" />
+    <task id="LOCAL-00096" summary="захуярил растеризацию сплайна катмулла-рома, чтоб PID-чартик посексуальнее выглядел">
+      <option name="closed" value="true" />
+      <created>1769707834845</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1769707834846</updated>
+    </task>
+    <option name="localTasksCounter" value="97" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1661,7 +1654,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="сделал фон СИНТЕТИЧЕСКОГО ЗРЕНИЯ попроще, а то раньше костыльно рендерилось" />
     <MESSAGE value="ЧИСТИМ ВИЛОЧКОЙ" />
     <MESSAGE value="ЧИСТИМ ЛОЖЕЧКОЙ" />
     <MESSAGE value="заебумба" />
@@ -1686,6 +1678,7 @@
     <MESSAGE value="почистил трансюка, а то классовых оберток понахуярил, а толку хули" />
     <MESSAGE value="захуярил поддержку scrollIntoView" />
     <MESSAGE value="захуярил визуализацию PID-тюнинга, но чета пока говной воняет, надо попизже будет" />
-    <option name="LAST_COMMIT_MESSAGE" value="захуярил визуализацию PID-тюнинга, но чета пока говной воняет, надо попизже будет" />
+    <MESSAGE value="захуярил растеризацию сплайна катмулла-рома, чтоб PID-чартик посексуальнее выглядел" />
+    <option name="LAST_COMMIT_MESSAGE" value="захуярил растеризацию сплайна катмулла-рома, чтоб PID-чартик посексуальнее выглядел" />
   </component>
 </project>

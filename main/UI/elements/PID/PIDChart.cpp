@@ -105,10 +105,10 @@ namespace pizda {
 				_PIDCoefficients.i,
 				_PIDCoefficients.d,
 
-				0.f,
-				100.f,
+				_deltaTime,
 
-				_deltaTime
+				0.f,
+				100.f
 			);
 
 			localX += stepPixels;
