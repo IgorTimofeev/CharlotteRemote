@@ -174,23 +174,18 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="захуярил поддержку scrollIntoView">
-      <change afterPath="$PROJECT_DIR$/components/ESP-IDF-PIDController" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="захуярил визуализацию PID-тюнинга, но чета пока говной воняет, надо попизже будет">
       <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/events/scrollIntoViewEvent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/events/scrollIntoViewEvent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dependencies.lock" beforeDir="false" afterPath="$PROJECT_DIR$/dependencies.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/routes.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/routes.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/generic.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/generic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-PIDController" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-PIDController" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-PIDController/src/PIDController.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-PIDController/src/PIDController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/renderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/renderer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/renderer.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/renderer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -202,7 +197,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/YOBA" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -264,7 +259,8 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "settings.editor.selected.configurable": "Errors",
+    "settings.editor.splitter.proportion": "0.20187794",
     "structure.view.defaults.are.configured": "true",
     "vue.rearranger.settings.migration": "true"
   }
@@ -1228,15 +1224,9 @@
       <workItem from="1769442612020" duration="31234000" />
       <workItem from="1769513460154" duration="32891000" />
       <workItem from="1769597689596" duration="17914000" />
-      <workItem from="1769634752036" duration="16733000" />
-    </task>
-    <task id="LOCAL-00046" summary="ОГО! ПАРТИЯ ГОРДИТСЯ ОТЕЧЕСТВЕННОЙ АВИОНИКОЙ ALTS MAN">
-      <option name="closed" value="true" />
-      <created>1767555409368</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1767555409368</updated>
+      <workItem from="1769634752036" duration="16800000" />
+      <workItem from="1769687786324" duration="2844000" />
+      <workItem from="1769696101519" duration="11604000" />
     </task>
     <task id="LOCAL-00047" summary="ОГО! ПАРТИЯ ГОРДИТСЯ ОТЕЧЕСТВЕННОЙ АВИОНИКОЙ ALTS MAN">
       <option name="closed" value="true" />
@@ -1622,7 +1612,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769614291364</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="захуярил визуализацию PID-тюнинга, но чета пока говной воняет, надо попизже будет">
+      <option name="closed" value="true" />
+      <created>1769652378463</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1769652378464</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1663,7 +1661,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="хд как оно вообще сигу не кидало ни разу" />
     <MESSAGE value="сделал фон СИНТЕТИЧЕСКОГО ЗРЕНИЯ попроще, а то раньше костыльно рендерилось" />
     <MESSAGE value="ЧИСТИМ ВИЛОЧКОЙ" />
     <MESSAGE value="ЧИСТИМ ЛОЖЕЧКОЙ" />
@@ -1688,6 +1685,7 @@
     <MESSAGE value="захуярил щипковые жесты для масштабирования графика радиоскана" />
     <MESSAGE value="почистил трансюка, а то классовых оберток понахуярил, а толку хули" />
     <MESSAGE value="захуярил поддержку scrollIntoView" />
-    <option name="LAST_COMMIT_MESSAGE" value="захуярил поддержку scrollIntoView" />
+    <MESSAGE value="захуярил визуализацию PID-тюнинга, но чета пока говной воняет, надо попизже будет" />
+    <option name="LAST_COMMIT_MESSAGE" value="захуярил визуализацию PID-тюнинга, но чета пока говной воняет, надо попизже будет" />
   </component>
 </project>

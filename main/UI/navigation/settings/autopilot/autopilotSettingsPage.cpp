@@ -15,8 +15,8 @@ namespace pizda {
 
 		// -------------------------------- Chart --------------------------------
 
-		chart.setHeight(160);
-		rows += &chart;
+		chartEditor.setHeight(190);
+		rows += &chartEditor;
 
 		// PID
 		PIDRow.setOrientation(Orientation::horizontal);
@@ -53,31 +53,6 @@ namespace pizda {
 
 		PIDRow += &DTitle;
 
-		// Step & interval
-		stepAndIntervalRow.setOrientation(Orientation::horizontal);
-		stepAndIntervalRow.setSpacing(5);
-		rows += &stepAndIntervalRow;
-
-		// Step
-		Theme::apply(&stepTextField);
-		stepTextField.setText(L"10");
-
-		stepTextField.input += [this](Key, std::optional<std::wstring_view>) {
-			updateChart();
-		};
-
-		stepAndIntervalRow += &stepTitle;
-
-		// Delta time
-		Theme::apply(&deltaTimeTextField);
-		deltaTimeTextField.setText(L"0.05");
-
-		deltaTimeTextField.input += [this](Key, std::optional<std::wstring_view>) {
-			updateChart();
-		};
-
-		stepAndIntervalRow += &intervalTitle;
-
 		updateChart();
 	}
 
@@ -93,18 +68,6 @@ namespace pizda {
 		if (!StringUtils::tryParseFloat(DTextField.getText(), d))
 			d = 0;
 
-		chart.setPIDCoefficients({ p, i, d });
-
-		int32_t step;
-		if (!StringUtils::tryParseInt32(stepTextField.getText(), step))
-			step = 1;
-
-		chart.setStep(std::clamp<int32_t>(step, 1, 100));
-
-		float interval;
-		if (!StringUtils::tryParseFloat(deltaTimeTextField.getText(), interval))
-			interval = 1;
-
-		chart.setDeltaTime(std::clamp<float>(interval, 0.0001, 100));
+		chartEditor.setCoefficients({ p, i, d });
 	}
 }

@@ -17,7 +17,7 @@ namespace pizda {
 			AutopilotSettingsPage();
 
 		private:
-			PIDChart chart {};
+			PIDChartEditor chartEditor {};
 
 			RelativeStackLayout PIDRow {};
 
@@ -29,14 +29,6 @@ namespace pizda {
 
 			TextField DTextField {};
 			Titler DTitle { L"D", &DTextField };
-
-			RelativeStackLayout stepAndIntervalRow {};
-
-			TextField stepTextField {};
-			Titler stepTitle { L"Step", &stepTextField };
-
-			TextField deltaTimeTextField {};
-			Titler intervalTitle { L"Delta time", &deltaTimeTextField };
 
 			void updateChart();
 	};

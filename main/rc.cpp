@@ -71,7 +71,7 @@ namespace pizda {
 		_application += &_pageLayout;
 		_application += &_openMenuButton;
 
-		setRoute(&Routes::MFD);
+		setRoute(&Routes::settingsAutopilot);
 		updateDebugOverlayVisibility();
 
 		// This shit is blazingly 🔥 fast 🚀, so letting user enjoy logo for a few moments

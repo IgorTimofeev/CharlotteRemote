@@ -1,3 +1,5 @@
+#include <utility>
+
 #include <PIDController.h>
 
 #include "UI/elements/PID/PIDChart.h"
@@ -82,11 +84,19 @@ namespace pizda {
 
 		// ----------------------------- Chart -----------------------------
 
-		float value  = 0;
-		PIDController PIDController {};
-		auto oldPoint = bounds.getBottomLeft();
 
-		for (int32_t localX = 0; localX < bounds.getWidth(); localX += _step) {
+		float value  = 0;
+
+		std::array<Point, 100> splinePoints {};
+		splinePoints[0] = bounds.getBottomLeft();
+		splinePoints[1] = splinePoints[0];
+
+		uint16_t localX = 0;
+		const auto stepPixels = bounds.getWidth() / (_stepsQuantity - 1);
+
+		PIDController PIDController {};
+
+		for (uint16_t i = 0; i < _stepsQuantity; ++i) {
 			value = PIDController.tick(
 				value,
 				_setpoint,
@@ -101,18 +111,29 @@ namespace pizda {
 				_deltaTime
 			);
 
-			Point newPoint {
+			localX += stepPixels;
+
+			splinePoints[i + 2] = {
 				bounds.getX() + localX,
 				bounds.getY2() - static_cast<int32_t>(value / 100.f * bounds.getHeight())
 			};
+		}
 
-			renderer->renderLine(
-				oldPoint,
-				newPoint,
-				&Theme::accent1
+		splinePoints[_stepsQuantity + 1] = splinePoints[_stepsQuantity];
+
+		renderer->renderCatmullRomSpline(
+			splinePoints.data(),
+			_stepsQuantity + 2,
+			&Theme::accent1,
+			10
+		);
+
+		for (uint16_t i = 0; i < _stepsQuantity; ++i) {
+			renderer->renderFilledCircle(
+				splinePoints[i + 2],
+				2,
+				&Theme::fg1
 			);
-
-			oldPoint = newPoint;
 		}
 	}
 
@@ -122,20 +143,121 @@ namespace pizda {
 
 		invalidate();
 	}
-
-	void PIDChart::setPIDCoefficients(const PIDCoefficients& coefficients) {
+	void PIDChart::setCoefficients(const PIDCoefficients& coefficients) {
 		_PIDCoefficients = coefficients;
 
 		invalidate();
 	}
 
-	void PIDChart::setStep(const uint64_t interval) {
-		_step = interval;
+	void PIDChart::setStepsQuantity(const uint16_t stepsQuantity) {
+		_stepsQuantity = stepsQuantity;
 
 		invalidate();
 	}
 
 	void PIDChart::setDeltaTime(const float deltaTime) {
 		_deltaTime = deltaTime;
+	}
+
+	PIDChartEditor::PIDChartEditor() {
+		*this += &_chart;
+
+		// Buttons
+		_buttonsRow.setOrientation(Orientation::horizontal);
+		_buttonsRow.setSpacing(1);
+		_buttonsRow.setHeight(22);
+		setAutoSize(&_buttonsRow);
+		*this += &_buttonsRow;
+
+		// Frequency
+		addButton(_frequencyButton);
+
+		_frequencyButton.click += [this] {
+			uint8_t value = static_cast<uint8_t>(_frequency) + 1;
+
+			if (value > static_cast<uint8_t>(PIDChartEditorFrequency::max))
+				value = 0;
+
+			_frequency = static_cast<PIDChartEditorFrequency>(value);
+
+			updateFromFrequency();
+		};
+
+		// Steps
+		addButton(_stepsButton);
+
+		_stepsButton.click += [this] {
+			uint8_t value = static_cast<uint8_t>(_steps) + 1;
+
+			if (value > static_cast<uint8_t>(PIDChartEditorSteps::max))
+				value = 0;
+
+			_steps = static_cast<PIDChartEditorSteps>(value);
+
+			updateFromSteps();
+		};
+
+		// Initialization
+		updateFromFrequency();
+		updateFromSteps();
+	}
+
+	void PIDChartEditor::addButton(Button& button) {
+		Theme::applySecondary(&button);
+		button.setCornerRadius(0);
+		button.setHeight(Size::computed);
+		_buttonsRow += &button;
+	}
+
+	void PIDChartEditor::updateFromFrequency() {
+		uint8_t frequency;
+		std::wstring text;
+
+		switch (_frequency) {
+			case PIDChartEditorFrequency::hz1:
+				frequency = 1;
+				text = L"1 Hz";
+				break;
+			case PIDChartEditorFrequency::hz20:
+				frequency = 20;
+				text = L"20 Hz";
+				break;
+			case PIDChartEditorFrequency::hz30:
+				frequency = 30;
+				text = L"30 Hz";
+				break;
+			default:
+				frequency = 100;
+				text = L"100 Hz";
+				break;
+		}
+
+		_chart.setDeltaTime(1.f / frequency);
+		_frequencyButton.setText(text);
+	}
+
+	void PIDChartEditor::updateFromSteps() {
+		uint8_t steps;
+		std::wstring text;
+
+		switch (_steps) {
+			case PIDChartEditorSteps::steps5:
+				steps = 5;
+				text = L"5 it";
+				break;
+
+			case PIDChartEditorSteps::steps10:
+				steps = 10;
+				text = L"10 it";
+				break;
+
+			default:
+				steps = 20;
+				text = L"20 it";
+				break;
+		}
+
+		_chart.setStepsQuantity(steps);
+		_stepsButton.setText(text);
 	}
 }
