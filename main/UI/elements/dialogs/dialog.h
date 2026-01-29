@@ -24,7 +24,6 @@ namespace pizda {
 			Layout slideLayout {};
 
 			void show();
-
 			void hide();
 	};
 }

@@ -9,10 +9,11 @@ namespace pizda {
 	}
 
 	void DialogSlideLayoutBackground::onEvent(Event* event) {
+		if (!ScreenEvent::isScreen(event))
+			return;
+
 		if (event->getTypeID() == PointerDownEvent::typeID) {
 			setFocused(true);
-			
-			event->setHandled(true);
 		}
 		else if (event->getTypeID() == PointerUpEvent::typeID && isFocused()) {
 			RC::getInstance().getApplication().scheduleOnTick([this] {
@@ -21,9 +22,9 @@ namespace pizda {
 				element->hide();
 				delete element;
 			});
-			
-			event->setHandled(true);
 		}
+
+		event->setHandled(true);
 	}
 
 	Dialog::Dialog() {
