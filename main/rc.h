@@ -157,6 +157,7 @@ namespace pizda {
 
 			void SPIBusSetup() const;
 			void ADCSetup();
+			void UISetup();
 
 			static void GPIOSetup();
 			static void NVSSetup();

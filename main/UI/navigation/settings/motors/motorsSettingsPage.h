@@ -38,13 +38,14 @@ namespace pizda {
 			Button _reverse {};
 			
 			template<std::integral T>
-			void addTextField(Titler& titler, TextField& text, T value) {
+			void addTextField(Titler& titler, TextField& textField, T value) {
 				titler.title.setTextColor(&Theme::fg5);
 				
-				Theme::apply(&text);
-				text.setText(std::to_wstring(value));
-				
-				text.input += [this](const Key key, std::optional<std::wstring_view> text) {
+				Theme::apply(&textField);
+				textField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
+				textField.setText(std::to_wstring(value));
+
+				textField.input += [this](const Key key, std::optional<std::wstring_view> text) {
 					if (key == Key::enter)
 						changed();
 				};

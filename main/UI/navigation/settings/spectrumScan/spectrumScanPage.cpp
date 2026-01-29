@@ -301,16 +301,19 @@ namespace pizda {
 
 		// From
 		Theme::apply(&frequencyFromTextField);
+		frequencyFromTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 		frequencyFromTextField.setText(std::to_wstring(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.from / 1'000'000));
 		frequencyRow += &frequencyFromTitle;
 
 		// To
 		Theme::apply(&frequencyToTextField);
+		frequencyToTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 		frequencyToTextField.setText(std::to_wstring(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.to / 1'000'000));
 		frequencyRow += &frequencyToTitle;
 
 		// Step
 		Theme::apply(&frequencyStepTextField);
+		frequencyStepTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 		frequencyStepTextField.setText(std::to_wstring(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.step / 1'000));
 		frequencyRow += &frequencyStepTitle;
 

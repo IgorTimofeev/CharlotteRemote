@@ -67,12 +67,7 @@ namespace pizda {
 		_application.addHID(&_encoder);
 
 		// UI
-		_application.setBackgroundColor(&Theme::bg1);
-		_application += &_pageLayout;
-		_application += &_openMenuButton;
-
-		setRoute(&Routes::settingsAutopilot);
-		updateDebugOverlayVisibility();
+		UISetup();
 
 		// This shit is blazingly 🔥 fast 🚀, so letting user enjoy logo for a few moments
 		vTaskDelay(pdMS_TO_TICKS(500));
@@ -357,6 +352,15 @@ namespace pizda {
 		unitConfig.clk_src = ADC_RTC_CLK_SRC_DEFAULT;
 		unitConfig.ulp_mode = ADC_ULP_MODE_DISABLE;
 		ESP_ERROR_CHECK(adc_oneshot_new_unit(&unitConfig, &_ADCOneshotUnit1));
+	}
+
+	void RC::UISetup() {
+		_application.setBackgroundColor(&Theme::bg1);
+		_application += &_pageLayout;
+		_application += &_openMenuButton;
+
+		setRoute(&Routes::settingsAutopilot);
+		updateDebugOverlayVisibility();
 	}
 
 	void RC::GPIOSetup() {
