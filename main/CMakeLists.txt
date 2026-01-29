@@ -17,6 +17,7 @@ idf_component_register(
         ESP-IDF-BitStream
         ESP-IDF-Units
         ESP-IDF-LowPassFilter
+        ESP-IDF-PIDController
         ESP-IDF-Battery
 )
 

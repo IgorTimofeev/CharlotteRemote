@@ -99,6 +99,7 @@ namespace pizda {
 		auto& st = rc.getSettings().transceiver.spectrumScanning;
 		auto& rd = RC::getInstance().getRemoteData().transceiver.spectrumScanning;
 
+		// Background
 		renderer->renderFilledRectangle(
 			bounds,
 			&Theme::bg2
