@@ -25,6 +25,7 @@ namespace pizda {
 
 		// P
 		Theme::apply(&PTextField);
+		PTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
 		PTextField.setText(L"0.1");
 
 		PTextField.input += [this](Key, std::optional<std::wstring_view>) {
@@ -35,6 +36,7 @@ namespace pizda {
 
 		// I
 		Theme::apply(&ITextField);
+		ITextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
 		ITextField.setText(L"20");
 
 		ITextField.input += [this](Key, std::optional<std::wstring_view>) {
@@ -45,6 +47,7 @@ namespace pizda {
 
 		// D
 		Theme::apply(&DTextField);
+		DTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
 		DTextField.setText(L"0.005");
 
 		DTextField.input += [this](Key, std::optional<std::wstring_view>) {

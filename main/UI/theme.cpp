@@ -74,6 +74,13 @@ namespace pizda {
 			keyboard->setActionKeyBackgroundColor(&Theme::bg2);
 			keyboard->setActionKeyTextColor(&Theme::fg1);
 
+			keyboard->setDisabledKeyBackgroundColor(&Theme::bg2);
+			keyboard->setDisabledKeyTextColor(&Theme::fg5);
+
+			keyboard->setNumericLayoutBuilder([] {
+				return new NumericKeyboardLayout();
+			});
+
 			keyboard->setCharactersLayoutBuilder([] {
 				return new CharactersKeyboardLayout();
 			});
@@ -81,13 +88,8 @@ namespace pizda {
 			keyboard->setCyclicLayoutBuilders({
 				[] {
 					return new EnglishKeyboardLayout();
-				},
-//			[]() {
-//				return new RussianKeyboardLayout();
-//			}
+				}
 			});
-
-			keyboard->setCyclicLayoutIndex(0);
 		});
 	}
 

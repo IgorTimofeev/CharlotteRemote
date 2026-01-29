@@ -174,14 +174,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="опача забыл">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ПОРА РЕВОРКАТЬ КЛАВУ ОБСКУРОВНУ">
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/button.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/button.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollView.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/control.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/control.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/layout.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/layout.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/textField.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/textField.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/textField.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/textField.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/dialogs/dialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/dialogs/dialog.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/dialogs/dialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/dialogs/dialog.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/theme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/theme.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,7 +258,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "Errors",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C++",
     "settings.editor.splitter.proportion": "0.20187794",
     "structure.view.defaults.are.configured": "true",
     "vue.rearranger.settings.migration": "true"
@@ -1222,15 +1225,7 @@
       <workItem from="1769597689596" duration="17914000" />
       <workItem from="1769634752036" duration="16800000" />
       <workItem from="1769687786324" duration="2844000" />
-      <workItem from="1769696101519" duration="16836000" />
-    </task>
-    <task id="LOCAL-00049" summary="неплохо выглядит - надо только кастомный рендер прихуярить ко всем варикам">
-      <option name="closed" value="true" />
-      <created>1767669028138</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1767669028138</updated>
+      <workItem from="1769696101519" duration="22944000" />
     </task>
     <task id="LOCAL-00050" summary="заебок, hold пашет">
       <option name="closed" value="true" />
@@ -1616,7 +1611,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769708110953</updated>
     </task>
-    <option name="localTasksCounter" value="98" />
+    <task id="LOCAL-00098" summary="ПОРА РЕВОРКАТЬ КЛАВУ ОБСКУРОВНУ">
+      <option name="closed" value="true" />
+      <created>1769713346905</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1769713346905</updated>
+    </task>
+    <option name="localTasksCounter" value="99" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1657,7 +1660,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="ЧИСТИМ ЛОЖЕЧКОЙ" />
     <MESSAGE value="заебумба" />
     <MESSAGE value="я хуею бля ЮНИТЫ ВАНШОТ ЮНИТЫ НЕТ БЛЯДЬ НОУСКОУП 360 У.У.УЛЛЛЬТРАКИЛЛ ЮНИТЫ" />
     <MESSAGE value="ТАК СТОП" />
@@ -1682,6 +1684,7 @@
     <MESSAGE value="захуярил визуализацию PID-тюнинга, но чета пока говной воняет, надо попизже будет" />
     <MESSAGE value="захуярил растеризацию сплайна катмулла-рома, чтоб PID-чартик посексуальнее выглядел" />
     <MESSAGE value="опача забыл" />
-    <option name="LAST_COMMIT_MESSAGE" value="опача забыл" />
+    <MESSAGE value="ПОРА РЕВОРКАТЬ КЛАВУ ОБСКУРОВНУ" />
+    <option name="LAST_COMMIT_MESSAGE" value="ПОРА РЕВОРКАТЬ КЛАВУ ОБСКУРОВНУ" />
   </component>
 </project>
