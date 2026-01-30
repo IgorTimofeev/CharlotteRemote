@@ -121,7 +121,7 @@ furnished to do so, subject to the following conditions)"
 
 		// Progress bar
 		Theme::apply(&_progressBar);
-		_progressBar.setValue(0xFFFF * 80 / 100);
+		_progressBar.setValue(0.8f);
 		_progressBar.setFillColor(&Theme::bad1);
 
 		rows += &_progressBarTitle;

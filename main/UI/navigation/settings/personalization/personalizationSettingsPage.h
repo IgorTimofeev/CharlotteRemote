@@ -32,18 +32,14 @@ namespace pizda {
 			constexpr static uint8_t _PFDSplitMax = 80;
 
 			Slider _PFDSplitSlider {};
-			Titler _PFDSplitTitle = Titler(&_PFDSplitSlider);
+			Titler _PFDSplitTitle = Titler(L"Split view height", &_PFDSplitSlider);
 
-			void updatePFDSplitTitle();
-			
 			// FOV
 			constexpr static uint8_t _PFDFOVMin = 20;
 			constexpr static uint8_t _PFDFOVMax = _PFDFOVMin + 100;
 
 			Slider _PFDFOVSlider {};
-			Titler _PFDFOVTitle = Titler(&_PFDFOVSlider);
-
-			void updatePFDFOVTitle();
+			Titler _PFDFOVTitle = Titler(L"Field of view", &_PFDFOVSlider);
 
 			// Waypoint labels
 			Switcher _PFDWaypointLabels { L"Waypoint labels" };

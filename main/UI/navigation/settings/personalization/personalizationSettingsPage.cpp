@@ -59,18 +59,15 @@ namespace pizda {
 		_PFDFOVSlider.setValueMaximum(_PFDFOVMax);
 		_PFDFOVSlider.setValue(settings.personalization.MFD.PFD.FOV);
 
-		_PFDFOVSlider.setTickInterval(10);
-		_PFDFOVSlider.setBigTickIndex(5);
+		_PFDFOVSlider.setTickQuantity(10);
+		_PFDFOVSlider.setBigTickStep(5);
 		_PFDFOVSlider.setTickLabelBuilder(Slider::int32TickLabelBuilder);
 
 		_PFDFOVSlider.valueChanged += [this, &settings] {
 			settings.personalization.MFD.PFD.FOV = _PFDFOVSlider.getValue();
 			settings.personalization.scheduleWrite();
-			
-			updatePFDFOVTitle();
 		};
 
-		updatePFDFOVTitle();
 		rows += &_PFDFOVTitle;
 		
 		// Height
@@ -80,11 +77,8 @@ namespace pizda {
 		_PFDSplitSlider.valueChanged += [this, &settings] {
 			settings.personalization.MFD.splitPercent = _PFDSplitMin + _PFDSplitSlider.getValueFactor() * (_PFDSplitMax - _PFDSplitMin);
 			settings.personalization.scheduleWrite();
-			
-			updatePFDSplitTitle();
 		};
-		
-		updatePFDSplitTitle();
+
 		rows += &_PFDSplitTitle;
 
 		// Waypoint labels
@@ -115,13 +109,5 @@ namespace pizda {
 		};
 		
 		rows += &_NDEarthGrid;
-	}
-	
-	void PersonalizationSettingsPage::updatePFDSplitTitle() {
-		_PFDSplitTitle.title.setText(std::format(L"Split view height ({}%)", RC::getInstance().getSettings().personalization.MFD.splitPercent));
-	}
-	
-	void PersonalizationSettingsPage::updatePFDFOVTitle() {
-		_PFDFOVTitle.title.setText(std::format(L"Field of view ({} deg)", RC::getInstance().getSettings().personalization.MFD.PFD.FOV));
 	}
 }

@@ -25,12 +25,18 @@ namespace pizda {
 		Theme::apply(&_jitteringCutoffFactorSlider);
 		_jitteringCutoffFactorSlider.setFillColor(&Theme::bad1);
 
-		_jitteringCutoffFactorSlider.setValue(static_cast<float>(RC::getInstance().getSettings().axes.jitteringCutoffValue) / _jitteringCutoffMaxValue);
+		_jitteringCutoffFactorSlider.setValueMinimum(0);
+		_jitteringCutoffFactorSlider.setValueMaximum(_jitteringCutoffMaxValue);
+		_jitteringCutoffFactorSlider.setValue(RC::getInstance().getSettings().axes.jitteringCutoffValue);
+
+		_jitteringCutoffFactorSlider.setTickQuantity(10);
+		_jitteringCutoffFactorSlider.setBigTickStep(5);
+		_jitteringCutoffFactorSlider.setTickLabelBuilder(Slider::int32TickLabelBuilder);
 
 		_jitteringCutoffFactorSlider.valueChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 
-			settings.axes.jitteringCutoffValue = _jitteringCutoffFactorSlider.getValueFactor() * _jitteringCutoffMaxValue;
+			settings.axes.jitteringCutoffValue = _jitteringCutoffFactorSlider.getValue();
 			settings.axes.scheduleWrite();
 		};
 

@@ -190,11 +190,11 @@ namespace pizda {
 		slider->setHandleColor(&Theme::fg1);
 
 		// Tick
-		slider->setTickInterval(0.2);
-		slider->setBigTickIndex(5);
+		slider->setTickQuantity(10);
+		slider->setBigTickStep(5);
 		slider->setTickOffset(0);
-		slider->setBigTickLength(5);
-		slider->setSmallTickLength(3);
+		slider->setBigTickLineLength(5);
+		slider->setSmallTickLineLength(3);
 		slider->setTickColor(&Theme::fg6);
 
 		slider->setTickLabelFont(&Theme::fontNormal);

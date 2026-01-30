@@ -63,7 +63,7 @@ The magnetometer should be calibrated each time before first takeoff in new geol
 		const auto calibrating = rc.getAircraftData().raw.calibration.isCalibrating();
 		
 		if (calibrating) {
-			_progressBar.setValue(rc.getAircraftData().raw.calibration.progress * 0xFFFF / 0xFF);
+			_progressBar.setValue(static_cast<float>(rc.getAircraftData().raw.calibration.progress) / 0xFF);
 			
 			_progressText.setText(std::format(
 				L"Calibrating {}: {}%",

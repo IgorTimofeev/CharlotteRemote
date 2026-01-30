@@ -32,7 +32,7 @@ namespace pizda {
 			Text progressText;
 			Text descriptionText;
 
-			void setProgress(uint16_t value) {
+			void setProgress(float value) {
 				progressBar.setValue(value);
 				progressText.setText(std::format(L"{}%", value * 100 / 0xFFFF));
 			}

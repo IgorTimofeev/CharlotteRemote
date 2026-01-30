@@ -174,18 +174,20 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="побольше сипиков, поменьше хедиков">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="захуярил ТИКОВЫЕ ЛЕЙБЛЫ для ползучих сучих товарей">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/progressBar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/progressBar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/progressBar.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/progressBar.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/traits/valueElement.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/traits/valueElement.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/dialogs/progressDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/dialogs/progressDialog.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axesSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axesSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axesSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axesSettingsPage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/developer/developerSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/developer/developerSettingsPage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/theme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/theme.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1228,15 +1230,7 @@
       <workItem from="1769687786324" duration="2844000" />
       <workItem from="1769696101519" duration="23777000" />
       <workItem from="1769722020518" duration="6733000" />
-      <workItem from="1769774809342" duration="12267000" />
-    </task>
-    <task id="LOCAL-00055" summary="по ходу все-таки нужен, над тогда щас нвс этот проапдейтить под int8">
-      <option name="closed" value="true" />
-      <created>1767969906906</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1767969906907</updated>
+      <workItem from="1769774809342" duration="14305000" />
     </task>
     <task id="LOCAL-00056" summary="фух бля заебался чета малеха">
       <option name="closed" value="true" />
@@ -1622,7 +1616,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769780831146</updated>
     </task>
-    <option name="localTasksCounter" value="104" />
+    <task id="LOCAL-00104" summary="захуярил ТИКОВЫЕ ЛЕЙБЛЫ для ползучих сучих товарей">
+      <option name="closed" value="true" />
+      <created>1769787197934</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1769787197934</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1663,7 +1665,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="СУКА ЧЕТО ЯВНО НЕ ТАК Я ЩАС ПСИХАНУ" />
     <MESSAGE value="пиздец" />
     <MESSAGE value="..." />
     <MESSAGE value="оказывается, я малёха проебался и вообще не делал ОБРЕЗАНИЕ ДЕТИШЕК в лейаутах для экранных ивентов - поэтому в скроллвьюверах за пределами вьюпорта они всегда ловили тачи, даже если их, бля, на экране не видно" />
@@ -1688,6 +1689,7 @@
     <MESSAGE value="WELCOME TO THE ♂ DUNGEON MIT ♂ LICENSE CLUB, BUDDY" />
     <MESSAGE value="забыл модельку лейаутов клависина подтереть" />
     <MESSAGE value="побольше сипиков, поменьше хедиков" />
-    <option name="LAST_COMMIT_MESSAGE" value="побольше сипиков, поменьше хедиков" />
+    <MESSAGE value="захуярил ТИКОВЫЕ ЛЕЙБЛЫ для ползучих сучих товарей" />
+    <option name="LAST_COMMIT_MESSAGE" value="захуярил ТИКОВЫЕ ЛЕЙБЛЫ для ползучих сучих товарей" />
   </component>
 </project>
