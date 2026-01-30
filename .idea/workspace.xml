@@ -174,19 +174,34 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="WELCOME TO THE ♂ DUNGEON MIT ♂ LICENSE CLUB, BUDDY">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="забыл модельку лейаутов клависина подтереть">
+      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/imageView.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/progressBar.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/relativeStackLayout.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollBar.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollView.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/stackLayout.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/switch.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/text.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/traits/valueElement.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/wrapLayout.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/button.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/button.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/button.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/button.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/buttonsLayout.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/layout.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/buttonsLayout.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/controller.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/controller.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/controller.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/controller.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/keyboard.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/keyboard.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/keyboard.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/keyboard.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/keyboardLayout.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/keyboardLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/layout.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/imageView.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/imageView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/progressBar.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/progressBar.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/relativeStackLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/relativeStackLayout.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollBar.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollBar.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollView.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/stackLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/stackLayout.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/switch.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/switch.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/text.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/text.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/traits/activeElement.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/traits/activeElement.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/wrapLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/wrapLayout.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/sevenRotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/sevenRotaryControl.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -198,7 +213,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/YOBA" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -269,10 +284,10 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\YOBA\src\YOBA\UI" />
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\YOBA\src\YOBA\UI\traits" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\YOBA\src\YOBA\UI\keyboard" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\elements\PID" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\settings" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-PIDController" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\YOBA\src\YOBA\UI\keyboard" />
@@ -1229,15 +1244,7 @@
       <workItem from="1769687786324" duration="2844000" />
       <workItem from="1769696101519" duration="23777000" />
       <workItem from="1769722020518" duration="6733000" />
-      <workItem from="1769774809342" duration="3702000" />
-    </task>
-    <task id="LOCAL-00053" summary="ну че, довольно сексапильные флажки вышли">
-      <option name="closed" value="true" />
-      <created>1767903887701</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1767903887701</updated>
+      <workItem from="1769774809342" duration="5752000" />
     </task>
     <task id="LOCAL-00054" summary="чота хз нужен ли трим на самом самбике или это хуйня">
       <option name="closed" value="true" />
@@ -1623,7 +1630,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769728717447</updated>
     </task>
-    <option name="localTasksCounter" value="102" />
+    <task id="LOCAL-00102" summary="забыл модельку лейаутов клависина подтереть">
+      <option name="closed" value="true" />
+      <created>1769778726102</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1769778726102</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1664,7 +1679,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="охуеть, написано же, СУКА, В ДОКЕ, ЧТО THREAD SAFE ЭТО ДЕРЬМО))) НУ И ЧЕ, ГДЕ? КАКОЙ TIMEOUT БЛЯДЬ" />
     <MESSAGE value="ебать че происходит сука при чтении adc с тасок внезапно появились какие-то интерференции, словно оси взаимно друг на друга влияют - ПЕРДЁЖ ЕБАНЫЙ БЛЯДЬЬ" />
     <MESSAGE value="СУКА ЧЕТО ЯВНО НЕ ТАК Я ЩАС ПСИХАНУ" />
     <MESSAGE value="пиздец" />
@@ -1689,6 +1703,7 @@
     <MESSAGE value="заебунькаль енамчик с ОПЦИЯМИ клавдии федеровны - терь в текстовых полях можно указывать, че ты хочешь, мол, числа, хуисла, со знаком, без плавающей точки и тп" />
     <MESSAGE value="разгондонил клавулетту на кучу файлов и убрал эту залупу с model-based интерфейсом - типа вы там на своих браузерах и мобилках дрочите скок хотите, а мы мужики базированные, сразу во вьюху всё хуярим и похуй" />
     <MESSAGE value="WELCOME TO THE ♂ DUNGEON MIT ♂ LICENSE CLUB, BUDDY" />
-    <option name="LAST_COMMIT_MESSAGE" value="WELCOME TO THE ♂ DUNGEON MIT ♂ LICENSE CLUB, BUDDY" />
+    <MESSAGE value="забыл модельку лейаутов клависина подтереть" />
+    <option name="LAST_COMMIT_MESSAGE" value="забыл модельку лейаутов клависина подтереть" />
   </component>
 </project>

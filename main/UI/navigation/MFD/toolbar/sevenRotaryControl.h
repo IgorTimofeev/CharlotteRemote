@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
@@ -27,7 +29,7 @@ namespace pizda {
 			SevenSegment seven {};
 			
 		protected:
-			void onRotate(bool clockwise, bool big) override {
+			void onRotate(const bool clockwise, const bool big) override {
 				if (getVariantIndex() == 0) {
 					const auto change = static_cast<int32_t>(big ? bigChange : smallChange) * (clockwise ? 1 : -1);
 					
