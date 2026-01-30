@@ -499,23 +499,18 @@ namespace pizda {
 		// Motors
 		
 		// Throttle
-		stream.writeUint16(
-			rc.getRemoteData().throttle_0_255 * ((1 << RemoteControlsPacket::motorLengthBits) - 1) / 0xFF,
-			RemoteControlsPacket::motorLengthBits
-		);
-		
 		const auto writeAxis = [&stream](const uint16_t axisValue) {
 			stream.writeUint16(
 				static_cast<uint16_t>(axisValue * ((1 << RemoteControlsPacket::motorLengthBits) - 1) / Axis::valueMax),
 				RemoteControlsPacket::motorLengthBits
 			);
 		};
-		
+
+		writeAxis(rc.getAxes().getLeverLeft().getFilteredValue());
 		writeAxis(rc.getAxes().getJoystickHorizontal().getFilteredValue());
 		writeAxis(rc.getAxes().getJoystickVertical().getFilteredValue());
 		writeAxis(rc.getAxes().getRing().getFilteredValue());
 		writeAxis(rc.getAxes().getLeverRight().getFilteredValue());
-		writeAxis(rc.getAxes().getLeverLeft().getFilteredValue());
 	}
 	
 	void RemoteTransceiver::transmitRemoteTrimPacket(BitStream& stream) {

@@ -51,10 +51,10 @@ namespace pizda {
 		// Levers
 		constexpr static uint8_t maxLeverHeight = 8;
 
-		const auto levL = rc.getAxes().getLeverLeft().getFilteredValueUint8() * maxLeverHeight / 0xFF;
-		const auto levR = rc.getAxes().getLeverRight().getFilteredValueUint8() * maxLeverHeight / 0xFF;
-
-		renderer->renderVerticalLine(Point(bounds.getX(), center.getY()), levL, &Theme::bad1);
-		renderer->renderVerticalLine(Point(bounds.getX2(), center.getY()), levR, &Theme::bad1);
+		renderer->renderVerticalLine(
+			Point(bounds.getX2(), center.getY()),
+			rc.getAxes().getLeverRight().getFilteredValueUint8() * maxLeverHeight / 0xFF,
+			&Theme::bad1
+		);
 	}
 }

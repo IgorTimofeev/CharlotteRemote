@@ -15,12 +15,6 @@ namespace pizda {
 			ThrottleIndicator throttleIndicator2 {};
 
 		protected:
-			void onEventBeforeChildren(Event* event) override;
 			void onTick() override;
-			
-		private:
-			int32_t _pointerX = -1;
-			
-			void onAnyRotate(int32_t change);
 	};
 }

@@ -55,8 +55,6 @@ namespace pizda {
 	
 	class RemoteData {
 		public:
-			uint8_t throttle_0_255 = 0;
-			
 			RemoteDataLights lights {};
 			RemoteDataAutopilot autopilot {};
 			AircraftCalibrationSystem calibrationSystem = AircraftCalibrationSystem::accelAndGyro;

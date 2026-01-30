@@ -5,28 +5,28 @@
 
 namespace pizda {
 	AxesSettingsPage::AxesSettingsPage() :
+		_leverLeftAxisEditor(AxisEditor(&RC::getInstance().getAxes().getLeverLeft())),
 		_aileronsAxisEditor(AxisEditor(&RC::getInstance().getAxes().getJoystickHorizontal())),
 		_elevatorAxisEditor(AxisEditor(&RC::getInstance().getAxes().getJoystickVertical())),
 		_rudderAxisEditor(AxisEditor(&RC::getInstance().getAxes().getRing())),
-		_spoilersAxisEditor(AxisEditor(&RC::getInstance().getAxes().getLeverLeft())),
-		_flapsAxisEditor(AxisEditor(&RC::getInstance().getAxes().getLeverRight()))
+		_leverRightAxisEditor(AxisEditor(&RC::getInstance().getAxes().getLeverRight()))
 	{
 		// Page title
 		title.setText(L"Axis");
 
-		// Axis
+		// Axes editors
+		rows += &_leverLeftAxisEditorTitle;
 		rows += &_aileronsAxisEditorTitle;
 		rows += &_elevatorAxisEditorTitle;
 		rows += &_rudderAxisEditorTitle;
-		rows += &_spoilersAxisEditorTitle;
-		rows += &_flapsAxisEditorTitle;
+		rows += &_leverRightAxisEditorTitle;
 
 		// Jittering slider
 		Theme::apply(&_jitteringCutoffFactorSlider);
 		_jitteringCutoffFactorSlider.setFillColor(&Theme::bad1);
 
 		_jitteringCutoffFactorSlider.setValueMinimum(0);
-		_jitteringCutoffFactorSlider.setValueMaximum(_jitteringCutoffMaxValue);
+		_jitteringCutoffFactorSlider.setValueMaximum(jitteringCutoffMaxValue);
 		_jitteringCutoffFactorSlider.setValue(RC::getInstance().getSettings().axes.jitteringCutoffValue);
 
 		_jitteringCutoffFactorSlider.setTickQuantity(10);

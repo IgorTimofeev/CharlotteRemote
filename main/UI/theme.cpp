@@ -167,8 +167,8 @@ namespace pizda {
 	}
 
 	void Theme::apply(Switch* sw) {
-		sw->setSize(Size(43, 18));
-		sw->setCornerRadius(9);
+		sw->setSize(Size(38, 16));
+		sw->setCornerRadius(sw->getSize().getHeight() / 2);
 
 		sw->setTrackColor(&Theme::bg3);
 		sw->setCheckedColor(&Theme::accent1);
@@ -180,13 +180,17 @@ namespace pizda {
 		slider->setValueMinimum(0);
 		slider->setValueMaximum(1);
 
+		// Track
 		slider->setTrackSize(5);
 		slider->setTrackCornerRadius(slider->getTrackSize() / 2);
 		slider->setTrackColor(&Theme::bg3);
+
+		// Fill
 		slider->setFillColor(&Theme::accent1);
 
-		slider->setHandleSize({ 14 });
-		slider->setHandleCornerRadius(slider->getHandleSize().getWidth() / 2);
+		// Handle
+		slider->setHandleSize({ 2, 10 });
+		slider->setHandleCornerRadius(0);
 		slider->setHandleColor(&Theme::fg1);
 
 		// Tick
@@ -195,7 +199,7 @@ namespace pizda {
 		slider->setTickOffset(0);
 		slider->setBigTickLineLength(5);
 		slider->setSmallTickLineLength(3);
-		slider->setTickColor(&Theme::fg6);
+		slider->setTickColor(&Theme::fg7);
 
 		slider->setTickLabelFont(&Theme::fontNormal);
 		slider->setTickLabelOffset(1);
