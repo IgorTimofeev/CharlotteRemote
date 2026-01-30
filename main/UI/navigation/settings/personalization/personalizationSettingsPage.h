@@ -38,7 +38,7 @@ namespace pizda {
 			
 			// FOV
 			constexpr static uint8_t _PFDFOVMin = 20;
-			constexpr static uint8_t _PFDFOVMax = 120;
+			constexpr static uint8_t _PFDFOVMax = _PFDFOVMin + 100;
 
 			Slider _PFDFOVSlider {};
 			Titler _PFDFOVTitle = Titler(&_PFDFOVSlider);

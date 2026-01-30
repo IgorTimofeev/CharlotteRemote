@@ -32,20 +32,20 @@ namespace pizda {
 		// Frequency
 		Theme::apply(&_speakerFrequencySlider);
 		_speakerFrequencySlider.setFillColor(&Theme::good2);
-		_speakerFrequencySlider.setValue(0xFFFF * 50 / 100);
+		_speakerFrequencySlider.setValue(0.5f);
 
 		rows += &_speakerFrequencySliderTitle;
 
 		// Duration
 		_speakerDurationSlider.setFillColor(&Theme::bad1);
 		Theme::apply(&_speakerDurationSlider);
-		_speakerDurationSlider.setValue(0xFFFF * 50 / 100);
+		_speakerDurationSlider.setValue(0.5f);
 
 		rows += &_speakerDurationSliderTitle;
 
 		// Count
 		Theme::apply(&_speakerCountSlider);
-		_speakerCountSlider.setValue(0xFFFF * 20 / 100);
+		_speakerCountSlider.setValue(0.5f);
 
 		rows += &_speakerCountSliderTitle;
 
@@ -56,9 +56,9 @@ namespace pizda {
 		_speakerButton.click += [this] {
 			auto& rc = RC::getInstance();
 
-			const uint32_t frequency = static_cast<uint32_t>(_speakerFrequencySlider.getValue()) * 12'000ul / 0xFFFFul;
-			const uint32_t duration = static_cast<uint64_t>(_speakerDurationSlider.getValue()) * 1'000'000ull / 0xFFFFull;
-			const auto count = static_cast<uint8_t>(1 + static_cast<uint32_t>(_speakerCountSlider.getValue()) * 5ul / 0xFFFFul);
+			const uint32_t frequency = _speakerFrequencySlider.getValueFactor() * 12'000ul;
+			const uint32_t duration = _speakerDurationSlider.getValueFactor() * 1'000'000ull;
+			const auto count = static_cast<uint8_t>(1 + _speakerCountSlider.getValueFactor() * 5ul);
 
 			ESP_LOGI("Debug", "Speaker test: %lu, %lu, %d", frequency, duration, count);
 			
@@ -82,10 +82,10 @@ namespace pizda {
 
 		// Text font size slider
 		Theme::apply(&_textFontSizeSlider);
-		_textFontSizeSlider.setValue(0xFFFF * 40 / 100);
+		_textFontSizeSlider.setValue(0.4);
 
 		_textFontSizeSlider.valueChanged += [this] {
-			_text.setFontScale(1 + static_cast<uint8_t>(std::round(_textFontSizeSlider.getValue() * 8 / 0xFFFF)));
+			_text.setFontScale(1 + static_cast<uint8_t>(std::round(_textFontSizeSlider.getValueFactor() * 8)));
 		};
 
 		rows += &_textSliderTitle;
@@ -93,10 +93,10 @@ namespace pizda {
 		// Text margin slider
 		Theme::apply(&_textMarginSlider);
 		_textMarginSlider.setFillColor(&Theme::good2);
-		_textMarginSlider.setValue(0xFFFF * 50 / 100);
+		_textMarginSlider.setValue(0.5);
 
 		_textMarginSlider.valueChanged += [this] {
-			const uint16_t value = 1 + static_cast<uint8_t>(std::round(_textMarginSlider.getValue() * 80 / 0xFFFF));
+			const uint16_t value = 1 + static_cast<uint8_t>(std::round(_textMarginSlider.getValueFactor() * 80));
 
 			rows.setMargin(Margin(value, rows.getMargin().getTop(), value, rows.getMargin().getTop()));
 		};

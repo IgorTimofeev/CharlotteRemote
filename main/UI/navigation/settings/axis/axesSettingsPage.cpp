@@ -25,12 +25,12 @@ namespace pizda {
 		Theme::apply(&_jitteringCutoffFactorSlider);
 		_jitteringCutoffFactorSlider.setFillColor(&Theme::bad1);
 
-		_jitteringCutoffFactorSlider.setValue(RC::getInstance().getSettings().axes.jitteringCutoffValue * 0xFFFF / _jitteringCutoffMaxValue);
+		_jitteringCutoffFactorSlider.setValue(static_cast<float>(RC::getInstance().getSettings().axes.jitteringCutoffValue) / _jitteringCutoffMaxValue);
 
 		_jitteringCutoffFactorSlider.valueChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 
-			settings.axes.jitteringCutoffValue = _jitteringCutoffFactorSlider.getValue() * _jitteringCutoffMaxValue / 0xFFFF;
+			settings.axes.jitteringCutoffValue = _jitteringCutoffFactorSlider.getValueFactor() * _jitteringCutoffMaxValue;
 			settings.axes.scheduleWrite();
 		};
 
@@ -40,12 +40,12 @@ namespace pizda {
 		Theme::apply(&_lowPassFactorSlider);
 		_lowPassFactorSlider.setFillColor(&Theme::good2);
 
-		_lowPassFactorSlider.setValue(RC::getInstance().getSettings().axes.lowPassFactor);
+		_lowPassFactorSlider.setValue(static_cast<float>(RC::getInstance().getSettings().axes.lowPassFactor) / 0xFFFF);
 
 		_lowPassFactorSlider.valueChanged += [this] {
 			auto& settings = RC::getInstance().getSettings();
 
-			settings.axes.lowPassFactor = _lowPassFactorSlider.getValue();
+			settings.axes.lowPassFactor = _lowPassFactorSlider.getValueFactor() * 0xFFFF;
 			settings.axes.scheduleWrite();
 		};
 

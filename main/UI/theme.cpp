@@ -177,16 +177,30 @@ namespace pizda {
 	}
 
 	void Theme::apply(Slider* slider) {
-		slider->setHeight(14);
+		slider->setValueMinimum(0);
+		slider->setValueMaximum(1);
 
 		slider->setTrackSize(5);
 		slider->setTrackCornerRadius(slider->getTrackSize() / 2);
 		slider->setTrackColor(&Theme::bg3);
 		slider->setFillColor(&Theme::accent1);
 
-		slider->setHandleSize(slider->getSize().getHeight());
-		slider->setHandleCornerRadius(slider->getHandleSize() / 2);
+		slider->setHandleSize({ 14 });
+		slider->setHandleCornerRadius(slider->getHandleSize().getWidth() / 2);
 		slider->setHandleColor(&Theme::fg1);
+
+		// Tick
+		slider->setTickInterval(0.2);
+		slider->setBigTickIndex(5);
+		slider->setTickOffset(0);
+		slider->setBigTickLength(5);
+		slider->setSmallTickLength(3);
+		slider->setTickColor(&Theme::fg6);
+
+		slider->setTickLabelFont(&Theme::fontNormal);
+		slider->setTickLabelOffset(1);
+
+		slider->setTickLabelBuilder(Slider::percentTickLabelBuilder);
 	}
 
 	void Theme::apply(ProgressBar* progressBar) {

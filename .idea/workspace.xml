@@ -174,34 +174,18 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="забыл модельку лейаутов клависина подтереть">
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/imageView.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/progressBar.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/relativeStackLayout.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollBar.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollView.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/stackLayout.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/switch.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/text.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/traits/valueElement.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/wrapLayout.cpp" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="побольше сипиков, поменьше хедиков">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/imageView.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/imageView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/progressBar.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/progressBar.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/relativeStackLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/relativeStackLayout.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollBar.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollBar.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollView.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/progressBar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/progressBar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/stackLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/stackLayout.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/switch.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/switch.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/text.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/text.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/traits/activeElement.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/traits/activeElement.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/wrapLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/wrapLayout.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/sevenRotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/sevenRotaryControl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/traits/valueElement.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/traits/valueElement.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axesSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axesSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/developer/developerSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/developer/developerSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/theme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/theme.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1244,15 +1228,7 @@
       <workItem from="1769687786324" duration="2844000" />
       <workItem from="1769696101519" duration="23777000" />
       <workItem from="1769722020518" duration="6733000" />
-      <workItem from="1769774809342" duration="5752000" />
-    </task>
-    <task id="LOCAL-00054" summary="чота хз нужен ли трим на самом самбике или это хуйня">
-      <option name="closed" value="true" />
-      <created>1767967491822</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1767967491823</updated>
+      <workItem from="1769774809342" duration="12267000" />
     </task>
     <task id="LOCAL-00055" summary="по ходу все-таки нужен, над тогда щас нвс этот проапдейтить под int8">
       <option name="closed" value="true" />
@@ -1638,7 +1614,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769778726102</updated>
     </task>
-    <option name="localTasksCounter" value="103" />
+    <task id="LOCAL-00103" summary="побольше сипиков, поменьше хедиков">
+      <option name="closed" value="true" />
+      <created>1769780831146</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1769780831146</updated>
+    </task>
+    <option name="localTasksCounter" value="104" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1679,7 +1663,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="ебать че происходит сука при чтении adc с тасок внезапно появились какие-то интерференции, словно оси взаимно друг на друга влияют - ПЕРДЁЖ ЕБАНЫЙ БЛЯДЬЬ" />
     <MESSAGE value="СУКА ЧЕТО ЯВНО НЕ ТАК Я ЩАС ПСИХАНУ" />
     <MESSAGE value="пиздец" />
     <MESSAGE value="..." />
@@ -1704,6 +1687,7 @@
     <MESSAGE value="разгондонил клавулетту на кучу файлов и убрал эту залупу с model-based интерфейсом - типа вы там на своих браузерах и мобилках дрочите скок хотите, а мы мужики базированные, сразу во вьюху всё хуярим и похуй" />
     <MESSAGE value="WELCOME TO THE ♂ DUNGEON MIT ♂ LICENSE CLUB, BUDDY" />
     <MESSAGE value="забыл модельку лейаутов клависина подтереть" />
-    <option name="LAST_COMMIT_MESSAGE" value="забыл модельку лейаутов клависина подтереть" />
+    <MESSAGE value="побольше сипиков, поменьше хедиков" />
+    <option name="LAST_COMMIT_MESSAGE" value="побольше сипиков, поменьше хедиков" />
   </component>
 </project>

@@ -55,24 +55,30 @@ namespace pizda {
 				
 		// FOV
 		Theme::apply(&_PFDFOVSlider);
-		_PFDFOVSlider.setValue(0xFFFF * (settings.personalization.MFD.PFD.FOV - _PFDFOVMin) / (_PFDFOVMax - _PFDFOVMin));
-		
+		_PFDFOVSlider.setValueMinimum(_PFDFOVMin);
+		_PFDFOVSlider.setValueMaximum(_PFDFOVMax);
+		_PFDFOVSlider.setValue(settings.personalization.MFD.PFD.FOV);
+
+		_PFDFOVSlider.setTickInterval(10);
+		_PFDFOVSlider.setBigTickIndex(5);
+		_PFDFOVSlider.setTickLabelBuilder(Slider::int32TickLabelBuilder);
+
 		_PFDFOVSlider.valueChanged += [this, &settings] {
-			settings.personalization.MFD.PFD.FOV = _PFDFOVMin + _PFDFOVSlider.getValue() * (_PFDFOVMax - _PFDFOVMin) / 0xFFFF;
+			settings.personalization.MFD.PFD.FOV = _PFDFOVSlider.getValue();
 			settings.personalization.scheduleWrite();
 			
 			updatePFDFOVTitle();
 		};
-		
+
 		updatePFDFOVTitle();
 		rows += &_PFDFOVTitle;
 		
 		// Height
 		Theme::apply(&_PFDSplitSlider);
-		_PFDSplitSlider.setValue(0xFFFF * (settings.personalization.MFD.splitPercent - _PFDSplitMin) / (_PFDSplitMax - _PFDSplitMin));
+		_PFDSplitSlider.setValue(static_cast<float>(settings.personalization.MFD.splitPercent - _PFDSplitMin) / (_PFDSplitMax - _PFDSplitMin));
 		
 		_PFDSplitSlider.valueChanged += [this, &settings] {
-			settings.personalization.MFD.splitPercent = _PFDSplitMin + _PFDSplitSlider.getValue() * (_PFDSplitMax - _PFDSplitMin) / 0xFFFF;
+			settings.personalization.MFD.splitPercent = _PFDSplitMin + _PFDSplitSlider.getValueFactor() * (_PFDSplitMax - _PFDSplitMin);
 			settings.personalization.scheduleWrite();
 			
 			updatePFDSplitTitle();

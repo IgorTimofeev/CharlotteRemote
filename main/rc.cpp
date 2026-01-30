@@ -359,7 +359,7 @@ namespace pizda {
 		_application += &_pageLayout;
 		_application += &_openMenuButton;
 
-		setRoute(&Routes::settingsAutopilot);
+		setRoute(&Routes::MFD);
 		updateDebugOverlayVisibility();
 	}
 
