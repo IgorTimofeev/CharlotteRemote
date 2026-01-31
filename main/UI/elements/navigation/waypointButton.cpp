@@ -2,7 +2,7 @@
 
 #include "UI/theme.h"
 #include "types/navigationData.h"
-#include "utils/rendering.h"
+#include "utilities/rendering.h"
 #include "rc.h"
 
 namespace pizda {

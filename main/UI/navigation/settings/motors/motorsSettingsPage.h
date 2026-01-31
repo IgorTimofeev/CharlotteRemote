@@ -7,7 +7,7 @@
 #include "UI/elements/titler.h"
 
 #include "types/generic.h"
-#include "utils/string.h"
+#include "utilities/string.h"
 
 namespace pizda {
 	using namespace YOBA;

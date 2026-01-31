@@ -93,23 +93,23 @@ namespace pizda {
 		});
 	}
 
-	void Theme::apply(Text* text) {
+	void Theme::apply(TextView* text) {
 		text->setTextColor(&Theme::fg1);
 		text->setFont(&Theme::fontNormal);
 	}
 
-	void Theme::applyDescription(Text* text) {
+	void Theme::applyDescription(TextView* text) {
 		text->setTextColor(&Theme::fg3);
 		text->setFont(&Theme::fontNormal);
 	}
 
-	void Theme::applyPageTitle(Text* text) {
+	void Theme::applyPageTitle(TextView* text) {
 		text->setTextColor(&Theme::fg1);
 		text->setFont(&Theme::fontNormal);
 		text->setFontScale(2);
 	}
 
-	void Theme::applyTitle(Text* text) {
+	void Theme::applyTitle(TextView* text) {
 		text->setFont(&Theme::fontNormal);
 		text->setTextColor(&Theme::fg3);
 	}

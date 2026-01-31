@@ -28,7 +28,7 @@ namespace pizda {
 				_switch.setActive(value);
 			}
 
-			Text& getText() {
+			TextView& getText() {
 				return _text;
 			}
 
@@ -36,7 +36,7 @@ namespace pizda {
 				return _switch;
 			}
 		private:
-			Text _text;
+			TextView _text;
 			Switch _switch;
 	};
 }

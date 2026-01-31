@@ -20,6 +20,6 @@ namespace pizda {
 			ScrollView scrollView {};
 			StackLayout rows {};
 
-			Text title {};
+			TextView title {};
 	};
 }

@@ -3,7 +3,7 @@
 #include "rc.h"
 #include "UI/theme.h"
 #include "UI/navigation/MFD/ND/NDScene.h"
-#include "utils/rendering.h"
+#include "utilities/rendering.h"
 
 namespace pizda {
 	WaypointElement::WaypointElement(const uint16_t waypointIndex) : waypointIndex(waypointIndex) {

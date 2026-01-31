@@ -3,7 +3,7 @@
 #include "rc.h"
 
 #include "flightPlanItemDialog.h"
-#include "utils/rendering.h"
+#include "utilities/rendering.h"
 
 namespace pizda {
 	FlightPlanItem::FlightPlanItem(const uint16_t legIndex) : _legIndex(legIndex) {

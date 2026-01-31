@@ -85,7 +85,7 @@ namespace pizda {
 			}
 
 		private:
-			Text _title {};
+			TextView _title {};
 			
 			void updateColors() {
 				_title.setTextColor(isFocused() ? &Theme::fg1 : &Theme::fg5);

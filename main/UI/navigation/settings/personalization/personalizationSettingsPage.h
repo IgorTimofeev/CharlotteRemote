@@ -25,7 +25,7 @@ namespace pizda {
 
 			// -------------------------------- PFD --------------------------------
 
-			Text _PFDTitle {};
+			TextView _PFDTitle {};
 
 			// Split
 			constexpr static uint8_t _PFDSplitMin = 20;
@@ -48,7 +48,7 @@ namespace pizda {
 
 			// -------------------------------- ND --------------------------------
 
-			Text _NDTitle {};
+			TextView _NDTitle {};
 
 			// Earth grid
 			Switcher _NDEarthGrid { L"Earth grid" };

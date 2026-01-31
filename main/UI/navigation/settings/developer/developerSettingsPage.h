@@ -19,7 +19,7 @@ namespace pizda {
 			Button _settingsNavigationResetButton {};
 
 			// Speaker
-			Text _speakerTitle {};
+			TextView _speakerTitle {};
 
 			Slider _speakerFrequencySlider {};
 			Titler _speakerFrequencySliderTitle { L"Frequency (1 - 12 KHz)", &_speakerFrequencySlider };
@@ -29,7 +29,7 @@ namespace pizda {
 
 			Slider _speakerCountSlider {};
 			Titler _speakerCountSliderTitle { L"Count (1 - 5 times)", &_speakerCountSlider };
-			Text _speakerCountText {};
+			TextView _speakerCountText {};
 
 			std::array<Note, 8> _speakerNotes {};
 			std::array<Delay, 8> _speakerDelays {};
@@ -44,7 +44,7 @@ namespace pizda {
 			Slider _textMarginSlider {};
 			Titler _textMarginSliderTitle { L"Margin slider", &_textMarginSlider };
 
-			Text _text {};
+			TextView _text {};
 
 			ProgressBar _progressBar {};
 			Titler _progressBarTitle { L"Progress bar", &_progressBar };

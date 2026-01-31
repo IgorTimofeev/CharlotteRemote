@@ -29,8 +29,8 @@ namespace pizda {
 			}
 
 			ProgressBar progressBar;
-			Text progressText;
-			Text descriptionText;
+			TextView progressText;
+			TextView descriptionText;
 
 			void setProgress(float value) {
 				progressBar.setValue(value);

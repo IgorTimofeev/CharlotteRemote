@@ -27,6 +27,6 @@ namespace pizda {
 			StackLayout _legsLayout {};
 			LegPlaceholderButton _addLegButton {};
 
-			static void applyTitleStyle(Text& text);
+			static void applyTitleStyle(TextView& text);
 	};
 }

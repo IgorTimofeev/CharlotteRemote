@@ -17,10 +17,10 @@ namespace pizda {
 			void onTick() override;
 		
 		private:
-			Text _descriptionText {};
+			TextView _descriptionText {};
 			
 			ProgressBar _progressBar {};
-			Text _progressText {};
+			TextView _progressText {};
 			
 			Button _accelAndGyroButton {};
 			Button _magButton {};

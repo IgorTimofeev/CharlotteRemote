@@ -1,6 +1,6 @@
 #include "selectWaypointDialog.h"
 
-#include <utils/string.h>
+#include <utilities/string.h>
 
 #include "rc.h"
 #include "UI/theme.h"

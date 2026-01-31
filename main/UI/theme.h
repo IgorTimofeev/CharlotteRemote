@@ -68,9 +68,9 @@ namespace pizda {
 			static void apply(ScrollView* scrollView);
 			static void apply(Switch* sw);
 			static void apply(ProgressBar* progressBar);
-			static void apply(Text* text);
-			static void applyPageTitle(Text* text);
-			static void applyTitle(Text* text);
-			static void applyDescription(Text* text);
+			static void apply(TextView* text);
+			static void applyPageTitle(TextView* text);
+			static void applyTitle(TextView* text);
+			static void applyDescription(TextView* text);
 	};
 }

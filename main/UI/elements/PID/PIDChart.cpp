@@ -6,6 +6,10 @@
 #include "UI/theme.h"
 
 namespace pizda {
+	PIDChart::PIDChart() {
+		setBackgroundColor(&Theme::bg2);
+	}
+
 	void PIDChart::onEvent(Event* event) {
 		Control::onEvent(event);
 
@@ -35,7 +39,7 @@ namespace pizda {
 		// Background
 		renderer->renderFilledRectangle(
 			bounds,
-			&Theme::bg2
+			getBackgroundColor()
 		);
 
 		// Axes
@@ -101,9 +105,9 @@ namespace pizda {
 				value,
 				_setpoint,
 
-				_PIDCoefficients.p,
-				_PIDCoefficients.i,
-				_PIDCoefficients.d,
+				_coefficients.p,
+				_coefficients.i,
+				_coefficients.d,
 
 				_deltaTime,
 
@@ -143,8 +147,13 @@ namespace pizda {
 
 		invalidate();
 	}
+
+	const PIDCoefficients& PIDChart::getCoefficients() const {
+		return _coefficients;
+	}
+
 	void PIDChart::setCoefficients(const PIDCoefficients& coefficients) {
-		_PIDCoefficients = coefficients;
+		_coefficients = coefficients;
 
 		invalidate();
 	}
@@ -165,7 +174,7 @@ namespace pizda {
 		// Buttons
 		_buttonsRow.setOrientation(Orientation::horizontal);
 		_buttonsRow.setSpacing(1);
-		_buttonsRow.setHeight(22);
+		_buttonsRow.setHeight(19);
 		setAutoSize(&_buttonsRow);
 		*this += &_buttonsRow;
 

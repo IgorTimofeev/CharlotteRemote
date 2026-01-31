@@ -27,6 +27,6 @@ namespace pizda {
 				*this += element;
 			}
 
-			Text title {};
+			TextView title {};
 	};
 }

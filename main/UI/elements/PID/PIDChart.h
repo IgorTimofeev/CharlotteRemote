@@ -6,8 +6,10 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class PIDChart : public Control {
+	class PIDChart : public Control, public BackgroundColorElement {
 		public:
+			PIDChart();
+			const PIDCoefficients& getCoefficients() const;
 			void setCoefficients(const PIDCoefficients& coefficients);
 			void setStepsQuantity(const uint16_t stepsQuantity);
 			void setDeltaTime(const float deltaTime);
@@ -17,7 +19,7 @@ namespace pizda {
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
-			PIDCoefficients _PIDCoefficients {};
+			PIDCoefficients _coefficients {};
 			uint8_t _setpoint = 50;
 
 			float _deltaTime = 1;
@@ -46,6 +48,10 @@ namespace pizda {
 	class PIDChartEditor : public RelativeStackLayout {
 		public:
 			PIDChartEditor();
+
+			const PIDCoefficients& getCoefficients() const {
+				return _chart.getCoefficients();
+			}
 
 			void setCoefficients(const PIDCoefficients& coefficients) {
 				_chart.setCoefficients(coefficients);

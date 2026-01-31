@@ -35,7 +35,7 @@ namespace pizda {
 		return _instance;
 	}
 
-	void FlightPlanPage::applyTitleStyle(Text& text) {
+	void FlightPlanPage::applyTitleStyle(TextView& text) {
 		Theme::apply(&text);
 		text.setTextColor(&Theme::fg4);
 	}

@@ -5,7 +5,7 @@
 
 #include "rc.h"
 #include "UI/theme.h"
-#include "utils/string.h"
+#include "utilities/string.h"
 
 namespace pizda {
 	SpectrumScanningFrequencyPresetsDialog::SpectrumScanningFrequencyPresetsDialog(const std::function<void(const std::wstring_view from, const std::wstring_view to)>& onConfirm): onConfirm(onConfirm) {

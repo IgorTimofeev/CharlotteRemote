@@ -7,7 +7,7 @@
 
 #include "UI/navigation/page.h"
 #include "UI/elements/titler.h"
-#include "UI/elements/PID/PIDChart.h"
+#include "UI/elements/PID/PIDReferencer.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -17,19 +17,17 @@ namespace pizda {
 			AutopilotSettingsPage();
 
 		private:
-			PIDChartEditor chartEditor {};
+			PIDReferencer _autothrottleReferencer { L"Autothrottle" };
+			Titler _autothrottleReferencerTitle { L"Autothrottle", &_autothrottleReferencer };
 
-			RelativeStackLayout PIDRow {};
+			PIDReferencer _rollReferencer { L"Roll" };
+			Titler _rollReferencerTitle { L"Roll", &_rollReferencer };
 
-			TextField PTextField {};
-			Titler PTitle { L"P", &PTextField };
+			PIDReferencer _aileronsReferencer { L"Ailerons" };
+			Titler _aileronsReferencerTitle { L"Ailerons", &_aileronsReferencer };
 
-			TextField ITextField {};
-			Titler ITitle { L"I", &ITextField };
+			PIDReferencer _pitchReferencer { L"Pitch" };
+			Titler _pitchReferencerTitle { L"Pitch", &_pitchReferencer };
 
-			TextField DTextField {};
-			Titler DTitle { L"D", &DTextField };
-
-			void updateChart();
 	};
 }
