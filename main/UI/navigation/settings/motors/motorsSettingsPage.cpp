@@ -27,9 +27,9 @@ namespace pizda {
 		
 		_reverse.setActive(_settings->reverse);
 		
-		_reverse.click += [this]() {
+		_reverse.setOnClick([this]() {
 			changed();
-		};
+		});
 		
 		_mainLayout += &_reverse;
 		
@@ -105,7 +105,7 @@ namespace pizda {
 	}
 	
 	void MotorsSettingsPage::vaginoz(MotorEditor* motorEditor) {
-		motorEditor->changed += [motorEditor]() {
+		motorEditor->changed = [motorEditor]() {
 			motorEditor->toSettings();
 			RC::getInstance().getSettings().motors.scheduleWrite();
 			

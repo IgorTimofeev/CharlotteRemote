@@ -22,14 +22,14 @@ namespace pizda {
 		Theme::applySecondary(&button);
 		button.setText(buttonText);
 
-		button.click += [this, to, from] {
+		button.setOnClick([this, to, from] {
 			RC::getInstance().getApplication().scheduleOnTick([this, to, from] {
 				onConfirm(from, to);
 
 				hide();
 				delete this;
 			});
-		};
+		});
 
 		rows += &button;
 	}
@@ -324,14 +324,14 @@ namespace pizda {
 		frequencyPresetsButton.setWidth(24);
 		frequencyPresetsButton.setText(L"...");
 
-		frequencyPresetsButton.click += [this] {
+		frequencyPresetsButton.setOnClick([this] {
 			(
 				new SpectrumScanningFrequencyPresetsDialog([this](const std::wstring_view from, const std::wstring_view to) {
 					frequencyFromTextField.setText(from);
 					frequencyToTextField.setText(to);
 				})
 			)->show();
-		};
+		});
 
 		frequencyRow.setAutoSize(&frequencyPresetsButton);
 		frequencyRow += &frequencyPresetsButton;
@@ -341,7 +341,7 @@ namespace pizda {
 		Theme::applyPrimary(&confirmButton);
 		confirmButton.setText(L"Begin");
 
-		confirmButton.click += [this] {
+		confirmButton.setOnClick([this] {
 			auto& rc = RC::getInstance();
 
 			if (rc.getRemoteData().transceiver.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::stopped) {
@@ -369,7 +369,7 @@ namespace pizda {
 			}
 
 			updateConfirmButtonText();
-		};
+		});
 
 		rows += &confirmButton;
 

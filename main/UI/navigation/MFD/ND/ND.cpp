@@ -61,7 +61,7 @@ namespace pizda {
 
 		button->setFont(&Theme::fontSmall);
 
-		button->click += onClick;
+		button->setOnClick(onClick);
 
 		_rightRows += button;
 	}

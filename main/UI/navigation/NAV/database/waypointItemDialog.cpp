@@ -18,7 +18,7 @@ namespace pizda {
 		Theme::applyCritical(&_removeButton);
 		_removeButton.setText(L"Delete");
 
-		_removeButton.click += [&rc, waypointIndex, this] {
+		_removeButton.setOnClick([&rc, waypointIndex, this] {
 			rc.getApplication().scheduleOnTick([&rc, waypointIndex, this] {
 				hide();
 				delete this;
@@ -30,7 +30,7 @@ namespace pizda {
 				if (page)
 					page->updateFromNavigationData();
 			});
-		};
+		});
 
 		rows += &_removeButton;
 	}

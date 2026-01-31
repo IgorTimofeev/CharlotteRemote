@@ -42,7 +42,7 @@ namespace pizda {
 
 		_searchTextField.setPlaceholder(L"Search");
 
-		_searchTextField.textChanged += [this, &rc] {
+		_searchTextField.setOnTextChanged([this, &rc] {
 			if (!_searchTextField.isFocused())
 				return;
 
@@ -70,7 +70,7 @@ namespace pizda {
 
 				updateVisualsFromWaypoint(waypointIndex, waypointData);
 			}
-		};
+		});
 
 		rows += &_searchTextFieldTitle;
 
@@ -83,19 +83,17 @@ namespace pizda {
 		Theme::applyPrimary(&_confirmButton);
 		_confirmButton.setText(L"Confirm");
 
-		_confirmButton.click += [&rc, this, onConfirm] {
-			rc.getApplication().scheduleOnTick([&rc, this, onConfirm] {
+		_confirmButton.setOnClick([&rc, this, onConfirm] {
+			rc.getApplication().scheduleOnTick([this, onConfirm] {
 				if (_waypointButton.getWaypointIndex() < 0)
 					return;
-
-				const auto& waypointData = rc.getNavigationData().waypoints[_waypointButton.getWaypointIndex()];
 
 				onConfirm(WaypointDialogSelectedItem(_waypointButton.getWaypointIndex()));
 
 				hide();
 				delete this;
 			});
-		};
+		});
 
 		rows += &_confirmButton;
 
@@ -129,8 +127,8 @@ namespace pizda {
 		if (waypointData.type == NavigationWaypointType::runway) {
 			_waypointTitle.title.setText(L"Runway");
 
-			const auto runwayIndex = nd.getRunwayIndex(waypointIndex);
-			const auto& runway = nd.runways[runwayIndex];
+			// const auto runwayIndex = nd.getRunwayIndex(waypointIndex);
+			// const auto& runway = nd.runways[runwayIndex];
 		}
 		// Waypoint
 		else {

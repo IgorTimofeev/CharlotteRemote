@@ -181,7 +181,7 @@ namespace pizda {
 		// Frequency
 		addButton(_frequencyButton);
 
-		_frequencyButton.click += [this] {
+		_frequencyButton.setOnClick([this] {
 			uint8_t value = static_cast<uint8_t>(_frequency) + 1;
 
 			if (value > static_cast<uint8_t>(PIDChartEditorFrequency::max))
@@ -190,12 +190,12 @@ namespace pizda {
 			_frequency = static_cast<PIDChartEditorFrequency>(value);
 
 			updateFromFrequency();
-		};
+		});
 
 		// Steps
 		addButton(_stepsButton);
 
-		_stepsButton.click += [this] {
+		_stepsButton.setOnClick([this] {
 			uint8_t value = static_cast<uint8_t>(_steps) + 1;
 
 			if (value > static_cast<uint8_t>(PIDChartEditorSteps::max))
@@ -204,7 +204,7 @@ namespace pizda {
 			_steps = static_cast<PIDChartEditorSteps>(value);
 
 			updateFromSteps();
-		};
+		});
 
 		// Initialization
 		updateFromFrequency();

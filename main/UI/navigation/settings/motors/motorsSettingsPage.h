@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 
@@ -18,7 +20,7 @@ namespace pizda {
 			
 			void toSettings();
 			
-			Callback<> changed {};
+			std::function<void()> changed = nullptr;
 			
 		private:
 			MotorConfiguration* _settings;
@@ -45,10 +47,11 @@ namespace pizda {
 				textField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 				textField.setText(std::to_wstring(value));
 
-				textField.input += [this](const Key key, std::optional<std::wstring_view> text) {
+				textField.setOnInput([this](const Key key, std::optional<std::wstring_view> text) {
 					if (key == Key::enter)
-						changed();
-				};
+						if (changed)
+							changed();
+				});
 				
 				_row += &titler;
 			}

@@ -8,7 +8,7 @@ namespace pizda {
 		row.setSpacing(1);
 		
 		// Navigation
-		navigation.pressed += [this] {
+		navigation.onPressed = [this] {
 			auto& rc = RC::getInstance();
 			
 			copyAircraftToRemote();
@@ -22,7 +22,7 @@ namespace pizda {
 		row += &navigation;
 		
 		// Strobe
-		strobe.pressed += [this] {
+		strobe.onPressed = [this] {
 			auto& rc = RC::getInstance();
 			
 			copyAircraftToRemote();
@@ -36,7 +36,7 @@ namespace pizda {
 		row += &strobe;
 		
 		// Landing
-		landing.pressed += [this] {
+		landing.onPressed = [this] {
 			auto& rc = RC::getInstance();
 			
 			copyAircraftToRemote();
@@ -50,7 +50,7 @@ namespace pizda {
 		row += &landing;
 		
 		// Landing
-		cabin.pressed += [this] {
+		cabin.onPressed = [this] {
 			auto& rc = RC::getInstance();
 			
 			copyAircraftToRemote();

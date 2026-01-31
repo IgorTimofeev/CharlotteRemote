@@ -38,9 +38,9 @@ namespace pizda {
 				PTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
 				PTextField.setText(StringUtils::toWString(coefficients.p));
 
-				PTextField.input += [this](Key, std::optional<std::wstring_view>) {
+				PTextField.setOnInput([this](Key, std::optional<std::wstring_view>) {
 					updateChart();
-				};
+				});
 
 				PIDRow += &PTitle;
 
@@ -49,9 +49,9 @@ namespace pizda {
 				ITextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
 				ITextField.setText(StringUtils::toWString(coefficients.i));
 
-				ITextField.input += [this](Key, std::optional<std::wstring_view>) {
+				ITextField.setOnInput([this](Key, std::optional<std::wstring_view>) {
 					updateChart();
-				};
+				});
 
 				PIDRow += &ITitle;
 
@@ -60,9 +60,9 @@ namespace pizda {
 				DTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
 				DTextField.setText(StringUtils::toWString(coefficients.d));
 
-				DTextField.input += [this](Key, std::optional<std::wstring_view>) {
+				DTextField.setOnInput([this](Key, std::optional<std::wstring_view>) {
 					updateChart();
-				};
+				});
 
 				PIDRow += &DTitle;
 
@@ -70,14 +70,14 @@ namespace pizda {
 				Theme::applyPrimary(&_confirmButton);
 				_confirmButton.setText(L"Confirm");
 
-				_confirmButton.click += [this, onConfirm] {
+				_confirmButton.setOnClick([this, onConfirm] {
 					Application::getCurrent()->scheduleOnTick([this, onConfirm] {
 						onConfirm(chart.getCoefficients());
 
 						hide();
 						delete this;
 					});
-				};
+				});
 
 				rows += &_confirmButton;
 

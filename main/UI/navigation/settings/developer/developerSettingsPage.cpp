@@ -10,7 +10,7 @@ namespace pizda {
 		// Button
 		Theme::applyPrimary(&_settingsNavigationResetButton);
 
-		_settingsNavigationResetButton.click += [] {
+		_settingsNavigationResetButton.setOnClick([] {
 			auto& rc = RC::getInstance();
 			auto& nd = rc.getNavigationData();
 
@@ -18,7 +18,7 @@ namespace pizda {
 			nd.addTemplateData();
 
 			rc.getSettings().navigation.scheduleWrite();
-		};
+		});
 
 		_settingsNavigationResetButton.setText(L"Reset NAV data");
 		rows += &_settingsNavigationResetButton;
@@ -53,7 +53,7 @@ namespace pizda {
 		Theme::applyPrimary(&_speakerButton);
 		_speakerButton.setText(L"Play");
 
-		_speakerButton.click += [this] {
+		_speakerButton.setOnClick([this] {
 			auto& rc = RC::getInstance();
 
 			const uint32_t frequency = _speakerFrequencySlider.getValueFactor() * 12'000ul;
@@ -76,7 +76,7 @@ namespace pizda {
 			_speakerSound.setPlayablesLength(count);
 			
 			rc.getAudioPlayer().play(_speakerSound);
-		};
+		});
 
 		rows += &_speakerButton;
 
@@ -84,9 +84,9 @@ namespace pizda {
 		Theme::apply(&_textFontSizeSlider);
 		_textFontSizeSlider.setValue(0.4);
 
-		_textFontSizeSlider.valueChanged += [this] {
+		_textFontSizeSlider.setOnValueChanged([this] {
 			_text.setFontScale(1 + static_cast<uint8_t>(std::round(_textFontSizeSlider.getValueFactor() * 8)));
-		};
+		});
 
 		rows += &_textSliderTitle;
 
@@ -95,11 +95,11 @@ namespace pizda {
 		_textMarginSlider.setFillColor(&Theme::good2);
 		_textMarginSlider.setValue(0.5);
 
-		_textMarginSlider.valueChanged += [this] {
+		_textMarginSlider.setOnValueChanged([this] {
 			const uint16_t value = 1 + static_cast<uint8_t>(std::round(_textMarginSlider.getValueFactor() * 80));
 
 			rows.setMargin(Margin(value, rows.getMargin().getTop(), value, rows.getMargin().getTop()));
-		};
+		});
 
 		rows += &_textMarginSliderTitle;
 

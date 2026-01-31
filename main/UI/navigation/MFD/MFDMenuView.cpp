@@ -38,7 +38,7 @@ namespace pizda {
 		PFDButton.setToggle(true);
 		PFDButton.setActive(settings.personalization.MFD.PFD.visible);
 
-		PFDButton.click += [this, &settings] {
+		PFDButton.setOnClick([this, &settings] {
 			settings.personalization.MFD.PFD.visible = !settings.personalization.MFD.PFD.visible;
 
 			if (!settings.personalization.MFD.isAnyPanelVisible())
@@ -49,7 +49,7 @@ namespace pizda {
 			settings.personalization.scheduleWrite();
 
 			MFDPage::fromSettings();
-		};
+		});
 
 		*this += &PFDButton;
 
@@ -59,7 +59,7 @@ namespace pizda {
 		NDButton.setToggle(true);
 		NDButton.setActive(settings.personalization.MFD.ND.visible);
 
-		NDButton.click += [this, &settings] {
+		NDButton.setOnClick([this, &settings] {
 			settings.personalization.MFD.ND.visible = !settings.personalization.MFD.ND.visible;
 
 			if (!settings.personalization.MFD.isAnyPanelVisible())
@@ -70,7 +70,7 @@ namespace pizda {
 			settings.personalization.scheduleWrite();
 
 			MFDPage::fromSettings();
-		};
+		});
 
 		*this += &NDButton;
 

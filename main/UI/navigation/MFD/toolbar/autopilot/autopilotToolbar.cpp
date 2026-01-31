@@ -9,7 +9,7 @@ namespace pizda {
 		// FD
 		flightDirector.setActive(rc.getSettings().personalization.MFD.PFD.flightDirector);
 
-		flightDirector.pressed += [this, &rc] {
+		flightDirector.onPressed = [this, &rc] {
 			rc.getSettings().personalization.MFD.PFD.flightDirector = !rc.getSettings().personalization.MFD.PFD.flightDirector;
 			rc.getSettings().personalization.scheduleWrite();
 			
@@ -25,7 +25,7 @@ namespace pizda {
 		row += &vertical;
 
 		// Autopilot
-		autopilot.pressed += [&rc] {
+		autopilot.onPressed = [&rc] {
 			rc.getRemoteData().autopilot.autopilot = !RC::getInstance().getAircraftData().raw.autopilot.autopilot;
 			
 			rc.getTransceiver().enqueue(RemotePacketType::autopilot);

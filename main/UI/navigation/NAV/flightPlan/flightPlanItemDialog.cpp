@@ -20,7 +20,7 @@ namespace pizda {
 		Theme::applyPrimary(&_activateLegButton);
 		_activateLegButton.setText(L"Activate leg");
 
-		_activateLegButton.click += [this, &rc, legIndex] {
+		_activateLegButton.setOnClick([this, &rc, legIndex] {
 			rc.getApplication().scheduleOnTick([this, &rc, legIndex] {
 				rc.getNavigationData().flightPlan.activeLegIndex = legIndex;
 
@@ -32,7 +32,7 @@ namespace pizda {
 				hide();
 				delete this;
 			});
-		};
+		});
 
 		rows += &_activateLegButton;
 
@@ -40,7 +40,7 @@ namespace pizda {
 		Theme::applySecondary(&_editButton);
 		_editButton.setText(L"Replace");
 
-		_editButton.click += [this, &waypointData, legIndex, &leg, &rc] {
+		_editButton.setOnClick([this, &waypointData, legIndex, &leg, &rc] {
 			rc.getApplication().scheduleOnTick([&rc, this, &leg, legIndex, &waypointData] {
 				SelectWaypointDialog::edit(
 					std::format(L"Change {}", waypointData.name),
@@ -58,7 +58,7 @@ namespace pizda {
 				hide();
 				delete this;
 			});
-		};
+		});
 
 		rows += &_editButton;
 
@@ -66,12 +66,12 @@ namespace pizda {
 		Theme::applySecondary(&_insertBeforeButton);
 		_insertBeforeButton.setText(L"Insert before");
 
-		_insertBeforeButton.click += [this, &waypointData, legIndex] {
+		_insertBeforeButton.setOnClick([this, &waypointData, legIndex] {
 			insertOnButtonClick(
 				std::format(L"Insert before {}", waypointData.name),
 				legIndex
 			);
-		};
+		});
 
 		rows += &_insertBeforeButton;
 
@@ -79,12 +79,12 @@ namespace pizda {
 		Theme::applySecondary(&_insertAfterButton);
 		_insertAfterButton.setText(L"Insert after");
 
-		_insertAfterButton.click += [this, &waypointData, legIndex] {
+		_insertAfterButton.setOnClick([this, &waypointData, legIndex] {
 			insertOnButtonClick(
 				std::format(L"Insert after {}", waypointData.name),
 				legIndex + 1
 			);
-		};
+		});
 
 		rows += &_insertAfterButton;
 
@@ -92,7 +92,7 @@ namespace pizda {
 		Theme::applyCritical(&_removeButton);
 		_removeButton.setText(L"Delete");
 
-		_removeButton.click += [&rc, this, legIndex] {
+		_removeButton.setOnClick([&rc, this, legIndex] {
 			rc.getApplication().scheduleOnTick([&rc, this, legIndex] {
 				rc.getNavigationData().flightPlan.legs.erase(rc.getNavigationData().flightPlan.legs.begin() + legIndex);
 
@@ -104,7 +104,7 @@ namespace pizda {
 				hide();
 				delete this;
 			});
-		};
+		});
 
 		rows += &_removeButton;
 	}

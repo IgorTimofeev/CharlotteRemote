@@ -99,7 +99,7 @@ namespace pizda {
 				Theme::applyPrimary(&_confirmButton);
 				_confirmButton.setText(L"Confirm");
 
-				_confirmButton.click += [this, &nd, &rc] {
+				_confirmButton.setOnClick([this, &nd, &rc] {
 					if (_nameTextField.getText().size() == 0) {
 						_nameTextField.setDefaultBorderColor(&Theme::bad1);
 						return;
@@ -120,7 +120,7 @@ namespace pizda {
 						hide();
 						delete this;
 					});
-				};
+				});
 
 				rows += &_confirmButton;
 			}

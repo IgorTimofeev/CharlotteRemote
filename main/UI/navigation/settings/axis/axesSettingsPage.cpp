@@ -33,12 +33,12 @@ namespace pizda {
 		_jitteringCutoffFactorSlider.setBigTickStep(5);
 		_jitteringCutoffFactorSlider.setTickLabelBuilder(Slider::int32TickLabelBuilder);
 
-		_jitteringCutoffFactorSlider.valueChanged += [this] {
+		_jitteringCutoffFactorSlider.setOnValueChanged([this] {
 			auto& settings = RC::getInstance().getSettings();
 
 			settings.axes.jitteringCutoffValue = _jitteringCutoffFactorSlider.getValue();
 			settings.axes.scheduleWrite();
-		};
+		});
 
 		rows += &_jitteringValueSliderTitle;
 
@@ -48,12 +48,12 @@ namespace pizda {
 
 		_lowPassFactorSlider.setValue(static_cast<float>(RC::getInstance().getSettings().axes.lowPassFactor) / 0xFFFF);
 
-		_lowPassFactorSlider.valueChanged += [this] {
+		_lowPassFactorSlider.setOnValueChanged([this] {
 			auto& settings = RC::getInstance().getSettings();
 
 			settings.axes.lowPassFactor = _lowPassFactorSlider.getValueFactor() * 0xFFFF;
 			settings.axes.scheduleWrite();
-		};
+		});
 
 		rows += &_lowPassFactorSliderTitle;
 	}

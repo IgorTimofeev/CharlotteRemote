@@ -15,32 +15,32 @@ namespace pizda {
 		// Audio feedback
 		_generalAudioFeedback.getSwitch().setActive(settings.personalization.audioFeedback);
 		
-		_generalAudioFeedback.getSwitch().isActiveChanged += [this, &settings] {
+		_generalAudioFeedback.getSwitch().setOnIsActiveChanged([this, &settings] {
 			settings.personalization.audioFeedback = _generalAudioFeedback.getSwitch().isActive();
 			settings.personalization.scheduleWrite();
-		};
+		});
 		
 		rows += &_generalAudioFeedback;
 		
 		// LPF
 		_generalDataInterpolation.getSwitch().setActive(settings.personalization.LPF);
 		
-		_generalDataInterpolation.getSwitch().isActiveChanged += [this, &settings] {
+		_generalDataInterpolation.getSwitch().setOnIsActiveChanged([this, &settings] {
 			settings.personalization.LPF = _generalDataInterpolation.getSwitch().isActive();
 			settings.personalization.scheduleWrite();
-		};
+		});
 		
 		rows += &_generalDataInterpolation;
 		
 		// Debug overlay
 		_generalDebugOverlay.getSwitch().setActive(settings.personalization.debugOverlay);
 		
-		_generalDebugOverlay.getSwitch().isActiveChanged += [this, &rc, &settings] {
+		_generalDebugOverlay.getSwitch().setOnIsActiveChanged([this, &rc, &settings] {
 			settings.personalization.debugOverlay = _generalDebugOverlay.getSwitch().isActive();
 			settings.personalization.scheduleWrite();
 			
 			rc.updateDebugOverlayVisibility();
-		};
+		});
 		
 		rows += &_generalDebugOverlay;
 		
@@ -63,10 +63,10 @@ namespace pizda {
 		_PFDFOVSlider.setBigTickStep(5);
 		_PFDFOVSlider.setTickLabelBuilder(Slider::int32TickLabelBuilder);
 
-		_PFDFOVSlider.valueChanged += [this, &settings] {
+		_PFDFOVSlider.setOnValueChanged([this, &settings] {
 			settings.personalization.MFD.PFD.FOV = _PFDFOVSlider.getValue();
 			settings.personalization.scheduleWrite();
-		};
+		});
 
 		rows += &_PFDFOVTitle;
 		
@@ -74,20 +74,20 @@ namespace pizda {
 		Theme::apply(&_PFDSplitSlider);
 		_PFDSplitSlider.setValue(static_cast<float>(settings.personalization.MFD.splitPercent - _PFDSplitMin) / (_PFDSplitMax - _PFDSplitMin));
 		
-		_PFDSplitSlider.valueChanged += [this, &settings] {
+		_PFDSplitSlider.setOnValueChanged([this, &settings] {
 			settings.personalization.MFD.splitPercent = _PFDSplitMin + _PFDSplitSlider.getValueFactor() * (_PFDSplitMax - _PFDSplitMin);
 			settings.personalization.scheduleWrite();
-		};
+		});
 
 		rows += &_PFDSplitTitle;
 
 		// Waypoint labels
 		_PFDWaypointLabels.getSwitch().setActive(settings.personalization.MFD.PFD.waypointLabels);
 
-		_PFDWaypointLabels.getSwitch().isActiveChanged += [this, &settings] {
+		_PFDWaypointLabels.getSwitch().setOnIsActiveChanged([this, &settings] {
 			settings.personalization.MFD.PFD.waypointLabels = _PFDWaypointLabels.getSwitch().isActive();
 			settings.personalization.scheduleWrite();
-		};
+		});
 
 		rows += &_PFDWaypointLabels;
 
@@ -103,10 +103,10 @@ namespace pizda {
 		// Earth grid
 		_NDEarthGrid.getSwitch().setActive(settings.personalization.MFD.ND.earth);
 		
-		_NDEarthGrid.getSwitch().isActiveChanged += [this, &settings] {
+		_NDEarthGrid.getSwitch().setOnIsActiveChanged([this, &settings] {
 			settings.personalization.MFD.ND.earth = _NDEarthGrid.getSwitch().isActive();
 			settings.personalization.scheduleWrite();
-		};
+		});
 		
 		rows += &_NDEarthGrid;
 	}

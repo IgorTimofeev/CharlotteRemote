@@ -29,9 +29,9 @@ namespace pizda {
 
 		_typeSelector.setSelectedIndex(0);
 
-		_typeSelector.selectionChanged += [this] {
+		_typeSelector.setOnSelectionChanged([this] {
 			updateFromNavigationData();
-		};
+		});
 
 		rows += &_typeSelector;
 
@@ -44,10 +44,10 @@ namespace pizda {
 
 		_searchTextField.setPlaceholder(L"Search");
 
-		_searchTextField.textChanged += [this] {
+		_searchTextField.setOnTextChanged([this] {
 			if (_searchTextField.isFocused())
 				updateFromNavigationData();
-		};
+		});
 
 		_searchAndAddRow += &_searchTextField;
 
@@ -56,11 +56,11 @@ namespace pizda {
 		_addButton.setWidth(Theme::elementHeight);
 		_addButton.setText(L"+");
 
-		_addButton.click += [this] {
+		_addButton.setOnClick([this] {
 			AddWaypointDialog::create({}, [this] {
 				updateFromNavigationData();
 			});
-		};
+		});
 
 		_searchAndAddRow.setAutoSize(&_addButton);
 		_searchAndAddRow += &_addButton;
