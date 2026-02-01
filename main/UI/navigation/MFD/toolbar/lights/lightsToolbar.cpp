@@ -14,7 +14,7 @@ namespace pizda {
 			copyAircraftToRemote();
 			rc.getRemoteData().lights.navigation = !rc.getAircraftData().raw.lights.navigation;
 			
-			rc.getTransceiver().enqueue(RemotePacketType::lights);
+			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::lights);
 			
 			rc.getAudioPlayer().playFeedback();
 		};
@@ -28,7 +28,7 @@ namespace pizda {
 			copyAircraftToRemote();
 			rc.getRemoteData().lights.strobe = !rc.getAircraftData().raw.lights.strobe;
 			
-			rc.getTransceiver().enqueue(RemotePacketType::lights);
+			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::lights);
 			
 			rc.getAudioPlayer().playFeedback();
 		};
@@ -42,7 +42,7 @@ namespace pizda {
 			copyAircraftToRemote();
 			rc.getRemoteData().lights.landing = !rc.getAircraftData().raw.lights.landing;
 			
-			rc.getTransceiver().enqueue(RemotePacketType::lights);
+			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::lights);
 			
 			rc.getAudioPlayer().playFeedback();
 		};
@@ -56,7 +56,7 @@ namespace pizda {
 			copyAircraftToRemote();
 			rc.getRemoteData().lights.cabin = !rc.getAircraftData().raw.lights.cabin;
 			
-			rc.getTransceiver().enqueue(RemotePacketType::lights);
+			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::lights);
 			
 			rc.getAudioPlayer().playFeedback();
 		};

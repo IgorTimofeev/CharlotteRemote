@@ -1,7 +1,6 @@
 #pragma once
 
-#include <queue>
-#include <set>
+#include <array>
 
 #include <bitStream.h>
 
@@ -21,44 +20,55 @@ namespace pizda {
 			bool _useEnqueued;
 	};
 	
-	class RemoteTransceiver : public Transceiver<RemotePacketType, AircraftPacketType> {
+	class RemoteTransceiver : public Transceiver<
+		RemotePacketType,
+		RemotePacket::typeLengthBits,
+
+		AircraftPacketType,
+		AircraftPacket::typeLengthBits
+	> {
 		public:
-			void enqueue(RemotePacketType type);
-			
+			void enqueueAuxiliary(RemoteAuxiliaryPacketType type);
+
 		protected:
 			[[noreturn]] void onStart() override;
 			RemotePacketType getTransmitPacketType() override;
-			bool onTransmit(BitStream& stream, RemotePacketType packetType) override;
+			void onTransmit(BitStream& stream, RemotePacketType packetType) override;
 			bool onReceive(BitStream& stream, AircraftPacketType packetType, uint8_t payloadLength) override;
 			void onConnectionStateChanged() override;
-			
+
 		private:
 			constexpr static uint32_t _trendsInterval = 500'000;
 			int64_t _trendsTime = 0;
 			float _trendsAirspeedPrevMPS = 0;
 			float _trendsAltitudePrevM = 0;
-			
-			std::vector<PacketSequenceItem> _packetSequence {
+
+			std::array<PacketSequenceItem, 2> _packetSequence {
 				PacketSequenceItem(RemotePacketType::controls, 2),
 				PacketSequenceItem(RemotePacketType::controls, 1, true)
 			};
-			
+
 			uint8_t _packetSequenceIndex = 0;
 			uint8_t _packetSequenceItemCounter = 0;
-			
-			std::set<RemotePacketType> _enqueuedPackets {};
 
-			bool receiveAircraftADIRSPacket(BitStream& stream, uint8_t payloadLength);
+			// FIFO packet queue
+			int16_t _packetQueueIndex = -1;
+			RemoteAuxiliaryPacketType _packetQueue[255] {};
+			RemoteAuxiliaryPacketType _auxiliaryPacketType = RemoteAuxiliaryPacketType::lights;
+
+			bool receiveAircraftTelemetryPrimaryPacket(BitStream& stream, uint8_t payloadLength);
+			bool receiveAircraftTelemetrySecondaryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength);
-			bool receiveAircraftCalibrationPacket(BitStream& stream, uint8_t payloadLength);
-			
+			bool receiveAircraftAuxiliaryCalibrationPacket(BitStream& stream, uint8_t payloadLength);
+
 			void transmitRemoteControlsPacket(BitStream& stream);
-			void transmitRemoteTrimPacket(BitStream& settingsValue);
-			void transmitRemoteLightsPacket(BitStream& stream);
-			void transmitRemoteBaroPacket(BitStream& stream);
-			void transmitRemoteAutopilotPacket(BitStream& stream);
-			void transmitRemoteMotorConfigurationPacket(BitStream& stream);
-			void transmitRemoteCalibratePacket(BitStream& stream);
+			void transmitRemoteAuxiliaryPacket(BitStream& stream);
+			void transmitRemoteAuxiliaryTrimPacket(BitStream& stream);
+			void transmitRemoteAuxiliaryLightsPacket(BitStream& stream);
+			void transmitRemoteAuxiliaryBaroPacket(BitStream& stream);
+			void transmitRemoteAuxiliaryAutopilotPacket(BitStream& stream);
+			void transmitRemoteAuxiliaryMotorConfigurationPacket(BitStream& stream);
+			void transmitRemoteAuxiliaryCalibratePacket(BitStream& stream);
 
 			uint16_t _spectrumScanningHistoryIndex = 0;
 			int64_t _spectrumScanningSampleRSSISum = 0;

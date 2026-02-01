@@ -7,7 +7,6 @@ namespace pizda {
 	
 	class Packet {
 		public:
-			constexpr static uint8_t typeLengthBits = 4;
 			constexpr static uint8_t checksumLengthBytes = 1;
 	};
 	
@@ -15,6 +14,20 @@ namespace pizda {
 	
 	enum class RemotePacketType : uint8_t {
 		controls,
+		auxiliary
+	};
+
+	class RemotePacket {
+		public:
+			constexpr static uint8_t typeLengthBits = 1;
+	};
+
+	class RemoteControlsPacket {
+		public:
+			constexpr static uint8_t motorLengthBits = 12;
+	};
+
+	enum class RemoteAuxiliaryPacketType : uint8_t {
 		trim,
 		lights,
 		baro,
@@ -22,29 +35,29 @@ namespace pizda {
 		motorConfiguration,
 		calibrate
 	};
-	
-	class RemoteMotorConfigurationPacket {
+
+	class RemoteAuxiliaryPacket {
+		public:
+			constexpr static uint8_t typeLengthBits = 3;
+	};
+
+	class RemoteAuxiliaryMotorConfigurationPacket {
 		public:
 			constexpr static uint8_t minLengthBits = 12;
 			constexpr static uint8_t maxLengthBits = minLengthBits;
 	};
 	
-	class RemoteCalibratePacket {
+	class RemoteAuxiliaryCalibratePacket {
 		public:
 			constexpr static uint8_t systemLengthBits = 2;
 	};
-	
-	class RemoteControlsPacket {
-		public:
-			constexpr static uint8_t motorLengthBits = 12;
-	};
-	
-	class RemoteTrimPacket {
+
+	class RemoteAuxiliaryTrimPacket {
 		public:
 			constexpr static uint8_t valueLengthBits = RemoteControlsPacket::motorLengthBits;
 	};
 	
-	class RemoteAutopilotPacket {
+	class RemoteAuxiliaryAutopilotPacket {
 		public:
 			// Speed
 			// The Guinness World Record for the fastest RC jet-powered aircraft is 749.221 km/h, set by Niels Herbrich in 2017.
@@ -68,7 +81,7 @@ namespace pizda {
 			constexpr static uint8_t verticalModeLengthBits = 3;
 	};
 	
-	class RemoteBaroPacket {
+	class RemoteAuxiliaryBaroPacket {
 		public:
 			// 1 hectopascal ~= 7.88 meters ~= 30 feet of altitude, which is not good enough for low altitude RC aircraft
 			// So we'll be using decapascals. Cool fact: The maximum recorded atmospheric pressure on Earth, adjusted to sea level,
@@ -81,12 +94,17 @@ namespace pizda {
 	// -------------------------------- Aircraft --------------------------------
 	
 	enum class AircraftPacketType : uint8_t {
-		ADIRS,
-		auxiliary,
-		calibration
+		telemetryPrimary,
+		telemetrySecondary,
+		auxiliary
+	};
+
+	class AircraftPacket {
+		public:
+			constexpr static uint8_t typeLengthBits = 2;
 	};
 	
-	class AircraftADIRSPacket {
+	class AircraftTelemetryPrimaryPacket {
 		public:
 			// Roll / pitch / yaw
 			// Precision of 0.25 - 0.5 deg should be enough for any client-side visualization with LPF
@@ -109,14 +127,12 @@ namespace pizda {
 			constexpr static uint8_t slipAndSkidLengthBits = 8;
 			constexpr static uint8_t slipAndSkidMaxG = 2;
 			
-			// See RemoteAutopilotPacket
-			constexpr static uint8_t speedLengthBits = RemoteAutopilotPacket::speedLengthBits;
-			constexpr static int16_t speedMaxMPS = RemoteAutopilotPacket::speedMaxMPS;
+			constexpr static uint8_t speedLengthBits = RemoteAuxiliaryAutopilotPacket::speedLengthBits;
+			constexpr static int16_t speedMaxMPS = RemoteAuxiliaryAutopilotPacket::speedMaxMPS;
 			
-			// See RemoteAutopilotPacket
-			constexpr static uint8_t altitudeLengthBits = RemoteAutopilotPacket::altitudeLengthBits;
-			constexpr static int16_t altitudeMinM = RemoteAutopilotPacket::altitudeMinM;
-			constexpr static int16_t altitudeMaxM = RemoteAutopilotPacket::altitudeMaxM;
+			constexpr static uint8_t altitudeLengthBits = RemoteAuxiliaryAutopilotPacket::altitudeLengthBits;
+			constexpr static int16_t altitudeMinM = RemoteAuxiliaryAutopilotPacket::altitudeMinM;
+			constexpr static int16_t altitudeMaxM = RemoteAuxiliaryAutopilotPacket::altitudeMaxM;
 			
 			constexpr static uint8_t autopilotRollLengthBits = rollLengthBits;
 			constexpr static float autopilotRollRangeRad = rollRangeRad;
@@ -124,29 +140,36 @@ namespace pizda {
 			constexpr static uint8_t autopilotPitchLengthBits = pitchLengthBits;
 			constexpr static float autopilotPitchRangeRad = pitchRangeRad;
 	};
-	
-	class AircraftCalibrationPacket {
-		public:
-			constexpr static uint8_t systemLengthBits = RemoteCalibratePacket::systemLengthBits;
-			constexpr static uint8_t progressLengthBits = 7;
-	};
-	
-	class AircraftAuxiliaryPacket {
+
+	class AircraftTelemetrySecondaryPacket {
 		public:
 			constexpr static uint8_t throttleLengthBits = 7;
 			constexpr static uint8_t latLengthBits = 25;
 			constexpr static uint8_t lonLengthBits = 26;
 			constexpr static uint8_t batteryLengthBits = 9;
 			
-			// See RemoteAutopilotPacket
-			constexpr static uint8_t autopilotLateralModeLengthBits = RemoteAutopilotPacket::lateralModeLengthBits;
-			constexpr static uint8_t autopilotVerticalModeLengthBits = RemoteAutopilotPacket::verticalModeLengthBits;
+			constexpr static uint8_t autopilotLateralModeLengthBits = RemoteAuxiliaryAutopilotPacket::lateralModeLengthBits;
+			constexpr static uint8_t autopilotVerticalModeLengthBits = RemoteAuxiliaryAutopilotPacket::verticalModeLengthBits;
 			
-			// See RemoteAutopilotPacket
-			constexpr static uint8_t autopilotAltitudeLengthBits = RemoteAutopilotPacket::altitudeLengthBits;
-			constexpr static int16_t autopilotAltitudeMinM = RemoteAutopilotPacket::altitudeMinM;
-			constexpr static int16_t autopilotAltitudeMaxM = RemoteAutopilotPacket::altitudeMaxM;
+			constexpr static uint8_t autopilotAltitudeLengthBits = RemoteAuxiliaryAutopilotPacket::altitudeLengthBits;
+			constexpr static int16_t autopilotAltitudeMinM = RemoteAuxiliaryAutopilotPacket::altitudeMinM;
+			constexpr static int16_t autopilotAltitudeMaxM = RemoteAuxiliaryAutopilotPacket::altitudeMaxM;
 	};
-	
+
+	enum class AircraftAuxiliaryPacketType : uint8_t {
+		calibration
+	};
+
+	class AircraftAuxiliaryPacket {
+		public:
+			constexpr static uint8_t typeLengthBits = 1;
+	};
+
+	class AircraftAuxiliaryCalibrationPacket {
+		public:
+			constexpr static uint8_t systemLengthBits = RemoteAuxiliaryCalibratePacket::systemLengthBits;
+			constexpr static uint8_t progressLengthBits = 7;
+	};
+
 	#pragma pack(pop)
 }

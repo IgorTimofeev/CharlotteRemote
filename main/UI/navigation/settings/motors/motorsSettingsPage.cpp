@@ -109,7 +109,7 @@ namespace pizda {
 			motorEditor->toSettings();
 			RC::getInstance().getSettings().motors.scheduleWrite();
 			
-			RC::getInstance().getTransceiver().enqueue(RemotePacketType::motorConfiguration);
+			RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::motorConfiguration);
 		};
 		
 		rows += motorEditor;
