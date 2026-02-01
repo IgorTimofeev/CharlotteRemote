@@ -174,17 +174,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="БИТОЁБИМ ПОМАЛЕНЬКУ)) перехуячил логику трансюка под one-time пакеты - теперь они пиздуют под общим типом, что сейвит аж ЦЕЛЫХ ТРИ БИТА на каждый continuous пакет">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/lateralRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/lateralRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/speedRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/speedRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/verticalRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/verticalRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimControls.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimControls.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/vector3.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/vector3.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/packet.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
@@ -1235,15 +1227,7 @@
       <workItem from="1769799762048" duration="6279000" />
       <workItem from="1769818378657" duration="2027000" />
       <workItem from="1769864495722" duration="15447000" />
-      <workItem from="1769952306407" duration="5163000" />
-    </task>
-    <task id="LOCAL-00060" summary="кек, ток ща заметил - если в лейаутах чиллит &gt; 1 текстфилда, то ивенты ловит последний, а не зафокушенный">
-      <option name="closed" value="true" />
-      <created>1768122858096</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1768122858096</updated>
+      <workItem from="1769952306407" duration="11657000" />
     </task>
     <task id="LOCAL-00061" summary="симпотно, но много места жрет, над покомпактнее как-то">
       <option name="closed" value="true" />
@@ -1629,7 +1613,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769880232284</updated>
     </task>
-    <option name="localTasksCounter" value="109" />
+    <task id="LOCAL-00109" summary="БИТОЁБИМ ПОМАЛЕНЬКУ)) перехуячил логику трансюка под one-time пакеты - теперь они пиздуют под общим типом, что сейвит аж ЦЕЛЫХ ТРИ БИТА на каждый continuous пакет">
+      <option name="closed" value="true" />
+      <created>1769957539707</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1769957539707</updated>
+    </task>
+    <option name="localTasksCounter" value="110" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1670,7 +1662,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="секс, теперь названия ранвеев пишет оверлеем на SVT" />
     <MESSAGE value="захуярил клиппинг ранвеев, а то че они постоянно рендерятся" />
     <MESSAGE value="прикостылил визуализацию активной НОЖКИ (ппалущщи по ебалу за horny thoughts)" />
     <MESSAGE value="щас все эти dlpf вынесем в отдельный самбмодуль,  заебало копипастить" />
@@ -1695,6 +1686,7 @@
     <MESSAGE value="баля вот это стилёвые слайдеры получились я теку" />
     <MESSAGE value="захуярил виджетоиды pid-тюнинга, но пока чет недостаточно видеофильски выглядит, надо облизать" />
     <MESSAGE value="ИЗНИЧТОЖИЛ хиповые коллбеки, а то изначально хотел как дотнете, типа удобно, вся хуйня - а они, бля, на каждый инстанс элемента отжирают кучу и срут фрагментацией - не-не-не-не, хватит и простого поинтера, шлинах" />
-    <option name="LAST_COMMIT_MESSAGE" value="ИЗНИЧТОЖИЛ хиповые коллбеки, а то изначально хотел как дотнете, типа удобно, вся хуйня - а они, бля, на каждый инстанс элемента отжирают кучу и срут фрагментацией - не-не-не-не, хватит и простого поинтера, шлинах" />
+    <MESSAGE value="БИТОЁБИМ ПОМАЛЕНЬКУ)) перехуячил логику трансюка под one-time пакеты - теперь они пиздуют под общим типом, что сейвит аж ЦЕЛЫХ ТРИ БИТА на каждый continuous пакет" />
+    <option name="LAST_COMMIT_MESSAGE" value="БИТОЁБИМ ПОМАЛЕНЬКУ)) перехуячил логику трансюка под one-time пакеты - теперь они пиздуют под общим типом, что сейвит аж ЦЕЛЫХ ТРИ БИТА на каждый continuous пакет" />
   </component>
 </project>

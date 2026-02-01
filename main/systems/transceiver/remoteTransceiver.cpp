@@ -10,25 +10,17 @@
 #include "resources/sounds.h"
 
 namespace pizda {
-	// -------------------------------- PacketSequenceItem --------------------------------
-	
-	PacketSequenceItem::PacketSequenceItem(const RemotePacketType type, const uint8_t count, const bool useEnqueued) : _type(type), _count(count), _useEnqueued(useEnqueued) {
-	
-	}
-	
-	RemotePacketType PacketSequenceItem::getType() const {
-		return _type;
-	}
-	
-	uint8_t PacketSequenceItem::getCount() const {
-		return _count;
-	}
-	
-	bool PacketSequenceItem::useEnqueued() const {
-		return _useEnqueued;
-	}
-	
+
 	// -------------------------------- Generic --------------------------------
+
+	RemoteTransceiver::RemoteTransceiver() : Transceiver(
+		{
+			PacketSequenceItem(RemotePacketType::controls, 2),
+			PacketSequenceItem(RemotePacketType::controls, 1, true)
+		}
+	) {
+
+	}
 
 	bool RemoteTransceiver::stopSpectrumScanning() {
 		RC::getInstance().getRemoteData().transceiver.spectrumScanning.state = RemoteDataRadioSpectrumScanningState::stopped;
@@ -196,14 +188,7 @@ namespace pizda {
 			rc.getAudioPlayer().play(resources::sounds::transceiverDisconnect);
 		}
 	}
-	
-	void RemoteTransceiver::enqueueAuxiliary(const RemoteAuxiliaryPacketType type) {
-		_packetQueueIndex++;
-		assert(_packetQueueIndex < std::size(_packetQueue) && "Packet queue overflow");
 
-		_packetQueue[_packetQueueIndex] = type;
-	}
-	
 	// -------------------------------- Receiving --------------------------------
 	
 	bool RemoteTransceiver::onReceive(BitStream& stream, const AircraftPacketType packetType, const uint8_t payloadLength) {
@@ -293,7 +278,7 @@ namespace pizda {
 		// Trends
 		const auto trendsDeltaTime = static_cast<float>(esp_timer_get_time() - _trendsTime);
 
-		if (trendsDeltaTime >= _trendsInterval) {
+		if (trendsDeltaTime >= trendsInterval) {
 			// Speed
 			rc.getAircraftData().raw.airspeedTrendMPS = (rc.getAircraftData().raw.airspeedMPS - _trendsAirspeedPrevMPS) * 5'000'000.f / trendsDeltaTime;
 			_trendsAirspeedPrevMPS = rc.getAircraftData().raw.airspeedMPS;
@@ -414,7 +399,8 @@ namespace pizda {
 	bool RemoteTransceiver::receiveAircraftAuxiliaryCalibrationPacket(BitStream& stream, const uint8_t payloadLength) {
 		if (!validatePayloadChecksumAndLength(
 			stream,
-			AircraftAuxiliaryCalibrationPacket::systemLengthBits
+			AircraftAuxiliaryPacket::typeLengthBits
+				+ AircraftAuxiliaryCalibrationPacket::systemLengthBits
 				+ AircraftAuxiliaryCalibrationPacket::progressLengthBits,
 			payloadLength
 		))
@@ -423,7 +409,7 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		rc.getAircraftData().raw.calibration.system = static_cast<AircraftCalibrationSystem>(stream.readUint8(AircraftAuxiliaryCalibrationPacket::systemLengthBits));
-		rc.getAircraftData().raw.calibration.progress = stream.readUint8(AircraftAuxiliaryCalibrationPacket::progressLengthBits) * 0xFF / ((1 << AircraftAuxiliaryCalibrationPacket::progressLengthBits) - 1);
+		rc.getAircraftData().raw.calibration.progress = static_cast<uint16_t>(stream.readUint8(AircraftAuxiliaryCalibrationPacket::progressLengthBits)) * 0xFF / ((1 << AircraftAuxiliaryCalibrationPacket::progressLengthBits) - 1);
 		rc.getAircraftData().raw.calibration.setCalibrating(rc.getAircraftData().raw.calibration.progress < 0xFF);
 		
 //		ESP_LOGI(_logTag, "calibration progress: %d", rc.getAircraftData().raw.calibration.progress * 100 / 0xFF);
@@ -432,48 +418,7 @@ namespace pizda {
 	}
 	
 	// -------------------------------- Transmitting --------------------------------
-	
-	RemotePacketType RemoteTransceiver::getTransmitPacketType() {
-		const auto& item = _packetSequence[_packetSequenceIndex];
-		
-		const auto next = [this, &item] {
-			_packetSequenceItemCounter++;
-			
-			if (_packetSequenceItemCounter < item.getCount())
-				return;
-			
-			_packetSequenceItemCounter = 0;
-			
-			_packetSequenceIndex++;
-			
-			if (_packetSequenceIndex >= _packetSequence.size())
-				_packetSequenceIndex = 0;
-		};
-		
-		// Enqueued
-		if (item.useEnqueued() && _packetQueueIndex >= 0) {
-			_auxiliaryPacketType = _packetQueue[0];
 
-			// 01234567
-			// --+-----
-			for (uint16_t i = 0; i < _packetQueueIndex; ++i)
-				_packetQueue[i] = _packetQueue[i + 1];
-
-			_packetQueueIndex--;
-
-			next();
-
-			return RemotePacketType::auxiliary;
-		}
-
-		// Normal
-		const auto packetType = item.getType();
-			
-		next();
-			
-		return packetType;
-	}
-	
 	void RemoteTransceiver::onTransmit(BitStream& stream, const RemotePacketType packetType) {
 		switch (packetType) {
 			case RemotePacketType::controls:
@@ -507,12 +452,10 @@ namespace pizda {
 	}
 
 	void RemoteTransceiver::transmitRemoteAuxiliaryPacket(BitStream& stream) {
-		auto& rc = RC::getInstance();
-
 		// Type
-		stream.writeUint8(std::to_underlying(_auxiliaryPacketType), RemoteAuxiliaryPacket::typeLengthBits);
+		stream.writeUint8(std::to_underlying(getEnqueuedAuxiliaryPacketType()), RemoteAuxiliaryPacket::typeLengthBits);
 
-		switch (_auxiliaryPacketType) {
+		switch (getEnqueuedAuxiliaryPacketType()) {
 			case RemoteAuxiliaryPacketType::trim:
 				transmitRemoteAuxiliaryTrimPacket(stream);
 				break;
@@ -538,7 +481,7 @@ namespace pizda {
 				break;
 
 			default:
-				ESP_LOGE(_logTag, "failed to transmit packet: unsupported type %d", _auxiliaryPacketType);
+				ESP_LOGE(_logTag, "failed to transmit packet: unsupported type %d", getEnqueuedAuxiliaryPacketType());
 				break;
 		}
 	}
