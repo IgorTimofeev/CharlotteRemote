@@ -12,6 +12,18 @@ namespace pizda {
 
 		title.setText(L"General");
 
+		// Debug overlay
+		_generalDebugOverlay.getSwitch().setActive(settings.personalization.debugOverlay);
+
+		_generalDebugOverlay.getSwitch().setOnIsActiveChanged([this, &rc, &settings] {
+			settings.personalization.debugOverlay = _generalDebugOverlay.getSwitch().isActive();
+			settings.personalization.scheduleWrite();
+
+			rc.updateDebugOverlayVisibility();
+		});
+
+		rows += &_generalDebugOverlay;
+
 		// Audio feedback
 		_generalAudioFeedback.getSwitch().setActive(settings.personalization.audioFeedback);
 		
@@ -31,18 +43,6 @@ namespace pizda {
 		});
 		
 		rows += &_generalDataInterpolation;
-		
-		// Debug overlay
-		_generalDebugOverlay.getSwitch().setActive(settings.personalization.debugOverlay);
-		
-		_generalDebugOverlay.getSwitch().setOnIsActiveChanged([this, &rc, &settings] {
-			settings.personalization.debugOverlay = _generalDebugOverlay.getSwitch().isActive();
-			settings.personalization.scheduleWrite();
-			
-			rc.updateDebugOverlayVisibility();
-		});
-		
-		rows += &_generalDebugOverlay;
 		
 		// Separator
 		rows += &_generalSeparator;

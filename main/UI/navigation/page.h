@@ -10,16 +10,40 @@ namespace pizda {
 	using namespace YOBA;
 
 	class Page : public Layout {
-
+		public:
+			void setDefaultContentMargin(Element* element) const;
 	};
 
-	class ScrollViewPage : public Page {
+	// ----------------------------- Templates -----------------------------
+
+	class TitlePageTemplate : public Page {
+		public:
+			TitlePageTemplate();
+
+			TextView title {};
+	};
+
+	class StackRowsPageTemplate : public TitlePageTemplate {
+		public:
+			StackRowsPageTemplate();
+
+			StackLayout rows {};
+	};
+
+	// ----------------------------- Ready to use -----------------------------
+
+	class ScrollViewPage : public StackRowsPageTemplate {
 		public:
 			ScrollViewPage();
 
 			ScrollView scrollView {};
-			StackLayout rows {};
-
-			TextView title {};
 	};
+
+	class RelativeRowsPage : public TitlePageTemplate {
+		public:
+			RelativeRowsPage();
+
+			RelativeStackLayout rows {};
+	};
+
 }

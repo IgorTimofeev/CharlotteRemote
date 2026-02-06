@@ -5,7 +5,7 @@
 
 namespace pizda {
 	FlightControlsIndicator::FlightControlsIndicator() {
-		setSize(Size(23, 23));
+		setSize(Size(21, 21));
 	}
 
 	void FlightControlsIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
@@ -22,11 +22,11 @@ namespace pizda {
 		
 		// Lines
 		const auto lineLength = bounds.getWidth() / 2 - 1;
-		renderer->renderHorizontalLine(Point(bounds.getX(), center.getY()), lineLength, &Theme::fg4);
-		renderer->renderHorizontalLine(Point(center.getX() + 2, center.getY()), lineLength, &Theme::fg4);
+		renderer->renderHorizontalLine(Point(bounds.getX(), center.getY()), lineLength, &Theme::bg5);
+		renderer->renderHorizontalLine(Point(center.getX() + 2, center.getY()), lineLength, &Theme::bg5);
 		
-		renderer->renderVerticalLine(Point(center.getX(), bounds.getY()), lineLength, &Theme::fg4);
-		renderer->renderVerticalLine(Point(center.getX(), center.getY() + 2), lineLength, &Theme::fg4);
+		renderer->renderVerticalLine(Point(center.getX(), bounds.getY()), lineLength, &Theme::bg5);
+		renderer->renderVerticalLine(Point(center.getX(), center.getY() + 2), lineLength, &Theme::bg5);
 		
 		// Joys
 		const auto joyH = bounds.getX() + rc.getAxes().getJoystickHorizontal().getFilteredValueUint8() * bounds.getWidth() / 0xFF;

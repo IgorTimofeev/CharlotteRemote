@@ -13,7 +13,7 @@ namespace pizda {
 		*this += &leftRow;
 
 		// Controls
-		ToolbarSection::setDefaultMargin(&_flightControlsIndicator, 4);
+		ToolbarSection::setDefaultMargin(&_flightControlsIndicator, 3);
 		_flightControlsSection.setFocusable(false);
 		leftRow += &_flightControlsSection;
 

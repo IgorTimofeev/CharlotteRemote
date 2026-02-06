@@ -12,7 +12,5 @@ namespace pizda {
 
 		protected:
 			void onClick() override;
-
-		private:
 	};
 }

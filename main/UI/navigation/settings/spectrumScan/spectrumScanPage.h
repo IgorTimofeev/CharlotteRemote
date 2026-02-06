@@ -46,7 +46,7 @@ namespace pizda {
 			void updatePointerPos(const Point& pointerEventPos);
 	};
 
-	class SpectrumScanPage : public ScrollViewPage {
+	class SpectrumScanPage : public RelativeRowsPage {
 		public:
 			SpectrumScanPage();
 

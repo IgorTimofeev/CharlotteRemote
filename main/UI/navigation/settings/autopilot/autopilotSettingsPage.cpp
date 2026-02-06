@@ -1,12 +1,7 @@
 #include "autopilotSettingsPage.h"
 
-#include <format>
-#include <algorithm>
-#include <optional>
-
 #include "rc.h"
 #include "UI/theme.h"
-#include "utilities/string.h"
 
 namespace pizda {
 	AutopilotSettingsPage::AutopilotSettingsPage() {

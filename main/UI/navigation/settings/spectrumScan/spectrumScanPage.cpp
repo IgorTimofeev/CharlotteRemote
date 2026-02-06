@@ -290,7 +290,7 @@ namespace pizda {
 		title.setText(L"Spectrum scanning");
 
 		// Char
-		chart.setHeight(175);
+		chart.setHeight(170);
 		rows += &chart;
 
 		// -------------------------------- Frequency --------------------------------
@@ -298,6 +298,7 @@ namespace pizda {
 		frequencyRow.setOrientation(Orientation::horizontal);
 		frequencyRow.setSpacing(5);
 		rows += &frequencyRow;
+		rows.setAutoSize(&frequencyRow);
 
 		// From
 		Theme::apply(&frequencyFromTextField);
@@ -372,6 +373,7 @@ namespace pizda {
 		});
 
 		rows += &confirmButton;
+		rows.setAutoSize(&confirmButton);
 
 		// -------------------------------- Initialization --------------------------------
 

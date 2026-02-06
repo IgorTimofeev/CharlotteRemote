@@ -1,7 +1,5 @@
 #pragma once
 
-#include <functional>
-
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
 

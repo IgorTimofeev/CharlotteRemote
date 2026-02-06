@@ -7,15 +7,17 @@
 
 namespace pizda {
 	OpenMenuButton::OpenMenuButton() {
-		constexpr static uint8_t size = 34;
+		constexpr static uint8_t size = 32;
 		
 		setSize(Size(size));
 		setCornerRadius(getSize().getWidth() / 2 - 1);
-		
-		setDefaultBackgroundColor(&Theme::bg3);
-		setDefaultTextColor(&Theme::fg4);
-		
+
+		setDefaultBackgroundColor(&Theme::bg2);
+		setDefaultBorderColor(&Theme::bg3);
+		setDefaultTextColor(&Theme::fg5);
+
 		setActiveBackgroundColor(&Theme::fg1);
+		setActiveBorderColor(nullptr);
 		setActiveTextColor(&Theme::bg1);
 		
 		setFont(&Theme::fontSmall);
@@ -24,7 +26,7 @@ namespace pizda {
 		
 		setAlignment(Alignment::center, Alignment::end);
 		setMargin(Margin(0, 0, 0, -(size / 2 + 3)));
-		setContentMargin(Margin(0, 0, 0, 7));
+		setContentMargin(Margin(0, 0, 0, 5));
 	}
 	
 	void OpenMenuButton::onClick() {

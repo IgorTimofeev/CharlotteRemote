@@ -15,15 +15,15 @@ namespace pizda {
 	};
 
 	enum class PersonalizationSettingsMFDNDMode : uint8_t {
-		arcHeadingUp,
-		mapHeadingUp,
+		arc,
+		map,
 
-		maxValue = mapHeadingUp
+		maxValue = map
 	};
 
 	class PersonalizationSettingsMFDND {
 		public:
-			PersonalizationSettingsMFDNDMode mode = PersonalizationSettingsMFDNDMode::arcHeadingUp;
+			PersonalizationSettingsMFDNDMode mode = PersonalizationSettingsMFDNDMode::arc;
 			bool earth = true;
 	};
 
@@ -79,7 +79,7 @@ namespace pizda {
 				MFD.PFD.flightDirector = stream.readBool(_MFDPFDFlightDirectors, true);
 				MFD.PFD.waypointLabels = stream.readBool(_MFDPFDWaypointLabels, true);
 
-				MFD.ND.mode = static_cast<PersonalizationSettingsMFDNDMode>(stream.readUint8(_MFDNDMode, static_cast<uint8_t>(PersonalizationSettingsMFDNDMode::arcHeadingUp)));
+				MFD.ND.mode = static_cast<PersonalizationSettingsMFDNDMode>(stream.readUint8(_MFDNDMode, static_cast<uint8_t>(PersonalizationSettingsMFDNDMode::arc)));
 				MFD.ND.earth = stream.readBool(_MFDNDEarth, true);
 
 				MFD.toolbar.mode = static_cast<PersonalizationSettingsMFDToolbarMode>(stream.readUint8(_MFDToolbarMode, static_cast<uint8_t>(PersonalizationSettingsMFDToolbarMode::none)));

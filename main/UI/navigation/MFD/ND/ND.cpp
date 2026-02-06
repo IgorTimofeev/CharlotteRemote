@@ -6,12 +6,13 @@
 namespace pizda {
 	ND::ND() {
 		setClipToBounds(true);
+
+		// Scene
 		*this += &_scene;
 
 		// Button rows
-		_buttonRows.setSpacing(5);
-		_buttonRows.setAlignment(Alignment::start, Alignment::start);
-		_buttonRows.setMargin(Margin(5, 5, 0, 0));
+		_buttonRows.setSpacing(1);
+		_buttonRows.setAlignment(Alignment::start, Alignment::center);
 		*this += &_buttonRows;
 
 		// View mode
@@ -73,7 +74,7 @@ namespace pizda {
 	}
 
 	void ND::addGovnoButton(Button* button, const std::function<void()>& onClick) {
-		button->setSize(Size(20));
+		button->setSize(Size(PFD::speedWidth, 20));
 		button->setCornerRadius(0);
 
 		button->setDefaultBackgroundColor(&Theme::bg2);
@@ -93,10 +94,10 @@ namespace pizda {
 		std::wstring text;
 
 		switch (RC::getInstance().getSettings().personalization.MFD.ND.mode) {
-			case PersonalizationSettingsMFDNDMode::arcHeadingUp:
+			case PersonalizationSettingsMFDNDMode::arc:
 				text = L"ARC";
 				break;
-			case PersonalizationSettingsMFDNDMode::mapHeadingUp:
+			case PersonalizationSettingsMFDNDMode::map:
 				text = L"MAP";
 				break;
 		}

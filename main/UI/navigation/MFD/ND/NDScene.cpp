@@ -8,6 +8,7 @@
 #include "UI/navigation/MFD/ND/sceneElements/NDRunwayElement.h"
 #include "UI/navigation/MFD/ND/sceneElements/waypointElement.h"
 #include "UI/navigation/MFD/ND/sceneElements/routeElement.h"
+#include "UI/navigation/MFD/PFD/PFD.h"
 
 namespace pizda {
 	NDScene::NDScene() {
@@ -73,7 +74,7 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 
-		const auto center = bounds.getCenter();
+		const auto pivot = bounds.getCenter() + getPivotOffset();
 
 		const auto isLandscape = bounds.isLandscape();
 
@@ -84,18 +85,15 @@ namespace pizda {
 		uint16_t tickMarksRadius;
 		int16_t tickAngleFromDeg;
 		int16_t tickAngleToDeg;
-		uint16_t y;
 
 		// Arc
-		if (rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arcHeadingUp) {
+		if (rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arc) {
 			circleRadius =
 				bounds.getHeight()
 				- circleMarginTopPixels
 				- circleMarginBottomPixels;
 
 			tickMarksRadius = circleRadius;
-
-			y = bounds.getY2() - circleMarginBottomPixels;
 
 			tickAngleFromDeg = -compassArcViewportHalfDeg + compassTickMarkUnitsDeg;
 			tickAngleToDeg = compassArcViewportHalfDeg;
@@ -123,8 +121,6 @@ namespace pizda {
 
 			tickMarksRadius = circleRadius - 1;
 
-			y = center.getY();
-
 			tickAngleFromDeg = 0;
 			tickAngleToDeg = 360 - compassTickMarkUnitsDeg;
 		}
@@ -134,8 +130,8 @@ namespace pizda {
 			// Cross
 			renderer->renderHorizontalLine(
 				Point(
-					center.getX() - compassLateralOffsetCrossSize / 2,
-					y
+					pivot.getX() - compassLateralOffsetCrossSize / 2,
+					pivot.getY()
 				),
 				compassLateralOffsetCrossSize,
 				&Theme::fg1
@@ -143,8 +139,8 @@ namespace pizda {
 
 			renderer->renderVerticalLine(
 				Point(
-					center.getX(),
-					y - compassLateralOffsetCrossSize / 2
+					pivot.getX(),
+					pivot.getY() - compassLateralOffsetCrossSize / 2
 				),
 				compassLateralOffsetCrossSize,
 				&Theme::fg1
@@ -152,18 +148,15 @@ namespace pizda {
 		}
 		else {
 			// Triangle
-			AircraftElement::render(renderer, Point(
-				center.getX(),
-				y
-			));
+			AircraftElement::render(renderer, pivot);
 		}
 
 		// Enough space for rose
 		if (bounds.getHeight() >= 80) {
 			// Arc
-			if (rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arcHeadingUp) {
+			if (rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arc) {
 				renderer->renderArc(
-					Point(center.getX(), y),
+					pivot,
 					circleRadius,
 					(90 - compassArcViewportHalfDeg) * 255 / 360,
 					(90 + compassArcViewportHalfDeg) * 255 / 360,
@@ -191,12 +184,12 @@ namespace pizda {
 
 					renderer->renderLine(
 						Point(
-							center.getX() + static_cast<int32_t>(angleStartVec.getX()),
-							y - static_cast<int32_t>(angleStartVec.getY())
+							pivot.getX() + static_cast<int32_t>(angleStartVec.getX()),
+							pivot.getY() - static_cast<int32_t>(angleStartVec.getY())
 						),
 						Point(
-							center.getX() + static_cast<int32_t>(angleEndVec.getX()),
-							y - static_cast<int32_t>(angleEndVec.getY())
+							pivot.getX() + static_cast<int32_t>(angleEndVec.getX()),
+							pivot.getY() - static_cast<int32_t>(angleEndVec.getY())
 						),
 						&Theme::fg1
 					);
@@ -209,8 +202,8 @@ namespace pizda {
 
 						renderer->renderString(
 							Point(
-								center.getX() + static_cast<int32_t>(textCenterVec.getX() - textWidth / 2),
-								y - static_cast<int32_t>(textCenterVec.getY()) - Theme::fontSmall.getHeight() / 2
+								pivot.getX() + static_cast<int32_t>(textCenterVec.getX() - textWidth / 2),
+								pivot.getY() - static_cast<int32_t>(textCenterVec.getY()) - Theme::fontSmall.getHeight() / 2
 							),
 							&Theme::fontSmall,
 							&Theme::fg1,
@@ -223,16 +216,16 @@ namespace pizda {
 			// Triangle
 			renderer->renderFilledTriangle(
 				Point(
-					center.getX(),
-					y - circleRadius
+					pivot.getX(),
+					pivot.getY() - circleRadius
 				),
 				Point(
-					center.getX() - compassArcTriangleWidth / 2,
-					y - circleRadius + compassArcTriangleHeight
+					pivot.getX() - compassArcTriangleWidth / 2,
+					pivot.getY() - circleRadius + compassArcTriangleHeight
 				),
 				Point(
-					center.getX() + compassArcTriangleWidth / 2,
-					y - circleRadius + compassArcTriangleHeight
+					pivot.getX() + compassArcTriangleWidth / 2,
+					pivot.getY() - circleRadius + compassArcTriangleHeight
 				),
 				&Theme::fg1
 			);
@@ -472,9 +465,9 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		setPivotOffset(
-			rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arcHeadingUp
+			rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arc
 			? Point(0, bounds.getHeight() / 2 - bounds.getHeight() * compassCircleMarginBottomPct / 100)
-			: Point()
+			: Point(0, 0)
 		);
 	}
 }

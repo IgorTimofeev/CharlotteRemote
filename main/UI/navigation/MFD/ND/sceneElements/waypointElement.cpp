@@ -24,7 +24,7 @@ namespace pizda {
 		RenderingUtils::renderWaypointIcon(
 			renderer,
 			waypointPosition,
-			&Theme::fg1,
+			&Theme::magenta1,
 			waypointData
 		);
 

@@ -1,20 +1,46 @@
 #include "page.h"
 
 namespace pizda {
-	ScrollViewPage::ScrollViewPage() {
+	// ----------------------------- Templates -----------------------------
+
+	void Page::setDefaultContentMargin(Element* element) const {
+		element->setMargin(Margin(15, 15, 15, 20));
+	}
+
+	TitlePageTemplate::TitlePageTemplate() {
 		// Title
 		Theme::applyPageTitle(&title);
 		title.setVerticalAlignment(Alignment::center);
-		rows += &title;
+	}
 
+	StackRowsPageTemplate::StackRowsPageTemplate() {
 		// Rows
 		rows.setSpacing(Theme::spacing);
-		// Bottom margin should be greater for nav menu button
-		rows.setMargin(Margin(15, 15, 15, 25));
-		scrollView += &rows;
-		
-		// Scroll views
+		setDefaultContentMargin(&rows);
+
+		// Title
+		rows += &title;
+	}
+
+	// ----------------------------- Ready to use -----------------------------
+
+	ScrollViewPage::ScrollViewPage() {
+		// Scroll view
 		Theme::apply(&scrollView);
 		*this += &scrollView;
+
+		// Rows
+		scrollView += &rows;
+	}
+
+	RelativeRowsPage::RelativeRowsPage() {
+		// Rows
+		rows.setSpacing(Theme::spacing);
+		setDefaultContentMargin(&rows);
+		*this += &rows;
+
+		// Title
+		rows += &title;
+		rows.setAutoSize(&title);
 	}
 }
