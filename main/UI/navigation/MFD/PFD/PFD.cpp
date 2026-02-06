@@ -122,17 +122,15 @@ namespace pizda {
 		);
 
 		// Yaw overlay
-		if (!rc.getSettings().personalization.MFD.ND.visible) {
-			renderYawOverlay(
-				renderer,
-				Bounds(
-					bounds.getX(),
-					bounds.getY2() - PFD::yawOverlayHeight + 1,
-					bounds.getWidth(),
-					PFD::yawOverlayHeight
-				)
-			);
-		}
+		renderYawOverlay(
+			renderer,
+			Bounds(
+				bounds.getX(),
+				bounds.getY2() - PFD::yawOverlayHeight + 1,
+				bounds.getWidth(),
+				PFD::yawOverlayHeight
+			)
+		);
 
 		// Wind
 		if (rc.getAircraftData().raw.groundSpeedKt > PFD::windVisibilityGroundSpeed) {
@@ -743,12 +741,12 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 
-		_scene.setCameraPosition(rc.getAircraftData().raw.coordinates.toCartesian());
+		_scene.setCameraPosition(rc.getAircraftData().computed.coordinates.toCartesian());
 
 		_scene.setWorldRotation(Vector3F(
-			toRadians(90) - rc.getAircraftData().raw.coordinates.getLatitude(),
+			toRadians(90) - rc.getAircraftData().computed.coordinates.getLatitude(),
 			0,
-			toRadians(90) + rc.getAircraftData().raw.coordinates.getLongitude()
+			toRadians(90) + rc.getAircraftData().computed.coordinates.getLongitude()
 		));
 
 		_scene.setCameraRotation(Vector3F(
@@ -768,13 +766,6 @@ namespace pizda {
 			bounds.getY() + miniHeight,
 			speedWidth,
 			bounds.getHeight() - miniHeight * 2
-		));
-
-		renderGroundSpeed(renderer, Bounds(
-			bounds.getX(),
-			bounds.getY2() + 1 - miniHeight,
-			speedWidth,
-			miniHeight
 		));
 
 		renderAutopilotSpeed(renderer, Bounds(
@@ -1562,11 +1553,5 @@ namespace pizda {
 		}
 
 		renderMiniPanel(renderer, bounds, bg, fg, text, 0);
-	}
-
-	void PFD::renderGroundSpeed(Renderer* renderer, const Bounds& bounds) {
-		auto& rc = RC::getInstance();
-
-		renderMiniPanel(renderer, bounds, &Theme::bg2, &Theme::magenta1, std::to_wstring(static_cast<uint16_t>(rc.getAircraftData().raw.groundSpeedKt)), 0);
 	}
 }

@@ -30,51 +30,6 @@ namespace pizda {
 	}
 
 	MFDMenuView::MFDMenuView() {
-		auto& settings = RC::getInstance().getSettings();
-
-		// PFD
-		PFDButton.setActiveBorderColor(&Theme::magenta1);
-		PFDButton.setActiveTextColor(&Theme::magenta1);
-		PFDButton.setToggle(true);
-		PFDButton.setActive(settings.personalization.MFD.PFD.visible);
-
-		PFDButton.setOnClick([this, &settings] {
-			settings.personalization.MFD.PFD.visible = !settings.personalization.MFD.PFD.visible;
-
-			if (!settings.personalization.MFD.isAnyPanelVisible())
-				settings.personalization.MFD.PFD.visible = true;
-
-			PFDButton.setActive(settings.personalization.MFD.PFD.visible);
-
-			settings.personalization.scheduleWrite();
-
-			MFDPage::fromSettings();
-		});
-
-		*this += &PFDButton;
-
-		// N/D
-		NDButton.setActiveBorderColor(&Theme::magenta1);
-		NDButton.setActiveTextColor(&Theme::magenta1);
-		NDButton.setToggle(true);
-		NDButton.setActive(settings.personalization.MFD.ND.visible);
-
-		NDButton.setOnClick([this, &settings] {
-			settings.personalization.MFD.ND.visible = !settings.personalization.MFD.ND.visible;
-
-			if (!settings.personalization.MFD.isAnyPanelVisible())
-				settings.personalization.MFD.ND.visible = true;
-
-			NDButton.setActive(settings.personalization.MFD.ND.visible);
-
-			settings.personalization.scheduleWrite();
-
-			MFDPage::fromSettings();
-		});
-
-		*this += &NDButton;
-
-		// Mode
 		for (const auto modeButton : modeButtons) {
 			*this += modeButton;
 		}

@@ -3,9 +3,6 @@
 #include "resources/images/splashScreenImage.h"
 
 #include "resources/images/menuIconMFDImage.h"
-#include "resources/images/menuIconMFDPFDImage.h"
-#include "resources/images/menuIconMFDNDImage.h"
-#include "resources/images/menuIconMFDMainImage.h"
 #include "resources/images/menuIconMFDAutopilotImage.h"
 #include "resources/images/menuIconMFDAutopilotFlightDirectorImage.h"
 #include "resources/images/menuIconMFDAutopilotEngageImage.h"
@@ -35,8 +32,6 @@ namespace pizda::resources {
 			constexpr static SplashScreenImage splashScreen {};
 
 			constexpr static MenuIconMFDImage menuIconMFD {};
-			constexpr static MenuIconMFDPFDImage menuIconMFDPFD {};
-			constexpr static MenuIconMFDNDImage menuIconMFDND {};
 			constexpr static MenuIconMFDAutopilotImage menuIconMFDAutopilot {};
 			constexpr static MenuIconMFDAutopilotFlightDirectorImage menuIconMFDAutopilotFlightDirector {};
 			constexpr static MenuIconMFDAutopilotEngageImage menuIconMFDAutopilotEngage {};

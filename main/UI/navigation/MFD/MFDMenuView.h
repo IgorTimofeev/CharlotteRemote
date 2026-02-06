@@ -27,10 +27,6 @@ namespace pizda {
 		public:
 			explicit MFDMenuView();
 
-			MenuViewButton
-				PFDButton = { &resources::images::menuIconMFDPFD, L"PFD" },
-				NDButton = { &resources::images::menuIconMFDND, L"ND" };
-
 			MFDModeMenuViewButton
 				autopilotButton { &resources::images::menuIconMFDAutopilot, L"A/P", PersonalizationSettingsMFDToolbarMode::autopilot },
 				pressureButton { &resources::images::menuIconMFDBaro, L"BARO", PersonalizationSettingsMFDToolbarMode::baro },

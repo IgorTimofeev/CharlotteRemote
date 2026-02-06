@@ -27,7 +27,7 @@ namespace pizda {
 
 			_distanceNm = YOBA::round(
 				Units::convertDistance(
-					(waypointData.cartesianCoordinates - rc.getAircraftData().raw.coordinates.toCartesian()).getLength(),
+					(waypointData.cartesianCoordinates - rc.getAircraftData().computed.coordinates.toCartesian()).getLength(),
 					DistanceUnit::meter,
 					DistanceUnit::nauticalMile
 				),

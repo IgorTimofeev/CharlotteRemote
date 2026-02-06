@@ -16,7 +16,7 @@ namespace pizda {
 		private:
 			NDScene _scene {};
 
-			StackLayout _rightRows {};
+			StackLayout _buttonRows {};
 
 			Button _viewModeButton {};
 			Button _latLongButton {};

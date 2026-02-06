@@ -18,9 +18,8 @@ namespace pizda {
 	enum class PersonalizationSettingsMFDNDMode : uint8_t {
 		arcHeadingUp,
 		mapHeadingUp,
-		mapNorthUp,
 
-		last = mapNorthUp
+		last = mapHeadingUp
 	};
 
 	class PersonalizationSettingsMFDND {

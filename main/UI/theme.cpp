@@ -177,8 +177,8 @@ namespace pizda {
 	}
 
 	void Theme::apply(Slider* slider) {
-		slider->setValueMinimum(0);
-		slider->setValueMaximum(1);
+		slider->setMinimumValue(0);
+		slider->setMaximumValue(1);
 
 		// Track
 		slider->setTrackSize(5);

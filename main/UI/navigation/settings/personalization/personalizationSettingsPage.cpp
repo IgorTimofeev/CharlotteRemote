@@ -55,8 +55,8 @@ namespace pizda {
 				
 		// FOV
 		Theme::apply(&_PFDFOVSlider);
-		_PFDFOVSlider.setValueMinimum(_PFDFOVMin);
-		_PFDFOVSlider.setValueMaximum(_PFDFOVMax);
+		_PFDFOVSlider.setMinimumValue(20);
+		_PFDFOVSlider.setMaximumValue(120);
 		_PFDFOVSlider.setValue(settings.personalization.MFD.PFD.FOV);
 
 		_PFDFOVSlider.setTickQuantity(10);
@@ -69,17 +69,6 @@ namespace pizda {
 		});
 
 		rows += &_PFDFOVTitle;
-		
-		// Height
-		Theme::apply(&_PFDSplitSlider);
-		_PFDSplitSlider.setValue(static_cast<float>(settings.personalization.MFD.splitPercent - _PFDSplitMin) / (_PFDSplitMax - _PFDSplitMin));
-		
-		_PFDSplitSlider.setOnValueChanged([this, &settings] {
-			settings.personalization.MFD.splitPercent = _PFDSplitMin + _PFDSplitSlider.getValueFactor() * (_PFDSplitMax - _PFDSplitMin);
-			settings.personalization.scheduleWrite();
-		});
-
-		rows += &_PFDSplitTitle;
 
 		// Waypoint labels
 		_PFDWaypointLabels.getSwitch().setActive(settings.personalization.MFD.PFD.waypointLabels);

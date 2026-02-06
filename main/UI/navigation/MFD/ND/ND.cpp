@@ -6,11 +6,11 @@ namespace pizda {
 	ND::ND() {
 		*this += &_scene;
 
-		// Right rows
-		_rightRows.setSpacing(10);
-		_rightRows.setAlignment(Alignment::end, Alignment::start);
-		_rightRows.setMargin(Margin(0, 5, 5, 0));
-		*this += &_rightRows;
+		// Button rows
+		_buttonRows.setSpacing(5);
+		_buttonRows.setAlignment(Alignment::start, Alignment::start);
+		_buttonRows.setMargin(Margin(5, 5, 0, 0));
+		*this += &_buttonRows;
 
 		updateViewModeButtonText();
 
@@ -51,7 +51,7 @@ namespace pizda {
 	void ND::addGovnoButton(Button* button, const std::function<void()>& onClick) {
 		Theme::applyPrimary(button);
 
-		button->setSize(Size(20));
+		button->setSize(Size(18));
 
 		button->setDefaultBackgroundColor(&Theme::bg2);
 		button->setDefaultTextColor(&Theme::fg5);
@@ -63,7 +63,7 @@ namespace pizda {
 
 		button->setOnClick(onClick);
 
-		_rightRows += button;
+		_buttonRows += button;
 	}
 
 	void ND::updateViewModeButtonText() {
@@ -75,9 +75,6 @@ namespace pizda {
 				break;
 			case PersonalizationSettingsMFDNDMode::mapHeadingUp:
 				text = L"MAP";
-				break;
-			case PersonalizationSettingsMFDNDMode::mapNorthUp:
-				text = L"NUP";
 				break;
 		}
 

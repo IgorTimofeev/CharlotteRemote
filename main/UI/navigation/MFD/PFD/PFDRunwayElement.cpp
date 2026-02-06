@@ -34,13 +34,13 @@ namespace pizda {
 		renderer->renderVerticalLine(
 			Point(waypointVertex.getX(), waypointVertex.getY() - lineLength),
 			lineLength - 1,
-			&Theme::ground2
+			&Theme::fg1
 		);
 
 		renderer->renderFilledCircle(
 			Point(waypointVertex.getX(), waypointVertex.getY()),
 			2,
-			&Theme::ground2
+			&Theme::fg1
 		);
 
 		renderer->renderString(
