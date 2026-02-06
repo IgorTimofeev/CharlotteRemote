@@ -1,9 +1,11 @@
 #include "ND.h"
 #include "rc.h"
 #include "UI/elements/navigation/addWaypointDialog.h"
+#include "UI/navigation/MFD/MFDPage.h"
 
 namespace pizda {
 	ND::ND() {
+		setClipToBounds(true);
 		*this += &_scene;
 
 		// Button rows
@@ -12,24 +14,26 @@ namespace pizda {
 		_buttonRows.setMargin(Margin(5, 5, 0, 0));
 		*this += &_buttonRows;
 
+		// View mode
 		updateViewModeButtonText();
 
 		addGovnoButton(&_viewModeButton, [this] {
-			auto& settings = RC::getInstance().getSettings();
+			auto& settings = RC::getInstance().getSettings().personalization;
 
-			uint8_t nextMode = static_cast<uint8_t>(settings.personalization.MFD.ND.mode) + 1;
+			uint8_t nextMode = static_cast<uint8_t>(settings.MFD.ND.mode) + 1;
 
-			if (nextMode > static_cast<uint8_t>(PersonalizationSettingsMFDNDMode::last))
+			if (nextMode > static_cast<uint8_t>(PersonalizationSettingsMFDNDMode::maxValue))
 				nextMode = 0;
 
-			settings.personalization.MFD.ND.mode = static_cast<PersonalizationSettingsMFDNDMode>(nextMode);
-			settings.personalization.scheduleWrite();
+			settings.MFD.ND.mode = static_cast<PersonalizationSettingsMFDNDMode>(nextMode);
+			settings.scheduleWrite();
 
 			updateViewModeButtonText();
 
 			_scene.setFocused(true);
 		});
 
+		// RST
 		_latLongButton.setText(L"RST");
 
 		addGovnoButton(&_latLongButton, [this] {
@@ -37,7 +41,8 @@ namespace pizda {
 			_scene.setFocused(true);
 		});
 
-		_waypointButton.setText(L"+");
+		// +
+		_waypointButton.setText(L"WPT");
 
 		addGovnoButton(&_waypointButton, [this] {
 			AddWaypointDialog::create(_scene.getCameraCoordinates(), [this] {
@@ -46,12 +51,30 @@ namespace pizda {
 				_scene.setFocused(true);
 			});
 		});
+
+		// Split
+		updateSplitButtonText();
+
+		addGovnoButton(&_splitButton, [this] {
+			auto& settings = RC::getInstance().getSettings().personalization;
+
+			settings.MFD.split.mode =
+				settings.MFD.split.mode == PersonalizationSettingsMFDSplitMode::split
+				? PersonalizationSettingsMFDSplitMode::ND
+				: PersonalizationSettingsMFDSplitMode::split;
+
+			settings.scheduleWrite();
+
+			updateSplitButtonText();
+			MFDPage::getInstance()->fromSettings();
+
+			_scene.setFocused(true);
+		});
 	}
 
 	void ND::addGovnoButton(Button* button, const std::function<void()>& onClick) {
-		Theme::applyPrimary(button);
-
-		button->setSize(Size(18));
+		button->setSize(Size(20));
+		button->setCornerRadius(0);
 
 		button->setDefaultBackgroundColor(&Theme::bg2);
 		button->setDefaultTextColor(&Theme::fg5);
@@ -80,4 +103,9 @@ namespace pizda {
 
 		_viewModeButton.setText(text);
 	}
+
+	void ND::updateSplitButtonText() {
+		_splitButton.setText(RC::getInstance().getSettings().personalization.MFD.split.mode == PersonalizationSettingsMFDSplitMode::ND ? L"> <" : L"< >");
+	}
+
 }

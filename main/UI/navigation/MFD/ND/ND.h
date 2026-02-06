@@ -11,8 +11,6 @@ namespace pizda {
 		public:
 			ND();
 
-			void updateViewModeButtonText();
-
 		private:
 			NDScene _scene {};
 
@@ -21,7 +19,10 @@ namespace pizda {
 			Button _viewModeButton {};
 			Button _latLongButton {};
 			Button _waypointButton {};
+			Button _splitButton {};
 
+			void updateViewModeButtonText();
+			void updateSplitButtonText();
 			void addGovnoButton(Button* button, const std::function<void()>& onClick);
 	};
 }

@@ -43,8 +43,8 @@ namespace pizda {
 				? &Theme::magenta1
 				: (
 					_legIndex < nd.flightPlan.activeLegIndex
-					? &Theme::fg4
-					: &Theme::fg2
+					? &Theme::fg5
+					: &Theme::fg3
 				)
 		);
 	}

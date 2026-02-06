@@ -24,7 +24,7 @@ namespace pizda {
 		for (const auto modeButton : menuView->modeButtons)
 			modeButton->setActive(modeButton->_mode == settings.personalization.MFD.toolbar.mode);
 
-		MFDPage::fromSettings();
+		MFDPage::getInstance()->fromSettings();
 
 		settings.personalization.scheduleWrite();
 	}

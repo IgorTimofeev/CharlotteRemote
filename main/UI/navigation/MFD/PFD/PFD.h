@@ -2,44 +2,15 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
-#include <YOBA/UI/spatial.h>
 
 #include "UI/theme.h"
-#include <units.h>
+#include "UI/navigation/MFD/PFD/PFDScene.h"
+#include "UI/navigation/MFD/PFD/PFDPageSplitter.h"
+
 #include "types/speedBug.h"
-#include "types/aircraftData.h"
-#include "settings/settings.h"
 
 namespace pizda {
 	using namespace YOBA;
-	using namespace YOBA::spatial;
-
-	class PFDScene : public Scene {
-		public:
-			PFDScene();
-
-		protected:
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
-
-		private:
-			static void renderPitchOverlay(
-				Renderer* renderer,
-				const Bounds& bounds,
-				float pitchPixelOffsetProjected,
-				float projectionPlaneDistance,
-				const Point& horizonLeft,
-				const Point& horizonRight,
-
-				const Vector2F& horizonVec,
-				const Vector2F& horizonVecNorm,
-				const Vector2F& horizonVecPerp,
-				const Vector2F& horizonCenter
-			);
-
-			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds);
-			static void renderFlightModeAnnunciatorOverlay(Renderer* renderer, const Bounds& bounds);
-			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds);
-	};
 
 	class PFD : public Layout {
 		public:
@@ -195,6 +166,7 @@ namespace pizda {
 
 		private:
 			PFDScene _scene {};
+			PFDPageSplitter _splitter {};
 
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left);
 			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, uint8_t digitCount, float value, bool left);

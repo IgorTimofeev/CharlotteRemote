@@ -77,8 +77,8 @@ namespace pizda {
 
 		const auto isLandscape = bounds.isLandscape();
 
-		const uint16_t circleMarginTopPixels = bounds.getHeight() * _compassHeadingTextMarginTopPct / 100;
-		const uint16_t circleMarginBottomPixels = bounds.getHeight() * _compassCircleMarginBottomPct / 100;
+		const uint16_t circleMarginTopPixels = bounds.getHeight() * compassCircleMarginTopPct / 100;
+		const uint16_t circleMarginBottomPixels = bounds.getHeight() * compassCircleMarginBottomPct / 100;
 
 		uint16_t circleRadius;
 		uint16_t tickMarksRadius;
@@ -91,32 +91,30 @@ namespace pizda {
 			circleRadius =
 				bounds.getHeight()
 				- circleMarginTopPixels
-				- Theme::fontNormal.getHeight()
-				- _compassHeadingTextHorizontalLineOffset
-				- 1
-				- _compassHeadingTextVerticalLineHeight
-				- _compassCircleMarginTopPx
 				- circleMarginBottomPixels;
 
 			tickMarksRadius = circleRadius;
 
 			y = bounds.getY2() - circleMarginBottomPixels;
 
-			tickAngleFromDeg = -_compassArcViewportHalfDeg + _compassTickMarkUnitsDeg;
-			tickAngleToDeg = _compassArcViewportHalfDeg;
+			tickAngleFromDeg = -compassArcViewportHalfDeg + compassTickMarkUnitsDeg;
+			tickAngleToDeg = compassArcViewportHalfDeg;
 		}
 		// Map
 		else {
 			const uint16_t landscapeRadius =
-				bounds.getHeight() / 2
-				- circleMarginTopPixels
-				- Theme::fontNormal.getHeight()
-				- _compassHeadingTextHorizontalLineOffset
-				- 1
-				- _compassHeadingTextVerticalLineHeight
-				- _compassCircleMarginTopPx;
+				(
+					bounds.getHeight()
+					- circleMarginTopPixels
+					- circleMarginBottomPixels
+				) / 2;
 
-			const uint16_t portraitRadius = (bounds.getWidth() - (bounds.getWidth() * _compassCircleMarginHorizontalPct / 100) * 2) / 2;
+			const uint16_t portraitRadius =
+				(
+					bounds.getWidth()
+					- bounds.getWidth() * compassCircleMarginHorizontalPct / 100 * 2
+				)
+				/ 2;
 
 			circleRadius =
 				isLandscape
@@ -128,7 +126,7 @@ namespace pizda {
 			y = center.getY();
 
 			tickAngleFromDeg = 0;
-			tickAngleToDeg = 360 - _compassTickMarkUnitsDeg;
+			tickAngleToDeg = 360 - compassTickMarkUnitsDeg;
 		}
 
 		// Aircraft indicator
@@ -136,19 +134,19 @@ namespace pizda {
 			// Cross
 			renderer->renderHorizontalLine(
 				Point(
-					center.getX() - _compassLateralOffsetCrossSize / 2,
+					center.getX() - compassLateralOffsetCrossSize / 2,
 					y
 				),
-				_compassLateralOffsetCrossSize,
+				compassLateralOffsetCrossSize,
 				&Theme::fg1
 			);
 
 			renderer->renderVerticalLine(
 				Point(
 					center.getX(),
-					y - _compassLateralOffsetCrossSize / 2
+					y - compassLateralOffsetCrossSize / 2
 				),
-				_compassLateralOffsetCrossSize,
+				compassLateralOffsetCrossSize,
 				&Theme::fg1
 			);
 		}
@@ -167,8 +165,8 @@ namespace pizda {
 				renderer->renderArc(
 					Point(center.getX(), y),
 					circleRadius,
-					(90 - _compassArcViewportHalfDeg) * 255 / 360,
-					(90 + _compassArcViewportHalfDeg) * 255 / 360,
+					(90 - compassArcViewportHalfDeg) * 255 / 360,
+					(90 + compassArcViewportHalfDeg) * 255 / 360,
 					&Theme::fg1
 				);
 			}
@@ -178,124 +176,65 @@ namespace pizda {
 			}
 
 			// Tick marks
-			float stepUnitsPerYawDegIntPart;
-			const float stepUnitsPerYawDegFractPart = std::modff(rc.getAircraftData().computed.headingDeg / _compassTickMarkUnitsDeg, &stepUnitsPerYawDegIntPart);
-			const int32_t yawSnappedInt = static_cast<int32_t>(stepUnitsPerYawDegIntPart) * _compassTickMarkUnitsDeg;
+			{
+				float stepUnitsPerYawDegIntPart;
+				const float stepUnitsPerYawDegFractPart = std::modff(rc.getAircraftData().computed.headingDeg / compassTickMarkUnitsDeg, &stepUnitsPerYawDegIntPart);
+				const int32_t yawSnappedInt = static_cast<int32_t>(stepUnitsPerYawDegIntPart) * compassTickMarkUnitsDeg;
 
-			for (int16_t angleDeg = tickAngleFromDeg; angleDeg <= tickAngleToDeg; angleDeg += _compassTickMarkUnitsDeg) {
-				const uint16_t shownAngleDeg = normalizeAngleDeg360(yawSnappedInt + angleDeg);
-				const auto isBig = shownAngleDeg % _compassTickMarkUnitsBigDeg == 0;
+				for (int16_t angleDeg = tickAngleFromDeg; angleDeg <= tickAngleToDeg; angleDeg += compassTickMarkUnitsDeg) {
+					const uint16_t shownAngleDeg = normalizeAngleDeg360(yawSnappedInt + angleDeg);
+					const auto isBig = shownAngleDeg % compassTickMarkUnitsBigDeg == 0;
 
-				const auto angleEndVec = Vector2F(0, tickMarksRadius).rotate(-toRadians(angleDeg - stepUnitsPerYawDegFractPart * _compassTickMarkUnitsDeg));
-				const auto angleEndVecNorm = angleEndVec.normalize();
-				const auto angleStartVec = angleEndVec - angleEndVecNorm * (isBig ? _compassTickMarkBigLength : _compassTickMarkSmallLength);
+					const auto angleEndVec = Vector2F(0, tickMarksRadius).rotate(-toRadians(angleDeg - stepUnitsPerYawDegFractPart * compassTickMarkUnitsDeg));
+					const auto angleEndVecNorm = angleEndVec.normalize();
+					const auto angleStartVec = angleEndVec - angleEndVecNorm * (isBig ? compassTickMarkBigLength : compassTickMarkSmallLength);
 
-				renderer->renderLine(
-					Point(
-						center.getX() + static_cast<int32_t>(angleStartVec.getX()),
-						y - static_cast<int32_t>(angleStartVec.getY())
-					),
-					Point(
-						center.getX() + static_cast<int32_t>(angleEndVec.getX()),
-						y - static_cast<int32_t>(angleEndVec.getY())
-					),
-					&Theme::fg1
-				);
-
-				if (isBig) {
-					const auto text = std::to_wstring(shownAngleDeg / 10);
-					const auto textWidth = Theme::fontSmall.getWidth(text);
-					const auto textDiagonal = std::sqrt(textWidth * textWidth + Theme::fontSmall.getHeight() * Theme::fontSmall.getHeight());
-					const auto textCenterVec = angleStartVec - angleEndVecNorm * (_compassTickMarkTextOffset + textDiagonal / 2);
-
-					renderer->renderString(
+					renderer->renderLine(
 						Point(
-							center.getX() + static_cast<int32_t>(textCenterVec.getX()) - textWidth / 2,
-							y - static_cast<int32_t>(textCenterVec.getY()) - Theme::fontSmall.getHeight() / 2
+							center.getX() + static_cast<int32_t>(angleStartVec.getX()),
+							y - static_cast<int32_t>(angleStartVec.getY())
 						),
-						&Theme::fontSmall,
-						&Theme::fg1,
-						text
+						Point(
+							center.getX() + static_cast<int32_t>(angleEndVec.getX()),
+							y - static_cast<int32_t>(angleEndVec.getY())
+						),
+						&Theme::fg1
 					);
+
+					if (isBig) {
+						const auto text = std::to_wstring(shownAngleDeg / 10);
+						const auto textWidth = Theme::fontSmall.getWidth(text);
+						const auto textDiagonal = std::sqrt(textWidth * textWidth + Theme::fontSmall.getHeight() * Theme::fontSmall.getHeight());
+						const auto textCenterVec = angleStartVec - angleEndVecNorm * (compassTickMarkTextOffset + textDiagonal / 2);
+
+						renderer->renderString(
+							Point(
+								center.getX() + static_cast<int32_t>(textCenterVec.getX() - textWidth / 2),
+								y - static_cast<int32_t>(textCenterVec.getY()) - Theme::fontSmall.getHeight() / 2
+							),
+							&Theme::fontSmall,
+							&Theme::fg1,
+							text
+						);
+					}
 				}
 			}
 
-			// Heading text
-			const auto yawDegText = std::format(L"{:03}", static_cast<int32_t>(rc.getAircraftData().computed.headingDeg));
-			const uint16_t yawDegTextWidth = Theme::fontNormal.getWidth(yawDegText);
-
-			y -= circleRadius + _compassCircleMarginTopPx + _compassHeadingTextVerticalLineHeight - 1;
-
-			// Vertical line
-			renderer->renderVerticalLine(
+			// Triangle
+			renderer->renderFilledTriangle(
 				Point(
 					center.getX(),
-					y
+					y - circleRadius
 				),
-				_compassHeadingTextVerticalLineHeight,
-				&Theme::fg1
-			);
-
-			y -= 1;
-
-			// Horizontal line
-			renderer->renderHorizontalLine(
 				Point(
-					center.getX() - yawDegTextWidth / 2,
-					y
+					center.getX() - compassArcTriangleWidth / 2,
+					y - circleRadius + compassArcTriangleHeight
 				),
-				yawDegTextWidth,
-				&Theme::fg1
-			);
-
-			y -= _compassHeadingTextHorizontalLineOffset + Theme::fontNormal.getHeight();
-
-			// Heading text
-			renderer->renderString(
 				Point(
-					center.getX() - yawDegTextWidth / 2,
-					y
+					center.getX() + compassArcTriangleWidth / 2,
+					y - circleRadius + compassArcTriangleHeight
 				),
-				&Theme::fontNormal,
-				&Theme::fg1,
-				yawDegText
-			);
-		}
-
-		// Cursor
-		if (isCursorVisible()) {
-			constexpr static uint8_t lineAreaOffset = 5;
-			constexpr static uint8_t lineAreaSize = 8;
-
-			// Center
-			const auto cursorCenter = bounds.getPosition() + _cursorPosition;
-
-			renderer->renderPixel(cursorCenter, &Theme::yellow);
-
-			// Upper
-			renderer->renderLine(
-				Point(cursorCenter.getX(), cursorCenter.getY() - lineAreaOffset),
-				Point(cursorCenter.getX() - lineAreaSize, cursorCenter.getY() - lineAreaOffset - lineAreaSize),
-				&Theme::yellow
-			);
-
-			renderer->renderLine(
-				Point(cursorCenter.getX(), cursorCenter.getY() - lineAreaOffset),
-				Point(cursorCenter.getX() + lineAreaSize, cursorCenter.getY() - lineAreaOffset - lineAreaSize),
-				&Theme::yellow
-			);
-
-			// Lower
-			renderer->renderLine(
-				Point(cursorCenter.getX(), cursorCenter.getY() + lineAreaOffset),
-				Point(cursorCenter.getX() - lineAreaSize, cursorCenter.getY() + lineAreaOffset + lineAreaSize),
-				&Theme::yellow
-			);
-
-			renderer->renderLine(
-				Point(cursorCenter.getX(), cursorCenter.getY() + lineAreaOffset),
-				Point(cursorCenter.getX() + lineAreaSize, cursorCenter.getY() + lineAreaOffset + lineAreaSize),
-				&Theme::yellow
+				&Theme::fg1
 			);
 		}
 	}
@@ -310,7 +249,6 @@ namespace pizda {
 			setCaptured(true);
 
 			_pointerDownPosition = pointerDownEvent->getPosition();
-			_cursorPosition = pointerDownEvent->getPosition() - getBounds().getPosition();
 
 			event->setHandled(true);
 		}
@@ -323,7 +261,6 @@ namespace pizda {
 			const auto yaw = -rc.getAircraftData().computed.yawRad;
 			const auto& deltaPixels = (pointerDragEventEvent->getPosition() - _pointerDownPosition).rotate(yaw);
 			_pointerDownPosition = pointerDragEventEvent->getPosition();
-			_cursorPosition = pointerDragEventEvent->getPosition() - getBounds().getPosition();
 
 	//			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
 
@@ -365,7 +302,6 @@ namespace pizda {
 		}
 		else if (event->getTypeID() == PinchDownEvent::typeID) {
 			_pinchLength = reinterpret_cast<PinchDownEvent*>(event)->getLength();
-			hideCursor();
 
 			event->setHandled(true);
 		}
@@ -395,8 +331,6 @@ namespace pizda {
 				)
 			));
 
-			hideCursor();
-
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == PinchUpEvent::typeID) {
@@ -419,15 +353,12 @@ namespace pizda {
 					)
 				));
 
-				hideCursor();
-
 				event->setHandled(true);
 			}
 		}
 		else if (event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
 			if (isFocused()) {
 				resetCameraLateralOffset();
-				hideCursor();
 
 				event->setHandled(true);
 			}
@@ -536,21 +467,13 @@ namespace pizda {
 		addElement(_aircraftElement);
 	}
 
-	bool NDScene::isCursorVisible() const {
-		return _cursorPosition.getX() >= 0 && _cursorPosition.getY() >= 0;
-	}
-
-	void NDScene::hideCursor() {
-		_cursorPosition = { -1, -1 };
-	}
-
 	void NDScene::updatePivot() {
 		const auto& bounds = getBounds();
 		auto& rc = RC::getInstance();
 
 		setPivotOffset(
 			rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arcHeadingUp
-			? Point(0, bounds.getHeight() / 2 - bounds.getHeight() * _compassCircleMarginBottomPct / 100)
+			? Point(0, bounds.getHeight() / 2 - bounds.getHeight() * compassCircleMarginBottomPct / 100)
 			: Point()
 		);
 	}

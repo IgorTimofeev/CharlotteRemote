@@ -36,38 +36,33 @@ namespace pizda {
 			void onEvent(Event* event) override;
 
 		private:
-			constexpr static uint8_t _compassTickMarkUnitsDeg = 10;
-			constexpr static uint8_t _compassTickMarkUnitsBigDeg = 30;
+			constexpr static uint8_t compassTickMarkUnitsDeg = 10;
+			constexpr static uint8_t compassTickMarkUnitsBigDeg = 30;
 
-			constexpr static uint8_t _compassLateralOffsetCrossSize = 8;
+			constexpr static uint8_t compassLateralOffsetCrossSize = 8;
 
-			constexpr static uint8_t _compassTickMarkSmallLength = 2;
-			constexpr static uint8_t _compassTickMarkBigLength = 4;
-			constexpr static uint8_t _compassTickMarkTextOffset = 3;
+			constexpr static uint8_t compassTickMarkSmallLength = 2;
+			constexpr static uint8_t compassTickMarkBigLength = 4;
+			constexpr static uint8_t compassTickMarkTextOffset = 3;
 
-			constexpr static uint8_t _compassHeadingTextMarginTopPct = 3;
-			constexpr static uint8_t _compassHeadingTextHorizontalLineOffset = 1;
-			constexpr static uint8_t _compassHeadingTextVerticalLineHeight = 2;
+			constexpr static uint8_t compassCircleMarginTopPct = 8;
+			constexpr static uint8_t compassCircleMarginBottomPct = 14;
+			constexpr static uint8_t compassCircleMarginHorizontalPct = 6;
 
-			constexpr static uint8_t _compassCircleMarginTopPx = 4;
-			constexpr static uint8_t _compassCircleMarginBottomPct = 14;
-			constexpr static uint8_t _compassCircleMarginHorizontalPct = 6;
-
-			constexpr static uint16_t _compassArcViewportDeg = _compassTickMarkUnitsDeg * 10;
-			constexpr static uint16_t _compassArcViewportHalfDeg = _compassArcViewportDeg / 2;
+			constexpr static uint16_t compassArcViewportDeg = compassTickMarkUnitsDeg * 10;
+			constexpr static uint16_t compassArcViewportHalfDeg = compassArcViewportDeg / 2;
+			constexpr static uint16_t compassArcTriangleWidth = 6;
+			constexpr static uint16_t compassArcTriangleHeight = 5;
 
 			static GeoCoordinates _cameraOffset;
 			GeoCoordinates _cameraCoordinates {};
 
 			float _pinchLength = 0;
 			Point _pointerDownPosition {};
-			Point _cursorPosition { -1, -1 };
 
 			AircraftElement* _aircraftElement = nullptr;
 
 			float getEquatorialRadiansPerPixel() const;
-			bool isCursorVisible() const;
-			void hideCursor();
 			void updatePivot();
 	};
 }
