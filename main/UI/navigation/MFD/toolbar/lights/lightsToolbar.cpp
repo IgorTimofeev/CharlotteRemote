@@ -5,7 +5,7 @@ namespace pizda {
 	using namespace YOBA;
 
 	LightsToolbar::LightsToolbar() {
-		row.setSpacing(1);
+		row.setGap(1);
 		
 		// Navigation
 		navigation.onPressed = [this] {

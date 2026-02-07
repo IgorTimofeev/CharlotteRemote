@@ -15,7 +15,7 @@ namespace pizda {
 
 	StackRowsPageTemplate::StackRowsPageTemplate() {
 		// Rows
-		rows.setSpacing(Theme::spacing);
+		rows.setGap(Theme::gap);
 		setDefaultContentMargin(&rows);
 
 		// Title
@@ -35,7 +35,7 @@ namespace pizda {
 
 	RelativeRowsPage::RelativeRowsPage() {
 		// Rows
-		rows.setSpacing(Theme::spacing);
+		rows.setGap(Theme::gap);
 		setDefaultContentMargin(&rows);
 		*this += &rows;
 

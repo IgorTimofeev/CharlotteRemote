@@ -58,5 +58,23 @@ namespace pizda {
 
 				return endPtr != source.data();
 			}
+
+			static int32_t tryParseInt32Or(const std::wstring_view& source, const int32_t fallbackValue = 0) {
+				int32_t result = 0;
+
+				if (!tryParseInt32(source, result))
+					result = fallbackValue;
+
+				return result;
+			}
+
+			static float tryParseFloatOr(const std::wstring_view& source, const float fallbackValue = 0) {
+				float result = 0;
+
+				if (!tryParseFloat(source, result))
+					result = fallbackValue;
+
+				return result;
+			}
 	};
 }

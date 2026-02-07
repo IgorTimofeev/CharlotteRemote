@@ -296,7 +296,7 @@ namespace pizda {
 		// -------------------------------- Frequency --------------------------------
 
 		frequencyRow.setOrientation(Orientation::horizontal);
-		frequencyRow.setSpacing(5);
+		frequencyRow.setGap(5);
 		rows += &frequencyRow;
 		rows.setAutoSize(&frequencyRow);
 
@@ -321,7 +321,7 @@ namespace pizda {
 		// Presets button
 		Theme::applySecondary(&frequencyPresetsButton);
 		frequencyPresetsButton.setDefaultBackgroundColor(&Theme::bg2);
-		frequencyPresetsButton.setMargin(Margin(0, Theme::fontNormal.getHeight() + frequencyFromTitle.getSpacing(), 0, 0));
+		frequencyPresetsButton.setMargin(Margin(0, Theme::fontNormal.getHeight() + frequencyFromTitle.getGap(), 0, 0));
 		frequencyPresetsButton.setWidth(24);
 		frequencyPresetsButton.setText(L"...");
 
@@ -346,19 +346,36 @@ namespace pizda {
 			auto& rc = RC::getInstance();
 
 			if (rc.getRemoteData().transceiver.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::stopped) {
-				int32_t result;
+				// From
+				rc.getSettings().transceiver.spectrumScanning.frequency.from =
+					std::clamp<uint32_t>(
+						StringUtils::tryParseInt32Or(frequencyFromTextField.getText(), 902),
+						0,
+						1000
+					)
+					* 1'000'000;
 
-				if (StringUtils::tryParseInt32(frequencyFromTextField.getText(), result))
-					rc.getSettings().transceiver.spectrumScanning.frequency.from = std::clamp<uint32_t>(result, 0, 1000) * 1'000'000;
+				// To
+				rc.getSettings().transceiver.spectrumScanning.frequency.to =
+					std::clamp<uint32_t>(
+						StringUtils::tryParseInt32Or(frequencyToTextField.getText(), 928),
+						0,
+						1000
+					)
+					* 1'000'000;
 
-				if (StringUtils::tryParseInt32(frequencyToTextField.getText(), result))
-					rc.getSettings().transceiver.spectrumScanning.frequency.to = std::clamp<uint32_t>(result, 0, 1000) * 1'000'000;
-
+				// From & to
 				if (rc.getSettings().transceiver.spectrumScanning.frequency.from > rc.getSettings().transceiver.spectrumScanning.frequency.to)
 					std::swap(rc.getSettings().transceiver.spectrumScanning.frequency.from, rc.getSettings().transceiver.spectrumScanning.frequency.to);
 
-				if (StringUtils::tryParseInt32(frequencyStepTextField.getText(), result))
-					rc.getSettings().transceiver.spectrumScanning.frequency.step = std::clamp<uint32_t>(result, 0, 1000) * 1'000;
+				// Step
+				rc.getSettings().transceiver.spectrumScanning.frequency.step =
+					std::clamp<uint32_t>(
+						StringUtils::tryParseInt32Or(frequencyStepTextField.getText(), 50),
+						0,
+						1000
+					)
+					* 1'000;
 
 				rc.getSettings().transceiver.scheduleWrite();
 

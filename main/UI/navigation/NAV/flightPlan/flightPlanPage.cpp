@@ -11,11 +11,11 @@ namespace pizda {
 
 		title.setText(L"Flight plan");
 
-		_itemsLayout.setSpacing(5);
+		_itemsLayout.setGap(5);
 		rows += &_itemsLayout;
 
 		// Legs
-		_legsLayout.setSpacing(5);
+		_legsLayout.setGap(5);
 		_itemsLayout += &_legsLayout;
 
 		// Add leg

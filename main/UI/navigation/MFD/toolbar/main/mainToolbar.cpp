@@ -32,7 +32,7 @@ namespace pizda {
 		rightRow += &_radioSection;
 		
 		// Battery
-		_batteryRows.setSpacing(3);
+		_batteryRows.setGap(3);
 		ToolbarSection::setDefaultMargin(&_batteryRows, 4);
 		_batteryRows += &_batteryIndicatorRC;
 		_batteryRows += &_batteryIndicatorAC;

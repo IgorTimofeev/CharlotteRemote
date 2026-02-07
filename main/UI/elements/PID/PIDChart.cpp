@@ -173,7 +173,7 @@ namespace pizda {
 
 		// Buttons
 		_buttonsRow.setOrientation(Orientation::horizontal);
-		_buttonsRow.setSpacing(1);
+		_buttonsRow.setGap(1);
 		_buttonsRow.setHeight(19);
 		setAutoSize(&_buttonsRow);
 		*this += &_buttonsRow;

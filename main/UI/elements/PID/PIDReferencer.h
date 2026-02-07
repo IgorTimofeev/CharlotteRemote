@@ -30,7 +30,7 @@ namespace pizda {
 
 				// PID
 				PIDRow.setOrientation(Orientation::horizontal);
-				PIDRow.setSpacing(5);
+				PIDRow.setGap(5);
 				rows += &PIDRow;
 
 				// P
@@ -103,18 +103,11 @@ namespace pizda {
 			Button _confirmButton {};
 
 			void updateChart() {
-				float p, i, d;
-
-				if (!StringUtils::tryParseFloat(PTextField.getText(), p))
-					p = 0;
-
-				if (!StringUtils::tryParseFloat(ITextField.getText(), i))
-					i = 0;
-
-				if (!StringUtils::tryParseFloat(DTextField.getText(), d))
-					d = 0;
-
-				chart.setCoefficients({ p, i, d });
+				chart.setCoefficients({
+					StringUtils::tryParseFloatOr(PTextField.getText(), 0),
+					StringUtils::tryParseFloatOr(ITextField.getText(), 0),
+					StringUtils::tryParseFloatOr(DTextField.getText(), 0)
+				});
 			}
 	};
 
@@ -122,7 +115,7 @@ namespace pizda {
 		public:
 			PIDReferencer(const std::wstring_view dialogTitle) {
 				_textsRow.setOrientation(Orientation::horizontal);
-				_textsRow.setSpacing(5);
+				_textsRow.setGap(5);
 				setDefaultMargin(&_textsRow, Margin(10));
 				*this += &_textsRow;
 

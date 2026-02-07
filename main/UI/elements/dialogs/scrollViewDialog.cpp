@@ -6,7 +6,7 @@ namespace pizda {
 	ScrollViewDialog::ScrollViewDialog() {
 		// Rows
 		rows.setMargin(Margin(15));
-		rows.setSpacing(Theme::spacing);
+		rows.setGap(Theme::gap);
 
 		// Title
 		Theme::applyPageTitle(&title);

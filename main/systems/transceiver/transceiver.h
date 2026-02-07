@@ -19,6 +19,8 @@
 #include "packet.h"
 
 namespace pizda {
+	using namespace YOBA;
+
 	template<typename TLocalPacketType>
 	class PacketSequenceItem {
 		public:
@@ -82,7 +84,7 @@ namespace pizda {
 					config::transceiver::preambleLength
 				);
 
-				if (error != SX1262Error::none) {
+				if (error != SX1262::error::none) {
 					ESP_LOGE(_logTag, "SX1262 setup failed with code %d", std::to_underlying(error));
 					return false;
 				}
@@ -109,7 +111,7 @@ namespace pizda {
 
 				const auto error = _SX.receive(_buffer, receivedLength, timeoutUs);
 
-				if (error == SX1262Error::none) {
+				if (error == SX1262::error::none) {
 					//		ESP_LOGI(_logTag, "read length: %d", length);
 					//
 					//		for (int i = 0; i < length; ++i) {
@@ -120,10 +122,10 @@ namespace pizda {
 					if (esp_timer_get_time() > _RSSIAndSNRUpdateTimeUs) {
 						float valueF;
 
-						if (_SX.getRSSI(valueF) == SX1262Error::none)
+						if (_SX.getRSSI(valueF) == SX1262::error::none)
 							_RSSI = static_cast<int8_t>(valueF);
 
-						if (_SX.getSNR(valueF) == SX1262Error::none)
+						if (_SX.getSNR(valueF) == SX1262::error::none)
 							_SNR = static_cast<int8_t>(valueF);
 
 						_RSSIAndSNRUpdateTimeUs = esp_timer_get_time() + _RSSIAndSNRUpdateIntervalUs;
@@ -196,7 +198,7 @@ namespace pizda {
 
 				_TXDurationUs = esp_timer_get_time() - transmitStartTimeUs;
 
-				if (error != SX1262Error::none) {
+				if (error != SX1262::error::none) {
 					logSXError("transmit error", error);
 					return true;
 				}
@@ -235,19 +237,19 @@ namespace pizda {
 
 		protected:
 			constexpr static auto _logTag = "XCVR";
-			SX1262 _SX {};
+			SX1262::Transceiver _SX {};
 
 			constexpr static uint16_t _bufferLength = 255;
 			uint8_t _buffer[_bufferLength] {};
 
-			static void logSXError(const char* key, const SX1262Error error) {
-				if (error == SX1262Error::timeout)
+			static void logSXError(const char* key, const SX1262::error error) {
+				if (error == SX1262::error::timeout)
 					return;
 
 				constexpr static uint8_t errorBufferLength = 255;
 				char errorBuffer[errorBufferLength];
 
-				SX1262::errorToString(error, errorBuffer, errorBufferLength);
+				SX1262::Transceiver::errorToString(error, errorBuffer, errorBufferLength);
 
 				ESP_LOGI(_logTag, "%s: %s", key, errorBuffer);
 			}

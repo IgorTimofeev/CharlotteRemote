@@ -5,6 +5,8 @@
 #include "systems/transceiver/transceiver.h"
 
 namespace pizda {
+	using namespace YOBA;
+
 	class RemoteTransceiver : public Transceiver<
 		RemotePacketType,
 		RemotePacket::typeLengthBits,

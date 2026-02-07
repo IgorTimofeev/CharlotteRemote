@@ -42,7 +42,7 @@ namespace pizda {
 		
 		// Row
 		_row.setOrientation(Orientation::horizontal);
-		_row.setSpacing(8);
+		_row.setGap(8);
 		_row.setMargin(Margin(8, 3, 8 + _backgroundRect.getMargin().getRight(), 8));
 		_mainLayout += &_row;
 		
@@ -53,24 +53,10 @@ namespace pizda {
 		addTextField(_maxTitle, _max, _settings->max);
 	}
 	
-	void MotorEditor::toSettings() {
-		int32_t result = 0;
-		
-		// Min
-		if (!StringUtils::tryParseInt32(_min.getText(), result))
-			result = 1000;
-		
-		_settings->min = static_cast<uint16_t>(result);
-		
-		// Max
-		if (!StringUtils::tryParseInt32(_max.getText(), result))
-			result = 2000;
-		
-		_settings->max = static_cast<uint16_t>(result);
-		
-		// Reverse
+	void MotorEditor::toSettings() const {
+		_settings->min = static_cast<uint16_t>(StringUtils::tryParseInt32Or(_min.getText(), 1'000));
+		_settings->max = static_cast<uint16_t>(StringUtils::tryParseInt32Or(_max.getText(), 2'000));
 		_settings->reverse = _reverse.isActive();
-		
 		_settings->sanitize();
 	}
 	

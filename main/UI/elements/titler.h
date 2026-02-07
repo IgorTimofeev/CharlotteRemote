@@ -9,7 +9,7 @@ namespace pizda {
 	class Titler : public StackLayout {
 		public:
 			Titler() {
-				setSpacing(3);
+				setGap(3);
 
 				Theme::applyTitle(&title);
 				*this += &title;

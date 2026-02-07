@@ -10,7 +10,6 @@
 #include "resources/sounds.h"
 
 namespace pizda {
-
 	// -------------------------------- Generic --------------------------------
 
 	RemoteTransceiver::RemoteTransceiver() : Transceiver(
@@ -28,7 +27,7 @@ namespace pizda {
 		// Switching to standby
 		auto error = _SX.setStandby();
 
-		if (error != SX1262Error::none) {
+		if (error != SX1262::error::none) {
 			logSXError("stopSpectrumScanning() error", error);
 			return false;
 		}
@@ -36,7 +35,7 @@ namespace pizda {
 		// Setting normal RX/TX frequency
 		error = _SX.setRFFrequency(config::transceiver::RFFrequencyHz);
 
-		if (error != SX1262Error::none) {
+		if (error != SX1262::error::none) {
 			logSXError("stopSpectrumScanning() error", error);
 			return false;
 		}
@@ -64,7 +63,7 @@ namespace pizda {
 			// Switching to standby
 			const auto error = _SX.setStandby();
 
-			if (error != SX1262Error::none) {
+			if (error != SX1262::error::none) {
 				logSXError("onSpectrumScanning() error", error);
 				stopSpectrumScanning();
 
@@ -81,7 +80,7 @@ namespace pizda {
 
 		// Changing frequency
 		auto error = _SX.setRFFrequency(rd.frequency);
-		if (error != SX1262Error::none) {
+		if (error != SX1262::error::none) {
 			logSXError("onSpectrumScanning() error", error);
 			stopSpectrumScanning();
 
@@ -93,7 +92,7 @@ namespace pizda {
 		// Moving to RX single mode
 		error = _SX.setRX();
 
-		if (error != SX1262Error::none) {
+		if (error != SX1262::error::none) {
 			logSXError("onSpectrumScanning() error", error);
 			stopSpectrumScanning();
 
@@ -108,7 +107,7 @@ namespace pizda {
 		for (uint8_t i = 0; i < samplesLength; i++) {
 			error = _SX.getRSSIInst(RSSIF);
 
-			if (error != SX1262Error::none) {
+			if (error != SX1262::error::none) {
 				logSXError("onSpectrumScanning() error", error);
 				stopSpectrumScanning();
 

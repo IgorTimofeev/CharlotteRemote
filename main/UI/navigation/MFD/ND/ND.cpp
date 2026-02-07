@@ -11,7 +11,7 @@ namespace pizda {
 		*this += &_scene;
 
 		// Button rows
-		_buttonRows.setSpacing(1);
+		_buttonRows.setGap(1);
 		_buttonRows.setAlignment(Alignment::start, Alignment::center);
 		*this += &_buttonRows;
 

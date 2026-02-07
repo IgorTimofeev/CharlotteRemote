@@ -13,6 +13,7 @@
 #include "UI/navigation/settings/autopilot/autopilotSettingsPage.h"
 #include "UI/navigation/settings/motors/motorsSettingsPage.h"
 #include "UI/navigation/settings/axis/axesSettingsPage.h"
+#include "UI/navigation/settings/transceiver/transceiverSettingsPage.h"
 
 namespace pizda {
 	class Routes {
@@ -28,5 +29,6 @@ namespace pizda {
 			constexpr static ElementRoute<AutopilotSettingsPage> settingsAutopilot {};
 			constexpr static ElementRoute<MotorsSettingsPage> settingsMotors {};
 			constexpr static ElementRoute<AxesSettingsPage> settingsAxes {};
+			constexpr static ElementRoute<TransceiverSettingsPage> settingsTransceiver {};
 	};
 }

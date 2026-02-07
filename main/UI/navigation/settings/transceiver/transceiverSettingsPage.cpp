@@ -2,16 +2,78 @@
 
 #include "rc.h"
 #include "UI/theme.h"
+#include "utilities/string.h"
 
 namespace pizda {
 	TransceiverSettingsPage::TransceiverSettingsPage() {
 		auto& rc = RC::getInstance();
 
 		// Page title
-		title.setText(L"Transceiver");
+		title.setText(L"XCVR SETTINGS");
 
 		// RF frequency
-		_RFFrequency.setText(rc.getSettings().transceiver.spectrumScanning)
+		Theme::apply(&_RFFrequency);
+		_RFFrequency.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
+		_RFFrequency.setText(std::to_wstring(rc.getSettings().transceiver.communication.RFFrequencyHz / 1'000'000));
 		rows += &_RFFrequencyTitle;
+
+		// Bandwidth
+		_bandwidth.setItems(_bandwidthItems);
+		_bandwidth.setItemCount(_bandwidthItemsLength);
+		_bandwidth.setSelectedIndex(static_cast<uint8_t>(rc.getSettings().transceiver.communication.bandwidth));
+		_bandwidth.setDialogTitle(L"Bandwidth");
+		rows += &_bandwidthTitle;
+
+		// Coding rate
+		_codingRate.setItems(_codingRateItems);
+		_codingRate.setItemCount(_codingRateItemsLength);
+		_codingRate.setSelectedIndex(static_cast<uint8_t>(rc.getSettings().transceiver.communication.codingRate));
+		_codingRate.setDialogTitle(L"Coding rate");
+		rows += &_codingRateTitle;
+
+		// Spreading factor
+		Theme::apply(&_spreadingFactor);
+		_spreadingFactor.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
+		_spreadingFactor.setText(std::to_wstring(rc.getSettings().transceiver.communication.spreadingFactor));
+		rows += &_spreadingFactorTitle;
+
+		// Sync word
+		Theme::apply(&_syncWord);
+		_syncWord.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
+		_syncWord.setText(std::to_wstring(rc.getSettings().transceiver.communication.syncWord));
+		rows += &_syncWordTitle;
+
+		// Preamble length
+		Theme::apply(&_preambleLength);
+		_preambleLength.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
+		_preambleLength.setText(std::to_wstring(rc.getSettings().transceiver.communication.preambleLength));
+		rows += &_preambleLengthTitle;
+
+		// Power
+		Theme::apply(&_power);
+		_power.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
+		_power.setText(std::to_wstring(rc.getSettings().transceiver.communication.powerDBm));
+		rows += &_powerTitle;
+
+		// Confirm button
+		Theme::applyPrimary(&_confirmButton);
+		_confirmButton.setText(L"Confirm");
+
+		_confirmButton.setOnClick([this] {
+			auto& settings = RC::getInstance().getSettings().transceiver;
+
+			settings.communication.RFFrequencyHz = StringUtils::tryParseInt32Or(_RFFrequency.getText(), 0) * 1'000'000;
+			settings.communication.bandwidth = static_cast<SX1262::LoRaBandwidth>(_bandwidth.getSelectedIndex());
+			settings.communication.codingRate = static_cast<SX1262::LoRaCodingRate>(_codingRate.getSelectedIndex());
+			settings.communication.spreadingFactor = StringUtils::tryParseInt32Or(_spreadingFactor.getText(), 0);
+			settings.communication.syncWord = StringUtils::tryParseInt32Or(_syncWord.getText(), 0);
+			settings.communication.powerDBm = StringUtils::tryParseInt32Or(_power.getText(), 0);
+			settings.communication.preambleLength = StringUtils::tryParseInt32Or(_preambleLength.getText(), 0);
+
+			settings.communication.sanitize();
+			settings.scheduleWrite();
+		});
+
+		rows += &_confirmButton;
 	}
 }

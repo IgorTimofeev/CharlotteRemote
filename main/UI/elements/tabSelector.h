@@ -51,7 +51,7 @@ namespace pizda {
 				*this += &backgroundRectangle;
 
 				itemsLayout.setOrientation(Orientation::horizontal);
-				itemsLayout.setSpacing(1);
+				itemsLayout.setGap(1);
 				*this += &itemsLayout;
 				setItemsLayout(&itemsLayout);
 			}

@@ -10,7 +10,7 @@ namespace pizda {
 		public:
 			Switcher() {
 				setOrientation(Orientation::horizontal);
-				setSpacing(3);
+				setGap(3);
 
 				Theme::applyDescription(&_text);
 				*this += &_text;

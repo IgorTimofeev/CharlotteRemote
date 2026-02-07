@@ -19,7 +19,7 @@ namespace pizda {
 		public:
 			LatLonRow() {
 				setOrientation(Orientation::horizontal);
-				setSpacing(Theme::spacing);
+				setGap(Theme::gap);
 
 				Theme::apply(&latitude);
 				*this += &latitude;

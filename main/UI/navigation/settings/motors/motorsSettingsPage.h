@@ -18,7 +18,7 @@ namespace pizda {
 		public:
 			MotorEditor(std::wstring_view title, MotorConfiguration* settings);
 			
-			void toSettings();
+			void toSettings() const;
 			
 			std::function<void()> changed = nullptr;
 			
