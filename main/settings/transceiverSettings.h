@@ -17,9 +17,21 @@ namespace pizda {
 			TransceiverSettingsSpectrumScanningFrequency frequency {};
 	};
 
-	class TransceiverSettings: public NVSSettings {
+	class TransceiverSettingsModulation {
+		public:
+			uint32_t RFFrequencyHz = 915'000'000;
+			uint8_t bandwidthIndex = SX1262::LORA_BW_500_0;
+			uint8_t spreadingFactor = 7;
+			uint8_t codingRateIndex = SX1262::LORA_CR_4_5;
+			uint8_t syncWord = 0x34;
+			uint16_t powerDBm = 22;
+			uint16_t preambleLength = 8;
+	};
+
+	class TransceiverSettings : public NVSSettings {
 		public:
 			TransceiverSettingsSpectrumScanning spectrumScanning {};
+			TransceiverSettingsModulation modulation {};
 
 		protected:
 			const char* getNamespace() override {

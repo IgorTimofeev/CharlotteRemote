@@ -391,31 +391,34 @@ namespace pizda {
 			bounds.getXCenter(),
 			bounds.getY() + PFD::turnCoordinatorOverlayRollIndicatorRadius
 		);
+		const auto enoughSpace = bounds.getHeight() >= 80;
 
-		const auto& renderLine = [&renderer, &center, &rc](const int8_t angle, const bool isBig) {
-			const auto vec = Vector2F(0, PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(toRadians(angle) - rc.getAircraftData().computed.rollRad);
-			const auto lineFrom = center - static_cast<Point>(vec);
+		if (enoughSpace) {
+			const auto& renderLine = [&renderer, &center, &rc](const int8_t angle, const bool isBig) {
+				const auto vec = Vector2F(0, PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(toRadians(angle) - rc.getAircraftData().computed.rollRad);
+				const auto lineFrom = center - static_cast<Point>(vec);
 
-			renderer->renderLine(
-				lineFrom,
-				lineFrom + static_cast<Point>(vec.normalize() * (isBig
-																	? PFD::turnCoordinatorOverlayRollIndicatorLineBigLength
-																	: PFD::turnCoordinatorOverlayRollIndicatorLineSmallLength)),
-				PFD::turnCoordinatorOverlayColor
-			);
-		};
+				renderer->renderLine(
+					lineFrom,
+					lineFrom + static_cast<Point>(vec.normalize() * (isBig
+																		? PFD::turnCoordinatorOverlayRollIndicatorLineBigLength
+																		: PFD::turnCoordinatorOverlayRollIndicatorLineSmallLength)),
+					PFD::turnCoordinatorOverlayColor
+				);
+			};
 
-		renderLine(-60, true);
-		renderLine(-45, false);
-		renderLine(-30, true);
-		renderLine(-20, false);
-		renderLine(-10, false);
+			renderLine(-60, true);
+			renderLine(-45, false);
+			renderLine(-30, true);
+			renderLine(-20, false);
+			renderLine(-10, false);
 
-		renderLine(10, false);
-		renderLine(20, false);
-		renderLine(30, true);
-		renderLine(45, false);
-		renderLine(60, true);
+			renderLine(10, false);
+			renderLine(20, false);
+			renderLine(30, true);
+			renderLine(45, false);
+			renderLine(60, true);
+		}
 
 		// Upper triangle
 		renderer->renderFilledTriangle(

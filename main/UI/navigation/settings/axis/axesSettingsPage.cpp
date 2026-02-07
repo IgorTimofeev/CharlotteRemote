@@ -22,25 +22,25 @@ namespace pizda {
 		rows += &_leverRightAxisEditorTitle;
 
 		// Jittering slider
-		Theme::apply(&_jitteringCutoffFactorSlider);
-		_jitteringCutoffFactorSlider.setFillColor(&Theme::bad1);
+		Theme::apply(&_jitteringThresholdSlider);
+		_jitteringThresholdSlider.setFillColor(&Theme::bad1);
 
-		_jitteringCutoffFactorSlider.setMinimumValue(0);
-		_jitteringCutoffFactorSlider.setMaximumValue(jitteringCutoffMaxValue);
-		_jitteringCutoffFactorSlider.setValue(RC::getInstance().getSettings().axes.jitteringCutoffValue);
+		_jitteringThresholdSlider.setMinimumValue(0);
+		_jitteringThresholdSlider.setMaximumValue(jitteringThresholdMaxValue);
+		_jitteringThresholdSlider.setValue(RC::getInstance().getSettings().axes.jitteringCutoffValue);
 
-		_jitteringCutoffFactorSlider.setTickQuantity(10);
-		_jitteringCutoffFactorSlider.setBigTickStep(5);
-		_jitteringCutoffFactorSlider.setTickLabelBuilder(Slider::int32TickLabelBuilder);
+		_jitteringThresholdSlider.setTickQuantity(10);
+		_jitteringThresholdSlider.setBigTickStep(5);
+		_jitteringThresholdSlider.setTickLabelBuilder(Slider::int32TickLabelBuilder);
 
-		_jitteringCutoffFactorSlider.setOnValueChanged([this] {
+		_jitteringThresholdSlider.setOnValueChanged([this] {
 			auto& settings = RC::getInstance().getSettings();
 
-			settings.axes.jitteringCutoffValue = _jitteringCutoffFactorSlider.getValue();
+			settings.axes.jitteringCutoffValue = _jitteringThresholdSlider.getValue();
 			settings.axes.scheduleWrite();
 		});
 
-		rows += &_jitteringValueSliderTitle;
+		rows += &_jitteringThresholdSliderTitle;
 
 		// Low pass slider
 		Theme::apply(&_lowPassFactorSlider);

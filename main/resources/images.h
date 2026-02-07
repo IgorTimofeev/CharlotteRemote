@@ -22,9 +22,9 @@
 #include "resources/images/menuIconCalibrationImage.h"
 #include "resources/images/menuIconMotorsImage.h"
 #include "resources/images/menuIconAxesImage.h"
-#include "resources/images/menuIconDevImage.h"
 #include "resources/images/menuIconSpectrumScanImage.h"
 #include "resources/images/menuIconAutopilotSettingsImage.h"
+#include "resources/images/menuIconTransceiverImage.h"
 
 namespace pizda::resources {
 	class images {
@@ -50,8 +50,8 @@ namespace pizda::resources {
 			constexpr static MenuIconCalibrationImage menuIconCalibration {};
 			constexpr static MenuIconMotorsImage menuIconMotors {};
 			constexpr static MenuIconAxesImage menuIconAxes {};
-			constexpr static MenuIconDevImage menuIconDev {};
 			constexpr static MenuIconSpectrumScanImage menuIconSpectrumScan {};
 			constexpr static MenuIconAutopilotSettingsImage menuIconAutopilotSettings {};
+			constexpr static MenuIconTransceiverImage menuIconTransceiverImage {};
 	};
 }

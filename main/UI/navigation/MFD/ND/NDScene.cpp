@@ -433,15 +433,13 @@ namespace pizda {
 
 		// Sphere
 		if (rc.getSettings().personalization.MFD.ND.earth)
-			addElement(new LinearSphere(Vector3F(), GeoCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg3));
+			addElement(new LinearSphere(Vector3F(), GeoCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg2));
 
 		// Flight plan
-		{
-			if (rc.getNavigationData().flightPlan.legs.size() > 1) {
-				// Subsequent
-				for (uint16_t legIndex = 1; legIndex < rc.getNavigationData().flightPlan.legs.size(); legIndex++) {
-					addElement(new RouteElement(legIndex));
-				}
+		if (rc.getNavigationData().flightPlan.legs.size() > 1) {
+			// Subsequent
+			for (uint16_t legIndex = 1; legIndex < rc.getNavigationData().flightPlan.legs.size(); legIndex++) {
+				addElement(new RouteElement(legIndex));
 			}
 		}
 

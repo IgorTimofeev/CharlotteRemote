@@ -37,8 +37,8 @@ namespace pizda {
 			Slider _lowPassFactorSlider;
 			Titler _lowPassFactorSliderTitle = Titler(L"Low pass filter factor", &_lowPassFactorSlider);
 
-			constexpr static uint8_t jitteringCutoffMaxValue = 100;
-			Slider _jitteringCutoffFactorSlider;
-			Titler _jitteringValueSliderTitle = Titler(L"Jittering cutoff value", &_jitteringCutoffFactorSlider);
+			constexpr static uint8_t jitteringThresholdMaxValue = 100;
+			Slider _jitteringThresholdSlider;
+			Titler _jitteringThresholdSliderTitle = Titler(L"Jittering threshold", &_jitteringThresholdSlider);
 	};
 }
