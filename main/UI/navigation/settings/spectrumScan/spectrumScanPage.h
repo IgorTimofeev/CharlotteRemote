@@ -37,7 +37,7 @@ namespace pizda {
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
-			Point _pointerPos { -1, -1 };
+			Vector2F _pointerPos { 0.5f, 0.5f };
 			int32_t _pinchLength = -1;
 
 			constexpr static int8_t _RSSIMin = -100;

@@ -105,7 +105,7 @@ namespace pizda {
 						return;
 					}
 
-					rc.getApplication().scheduleOnTick([this, &nd] {
+					rc.getApplication().invokeOnNextTick([this, &nd] {
 						float latitudeRad, longitudeRad;
 						_latLon.toRadians(latitudeRad, longitudeRad);
 

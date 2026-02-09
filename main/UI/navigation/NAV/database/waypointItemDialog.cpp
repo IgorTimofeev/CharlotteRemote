@@ -19,7 +19,7 @@ namespace pizda {
 		_removeButton.setText(L"Delete");
 
 		_removeButton.setOnClick([&rc, waypointIndex, this] {
-			rc.getApplication().scheduleOnTick([&rc, waypointIndex, this] {
+			rc.getApplication().invokeOnNextTick([&rc, waypointIndex, this] {
 				hide();
 				delete this;
 

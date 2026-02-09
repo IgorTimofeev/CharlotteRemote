@@ -174,51 +174,33 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ну-ка, мб щас уберем std function">
-      <change afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/traits/gapElement.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/elements/comboBox.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/elements/comboBox.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="захуярил страничку конфигурации трансюка">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/relativeStackLayout.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/relativeStackLayout.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/stackLayout.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/stackLayout.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/stackLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/stackLayout.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/traits/spacingElement.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/application.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/application.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/application.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/application.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/element.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/element.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/button.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/keyboard/button.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/layout.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/layout.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollBar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollBar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollView.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/scrollView.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/math.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/math.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/elements/PID/PIDReferencer.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/PID/PIDReferencer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/comboBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/comboBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/comboBox.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/comboBox.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/dialogs/dialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/dialogs/dialog.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/elements/dialogs/scrollViewDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/dialogs/scrollViewDialog.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/referencer.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/referencer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/switcher.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/switcher.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/tabSelector.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/tabSelector.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/titler.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/titler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/ND.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/ND.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/mainToolbar.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleSection.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/main/throttleSection.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/toolbar.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/NAV/database/databasePage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/NAV/database/databasePage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/NAV/flightPlan/flightPlanPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/NAV/flightPlan/flightPlanPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/page.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/page.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/routes.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/routes.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/selectWaypointDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/selectWaypointDialog.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/routeElement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/sceneElements/routeElement.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/NAV/database/waypointItemDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/NAV/database/waypointItemDialog.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/NAV/flightPlan/flightPlanItemDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/NAV/flightPlan/flightPlanItemDialog.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/page.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/page.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/theme.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/theme.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/transceiverSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/transceiverSettings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/utilities/string.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/utilities/string.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/theme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/theme.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,7 +212,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/YOBA" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -272,32 +254,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.RadMigrateCodeStyle": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "RunOnceActivity.west.config.association.type.startup.service": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/UI/elements",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.sourceCode.C++",
-    "settings.editor.splitter.proportion": "0.20187794",
-    "structure.view.defaults.are.configured": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/UI/elements&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.20187794&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\elements" />
@@ -1270,15 +1252,9 @@
       <workItem from="1770346106639" duration="8841000" />
       <workItem from="1770391007615" duration="14298000" />
       <workItem from="1770410919721" duration="2791000" />
-      <workItem from="1770464933222" duration="27249000" />
-    </task>
-    <task id="LOCAL-00066" summary="фух бля вроде почище выглядит">
-      <option name="closed" value="true" />
-      <created>1768767217807</created>
-      <option name="number" value="00066" />
-      <option name="presentableId" value="LOCAL-00066" />
-      <option name="project" value="LOCAL" />
-      <updated>1768767217807</updated>
+      <workItem from="1770464933222" duration="27592000" />
+      <workItem from="1770590617964" duration="2680000" />
+      <workItem from="1770596607393" duration="6523000" />
     </task>
     <task id="LOCAL-00067" summary="хд как оно вообще сигу не кидало ни разу">
       <option name="closed" value="true" />
@@ -1664,7 +1640,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770476792016</updated>
     </task>
-    <option name="localTasksCounter" value="115" />
+    <task id="LOCAL-00115" summary="захуярил страничку конфигурации трансюка">
+      <option name="closed" value="true" />
+      <created>1770498865282</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1770498865282</updated>
+    </task>
+    <option name="localTasksCounter" value="116" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1705,7 +1689,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="ахуй выглядит, надо завтра будет захуярить чета типа signal saturation или я хз" />
     <MESSAGE value="заебися" />
     <MESSAGE value="захуярил щипковые жесты для масштабирования графика радиоскана" />
     <MESSAGE value="почистил трансюка, а то классовых оберток понахуярил, а толку хули" />
@@ -1730,6 +1713,7 @@
     <MESSAGE value="сделал все поудобней, чтоб не надо было менюху для сплита открывать постоянно - а то в полете нервы отъебнут" />
     <MESSAGE value="заебенил шаблоны страниц со скролловью и без, т.к. на том же спектрум скане он там не пришей к пизде рукав" />
     <MESSAGE value="ну-ка, мб щас уберем std function" />
-    <option name="LAST_COMMIT_MESSAGE" value="ну-ка, мб щас уберем std function" />
+    <MESSAGE value="захуярил страничку конфигурации трансюка" />
+    <option name="LAST_COMMIT_MESSAGE" value="захуярил страничку конфигурации трансюка" />
   </component>
 </project>

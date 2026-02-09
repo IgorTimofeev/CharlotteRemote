@@ -16,11 +16,11 @@ namespace pizda {
 			setFocused(true);
 		}
 		else if (event->getTypeID() == PointerUpEvent::typeID && isFocused()) {
-			RC::getInstance().getApplication().scheduleOnTick([this] {
-				const auto element = dynamic_cast<Dialog*>(getParent());
+			RC::getInstance().getApplication().invokeOnNextTick([this] {
+				const auto dialog = dynamic_cast<Dialog*>(getParent());
 				
-				element->hide();
-				delete element;
+				dialog->hide();
+				delete dialog;
 			});
 		}
 

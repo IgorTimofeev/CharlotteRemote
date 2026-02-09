@@ -21,7 +21,7 @@ namespace pizda {
 		_activateLegButton.setText(L"Activate leg");
 
 		_activateLegButton.setOnClick([this, &rc, legIndex] {
-			rc.getApplication().scheduleOnTick([this, &rc, legIndex] {
+			rc.getApplication().invokeOnNextTick([this, &rc, legIndex] {
 				rc.getNavigationData().flightPlan.activeLegIndex = legIndex;
 
 				const auto page = FlightPlanPage::getInstance();
@@ -41,7 +41,7 @@ namespace pizda {
 		_editButton.setText(L"Replace");
 
 		_editButton.setOnClick([this, &waypointData, legIndex, &leg, &rc] {
-			rc.getApplication().scheduleOnTick([&rc, this, &leg, legIndex, &waypointData] {
+			rc.getApplication().invokeOnNextTick([&rc, this, &leg, legIndex, &waypointData] {
 				SelectWaypointDialog::edit(
 					std::format(L"Change {}", waypointData.name),
 					WaypointDialogSelectedItem(leg.waypointIndex),
@@ -93,7 +93,7 @@ namespace pizda {
 		_removeButton.setText(L"Delete");
 
 		_removeButton.setOnClick([&rc, this, legIndex] {
-			rc.getApplication().scheduleOnTick([&rc, this, legIndex] {
+			rc.getApplication().invokeOnNextTick([&rc, this, legIndex] {
 				rc.getNavigationData().flightPlan.legs.erase(rc.getNavigationData().flightPlan.legs.begin() + legIndex);
 
 				const auto page = FlightPlanPage::getInstance();
@@ -129,7 +129,7 @@ namespace pizda {
 	}
 
 	void FlightPlanItemDialog::insertOnButtonClick(const std::wstring& title, uint16_t insertAt) {
-		RC::getInstance().getApplication().scheduleOnTick([this, insertAt, title] {
+		RC::getInstance().getApplication().invokeOnNextTick([this, insertAt, title] {
 			showWaypointSelectionDialogToInsertAt(title, insertAt);
 
 			hide();

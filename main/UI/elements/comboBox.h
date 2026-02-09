@@ -33,6 +33,9 @@ namespace pizda {
 
 			ComboBox* getComboBox() const;
 
+		protected:
+			void onAddedToParent(Layout* parent) override;
+
 		private:
 			ComboBox* _comboBox;
 			RelativeStackLayout _itemRows {};

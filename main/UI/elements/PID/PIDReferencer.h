@@ -71,7 +71,7 @@ namespace pizda {
 				_confirmButton.setText(L"Confirm");
 
 				_confirmButton.setOnClick([this, onConfirm] {
-					Application::getCurrent()->scheduleOnTick([this, onConfirm] {
+					Application::getCurrent()->invokeOnNextTick([this, onConfirm] {
 						onConfirm(chart.getCoefficients());
 
 						hide();

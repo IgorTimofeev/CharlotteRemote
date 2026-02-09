@@ -23,7 +23,7 @@ namespace pizda {
 		button.setText(buttonText);
 
 		button.setOnClick([this, to, from] {
-			RC::getInstance().getApplication().scheduleOnTick([this, to, from] {
+			RC::getInstance().getApplication().invokeOnNextTick([this, to, from] {
 				onConfirm(from, to);
 
 				hide();
@@ -142,9 +142,6 @@ namespace pizda {
 			return std::abs(RSSI - _RSSIMin) * bounds.getHeight() / std::abs(_RSSIMax - _RSSIMin);
 		};
 
-		if (_pointerPos.getX() < 0)
-			_pointerPos = bounds.getCenter() - bounds.getTopLeft();
-
 		// History
 		auto shouldRenderScanline = rd.frequency > 0;
 
@@ -195,17 +192,22 @@ namespace pizda {
 
 		// Pointer
 		{
-			const auto frequency = getFrequency(_pointerPos.getX());
+			const auto pointerPixelPos = Point(
+				_pointerPos.getX() * bounds.getWidth(),
+				_pointerPos.getY() * bounds.getHeight()
+			);
+
+			const auto frequency = getFrequency(pointerPixelPos.getX());
 
 			// Horizontal
-			const auto pointerRSSI = _RSSIMin + (bounds.getHeight() - _pointerPos.getY()) * (_RSSIMax - _RSSIMin) / bounds.getHeight();
+			const auto pointerRSSI = _RSSIMin + (bounds.getHeight() - pointerPixelPos.getY()) * (_RSSIMax - _RSSIMin) / bounds.getHeight();
 			auto text = std::format(L"{} dBm", pointerRSSI);
 			auto textWidth = Theme::fontSmall.getWidth(text);
 
 			renderer->renderString(
 				Point(
 					bounds.getX() + textHOffset,
-					bounds.getY() + _pointerPos.getY() - Theme::fontSmall.getHeight() / 2
+					bounds.getY() + pointerPixelPos.getY() - Theme::fontSmall.getHeight() / 2
 				),
 				&Theme::fontSmall,
 				&Theme::fg4,
@@ -215,7 +217,7 @@ namespace pizda {
 			renderer->renderHorizontalLine(
 				Point(
 					bounds.getX() + textHOffset + textWidth + textHOffset,
-					bounds.getY() + _pointerPos.getY()
+					bounds.getY() + pointerPixelPos.getY()
 				),
 				bounds.getWidth() - (textHOffset + textWidth + textHOffset),
 				&Theme::fg4
@@ -227,7 +229,7 @@ namespace pizda {
 
 			renderer->renderString(
 				Point(
-					bounds.getX() + _pointerPos.getX() - textWidth / 2,
+					bounds.getX() + pointerPixelPos.getX() - textWidth / 2,
 					bounds.getY() + textVOffset
 				),
 				&Theme::fontSmall,
@@ -237,7 +239,7 @@ namespace pizda {
 
 			renderer->renderVerticalLine(
 				Point(
-					bounds.getX() + _pointerPos.getX(),
+					bounds.getX() + pointerPixelPos.getX(),
 					bounds.getY() + textVOffset + Theme::fontSmall.getHeight() + textVOffset
 				),
 				bounds.getHeight() - (textVOffset + Theme::fontSmall.getHeight() + textVOffset),
@@ -245,7 +247,7 @@ namespace pizda {
 			);
 
 			// Tip
-			const auto historyIndex = getHistoryIndex(_pointerPos.getX());
+			const auto historyIndex = getHistoryIndex(pointerPixelPos.getX());
 			const auto historyRSSI = getRSSI(historyIndex);
 
 			if (historyRSSI > _RSSIMin) {
@@ -255,7 +257,7 @@ namespace pizda {
 
 				renderer->renderFilledCircle(
 					Point(
-						bounds.getX() + _pointerPos.getX(),
+						bounds.getX() + pointerPixelPos.getX(),
 						tipY
 					),
 					2,
@@ -266,7 +268,7 @@ namespace pizda {
 
 				renderer->renderString(
 					Point(
-						bounds.getX() + _pointerPos.getX() + 2 + textHOffset,
+						bounds.getX() + pointerPixelPos.getX() + 2 + textHOffset,
 						tipY - Theme::fontSmall.getHeight() / 2
 					),
 					&Theme::fontSmall,
@@ -279,10 +281,10 @@ namespace pizda {
 
 	void SpectrumScanningChart::updatePointerPos(const Point& pointerEventPos) {
 		const auto& bounds = getBounds();
+		const auto pointerPixelPos = pointerEventPos - bounds.getTopLeft();
 
-		_pointerPos = pointerEventPos - bounds.getTopLeft();
-		_pointerPos.setX(std::clamp<int32_t>(_pointerPos.getX(), 0, bounds.getWidth() - 1));
-		_pointerPos.setY(std::clamp<int32_t>(_pointerPos.getY(), 0, bounds.getHeight() - 1));
+		_pointerPos.setX(std::clamp<float>(pointerPixelPos.getX() / bounds.getWidth(), 0, 1));
+		_pointerPos.setY(std::clamp<float>(1.f - pointerPixelPos.getY() / bounds.getHeight(), 0, 1));
 	}
 
 	SpectrumScanPage::SpectrumScanPage() {
@@ -290,7 +292,7 @@ namespace pizda {
 		title.setText(L"Spectrum scanning");
 
 		// Char
-		chart.setHeight(170);
+		// chart.setHeight(170);
 		rows += &chart;
 
 		// -------------------------------- Frequency --------------------------------

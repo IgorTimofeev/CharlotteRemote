@@ -17,23 +17,25 @@ namespace pizda {
 
 		private:
 			TextField _RFFrequency {};
-			Titler _RFFrequencyTitle { L"RF frequency (MHz)", &_RFFrequency };
+			Titler _RFFrequencyTitle { L"Freq [120; 960] (MHz)", &_RFFrequency };
+
+			RelativeStackLayout horizontalRows[3] {};
 
 			ComboBox _bandwidth {};
 
 			constexpr static uint8_t _bandwidthItemsLength = 8;
 			std::wstring_view _bandwidthItems[_bandwidthItemsLength] {
-				L"7.8 kHz",
-				L"10.4 kHz",
-				L"15.6 kHz",
-				L"20.8 kHz",
-				L"31.25 kHz",
-				L"41.7 kHz",
-				L"62.5 kHz",
-				L"125.0 kHz"
+				L"7.8",
+				L"10.4",
+				L"15.6",
+				L"20.8",
+				L"31.25",
+				L"41.7",
+				L"62.5",
+				L"125.0"
 			};
 
-			Titler _bandwidthTitle { L"Bandwidth", &_bandwidth };
+			Titler _bandwidthTitle { L"BW (kHz)", &_bandwidth };
 
 			ComboBox _codingRate {};
 
@@ -45,19 +47,19 @@ namespace pizda {
 				L"4/8"
 			};
 
-			Titler _codingRateTitle { L"Coding rate", &_codingRate };
+			Titler _codingRateTitle { L"CR", &_codingRate };
 
 			TextField _spreadingFactor {};
-			Titler _spreadingFactorTitle { L"Spreading factor [5; 12]", &_spreadingFactor };
+			Titler _spreadingFactorTitle { L"SF [5; 12]", &_spreadingFactor };
 
 			TextField _syncWord {};
-			Titler _syncWordTitle { L"Sync word [0; 255]", &_syncWord };
+			Titler _syncWordTitle { L"SW [0; 255]", &_syncWord };
 
 			TextField _preambleLength {};
-			Titler _preambleLengthTitle { L"Preamble length [0; 65535]", &_preambleLength };
+			Titler _preambleLengthTitle { L"PL [0; 65535] s", &_preambleLength };
 
 			TextField _power {};
-			Titler _powerTitle { L"Power ([-17; 22] dBm", &_power };
+			Titler _powerTitle { L"PWR [-17; 22] (dBm)", &_power };
 
 			Button _confirmButton {};
 	};

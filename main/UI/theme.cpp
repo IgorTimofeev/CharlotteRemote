@@ -43,7 +43,7 @@ namespace pizda {
 			RGB888Color(0x0000FF),
 			// Magenta (R.I.P. PURPLE)
 			RGB888Color(0xFF00FF),
-			RGB888Color(0xCC00CC),
+			RGB888Color(0xAA00AA),
 			// Ocean
 			RGB888Color(0x00FFFF),
 

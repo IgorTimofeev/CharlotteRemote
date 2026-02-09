@@ -84,7 +84,7 @@ namespace pizda {
 		_confirmButton.setText(L"Confirm");
 
 		_confirmButton.setOnClick([&rc, this, onConfirm] {
-			rc.getApplication().scheduleOnTick([this, onConfirm] {
+			rc.getApplication().invokeOnNextTick([this, onConfirm] {
 				if (_waypointButton.getWaypointIndex() < 0)
 					return;
 

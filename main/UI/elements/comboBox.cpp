@@ -14,20 +14,11 @@ namespace pizda {
 	void ComboBoxDialogItem::onClick() {
 		Button::onClick();
 
-		Application::getCurrent()->scheduleOnTick([this] {
+		Application::getCurrent()->invokeOnNextTick([this] {
 			_comboBoxDialog->getComboBox()->setSelectedIndex(_index);
 			_comboBoxDialog->hide();
 			delete _comboBoxDialog;
 		});
-	}
-
-	ComboBoxDialog::~ComboBoxDialog() {
-		for (const auto child : _itemRows)
-			delete child;
-	}
-
-	ComboBox* ComboBoxDialog::getComboBox() const {
-		return _comboBox;
 	}
 
 	ComboBoxDialog::ComboBoxDialog(ComboBox* comboBox) : _comboBox(comboBox) {
@@ -42,6 +33,21 @@ namespace pizda {
 
 			_itemRows += item;
 		}
+	}
+
+	ComboBoxDialog::~ComboBoxDialog() {
+		for (const auto child : _itemRows)
+			delete child;
+	}
+
+	ComboBox* ComboBoxDialog::getComboBox() const {
+		return _comboBox;
+	}
+
+	void ComboBoxDialog::onAddedToParent(Layout* parent) {
+		ScrollViewDialog::onAddedToParent(parent);
+
+		_itemRows[_comboBox->getSelectedIndex()]->scrollIntoView();
 	}
 
 	ComboBox::ComboBox() {
