@@ -34,7 +34,6 @@ namespace pizda {
 
 	void PIDChart::onRender(Renderer* renderer, const Bounds& bounds) {
 		constexpr static uint8_t textHOffset = 4;
-		constexpr static uint8_t textVOffset = 1;
 
 		// Background
 		renderer->renderFilledRectangle(

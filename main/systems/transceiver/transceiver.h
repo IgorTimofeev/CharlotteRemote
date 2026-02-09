@@ -65,7 +65,7 @@ namespace pizda {
 
 			virtual ~Transceiver() = default;
 
-			bool setup() {
+			virtual bool setup() {
 				const auto error = _SX.setup(
 					config::spi::device,
 					config::transceiver::SPIFrequencyHz,
@@ -89,7 +89,7 @@ namespace pizda {
 					return false;
 				}
 
-				xTaskCreate(
+				xTaskCreatePinnedToCore(
 					[](void* arg) {
 						static_cast<Transceiver*>(arg)->onStart();
 					},
@@ -97,7 +97,8 @@ namespace pizda {
 					8 * 1024,
 					this,
 					configMAX_PRIORITIES - 1,
-					nullptr
+					nullptr,
+					1
 				);
 
 				return true;

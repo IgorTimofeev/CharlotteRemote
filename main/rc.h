@@ -39,7 +39,6 @@ namespace pizda {
 			static RC& getInstance();
 
 			[[noreturn]] void run();
-			void pizda();
 
 			Application& getApplication();
 			Settings& getSettings();
@@ -67,8 +66,8 @@ namespace pizda {
 			RemoteData& getRemoteData();
 			AircraftData& getAircraftData();
 			NavigationData& getNavigationData();
-			
-			uint32_t getTickDeltaTime() const;
+
+			SemaphoreHandle_t getSPIMutex() const;
 
 			constexpr adc_oneshot_unit_handle_t* getAssignedADCOneshotUnit(const adc_unit_t ADCUnit) {
 				switch (ADCUnit) {
@@ -82,9 +81,15 @@ namespace pizda {
 			
 			RC() = default;
 
-			Settings _settings;
+			// -------------------------------- Multicore --------------------------------
+
+			SemaphoreHandle_t _SPIMutex = nullptr;
+
+			void multicoreSetup();
 
 			// -------------------------------- Hardware --------------------------------
+
+			adc_oneshot_unit_handle_t _ADCOneshotUnit1 {};
 
 			ILI9341Display _display = ILI9341Display(
 				config::spi::MOSI,
@@ -106,9 +111,7 @@ namespace pizda {
 				config::screen::touch::RST,
 				config::screen::touch::INTR
 			);
-			
-			AudioPlayer _audioPlayer {};
-			
+
 			// Transceiver
 			RemoteTransceiver _transceiver {};
 			
@@ -134,6 +137,8 @@ namespace pizda {
 				getAssignedADCOneshotUnit(config::battery::remote::unit)
 			};
 
+			[[noreturn]] void peripheralTask();
+
 			// -------------------------------- UI --------------------------------
 
 			Application _application {};
@@ -145,15 +150,13 @@ namespace pizda {
 			const Route* _route = nullptr;
 
 			// -------------------------------- Other shit --------------------------------
-			
+
+			Settings _settings;
 			RemoteData _remoteData {};
 			AircraftData _aircraftData {};
 			NavigationData _navigationData {};
-
-			adc_oneshot_unit_handle_t _ADCOneshotUnit1 {};
-
-			uint32_t _tickDeltaTime = 0;
-			int64_t _interpolationTickTime = 0;
+			AudioPlayer _audioPlayer {};
+			int64_t _dataInterpolationTime = 0;
 
 			void SPIBusSetup() const;
 			void ADCSetup();
@@ -163,8 +166,8 @@ namespace pizda {
 			static void NVSSetup();
 
 			float applyLPF(float oldValue, float newValue, float factor) const;
-			float applyLPFForAngleRad(float oldValue, float newValue, float factor) const;
-			void interpolationTick();
+			float applyLPFToAngle(float oldValue, float newValue, float factor) const;
+			void interpolateData();
 
 			[[noreturn]] static void startErrorLoop(const char* error);
 	};

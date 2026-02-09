@@ -157,6 +157,7 @@ namespace pizda {
 				public:
 					// 30 FPS are barely achievable on SPI displays, BUT
 					constexpr static uint8_t interfaceTickRateHz = 60;
+					constexpr static uint8_t peripheralTickRateHz = 20;
 			};
 	};
 }

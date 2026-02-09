@@ -18,7 +18,12 @@ namespace pizda {
 
 		int32_t y = 0;
 
-		const auto totalDeltaTime = rc.getTickDeltaTime();
+		const auto totalDeltaTime =
+			rc.getApplication().getHIDTickDeltaTime()
+			+ rc.getApplication().getTickDeltaTime()
+			+ rc.getApplication().getLayoutDeltaTime()
+			+ rc.getApplication().getRenderDeltaTime()
+			+ rc.getApplication().getFlushDeltaTime();
 
 		const auto renderLine = [&renderer, &y](const std::wstring_view text, const Color* color = &Theme::magenta1, uint8_t scale = 1) {
 			renderer->renderString(Point(10, y), &Theme::fontNormal, color, text, scale);
@@ -37,7 +42,7 @@ namespace pizda {
 
 		renderLine(std::format(L"Heap free: {} kB", esp_get_free_heap_size() / 1024));
 
-		const auto renderTimeLine = [&renderLine, &totalDeltaTime](std::wstring_view key, uint32_t time) {
+		const auto renderTimeLine = [&renderLine, &totalDeltaTime](std::wstring_view key, const uint32_t time) {
 			renderLine(std::format(L"{}: {} ms, {}%", key, time / 1000, totalDeltaTime > 0 ? time * 100 / totalDeltaTime : 0));
 		};
 
@@ -46,7 +51,8 @@ namespace pizda {
 		renderTimeLine(L"Layout", rc.getApplication().getLayoutDeltaTime());
 		renderTimeLine(L"Render", rc.getApplication().getRenderDeltaTime());
 		renderTimeLine(L"Flush", rc.getApplication().getFlushDeltaTime());
-		renderLine(std::format(L"PPS: {}", rc.getTransceiver().getPPS()));
 		renderLine(std::format(L"Total: {} ms", totalDeltaTime / 1000));
+
+		renderLine(std::format(L"XCVR PPS: {}", rc.getTransceiver().getPPS()));
 	}
 }

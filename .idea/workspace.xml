@@ -174,13 +174,18 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="захуярил отображение метрической высоты для пуссибоев, почему-то не любящих ножки">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="попробовать что ли на разные ядра эту хуйню распараллелить">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/system/ESP-IDF.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/system/ESP-IDF.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/system/ESP-IDF.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/system/ESP-IDF.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/elements/debugOverlay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/debugOverlay.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/audio/audioPlayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/audio/audioPlayer.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
@@ -280,6 +285,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1233,15 +1243,7 @@
       <workItem from="1770464933222" duration="27592000" />
       <workItem from="1770590617964" duration="2680000" />
       <workItem from="1770596607393" duration="10994000" />
-      <workItem from="1770644480266" duration="5506000" />
-    </task>
-    <task id="LOCAL-00069" summary="ЧИСТИМ ВИЛОЧКОЙ">
-      <option name="closed" value="true" />
-      <created>1768836240632</created>
-      <option name="number" value="00069" />
-      <option name="presentableId" value="LOCAL-00069" />
-      <option name="project" value="LOCAL" />
-      <updated>1768836240632</updated>
+      <workItem from="1770644480266" duration="11244000" />
     </task>
     <task id="LOCAL-00070" summary="ЧИСТИМ ЛОЖЕЧКОЙ">
       <option name="closed" value="true" />
@@ -1627,7 +1629,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770607453905</updated>
     </task>
-    <option name="localTasksCounter" value="118" />
+    <task id="LOCAL-00118" summary="попробовать что ли на разные ядра эту хуйню распараллелить">
+      <option name="closed" value="true" />
+      <created>1770651229040</created>
+      <option name="number" value="00118" />
+      <option name="presentableId" value="LOCAL-00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1770651229040</updated>
+    </task>
+    <option name="localTasksCounter" value="119" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1668,7 +1678,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="почистил трансюка, а то классовых оберток понахуярил, а толку хули" />
     <MESSAGE value="захуярил поддержку scrollIntoView" />
     <MESSAGE value="захуярил визуализацию PID-тюнинга, но чета пока говной воняет, надо попизже будет" />
     <MESSAGE value="захуярил растеризацию сплайна катмулла-рома, чтоб PID-чартик посексуальнее выглядел" />
@@ -1693,6 +1702,7 @@
     <MESSAGE value="захуярил страничку конфигурации трансюка" />
     <MESSAGE value="шизоидная дилемма - с одной стороны двухпроходная растеризация через measure/render крайне эффективна, а с другой - иногда могут возникнуть ситуации, когда после первого рендер пасса необходимо чета там захуярить (например, проскроллиться к указанному элементу, когда его коорды гарантированно рассчитались). И вот тут на ум приходит только костыль в виде requestSecondRenderPass, т.к. разделять рендер на arrange/render на постоянной основе мне пиздец не хочется. Ну типа вроде это даже правильно звучит - но это по сути снизит перформанс всей либы ради &quot;правильности&quot;, поэтому хуй знает чота.... пока оставлю так, надо будет еще подумать" />
     <MESSAGE value="захуярил отображение метрической высоты для пуссибоев, почему-то не любящих ножки" />
-    <option name="LAST_COMMIT_MESSAGE" value="захуярил отображение метрической высоты для пуссибоев, почему-то не любящих ножки" />
+    <MESSAGE value="попробовать что ли на разные ядра эту хуйню распараллелить" />
+    <option name="LAST_COMMIT_MESSAGE" value="попробовать что ли на разные ядра эту хуйню распараллелить" />
   </component>
 </project>

@@ -18,9 +18,10 @@ namespace pizda {
 
 	[[noreturn]] void RC::run() {
 		// First, let's render a splash screen while we wait for the peripherals to finish warming up
+		multicoreSetup();
 		SPIBusSetup();
 		GPIOSetup();
-		
+
 		// After applying power or a hard reset, the LCD panel will be turned off, its internal pixel
 		// buffer will contain random garbage, and the driver will wait for pixel data to be received
 		//
@@ -47,7 +48,7 @@ namespace pizda {
 		// Settings contain calibration data for the ADC axes, so they should be read first
 		_settings.readAll();
 
-		// Peripherals
+		// HID
 		_touchPanel.setup();
 
 		_encoder.setup();
@@ -69,46 +70,23 @@ namespace pizda {
 		// UI
 		UISetup();
 
-		// This shit is blazingly 🔥 fast 🚀, so letting user enjoy logo for a few moments
-		vTaskDelay(pdMS_TO_TICKS(500));
-
 		// Beep beep
 		_audioPlayer.play(resources::sounds::boot);
 
-		// xTaskCreate(
-		// 	[](void* arg) {
-		// 		static_cast<RC*>(arg)->pizda();
-		// 	},
-		// 	"RC",
-		// 	8 * 1024,
-		// 	this,
-		// 	configMAX_PRIORITIES - 2,
-		// 	nullptr
-		// );
+		// This shit is blazingly 🔥 fast 🚀, so letting user enjoy logo for a few moments
+		vTaskDelay(pdMS_TO_TICKS(500));
 
-		// Main loop
+		// Main loop, we'll use it for UI
 		while (true) {
-			const auto tickStartTime = esp_timer_get_time();
-
 			_axes.tick();
-			_battery.tick();
+			_battery.tick();=
 
-			interpolationTick();
+			interpolateData();
 
 			_application.tick();
 			_application.render();
 
-			_tickDeltaTime = esp_timer_get_time() - tickStartTime;
-
 			vTaskDelay(pdMS_TO_TICKS(1'000 / config::application::interfaceTickRateHz));
-
-			// vTaskDelay(pdMS_TO_TICKS(10'000));
-		}
-	}
-
-	void RC::pizda() {
-		while (true) {
-
 		}
 	}
 
@@ -119,16 +97,16 @@ namespace pizda {
 			: newValue;
 	}
 	
-	float RC::applyLPFForAngleRad(const float oldValue, const float newValue, const float factor) const {
+	float RC::applyLPFToAngle(const float oldValue, const float newValue, const float factor) const {
 		return
 			_settings.personalization.LPF
 			? LowPassFilter::applyToAngle(oldValue, newValue, factor)
 			: newValue;
 	}
 	
-	void RC::interpolationTick() {
-		const auto deltaTimeUs = esp_timer_get_time() - _interpolationTickTime;
-		_interpolationTickTime = esp_timer_get_time();
+	void RC::interpolateData() {
+		const auto deltaTimeUs = esp_timer_get_time() - _dataInterpolationTime;
+		_dataInterpolationTime = esp_timer_get_time();
 
 		// Principle of calculating the interpolation factor:
 		//
@@ -141,21 +119,21 @@ namespace pizda {
 		float LPFFactor = LowPassFilter::getDeltaTimeFactor(5.0f, deltaTimeUs);
 		
 		// Pitch
-		_aircraftData.computed.pitchRad = applyLPFForAngleRad(
+		_aircraftData.computed.pitchRad = applyLPFToAngle(
 			_aircraftData.computed.pitchRad,
 			_aircraftData.raw.pitchRad,
 			LPFFactor
 		);
 		
 		// Roll
-		_aircraftData.computed.rollRad = applyLPFForAngleRad(
+		_aircraftData.computed.rollRad = applyLPFToAngle(
 			_aircraftData.computed.rollRad,
 			_aircraftData.raw.rollRad,
 			LPFFactor
 		);
 		
 		// Yaw
-		_aircraftData.computed.yawRad = applyLPFForAngleRad(
+		_aircraftData.computed.yawRad = applyLPFToAngle(
 			_aircraftData.computed.yawRad,
 			_aircraftData.raw.yawRad,
 			LPFFactor
@@ -294,10 +272,10 @@ namespace pizda {
 		return _navigationData;
 	}
 	
-	uint32_t RC::getTickDeltaTime() const {
-		return _tickDeltaTime;
+	SemaphoreHandle_t RC::getSPIMutex() const {
+		return _SPIMutex;
 	}
-	
+
 	Settings& RC::getSettings() {
 		return _settings;
 	}
@@ -338,6 +316,11 @@ namespace pizda {
 		else {
 			ESP_ERROR_CHECK(status);
 		}
+	}
+
+	void RC::multicoreSetup() {
+		_SPIMutex = xSemaphoreCreateMutex();
+		system::SPI::setMutex(_SPIMutex);
 	}
 
 	void RC::SPIBusSetup() const {

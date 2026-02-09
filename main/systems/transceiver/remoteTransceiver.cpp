@@ -21,6 +21,19 @@ namespace pizda {
 
 	}
 
+	bool RemoteTransceiver::setup() {
+		if (!Transceiver::setup())
+			return false;
+
+		_SX.setSPIMutex(RC::getInstance().getSPIMutex());
+
+		return true;
+	}
+
+	uint16_t RemoteTransceiver::getPPS() const {
+		return _PPS;
+	}
+
 	bool RemoteTransceiver::stopSpectrumScanning() {
 		RC::getInstance().getRemoteData().transceiver.spectrumScanning.state = RemoteDataRadioSpectrumScanningState::stopped;
 

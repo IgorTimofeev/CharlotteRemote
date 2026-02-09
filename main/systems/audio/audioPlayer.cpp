@@ -11,7 +11,7 @@ namespace pizda {
 	void AudioPlayer::setup() {
 		_speaker.setup();
 		
-		xTaskCreate(
+		xTaskCreatePinnedToCore(
 			[](void* arg) {
 				static_cast<AudioPlayer*>(arg)->onStart();
 			},
@@ -19,7 +19,8 @@ namespace pizda {
 			4 * 1024,
 			this,
 			5,
-			&_taskHandle
+			&_taskHandle,
+			1
 		);
 	}
 	
@@ -37,7 +38,7 @@ namespace pizda {
 				taskYIELD();
 				continue;
 			}
-			
+
 			if (_playableIndex < _sound->getPlayablesLength()) {
 				const auto playable = _sound->getPlayables()[_playableIndex];
 				

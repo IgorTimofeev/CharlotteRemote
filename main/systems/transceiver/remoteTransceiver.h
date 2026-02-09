@@ -20,9 +20,9 @@ namespace pizda {
 		public:
 			RemoteTransceiver();
 
-			uint16_t getPPS() const {
-				return _PPS;
-			}
+			bool setup() override;
+
+			uint16_t getPPS() const;
 
 		protected:
 			[[noreturn]] void onStart() override;
