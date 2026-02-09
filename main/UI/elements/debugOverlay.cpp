@@ -46,10 +46,7 @@ namespace pizda {
 		renderTimeLine(L"Layout", rc.getApplication().getLayoutDeltaTime());
 		renderTimeLine(L"Render", rc.getApplication().getRenderDeltaTime());
 		renderTimeLine(L"Flush", rc.getApplication().getFlushDeltaTime());
-		
-		renderLine(std::format(L"RX: {} ms", rc.getTransceiver().getRxDurationUs() / 1000));
-		renderLine(std::format(L"TX: {} ms", rc.getTransceiver().getTxDurationUs() / 1000));
-
+		renderLine(std::format(L"PPS: {}", rc.getTransceiver().getPPS()));
 		renderLine(std::format(L"Total: {} ms", totalDeltaTime / 1000));
 	}
 }

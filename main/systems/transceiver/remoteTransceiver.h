@@ -20,6 +20,10 @@ namespace pizda {
 		public:
 			RemoteTransceiver();
 
+			uint16_t getPPS() const {
+				return _PPS;
+			}
+
 		protected:
 			[[noreturn]] void onStart() override;
 			void onTransmit(BitStream& stream, RemotePacketType packetType) override;
@@ -31,6 +35,9 @@ namespace pizda {
 			int64_t _trendsTime = 0;
 			float _trendsAirspeedPrevMPS = 0;
 			float _trendsAltitudePrevM = 0;
+			int64_t _receivePPSTime = 0;
+			uint16_t _PPSTemp = 0;
+			uint16_t _PPS = 0;
 
 			bool receiveAircraftTelemetryPrimaryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftTelemetrySecondaryPacket(BitStream& stream, uint8_t payloadLength);

@@ -167,10 +167,19 @@ namespace pizda {
 		while (true) {
 			if (rc.getRemoteData().transceiver.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::stopped) {
 				transmit(100'000);
-				receive(100'000);
+
+				if (receive(100'000)) {
+					_PPSTemp++;
+				}
 			}
 			else {
 				onSpectrumScanning();
+			}
+
+			if (esp_timer_get_time() >= _receivePPSTime) {
+				_PPS = _PPSTemp;
+				_PPSTemp = 0;
+				_receivePPSTime = esp_timer_get_time() + 1'000'000;
 			}
 		}
 	}

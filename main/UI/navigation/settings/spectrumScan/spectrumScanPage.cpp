@@ -284,7 +284,7 @@ namespace pizda {
 		const auto pointerPixelPos = pointerEventPos - bounds.getTopLeft();
 
 		_pointerPos.setX(std::clamp<float>(static_cast<float>(pointerPixelPos.getX()) / bounds.getWidth(), 0, 1));
-		_pointerPos.setY(std::clamp<float>(1.f - static_cast<float>(pointerPixelPos.getY()) / bounds.getHeight(), 0, 1));
+		_pointerPos.setY(std::clamp<float>(static_cast<float>(pointerPixelPos.getY()) / bounds.getHeight(), 0, 1));
 	}
 
 	SpectrumScanPage::SpectrumScanPage() {

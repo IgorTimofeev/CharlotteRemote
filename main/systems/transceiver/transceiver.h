@@ -142,7 +142,6 @@ namespace pizda {
 
 						// Reading
 						if (onReceive(stream, packetType, payloadLength)) {
-							_RXDurationUs = esp_timer_get_time() - receiveStartTimeUs;
 							_connectionLostTimeUs = esp_timer_get_time() + _connectionLostIntervalUs;
 
 							if (_connectionState != ConnectionState::connected)
@@ -196,8 +195,6 @@ namespace pizda {
 
 				const auto error = _SX.transmit(_buffer, totalLength, timeoutUs);
 
-				_TXDurationUs = esp_timer_get_time() - transmitStartTimeUs;
-
 				if (error != SX1262::error::none) {
 					logSXError("transmit error", error);
 					return true;
@@ -212,14 +209,6 @@ namespace pizda {
 
 			float getRSSI() const {
 				return _RSSI;
-			}
-
-			const int64_t& getRxDurationUs() const {
-				return _RXDurationUs;
-			}
-
-			const int64_t& getTxDurationUs() const {
-				return _TXDurationUs;
 			}
 
 			ConnectionState getConnectionState() const {
@@ -243,15 +232,15 @@ namespace pizda {
 			uint8_t _buffer[_bufferLength] {};
 
 			static void logSXError(const char* key, const SX1262::error error) {
-				if (error == SX1262::error::timeout)
-					return;
+				// if (error == SX1262::error::timeout)
+				// 	return;
 
 				constexpr static uint8_t errorBufferLength = 255;
 				char errorBuffer[errorBufferLength];
 
 				SX1262::Transceiver::errorToString(error, errorBuffer, errorBufferLength);
 
-				ESP_LOGI(_logTag, "%s: %s", key, errorBuffer);
+				ESP_LOGE(_logTag, "%s: %s", key, errorBuffer);
 			}
 
 			static uint8_t getCRC8(const uint8_t* buffer, const size_t length) {
@@ -371,9 +360,6 @@ namespace pizda {
 			int64_t _RSSIAndSNRUpdateTimeUs = 0;
 			int8_t _RSSI = 0;
 			int8_t _SNR = 0;
-
-			int64_t _RXDurationUs = 0;
-			int64_t _TXDurationUs = 0;
 
 			// ----------------------------- Packet queue -----------------------------
 

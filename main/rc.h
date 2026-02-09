@@ -39,6 +39,7 @@ namespace pizda {
 			static RC& getInstance();
 
 			[[noreturn]] void run();
+			void pizda();
 
 			Application& getApplication();
 			Settings& getSettings();
@@ -153,7 +154,6 @@ namespace pizda {
 
 			uint32_t _tickDeltaTime = 0;
 			int64_t _interpolationTickTime = 0;
-			int64_t _interfaceTickTime = 0;
 
 			void SPIBusSetup() const;
 			void ADCSetup();
@@ -165,7 +165,6 @@ namespace pizda {
 			float applyLPF(float oldValue, float newValue, float factor) const;
 			float applyLPFForAngleRad(float oldValue, float newValue, float factor) const;
 			void interpolationTick();
-			void UITick();
 
 			[[noreturn]] static void startErrorLoop(const char* error);
 	};

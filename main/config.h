@@ -55,9 +55,9 @@ namespace pizda {
 					constexpr static gpio_num_t DIO1 = GPIO_NUM_13;
 
 					constexpr static uint32_t RFFrequencyHz = 915'000'000;
-					constexpr static SX1262::LoRaBandwidth bandwidth = SX1262::LoRaBandwidth::bw500_0;
+					constexpr static auto bandwidth = SX1262::LoRaBandwidth::bw500_0;
 					constexpr static uint8_t spreadingFactor = 7;
-					constexpr static SX1262::LoRaCodingRate codingRate = SX1262::LoRaCodingRate::cr4_5;
+					constexpr static auto codingRate = SX1262::LoRaCodingRate::cr4_5;
 					constexpr static uint8_t syncWord = 0x34;
 					constexpr static int8_t powerDBm = 22;
 					constexpr static uint16_t preambleLength = 8;
@@ -155,11 +155,8 @@ namespace pizda {
 	
 			class application {
 				public:
-					// 30 FPS are barely achievable on SPI displays, so let's take them for max tick rate
-					constexpr static uint8_t interfaceTickRateHz = 30;
-
-					constexpr static uint8_t dataInterpolationTickRateHz = 30;
-					constexpr static uint32_t dataInterpolationTickIntervalUs = 1'000'000 / dataInterpolationTickRateHz;
+					// 30 FPS are barely achievable on SPI displays, BUT
+					constexpr static uint8_t interfaceTickRateHz = 60;
 			};
 	};
 }

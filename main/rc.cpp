@@ -75,21 +75,43 @@ namespace pizda {
 		// Beep beep
 		_audioPlayer.play(resources::sounds::boot);
 
+		// xTaskCreate(
+		// 	[](void* arg) {
+		// 		static_cast<RC*>(arg)->pizda();
+		// 	},
+		// 	"RC",
+		// 	8 * 1024,
+		// 	this,
+		// 	configMAX_PRIORITIES - 2,
+		// 	nullptr
+		// );
+
 		// Main loop
 		while (true) {
 			const auto tickStartTime = esp_timer_get_time();
 
 			_axes.tick();
 			_battery.tick();
+
 			interpolationTick();
-			UITick();
 
- 			_tickDeltaTime = esp_timer_get_time() - tickStartTime;
+			_application.tick();
+			_application.render();
 
-			vTaskDelay(1);
+			_tickDeltaTime = esp_timer_get_time() - tickStartTime;
+
+			vTaskDelay(pdMS_TO_TICKS(1'000 / config::application::interfaceTickRateHz));
+
+			// vTaskDelay(pdMS_TO_TICKS(10'000));
 		}
 	}
-	
+
+	void RC::pizda() {
+		while (true) {
+
+		}
+	}
+
 	float RC::applyLPF(const float oldValue, const float newValue, const float factor) const {
 		return
 			_settings.personalization.LPF
@@ -106,10 +128,6 @@ namespace pizda {
 	
 	void RC::interpolationTick() {
 		const auto deltaTimeUs = esp_timer_get_time() - _interpolationTickTime;
-
-		if (deltaTimeUs < config::application::dataInterpolationTickIntervalUs)
-			return;
-
 		_interpolationTickTime = esp_timer_get_time();
 
 		// Principle of calculating the interpolation factor:
@@ -256,18 +274,6 @@ namespace pizda {
 		
 		// Smooth as fuck
 		LPFFactor = LowPassFilter::getDeltaTimeFactor(0.5f, deltaTimeUs);
-	}
-
-	void RC::UITick() {
-		const auto time = esp_timer_get_time();
-
-		if (time < _interfaceTickTime)
-			return;
-
-		_interfaceTickTime = time + 1'000'000 / config::application::interfaceTickRateHz;
-
-		_application.tick();
-		_application.render();
 	}
 
 	// ------------------------- Data -------------------------
