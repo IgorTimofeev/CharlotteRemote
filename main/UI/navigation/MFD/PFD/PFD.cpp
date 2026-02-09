@@ -698,6 +698,45 @@ namespace pizda {
 			altitude,
 			false
 		);
+
+		// Metric units
+		if (rc.getSettings().personalization.MFD.PFD.metricUnits) {
+			constexpr static uint8_t textLength = 6;
+			wchar_t text[textLength];
+			std::swprintf(text, textLength, L"%dm", static_cast<int32_t>(Units::convertDistance(altitude, DistanceUnit::foot, DistanceUnit::meter)));
+
+			constexpr static uint8_t verticalPanelOffset = 5;
+
+			constexpr static uint8_t horizontalTextOffset = 2;
+			constexpr static uint8_t verticalTextOffset = 1;
+
+			const auto panelSize = Size(
+				Theme::fontSmall.getWidth(text) + horizontalTextOffset * 2,
+				Theme::fontSmall.getHeight() + verticalTextOffset * 2
+			);
+
+			const auto panelBounds = Bounds(
+				bounds.getX2() - panelSize.getWidth() + 1,
+				centerY - currentValueHeight / 2 - verticalPanelOffset - panelSize.getHeight(),
+				panelSize.getWidth(),
+				panelSize.getHeight()
+			);
+
+			renderer->renderFilledRectangle(
+				panelBounds,
+				&Theme::bg2
+			);
+
+			renderer->renderString(
+				Point(
+					panelBounds.getX() + horizontalTextOffset,
+					panelBounds.getY() + verticalTextOffset
+				),
+				&Theme::fontSmall,
+				&Theme::ocean,
+				text
+			);
+		}
 	}
 
 	void PFD::renderVerticalSpeed(Renderer* renderer, const Bounds& bounds) {

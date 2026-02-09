@@ -2,7 +2,6 @@
 
 #include <YOBA/main.h>
 #include <YOBA/UI.h>
-#include "UI/theme.h"
 
 #include "UI/navigation/MFD/toolbar/toolbar.h"
 #include "UI/navigation/MFD/toolbar/toolbarButton.h"
