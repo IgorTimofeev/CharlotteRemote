@@ -12,8 +12,8 @@ namespace pizda {
 	class AudioPlayer {
 		public:
 			void setup();
-			void play(const Sound& sound);
-			void playFeedback(const Sound& sound);
+			void play(const Sound* sound);
+			void playFeedback(const Sound* sound);
 			void playFeedback();
 
 		private:

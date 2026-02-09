@@ -6,9 +6,7 @@ idf_component_register(
     SRCS ${pizda_sources}
     INCLUDE_DIRS "."
     REQUIRES
-        esp_timer
         esp_driver_ledc
-        driver
         nvs_flash
         esp_adc
         YOBA

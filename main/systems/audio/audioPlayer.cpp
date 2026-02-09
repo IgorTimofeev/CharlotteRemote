@@ -11,16 +11,15 @@ namespace pizda {
 	void AudioPlayer::setup() {
 		_speaker.setup();
 		
-		xTaskCreatePinnedToCore(
+		xTaskCreate(
 			[](void* arg) {
 				static_cast<AudioPlayer*>(arg)->onStart();
 			},
 			"AudioPlayer",
 			4 * 1024,
 			this,
-			5,
-			&_taskHandle,
-			1
+			1,
+			&_taskHandle
 		);
 	}
 	
@@ -68,15 +67,15 @@ namespace pizda {
 		}
 	}
 	
-	void AudioPlayer::play(const Sound& sound) {
-		_sound = &sound;
+	void AudioPlayer::play(const Sound* sound) {
+		_sound = sound;
 		_playableIndex = 0;
 		_playableDeadline = 0;
 		
 		xTaskNotifyGive(_taskHandle);
 	}
 	
-	void AudioPlayer::playFeedback(const Sound& sound) {
+	void AudioPlayer::playFeedback(const Sound* sound) {
 		auto& rc = RC::getInstance();
 		
 		if (rc.getSettings().personalization.audioFeedback) {
@@ -85,6 +84,6 @@ namespace pizda {
 	}
 	
 	void AudioPlayer::playFeedback() {
-		playFeedback(resources::sounds::feedback);
+		playFeedback(&resources::sounds::feedback);
 	}
 }

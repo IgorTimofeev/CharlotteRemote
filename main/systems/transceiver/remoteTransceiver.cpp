@@ -201,12 +201,12 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		if (isConnected()) {
-			rc.getAudioPlayer().play(resources::sounds::transceiverConnect);
+			rc.getAudioPlayer().play(&resources::sounds::transceiverConnect);
 		}
 		else {
 			RC::getInstance().getAircraftData().raw.calibration.checkValidTime();
 			
-			rc.getAudioPlayer().play(resources::sounds::transceiverDisconnect);
+			rc.getAudioPlayer().play(&resources::sounds::transceiverDisconnect);
 		}
 	}
 

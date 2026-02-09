@@ -17,10 +17,12 @@ namespace pizda {
 	}
 
 	[[noreturn]] void RC::run() {
+		// -------------------------------- Splash screen --------------------------------
+
 		// First, let's render a splash screen while we wait for the peripherals to finish warming up
-		multicoreSetup();
-		SPIBusSetup();
-		GPIOSetup();
+		setupMulticore();
+		setupSPI();
+		setupGPIO();
 
 		// After applying power or a hard reset, the LCD panel will be turned off, its internal pixel
 		// buffer will contain random garbage, and the driver will wait for pixel data to be received
@@ -41,45 +43,53 @@ namespace pizda {
 		// Turning display on
 		_display.turnOn();
 
+		// -------------------------------- Hardware --------------------------------
+
 		// NVS is required by settings & Wi-Fi
-		NVSSetup();
-		ADCSetup();
+		setupNVS();
+		setupADC();
 
-		// Settings contain calibration data for the ADC axes, so they should be read first
+		// Settings contain calibration data for the ADC axes, XCVR modulation params, etc. - they should be read first
 		_settings.readAll();
-
-		// HID
-		_touchPanel.setup();
-
-		_encoder.setup();
-		_encoder.setMinimumDelta(4);
-
-		_axes.setup();
-		_battery.setup();
-		_audioPlayer.setup();
 
 		// Transceiver
 		if (!_transceiver.setup())
 			startErrorLoop("failed to setup XCVR");
-		
-		// Application
-		_application.setRenderer(&_renderer);
+
+		// Touch panel
+		_touchPanel.setup();
 		_application.addHID(&_touchPanel);
+
+		// Encoder
+		_encoder.setup();
+		_encoder.setMinimumDelta(4);
 		_application.addHID(&_encoder);
 
-		// UI
-		UISetup();
+		// Other shit
+		_axes.setup();
+		_battery.setup();
+		_audioPlayer.setup();
 
-		// Beep beep
-		_audioPlayer.play(resources::sounds::boot);
+		// -------------------------------- UI --------------------------------
+
+		_application.setRenderer(&_renderer);
+		_application.setBackgroundColor(&Theme::bg1);
+		_application += &_pageLayout;
+		_application += &_openMenuButton;
+
+		setRoute(&Routes::MFD);
+		updateDebugOverlayVisibility();
+
+		// -------------------------------- Main loop --------------------------------
+
+		_audioPlayer.play(&resources::sounds::boot);
 
 		// This shit is blazingly 🔥 fast 🚀, so letting user enjoy logo for a few moments
 		vTaskDelay(pdMS_TO_TICKS(500));
 
-		// Main loop, we'll use it for UI
 		while (true) {
 			_axes.tick();
-			_battery.tick();=
+			_battery.tick();
 
 			interpolateData();
 
@@ -304,7 +314,7 @@ namespace pizda {
 		return _battery;
 	}
 
-	void RC::NVSSetup() {
+	void RC::setupNVS() {
 		const auto status = nvs_flash_init();
 
 		if (status == ESP_ERR_NVS_NO_FREE_PAGES || status == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -318,12 +328,12 @@ namespace pizda {
 		}
 	}
 
-	void RC::multicoreSetup() {
+	void RC::setupMulticore() {
 		_SPIMutex = xSemaphoreCreateMutex();
 		system::SPI::setMutex(_SPIMutex);
 	}
 
-	void RC::SPIBusSetup() const {
+	void RC::setupSPI() const {
 		spi_bus_config_t config {};
 		config.mosi_io_num = config::spi::MOSI;
 		config.miso_io_num = config::spi::MISO;
@@ -335,7 +345,7 @@ namespace pizda {
 		ESP_ERROR_CHECK(spi_bus_initialize(config::spi::device, &config, SPI_DMA_CH_AUTO));
 	}
 
-	void RC::ADCSetup() {
+	void RC::setupADC() {
 		adc_oneshot_unit_init_cfg_t unitConfig {};
 		unitConfig.unit_id = ADC_UNIT_1;
 		unitConfig.clk_src = ADC_RTC_CLK_SRC_DEFAULT;
@@ -343,16 +353,7 @@ namespace pizda {
 		ESP_ERROR_CHECK(adc_oneshot_new_unit(&unitConfig, &_ADCOneshotUnit1));
 	}
 
-	void RC::UISetup() {
-		_application.setBackgroundColor(&Theme::bg1);
-		_application += &_pageLayout;
-		_application += &_openMenuButton;
-
-		setRoute(&Routes::MFD);
-		updateDebugOverlayVisibility();
-	}
-
-	void RC::GPIOSetup() {
+	void RC::setupGPIO() {
 		// Slave selects
 		gpio_config_t g = {};
 		g.pin_bit_mask = (1ULL << config::screen::SS) | (1ULL << config::transceiver::SS);

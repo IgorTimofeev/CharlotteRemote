@@ -32,8 +32,8 @@ namespace pizda {
 
 			rc.getAudioPlayer().play(
 				rc.getRemoteData().autopilot.autopilot
-				? static_cast<const Sound&>(resources::sounds::engaged)
-				: resources::sounds::disengaged
+				? static_cast<const Sound*>(&resources::sounds::engaged)
+				: &resources::sounds::disengaged
 			);
 		};
 

@@ -85,7 +85,7 @@ namespace pizda {
 
 			SemaphoreHandle_t _SPIMutex = nullptr;
 
-			void multicoreSetup();
+			void setupMulticore();
 
 			// -------------------------------- Hardware --------------------------------
 
@@ -137,8 +137,6 @@ namespace pizda {
 				getAssignedADCOneshotUnit(config::battery::remote::unit)
 			};
 
-			[[noreturn]] void peripheralTask();
-
 			// -------------------------------- UI --------------------------------
 
 			Application _application {};
@@ -158,12 +156,11 @@ namespace pizda {
 			AudioPlayer _audioPlayer {};
 			int64_t _dataInterpolationTime = 0;
 
-			void SPIBusSetup() const;
-			void ADCSetup();
-			void UISetup();
+			void setupSPI() const;
+			void setupADC();
 
-			static void GPIOSetup();
-			static void NVSSetup();
+			static void setupGPIO();
+			static void setupNVS();
 
 			float applyLPF(float oldValue, float newValue, float factor) const;
 			float applyLPFToAngle(float oldValue, float newValue, float factor) const;

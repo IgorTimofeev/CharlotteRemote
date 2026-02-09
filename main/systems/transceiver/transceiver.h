@@ -239,7 +239,7 @@ namespace pizda {
 				constexpr static uint8_t errorBufferLength = 255;
 				char errorBuffer[errorBufferLength];
 
-				SX1262::Transceiver::errorToString(error, errorBuffer, errorBufferLength);
+				SX1262::errorToString(error, errorBuffer, errorBufferLength);
 
 				ESP_LOGE(_logTag, "%s: %s", key, errorBuffer);
 			}
