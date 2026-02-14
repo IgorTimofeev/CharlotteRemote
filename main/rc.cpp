@@ -18,7 +18,7 @@ namespace pizda {
 		return instance;
 	}
 
-	[[noreturn]] void RC::run() {
+	[[noreturn]] void RC::start() {
 		// -------------------------------- Splash screen --------------------------------
 
 		// First, let's render a splash screen while we wait for the peripherals to finish warming up

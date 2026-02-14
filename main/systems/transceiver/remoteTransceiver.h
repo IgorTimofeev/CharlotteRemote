@@ -24,7 +24,7 @@ namespace pizda {
 
 			bool setup() override;
 
-			uint16_t getPPS() const;
+			void getPPS(uint16_t& RXPPS, uint16_t& TXPPS) const;
 
 		protected:
 			[[noreturn]] void onStart() override;
@@ -37,9 +37,11 @@ namespace pizda {
 			int64_t _trendsTime = 0;
 			float _trendsAirspeedPrevMPS = 0;
 			float _trendsAltitudePrevM = 0;
-			int64_t _receivePPSTime = 0;
-			uint16_t _PPSTemp = 0;
-			uint16_t _PPS = 0;
+			int64_t _PPSTime = 0;
+			uint16_t _RXPPSTemp = 0;
+			uint16_t _TXPPSTemp = 0;
+			uint16_t _RXPPS = 0;
+			uint16_t _TXPPS = 0;
 
 			bool receiveAircraftTelemetryPrimaryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftTelemetrySecondaryPacket(BitStream& stream, uint8_t payloadLength);

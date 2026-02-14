@@ -30,8 +30,9 @@ namespace pizda {
 		return true;
 	}
 
-	uint16_t RemoteTransceiver::getPPS() const {
-		return _PPS;
+	void RemoteTransceiver::getPPS(uint16_t& RXPPS, uint16_t& TXPPS) const {
+		RXPPS = _RXPPS;
+		TXPPS = _TXPPS;
 	}
 
 	bool RemoteTransceiver::stopSpectrumScanning() {
@@ -179,20 +180,26 @@ namespace pizda {
 
 		while (true) {
 			if (rc.getRemoteData().transceiver.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::stopped) {
-				transmit(100'000);
+				if (transmit(100'000)) {
+					_TXPPSTemp++;
+				}
 
 				if (receive(100'000)) {
-					_PPSTemp++;
+					_RXPPSTemp++;
 				}
 			}
 			else {
 				onSpectrumScanning();
 			}
 
-			if (esp_timer_get_time() >= _receivePPSTime) {
-				_PPS = _PPSTemp;
-				_PPSTemp = 0;
-				_receivePPSTime = esp_timer_get_time() + 1'000'000;
+			if (esp_timer_get_time() >= _PPSTime) {
+				_RXPPS = _RXPPSTemp;
+				_TXPPS = _TXPPSTemp;
+
+				_RXPPSTemp = 0;
+				_TXPPSTemp = 0;
+
+				_PPSTime = esp_timer_get_time() + 1'000'000;
 			}
 		}
 	}

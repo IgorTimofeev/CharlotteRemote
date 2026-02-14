@@ -39,7 +39,7 @@ namespace pizda {
 		public:
 			static RC& getInstance();
 
-			[[noreturn]] void run();
+			[[noreturn]] void start();
 
 			Application& getApplication();
 			Settings& getSettings();
