@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="7" type="long" />
     <option name="/Default/Environment/UserInterface/HierarchyView/ViewStyle/@EntryValue" value="SuperTypes" type="string" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
@@ -175,14 +175,27 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="щас твердо и четко напаяю трансюк на баззер - надо чекнуть, будет ли эта харкота громче пищать от 5в питания">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="а каналы ledc все заняты... сука, ну че за хуйня начинается, опять что ли gptimer сосать и софтверно шимить">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/elements/debugOverlay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/debugOverlay.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconTransceiverImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconTransceiverImage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/settings/axesSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/axesSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/axes/axis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/axes/axis.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/aircraftData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconTransceiver.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconTransceiver.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconTransceiver.psd" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/menuIconTransceiver.psd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -239,32 +252,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.RadMigrateCodeStyle": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "RunOnceActivity.west.config.association.type.startup.service": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/components/ESP-IDF-BuzzerAudio/src",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "settings.editor.splitter.proportion": "0.20187794",
-    "structure.view.defaults.are.configured": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/components/ESP-IDF-BuzzerAudio/src&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.20187794&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-BuzzerAudio\src" />
@@ -282,11 +295,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -777,6 +785,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="apidoc" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1250,15 +1263,8 @@
       <workItem from="1770671109700" duration="1416000" />
       <workItem from="1770898946281" duration="2032000" />
       <workItem from="1771027751991" duration="434000" />
-      <workItem from="1771028224598" duration="5378000" />
-    </task>
-    <task id="LOCAL-00073" summary="я хуею бля ЮНИТЫ ВАНШОТ ЮНИТЫ НЕТ БЛЯДЬ НОУСКОУП 360 У.У.УЛЛЛЬТРАКИЛЛ ЮНИТЫ">
-      <option name="closed" value="true" />
-      <created>1768921855142</created>
-      <option name="number" value="00073" />
-      <option name="presentableId" value="LOCAL-00073" />
-      <option name="project" value="LOCAL" />
-      <updated>1768921855142</updated>
+      <workItem from="1771028224598" duration="5733000" />
+      <workItem from="1771044311079" duration="9300000" />
     </task>
     <task id="LOCAL-00074" summary="ТАК СТОП">
       <option name="closed" value="true" />
@@ -1644,7 +1650,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771031763971</updated>
     </task>
-    <option name="localTasksCounter" value="122" />
+    <task id="LOCAL-00122" summary="а каналы ledc все заняты... сука, ну че за хуйня начинается, опять что ли gptimer сосать и софтверно шимить">
+      <option name="closed" value="true" />
+      <created>1771033976995</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1771033976995</updated>
+    </task>
+    <option name="localTasksCounter" value="123" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1685,7 +1699,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="опача забыл" />
     <MESSAGE value="ПОРА РЕВОРКАТЬ КЛАВУ ОБСКУРОВНУ" />
     <MESSAGE value="заебунькаль енамчик с ОПЦИЯМИ клавдии федеровны - терь в текстовых полях можно указывать, че ты хочешь, мол, числа, хуисла, со знаком, без плавающей точки и тп" />
     <MESSAGE value="разгондонил клавулетту на кучу файлов и убрал эту залупу с model-based интерфейсом - типа вы там на своих браузерах и мобилках дрочите скок хотите, а мы мужики базированные, сразу во вьюху всё хуярим и похуй" />
@@ -1710,6 +1723,7 @@
     <MESSAGE value="ахуенчик)) теперь трансюк монопольно сосёт все кварцевые соки со 2 ядра" />
     <MESSAGE value="ахахахахахахах, блядь, для клиона FILE IS TOO COMPLEX)))) они че, в дуб уебались? а че тогда не complex? ногодрыг? НЕ, НУ НОЖКИ - ЭТО СВЯТОЕ, БАЗАРУ НЕТ" />
     <MESSAGE value="щас твердо и четко напаяю трансюк на баззер - надо чекнуть, будет ли эта харкота громче пищать от 5в питания" />
-    <option name="LAST_COMMIT_MESSAGE" value="щас твердо и четко напаяю трансюк на баззер - надо чекнуть, будет ли эта харкота громче пищать от 5в питания" />
+    <MESSAGE value="а каналы ledc все заняты... сука, ну че за хуйня начинается, опять что ли gptimer сосать и софтверно шимить" />
+    <option name="LAST_COMMIT_MESSAGE" value="а каналы ledc все заняты... сука, ну че за хуйня начинается, опять что ли gptimer сосать и софтверно шимить" />
   </component>
 </project>

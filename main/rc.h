@@ -85,9 +85,9 @@ namespace pizda {
 			adc_oneshot_unit_handle_t _ADCOneshotUnit1 {};
 
 			ILI9341Display _display {
-				config::spi::MOSI,
-				config::spi::MISO,
-				config::spi::SCK,
+				config::SPI::MOSI,
+				config::SPI::MISO,
+				config::SPI::SCK,
 
 				config::screen::SS,
 				config::screen::DC,
@@ -98,8 +98,8 @@ namespace pizda {
 			Bit8PaletteRenderer _renderer { 32 };
 
 			FT6336UTouchPanel _touchPanel {
-				config::i2c::SDA,
-				config::i2c::SCL,
+				config::I2C::SDA,
+				config::I2C::SCL,
 				config::screen::touch::RST,
 				config::screen::touch::INTR
 			};

@@ -32,14 +32,14 @@ namespace pizda {
 		// SPI
 		{
 			spi_bus_config_t config {};
-			config.mosi_io_num = config::spi::MOSI;
-			config.miso_io_num = config::spi::MISO;
-			config.sclk_io_num = config::spi::SCK;
+			config.mosi_io_num = config::SPI::MOSI;
+			config.miso_io_num = config::SPI::MISO;
+			config.sclk_io_num = config::SPI::SCK;
 			config.quadwp_io_num = -1;
 			config.quadhd_io_num = -1;
 			config.max_transfer_sz = _display.getSize().getSquare() * 2;
 
-			ESP_ERROR_CHECK(spi_bus_initialize(config::spi::device, &config, SPI_DMA_CH_AUTO));
+			ESP_ERROR_CHECK(spi_bus_initialize(config::SPI::device, &config, SPI_DMA_CH_AUTO));
 		}
 
 		// GPIO
@@ -288,11 +288,18 @@ namespace pizda {
 			static_cast<float>(_aircraftData.raw.throttle_0_255) / 255.f,
 			LPFFactor
 		);
-		
+
+		// Yaw trend
+		_aircraftData.computed.yawTrendDeg = applyLPF(
+			_aircraftData.computed.yawTrendDeg,
+			_aircraftData.raw.yawTrendDeg,
+			LPFFactor
+		);
+
 		// Slower
 		LPFFactor = LowPassFilter::getDeltaTimeFactor(1.0f, deltaTimeUs);
-		
-		// Air speed trend
+
+		// Airspeed trend
 		_aircraftData.computed.airspeedTrendKt = applyLPF(
 			_aircraftData.computed.airspeedTrendKt,
 			Units::convertSpeed(_aircraftData.raw.airspeedTrendMPS, SpeedUnit::meterPerSecond, SpeedUnit::knot),

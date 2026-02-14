@@ -11,7 +11,7 @@
 namespace pizda {
 	class config {
 		public:
-			class spi {
+			class SPI {
 				public:
 					constexpr static spi_host_device_t device = SPI2_HOST;
 					constexpr static gpio_num_t MOSI = GPIO_NUM_23;
@@ -19,13 +19,13 @@ namespace pizda {
 					constexpr static gpio_num_t SCK = GPIO_NUM_18;
 			};
 
-			class i2c {
+			class I2C {
 				public:
 					constexpr static gpio_num_t SDA = GPIO_NUM_21;
 					constexpr static gpio_num_t SCL = GPIO_NUM_22;
 			};
 
-			class ota {
+			class OTA {
 				public:
 					constexpr static const char* url = "https://github.com/IgorTimofeev/CharlotteDownloads/raw/refs/heads/master/Firmware/Remote.bin";
 			};

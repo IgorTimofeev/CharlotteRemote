@@ -643,7 +643,7 @@ namespace pizda {
 				deltaDeg -= 360;
 			
 			const auto deltaPixels = deltaDeg / static_cast<float>(PFD::yawOverlayAngleStepUnits) * PFD::yawOverlayAngleStepPixels;
-			
+
 			const auto indicatorXCenter = std::clamp<int32_t>(
 				static_cast<int32_t>(centerX + deltaPixels),
 				bounds.getX(),
@@ -719,6 +719,24 @@ namespace pizda {
 					y + PFD::autopilotIndicatorTriangleThickness - 1
 				),
 				&Theme::ocean
+			);
+		}
+
+		// Trend
+		{
+			auto deltaPixels = static_cast<int32_t>(rc.getAircraftData().computed.yawTrendDeg / static_cast<float>(PFD::yawOverlayAngleStepUnits) * PFD::yawOverlayAngleStepPixels);
+
+			x = centerX;
+
+			if (deltaPixels < 0) {
+				deltaPixels = -deltaPixels;
+				x -= deltaPixels;
+			}
+
+			renderer->renderHorizontalLine(
+				Point(x, y2),
+				deltaPixels,
+				&Theme::magenta1
 			);
 		}
 		

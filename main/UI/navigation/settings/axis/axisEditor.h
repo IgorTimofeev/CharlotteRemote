@@ -17,28 +17,19 @@ namespace pizda {
 		to
 	};
 
-	class AxisEditorTrack : public Control {
+	class AxisEditor : public Control {
+		public:
+			AxisEditor(Axis* axis);
+			Axis* getAxis() const;
+
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 			void onEvent(Event* event) override;
 
 		private:
+			Axis* _axis;
+
 			SelectedPin _selectedPin = SelectedPin::none;
 			int32_t pointerDownX = -1;
-
-			AxisEditor* getEditor() const;
-	};
-
-	class AxisEditor : public Layout {
-		public:
-			AxisEditor(Axis* axis);
-
-			Axis* getAxis() const;
-
-		private:
-			Axis* _axis = nullptr;
-
-			AxisEditorTrack _track;
-			Button _invertButton;
 	};
 }

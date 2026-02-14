@@ -26,23 +26,17 @@ namespace pizda {
 			MotorConfiguration* _settings;
 			
 			Layout _mainLayout {};
-			
+
 			Rectangle _backgroundRect {};
 			
-			RelativeStackLayout _row {};
-			
+			RelativeStackLayout _minMaxRow {};
 			TextField _min {};
-			Titler _minTitle { L"Min", &_min };
-			
 			TextField _max {};
-			Titler _maxTitle { L"Max", &_max };
-			
+
 			Button _reverse {};
 			
 			template<std::integral T>
-			void addTextField(Titler& titler, TextField& textField, T value) {
-				titler.title.setTextColor(&Theme::fg5);
-				
+			void addTextField(TextField& textField, T value) {
 				Theme::apply(&textField);
 				textField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 				textField.setText(std::to_wstring(value));
@@ -53,7 +47,7 @@ namespace pizda {
 							changed();
 				});
 				
-				_row += &titler;
+				_minMaxRow += &textField;
 			}
 	};
 

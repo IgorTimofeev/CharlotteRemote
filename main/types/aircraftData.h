@@ -84,7 +84,8 @@ namespace pizda {
 			float rollRad = 0;
 			float pitchRad = 0;
 			float yawRad = 0;
-			
+			float yawTrendDeg = 0;
+
 			float slipAndSkidFactor = 0;
 			
 			float flightPathVectorPitchRad = 0;
@@ -111,7 +112,7 @@ namespace pizda {
 
 			float airspeedKt = 0;
 			float airspeedTrendKt = 0;
-			
+
 			float altitudeFt = 0;
 			float altitudeTrendFt = 0;
 			
@@ -119,9 +120,11 @@ namespace pizda {
 
 			float rollRad = 0;
 			float pitchRad = 0;
+
 			float yawRad = 0;
+			float yawTrendDeg = 0;
 			float headingDeg = 0;
-			
+
 			float slipAndSkidFactor = 0;
 			
 			float flightPathVectorPitchRad = 0;

@@ -56,6 +56,6 @@ namespace pizda {
 		uint16_t XCVRRXPPS, XCVRTXPPS;
 		rc.getTransceiver().getPPS(XCVRRXPPS, XCVRTXPPS);
 
-		renderLine(std::format(L"XCVR PPS: {} / {}", XCVRRXPPS, XCVRTXPPS));
+		renderLine(std::format(L"XCVR PPS RX: {}, TX: {}", XCVRRXPPS, XCVRTXPPS));
 	}
 }

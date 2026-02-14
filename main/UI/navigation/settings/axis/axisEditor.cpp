@@ -4,26 +4,29 @@
 #include "rc.h"
 
 namespace pizda {
-	void AxisEditorTrack::onEvent(Event* event) {
+	AxisEditor::AxisEditor(Axis* axis) : _axis(axis) {
+		setHeight(Theme::elementHeight);
+	}
+	
+	void AxisEditor::onEvent(Event* event) {
 		if (event->getTypeID() == PointerDownEvent::typeID) {
-			const auto editor = getEditor();
 			const auto& bounds = getBounds();
 			
 			pointerDownX = reinterpret_cast<PointerDownEvent*>(event)->getPosition().getX();
 			const int32_t ADCValue = (pointerDownX - bounds.getX()) * Axis::valueMax / bounds.getWidth();
 			
-			const auto range = editor->getAxis()->getSettings()->to - editor->getAxis()->getSettings()->from;
-			const auto middle = editor->getAxis()->getSettings()->from + range / 2;
+			const auto range = _axis->getSettings()->to - _axis->getSettings()->from;
+			const auto middle = _axis->getSettings()->from + range / 2;
 			
-			const auto fromDelta = std::abs(ADCValue - editor->getAxis()->getSettings()->from);
+			const auto fromDelta = std::abs(ADCValue - _axis->getSettings()->from);
 			const auto middleDelta = std::abs(ADCValue - middle);
-			const auto toDelta = std::abs(ADCValue - editor->getAxis()->getSettings()->to);
+			const auto toDelta = std::abs(ADCValue - _axis->getSettings()->to);
 			
 			// Range check comes first to prevent deadlock on edges
-			if (ADCValue <= editor->getAxis()->getSettings()->from) {
+			if (ADCValue <= _axis->getSettings()->from) {
 				_selectedPin = SelectedPin::from;
 			}
-			else if (ADCValue >= editor->getAxis()->getSettings()->to) {
+			else if (ADCValue >= _axis->getSettings()->to) {
 				_selectedPin = SelectedPin::to;
 			}
 			// Normal case
@@ -47,7 +50,7 @@ namespace pizda {
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == PointerDragEvent::typeID) {
-			const auto settings = getEditor()->getAxis()->getSettings();
+			const auto settings = _axis->getSettings();
 			const auto pointerX = reinterpret_cast<PointerDragEvent*>(event)->getPosition().getX();
 
 			// Updating settings
@@ -85,17 +88,15 @@ namespace pizda {
 		}
 	}
 	
-	void AxisEditorTrack::onRender(Renderer* renderer, const Bounds& bounds) {
-		const auto editor = getEditor();
-		
+	void AxisEditor::onRender(Renderer* renderer, const Bounds& bounds) {
 		// Track
 		renderer->renderFilledRectangle(bounds, Theme::cornerRadius, &Theme::bg2);
 		renderer->renderRectangle(bounds, Theme::cornerRadius, &Theme::bg3);
 		
 		// Fill
-		const auto settingsDelta = editor->getAxis()->getSettings()->to - editor->getAxis()->getSettings()->from;
-		const int32_t fromX = bounds.getX() + editor->getAxis()->getSettings()->from * bounds.getWidth() / Axis::valueMax;
-		const int32_t toX = bounds.getX() + editor->getAxis()->getSettings()->to * bounds.getWidth() / Axis::valueMax;
+		const auto settingsDelta = _axis->getSettings()->to - _axis->getSettings()->from;
+		const int32_t fromX = bounds.getX() + _axis->getSettings()->from * bounds.getWidth() / Axis::valueMax;
+		const int32_t toX = bounds.getX() + _axis->getSettings()->to * bounds.getWidth() / Axis::valueMax;
 		const uint16_t fillWidth = toX - fromX + 1;
 		
 		renderer->renderFilledRectangle(
@@ -114,12 +115,12 @@ namespace pizda {
 		
 		for (int32_t i = 0; i < fillWidth; ++i) {
 			const auto ADCValue =
-				editor->getAxis()->getSettings()->from
+				_axis->getSettings()->from
 				+ settingsDelta * i / fillWidth;
 			
 			Point curvePos1 {
 				fromX + i,
-				bounds.getY2() - bounds.getHeight() * editor->getAxis()->applySensitivityFilter(ADCValue) / Axis::valueMax
+				bounds.getY2() - bounds.getHeight() * _axis->applySensitivityFilter(ADCValue) / Axis::valueMax
 			};
 			
 			if (i > 0) {
@@ -191,18 +192,18 @@ namespace pizda {
 		
 		renderSidePin(
 			fromX,
-			editor->getAxis()->getSettings()->from,
+			_axis->getSettings()->from,
 			false
 		);
 		
 		renderSidePin(
 			toX,
-			editor->getAxis()->getSettings()->to,
+			_axis->getSettings()->to,
 			true
 		);
 		
 		// Thumb
-		const auto thumbX = bounds.getX() + editor->getAxis()->getRawValue() * bounds.getWidth() / Axis::valueMax;
+		const auto thumbX = bounds.getX() + _axis->getRawValue() * bounds.getWidth() / Axis::valueMax;
 		const auto thumbInWorkingRange = thumbX >= fromX && thumbX <= toX;
 		
 		renderer->renderVerticalLine(
@@ -225,7 +226,7 @@ namespace pizda {
 			renderer->renderFilledCircle(
 				Point(
 					thumbX,
-					bounds.getY2() - bounds.getHeight() * editor->getAxis()->applySensitivityFilter(editor->getAxis()->getRawValue()) / Axis::valueMax
+					bounds.getY2() - bounds.getHeight() * _axis->applySensitivityFilter(_axis->getRawValue()) / Axis::valueMax
 				),
 				2,
 				&Theme::fg1
@@ -236,45 +237,7 @@ namespace pizda {
 		
 		Element::onRender(renderer, bounds);
 	}
-
-	AxisEditor* AxisEditorTrack::getEditor() const {
-		return dynamic_cast<AxisEditor*>(getParent());
-	}
-
-	AxisEditor::AxisEditor(Axis* axis) : _axis(axis) {
-		setHeight(Theme::elementHeight);
-
-		// Invert button
-		_invertButton.setWidth(Theme::elementHeight);
-		_invertButton.setHorizontalAlignment(Alignment::end);
-		_invertButton.setCornerRadius(Theme::cornerRadius);
-		_invertButton.setContentMargin(Margin(_invertButton.getCornerRadius(), 0, 0, 0));
-
-		_invertButton.setDefaultBackgroundColor(&Theme::bg3);
-		_invertButton.setActiveBackgroundColor(&Theme::fg1);
-
-		_invertButton.setDefaultTextColor(&Theme::bg7);
-		_invertButton.setActiveTextColor(&Theme::bg2);
-		
-		_invertButton.setFont(&Theme::fontSmall);
-		_invertButton.setText(L"<->");
-
-		_invertButton.setToggle(true);
-		_invertButton.setActive(_axis->getSettings()->invertOutput);
-
-		_invertButton.setOnClick([this] {
-			_axis->getSettings()->invertOutput = _invertButton.isActive();
-
-			RC::getInstance().getSettings().axes.scheduleWrite();
-		});
-
-		*this += &_invertButton;
-
-		// Track
-		_track.setMargin(Margin(0, 0, _invertButton.getSize().getWidth() - _invertButton.getCornerRadius() - 1, 0));
-		*this += &_track;
-	}
-
+	
 	Axis* AxisEditor::getAxis() const {
 		return _axis;
 	}

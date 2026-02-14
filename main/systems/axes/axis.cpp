@@ -54,10 +54,6 @@ namespace pizda {
 		}
 
 		_filteredValue = applySensitivityFilter(_rawValue);
-
-		// Inverting output if required
-		if (_settings->invertOutput)
-			_filteredValue = valueMax - _filteredValue;
 	}
 	
 	uint16_t Axis::applySensitivityFilter(const uint16_t rawValue) const {

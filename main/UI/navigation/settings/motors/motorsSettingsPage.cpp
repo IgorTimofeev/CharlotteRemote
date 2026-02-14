@@ -6,17 +6,17 @@
 #include "UI/theme.h"
 
 namespace pizda {
-	MotorEditor::MotorEditor(std::wstring_view title, MotorConfiguration* settings) : Titler(title), _settings(settings) {
+	MotorEditor::MotorEditor(const std::wstring_view title, MotorConfiguration* settings) : Titler(title), _settings(settings) {
 		*this += &_mainLayout;
 		
 		// Reverse
-		_reverse.setWidth(18);
-		_reverse.setContentMargin(Margin(Theme::cornerRadius, 0, 0, 0));
+		_reverse.setWidth(20);
+		_reverse.setContentMargin(Margin(Theme::cornerRadius - 1, 0, 0, 0));
 		_reverse.setHorizontalAlignment(Alignment::end);
 		_reverse.setCornerRadius(Theme::cornerRadius);
 		
-		_reverse.setDefaultBackgroundColor(&Theme::bg3);
-		_reverse.setDefaultTextColor(&Theme::fg2);
+		_reverse.setDefaultBackgroundColor(&Theme::bg2);
+		_reverse.setDefaultTextColor(&Theme::fg4);
 		
 		_reverse.setActiveBackgroundColor(&Theme::fg1);
 		_reverse.setActiveTextColor(&Theme::bg1);
@@ -41,16 +41,16 @@ namespace pizda {
 		_mainLayout += &_backgroundRect;
 		
 		// Row
-		_row.setOrientation(Orientation::horizontal);
-		_row.setGap(8);
-		_row.setMargin(Margin(8, 3, 8 + _backgroundRect.getMargin().getRight(), 8));
-		_mainLayout += &_row;
+		_minMaxRow.setOrientation(Orientation::horizontal);
+		_minMaxRow.setGap(8);
+		_minMaxRow.setMargin(Margin(0, 0, _backgroundRect.getMargin().getRight(), 0));
+		_mainLayout += &_minMaxRow;
 		
 		// Min
-		addTextField(_minTitle, _min, _settings->min);
+		addTextField(_min, _settings->min);
 		
 		// Max
-		addTextField(_maxTitle, _max, _settings->max);
+		addTextField(_max, _settings->max);
 	}
 	
 	void MotorEditor::toSettings() const {

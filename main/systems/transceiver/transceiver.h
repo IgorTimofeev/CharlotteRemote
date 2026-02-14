@@ -69,7 +69,7 @@ namespace pizda {
 
 			virtual bool setup() {
 				const auto error = _SX.setup(
-					config::spi::device,
+					config::SPI::device,
 					config::transceiver::SPIFrequencyHz,
 
 					config::transceiver::RFFrequencyHz,
@@ -102,10 +102,7 @@ namespace pizda {
 			}
 
 			bool receive(const uint32_t timeoutUs) {
-				const auto receiveStartTimeUs = esp_timer_get_time();
-
 				uint8_t receivedLength = 0;
-
 
 				const auto error = _SX.receive(_buffer, receivedLength, timeoutUs);
 
@@ -163,8 +160,6 @@ namespace pizda {
 			}
 
 			bool transmit(const uint32_t timeoutUs) {
-				const auto transmitStartTimeUs = esp_timer_get_time();
-
 				BitStream stream { _buffer };
 
 				const auto packetType = getTransmitPacketType();
@@ -195,10 +190,10 @@ namespace pizda {
 
 				if (error != SX1262::error::none) {
 					logSXError("transmit error", error);
-					return true;
+					return false;
 				}
 
-				return false;
+				return true;
 			}
 
 			float getSNR() const {

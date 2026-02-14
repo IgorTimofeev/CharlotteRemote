@@ -307,6 +307,10 @@ namespace pizda {
 		const auto trendsDeltaTime = static_cast<float>(esp_timer_get_time() - _trendsTime);
 
 		if (trendsDeltaTime >= trendsInterval) {
+			// Yaw
+			rc.getAircraftData().raw.yawTrendDeg = -toDegrees(rc.getAircraftData().raw.yawRad - _trendsYawPrevRad) * 2'500'000.f / trendsDeltaTime;
+			_trendsYawPrevRad = rc.getAircraftData().raw.yawRad;
+
 			// Speed
 			rc.getAircraftData().raw.airspeedTrendMPS = (rc.getAircraftData().raw.airspeedMPS - _trendsAirspeedPrevMPS) * 5'000'000.f / trendsDeltaTime;
 			_trendsAirspeedPrevMPS = rc.getAircraftData().raw.airspeedMPS;

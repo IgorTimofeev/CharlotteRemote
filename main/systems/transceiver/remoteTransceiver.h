@@ -35,6 +35,7 @@ namespace pizda {
 		private:
 			constexpr static uint32_t trendsInterval = 500'000;
 			int64_t _trendsTime = 0;
+			float _trendsYawPrevRad = 0;
 			float _trendsAirspeedPrevMPS = 0;
 			float _trendsAltitudePrevM = 0;
 			int64_t _PPSTime = 0;
