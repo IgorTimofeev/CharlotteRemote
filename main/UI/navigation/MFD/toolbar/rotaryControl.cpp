@@ -114,10 +114,10 @@ namespace pizda {
 		variantSelectMode = !variantSelectMode;
 		
 		if (variantSelectMode) {
-			RC::getInstance().getAudioPlayer().playFeedback(&resources::sounds::engaged);
+			RC::getInstance().playFeedback(&resources::sounds::engaged);
 		}
 		else {
-			RC::getInstance().getAudioPlayer().playFeedback(&resources::sounds::disengaged);
+			RC::getInstance().playFeedback(&resources::sounds::disengaged);
 		}
 	}
 	
@@ -204,7 +204,7 @@ namespace pizda {
 		if (callOnPress) {
 			variantSelectMode = false;
 			
-			RC::getInstance().getAudioPlayer().playFeedback();
+			RC::getInstance().playFeedback();
 			
 			onPress();
 		}
@@ -218,12 +218,12 @@ namespace pizda {
 			
 			onVariantChanged();
 			
-			RC::getInstance().getAudioPlayer().playFeedback();
+			RC::getInstance().playFeedback();
 		}
 		else if (isVariantEditable(variantIndex)) {
 			onRotate(clockwise, big);
 
-			RC::getInstance().getAudioPlayer().playFeedback();
+			RC::getInstance().playFeedback();
 		}
 	}
 }

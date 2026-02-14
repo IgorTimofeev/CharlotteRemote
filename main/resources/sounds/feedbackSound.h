@@ -2,9 +2,11 @@
 
 #include <array>
 
-#include "systems/audio/sound.h"
+#include <sound.h>
 
 namespace pizda {
+	using namespace YOBA;
+
 	class FeedbackSound : public Sound {
 		public:
 			constexpr FeedbackSound() : Sound(playables.data(), playables.size()) {

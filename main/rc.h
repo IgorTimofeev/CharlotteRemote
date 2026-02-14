@@ -12,7 +12,9 @@
 #include <units.h>
 #include <battery.h>
 #include <lowPassFilter.h>
+#include <audioPlayer.h>
 
+#include "config.h"
 #include "UI/theme.h"
 #include "UI/navigation/route.h"
 #include "UI/navigation/menu/openMenuButton.h"
@@ -23,7 +25,6 @@
 
 #include "systems/transceiver/transceiver.h"
 #include "systems/transceiver/remoteTransceiver.h"
-#include "systems/audio/audioPlayer.h"
 #include "systems/axes/axes.h"
 
 #include "types/remoteData.h"
@@ -46,16 +47,7 @@ namespace pizda {
 			PushButtonEncoder& getEncoder();
 			Axes& getAxes();
 
-			Battery<
-				config::battery::remote::unit,
-				config::battery::remote::channel,
-				config::battery::remote::voltageMin,
-				config::battery::remote::voltageMax,
-				config::battery::remote::voltageDividerR1,
-				config::battery::remote::voltageDividerR2
-			>
-			getBattery() const;
-
+			Battery getBattery() const;
 			RemoteTransceiver& getTransceiver();
 			
 			void updateDebugOverlayVisibility();
@@ -69,6 +61,9 @@ namespace pizda {
 
 			SemaphoreHandle_t getSPIMutex() const;
 
+			void playFeedback(const Sound* sound);
+			void playFeedback();
+
 			constexpr adc_oneshot_unit_handle_t* getAssignedADCOneshotUnit(const adc_unit_t ADCUnit) {
 				switch (ADCUnit) {
 					case ADC_UNIT_1: return &_ADCOneshotUnit1;
@@ -77,7 +72,7 @@ namespace pizda {
 			}
 
 		private:
-			constexpr static const char* _logTag = "Main";
+			constexpr static const char* _logTag = "RC";
 			
 			RC() = default;
 
@@ -85,13 +80,11 @@ namespace pizda {
 
 			SemaphoreHandle_t _SPIMutex = nullptr;
 
-			void setupMulticore();
-
 			// -------------------------------- Hardware --------------------------------
 
 			adc_oneshot_unit_handle_t _ADCOneshotUnit1 {};
 
-			ILI9341Display _display = ILI9341Display(
+			ILI9341Display _display {
 				config::spi::MOSI,
 				config::spi::MISO,
 				config::spi::SCK,
@@ -100,17 +93,16 @@ namespace pizda {
 				config::screen::DC,
 				config::screen::RST,
 				config::screen::frequency
-			);
+			};
 
 			Bit8PaletteRenderer _renderer { 32 };
 
-			FT6336UTouchPanel _touchPanel = FT6336UTouchPanel(
+			FT6336UTouchPanel _touchPanel {
 				config::i2c::SDA,
 				config::i2c::SCL,
-
 				config::screen::touch::RST,
 				config::screen::touch::INTR
-			);
+			};
 
 			// Transceiver
 			RemoteTransceiver _transceiver {};
@@ -122,20 +114,28 @@ namespace pizda {
 				config::encoder::sw
 			};
 
+			// Analog axes
 			Axes _axes {};
 
-			Battery<
+			// Battery
+			Battery _battery {
 				config::battery::remote::unit,
+				getAssignedADCOneshotUnit(config::battery::remote::unit),
 				config::battery::remote::channel,
 
 				config::battery::remote::voltageMin,
 				config::battery::remote::voltageMax,
 				config::battery::remote::voltageDividerR1,
 				config::battery::remote::voltageDividerR2
-			>
-			_battery {
-				getAssignedADCOneshotUnit(config::battery::remote::unit)
 			};
+
+			// Audio
+			Buzzer _buzzer {
+				config::buzzer::gpio,
+				config::buzzer::channel
+			};
+
+			AudioPlayer _audioPlayer { &_buzzer };
 
 			// -------------------------------- UI --------------------------------
 
@@ -153,18 +153,14 @@ namespace pizda {
 			RemoteData _remoteData {};
 			AircraftData _aircraftData {};
 			NavigationData _navigationData {};
-			AudioPlayer _audioPlayer {};
+
 			int64_t _dataInterpolationTime = 0;
-
-			void setupSPI() const;
-			void setupADC();
-
-			static void setupGPIO();
-			static void setupNVS();
+			int64_t _batteryTickTime = 0;
 
 			float applyLPF(float oldValue, float newValue, float factor) const;
 			float applyLPFToAngle(float oldValue, float newValue, float factor) const;
 			void interpolateData();
+			void batteryTick();
 
 			[[noreturn]] static void startErrorLoop(const char* error);
 	};

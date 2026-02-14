@@ -15,7 +15,7 @@ namespace pizda {
 			
 			flightDirector.setActive(rc.getSettings().personalization.MFD.PFD.flightDirector);
 			
-			rc.getAudioPlayer().playFeedback();
+			rc.playFeedback();
 		};
 
 		row += &flightDirector;

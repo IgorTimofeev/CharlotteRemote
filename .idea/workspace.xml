@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="6" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
     <option name="/Default/Environment/UserInterface/HierarchyView/ViewStyle/@EntryValue" value="SuperTypes" type="string" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
@@ -75,6 +75,7 @@
       <config projectName="Remote" targetName="__idf_esp_rom" />
       <config projectName="Remote" targetName="encrypted-partition-table-flash" />
       <config projectName="Remote" targetName="__idf_tcp_transport" />
+      <config projectName="Remote" targetName="__idf_ESP-IDF-BuzzerAudio" />
       <config projectName="Remote" targetName="__idf_esp_driver_gptimer" />
       <config projectName="Remote" targetName="__idf_sdmmc" />
       <config projectName="Remote" targetName="sections.ld.in" />
@@ -174,20 +175,40 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ахуенчик)) теперь трансюк монопольно сосёт все кварцевые соки со 2 ядра">
-      <change afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.cpp" afterDir="false" />
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ахахахахахахах, блядь, для клиона FILE IS TOO COMPLEX)))) они че, в дуб уебались? а че тогда не complex? ногодрыг? НЕ, НУ НОЖКИ - ЭТО СВЯТОЕ, БАЗАРУ НЕТ">
+      <change afterPath="$PROJECT_DIR$/components/ESP-IDF-BuzzerAudio" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ESP-IDF-BuzzerAudio/src/buzzer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery/src/battery.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery/src/battery.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/hardware/touchPanels/FT6336UTouchPanel.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/hardware/touchPanels/FT6336UTouchPanel.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/hardware/touchPanels/FT6336UTouchPanel.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/hardware/touchPanels/FT6336UTouchPanel.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencies.lock" beforeDir="false" afterPath="$PROJECT_DIR$/dependencies.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/lights/lightsToolbar.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/rotaryControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/audio/audioPlayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/audio/audioPlayer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/audio/audioPlayer.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/audio/audioPlayer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/sounds/bootSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/sounds/bootSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/sounds/disengagedSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/sounds/disengagedSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/sounds/engagedSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/sounds/engagedSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/sounds/feedbackSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/sounds/feedbackSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/sounds/transceiverConnectSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/sounds/transceiverConnectSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/sounds/transceiverDisconnectSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/sounds/transceiverDisconnectSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/audio/audioPlayer.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/audio/audioPlayer.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/audio/sound.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/audio/speaker.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -200,7 +221,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/ESP-IDF-SX1262" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/YOBA" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -258,14 +279,14 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/components/ESP-IDF-SX1262/src",
+    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/components/ESP-IDF-BuzzerAudio/src",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.keymap",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
     "settings.editor.splitter.proportion": "0.20187794",
     "structure.view.defaults.are.configured": "true",
     "vue.rearranger.settings.migration": "true"
@@ -273,18 +294,18 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-BuzzerAudio\src" />
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-BuzzerAudio" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-SX1262\src" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\toolbar\baro" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\elements" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\YOBA\src\YOBA\main" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\settings\transceiver" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-BuzzerAudio\src" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\PFD" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\YOBA\src\YOBA\UI\keyboard" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\YOBA\src\YOBA\main" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\YOBA\src\YOBA\main\keyboard" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\systems\transceiver" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
@@ -304,6 +325,11 @@
       </method>
     </configuration>
     <configuration name="__idf_ESP-IDF-BitStream" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_ESP-IDF-BitStream" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_ESP-IDF-BuzzerAudio" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_ESP-IDF-BuzzerAudio" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -1003,9 +1029,10 @@
       <item itemvalue="CMake Application.Remote.elf" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-Battery" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-BitStream" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-BuzzerAudio" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-LowPassFilter" />
-      <item itemvalue="CMake Application.__idf_ESP-IDF-PIDController" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-NVSExtensions" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-PIDController" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-SX1262" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-Units" />
       <item itemvalue="CMake Application.__idf_YOBA" />
@@ -1246,15 +1273,11 @@
       <workItem from="1770464933222" duration="27592000" />
       <workItem from="1770590617964" duration="2680000" />
       <workItem from="1770596607393" duration="10994000" />
-      <workItem from="1770644480266" duration="17382000" />
-    </task>
-    <task id="LOCAL-00071" summary="заебумба">
-      <option name="closed" value="true" />
-      <created>1768840664883</created>
-      <option name="number" value="00071" />
-      <option name="presentableId" value="LOCAL-00071" />
-      <option name="project" value="LOCAL" />
-      <updated>1768840664884</updated>
+      <workItem from="1770644480266" duration="18513000" />
+      <workItem from="1770671109700" duration="1416000" />
+      <workItem from="1770898946281" duration="2032000" />
+      <workItem from="1771027751991" duration="434000" />
+      <workItem from="1771028224598" duration="3296000" />
     </task>
     <task id="LOCAL-00072" summary="заебумба">
       <option name="closed" value="true" />
@@ -1640,7 +1663,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770656624212</updated>
     </task>
-    <option name="localTasksCounter" value="120" />
+    <task id="LOCAL-00120" summary="ахахахахахахах, блядь, для клиона FILE IS TOO COMPLEX)))) они че, в дуб уебались? а че тогда не complex? ногодрыг? НЕ, НУ НОЖКИ - ЭТО СВЯТОЕ, БАЗАРУ НЕТ">
+      <option name="closed" value="true" />
+      <created>1770663390909</created>
+      <option name="number" value="00120" />
+      <option name="presentableId" value="LOCAL-00120" />
+      <option name="project" value="LOCAL" />
+      <updated>1770663390909</updated>
+    </task>
+    <option name="localTasksCounter" value="121" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1681,7 +1712,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="захуярил визуализацию PID-тюнинга, но чета пока говной воняет, надо попизже будет" />
     <MESSAGE value="захуярил растеризацию сплайна катмулла-рома, чтоб PID-чартик посексуальнее выглядел" />
     <MESSAGE value="опача забыл" />
     <MESSAGE value="ПОРА РЕВОРКАТЬ КЛАВУ ОБСКУРОВНУ" />
@@ -1706,6 +1736,7 @@
     <MESSAGE value="захуярил отображение метрической высоты для пуссибоев, почему-то не любящих ножки" />
     <MESSAGE value="попробовать что ли на разные ядра эту хуйню распараллелить" />
     <MESSAGE value="ахуенчик)) теперь трансюк монопольно сосёт все кварцевые соки со 2 ядра" />
-    <option name="LAST_COMMIT_MESSAGE" value="ахуенчик)) теперь трансюк монопольно сосёт все кварцевые соки со 2 ядра" />
+    <MESSAGE value="ахахахахахахах, блядь, для клиона FILE IS TOO COMPLEX)))) они че, в дуб уебались? а че тогда не complex? ногодрыг? НЕ, НУ НОЖКИ - ЭТО СВЯТОЕ, БАЗАРУ НЕТ" />
+    <option name="LAST_COMMIT_MESSAGE" value="ахахахахахахах, блядь, для клиона FILE IS TOO COMPLEX)))) они че, в дуб уебались? а че тогда не complex? ногодрыг? НЕ, НУ НОЖКИ - ЭТО СВЯТОЕ, БАЗАРУ НЕТ" />
   </component>
 </project>

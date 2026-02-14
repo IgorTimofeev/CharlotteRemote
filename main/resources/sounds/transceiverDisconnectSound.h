@@ -2,9 +2,11 @@
 
 #include <array>
 
-#include "systems/audio/sound.h"
+#include <sound.h>
 
 namespace pizda {
+	using namespace YOBA;
+
 	class TransceiverDisconnectSound : public Sound {
 		public:
 			constexpr TransceiverDisconnectSound() : Sound(playables.data(), playables.size()) {

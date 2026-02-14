@@ -17,7 +17,7 @@ namespace pizda {
 
 			metricUnits.setActive(rc.getSettings().personalization.MFD.PFD.metricUnits);
 
-			rc.getAudioPlayer().playFeedback();
+			rc.playFeedback();
 		};
 
 		row += &metricUnits;

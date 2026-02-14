@@ -22,3 +22,6 @@
 [submodule "components/ESP-IDF-PIDController"]
 	path = components/ESP-IDF-PIDController
 	url = https://github.com/IgorTimofeev/ESP-IDF-PIDController.git
+[submodule "components/ESP-IDF-BuzzerAudio"]
+	path = components/ESP-IDF-BuzzerAudio
+	url = https://github.com/IgorTimofeev/ESP-IDF-BuzzerAudio.git

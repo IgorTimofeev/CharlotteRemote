@@ -16,7 +16,7 @@ namespace pizda {
 			
 			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::lights);
 			
-			rc.getAudioPlayer().playFeedback();
+			rc.playFeedback();
 		};
 		
 		row += &navigation;
@@ -30,7 +30,7 @@ namespace pizda {
 			
 			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::lights);
 			
-			rc.getAudioPlayer().playFeedback();
+			rc.playFeedback();
 		};
 		
 		row += &strobe;
@@ -44,7 +44,7 @@ namespace pizda {
 			
 			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::lights);
 			
-			rc.getAudioPlayer().playFeedback();
+			rc.playFeedback();
 		};
 		
 		row += &landing;
@@ -58,7 +58,7 @@ namespace pizda {
 			
 			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::lights);
 			
-			rc.getAudioPlayer().playFeedback();
+			rc.playFeedback();
 		};
 		
 		row += &cabin;

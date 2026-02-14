@@ -17,6 +17,7 @@ idf_component_register(
         ESP-IDF-LowPassFilter
         ESP-IDF-PIDController
         ESP-IDF-Battery
+        ESP-IDF-BuzzerAudio
 )
 
 include_directories(.)

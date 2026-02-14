@@ -46,13 +46,13 @@ namespace pizda {
 	
 			class transceiver {
 				public:
-					// SX1262 supports up to 16 MHz, but with long wires (10+ cm) there will be troubles, so
-					constexpr static uint32_t SPIFrequencyHz = 10'000'000;
-					
 					constexpr static gpio_num_t SS = GPIO_NUM_14;
-					constexpr static gpio_num_t RST = GPIO_NUM_NC;
 					constexpr static gpio_num_t busy = GPIO_NUM_12;
 					constexpr static gpio_num_t DIO1 = GPIO_NUM_13;
+					constexpr static gpio_num_t RST = GPIO_NUM_NC;
+
+					// SX1262 supports up to 16 MHz, but with long wires (10+ cm) there will be troubles, so
+					constexpr static uint32_t SPIFrequencyHz = 10'000'000;
 
 					constexpr static uint32_t RFFrequencyHz = 915'000'000;
 					constexpr static auto bandwidth = SX1262::LoRaBandwidth::bw500_0;
@@ -145,12 +145,10 @@ namespace pizda {
 					};
 			};
 	
-			class speaker {
+			class buzzer {
 				public:
 					constexpr static gpio_num_t gpio = GPIO_NUM_4;
 					constexpr static ledc_channel_t channel = LEDC_CHANNEL_0;
-					constexpr static ledc_timer_t timer = LEDC_TIMER_0;
-					constexpr static ledc_mode_t mode = LEDC_LOW_SPEED_MODE;
 			};
 	
 			class application {

@@ -1,6 +1,8 @@
 #include <cstdint>
 #include <esp_timer.h>
-#include "nvs.h"
+
+#include <nvs.h>
+
 #include "rc.h"
 #include "config.h"
 #include "resources/sounds.h"
@@ -20,9 +22,40 @@ namespace pizda {
 		// -------------------------------- Splash screen --------------------------------
 
 		// First, let's render a splash screen while we wait for the peripherals to finish warming up
-		setupMulticore();
-		setupSPI();
-		setupGPIO();
+
+		// Multicore
+		{
+			_SPIMutex = xSemaphoreCreateMutex();
+			system::SPI::setMutex(_SPIMutex);
+		}
+
+		// SPI
+		{
+			spi_bus_config_t config {};
+			config.mosi_io_num = config::spi::MOSI;
+			config.miso_io_num = config::spi::MISO;
+			config.sclk_io_num = config::spi::SCK;
+			config.quadwp_io_num = -1;
+			config.quadhd_io_num = -1;
+			config.max_transfer_sz = _display.getSize().getSquare() * 2;
+
+			ESP_ERROR_CHECK(spi_bus_initialize(config::spi::device, &config, SPI_DMA_CH_AUTO));
+		}
+
+		// GPIO
+		{
+			// Slave selects
+			gpio_config_t g = {};
+			g.pin_bit_mask = (1ULL << config::screen::SS) | (1ULL << config::transceiver::SS);
+			g.mode = GPIO_MODE_OUTPUT;
+			g.pull_up_en = GPIO_PULLUP_DISABLE;
+			g.pull_down_en = GPIO_PULLDOWN_DISABLE;
+			g.intr_type = GPIO_INTR_DISABLE;
+			gpio_config(&g);
+
+			gpio_set_level(config::screen::SS, true);
+			gpio_set_level(config::transceiver::SS, true);
+		}
 
 		// After applying power or a hard reset, the LCD panel will be turned off, its internal pixel
 		// buffer will contain random garbage, and the driver will wait for pixel data to be received
@@ -46,10 +79,30 @@ namespace pizda {
 		// -------------------------------- Hardware --------------------------------
 
 		// NVS is required by settings & Wi-Fi
-		setupNVS();
-		setupADC();
+		{
+			const auto status = nvs_flash_init();
 
-		// Settings contain calibration data for the ADC axes, XCVR modulation params, etc. - they should be read first
+			if (status == ESP_ERR_NVS_NO_FREE_PAGES || status == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+				// NVS partition was truncated and needs to be erased
+				ESP_ERROR_CHECK(nvs_flash_erase());
+				// Retry init
+				ESP_ERROR_CHECK(nvs_flash_init());
+			}
+			else {
+				ESP_ERROR_CHECK(status);
+			}
+		}
+
+		// ADC
+		{
+			adc_oneshot_unit_init_cfg_t unitConfig {};
+			unitConfig.unit_id = ADC_UNIT_1;
+			unitConfig.clk_src = ADC_RTC_CLK_SRC_DEFAULT;
+			unitConfig.ulp_mode = ADC_ULP_MODE_DISABLE;
+			ESP_ERROR_CHECK(adc_oneshot_new_unit(&unitConfig, &_ADCOneshotUnit1));
+		}
+
+		// Settings come first because they contain XCVR modulation params, ADC axes calibration data, etc.
 		_settings.readAll();
 
 		// Transceiver
@@ -89,7 +142,7 @@ namespace pizda {
 
 		while (true) {
 			_axes.tick();
-			_battery.tick();
+			batteryTick();
 
 			interpolateData();
 
@@ -264,6 +317,15 @@ namespace pizda {
 		LPFFactor = LowPassFilter::getDeltaTimeFactor(0.5f, deltaTimeUs);
 	}
 
+	void RC::batteryTick() {
+		if (esp_timer_get_time() < _batteryTickTime)
+			return;
+
+		_battery.tick();
+
+		_batteryTickTime = esp_timer_get_time() + 1'000'000 / (1 * 8);
+	}
+
 	// ------------------------- Data -------------------------
 
 	Application& RC::getApplication() {
@@ -286,6 +348,16 @@ namespace pizda {
 		return _SPIMutex;
 	}
 
+	void RC::playFeedback(const Sound* sound) {
+		if (_settings.personalization.audioFeedback) {
+			_audioPlayer.play(sound);
+		}
+	}
+
+	void RC::playFeedback() {
+		playFeedback(&resources::sounds::feedback);
+	}
+
 	Settings& RC::getSettings() {
 		return _settings;
 	}
@@ -302,69 +374,8 @@ namespace pizda {
 		return _axes;
 	}
 
-	Battery<
-		config::battery::remote::unit,
-		config::battery::remote::channel,
-		config::battery::remote::voltageMin,
-		config::battery::remote::voltageMax,
-		config::battery::remote::voltageDividerR1,
-		config::battery::remote::voltageDividerR2
-	>
-	RC::getBattery() const {
+	Battery RC::getBattery() const {
 		return _battery;
-	}
-
-	void RC::setupNVS() {
-		const auto status = nvs_flash_init();
-
-		if (status == ESP_ERR_NVS_NO_FREE_PAGES || status == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-			// NVS partition was truncated and needs to be erased
-			ESP_ERROR_CHECK(nvs_flash_erase());
-			// Retry init
-			ESP_ERROR_CHECK(nvs_flash_init());
-		}
-		else {
-			ESP_ERROR_CHECK(status);
-		}
-	}
-
-	void RC::setupMulticore() {
-		_SPIMutex = xSemaphoreCreateMutex();
-		system::SPI::setMutex(_SPIMutex);
-	}
-
-	void RC::setupSPI() const {
-		spi_bus_config_t config {};
-		config.mosi_io_num = config::spi::MOSI;
-		config.miso_io_num = config::spi::MISO;
-		config.sclk_io_num = config::spi::SCK;
-		config.quadwp_io_num = -1;
-		config.quadhd_io_num = -1;
-		config.max_transfer_sz = _display.getSize().getSquare() * 2;
-
-		ESP_ERROR_CHECK(spi_bus_initialize(config::spi::device, &config, SPI_DMA_CH_AUTO));
-	}
-
-	void RC::setupADC() {
-		adc_oneshot_unit_init_cfg_t unitConfig {};
-		unitConfig.unit_id = ADC_UNIT_1;
-		unitConfig.clk_src = ADC_RTC_CLK_SRC_DEFAULT;
-		unitConfig.ulp_mode = ADC_ULP_MODE_DISABLE;
-		ESP_ERROR_CHECK(adc_oneshot_new_unit(&unitConfig, &_ADCOneshotUnit1));
-	}
-
-	void RC::setupGPIO() {
-		// Slave selects
-		gpio_config_t g = {};
-		g.pin_bit_mask = (1ULL << config::screen::SS) | (1ULL << config::transceiver::SS);
-		g.mode = GPIO_MODE_OUTPUT;
-		g.pull_up_en = GPIO_PULLUP_DISABLE;
-		g.pull_down_en = GPIO_PULLDOWN_DISABLE;
-		g.intr_type = GPIO_INTR_DISABLE;
-		gpio_config(&g);
-		
-		gpio_set_level(config::screen::SS, true);
-		gpio_set_level(config::transceiver::SS, true);
 	}
 
 	void RC::updateDebugOverlayVisibility() {

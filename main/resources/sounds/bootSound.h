@@ -2,9 +2,11 @@
 
 #include <array>
 
-#include "systems/audio/sound.h"
+#include <sound.h>
 
 namespace pizda {
+	using namespace YOBA;
+
 	class BootSound : public Sound {
 		public:
 			constexpr BootSound() : Sound(playables.data(), playables.size()) {
