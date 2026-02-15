@@ -29,7 +29,7 @@ namespace pizda {
 		_jitteringThresholdSlider.setMaximumValue(jitteringThresholdMaxValue);
 		_jitteringThresholdSlider.setValue(RC::getInstance().getSettings().axes.jitteringCutoffValue);
 
-		_jitteringThresholdSlider.setTickQuantity(10);
+		_jitteringThresholdSlider.setTickCount(10);
 		_jitteringThresholdSlider.setBigTickStep(5);
 		_jitteringThresholdSlider.setTickLabelBuilder(Slider::int32TickLabelBuilder);
 

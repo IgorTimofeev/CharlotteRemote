@@ -95,11 +95,11 @@ namespace pizda {
 		splinePoints[1] = splinePoints[0];
 
 		uint16_t localX = 0;
-		const auto stepPixels = bounds.getWidth() / (_stepsQuantity - 1);
+		const auto stepPixels = bounds.getWidth() / (_stepCount - 1);
 
 		PIDController PIDController {};
 
-		for (uint16_t i = 0; i < _stepsQuantity; ++i) {
+		for (uint16_t i = 0; i < _stepCount; ++i) {
 			value = PIDController.tick(
 				value,
 				_setpoint,
@@ -122,16 +122,16 @@ namespace pizda {
 			};
 		}
 
-		splinePoints[_stepsQuantity + 1] = splinePoints[_stepsQuantity];
+		splinePoints[_stepCount + 1] = splinePoints[_stepCount];
 
 		renderer->renderCatmullRomSpline(
 			splinePoints.data(),
-			_stepsQuantity + 2,
+			_stepCount + 2,
 			&Theme::accent1,
 			10
 		);
 
-		for (uint16_t i = 0; i < _stepsQuantity; ++i) {
+		for (uint16_t i = 0; i < _stepCount; ++i) {
 			renderer->renderFilledCircle(
 				splinePoints[i + 2],
 				2,
@@ -157,8 +157,8 @@ namespace pizda {
 		invalidate();
 	}
 
-	void PIDChart::setStepsQuantity(const uint16_t stepsQuantity) {
-		_stepsQuantity = stepsQuantity;
+	void PIDChart::setStepCount(const uint16_t value) {
+		_stepCount = value;
 
 		invalidate();
 	}
@@ -265,7 +265,7 @@ namespace pizda {
 				break;
 		}
 
-		_chart.setStepsQuantity(steps);
+		_chart.setStepCount(steps);
 		_stepsButton.setText(text);
 	}
 }

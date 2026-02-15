@@ -194,7 +194,7 @@ namespace pizda {
 		slider->setHandleColor(&Theme::fg1);
 
 		// Tick
-		slider->setTickQuantity(10);
+		slider->setTickCount(10);
 		slider->setBigTickStep(5);
 		slider->setTickOffset(0);
 		slider->setBigTickLineLength(5);

@@ -72,7 +72,7 @@ namespace pizda {
 
 			_spectrumScanningHistoryIndex = 0;
 			_spectrumScanningSampleRSSISum = 0;
-			_spectrumScanningSampleQuantity = 0;
+			_spectrumScanningSampleCount = 0;
 
 			// Switching to standby
 			const auto error = _SX.setStandby();
@@ -148,11 +148,11 @@ namespace pizda {
 		if (newHistoryIndex <= _spectrumScanningHistoryIndex) {
 			// Accumulating samples
 			_spectrumScanningSampleRSSISum += RSSI;
-			_spectrumScanningSampleQuantity++;
+			_spectrumScanningSampleCount++;
 		}
 		else {
 			// Computing average values for prev
-			_spectrumScanningSampleRSSISum = _spectrumScanningSampleQuantity > 0 ? _spectrumScanningSampleRSSISum / _spectrumScanningSampleQuantity : std::numeric_limits<int8_t>::min();
+			_spectrumScanningSampleRSSISum = _spectrumScanningSampleCount > 0 ? _spectrumScanningSampleRSSISum / _spectrumScanningSampleCount : std::numeric_limits<int8_t>::min();
 
 			// Filling prev
 			rd.history[_spectrumScanningHistoryIndex] = _spectrumScanningSampleRSSISum;
@@ -165,7 +165,7 @@ namespace pizda {
 
 			_spectrumScanningHistoryIndex = newHistoryIndex;
 			_spectrumScanningSampleRSSISum = RSSI;
-			_spectrumScanningSampleQuantity = 1;
+			_spectrumScanningSampleCount = 1;
 		}
 
 		// Moving to next frequency

@@ -11,7 +11,7 @@ namespace pizda {
 			PIDChart();
 			const PIDCoefficients& getCoefficients() const;
 			void setCoefficients(const PIDCoefficients& coefficients);
-			void setStepsQuantity(const uint16_t stepsQuantity);
+			void setStepCount(const uint16_t value);
 			void setDeltaTime(const float deltaTime);
 
 		protected:
@@ -23,7 +23,7 @@ namespace pizda {
 			uint8_t _setpoint = 50;
 
 			float _deltaTime = 1;
-			uint16_t _stepsQuantity = 20;
+			uint16_t _stepCount = 20;
 
 			void updateSetpointFromPointerEvent(const int32_t pointerY);
 	};

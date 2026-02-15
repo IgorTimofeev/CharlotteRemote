@@ -59,7 +59,7 @@ namespace pizda {
 		_PFDFOVSlider.setMaximumValue(120);
 		_PFDFOVSlider.setValue(settings.personalization.MFD.PFD.FOV);
 
-		_PFDFOVSlider.setTickQuantity(10);
+		_PFDFOVSlider.setTickCount(10);
 		_PFDFOVSlider.setBigTickStep(5);
 		_PFDFOVSlider.setTickLabelBuilder(Slider::int32TickLabelBuilder);
 

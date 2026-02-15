@@ -24,7 +24,7 @@ namespace pizda {
 				// Chart
 				chart.setHeight(120);
 				chart.setDeltaTime(1.f / 20.f);
-				chart.setStepsQuantity(10);
+				chart.setStepCount(10);
 				chart.setBackgroundColor(&Theme::bg3);
 				rows += &chart;
 

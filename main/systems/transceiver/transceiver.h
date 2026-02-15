@@ -394,7 +394,7 @@ namespace pizda {
 				// Enqueued
 				if (item.useEnqueued() && _packetEnqueued) {
 					bool shouldAssign = true;
-					uint8_t remainingPacketQuantity = 0;
+					uint8_t remainingPacketCount = 0;
 
 					for (uint8_t i = 0; i < packetQueueLength; ++i) {
 						if (!_packetQueue[i])
@@ -407,11 +407,11 @@ namespace pizda {
 							shouldAssign = false;
 						}
 						else {
-							remainingPacketQuantity++;
+							remainingPacketCount++;
 						}
 					}
 
-					_packetEnqueued = remainingPacketQuantity > 0;
+					_packetEnqueued = remainingPacketCount > 0;
 
 					nextSequenceItem();
 

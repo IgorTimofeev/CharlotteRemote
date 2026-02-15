@@ -60,7 +60,7 @@ namespace pizda {
 
 			uint16_t _spectrumScanningHistoryIndex = 0;
 			int64_t _spectrumScanningSampleRSSISum = 0;
-			uint32_t _spectrumScanningSampleQuantity = 0;
+			uint32_t _spectrumScanningSampleCount = 0;
 
 			bool stopSpectrumScanning();
 
