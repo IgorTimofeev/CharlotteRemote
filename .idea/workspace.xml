@@ -175,37 +175,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="накалякал семплер попизже, а то оно с FIFO сосало слишком редко">
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/settings/ADIRS/ADIRSSettingsPage.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/UI/navigation/settings/ADIRS/ADIRSSettingsPage.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/settings/ADIRSSettings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/minimumsRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/minimumsRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/routes.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/routes.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconCalibrationImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconADIRSImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/controlSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/controlSettings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/motorsSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/motorsSettings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/transceiverSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/transceiverSettings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/packet.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/generic.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/generic.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconCalibration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/images/menuIconCalibration.psd" beforeDir="false" />
-    </list>
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ну че, потихоньку продвигаемся к параметрам модуляции - вообще это пиздец опасная тема, надо хорошенько всяких условий понасрать с фоллбеками, а то получить окирпичивание в поле было бы не в кайф" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -304,6 +274,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1271,15 +1246,7 @@
       <workItem from="1771044311079" duration="10130000" />
       <workItem from="1771132153485" duration="2455000" />
       <workItem from="1771213814693" duration="5000" />
-      <workItem from="1771213947001" duration="8169000" />
-    </task>
-    <task id="LOCAL-00076" summary="ебать че происходит сука при чтении adc с тасок внезапно появились какие-то интерференции, словно оси взаимно друг на друга влияют - ПЕРДЁЖ ЕБАНЫЙ БЛЯДЬЬ">
-      <option name="closed" value="true" />
-      <created>1768939879654</created>
-      <option name="number" value="00076" />
-      <option name="presentableId" value="LOCAL-00076" />
-      <option name="project" value="LOCAL" />
-      <updated>1768939879654</updated>
+      <workItem from="1771213947001" duration="8244000" />
     </task>
     <task id="LOCAL-00077" summary="ебать че происходит сука при чтении adc с тасок внезапно появились какие-то интерференции, словно оси взаимно друг на друга влияют - ПЕРДЁЖ ЕБАНЫЙ БЛЯДЬЬ">
       <option name="closed" value="true" />
@@ -1665,7 +1632,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771143131677</updated>
     </task>
-    <option name="localTasksCounter" value="125" />
+    <task id="LOCAL-00125" summary="ну че, потихоньку продвигаемся к параметрам модуляции - вообще это пиздец опасная тема, надо хорошенько всяких условий понасрать с фоллбеками, а то получить окирпичивание в поле было бы не в кайф">
+      <option name="closed" value="true" />
+      <created>1771222455855</created>
+      <option name="number" value="00125" />
+      <option name="presentableId" value="LOCAL-00125" />
+      <option name="project" value="LOCAL" />
+      <updated>1771222455855</updated>
+    </task>
+    <option name="localTasksCounter" value="126" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1706,7 +1681,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="разгондонил клавулетту на кучу файлов и убрал эту залупу с model-based интерфейсом - типа вы там на своих браузерах и мобилках дрочите скок хотите, а мы мужики базированные, сразу во вьюху всё хуярим и похуй" />
     <MESSAGE value="WELCOME TO THE ♂ DUNGEON MIT ♂ LICENSE CLUB, BUDDY" />
     <MESSAGE value="забыл модельку лейаутов клависина подтереть" />
     <MESSAGE value="побольше сипиков, поменьше хедиков" />
@@ -1731,6 +1705,7 @@
     <MESSAGE value="а каналы ledc все заняты... сука, ну че за хуйня начинается, опять что ли gptimer сосать и софтверно шимить" />
     <MESSAGE value="захуярил визуализацию тренда рысканья" />
     <MESSAGE value="накалякал семплер попизже, а то оно с FIFO сосало слишком редко" />
-    <option name="LAST_COMMIT_MESSAGE" value="накалякал семплер попизже, а то оно с FIFO сосало слишком редко" />
+    <MESSAGE value="ну че, потихоньку продвигаемся к параметрам модуляции - вообще это пиздец опасная тема, надо хорошенько всяких условий понасрать с фоллбеками, а то получить окирпичивание в поле было бы не в кайф" />
+    <option name="LAST_COMMIT_MESSAGE" value="ну че, потихоньку продвигаемся к параметрам модуляции - вообще это пиздец опасная тема, надо хорошенько всяких условий понасрать с фоллбеками, а то получить окирпичивание в поле было бы не в кайф" />
   </component>
 </project>
