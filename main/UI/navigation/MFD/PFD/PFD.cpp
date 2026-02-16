@@ -606,8 +606,8 @@ namespace pizda {
 		);
 
 		// Minimums
-		if (rc.getSettings().controls.minimumAltitudeEnabled) {
-			const int32_t delta = altitude - static_cast<float>(rc.getSettings().controls.minimumAltitudeFt);
+		if (rc.getSettings().ADIRS.minimumAltitudeEnabled) {
+			const int32_t delta = altitude - static_cast<float>(rc.getSettings().ADIRS.minimumAltitudeFt);
 
 			y = centerY + static_cast<int32_t>(delta * static_cast<float>(altitudeStepPixels) / static_cast<float>(altitudeStepUnits));
 
@@ -660,7 +660,7 @@ namespace pizda {
 				centerY
 				- static_cast<int32_t>(
 					(
-						Units::convertDistance(static_cast<float>(rc.getAircraftData().raw.autopilot.targetAltitudeM), DistanceUnit::meter, DistanceUnit::foot)
+						Units::convertDistance(rc.getAircraftData().raw.autopilot.targetAltitudeM, DistanceUnit::meter, DistanceUnit::foot)
 						- altitude
 					)
 					* static_cast<float>(altitudeStepPixels)
@@ -856,7 +856,7 @@ namespace pizda {
 
 		std::wstring text;
 
-		if (rc.getSettings().controls.referencePressureSTD) {
+		if (rc.getSettings().ADIRS.referencePressureSTD) {
 			text = L"STD";
 			bg = &Theme::yellow;
 			fg = &Theme::bg1;
@@ -864,7 +864,7 @@ namespace pizda {
 		else {
 			text = std::to_wstring(static_cast<uint32_t>(
 				Units::convertPressure(
-					rc.getSettings().controls.referencePressurePa,
+					rc.getSettings().ADIRS.referencePressurePa,
 					PressureUnit::pascal,
 					PressureUnit::hectopascal
 				)

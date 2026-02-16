@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="7" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
     <option name="/Default/Environment/UserInterface/HierarchyView/ViewStyle/@EntryValue" value="SuperTypes" type="string" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
@@ -175,20 +175,36 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="захуярил визуализацию тренда рысканья">
+    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="накалякал семплер попизже, а то оно с FIFO сосало слишком редко">
+      <change afterPath="$PROJECT_DIR$/main/UI/navigation/settings/ADIRS/ADIRSSettingsPage.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/UI/navigation/settings/ADIRS/ADIRSSettingsPage.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/settings/ADIRSSettings.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/slider.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/PID/PIDChart.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/PID/PIDReferencer.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/PID/PIDReferencer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axesSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axesSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/theme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/theme.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/minimumsRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/minimumsRotaryControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/routes.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/routes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/calibration/calibrationSettingsPage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/settingsMenuView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconCalibrationImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconADIRSImage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/settings/controlSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/controlSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/settings/motorsSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/motorsSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/settings/settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/settings/transceiverSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/transceiverSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/packet.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/generic.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/generic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconCalibration.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/images/menuIconCalibration.psd" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -258,7 +274,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/components/ESP-IDF-BuzzerAudio/src",
+    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/settings",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -273,11 +289,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\settings" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-BuzzerAudio\src" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-BuzzerAudio" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-SX1262\src" />
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\toolbar\baro" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\elements" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-BuzzerAudio\src" />
@@ -1253,15 +1269,9 @@
       <workItem from="1771027751991" duration="434000" />
       <workItem from="1771028224598" duration="5733000" />
       <workItem from="1771044311079" duration="10130000" />
-      <workItem from="1771132153485" duration="2267000" />
-    </task>
-    <task id="LOCAL-00075" summary="охуеть, написано же, СУКА, В ДОКЕ, ЧТО THREAD SAFE ЭТО ДЕРЬМО))) НУ И ЧЕ, ГДЕ? КАКОЙ TIMEOUT БЛЯДЬ">
-      <option name="closed" value="true" />
-      <created>1768935378398</created>
-      <option name="number" value="00075" />
-      <option name="presentableId" value="LOCAL-00075" />
-      <option name="project" value="LOCAL" />
-      <updated>1768935378398</updated>
+      <workItem from="1771132153485" duration="2455000" />
+      <workItem from="1771213814693" duration="5000" />
+      <workItem from="1771213947001" duration="8169000" />
     </task>
     <task id="LOCAL-00076" summary="ебать че происходит сука при чтении adc с тасок внезапно появились какие-то интерференции, словно оси взаимно друг на друга влияют - ПЕРДЁЖ ЕБАНЫЙ БЛЯДЬЬ">
       <option name="closed" value="true" />
@@ -1647,7 +1657,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771077706004</updated>
     </task>
-    <option name="localTasksCounter" value="124" />
+    <task id="LOCAL-00124" summary="накалякал семплер попизже, а то оно с FIFO сосало слишком редко">
+      <option name="closed" value="true" />
+      <created>1771143131677</created>
+      <option name="number" value="00124" />
+      <option name="presentableId" value="LOCAL-00124" />
+      <option name="project" value="LOCAL" />
+      <updated>1771143131677</updated>
+    </task>
+    <option name="localTasksCounter" value="125" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1688,7 +1706,6 @@
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
       <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
     </ignored-roots>
-    <MESSAGE value="заебунькаль енамчик с ОПЦИЯМИ клавдии федеровны - терь в текстовых полях можно указывать, че ты хочешь, мол, числа, хуисла, со знаком, без плавающей точки и тп" />
     <MESSAGE value="разгондонил клавулетту на кучу файлов и убрал эту залупу с model-based интерфейсом - типа вы там на своих браузерах и мобилках дрочите скок хотите, а мы мужики базированные, сразу во вьюху всё хуярим и похуй" />
     <MESSAGE value="WELCOME TO THE ♂ DUNGEON MIT ♂ LICENSE CLUB, BUDDY" />
     <MESSAGE value="забыл модельку лейаутов клависина подтереть" />
@@ -1713,6 +1730,7 @@
     <MESSAGE value="щас твердо и четко напаяю трансюк на баззер - надо чекнуть, будет ли эта харкота громче пищать от 5в питания" />
     <MESSAGE value="а каналы ledc все заняты... сука, ну че за хуйня начинается, опять что ли gptimer сосать и софтверно шимить" />
     <MESSAGE value="захуярил визуализацию тренда рысканья" />
-    <option name="LAST_COMMIT_MESSAGE" value="захуярил визуализацию тренда рысканья" />
+    <MESSAGE value="накалякал семплер попизже, а то оно с FIFO сосало слишком редко" />
+    <option name="LAST_COMMIT_MESSAGE" value="накалякал семплер попизже, а то оно с FIFO сосало слишком редко" />
   </component>
 </project>

@@ -6,7 +6,7 @@
 #include "UI/theme.h"
 
 namespace pizda {
-	MotorEditor::MotorEditor(const std::wstring_view title, MotorConfiguration* settings) : Titler(title), _settings(settings) {
+	MotorEditor::MotorEditor(const std::wstring_view title, MotorSettings* settings) : Titler(title), _settings(settings) {
 		*this += &_mainLayout;
 		
 		// Reverse
@@ -95,7 +95,7 @@ namespace pizda {
 			motorEditor->toSettings();
 			RC::getInstance().getSettings().motors.scheduleWrite();
 			
-			RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::motorConfiguration);
+			RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::motors);
 		};
 		
 		rows += motorEditor;

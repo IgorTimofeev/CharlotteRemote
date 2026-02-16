@@ -16,14 +16,14 @@ namespace pizda {
 	
 	class MotorEditor : public Titler {
 		public:
-			MotorEditor(std::wstring_view title, MotorConfiguration* settings);
+			MotorEditor(std::wstring_view title, MotorSettings* settings);
 			
 			void toSettings() const;
 			
 			std::function<void()> changed = nullptr;
 			
 		private:
-			MotorConfiguration* _settings;
+			MotorSettings* _settings;
 			
 			Layout _mainLayout {};
 

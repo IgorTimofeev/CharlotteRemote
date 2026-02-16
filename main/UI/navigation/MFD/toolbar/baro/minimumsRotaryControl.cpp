@@ -8,7 +8,7 @@ namespace pizda {
 			&seven
 		});
 		
-		seven.setValue(RC::getInstance().getSettings().controls.minimumAltitudeFt);
+		seven.setValue(RC::getInstance().getSettings().ADIRS.minimumAltitudeFt);
 		updateColor();
 	}
 	
@@ -23,15 +23,15 @@ namespace pizda {
 	void MinimumsRotaryControl::onRotate(const bool clockwise, const bool big) {
 		SevenRotaryControl::onRotate(clockwise, big);
 		
-		RC::getInstance().getSettings().controls.minimumAltitudeFt = static_cast<uint16_t>(seven.getValue());
-		RC::getInstance().getSettings().controls.scheduleWrite();
+		RC::getInstance().getSettings().ADIRS.minimumAltitudeFt = static_cast<uint16_t>(seven.getValue());
+		RC::getInstance().getSettings().ADIRS.scheduleWrite();
 	}
 	
 	void MinimumsRotaryControl::onPress() {
 		RotaryControl::onPress();
 		
-		RC::getInstance().getSettings().controls.minimumAltitudeEnabled = !RC::getInstance().getSettings().controls.minimumAltitudeEnabled;
-		RC::getInstance().getSettings().controls.scheduleWrite();
+		RC::getInstance().getSettings().ADIRS.minimumAltitudeEnabled = !RC::getInstance().getSettings().ADIRS.minimumAltitudeEnabled;
+		RC::getInstance().getSettings().ADIRS.scheduleWrite();
 		
 		updateColor();
 	}
@@ -44,7 +44,7 @@ namespace pizda {
 	
 	void MinimumsRotaryControl::updateColor() {
 		setBorderColor(
-			RC::getInstance().getSettings().controls.minimumAltitudeEnabled
+			RC::getInstance().getSettings().ADIRS.minimumAltitudeEnabled
 			? &Theme::fg1
 			: nullptr
 		);

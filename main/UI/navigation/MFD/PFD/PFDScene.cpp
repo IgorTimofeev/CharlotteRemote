@@ -638,10 +638,14 @@ namespace pizda {
 		// Autopilot value
 		{
 			auto deltaDeg = static_cast<float>(rc.getSettings().autopilot.headingDeg) - rc.getAircraftData().computed.headingDeg;
-			
-			if (deltaDeg >= 180)
+
+			if (deltaDeg > 180) {
 				deltaDeg -= 360;
-			
+			}
+			else if (deltaDeg < -180) {
+				deltaDeg += 360;
+			}
+
 			const auto deltaPixels = deltaDeg / static_cast<float>(PFD::yawOverlayAngleStepUnits) * PFD::yawOverlayAngleStepPixels;
 
 			const auto indicatorXCenter = std::clamp<int32_t>(

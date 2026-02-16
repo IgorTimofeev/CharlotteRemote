@@ -55,8 +55,10 @@ namespace pizda {
 			void transmitRemoteAuxiliaryLightsPacket(BitStream& stream);
 			void transmitRemoteAuxiliaryBaroPacket(BitStream& stream);
 			void transmitRemoteAuxiliaryAutopilotPacket(BitStream& stream);
-			void transmitRemoteAuxiliaryMotorConfigurationPacket(BitStream& stream);
+			void transmitRemoteAuxiliaryMotorsPacket(BitStream& stream);
 			void transmitRemoteAuxiliaryCalibratePacket(BitStream& stream);
+			void transmitRemoteAuxiliaryADIRSPacket(BitStream& stream);
+			void transmitRemoteAuxiliaryXCVRPacket(BitStream& stream);
 
 			uint16_t _spectrumScanningHistoryIndex = 0;
 			int64_t _spectrumScanningSampleRSSISum = 0;

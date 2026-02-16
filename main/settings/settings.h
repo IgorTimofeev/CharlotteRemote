@@ -7,10 +7,12 @@
 #include "settings/navigationSettings.h"
 #include "settings/motorsSettings.h"
 #include "settings/transceiverSettings.h"
+#include "settings/ADIRSSettings.h"
 
 namespace pizda {
 	class Settings {
 		public:
+			ADIRSSettings ADIRS {};
 			ControlSettings controls {};
 			AxesSettings axes {};
 			AutopilotSettings autopilot {};
@@ -20,6 +22,7 @@ namespace pizda {
 			TransceiverSettings transceiver {};
 
 			void readAll() {
+				ADIRS.read();
 				controls.read();
 				axes.read();
 				autopilot.read();

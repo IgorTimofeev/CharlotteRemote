@@ -8,7 +8,7 @@
 #include "UI/navigation/NAV/database/databasePage.h"
 
 #include "UI/navigation/settings/personalization/personalizationSettingsPage.h"
-#include "UI/navigation/settings/calibration/calibrationSettingsPage.h"
+#include "UI/navigation/settings/ADIRS/ADIRSSettingsPage.h"
 #include "UI/navigation/settings/spectrumScan/spectrumScanPage.h"
 #include "UI/navigation/settings/autopilot/autopilotSettingsPage.h"
 #include "UI/navigation/settings/motors/motorsSettingsPage.h"
@@ -24,7 +24,7 @@ namespace pizda {
 			constexpr static ElementRoute<DatabasePage> navWaypoints {};
 
 			constexpr static ElementRoute<PersonalizationSettingsPage> settingsPersonalization {};
-			constexpr static ElementRoute<CalibrationSettingsPage> settingsCalibration {};
+			constexpr static ElementRoute<ADIRSSettingsPage> settingsADIRS {};
 			constexpr static ElementRoute<SpectrumScanPage> settingsSpectrumScan {};
 			constexpr static ElementRoute<AutopilotSettingsPage> settingsAutopilot {};
 			constexpr static ElementRoute<MotorsSettingsPage> settingsMotors {};

@@ -5,6 +5,7 @@
 #include <limits>
 
 #include <esp_timer.h>
+#include <esp_log.h>
 
 #include "rc.h"
 #include "resources/sounds.h"
@@ -504,12 +505,20 @@ namespace pizda {
 				transmitRemoteAuxiliaryAutopilotPacket(stream);
 				break;
 
-			case RemoteAuxiliaryPacketType::motorConfiguration:
-				transmitRemoteAuxiliaryMotorConfigurationPacket(stream);
+			case RemoteAuxiliaryPacketType::motors:
+				transmitRemoteAuxiliaryMotorsPacket(stream);
 				break;
 
 			case RemoteAuxiliaryPacketType::calibrate:
 				transmitRemoteAuxiliaryCalibratePacket(stream);
+				break;
+
+			case RemoteAuxiliaryPacketType::ADIRS:
+				transmitRemoteAuxiliaryADIRSPacket(stream);
+				break;
+
+			case RemoteAuxiliaryPacketType::XCVR:
+				transmitRemoteAuxiliaryXCVRPacket(stream);
 				break;
 
 			default:
@@ -552,7 +561,7 @@ namespace pizda {
 
 		// Reference pressure
 		stream.writeUint16(
-			rc.getSettings().controls.referencePressureSTD ? 10132 : rc.getSettings().controls.referencePressurePa / 10,
+			rc.getSettings().ADIRS.referencePressureSTD ? 10132 : rc.getSettings().ADIRS.referencePressurePa / 10,
 			RemoteAuxiliaryBaroPacket::referencePressureLengthBits
 		);
 	}
@@ -600,10 +609,10 @@ namespace pizda {
 		stream.writeBool(rc.getRemoteData().autopilot.autopilot);
 	}
 	
-	void RemoteTransceiver::transmitRemoteAuxiliaryMotorConfigurationPacket(BitStream& stream) {
+	void RemoteTransceiver::transmitRemoteAuxiliaryMotorsPacket(BitStream& stream) {
 		const auto& motors = RC::getInstance().getSettings().motors;
 	
-		const auto write = [&stream](const MotorConfiguration& motor) {
+		const auto write = [&stream](const MotorSettings& motor) {
 			stream.writeUint16(motor.min, RemoteAuxiliaryMotorConfigurationPacket::minLengthBits);
 			stream.writeUint16(motor.max, RemoteAuxiliaryMotorConfigurationPacket::maxLengthBits);
 			stream.writeBool(motor.reverse);
@@ -626,7 +635,25 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		
 		stream.writeUint8(std::to_underlying(rc.getRemoteData().calibrationSystem), RemoteAuxiliaryCalibratePacket::systemLengthBits);
-		
+
 //		ESP_LOGI(_logTag, "Sending calibrate packet");
+	}
+
+	void RemoteTransceiver::transmitRemoteAuxiliaryADIRSPacket(BitStream& stream) {
+		auto& rc = RC::getInstance();
+
+		stream.writeInt16(rc.getSettings().ADIRS.magneticDeclinationDeg, RemoteAuxiliaryADIRSPacket::magneticDeclinationLengthBits);
+	}
+
+	void RemoteTransceiver::transmitRemoteAuxiliaryXCVRPacket(BitStream& stream) {
+		const auto& settings = RC::getInstance().getSettings().transceiver.communication;
+
+		stream.writeUint16(settings.RFFrequencyHz / 1'000'000, RemoteAuxiliaryXCVRPacket::RFFrequencyLengthBits);
+		stream.writeUint8(std::to_underlying(settings.bandwidth), RemoteAuxiliaryXCVRPacket::bandwidthLengthBits);
+		stream.writeUint8(settings.spreadingFactor, RemoteAuxiliaryXCVRPacket::spreadingFactorLengthBits);
+		stream.writeUint8(std::to_underlying(settings.codingRate), RemoteAuxiliaryXCVRPacket::codingRateLengthBits);
+		stream.writeUint8(settings.syncWord, RemoteAuxiliaryXCVRPacket::syncWordLengthBits);
+		stream.writeInt8(settings.powerDBm, RemoteAuxiliaryXCVRPacket::powerDBmLengthBits);
+		stream.writeUint16(settings.preambleLength, RemoteAuxiliaryXCVRPacket::preambleLengthLengthBits);
 	}
 }

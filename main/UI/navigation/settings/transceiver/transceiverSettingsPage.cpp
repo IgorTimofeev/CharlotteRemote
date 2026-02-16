@@ -71,8 +71,8 @@ namespace pizda {
 		Theme::applyPrimary(&_confirmButton);
 		_confirmButton.setText(L"Confirm");
 
-		_confirmButton.setOnClick([this] {
-			auto& settings = RC::getInstance().getSettings().transceiver;
+		_confirmButton.setOnClick([this, &rc] {
+			auto& settings = rc.getSettings().transceiver;
 
 			settings.communication.RFFrequencyHz = StringUtils::tryParseInt32Or(_RFFrequency.getText(), 0) * 1'000'000;
 			settings.communication.bandwidth = static_cast<SX1262::LoRaBandwidth>(_bandwidth.getSelectedIndex());
@@ -83,6 +83,8 @@ namespace pizda {
 			settings.communication.preambleLength = StringUtils::tryParseInt32Or(_preambleLength.getText(), 0);
 			settings.communication.sanitize();
 			settings.scheduleWrite();
+
+			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::XCVR);
 		});
 
 		rows += &_confirmButton;

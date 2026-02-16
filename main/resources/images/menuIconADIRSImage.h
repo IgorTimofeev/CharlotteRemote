@@ -5,9 +5,9 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class MenuIconCalibrationImage : public Image {
+	class MenuIconADIRSImage : public Image {
 		public:
-			constexpr MenuIconCalibrationImage() : Image(
+			constexpr MenuIconADIRSImage() : Image(
 				ImageFlags::palette8Bit | ImageFlags::alpha1Bit,
 				Size(45, 33),
 				_bitmap
