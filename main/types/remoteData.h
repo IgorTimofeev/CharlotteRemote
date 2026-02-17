@@ -50,6 +50,7 @@ namespace pizda {
 
 	class RemoteDataRadio {
 		public:
+			TransceiverCommunicationSettings sentCommunicationSettings {};
 			RemoteDataRadioSpectrumScanning spectrumScanning {};
 	};
 	

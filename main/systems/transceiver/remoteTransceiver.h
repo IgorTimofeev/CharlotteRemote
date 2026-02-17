@@ -23,7 +23,6 @@ namespace pizda {
 			RemoteTransceiver();
 
 			bool setup() override;
-
 			void getPPS(uint16_t& RXPPS, uint16_t& TXPPS) const;
 
 		protected:
@@ -43,11 +42,13 @@ namespace pizda {
 			uint16_t _TXPPSTemp = 0;
 			uint16_t _RXPPS = 0;
 			uint16_t _TXPPS = 0;
+			int64_t _communicationSettingsACKTime = 0;
 
 			bool receiveAircraftTelemetryPrimaryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftTelemetrySecondaryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftAuxiliaryCalibrationPacket(BitStream& stream, uint8_t payloadLength);
+			bool receiveAircraftAuxiliaryXCVRACKPacket(BitStream& stream, uint8_t payloadLength);
 
 			void transmitRemoteControlsPacket(BitStream& stream);
 			void transmitRemoteAuxiliaryPacket(BitStream& stream);
@@ -65,7 +66,6 @@ namespace pizda {
 			uint32_t _spectrumScanningSampleCount = 0;
 
 			bool stopSpectrumScanning();
-
 			void onSpectrumScanning();
 	};
 }

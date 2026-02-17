@@ -36,6 +36,79 @@ namespace pizda {
 		TXPPS = _TXPPS;
 	}
 
+	void RemoteTransceiver::onStart() {
+		auto& rc = RC::getInstance();
+
+		while (true) {
+			if (rc.getRemoteData().transceiver.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::stopped) {
+				if (_communicationSettingsACKTime < 0) {
+					setCommunicationSettings(rc.getRemoteData().transceiver.sentCommunicationSettings);
+
+					_communicationSettingsACKTime = esp_timer_get_time() + 5'000'000;
+				}
+
+				// Transmitting
+				if (transmit(100'000)) {
+					_TXPPSTemp++;
+				}
+
+				// Receiving
+				if (receive(100'000)) {
+					_RXPPSTemp++;
+
+					if (_communicationSettingsACKTime > 0) {
+						ESP_LOGI(_logTag, "communication settings synchronized");
+
+						rc.getSettings().transceiver.communication = rc.getRemoteData().transceiver.sentCommunicationSettings;
+						rc.getSettings().transceiver.scheduleWrite();
+
+						_communicationSettingsACKTime = 0;
+					}
+				}
+				else {
+					if (
+						_communicationSettingsACKTime > 0
+						&& esp_timer_get_time() >= _communicationSettingsACKTime
+					) {
+						ESP_LOGI(_logTag, "communication settings change timed out, falling back to previous");
+
+						// Falling back to previous communication settings
+						setCommunicationSettings(rc.getSettings().transceiver.communication);
+
+						_communicationSettingsACKTime = 0;
+					}
+				}
+			}
+			else {
+				onSpectrumScanning();
+			}
+
+			if (esp_timer_get_time() >= _PPSTime) {
+				_RXPPS = _RXPPSTemp;
+				_TXPPS = _TXPPSTemp;
+
+				_RXPPSTemp = 0;
+				_TXPPSTemp = 0;
+
+				_PPSTime = esp_timer_get_time() + 1'000'000;
+			}
+		}
+	}
+	
+	void RemoteTransceiver::onConnectionStateChanged() {
+		auto& rc = RC::getInstance();
+
+		if (isConnected()) {
+			rc.getAudioPlayer().play(&resources::sounds::transceiverConnect);
+		}
+		else {
+			RC::getInstance().getAircraftData().raw.calibration.checkValidTime();
+			
+			rc.getAudioPlayer().play(&resources::sounds::transceiverDisconnect);
+		}
+	}
+
+
 	bool RemoteTransceiver::stopSpectrumScanning() {
 		RC::getInstance().getRemoteData().transceiver.spectrumScanning.state = RemoteDataRadioSpectrumScanningState::stopped;
 
@@ -176,47 +249,6 @@ namespace pizda {
 			stopSpectrumScanning();
 	}
 
-	void RemoteTransceiver::onStart() {
-		auto& rc = RC::getInstance();
-
-		while (true) {
-			if (rc.getRemoteData().transceiver.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::stopped) {
-				if (transmit(100'000)) {
-					_TXPPSTemp++;
-				}
-
-				if (receive(100'000)) {
-					_RXPPSTemp++;
-				}
-			}
-			else {
-				onSpectrumScanning();
-			}
-
-			if (esp_timer_get_time() >= _PPSTime) {
-				_RXPPS = _RXPPSTemp;
-				_TXPPS = _TXPPSTemp;
-
-				_RXPPSTemp = 0;
-				_TXPPSTemp = 0;
-
-				_PPSTime = esp_timer_get_time() + 1'000'000;
-			}
-		}
-	}
-	
-	void RemoteTransceiver::onConnectionStateChanged() {
-		auto& rc = RC::getInstance();
-
-		if (isConnected()) {
-			rc.getAudioPlayer().play(&resources::sounds::transceiverConnect);
-		}
-		else {
-			RC::getInstance().getAircraftData().raw.calibration.checkValidTime();
-			
-			rc.getAudioPlayer().play(&resources::sounds::transceiverDisconnect);
-		}
-	}
 
 	// -------------------------------- Receiving --------------------------------
 	
@@ -424,6 +456,11 @@ namespace pizda {
 			case AircraftAuxiliaryPacketType::calibration:
 				receiveAircraftAuxiliaryCalibrationPacket(stream, payloadLength);
 				break;
+			case AircraftAuxiliaryPacketType::XCVRACK:
+				receiveAircraftAuxiliaryXCVRACKPacket(stream, payloadLength);
+				break;
+			default:
+				break;
 		}
 
 		return true;
@@ -447,6 +484,21 @@ namespace pizda {
 		
 //		ESP_LOGI(_logTag, "calibration progress: %d", rc.getAircraftData().raw.calibration.progress * 100 / 0xFF);
 		
+		return true;
+	}
+
+	bool RemoteTransceiver::receiveAircraftAuxiliaryXCVRACKPacket(BitStream& stream, const uint8_t payloadLength) {
+		if (!validatePayloadChecksumAndLength(
+			stream,
+			AircraftAuxiliaryPacket::typeLengthBits,
+			payloadLength
+		))
+			return false;
+
+		ESP_LOGI(_logTag, "received communication settings ACK");
+
+		_communicationSettingsACKTime = -1;
+
 		return true;
 	}
 	
@@ -646,7 +698,9 @@ namespace pizda {
 	}
 
 	void RemoteTransceiver::transmitRemoteAuxiliaryXCVRPacket(BitStream& stream) {
-		const auto& settings = RC::getInstance().getSettings().transceiver.communication;
+		const auto& settings = RC::getInstance().getRemoteData().transceiver.sentCommunicationSettings;
+
+		ESP_LOGI(_logTag, "transmitting communication settings");
 
 		stream.writeUint16(settings.RFFrequencyHz / 1'000'000, RemoteAuxiliaryXCVRPacket::RFFrequencyLengthBits);
 		stream.writeUint8(std::to_underlying(settings.bandwidth), RemoteAuxiliaryXCVRPacket::bandwidthLengthBits);

@@ -23,16 +23,18 @@ namespace pizda {
 
 			ComboBox _bandwidth {};
 
-			constexpr static uint8_t _bandwidthItemsLength = 8;
+			constexpr static uint8_t _bandwidthItemsLength = 10;
 			std::wstring_view _bandwidthItems[_bandwidthItemsLength] {
-				L"7.8",
-				L"10.4",
-				L"15.6",
-				L"20.8",
+				L"7.81",
+				L"10.42",
+				L"15.63",
+				L"20.83",
 				L"31.25",
-				L"41.7",
+				L"41.67",
 				L"62.5",
-				L"125.0"
+				L"125.0",
+				L"250.0",
+				L"500.0"
 			};
 
 			Titler _bandwidthTitle { L"BW (kHz)", &_bandwidth };

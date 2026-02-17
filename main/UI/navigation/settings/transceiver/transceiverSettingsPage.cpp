@@ -72,17 +72,15 @@ namespace pizda {
 		_confirmButton.setText(L"Confirm");
 
 		_confirmButton.setOnClick([this, &rc] {
-			auto& settings = rc.getSettings().transceiver;
-
-			settings.communication.RFFrequencyHz = StringUtils::tryParseInt32Or(_RFFrequency.getText(), 0) * 1'000'000;
-			settings.communication.bandwidth = static_cast<SX1262::LoRaBandwidth>(_bandwidth.getSelectedIndex());
-			settings.communication.codingRate = static_cast<SX1262::LoRaCodingRate>(_codingRate.getSelectedIndex());
-			settings.communication.spreadingFactor = StringUtils::tryParseInt32Or(_spreadingFactor.getText(), 0);
-			settings.communication.syncWord = StringUtils::tryParseInt32Or(_syncWord.getText(), 0);
-			settings.communication.powerDBm = StringUtils::tryParseInt32Or(_power.getText(), 0);
-			settings.communication.preambleLength = StringUtils::tryParseInt32Or(_preambleLength.getText(), 0);
-			settings.communication.sanitize();
-			settings.scheduleWrite();
+			auto& settings = rc.getRemoteData().transceiver.sentCommunicationSettings;
+			settings.RFFrequencyHz = StringUtils::tryParseInt32Or(_RFFrequency.getText(), 0) * 1'000'000;
+			settings.bandwidth = static_cast<SX1262::LoRaBandwidth>(_bandwidth.getSelectedIndex());
+			settings.codingRate = static_cast<SX1262::LoRaCodingRate>(_codingRate.getSelectedIndex());
+			settings.spreadingFactor = StringUtils::tryParseInt32Or(_spreadingFactor.getText(), 0);
+			settings.syncWord = StringUtils::tryParseInt32Or(_syncWord.getText(), 0);
+			settings.powerDBm = StringUtils::tryParseInt32Or(_power.getText(), 0);
+			settings.preambleLength = StringUtils::tryParseInt32Or(_preambleLength.getText(), 0);
+			settings.sanitize();
 
 			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::XCVR);
 		});
