@@ -23,7 +23,9 @@ namespace pizda {
 			RemoteTransceiver();
 
 			bool setup() override;
-			void getPPS(uint16_t& RXPPS, uint16_t& TXPPS) const;
+
+			int8_t getRSSI() const;
+			int8_t getSNR() const;
 
 		protected:
 			[[noreturn]] void onStart() override;
@@ -37,11 +39,13 @@ namespace pizda {
 			float _trendsYawPrevRad = 0;
 			float _trendsAirspeedPrevMPS = 0;
 			float _trendsAltitudePrevM = 0;
-			int64_t _PPSTime = 0;
-			uint16_t _RXPPSTemp = 0;
-			uint16_t _TXPPSTemp = 0;
-			uint16_t _RXPPS = 0;
-			uint16_t _TXPPS = 0;
+
+			constexpr static uint8_t _RSSIFrequencyHz = 1;
+			constexpr static uint32_t _RSSIAndSNRUpdateIntervalUs = 1'000'000 / _RSSIFrequencyHz;
+			int64_t _RSSIAndSNRUpdateTimeUs = 0;
+			int8_t _RSSI = 0;
+			int8_t _SNR = 0;
+
 			int64_t _communicationSettingsACKTime = 0;
 
 			bool receiveAircraftTelemetryPrimaryPacket(BitStream& stream, uint8_t payloadLength);

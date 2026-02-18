@@ -637,7 +637,9 @@ namespace pizda {
 		
 		// Autopilot value
 		{
-			auto deltaDeg = static_cast<float>(rc.getSettings().autopilot.headingDeg) - rc.getAircraftData().computed.headingDeg;
+			auto deltaDeg =
+				static_cast<int32_t>(rc.getSettings().autopilot.headingDeg)
+				- static_cast<int32_t>(rc.getAircraftData().computed.headingDeg);
 
 			if (deltaDeg > 180) {
 				deltaDeg -= 360;
@@ -646,10 +648,10 @@ namespace pizda {
 				deltaDeg += 360;
 			}
 
-			const auto deltaPixels = deltaDeg / static_cast<float>(PFD::yawOverlayAngleStepUnits) * PFD::yawOverlayAngleStepPixels;
+			const auto deltaPixels = deltaDeg * PFD::yawOverlayAngleStepPixels / PFD::yawOverlayAngleStepUnits;
 
 			const auto indicatorXCenter = std::clamp<int32_t>(
-				static_cast<int32_t>(centerX + deltaPixels),
+				centerX + deltaPixels,
 				bounds.getX(),
 				bounds.getX2()
 			);
@@ -728,7 +730,10 @@ namespace pizda {
 
 		// Trend
 		{
-			auto deltaPixels = static_cast<int32_t>(rc.getAircraftData().computed.yawTrendDeg / static_cast<float>(PFD::yawOverlayAngleStepUnits) * PFD::yawOverlayAngleStepPixels);
+			auto deltaPixels =
+				static_cast<int32_t>(rc.getAircraftData().computed.yawTrendDeg)
+				* PFD::yawOverlayAngleStepPixels
+				/ static_cast<float>(PFD::yawOverlayAngleStepUnits);
 
 			x = centerX;
 

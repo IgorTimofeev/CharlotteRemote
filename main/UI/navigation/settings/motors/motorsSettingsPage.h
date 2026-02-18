@@ -27,8 +27,6 @@ namespace pizda {
 			
 			Layout _mainLayout {};
 
-			Rectangle _backgroundRect {};
-			
 			RelativeStackLayout _minMaxRow {};
 			TextField _min {};
 			TextField _max {};

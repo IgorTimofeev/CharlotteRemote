@@ -21,8 +21,6 @@ namespace pizda {
 
 			RelativeStackLayout horizontalRows[3] {};
 
-			ComboBox _bandwidth {};
-
 			constexpr static uint8_t _bandwidthItemsLength = 10;
 			std::wstring_view _bandwidthItems[_bandwidthItemsLength] {
 				L"7.81",
@@ -37,9 +35,8 @@ namespace pizda {
 				L"500.0"
 			};
 
+			ComboBox _bandwidth {};
 			Titler _bandwidthTitle { L"BW (kHz)", &_bandwidth };
-
-			ComboBox _codingRate {};
 
 			constexpr static uint8_t _codingRateItemsLength = 4;
 			std::wstring_view _codingRateItems[_codingRateItemsLength] {
@@ -49,6 +46,7 @@ namespace pizda {
 				L"4/8"
 			};
 
+			ComboBox _codingRate {};
 			Titler _codingRateTitle { L"CR", &_codingRate };
 
 			TextField _spreadingFactor {};

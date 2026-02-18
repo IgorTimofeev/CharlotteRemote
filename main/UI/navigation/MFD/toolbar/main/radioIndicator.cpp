@@ -15,31 +15,29 @@ namespace pizda {
 
 	void RadioIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
-		auto& transceiver = rc.getTransceiver();
-		auto& Transceiver = rc.getTransceiver();
-		const auto isConnected = Transceiver.isConnected();
-		
-		const auto rssi = static_cast<int32_t>(transceiver.getRSSI());
-		const auto snr = static_cast<int32_t>(transceiver.getSNR());
+		const auto isConnected = rc.getTransceiver().isConnected();
+
+		const auto RSSI = rc.getTransceiver().getRSSI();
+		const auto SNR = rc.getTransceiver().getSNR();
 
 		uint8_t sexuality;
 		const Color* color;
 		
 		// From worst to best
 		if (isConnected) {
-			if (rssi < -80) {
+			if (RSSI < -80) {
 				sexuality = 0;
 				color = &Theme::bad1;
 			}
-			else if (rssi < -70) {
+			else if (RSSI < -70) {
 				sexuality = 1;
 				color = &Theme::bad1;
 			}
-			else if (rssi < -60) {
+			else if (RSSI < -60) {
 				sexuality = 2;
 				color = &Theme::fg1;
 			}
-			else if (rssi < -50) {
+			else if (RSSI < -50) {
 				sexuality = 3;
 				color = &Theme::fg1;
 			}
@@ -81,7 +79,7 @@ namespace pizda {
 			position,
 			&Theme::fontSmall,
 			isConnected ? &Theme::fg4 : &Theme::bad1,
-			isConnected ? std::format(L"R {}", rssi) : L"----"
+			isConnected ? std::format(L"R {}", RSSI) : L"----"
 		);
 		
 		position.setY(position.getY() + Theme::fontSmall.getHeight());
@@ -91,7 +89,7 @@ namespace pizda {
 			position,
 			&Theme::fontSmall,
 			isConnected ? &Theme::fg4 : &Theme::bad1,
-			isConnected ? std::format(L"S {}", snr) : L"----"
+			isConnected ? std::format(L"S {}", SNR) : L"----"
 		);
 	}
 }

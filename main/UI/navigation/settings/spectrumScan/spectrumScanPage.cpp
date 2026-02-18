@@ -5,35 +5,10 @@
 
 #include "rc.h"
 #include "UI/theme.h"
+#include "UI/elements/dialogs/selectorDialog.h"
 #include "utilities/string.h"
 
 namespace pizda {
-	SpectrumScanningFrequencyPresetsDialog::SpectrumScanningFrequencyPresetsDialog(const std::function<void(const std::wstring_view from, const std::wstring_view to)>& onConfirm): onConfirm(onConfirm) {
-		title.setText(L"Presets");
-
-		growPodzalupnik(button430_440, L"430 - 440 MHz", L"430", L"440");
-		growPodzalupnik(button470_510, L"470 - 510 MHz", L"470", L"510");
-		growPodzalupnik(button779_787, L"779 - 787 MHz", L"779", L"787");
-		growPodzalupnik(button863_870, L"863 - 870 MHz", L"863", L"870");
-		growPodzalupnik(button902_928, L"902 - 928 MHz", L"902", L"928");
-	}
-
-	void SpectrumScanningFrequencyPresetsDialog::growPodzalupnik(Button& button, const std::wstring_view buttonText, const std::wstring_view from, const std::wstring_view to) {
-		Theme::applySecondary(&button);
-		button.setText(buttonText);
-
-		button.setOnClick([this, to, from] {
-			RC::getInstance().getApplication().invokeOnNextTick([this, to, from] {
-				onConfirm(from, to);
-
-				hide();
-				delete this;
-			});
-		});
-
-		rows += &button;
-	}
-
 	void SpectrumScanningChart::onTick() {
 		Control::onTick();
 
@@ -328,11 +303,46 @@ namespace pizda {
 		frequencyPresetsButton.setText(L"...");
 
 		frequencyPresetsButton.setOnClick([this] {
+			constexpr static std::array<std::wstring_view, 5> itemsNames {
+				L"430 - 440 MHz",
+				L"470 - 510 MHz",
+				L"779 - 787 MHz",
+				L"863 - 870 MHz",
+				L"902 - 928 MHz"
+			};
+
+			constexpr static std::array<std::tuple<uint16_t, uint16_t>, itemsNames.size()> itemsFromTo {
+				std::tuple(430, 440),
+				std::tuple(470, 510),
+				std::tuple(779, 787),
+				std::tuple(863, 870),
+				std::tuple(902, 928)
+			};
+
+			const uint16_t typedFrom = StringUtils::tryParseFloatOr(frequencyFromTextField.getText(), std::get<0>(itemsFromTo[0]));
+			uint8_t presetIndex = 0;
+
+			for (int i = 0; i < itemsFromTo.size(); ++i) {
+				const auto presetFrom = std::get<0>(itemsFromTo[i]);
+				const auto presetTo = std::get<1>(itemsFromTo[i]);
+
+				if (typedFrom < presetFrom || !presetTo)
+					continue;
+
+				presetIndex = i;
+			}
+
 			(
-				new SpectrumScanningFrequencyPresetsDialog([this](const std::wstring_view from, const std::wstring_view to) {
-					frequencyFromTextField.setText(from);
-					frequencyToTextField.setText(to);
-				})
+				new SelectorDialog(
+					L"Presets",
+					itemsNames.data(),
+					itemsNames.size(),
+					presetIndex,
+					[this](const uint8_t index) {
+						frequencyFromTextField.setText(std::to_wstring(std::get<0>(itemsFromTo[index])));
+						frequencyToTextField.setText(std::to_wstring(std::get<1>(itemsFromTo[index])));
+					}
+				)
 			)->show();
 		});
 

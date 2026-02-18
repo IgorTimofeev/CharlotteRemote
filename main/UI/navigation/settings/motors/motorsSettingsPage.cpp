@@ -33,17 +33,10 @@ namespace pizda {
 		
 		_mainLayout += &_reverse;
 		
-		// Background rect
-		_backgroundRect.setMargin(Margin(0, 0, _reverse.getSize().getWidth() - Theme::cornerRadius - 1, 0));
-		_backgroundRect.setCornerRadius(Theme::cornerRadius);
-		_backgroundRect.setFillColor(&Theme::bg2);
-		_backgroundRect.setBorderColor(&Theme::bg3);
-		_mainLayout += &_backgroundRect;
-		
 		// Row
 		_minMaxRow.setOrientation(Orientation::horizontal);
 		_minMaxRow.setGap(8);
-		_minMaxRow.setMargin(Margin(0, 0, _backgroundRect.getMargin().getRight(), 0));
+		_minMaxRow.setMargin(Margin(0, 0, _reverse.getSize().getWidth() - Theme::cornerRadius - 1, 0));
 		_mainLayout += &_minMaxRow;
 		
 		// Min

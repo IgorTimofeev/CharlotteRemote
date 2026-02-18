@@ -12,24 +12,6 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class SpectrumScanningFrequencyPresetsDialog : public ScrollViewDialog {
-		public:
-			SpectrumScanningFrequencyPresetsDialog(const std::function<void(const std::wstring_view from, const std::wstring_view to)>& onConfirm);
-
-		private:
-			Button button430_440 {};
-			Button button470_510 {};
-			Button button779_787 {};
-			Button button863_870 {};
-			Button button902_928 {};
-
-			Button confirmButton {};
-
-			std::function<void(const std::wstring_view from, const std::wstring_view to)> onConfirm;
-
-			void growPodzalupnik(Button& button, const std::wstring_view buttonText, const std::wstring_view from, const std::wstring_view to);
-	};
-
 	class SpectrumScanningChart : public Control {
 		protected:
 			void onTick() override;

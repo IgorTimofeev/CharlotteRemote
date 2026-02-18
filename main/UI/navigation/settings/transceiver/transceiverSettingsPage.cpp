@@ -14,7 +14,7 @@ namespace pizda {
 		// RF frequency
 		Theme::apply(&_RFFrequency);
 		_RFFrequency.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
-		_RFFrequency.setText(std::to_wstring(rc.getSettings().transceiver.communication.RFFrequencyHz / 1'000'000));
+		_RFFrequency.setText(std::to_wstring(rc.getSettings().transceiver.communication.frequencyHz / 1'000'000));
 		rows += &_RFFrequencyTitle;
 
 		horizontalRows[0].setOrientation(Orientation::horizontal);
@@ -72,8 +72,8 @@ namespace pizda {
 		_confirmButton.setText(L"Confirm");
 
 		_confirmButton.setOnClick([this, &rc] {
-			auto& settings = rc.getRemoteData().transceiver.sentCommunicationSettings;
-			settings.RFFrequencyHz = StringUtils::tryParseInt32Or(_RFFrequency.getText(), 0) * 1'000'000;
+			auto& settings = rc.getRemoteData().transceiver.communicationSettings;
+			settings.frequencyHz = StringUtils::tryParseInt32Or(_RFFrequency.getText(), 0) * 1'000'000;
 			settings.bandwidth = static_cast<SX1262::LoRaBandwidth>(_bandwidth.getSelectedIndex());
 			settings.codingRate = static_cast<SX1262::LoRaCodingRate>(_codingRate.getSelectedIndex());
 			settings.spreadingFactor = StringUtils::tryParseInt32Or(_spreadingFactor.getText(), 0);

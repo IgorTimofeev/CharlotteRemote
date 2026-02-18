@@ -36,13 +36,13 @@ namespace pizda {
 				spectrumScanning.frequency.to = stream.readUint32(_spectrumScanningFrequencyTo, 440'000'000);
 				spectrumScanning.frequency.step = stream.readUint32(_spectrumScanningFrequencyStep, 10'000);
 
-				communication.RFFrequencyHz = stream.readUint32(_communicationRFFrequencyHz, config::transceiver::RFFrequencyHz);
-				communication.bandwidth = static_cast<SX1262::LoRaBandwidth>(stream.readUint8(_communicationBandwidth, static_cast<uint8_t>(config::transceiver::bandwidth)));
-				communication.spreadingFactor = stream.readUint8(_communicationSpreadingFactor, config::transceiver::spreadingFactor);
-				communication.codingRate = static_cast<SX1262::LoRaCodingRate>(stream.readUint8(_communicationCodingRate,  static_cast<uint8_t>(config::transceiver::codingRate)));
-				communication.syncWord = stream.readUint8(_communicationSyncWord, config::transceiver::syncWord);
-				communication.powerDBm = stream.readInt8(_communicationPowerDBm, config::transceiver::powerDBm);
-				communication.preambleLength = stream.readUint16(_communicationPreambleLength, config::transceiver::preambleLength);
+				communication.frequencyHz = stream.readUint32(_communicationRFFrequencyHz, config::transceiver::communicationSettings.frequencyHz);
+				communication.bandwidth = static_cast<SX1262::LoRaBandwidth>(stream.readUint8(_communicationBandwidth, static_cast<uint8_t>(config::transceiver::communicationSettings.bandwidth)));
+				communication.spreadingFactor = stream.readUint8(_communicationSpreadingFactor, config::transceiver::communicationSettings.spreadingFactor);
+				communication.codingRate = static_cast<SX1262::LoRaCodingRate>(stream.readUint8(_communicationCodingRate, static_cast<uint8_t>(config::transceiver::communicationSettings.codingRate)));
+				communication.syncWord = stream.readUint8(_communicationSyncWord, config::transceiver::communicationSettings.syncWord);
+				communication.powerDBm = stream.readInt8(_communicationPowerDBm, config::transceiver::communicationSettings.powerDBm);
+				communication.preambleLength = stream.readUint16(_communicationPreambleLength, config::transceiver::communicationSettings.preambleLength);
 			}
 
 			void onWrite(const NVSStream& stream) override {
@@ -50,7 +50,7 @@ namespace pizda {
 				stream.writeUint32(_spectrumScanningFrequencyTo, spectrumScanning.frequency.to);
 				stream.writeUint32(_spectrumScanningFrequencyStep, spectrumScanning.frequency.step);
 
-				stream.writeUint32(_communicationRFFrequencyHz, communication.RFFrequencyHz);
+				stream.writeUint32(_communicationRFFrequencyHz, communication.frequencyHz);
 				stream.writeUint8(_communicationBandwidth, static_cast<uint8_t>(communication.bandwidth));
 				stream.writeUint8(_communicationSpreadingFactor, communication.spreadingFactor);
 				stream.writeUint8(_communicationCodingRate, static_cast<uint8_t>(communication.codingRate));

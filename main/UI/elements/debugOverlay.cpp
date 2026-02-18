@@ -53,9 +53,6 @@ namespace pizda {
 		renderTimeLine(L"Flush", rc.getApplication().getFlushDeltaTime());
 		renderLine(std::format(L"Total: {} ms", totalDeltaTime / 1000));
 
-		uint16_t XCVRRXPPS, XCVRTXPPS;
-		rc.getTransceiver().getPPS(XCVRRXPPS, XCVRTXPPS);
-
-		renderLine(std::format(L"XCVR PPS RX: {}, TX: {}", XCVRRXPPS, XCVRTXPPS));
+		renderLine(std::format(L"XCVR PPS RX: {}, TX: {}", rc.getTransceiver().getRXPPS(), rc.getTransceiver().getTXPPS()));
 	}
 }

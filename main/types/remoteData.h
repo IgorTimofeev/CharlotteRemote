@@ -33,9 +33,9 @@ namespace pizda {
 		stopRequested
 	};
 
-	class RemoteDataRadioSpectrumScanning {
+	class RemoteDataTransceiverSpectrumScanning {
 		public:
-			RemoteDataRadioSpectrumScanning() {
+			RemoteDataTransceiverSpectrumScanning() {
 				// Clearing history
 				for (auto& record : history)
 					record = std::numeric_limits<int8_t>::min();
@@ -48,10 +48,10 @@ namespace pizda {
 			int8_t historyMax = std::numeric_limits<int8_t>::min();
 	};
 
-	class RemoteDataRadio {
+	class RemoteDataTransceiver {
 		public:
-			TransceiverCommunicationSettings sentCommunicationSettings {};
-			RemoteDataRadioSpectrumScanning spectrumScanning {};
+			TransceiverCommunicationSettings communicationSettings {};
+			RemoteDataTransceiverSpectrumScanning spectrumScanning {};
 	};
 	
 	class RemoteData {
@@ -59,6 +59,6 @@ namespace pizda {
 			RemoteDataLights lights {};
 			RemoteDataAutopilot autopilot {};
 			AircraftCalibrationSystem calibrationSystem = AircraftCalibrationSystem::accelAndGyro;
-			RemoteDataRadio transceiver {};
+			RemoteDataTransceiver transceiver {};
 	};
 }

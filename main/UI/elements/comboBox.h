@@ -5,41 +5,10 @@
 #include <YOBA/UI.h>
 #include <YOBA/main.h>
 
-#include "UI/elements/dialogs/scrollViewDialog.h"
 #include "UI/elements/referencer.h"
 
 namespace pizda {
 	using namespace YOBA;
-
-	class ComboBox;
-	class ComboBoxDialog;
-
-	class ComboBoxDialogItem : public Button {
-		public:
-			ComboBoxDialogItem(ComboBoxDialog* comboBoxDialog, const uint8_t index);
-
-		protected:
-			void onClick() override;
-
-		private:
-			ComboBoxDialog* _comboBoxDialog;
-			uint8_t _index;
-	};
-
-	class ComboBoxDialog : public ScrollViewDialog {
-		public:
-			ComboBoxDialog(ComboBox* comboBox);
-			~ComboBoxDialog() override;
-
-			ComboBox* getComboBox() const;
-
-		protected:
-			void onAddedToParent(Layout* parent) override;
-
-		private:
-			ComboBox* _comboBox;
-			RelativeStackLayout _itemRows {};
-	};
 
 	class ComboBox : public Referencer {
 		public:

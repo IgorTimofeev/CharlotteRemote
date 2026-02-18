@@ -199,7 +199,7 @@ namespace pizda {
 		slider->setTickOffset(0);
 		slider->setBigTickLineLength(5);
 		slider->setSmallTickLineLength(3);
-		slider->setTickColor(&Theme::fg7);
+		slider->setTickColor(&Theme::fg6);
 
 		slider->setTickLabelFont(&Theme::fontNormal);
 		slider->setTickLabelOffset(1);

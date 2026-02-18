@@ -31,9 +31,12 @@ namespace pizda {
 		return true;
 	}
 
-	void RemoteTransceiver::getPPS(uint16_t& RXPPS, uint16_t& TXPPS) const {
-		RXPPS = _RXPPS;
-		TXPPS = _TXPPS;
+	int8_t RemoteTransceiver::getRSSI() const {
+		return _RSSI;
+	}
+
+	int8_t RemoteTransceiver::getSNR() const {
+		return _SNR;
 	}
 
 	void RemoteTransceiver::onStart() {
@@ -41,41 +44,52 @@ namespace pizda {
 
 		while (true) {
 			if (rc.getRemoteData().transceiver.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::stopped) {
+				// Should schedule communication settings sync check
 				if (_communicationSettingsACKTime < 0) {
-					setCommunicationSettings(rc.getRemoteData().transceiver.sentCommunicationSettings);
+					ESP_LOGI(_logTag, "communication settings ACK handled");
 
-					_communicationSettingsACKTime = esp_timer_get_time() + 5'000'000;
+					setCommunicationSettings(rc.getRemoteData().transceiver.communicationSettings);
+
+					_communicationSettingsACKTime = esp_timer_get_time() + 2'000'000;
+				}
+				// Should perform communication settings sync check
+				else if (_communicationSettingsACKTime > 0 && esp_timer_get_time() >= _communicationSettingsACKTime) {
+					// Received and decoded enough packets to consider the connection is stable
+					if (getRXPPS() > 5) {
+						ESP_LOGI(_logTag, "communication settings synchronized");
+
+						rc.getSettings().transceiver.communication = rc.getRemoteData().transceiver.communicationSettings;
+						rc.getSettings().transceiver.scheduleWrite();
+					}
+					// Or not enough...
+					else {
+						ESP_LOGI(_logTag, "communication settings change timed out with PPS = %d, falling back to default", getRXPPS());
+
+						// Falling back to default communication settings
+						setCommunicationSettings(config::transceiver::communicationSettings);
+					}
+
+					_communicationSettingsACKTime = 0;
 				}
 
 				// Transmitting
 				if (transmit(100'000)) {
-					_TXPPSTemp++;
+
 				}
 
 				// Receiving
 				if (receive(100'000)) {
-					_RXPPSTemp++;
+					// Updating RSSI and SNR
+					if (esp_timer_get_time() > _RSSIAndSNRUpdateTimeUs) {
+						float valueF;
 
-					if (_communicationSettingsACKTime > 0) {
-						ESP_LOGI(_logTag, "communication settings synchronized");
+						if (_SX.getRSSI(valueF) == SX1262::error::none)
+							_RSSI = static_cast<int8_t>(valueF);
 
-						rc.getSettings().transceiver.communication = rc.getRemoteData().transceiver.sentCommunicationSettings;
-						rc.getSettings().transceiver.scheduleWrite();
+						if (_SX.getSNR(valueF) == SX1262::error::none)
+							_SNR = static_cast<int8_t>(valueF);
 
-						_communicationSettingsACKTime = 0;
-					}
-				}
-				else {
-					if (
-						_communicationSettingsACKTime > 0
-						&& esp_timer_get_time() >= _communicationSettingsACKTime
-					) {
-						ESP_LOGI(_logTag, "communication settings change timed out, falling back to previous");
-
-						// Falling back to previous communication settings
-						setCommunicationSettings(rc.getSettings().transceiver.communication);
-
-						_communicationSettingsACKTime = 0;
+						_RSSIAndSNRUpdateTimeUs = esp_timer_get_time() + _RSSIAndSNRUpdateIntervalUs;
 					}
 				}
 			}
@@ -83,15 +97,7 @@ namespace pizda {
 				onSpectrumScanning();
 			}
 
-			if (esp_timer_get_time() >= _PPSTime) {
-				_RXPPS = _RXPPSTemp;
-				_TXPPS = _TXPPSTemp;
-
-				_RXPPSTemp = 0;
-				_TXPPSTemp = 0;
-
-				_PPSTime = esp_timer_get_time() + 1'000'000;
-			}
+			PPSTick();
 		}
 	}
 	
@@ -121,7 +127,7 @@ namespace pizda {
 		}
 
 		// Setting normal RX/TX frequency
-		error = _SX.setRFFrequency(config::transceiver::RFFrequencyHz);
+		error = _SX.setRFFrequency(config::transceiver::communicationSettings.frequencyHz);
 
 		if (error != SX1262::error::none) {
 			logSXError("stopSpectrumScanning() error", error);
@@ -495,8 +501,6 @@ namespace pizda {
 		))
 			return false;
 
-		ESP_LOGI(_logTag, "received communication settings ACK");
-
 		_communicationSettingsACKTime = -1;
 
 		return true;
@@ -698,11 +702,11 @@ namespace pizda {
 	}
 
 	void RemoteTransceiver::transmitRemoteAuxiliaryXCVRPacket(BitStream& stream) {
-		const auto& settings = RC::getInstance().getRemoteData().transceiver.sentCommunicationSettings;
+		const auto& settings = RC::getInstance().getRemoteData().transceiver.communicationSettings;
 
 		ESP_LOGI(_logTag, "transmitting communication settings");
 
-		stream.writeUint16(settings.RFFrequencyHz / 1'000'000, RemoteAuxiliaryXCVRPacket::RFFrequencyLengthBits);
+		stream.writeUint16(settings.frequencyHz / 1'000'000, RemoteAuxiliaryXCVRPacket::RFFrequencyLengthBits);
 		stream.writeUint8(std::to_underlying(settings.bandwidth), RemoteAuxiliaryXCVRPacket::bandwidthLengthBits);
 		stream.writeUint8(settings.spreadingFactor, RemoteAuxiliaryXCVRPacket::spreadingFactorLengthBits);
 		stream.writeUint8(std::to_underlying(settings.codingRate), RemoteAuxiliaryXCVRPacket::codingRateLengthBits);

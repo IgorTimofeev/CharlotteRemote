@@ -17,7 +17,7 @@ namespace pizda {
 			constexpr static uint8_t _lineHeightMin = 2;
 			constexpr static uint8_t _lineHeightIncrement = 3;
 			
-			constexpr static uint8_t _textOffset = 4;
+			constexpr static uint8_t _textOffset = 5;
 			constexpr static uint8_t _textMaxWidth = 19;
 	};
 }
