@@ -64,6 +64,7 @@ namespace pizda {
 			void transmitRemoteAuxiliaryCalibratePacket(BitStream& stream);
 			void transmitRemoteAuxiliaryADIRSPacket(BitStream& stream);
 			void transmitRemoteAuxiliaryXCVRPacket(BitStream& stream);
+			void transmitRemoteAuxiliaryPIDPacket(BitStream& stream);
 
 			uint16_t _spectrumScanningHistoryIndex = 0;
 			int64_t _spectrumScanningSampleRSSISum = 0;

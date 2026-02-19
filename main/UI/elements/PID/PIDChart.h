@@ -14,60 +14,21 @@ namespace pizda {
 			void setStepCount(const uint16_t value);
 			void setDeltaTime(const float deltaTime);
 
+			float getValueMax() const;
+			void setValueMax(const float value);
 		protected:
 			void onEvent(Event* event) override;
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
 			PIDCoefficients _coefficients {};
-			uint8_t _setpoint = 50;
+			float _valueFactor = 0.5f;
+
+			float _valueMax = 100;
 
 			float _deltaTime = 1;
 			uint16_t _stepCount = 20;
 
-			void updateSetpointFromPointerEvent(const int32_t pointerY);
-	};
-
-	enum class PIDChartEditorFrequency : uint8_t {
-		hz1,
-		hz20,
-		hz30,
-		hz100,
-
-		max = hz100
-	};
-
-	enum class PIDChartEditorSteps : uint8_t {
-		steps5,
-		steps10,
-		steps20,
-
-		max = steps20
-	};
-
-	class PIDChartEditor : public RelativeStackLayout {
-		public:
-			PIDChartEditor();
-
-			const PIDCoefficients& getCoefficients() const {
-				return _chart.getCoefficients();
-			}
-
-			void setCoefficients(const PIDCoefficients& coefficients) {
-				_chart.setCoefficients(coefficients);
-			}
-
-		private:
-			PIDChart _chart {};
-			PIDChartEditorFrequency _frequency = PIDChartEditorFrequency::hz20;
-			PIDChartEditorSteps _steps = PIDChartEditorSteps::steps10;
-
-			RelativeStackLayout _buttonsRow {};
-			Button _frequencyButton {};
-			Button _stepsButton {};
-
-			void addButton(Button& button);
-			void updateFromFrequency();
-			void updateFromSteps();
+			void updateValueFactorFromPointerEvent(const int32_t pointerY);
 	};
 }

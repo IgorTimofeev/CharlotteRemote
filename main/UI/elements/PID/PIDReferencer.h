@@ -23,8 +23,9 @@ namespace pizda {
 
 				// Chart
 				chart.setHeight(120);
-				chart.setDeltaTime(1.f / 20.f);
+				chart.setDeltaTime(1.f / 30.f);
 				chart.setStepCount(10);
+				chart.setValueMax(100);
 				chart.setBackgroundColor(&Theme::bg3);
 				rows += &chart;
 
@@ -86,7 +87,6 @@ namespace pizda {
 			}
 
 		private:
-
 			PIDChart chart {};
 
 			RelativeStackLayout PIDRow {};
@@ -113,7 +113,7 @@ namespace pizda {
 
 	class PIDReferencer : public Referencer {
 		public:
-			PIDReferencer(const std::wstring_view dialogTitle) {
+			PIDReferencer(const std::wstring_view& dialogTitle) {
 				_textsRow.setOrientation(Orientation::horizontal);
 				_textsRow.setGap(5);
 				setDefaultMargin(&_textsRow, Margin(10));
@@ -145,6 +145,13 @@ namespace pizda {
 				_textP.setText(StringUtils::toWString(_coefficients.p));
 				_textI.setText(StringUtils::toWString(_coefficients.i));
 				_textD.setText(StringUtils::toWString(_coefficients.d));
+
+				if (_onCoefficientsChanged)
+					_onCoefficientsChanged(_coefficients);
+			}
+
+			void setOnCoefficientsChanged(const std::function<void(const PIDCoefficients&)>& callback) {
+				_onCoefficientsChanged = callback;
 			}
 
 		private:
@@ -159,6 +166,8 @@ namespace pizda {
 			TextView _textI_D {};
 			TextView _textD {};
 			TextView _textD_ {};
+
+			std::function<void(const PIDCoefficients&)> _onCoefficientsChanged = nullptr;
 
 			void addText(TextView& text, const Color* color) {
 				text.setTextColor(color);

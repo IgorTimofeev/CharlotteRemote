@@ -2,20 +2,59 @@
 
 #include "rc.h"
 #include "UI/theme.h"
+#include "types/generic.h"
 
 namespace pizda {
 	AutopilotSettingsPage::AutopilotSettingsPage() {
 		// Page title
-		title.setText(L"PID tuning");
+		title.setText(L"PID");
 
-		rows += &_autothrottleReferencerTitle;
-		rows += &_rollReferencerTitle;
-		rows += &_aileronsReferencerTitle;
-		rows += &_pitchReferencerTitle;
+		const auto addPizda = [this](Titler& titler, PIDReferencer& referencer, AutopilotPIDType PIDType, PIDCoefficients* settingsCoefficients) {
+			referencer.setCoefficients(*settingsCoefficients);
 
-		_autothrottleReferencer.setCoefficients({0.1f, 20, 0.005f });
-		_rollReferencer.setCoefficients({0.1f, 20, 0.005f });
-		_aileronsReferencer.setCoefficients({0.1f, 20, 0.005f });
-		_pitchReferencer.setCoefficients({0.1f, 20, 0.005f });
+			referencer.setOnCoefficientsChanged([settingsCoefficients, PIDType](const PIDCoefficients& newCoefficients) {
+				auto& rc = RC::getInstance();
+
+				*settingsCoefficients = newCoefficients;
+				rc.getSettings().PID.scheduleWrite();
+
+				rc.getRemoteData().autopilot.PID.type = PIDType;
+				rc.getRemoteData().autopilot.PID.coefficients = newCoefficients;
+
+				rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::PID);
+			});
+
+			rows += &titler;
+		};
+
+		auto& rc = RC::getInstance();
+
+		addPizda(
+			_targetToRollReferencerTitle,
+			_targetToRollReferencer,
+			AutopilotPIDType::targetToRoll,
+			&rc.getSettings().PID.targetToRoll
+		);
+
+		addPizda(
+			_targetToPitchReferencerTitle,
+			_targetToPitchReferencer,
+			AutopilotPIDType::targetToPitch,
+			&rc.getSettings().PID.targetToPitch
+		);
+
+		addPizda(
+			_rollToAileronsReferencerTitle,
+			_rollToAileronsReferencer,
+			AutopilotPIDType::rollToAilerons,
+			&rc.getSettings().PID.rollToAilerons
+		);
+
+		addPizda(
+			_pitchToElevatorReferencerTitle,
+			_pitchToElevatorReferencer,
+			AutopilotPIDType::pitchToElevator,
+			&rc.getSettings().PID.pitchToElevator
+		);
 	}
 }

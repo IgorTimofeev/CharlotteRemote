@@ -451,6 +451,9 @@ namespace pizda {
 		
 		// Autopilot
 		rc.getAircraftData().raw.autopilot.autopilot = stream.readBool();
+
+		// Gyro
+		rc.getAircraftData().raw.autopilot.gyro = stream.readBool();
 		
 		return true;
 	}
@@ -577,6 +580,10 @@ namespace pizda {
 				transmitRemoteAuxiliaryXCVRPacket(stream);
 				break;
 
+			case RemoteAuxiliaryPacketType::PID:
+				transmitRemoteAuxiliaryPIDPacket(stream);
+				break;
+
 			default:
 				ESP_LOGE(_logTag, "failed to transmit packet: unsupported type %d", getEnqueuedAuxiliaryPacketType());
 				break;
@@ -663,6 +670,9 @@ namespace pizda {
 		
 		// Autopilot
 		stream.writeBool(rc.getRemoteData().autopilot.autopilot);
+
+		// Gyro
+		stream.writeBool(rc.getRemoteData().autopilot.gyro);
 	}
 	
 	void RemoteTransceiver::transmitRemoteAuxiliaryMotorsPacket(BitStream& stream) {
@@ -713,5 +723,16 @@ namespace pizda {
 		stream.writeUint8(settings.syncWord, RemoteAuxiliaryXCVRPacket::syncWordLengthBits);
 		stream.writeInt8(settings.powerDBm, RemoteAuxiliaryXCVRPacket::powerDBmLengthBits);
 		stream.writeUint16(settings.preambleLength, RemoteAuxiliaryXCVRPacket::preambleLengthLengthBits);
+	}
+
+	void RemoteTransceiver::transmitRemoteAuxiliaryPIDPacket(BitStream& stream) {
+		const auto& data = RC::getInstance().getRemoteData().autopilot.PID;
+
+		ESP_LOGI(_logTag, "TX PID packet, type: %d, P: %f, I: %f, D: %f", data.type, data.coefficients.p, data.coefficients.i, data.coefficients.d);
+
+		stream.writeUint8(std::to_underlying(data.type), RemoteAuxiliaryPIDPacket::typeLengthBits);
+		stream.writeFloat(data.coefficients.p);
+		stream.writeFloat(data.coefficients.i);
+		stream.writeFloat(data.coefficients.d);
 	}
 }

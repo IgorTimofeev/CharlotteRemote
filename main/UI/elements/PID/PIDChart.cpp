@@ -1,9 +1,11 @@
 #include <utility>
+#include <format>
 
 #include <PIDController.h>
 
 #include "UI/elements/PID/PIDChart.h"
 #include "UI/theme.h"
+#include "utilities/string.h"
 
 namespace pizda {
 	PIDChart::PIDChart() {
@@ -14,14 +16,14 @@ namespace pizda {
 		Control::onEvent(event);
 
 		if (event->getTypeID() == PointerDownEvent::typeID) {
-			updateSetpointFromPointerEvent(reinterpret_cast<PointerDownEvent*>(event)->getPosition().getY());
+			updateValueFactorFromPointerEvent(reinterpret_cast<PointerDownEvent*>(event)->getPosition().getY());
 
 			setCaptured(true);
 
 			event->setHandled(true);
 		}
 		else if (event->getTypeID() == PointerDragEvent::typeID) {
-			updateSetpointFromPointerEvent(reinterpret_cast<PointerDragEvent*>(event)->getPosition().getY());
+			updateValueFactorFromPointerEvent(reinterpret_cast<PointerDragEvent*>(event)->getPosition().getY());
 
 			event->setHandled(true);
 		}
@@ -54,13 +56,15 @@ namespace pizda {
 			&Theme::fg4
 		);
 
-		// ----------------------------- Setpoint -----------------------------
+		// ----------------------------- Value -----------------------------
+
+		const auto valueTarget = _valueFactor * _valueMax;
 
 		{
-			const auto y = bounds.getY2() - _setpoint * bounds.getHeight() / 100;
+			const auto y = bounds.getY2() - static_cast<int32_t>(_valueFactor * bounds.getHeight());
 
 			// Text
-			const auto text = std::to_wstring(_setpoint);
+			const auto text = std::to_wstring(valueTarget);
 
 			renderer->renderString(
 				Point(
@@ -87,9 +91,6 @@ namespace pizda {
 
 		// ----------------------------- Chart -----------------------------
 
-
-		float value  = 0;
-
 		std::array<Point, 100> splinePoints {};
 		splinePoints[0] = bounds.getBottomLeft();
 		splinePoints[1] = splinePoints[0];
@@ -99,10 +100,12 @@ namespace pizda {
 
 		PIDController PIDController {};
 
+		float outputValue = 0;
+
 		for (uint16_t i = 0; i < _stepCount; ++i) {
-			value = PIDController.tick(
-				value,
-				_setpoint,
+			outputValue = PIDController.tick(
+				outputValue,
+				valueTarget,
 
 				_coefficients.p,
 				_coefficients.i,
@@ -111,14 +114,14 @@ namespace pizda {
 				_deltaTime,
 
 				0.f,
-				100.f
+				_valueMax
 			);
 
 			localX += stepPixels;
 
 			splinePoints[i + 2] = {
 				bounds.getX() + localX,
-				bounds.getY2() - static_cast<int32_t>(value / 100.f * bounds.getHeight())
+				bounds.getY2() - static_cast<int32_t>(outputValue / _valueMax * bounds.getHeight())
 			};
 		}
 
@@ -140,9 +143,9 @@ namespace pizda {
 		}
 	}
 
-	void PIDChart::updateSetpointFromPointerEvent(const int32_t pointerY) {
+	void PIDChart::updateValueFactorFromPointerEvent(const int32_t pointerY) {
 		const auto bounds = getBounds();
-		_setpoint = 100 - std::clamp<int32_t>(pointerY - bounds.getY(), 0, bounds.getHeight()) * 100 / bounds.getHeight();
+		_valueFactor = 1.f - std::clamp<float>(pointerY - bounds.getY(), 0, bounds.getHeight()) / bounds.getHeight();
 
 		invalidate();
 	}
@@ -167,105 +170,11 @@ namespace pizda {
 		_deltaTime = deltaTime;
 	}
 
-	PIDChartEditor::PIDChartEditor() {
-		*this += &_chart;
-
-		// Buttons
-		_buttonsRow.setOrientation(Orientation::horizontal);
-		_buttonsRow.setGap(1);
-		_buttonsRow.setHeight(19);
-		setAutoSize(&_buttonsRow);
-		*this += &_buttonsRow;
-
-		// Frequency
-		addButton(_frequencyButton);
-
-		_frequencyButton.setOnClick([this] {
-			uint8_t value = static_cast<uint8_t>(_frequency) + 1;
-
-			if (value > static_cast<uint8_t>(PIDChartEditorFrequency::max))
-				value = 0;
-
-			_frequency = static_cast<PIDChartEditorFrequency>(value);
-
-			updateFromFrequency();
-		});
-
-		// Steps
-		addButton(_stepsButton);
-
-		_stepsButton.setOnClick([this] {
-			uint8_t value = static_cast<uint8_t>(_steps) + 1;
-
-			if (value > static_cast<uint8_t>(PIDChartEditorSteps::max))
-				value = 0;
-
-			_steps = static_cast<PIDChartEditorSteps>(value);
-
-			updateFromSteps();
-		});
-
-		// Initialization
-		updateFromFrequency();
-		updateFromSteps();
+	float PIDChart::getValueMax() const {
+		return _valueMax;
 	}
 
-	void PIDChartEditor::addButton(Button& button) {
-		Theme::applySecondary(&button);
-		button.setCornerRadius(0);
-		button.setHeight(Size::computed);
-		_buttonsRow += &button;
-	}
-
-	void PIDChartEditor::updateFromFrequency() {
-		uint8_t frequency;
-		std::wstring text;
-
-		switch (_frequency) {
-			case PIDChartEditorFrequency::hz1:
-				frequency = 1;
-				text = L"1 Hz";
-				break;
-			case PIDChartEditorFrequency::hz20:
-				frequency = 20;
-				text = L"20 Hz";
-				break;
-			case PIDChartEditorFrequency::hz30:
-				frequency = 30;
-				text = L"30 Hz";
-				break;
-			default:
-				frequency = 100;
-				text = L"100 Hz";
-				break;
-		}
-
-		_chart.setDeltaTime(1.f / frequency);
-		_frequencyButton.setText(text);
-	}
-
-	void PIDChartEditor::updateFromSteps() {
-		uint8_t steps;
-		std::wstring text;
-
-		switch (_steps) {
-			case PIDChartEditorSteps::steps5:
-				steps = 5;
-				text = L"5 it";
-				break;
-
-			case PIDChartEditorSteps::steps10:
-				steps = 10;
-				text = L"10 it";
-				break;
-
-			default:
-				steps = 20;
-				text = L"20 it";
-				break;
-		}
-
-		_chart.setStepCount(steps);
-		_stepsButton.setText(text);
+	void PIDChart::setValueMax(const float value) {
+		_valueMax = value;
 	}
 }

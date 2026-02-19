@@ -29,5 +29,7 @@ namespace pizda {
 			VerticalRotaryControl vertical {};
 			
 			ImageToolbarButton autopilot { L"A/P", &resources::images::menuIconMFDAutopilotEngage };
+			ImageToolbarButton gyro { L"Gyro", &resources::images::menuIconMFDAutopilotGyro };
+
 	};
 }

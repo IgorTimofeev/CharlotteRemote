@@ -15,17 +15,16 @@ namespace pizda {
 			AutopilotSettingsPage();
 
 		private:
-			PIDReferencer _autothrottleReferencer { L"Autothrottle" };
-			Titler _autothrottleReferencerTitle { L"Autothrottle", &_autothrottleReferencer };
+			PIDReferencer _targetToRollReferencer { L"Target > roll" };
+			Titler _targetToRollReferencerTitle { L"Target > roll", &_targetToRollReferencer };
 
-			PIDReferencer _rollReferencer { L"Roll" };
-			Titler _rollReferencerTitle { L"Roll", &_rollReferencer };
+			PIDReferencer _targetToPitchReferencer { L"Target > pitch" };
+			Titler _targetToPitchReferencerTitle { L"Target > pitch", &_targetToPitchReferencer };
 
-			PIDReferencer _aileronsReferencer { L"Ailerons" };
-			Titler _aileronsReferencerTitle { L"Ailerons", &_aileronsReferencer };
+			PIDReferencer _rollToAileronsReferencer { L"Roll > ailerons" };
+			Titler _rollToAileronsReferencerTitle { L"Roll > ailerons", &_rollToAileronsReferencer };
 
-			PIDReferencer _pitchReferencer { L"Pitch" };
-			Titler _pitchReferencerTitle { L"Pitch", &_pitchReferencer };
-
+			PIDReferencer _pitchToElevatorReferencer { L"Pitch > elevator" };
+			Titler _pitchToElevatorReferencerTitle { L"Pitch > elevator", &_pitchToElevatorReferencer };
 	};
 }

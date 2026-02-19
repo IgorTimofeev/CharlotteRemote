@@ -8,6 +8,7 @@
 #include "settings/motorsSettings.h"
 #include "settings/transceiverSettings.h"
 #include "settings/ADIRSSettings.h"
+#include "settings/PIDSettings.h"
 
 namespace pizda {
 	class Settings {
@@ -20,6 +21,7 @@ namespace pizda {
 			NavigationSettings navigation {};
 			MotorsSettings motors {};
 			TransceiverSettings transceiver {};
+			PIDSettings PID {};
 
 			void readAll() {
 				ADIRS.read();
@@ -30,6 +32,7 @@ namespace pizda {
 				navigation.read();
 				motors.read();
 				transceiver.read();
+				PID.read();
 			}
 	};
 }

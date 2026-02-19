@@ -22,6 +22,7 @@ namespace pizda {
 			
 			bool autothrottle = false;
 			bool autopilot = false;
+			bool gyro = false;
 	};
 	
 	class AircraftDataRawLights {
