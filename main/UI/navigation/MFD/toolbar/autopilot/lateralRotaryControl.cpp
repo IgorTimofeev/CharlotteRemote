@@ -3,24 +3,19 @@
 #include "rc.h"
 
 namespace pizda {
-	void LateralRotaryControlStab::onRender(Renderer* renderer, const Bounds& bounds) {
-		auto& rc = RC::getInstance();
+	LateralRotaryControlStab::LateralRotaryControlStab() {
+		setDigitCount(3);
+		setSignVisible(true);
 
-		constexpr static uint8_t textLength = 8;
-		wchar_t text[textLength];
-		std::swprintf(text, textLength, L"%ls%d°", rc.getAircraftData().computed.autopilot.rollRad >= 0 ? L"+" : L"-", static_cast<uint16_t>(std::abs(toDegrees(rc.getAircraftData().computed.autopilot.rollRad))));
-
-		renderer->renderString(
-			Point(
-				bounds.getXCenter() - Theme::fontNormal.getWidth(text) / 2,
-				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
-			),
-			&Theme::fontNormal,
-			&Theme::green1,
-			text
-		);
+		setActiveColor(&Theme::magenta1);
 	}
-	
+
+	void LateralRotaryControlStab::onTick() {
+		RotaryControlSevenVariant::onTick();
+
+		setValue(static_cast<int32_t>(std::round(toDegrees(RC::getInstance().getAircraftData().computed.autopilot.rollRad))));
+	}
+
 	LateralRotaryControl::LateralRotaryControl() {
 		setVariants({
 			&seven,
@@ -45,7 +40,7 @@ namespace pizda {
 	std::wstring_view LateralRotaryControl::variantIndexToTitle(const uint8_t index) {
 		switch (index) {
 			case 0: return L"HDG";
-			default: return L"STAB";
+			default: return L"STB";
 		}
 	}
 	

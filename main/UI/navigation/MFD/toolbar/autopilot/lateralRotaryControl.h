@@ -8,9 +8,12 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class LateralRotaryControlStab : public RotaryControlRenderable {
+	class LateralRotaryControlStab : public RotaryControlSevenVariant {
+		public:
+			LateralRotaryControlStab();
+
 		protected:
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onTick() override;
 	};
 
 	class LateralRotaryControl : public SevenRotaryControl<3, 1, 360, true, 1, 10> {

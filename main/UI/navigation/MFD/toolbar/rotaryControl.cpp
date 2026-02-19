@@ -200,6 +200,8 @@ namespace pizda {
 		longPressTime = 0;
 
 		if (callOnPress) {
+			variantSelectMode = false;
+
 			RC::getInstance().playFeedback();
 
 			onPress();

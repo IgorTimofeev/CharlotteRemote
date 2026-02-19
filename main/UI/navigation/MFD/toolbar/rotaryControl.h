@@ -52,10 +52,22 @@ namespace pizda {
 			void onAnyRotate(bool clockwise, bool big);
 	};
 	
-	class RotaryControlRenderable : public Control {
+	class RotaryControlRenderableVariant : public Control {
 		public:
-			RotaryControlRenderable() {
+			RotaryControlRenderableVariant() {
 				setWidth(24);
+			}
+	};
+
+	class RotaryControlSevenVariant : public SevenSegment {
+		public:
+			RotaryControlSevenVariant() {
+				setAlignment(Alignment::center);
+
+				setSegmentThickness(1);
+				setSegmentLength(4);
+
+				setInactiveColor(&Theme::bg5);
 			}
 	};
 }
