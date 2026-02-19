@@ -38,23 +38,11 @@ namespace pizda {
 		};
 
 		row += &autopilot;
-
-		// Gyro
-		gyro.onPressed = [&rc] {
-			rc.getRemoteData().autopilot.gyro = !RC::getInstance().getAircraftData().raw.autopilot.gyro;
-
-			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::autopilot);
-
-			rc.playFeedback();
-		};
-
-		row += &gyro;
 	}
 	
 	void AutopilotToolbar::onTick() {
 		Layout::onTick();
 		
 		autopilot.setActive(RC::getInstance().getAircraftData().raw.autopilot.autopilot);
-		gyro.setActive(RC::getInstance().getAircraftData().raw.autopilot.gyro);
 	}
 }

@@ -187,8 +187,6 @@ namespace pizda {
 		for (const auto element : elements) {
 			variantsLayout += element;
 		}
-		
-		setVariantIndex(0);
 	}
 	
 	void RotaryControl::onAnyDown() {
@@ -200,12 +198,10 @@ namespace pizda {
 	
 	void RotaryControl::onAnyUp() {
 		longPressTime = 0;
-		
+
 		if (callOnPress) {
-			variantSelectMode = false;
-			
 			RC::getInstance().playFeedback();
-			
+
 			onPress();
 		}
 	}

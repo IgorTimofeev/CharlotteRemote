@@ -8,16 +8,16 @@
 namespace pizda {
 	using namespace YOBA;
 
-	class LateralRotaryControlLNAV : public RotaryControlRenderable {
+	class LateralRotaryControlStab : public RotaryControlRenderable {
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 	};
-	
+
 	class LateralRotaryControl : public SevenRotaryControl<3, 1, 360, true, 1, 10> {
 		public:
 			LateralRotaryControl();
 			
-//			LateralRotaryControlLNAV LNAV {};
+			LateralRotaryControlStab stab {};
 		
 		protected:
 			std::wstring_view variantIndexToTitle(uint8_t index) override;

@@ -6,7 +6,6 @@
 #include "resources/images/menuIconMFDAutopilotImage.h"
 #include "resources/images/menuIconMFDAutopilotFlightDirectorImage.h"
 #include "resources/images/menuIconMFDAutopilotEngageImage.h"
-#include "resources/images/menuIconMFDAutopilotGyroImage.h"
 #include "resources/images/menuIconMFDBaroImage.h"
 #include "resources/images/menuIconMFDTrimImage.h"
 #include "resources/images/menuIconMFDMetricUnitsImage.h"
@@ -37,7 +36,6 @@ namespace pizda::resources {
 			constexpr static MenuIconMFDAutopilotImage menuIconMFDAutopilot {};
 			constexpr static MenuIconMFDAutopilotFlightDirectorImage menuIconMFDAutopilotFlightDirector {};
 			constexpr static MenuIconMFDAutopilotEngageImage menuIconMFDAutopilotEngage {};
-			constexpr static MenuIconMFDAutopilotGyroImage menuIconMFDAutopilotGyro {};
 			constexpr static MenuIconMFDBaroImage menuIconMFDBaro {};
 			constexpr static MenuIconMFDTrimImage menuIconMFDTrim {};
 			constexpr static MenuIconMFDLightsImage menuIconMFDLights {};

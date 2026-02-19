@@ -3,51 +3,57 @@
 #include "rc.h"
 
 namespace pizda {
-	void LateralRotaryControlLNAV::onRender(Renderer* renderer, const Bounds& bounds) {
-		auto text = L"ULLI";
-		
+	void LateralRotaryControlStab::onRender(Renderer* renderer, const Bounds& bounds) {
+		auto& rc = RC::getInstance();
+
+		constexpr static uint8_t textLength = 8;
+		wchar_t text[textLength];
+		std::swprintf(text, textLength, L"%ls%d°", rc.getAircraftData().computed.autopilot.rollRad >= 0 ? L"+" : L"-", static_cast<uint16_t>(std::abs(toDegrees(rc.getAircraftData().computed.autopilot.rollRad))));
+
 		renderer->renderString(
 			Point(
 				bounds.getXCenter() - Theme::fontNormal.getWidth(text) / 2,
-				bounds.getYCenter() - Theme::fontNormal.getHeight() + 1
+				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
 			),
 			&Theme::fontNormal,
-			&Theme::magenta1,
-			text
-		);
-		
-		text = L"0.5NM";
-		
-		renderer->renderString(
-			Point(
-				bounds.getXCenter() - Theme::fontSmall.getWidth(text) / 2,
-				bounds.getYCenter()
-			),
-			&Theme::fontSmall,
-			&Theme::fg1,
+			&Theme::green1,
 			text
 		);
 	}
 	
 	LateralRotaryControl::LateralRotaryControl() {
 		setVariants({
-			&seven
+			&seven,
+			&stab
 		});
+
+		switch (RC::getInstance().getRemoteData().autopilot.lateralMode) {
+			case AutopilotLateralMode::stab:
+				setVariantIndex(1);
+				break;
+
+			default:
+				setVariantIndex(0);
+				break;
+		}
+
+		setVariantIndex(RC::getInstance().getRemoteData().autopilot.lateralMode == AutopilotLateralMode::stab ? 1 : 0);
 		
 		seven.setValue(RC::getInstance().getSettings().autopilot.headingDeg);
 	}
 	
-	std::wstring_view LateralRotaryControl::variantIndexToTitle(uint8_t index) {
+	std::wstring_view LateralRotaryControl::variantIndexToTitle(const uint8_t index) {
 		switch (index) {
-			default: return L"HDG";
+			case 0: return L"HDG";
+			default: return L"STAB";
 		}
 	}
 	
-	bool LateralRotaryControl::isVariantEditable(uint8_t index) {
+	bool LateralRotaryControl::isVariantEditable(const uint8_t index) {
 		return index == 0;
 	}
 	
-	void LateralRotaryControl::onRotate(bool clockwise, bool big) {
+	void LateralRotaryControl::onRotate(const bool clockwise, const bool big) {
 		SevenRotaryControl::onRotate(clockwise, big);
 		
 		RC::getInstance().getSettings().autopilot.headingDeg = static_cast<uint16_t>(seven.getValue());
@@ -58,12 +64,23 @@ namespace pizda {
 	
 	void LateralRotaryControl::onPress() {
 		RotaryControl::onPress();
-		
-		const auto newMode = AutopilotLateralMode::hdg;
+
+		AutopilotLateralMode newMode;
+
+		switch (getVariantIndex()) {
+			case 0: {
+				newMode = AutopilotLateralMode::hdg;
+				break;
+			}
+			default: {
+				newMode = AutopilotLateralMode::stab;
+				break;
+			}
+		}
 		
 		RC::getInstance().getRemoteData().autopilot.lateralMode =
 			RC::getInstance().getRemoteData().autopilot.lateralMode == newMode
-			? AutopilotLateralMode::man
+			? AutopilotLateralMode::dir
 			: newMode;
 		
 		RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::autopilot);
@@ -73,10 +90,14 @@ namespace pizda {
 		RotaryControl::onTick();
 		
 		switch (RC::getInstance().getAircraftData().raw.autopilot.lateralMode) {
-			case AutopilotLateralMode::man:
+			case AutopilotLateralMode::dir:
 				setBorderColor(nullptr);
 				break;
-			
+
+			case AutopilotLateralMode::stab:
+				setBorderColor(getVariantIndex() == 1 ? &Theme::fg1 : &Theme::yellow);
+				break;
+
 			case AutopilotLateralMode::hdg:
 				setBorderColor(getVariantIndex() == 0 ? &Theme::fg1 : &Theme::yellow);
 				break;

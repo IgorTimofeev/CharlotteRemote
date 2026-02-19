@@ -26,12 +26,11 @@ namespace pizda {
 		public:
 			float altitudeHoldFt = 0;
 			
-			AutopilotLateralMode lateralMode = AutopilotLateralMode::man;
-			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::man;
+			AutopilotLateralMode lateralMode = AutopilotLateralMode::dir;
+			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::dir;
 
 			bool autothrottle = false;
 			bool autopilot = false;
-			bool gyro = false;
 
 			RemoteDataAutopilotPID PID {};
 	};

@@ -15,14 +15,13 @@ namespace pizda {
 			float pitchRad = 0;
 			float rollRad = 0;
 
-			AutopilotLateralMode lateralMode = AutopilotLateralMode::man;
-			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::man;
+			AutopilotLateralMode lateralMode = AutopilotLateralMode::dir;
+			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::dir;
 			
 			int16_t targetAltitudeM = 0;
 			
 			bool autothrottle = false;
 			bool autopilot = false;
-			bool gyro = false;
 	};
 	
 	class AircraftDataRawLights {

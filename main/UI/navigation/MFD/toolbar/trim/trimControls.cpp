@@ -3,13 +3,15 @@
 #include "rc.h"
 
 namespace pizda {
-	TrimControl::TrimControl(std::wstring_view title, int8_t* settingsValue) : _title(title), _settingsValue(settingsValue) {
-		seven.setSignVisible(true);
-		seven.setValue(*_settingsValue);
-		
+	TrimControl::TrimControl(const std::wstring_view title, int8_t* settingsValue) : _title(title), _settingsValue(settingsValue) {
 		setVariants({
 			&seven
 		});
+
+		setVariantIndex(0);
+
+		seven.setSignVisible(true);
+		seven.setValue(*_settingsValue);
 	}
 	
 	std::wstring_view TrimControl::variantIndexToTitle(uint8_t index) {
@@ -20,7 +22,7 @@ namespace pizda {
 		return true;
 	}
 	
-	void TrimControl::onRotate(bool clockwise, bool big) {
+	void TrimControl::onRotate(const bool clockwise, const bool big) {
 		SevenRotaryControl::onRotate(clockwise, big);
 		
 		*_settingsValue = seven.getValue();

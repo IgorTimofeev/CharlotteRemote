@@ -452,9 +452,6 @@ namespace pizda {
 		// Autopilot
 		rc.getAircraftData().raw.autopilot.autopilot = stream.readBool();
 
-		// Gyro
-		rc.getAircraftData().raw.autopilot.gyro = stream.readBool();
-		
 		return true;
 	}
 
@@ -670,9 +667,6 @@ namespace pizda {
 		
 		// Autopilot
 		stream.writeBool(rc.getRemoteData().autopilot.autopilot);
-
-		// Gyro
-		stream.writeBool(rc.getRemoteData().autopilot.gyro);
 	}
 	
 	void RemoteTransceiver::transmitRemoteAuxiliaryMotorsPacket(BitStream& stream) {

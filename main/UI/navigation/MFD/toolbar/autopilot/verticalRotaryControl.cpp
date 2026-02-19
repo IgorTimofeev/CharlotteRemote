@@ -37,28 +37,20 @@ namespace pizda {
 		);
 	}
 	
-	void VerticalRotaryControlVNAV::onRender(Renderer* renderer, const Bounds& bounds) {
-		auto text = L"ULLI";
-		
+	void VerticalRotaryControlStab::onRender(Renderer* renderer, const Bounds& bounds) {
+		auto& rc = RC::getInstance();
+
+		constexpr static uint8_t textLength = 8;
+		wchar_t text[textLength];
+		std::swprintf(text, textLength, L"%ls%d°", rc.getAircraftData().computed.autopilot.pitchRad >= 0 ? L"+" : L"-", static_cast<uint16_t>(std::abs(toDegrees(rc.getAircraftData().computed.autopilot.pitchRad))));
+
 		renderer->renderString(
 			Point(
 				bounds.getXCenter() - Theme::fontNormal.getWidth(text) / 2,
-				bounds.getYCenter() - Theme::fontNormal.getHeight() + 1
+				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
 			),
 			&Theme::fontNormal,
-			&Theme::magenta1,
-			text
-		);
-		
-		text = L"1200";
-		
-		renderer->renderString(
-			Point(
-				bounds.getXCenter() - Theme::fontSmall.getWidth(text) / 2,
-				bounds.getYCenter()
-			),
-			&Theme::fontSmall,
-			&Theme::fg1,
+			&Theme::green1,
 			text
 		);
 	}
@@ -66,24 +58,40 @@ namespace pizda {
 	VerticalRotaryControl::VerticalRotaryControl() {
 		setVariants({
 			&seven,
+			&stab,
 			&ALT
 		});
-		
+
+		switch (RC::getInstance().getRemoteData().autopilot.verticalMode) {
+			case AutopilotVerticalMode::stab:
+				setVariantIndex(1);
+				break;
+
+			case AutopilotVerticalMode::alt:
+				setVariantIndex(2);
+				break;
+
+			default:
+				setVariantIndex(0);
+				break;
+		}
+
 		seven.setValue(RC::getInstance().getSettings().autopilot.altitudeFt);
 	}
 	
-	std::wstring_view VerticalRotaryControl::variantIndexToTitle(uint8_t index) {
+	std::wstring_view VerticalRotaryControl::variantIndexToTitle(const uint8_t index) {
 		switch (index) {
 			case 0: return L"FLC";
+			case 1: return L"STAB";
 			default: return L"ALT";
 		}
 	}
 	
-	bool VerticalRotaryControl::isVariantEditable(uint8_t index) {
+	bool VerticalRotaryControl::isVariantEditable(const uint8_t index) {
 		return index == 0;
 	}
 	
-	void VerticalRotaryControl::onRotate(bool clockwise, bool big) {
+	void VerticalRotaryControl::onRotate(const bool clockwise, const bool big) {
 		SevenRotaryControl::onRotate(clockwise, big);
 		
 		RC::getInstance().getSettings().autopilot.altitudeFt = static_cast<uint16_t>(seven.getValue());
@@ -102,6 +110,11 @@ namespace pizda {
 				newMode = AutopilotVerticalMode::flc;
 				break;
 			}
+			case 1: {
+				newMode = AutopilotVerticalMode::stab;
+				RC::getInstance().getRemoteData().autopilot.altitudeHoldFt = RC::getInstance().getAircraftData().computed.altitudeFt;
+				break;
+			}
 			default: {
 				newMode = AutopilotVerticalMode::alt;
 				RC::getInstance().getRemoteData().autopilot.altitudeHoldFt = RC::getInstance().getAircraftData().computed.altitudeFt;
@@ -111,7 +124,7 @@ namespace pizda {
 		
 		RC::getInstance().getRemoteData().autopilot.verticalMode =
 			newMode == RC::getInstance().getRemoteData().autopilot.verticalMode
-			? AutopilotVerticalMode::man
+			? AutopilotVerticalMode::dir
 			: newMode;
 		
 		RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::autopilot);
@@ -121,8 +134,12 @@ namespace pizda {
 		RotaryControl::onTick();
 		
 		switch (RC::getInstance().getAircraftData().raw.autopilot.verticalMode) {
-			case AutopilotVerticalMode::man:
+			case AutopilotVerticalMode::dir:
 				setBorderColor(nullptr);
+				break;
+
+			case AutopilotVerticalMode::stab:
+				setBorderColor(getVariantIndex() == 1 ? &Theme::fg1 : &Theme::yellow);
 				break;
 				
 			case AutopilotVerticalMode::flc:
@@ -134,7 +151,7 @@ namespace pizda {
 				break;
 				
 			case AutopilotVerticalMode::alt:
-				setBorderColor(getVariantIndex() == 1 ? &Theme::fg1 : &Theme::yellow);
+				setBorderColor(getVariantIndex() == 2 ? &Theme::fg1 : &Theme::yellow);
 				break;
 		}
 	}

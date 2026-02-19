@@ -7,7 +7,9 @@ namespace pizda {
 		setVariants({
 			&seven
 		});
-		
+
+		setVariantIndex(0);
+
 		seven.setValue(RC::getInstance().getSettings().autopilot.speedKt);
 	}
 	

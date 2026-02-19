@@ -8,23 +8,23 @@
 namespace pizda {
 	using namespace YOBA;
 
+	class VerticalRotaryControlStab : public RotaryControlRenderable {
+		protected:
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
+	};
+
 	class VerticalRotaryControlALT : public RotaryControlRenderable {
 		protected:
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 	};
-	
-	class VerticalRotaryControlVNAV : public RotaryControlRenderable {
-		protected:
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
-	};
-	
+
 	class VerticalRotaryControl : public SevenRotaryControl<4, 0, 35000, false, 10, 100> {
 		public:
 			VerticalRotaryControl();
-			
+
+			VerticalRotaryControlStab stab {};
 			VerticalRotaryControlALT ALT {};
-//			VerticalRotaryControlVNAV VNAV {};
-		
+
 		protected:
 			std::wstring_view variantIndexToTitle(uint8_t index) override;
 			bool isVariantEditable(uint8_t index) override;

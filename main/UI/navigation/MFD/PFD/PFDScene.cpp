@@ -512,8 +512,12 @@ namespace pizda {
 		// Lateral
 		if (rc.getTransceiver().isConnected()) {
 			switch (rc.getAircraftData().raw.autopilot.lateralMode) {
-				case AutopilotLateralMode::man: {
-					renderText(L"MAN", false);
+				case AutopilotLateralMode::dir: {
+					renderText(L"DIR", false);
+					break;
+				}
+				case AutopilotLateralMode::stab: {
+					renderText(L"STB", true);
 					break;
 				}
 				case AutopilotLateralMode::hdg: {
@@ -531,8 +535,12 @@ namespace pizda {
 		// Vertical
 		if (rc.getTransceiver().isConnected()) {
 			switch (rc.getAircraftData().raw.autopilot.verticalMode) {
-				case AutopilotVerticalMode::man: {
-					renderText(L"MAN", false);
+				case AutopilotVerticalMode::dir: {
+					renderText(L"DIR", false);
+					break;
+				}
+				case AutopilotVerticalMode::stab: {
+					renderText(L"STB", true);
 					break;
 				}
 				case AutopilotVerticalMode::alt: {
