@@ -39,6 +39,12 @@ namespace pizda {
 		return _SNR;
 	}
 
+	void RemoteTransceiver::enqueueAutopilot(const RemoteAuxiliaryAutopilotPacketType type) {
+		_enqueuedAutopilotPacketType = type;
+
+		enqueueAuxiliary(RemoteAuxiliaryPacketType::autopilot);
+	}
+
 	void RemoteTransceiver::onStart() {
 		auto& rc = RC::getInstance();
 
@@ -577,10 +583,6 @@ namespace pizda {
 				transmitRemoteAuxiliaryXCVRPacket(stream);
 				break;
 
-			case RemoteAuxiliaryPacketType::PID:
-				transmitRemoteAuxiliaryPIDPacket(stream);
-				break;
-
 			default:
 				ESP_LOGE(_logTag, "failed to transmit packet: unsupported type %d", getEnqueuedAuxiliaryPacketType());
 				break;
@@ -629,44 +631,116 @@ namespace pizda {
 	void RemoteTransceiver::transmitRemoteAuxiliaryAutopilotPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 
-		// Speed
-		const auto speedFactor =
-			std::min<float>(
-				Units::convertSpeed(rc.getSettings().autopilot.speedKt, SpeedUnit::knot, SpeedUnit::meterPerSecond),
-				RemoteAuxiliaryAutopilotPacket::speedMaxMPS
-			)
-			/ static_cast<float>(RemoteAuxiliaryAutopilotPacket::speedMaxMPS);
-		
-		const auto speedMapped = static_cast<float>((1 << RemoteAuxiliaryAutopilotPacket::speedLengthBits) - 1) * speedFactor;
-		
-		stream.writeUint8(static_cast<uint8_t>(std::round(speedMapped)), RemoteAuxiliaryAutopilotPacket::speedLengthBits);
-		
-		// Heading
-		stream.writeUint16(rc.getSettings().autopilot.headingDeg, RemoteAuxiliaryAutopilotPacket::headingLengthBits);
-		
-		// Altitude
-		const auto altitudeFt =
-			rc.getRemoteData().autopilot.verticalMode == AutopilotVerticalMode::alt
-			? rc.getRemoteData().autopilot.altitudeHoldFt
-			: rc.getSettings().autopilot.altitudeFt;
-		
-		writeAltitude(
-			stream,
-			Units::convertDistance(altitudeFt, DistanceUnit::foot, DistanceUnit::meter),
-			RemoteAuxiliaryAutopilotPacket::altitudeLengthBits,
-			RemoteAuxiliaryAutopilotPacket::altitudeMinM,
-			RemoteAuxiliaryAutopilotPacket::altitudeMaxM
-		);
-		
-		// Modes
-		stream.writeUint8(std::to_underlying(rc.getRemoteData().autopilot.lateralMode), RemoteAuxiliaryAutopilotPacket::lateralModeLengthBits);
-		stream.writeUint8(std::to_underlying(rc.getRemoteData().autopilot.verticalMode), RemoteAuxiliaryAutopilotPacket::verticalModeLengthBits);
-		
-		// Autothrottle
-		stream.writeBool(rc.getRemoteData().autopilot.autothrottle);
-		
-		// Autopilot
-		stream.writeBool(rc.getRemoteData().autopilot.autopilot);
+		// Type
+		stream.writeUint8(std::to_underlying(_enqueuedAutopilotPacketType), RemoteAuxiliaryAutopilotPacket::typeLengthBits);
+
+		// Data
+		const auto writePID = [&stream](const PIDCoefficients& coefficients) {
+			stream.writeFloat(coefficients.p);
+			stream.writeFloat(coefficients.i);
+			stream.writeFloat(coefficients.d);
+		};
+
+		switch (_enqueuedAutopilotPacketType) {
+			case RemoteAuxiliaryAutopilotPacketType::setSpeed: {
+				const auto speedFactor =
+					std::min<float>(
+						Units::convertSpeed(rc.getSettings().autopilot.speedKt, SpeedUnit::knot, SpeedUnit::meterPerSecond),
+						RemoteAuxiliaryAutopilotPacket::speedMaxMPS
+					)
+					/ static_cast<float>(RemoteAuxiliaryAutopilotPacket::speedMaxMPS);
+
+				const auto speedMapped = static_cast<float>((1 << RemoteAuxiliaryAutopilotPacket::speedLengthBits) - 1) * speedFactor;
+
+				stream.writeUint8(static_cast<uint8_t>(std::round(speedMapped)), RemoteAuxiliaryAutopilotPacket::speedLengthBits);
+
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setHeading: {
+				stream.writeUint16(rc.getSettings().autopilot.headingDeg, RemoteAuxiliaryAutopilotPacket::headingLengthBits);
+
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setAltitude: {
+				writeAltitude(
+					stream,
+					Units::convertDistance(rc.getSettings().autopilot.altitudeFt, DistanceUnit::foot, DistanceUnit::meter),
+					RemoteAuxiliaryAutopilotPacket::altitudeLengthBits,
+					RemoteAuxiliaryAutopilotPacket::altitudeMinM,
+					RemoteAuxiliaryAutopilotPacket::altitudeMaxM
+				);
+
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setLateralMode: {
+				stream.writeUint8(std::to_underlying(rc.getRemoteData().autopilot.lateralMode), RemoteAuxiliaryAutopilotPacket::lateralModeLengthBits);
+
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setVerticalMode: {
+				stream.writeUint8(std::to_underlying(rc.getRemoteData().autopilot.verticalMode), RemoteAuxiliaryAutopilotPacket::verticalModeLengthBits);
+
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setAutothrottle: {
+				stream.writeBool(rc.getRemoteData().autopilot.autothrottle);
+
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setAutopilot: {
+				stream.writeBool(rc.getRemoteData().autopilot.autopilot);
+
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setMaxRollAngleRad: {
+				stream.writeFloat(rc.getSettings().autopilot.maxRollAngleRad);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setMaxPitchAngleRad: {
+				stream.writeFloat(rc.getSettings().autopilot.maxPitchAngleRad);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setTargetAngleLPFF: {
+				stream.writeFloat(rc.getSettings().autopilot.targetAngleLPFF);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setStabAngleIncrementRad: {
+				stream.writeFloat(rc.getSettings().autopilot.stabTargetAngleIncrementFactor);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setMaxAileronsFactor: {
+				stream.writeFloat(rc.getSettings().autopilot.maxAileronsFactor);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setMaxElevatorFactor: {
+				stream.writeFloat(rc.getSettings().autopilot.maxElevatorFactor);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setYawToRollPID: {
+				writePID(rc.getSettings().autopilot.PIDs.yawToRoll);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setAltitudeToPitchPID: {
+				writePID(rc.getSettings().autopilot.PIDs.altitudeToPitch);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setSpeedToPitchPID: {
+				writePID(rc.getSettings().autopilot.PIDs.speedToPitch);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setRollToAileronsPID: {
+				writePID(rc.getSettings().autopilot.PIDs.rollToAilerons);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setPitchToElevatorPID: {
+				writePID(rc.getSettings().autopilot.PIDs.pitchToElevator);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setSpeedToThrottlePID: {
+				writePID(rc.getSettings().autopilot.PIDs.speedToThrottle);
+				break;
+			}
+		}
 	}
 	
 	void RemoteTransceiver::transmitRemoteAuxiliaryMotorsPacket(BitStream& stream) {
@@ -717,16 +791,5 @@ namespace pizda {
 		stream.writeUint8(settings.syncWord, RemoteAuxiliaryXCVRPacket::syncWordLengthBits);
 		stream.writeInt8(settings.powerDBm, RemoteAuxiliaryXCVRPacket::powerDBmLengthBits);
 		stream.writeUint16(settings.preambleLength, RemoteAuxiliaryXCVRPacket::preambleLengthLengthBits);
-	}
-
-	void RemoteTransceiver::transmitRemoteAuxiliaryPIDPacket(BitStream& stream) {
-		const auto& data = RC::getInstance().getRemoteData().autopilot.PID;
-
-		ESP_LOGI(_logTag, "TX PID packet, type: %d, P: %f, I: %f, D: %f", data.type, data.coefficients.p, data.coefficients.i, data.coefficients.d);
-
-		stream.writeUint8(std::to_underlying(data.type), RemoteAuxiliaryPIDPacket::typeLengthBits);
-		stream.writeFloat(data.coefficients.p);
-		stream.writeFloat(data.coefficients.i);
-		stream.writeFloat(data.coefficients.d);
 	}
 }

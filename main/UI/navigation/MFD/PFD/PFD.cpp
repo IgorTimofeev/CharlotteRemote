@@ -13,6 +13,8 @@ namespace pizda {
 		_scene.setMargin(Margin(speedWidth, 0, altitudeWidth + verticalSpeedWidth, 0));
 		*this += &_scene;
 
+		_splitter.setSize(Size(speedWidth, miniHeight));
+		_splitter.setAlignment(Alignment::start, Alignment::end);
 		*this += &_splitter;
 	}
 
@@ -39,8 +41,6 @@ namespace pizda {
 	}
 
 	void PFD::onRender(Renderer* renderer, const Bounds& bounds) {
-		Layout::onRender(renderer, bounds);
-
 		renderSpeed(renderer, Bounds(
 			bounds.getX(),
 			bounds.getY() + miniHeight,
@@ -82,6 +82,8 @@ namespace pizda {
 			verticalSpeedWidth,
 			bounds.getHeight()
 		));
+
+		Layout::onRender(renderer, bounds);
 	}
 
 	void PFD::renderCurrentValue(Renderer* renderer, const Bounds& bounds, const uint8_t digitCount, float value, const bool left) {

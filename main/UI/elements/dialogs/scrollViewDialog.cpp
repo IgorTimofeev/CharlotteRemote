@@ -10,7 +10,7 @@ namespace pizda {
 
 		// Rows
 		rows.setMargin(Margin(15));
-		rows.setGap(Theme::gap);
+		rows.setGap(Theme::verticalGap);
 		scrollView += &rows;
 
 		// Title

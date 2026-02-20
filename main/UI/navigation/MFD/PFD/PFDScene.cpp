@@ -223,7 +223,7 @@ namespace pizda {
 		}
 
 		// Flight path vector
-		if (rc.getAircraftData().computed.airspeedKt > PFD::speedFlapsMin) {
+		if (false && rc.getAircraftData().computed.airspeedKt > PFD::speedFlapsMin) {
 			const auto& FPVPosition = Point(
 				static_cast<int32_t>(horizonCenter.getX() + std::tanf(rc.getAircraftData().computed.flightPathVectorYawRad) * projectionPlaneDistance),
 				static_cast<int32_t>(horizonCenter.getY() - std::tanf(rc.getAircraftData().computed.flightPathVectorPitchRad) * projectionPlaneDistance)
@@ -500,7 +500,7 @@ namespace pizda {
 				renderText(L"A/T", true);
 			}
 			else {
-				renderText(L"MAN", false);
+				renderText(L"DIR", false);
 			}
 		}
 		else {
@@ -513,11 +513,11 @@ namespace pizda {
 		if (rc.getTransceiver().isConnected()) {
 			switch (rc.getAircraftData().raw.autopilot.lateralMode) {
 				case AutopilotLateralMode::dir: {
-					renderText(L"DIR", false);
+					renderText(L"LDIR", false);
 					break;
 				}
 				case AutopilotLateralMode::stab: {
-					renderText(L"STB", true);
+					renderText(L"LSTB", true);
 					break;
 				}
 				case AutopilotLateralMode::hdg: {
@@ -536,11 +536,11 @@ namespace pizda {
 		if (rc.getTransceiver().isConnected()) {
 			switch (rc.getAircraftData().raw.autopilot.verticalMode) {
 				case AutopilotVerticalMode::dir: {
-					renderText(L"DIR", false);
+					renderText(L"VDIR", false);
 					break;
 				}
 				case AutopilotVerticalMode::stab: {
-					renderText(L"STB", true);
+					renderText(L"VSTB", true);
 					break;
 				}
 				case AutopilotVerticalMode::alt: {

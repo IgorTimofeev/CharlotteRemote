@@ -36,7 +36,7 @@ namespace pizda {
 	{
 		this->title.setText(title);
 
-		_itemRows.setGap(Theme::gap);
+		_itemRows.setGap(Theme::verticalGap);
 		rows += &_itemRows;
 
 		for (uint16_t i = 0; i < _itemCount; ++i) {

@@ -17,25 +17,29 @@ namespace pizda {
 		return L"IAS";
 	}
 	
-	bool SpeedRotaryControl::isVariantEditable(uint8_t index) {
+	bool SpeedRotaryControl::isVariantEditable(const uint8_t index) {
 		return index == 0;
 	}
 	
-	void SpeedRotaryControl::onRotate(bool clockwise, bool big) {
+	void SpeedRotaryControl::onRotate(const bool clockwise, const bool big) {
 		SevenRotaryControl::onRotate(clockwise, big);
-		
-		RC::getInstance().getSettings().autopilot.speedKt = static_cast<uint16_t>(seven.getValue());
-		RC::getInstance().getSettings().autopilot.scheduleWrite();
-		
-		RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::autopilot);
+
+		auto& rc = RC::getInstance();
+
+		rc.getSettings().autopilot.speedKt = static_cast<uint16_t>(seven.getValue());
+		rc.getSettings().autopilot.scheduleWrite();
+
+		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setSpeed);
 	}
 	
 	void SpeedRotaryControl::onPress() {
 		RotaryControl::onPress();
 
-		RC::getInstance().getRemoteData().autopilot.autothrottle = !RC::getInstance().getRemoteData().autopilot.autothrottle;
-		
-		RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::autopilot);
+		auto& rc = RC::getInstance();
+
+		rc.getRemoteData().autopilot.autothrottle = !RC::getInstance().getRemoteData().autopilot.autothrottle;
+
+		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setAutothrottle);
 	}
 	
 	void SpeedRotaryControl::onTick() {

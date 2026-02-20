@@ -37,7 +37,7 @@ namespace pizda {
 
 		// Search and add button
 		_searchAndAddRow.setOrientation(Orientation::horizontal);
-		_searchAndAddRow.setGap(Theme::gap);
+		_searchAndAddRow.setGap(Theme::verticalGap);
 
 		// Search text field
 		Theme::apply(&_searchTextField);

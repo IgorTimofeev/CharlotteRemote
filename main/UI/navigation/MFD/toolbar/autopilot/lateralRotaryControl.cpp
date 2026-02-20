@@ -7,7 +7,7 @@ namespace pizda {
 		setDigitCount(3);
 		setSignVisible(true);
 
-		setActiveColor(&Theme::magenta1);
+		setActiveColor(&Theme::yellow);
 	}
 
 	void LateralRotaryControlStab::onTick() {
@@ -40,7 +40,7 @@ namespace pizda {
 	std::wstring_view LateralRotaryControl::variantIndexToTitle(const uint8_t index) {
 		switch (index) {
 			case 0: return L"HDG";
-			default: return L"STB";
+			default: return L"LSTB";
 		}
 	}
 	
@@ -50,15 +50,19 @@ namespace pizda {
 	
 	void LateralRotaryControl::onRotate(const bool clockwise, const bool big) {
 		SevenRotaryControl::onRotate(clockwise, big);
-		
-		RC::getInstance().getSettings().autopilot.headingDeg = static_cast<uint16_t>(seven.getValue());
-		RC::getInstance().getSettings().autopilot.scheduleWrite();
-		
-		RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::autopilot);
+
+		auto& rc = RC::getInstance();
+
+		rc.getSettings().autopilot.headingDeg = static_cast<uint16_t>(seven.getValue());
+		rc.getSettings().autopilot.scheduleWrite();
+
+		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setHeading);
 	}
 	
 	void LateralRotaryControl::onPress() {
 		RotaryControl::onPress();
+
+		auto& rc = RC::getInstance();
 
 		AutopilotLateralMode newMode;
 
@@ -72,13 +76,13 @@ namespace pizda {
 				break;
 			}
 		}
-		
-		RC::getInstance().getRemoteData().autopilot.lateralMode =
-			RC::getInstance().getRemoteData().autopilot.lateralMode == newMode
+
+		rc.getRemoteData().autopilot.lateralMode =
+			rc.getRemoteData().autopilot.lateralMode == newMode
 			? AutopilotLateralMode::dir
 			: newMode;
-		
-		RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::autopilot);
+
+		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setLateralMode);
 	}
 	
 	void LateralRotaryControl::onTick() {

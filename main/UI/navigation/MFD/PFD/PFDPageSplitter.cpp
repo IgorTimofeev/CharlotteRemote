@@ -3,11 +3,6 @@
 #include "UI/navigation/MFD/MFDPage.h"
 
 namespace pizda {
-	PFDPageSplitter::PFDPageSplitter() {
-		setSize(Size(PFD::speedWidth, PFD::miniHeight));
-		setVerticalAlignment(Alignment::end);
-	}
-
 	void PFDPageSplitter::onEvent(Event* event) {
 		if (event->getTypeID() == PointerDownEvent::typeID) {
 			_pointerY = reinterpret_cast<PointerDownEvent*>(event)->getPosition().getY();

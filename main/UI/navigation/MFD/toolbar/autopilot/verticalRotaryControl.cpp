@@ -7,7 +7,7 @@ namespace pizda {
 		setDigitCount(3);
 		setSignVisible(true);
 
-		setActiveColor(&Theme::magenta1);
+		setActiveColor(&Theme::yellow);
 	}
 
 	void VerticalRotaryControlStab::onTick() {
@@ -25,7 +25,7 @@ namespace pizda {
 	void VerticalRotaryControlALT::onTick() {
 		RotaryControlSevenVariant::onTick();
 
-		setValue(RC::getInstance().getAircraftData().raw.autopilot.targetAltitudeM);
+		setValue(Units::convertDistance(RC::getInstance().getAircraftData().raw.autopilot.targetAltitudeM, DistanceUnit::meter, DistanceUnit::foot));
 	}
 	
 	VerticalRotaryControl::VerticalRotaryControl() {
@@ -55,7 +55,7 @@ namespace pizda {
 	std::wstring_view VerticalRotaryControl::variantIndexToTitle(const uint8_t index) {
 		switch (index) {
 			case 0: return L"FLC";
-			case 1: return L"STB";
+			case 1: return L"VSTB";
 			default: return L"ALT";
 		}
 	}
@@ -66,16 +66,20 @@ namespace pizda {
 	
 	void VerticalRotaryControl::onRotate(const bool clockwise, const bool big) {
 		SevenRotaryControl::onRotate(clockwise, big);
-		
-		RC::getInstance().getSettings().autopilot.altitudeFt = static_cast<uint16_t>(seven.getValue());
-		RC::getInstance().getSettings().autopilot.scheduleWrite();
-		
-		RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::autopilot);
+
+		auto& rc = RC::getInstance();
+
+		rc.getSettings().autopilot.altitudeFt = static_cast<uint16_t>(seven.getValue());
+		rc.getSettings().autopilot.scheduleWrite();
+
+		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setAltitude);
 	}
 	
 	void VerticalRotaryControl::onPress() {
 		RotaryControl::onPress();
-		
+
+		auto& rc = RC::getInstance();
+
 		AutopilotVerticalMode newMode;
 		
 		switch (getVariantIndex()) {
@@ -85,22 +89,20 @@ namespace pizda {
 			}
 			case 1: {
 				newMode = AutopilotVerticalMode::stab;
-				RC::getInstance().getRemoteData().autopilot.altitudeHoldFt = RC::getInstance().getAircraftData().computed.altitudeFt;
 				break;
 			}
 			default: {
 				newMode = AutopilotVerticalMode::alt;
-				RC::getInstance().getRemoteData().autopilot.altitudeHoldFt = RC::getInstance().getAircraftData().computed.altitudeFt;
 				break;
 			}
 		}
 		
-		RC::getInstance().getRemoteData().autopilot.verticalMode =
-			newMode == RC::getInstance().getRemoteData().autopilot.verticalMode
+		rc.getRemoteData().autopilot.verticalMode =
+			newMode == rc.getRemoteData().autopilot.verticalMode
 			? AutopilotVerticalMode::dir
 			: newMode;
-		
-		RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::autopilot);
+
+		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setVerticalMode);
 	}
 	
 	void VerticalRotaryControl::onTick() {

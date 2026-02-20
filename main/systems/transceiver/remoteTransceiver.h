@@ -27,6 +27,8 @@ namespace pizda {
 			int8_t getRSSI() const;
 			int8_t getSNR() const;
 
+			void enqueueAutopilot(const RemoteAuxiliaryAutopilotPacketType type);
+
 		protected:
 			[[noreturn]] void onStart() override;
 			void onTransmit(BitStream& stream, RemotePacketType packetType) override;
@@ -47,6 +49,7 @@ namespace pizda {
 			int8_t _SNR = 0;
 
 			int64_t _communicationSettingsACKTime = 0;
+			RemoteAuxiliaryAutopilotPacketType _enqueuedAutopilotPacketType = RemoteAuxiliaryAutopilotPacketType::setAutopilot;
 
 			bool receiveAircraftTelemetryPrimaryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftTelemetrySecondaryPacket(BitStream& stream, uint8_t payloadLength);
@@ -64,7 +67,6 @@ namespace pizda {
 			void transmitRemoteAuxiliaryCalibratePacket(BitStream& stream);
 			void transmitRemoteAuxiliaryADIRSPacket(BitStream& stream);
 			void transmitRemoteAuxiliaryXCVRPacket(BitStream& stream);
-			void transmitRemoteAuxiliaryPIDPacket(BitStream& stream);
 
 			uint16_t _spectrumScanningHistoryIndex = 0;
 			int64_t _spectrumScanningSampleRSSISum = 0;

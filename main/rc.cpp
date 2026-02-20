@@ -179,7 +179,7 @@ namespace pizda {
 		// factorPerTick = factorPerSecond * deltaTime / 1'000'000
 
 		// Fast
-		float LPFFactor = LowPassFilter::getDeltaTimeFactor(5.0f, deltaTimeUs);
+		float LPFFactor = LowPassFilter::getDeltaTimeUsFactor(5.0f, deltaTimeUs);
 		
 		// Pitch
 		_aircraftData.computed.pitchRad = applyLPFToAngle(
@@ -259,7 +259,7 @@ namespace pizda {
 		);
 		
 		// Normal
-		LPFFactor = LowPassFilter::getDeltaTimeFactor(3.0f, deltaTimeUs);
+		LPFFactor = LowPassFilter::getDeltaTimeUsFactor(3.0f, deltaTimeUs);
 		
 		// Air speed
 		_aircraftData.computed.airspeedKt = applyLPF(
@@ -297,7 +297,7 @@ namespace pizda {
 		);
 
 		// Slower
-		LPFFactor = LowPassFilter::getDeltaTimeFactor(1.0f, deltaTimeUs);
+		LPFFactor = LowPassFilter::getDeltaTimeUsFactor(1.0f, deltaTimeUs);
 
 		// Airspeed trend
 		_aircraftData.computed.airspeedTrendKt = applyLPF(
@@ -321,7 +321,7 @@ namespace pizda {
 		);
 		
 		// Smooth as fuck
-		LPFFactor = LowPassFilter::getDeltaTimeFactor(0.5f, deltaTimeUs);
+		LPFFactor = LowPassFilter::getDeltaTimeUsFactor(0.5f, deltaTimeUs);
 	}
 
 	void RC::batteryTick() {

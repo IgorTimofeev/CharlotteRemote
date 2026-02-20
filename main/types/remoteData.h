@@ -15,24 +15,13 @@ namespace pizda {
 			bool cabin = false;
 	};
 
-
-	class RemoteDataAutopilotPID {
-		public:
-			AutopilotPIDType type = AutopilotPIDType::rollToAilerons;
-			PIDCoefficients coefficients {};
-	};
-	
 	class RemoteDataAutopilot {
 		public:
-			float altitudeHoldFt = 0;
-			
 			AutopilotLateralMode lateralMode = AutopilotLateralMode::dir;
 			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::dir;
 
 			bool autothrottle = false;
 			bool autopilot = false;
-
-			RemoteDataAutopilotPID PID {};
 	};
 
 	enum class RemoteDataRadioSpectrumScanningState {

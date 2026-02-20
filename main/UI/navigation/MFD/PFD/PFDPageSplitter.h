@@ -7,9 +7,6 @@ namespace pizda {
 	using namespace YOBA;
 
 	class PFDPageSplitter : public Control, public ActiveElement {
-		public:
-			PFDPageSplitter();
-
 		protected:
 			void onEvent(Event* event) override;
 			void onRender(Renderer* renderer, const Bounds& bounds) override;

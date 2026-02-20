@@ -56,7 +56,8 @@ namespace pizda {
 
 			constexpr static uint16_t elementHeight = 27;
 			constexpr static uint16_t cornerRadius = 3;
-			constexpr static uint16_t gap = 9;
+			constexpr static uint16_t verticalGap = 9;
+			constexpr static uint16_t horizontalGap = 7;
 
 			static void setup(Bit8PaletteRenderer* renderer);
 			static void applyPrimary(Button* button);
