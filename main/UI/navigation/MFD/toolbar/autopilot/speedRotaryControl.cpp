@@ -39,7 +39,7 @@ namespace pizda {
 
 		rc.getRemoteData().autopilot.autothrottle = !RC::getInstance().getRemoteData().autopilot.autothrottle;
 
-		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setAutothrottle);
+		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setAutothrottleEnabled);
 	}
 	
 	void SpeedRotaryControl::onTick() {

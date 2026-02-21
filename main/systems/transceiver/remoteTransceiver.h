@@ -49,7 +49,7 @@ namespace pizda {
 			int8_t _SNR = 0;
 
 			int64_t _communicationSettingsACKTime = 0;
-			RemoteAuxiliaryAutopilotPacketType _enqueuedAutopilotPacketType = RemoteAuxiliaryAutopilotPacketType::setAutopilot;
+			RemoteAuxiliaryAutopilotPacketType _enqueuedAutopilotPacketType = RemoteAuxiliaryAutopilotPacketType::setAutopilotEngaged;
 
 			bool receiveAircraftTelemetryPrimaryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftTelemetrySecondaryPacket(BitStream& stream, uint8_t payloadLength);

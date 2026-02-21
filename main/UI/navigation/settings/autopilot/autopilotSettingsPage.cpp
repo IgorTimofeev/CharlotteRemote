@@ -9,83 +9,49 @@ namespace pizda {
 	AutopilotSettingsPage::AutopilotSettingsPage() {
 		auto& rc = RC::getInstance();
 
-		// ----------------------------- Limits -----------------------------
+		// ----------------------------- Lateral -----------------------------
 
-		title.setText(L"Limits");
+		title.setText(L"Lateral");
 
-		_anglesRow.setOrientation(Orientation::horizontal);
-		_anglesRow.setGap(Theme::horizontalGap);
-		rows += &_anglesRow;
-
-		// Max roll
+		// Angle max
 		setupRadTextField(
-			_anglesMaxRoll,
+			_latMaxRoll,
 			&rc.getSettings().autopilot.maxRollAngleRad,
 			30.f,
 			RemoteAuxiliaryAutopilotPacketType::setMaxRollAngleRad
 		);
 
-		_anglesRow += &_anglesMaxRollTitle;
+		rows += &_latMaxRollTitle;
 
-		// Max pitch
-		setupRadTextField(
-			_anglesMaxPitch,
-			&rc.getSettings().autopilot.maxPitchAngleRad,
-			15.f,
-			RemoteAuxiliaryAutopilotPacketType::setMaxPitchAngleRad
-		);
+		addRow(_latRow0);
 
-		_anglesRow += &_anglesMaxPitchTitle;
-
-		// ----------------------------- LPFF -----------------------------
-
-		rows += &_targetAnglesSeparator;
-
-		Theme::applyPageTitle(&_targetAnglesTitle);
-		rows += &_targetAnglesTitle;
-
-		_targetAnglesRow.setOrientation(Orientation::horizontal);
-		_targetAnglesRow.setGap(Theme::horizontalGap);
-		rows += &_targetAnglesRow;
-
-		// Default
+		// Angle increment
 		setupFloatTextField(
-			_targetAngleLPFF,
-			&rc.getSettings().autopilot.targetAngleLPFFPS,
-			0.6f,
-			0.0f,
-			100.0f,
-			RemoteAuxiliaryAutopilotPacketType::setTargetAngleLPFFPS
-		);
-
-		_targetAnglesRow += &_targetAngleLPFFTitle;
-
-		// Stab
-		setupFloatTextField(
-			_stabAngleIncrement,
-			&rc.getSettings().autopilot.stabTargetAngleIncrementFPS,
+			_latSMTAIFPS,
+			&rc.getSettings().autopilot.stabilizedModeRollAngleIncrementFactorPerSecond,
 			1.0f,
 			0.0f,
 			1000.0f,
-			RemoteAuxiliaryAutopilotPacketType::setStabTargetAngleIncrementFPS
+			RemoteAuxiliaryAutopilotPacketType::setStabilizedModeRollAngleIncrementFactorPerSecond
 		);
 
-		_targetAnglesRow += &_stabAngleIncrementTitle;
+		_latRow0 += &_latSMTAIFPSTitle;
 
-		// ----------------------------- Controls -----------------------------
-
-		rows += &_surfacesSeparator;
-
-		Theme::applyPageTitle(&_surfacesTitle);
-		rows += &_surfacesTitle;
-
-		_surfacesRow.setOrientation(Orientation::horizontal);
-		_surfacesRow.setGap(Theme::horizontalGap);
-		rows += &_surfacesRow;
-
-		// Ailerons
+		// Angle LPFF
 		setupFloatTextField(
-			_maxAileronsFactor,
+			_latTALPFFPS,
+			&rc.getSettings().autopilot.rollAngleLPFFactorPerSecond,
+			0.6f,
+			0.0f,
+			1000.0f,
+			RemoteAuxiliaryAutopilotPacketType::setRollAngleLPFFactorPerSecond
+		);
+
+		_latRow0 += &_latTALPFFPSTitle;
+
+		// Surface factor
+		setupFloatTextField(
+			_latMaxAileronsFactor,
 			&rc.getSettings().autopilot.maxAileronsFactor,
 			1.0f,
 			0.0f,
@@ -93,11 +59,70 @@ namespace pizda {
 			RemoteAuxiliaryAutopilotPacketType::setMaxAileronsFactor
 		);
 
-		_surfacesRow += &_maxAileronsFactorTitle;
+		rows += &_latMaxAileronsFactorTitle;
 
-		// Elevator
+		// PIDs
+		addPID(
+			_latYawToRollPIDTitle,
+			_latYawToRollPID,
+			RemoteAuxiliaryAutopilotPacketType::setYawToRollPID,
+			&rc.getSettings().autopilot.PIDs.yawToRoll
+		);
+
+		addPID(
+			_latRollToAileronsPIDTitle,
+			_latRollToAileronsPID,
+			RemoteAuxiliaryAutopilotPacketType::setRollToAileronsPID,
+			&rc.getSettings().autopilot.PIDs.rollToAilerons
+		);
+
+
+		// ----------------------------- Vertical -----------------------------
+
+		rows += &_verSeparator;
+
+		Theme::applyPageTitle(&_verTitle);
+		rows += &_verTitle;
+
+		// Angle max
+		setupRadTextField(
+			_verMaxPitch,
+			&rc.getSettings().autopilot.maxPitchAngleRad,
+			15.f,
+			RemoteAuxiliaryAutopilotPacketType::setMaxPitchAngleRad
+		);
+
+		rows += &_verMaxPitchTitle;
+
+		addRow(_verRow0);
+
+		// Angle increment
 		setupFloatTextField(
-			_maxElevatorFactor,
+			_verSMTAIFPS,
+			&rc.getSettings().autopilot.stabilizedModePitchAngleIncrementFactorPerSecond,
+			1.0f,
+			0.0f,
+			1000.0f,
+			RemoteAuxiliaryAutopilotPacketType::setStabilizedModePitchAngleIncrementFactorPerSecond
+		);
+
+		_verRow0 += &_verSMTAIFPSTitle;
+
+		// Angle LPFF
+		setupFloatTextField(
+			_verTALPFFPS,
+			&rc.getSettings().autopilot.pitchAngleLPFFactorPerSecond,
+			0.6f,
+			0.0f,
+			1000.0f,
+			RemoteAuxiliaryAutopilotPacketType::setPitchAngleLPFFactorPerSecond
+		);
+
+		_verRow0 += &_verTALPFFPSTitle;
+
+		// Surface factor
+		setupFloatTextField(
+			_verMaxElevatorFactor,
 			&rc.getSettings().autopilot.maxElevatorFactor,
 			1.0f,
 			0.0f,
@@ -105,61 +130,55 @@ namespace pizda {
 			RemoteAuxiliaryAutopilotPacketType::setMaxElevatorFactor
 		);
 
-		_surfacesRow += &_maxElevatorFactorTitle;
+		rows += &_verMaxElevatorFactorTitle;
 
-		// ----------------------------- PIDs -----------------------------
-
-		rows += &_PIDSeparator;
-
-		Theme::applyPageTitle(&_PIDTitle);
-		rows += &_PIDTitle;
-
-		const auto addPID = [this, &rc](Titler& titler, PIDReferencer& referencer, RemoteAuxiliaryAutopilotPacketType packetType, PIDCoefficients* settingsCoefficients) {
-			referencer.setCoefficients(*settingsCoefficients);
-
-			referencer.setOnCoefficientsChanged([&rc, settingsCoefficients, packetType](const PIDCoefficients& newCoefficients) {
-				*settingsCoefficients = newCoefficients;
-				rc.getSettings().autopilot.scheduleWrite();
-
-				rc.getTransceiver().enqueueAutopilot(packetType);
-			});
-
-			rows += &titler;
-		};
-
+		// PIDs
 		addPID(
-			_yawToRollPIDTitle,
-			_yawToRollPID,
-			RemoteAuxiliaryAutopilotPacketType::setYawToRollPID,
-			&rc.getSettings().autopilot.PIDs.yawToRoll
-		);
-
-		addPID(
-			_altitudeToPitchPIDTitle,
-			_altitudeToPitchPID,
+			_varAltitudeToPitchPIDTitle,
+			_verAltitudeToPitchPID,
 			RemoteAuxiliaryAutopilotPacketType::setAltitudeToPitchPID,
 			&rc.getSettings().autopilot.PIDs.altitudeToPitch
 		);
 
 		addPID(
-			_speedToPitchPIDTitle,
-			_speedToPitchPID,
+			_verSpeedToPitchPIDTitle,
+			_verSpeedToPitchPID,
 			RemoteAuxiliaryAutopilotPacketType::setSpeedToPitchPID,
 			&rc.getSettings().autopilot.PIDs.speedToPitch
 		);
 
 		addPID(
-			_rollToAileronsPIDTitle,
-			_rollToAileronsPID,
-			RemoteAuxiliaryAutopilotPacketType::setRollToAileronsPID,
-			&rc.getSettings().autopilot.PIDs.rollToAilerons
-		);
-
-		addPID(
-			_pitchToElevatorPIDTitle,
-			_pitchToElevatorPID,
+			_verPitchToElevatorPIDTitle,
+			_verPitchToElevatorPID,
 			RemoteAuxiliaryAutopilotPacketType::setPitchToElevatorPID,
 			&rc.getSettings().autopilot.PIDs.pitchToElevator
+		);
+
+		// ----------------------------- Longitudinal -----------------------------
+
+		rows += &_lonSeparator;
+
+		Theme::applyPageTitle(&_lonTitle);
+		rows += &_lonTitle;
+
+		// LPFF
+		setupFloatTextField(
+			_lonThrottleLPFFPS,
+			&rc.getSettings().autopilot.throttleLPFFactorPerSecond,
+			0.6f,
+			0.0f,
+			1000.0f,
+			RemoteAuxiliaryAutopilotPacketType::setThrottleLPFFactorPerSecond
+		);
+
+		rows += &_lonThrottleLPFFPSTitle;
+
+		// PIDs
+		addPID(
+			_lonSpeedToThrottlePIDTitle,
+			_lonSpeedToThrottlePID,
+			RemoteAuxiliaryAutopilotPacketType::setSpeedToThrottlePID,
+			&rc.getSettings().autopilot.PIDs.speedToThrottle
 		);
 	}
 
@@ -203,5 +222,27 @@ namespace pizda {
 		);
 
 		textField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
+	}
+
+	void AutopilotSettingsPage::addRow(RelativeStackLayout& row) {
+		row.setOrientation(Orientation::horizontal);
+		row.setGap(Theme::horizontalGap);
+		rows += &row;
+	}
+
+	void AutopilotSettingsPage::addPID(Titler& titler, PIDReferencer& referencer,
+		RemoteAuxiliaryAutopilotPacketType packetType, PIDCoefficients* settingsCoefficients) {
+		referencer.setCoefficients(*settingsCoefficients);
+
+		referencer.setOnCoefficientsChanged([settingsCoefficients, packetType](const PIDCoefficients& newCoefficients) {
+			auto& rc = RC::getInstance();
+
+			*settingsCoefficients = newCoefficients;
+			rc.getSettings().autopilot.scheduleWrite();
+
+			rc.getTransceiver().enqueueAutopilot(packetType);
+		});
+
+		rows += &titler;
 	}
 }

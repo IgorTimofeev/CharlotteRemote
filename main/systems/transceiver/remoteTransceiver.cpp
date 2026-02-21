@@ -642,6 +642,98 @@ namespace pizda {
 		};
 
 		switch (_enqueuedAutopilotPacketType) {
+			// Generic
+			case RemoteAuxiliaryAutopilotPacketType::setAutopilotEngaged: {
+				stream.writeBool(rc.getRemoteData().autopilot.autopilot);
+				break;
+			}
+
+			// Lateral
+			case RemoteAuxiliaryAutopilotPacketType::setLateralMode: {
+				stream.writeUint8(std::to_underlying(rc.getRemoteData().autopilot.lateralMode), RemoteAuxiliaryAutopilotPacket::lateralModeLengthBits);
+				break;
+			}
+
+			case RemoteAuxiliaryAutopilotPacketType::setHeading: {
+				stream.writeUint16(rc.getSettings().autopilot.headingDeg, RemoteAuxiliaryAutopilotPacket::headingLengthBits);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setMaxRollAngleRad: {
+				stream.writeFloat(rc.getSettings().autopilot.maxRollAngleRad);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setStabilizedModeRollAngleIncrementFactorPerSecond: {
+				stream.writeFloat(rc.getSettings().autopilot.stabilizedModeRollAngleIncrementFactorPerSecond);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setRollAngleLPFFactorPerSecond: {
+				stream.writeFloat(rc.getSettings().autopilot.rollAngleLPFFactorPerSecond);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setYawToRollPID: {
+				writePID(rc.getSettings().autopilot.PIDs.yawToRoll);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setRollToAileronsPID: {
+				writePID(rc.getSettings().autopilot.PIDs.rollToAilerons);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setMaxAileronsFactor: {
+				stream.writeFloat(rc.getSettings().autopilot.maxAileronsFactor);
+				break;
+			}
+
+			// Vertical
+			case RemoteAuxiliaryAutopilotPacketType::setVerticalMode: {
+				stream.writeUint8(std::to_underlying(rc.getRemoteData().autopilot.verticalMode), RemoteAuxiliaryAutopilotPacket::verticalModeLengthBits);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setAltitude: {
+				writeAltitude(
+					stream,
+					Units::convertDistance(rc.getSettings().autopilot.altitudeFt, DistanceUnit::foot, DistanceUnit::meter),
+					RemoteAuxiliaryAutopilotPacket::altitudeLengthBits,
+					RemoteAuxiliaryAutopilotPacket::altitudeMinM,
+					RemoteAuxiliaryAutopilotPacket::altitudeMaxM
+				);
+
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setMaxPitchAngleRad: {
+				stream.writeFloat(rc.getSettings().autopilot.maxPitchAngleRad);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setStabilizedModePitchAngleIncrementFactorPerSecond: {
+				stream.writeFloat(rc.getSettings().autopilot.stabilizedModePitchAngleIncrementFactorPerSecond);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setPitchAngleLPFFactorPerSecond: {
+				stream.writeFloat(rc.getSettings().autopilot.pitchAngleLPFFactorPerSecond);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setSpeedToPitchPID: {
+				writePID(rc.getSettings().autopilot.PIDs.speedToPitch);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setAltitudeToPitchPID: {
+				writePID(rc.getSettings().autopilot.PIDs.altitudeToPitch);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setPitchToElevatorPID: {
+				writePID(rc.getSettings().autopilot.PIDs.pitchToElevator);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setMaxElevatorFactor: {
+				stream.writeFloat(rc.getSettings().autopilot.maxElevatorFactor);
+				break;
+			}
+
+			// Longitudinal
+			case RemoteAuxiliaryAutopilotPacketType::setAutothrottleEnabled: {
+				stream.writeBool(rc.getRemoteData().autopilot.autothrottle);
+
+				break;
+			}
 			case RemoteAuxiliaryAutopilotPacketType::setSpeed: {
 				const auto speedFactor =
 					std::min<float>(
@@ -656,88 +748,12 @@ namespace pizda {
 
 				break;
 			}
-			case RemoteAuxiliaryAutopilotPacketType::setHeading: {
-				stream.writeUint16(rc.getSettings().autopilot.headingDeg, RemoteAuxiliaryAutopilotPacket::headingLengthBits);
-
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setAltitude: {
-				writeAltitude(
-					stream,
-					Units::convertDistance(rc.getSettings().autopilot.altitudeFt, DistanceUnit::foot, DistanceUnit::meter),
-					RemoteAuxiliaryAutopilotPacket::altitudeLengthBits,
-					RemoteAuxiliaryAutopilotPacket::altitudeMinM,
-					RemoteAuxiliaryAutopilotPacket::altitudeMaxM
-				);
-
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setLateralMode: {
-				stream.writeUint8(std::to_underlying(rc.getRemoteData().autopilot.lateralMode), RemoteAuxiliaryAutopilotPacket::lateralModeLengthBits);
-
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setVerticalMode: {
-				stream.writeUint8(std::to_underlying(rc.getRemoteData().autopilot.verticalMode), RemoteAuxiliaryAutopilotPacket::verticalModeLengthBits);
-
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setAutothrottle: {
-				stream.writeBool(rc.getRemoteData().autopilot.autothrottle);
-
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setAutopilot: {
-				stream.writeBool(rc.getRemoteData().autopilot.autopilot);
-
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setMaxRollAngleRad: {
-				stream.writeFloat(rc.getSettings().autopilot.maxRollAngleRad);
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setMaxPitchAngleRad: {
-				stream.writeFloat(rc.getSettings().autopilot.maxPitchAngleRad);
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setTargetAngleLPFFPS: {
-				stream.writeFloat(rc.getSettings().autopilot.targetAngleLPFFPS);
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setStabTargetAngleIncrementFPS: {
-				stream.writeFloat(rc.getSettings().autopilot.stabTargetAngleIncrementFPS);
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setMaxAileronsFactor: {
-				stream.writeFloat(rc.getSettings().autopilot.maxAileronsFactor);
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setMaxElevatorFactor: {
-				stream.writeFloat(rc.getSettings().autopilot.maxElevatorFactor);
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setYawToRollPID: {
-				writePID(rc.getSettings().autopilot.PIDs.yawToRoll);
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setAltitudeToPitchPID: {
-				writePID(rc.getSettings().autopilot.PIDs.altitudeToPitch);
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setSpeedToPitchPID: {
-				writePID(rc.getSettings().autopilot.PIDs.speedToPitch);
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setRollToAileronsPID: {
-				writePID(rc.getSettings().autopilot.PIDs.rollToAilerons);
-				break;
-			}
-			case RemoteAuxiliaryAutopilotPacketType::setPitchToElevatorPID: {
-				writePID(rc.getSettings().autopilot.PIDs.pitchToElevator);
-				break;
-			}
 			case RemoteAuxiliaryAutopilotPacketType::setSpeedToThrottlePID: {
 				writePID(rc.getSettings().autopilot.PIDs.speedToThrottle);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setThrottleLPFFactorPerSecond: {
+				stream.writeFloat(rc.getSettings().autopilot.throttleLPFFactorPerSecond);
 				break;
 			}
 		}

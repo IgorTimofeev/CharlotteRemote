@@ -17,61 +17,72 @@ namespace pizda {
 			AutopilotSettingsPage();
 
 		private:
-			// Max angles
-			RelativeStackLayout _anglesRow {};
+			// ----------------------------- Lateral -----------------------------
 
-			TextField _anglesMaxRoll {};
-			Titler _anglesMaxRollTitle { L"Max roll", &_anglesMaxRoll };
 
-			TextField _anglesMaxPitch {};
-			Titler _anglesMaxPitchTitle { L"Max pitch", &_anglesMaxPitch };
+			TextField _latMaxRoll {};
+			Titler _latMaxRollTitle { L"Max roll ang", &_latMaxRoll };
 
-			// LPFFs
-			HorizontalSeparator _targetAnglesSeparator {};
-			TextView _targetAnglesTitle { L"Target angle"};
+			RelativeStackLayout _latRow0 {};
 
-			RelativeStackLayout _targetAnglesRow {};
+			TextField _latTALPFFPS {};
+			Titler _latTALPFFPSTitle { L"Ang LPFF", &_latTALPFFPS };
 
-			TextField _targetAngleLPFF {};
-			Titler _targetAngleLPFFTitle { L"LPFF", &_targetAngleLPFF };
+			TextField _latSMTAIFPS {};
+			Titler _latSMTAIFPSTitle { L"Stab ang inc F", &_latSMTAIFPS };
 
-			TextField _stabAngleIncrement {};
-			Titler _stabAngleIncrementTitle { L"Stab TA incr", &_stabAngleIncrement };
+			TextField _latMaxAileronsFactor {};
+			Titler _latMaxAileronsFactorTitle { L"Max ailerons F", &_latMaxAileronsFactor };
 
-			// Surfaces
-			HorizontalSeparator _surfacesSeparator {};
-			TextView _surfacesTitle { L"Surfaces"};
+			PIDReferencer _latYawToRollPID { L"Yaw to roll" };
+			Titler _latYawToRollPIDTitle { L"Yaw to roll", &_latYawToRollPID };
 
-			RelativeStackLayout _surfacesRow {};
+			PIDReferencer _latRollToAileronsPID { L"Roll to ailerons" };
+			Titler _latRollToAileronsPIDTitle { L"Roll to ailerons", &_latRollToAileronsPID };
 
-			TextField _maxAileronsFactor {};
-			Titler _maxAileronsFactorTitle { L"Max ailerons", &_maxAileronsFactor };
+			// ----------------------------- Vertical -----------------------------
 
-			TextField _maxElevatorFactor {};
-			Titler _maxElevatorFactorTitle { L"Max elevator", &_maxElevatorFactor };
+			HorizontalSeparator _verSeparator {};
+			TextView _verTitle { L"Vertical"};
 
-			// PIDs
-			HorizontalSeparator _PIDSeparator {};
-			TextView _PIDTitle { L"PID tuning"};
+			TextField _verMaxPitch {};
+			Titler _verMaxPitchTitle { L"Max pitch ang", &_verMaxPitch };
 
-			PIDReferencer _yawToRollPID { L"Yaw to roll" };
-			Titler _yawToRollPIDTitle { L"Yaw to roll", &_yawToRollPID };
+			RelativeStackLayout _verRow0 {};
 
-			PIDReferencer _altitudeToPitchPID { L"Altitude to pitch" };
-			Titler _altitudeToPitchPIDTitle { L"Altitude to pitch", &_altitudeToPitchPID };
+			TextField _verTALPFFPS {};
+			Titler _verTALPFFPSTitle { L"Ang LPFF", &_verTALPFFPS };
 
-			PIDReferencer _speedToPitchPID { L"Speed to pitch" };
-			Titler _speedToPitchPIDTitle { L"Speed to pitch", &_speedToPitchPID };
+			TextField _verSMTAIFPS {};
+			Titler _verSMTAIFPSTitle { L"Stab ang inc F", &_verSMTAIFPS };
 
-			PIDReferencer _rollToAileronsPID { L"Roll to ailerons" };
-			Titler _rollToAileronsPIDTitle { L"Roll to ailerons", &_rollToAileronsPID };
+			TextField _verMaxElevatorFactor {};
+			Titler _verMaxElevatorFactorTitle { L"Max elevator F", &_verMaxElevatorFactor };
 
-			PIDReferencer _pitchToElevatorPID { L"Pitch to elevator" };
-			Titler _pitchToElevatorPIDTitle { L"Pitch to elevator", &_pitchToElevatorPID };
+			PIDReferencer _verSpeedToPitchPID { L"Speed to pitch" };
+			Titler _verSpeedToPitchPIDTitle { L"Speed to pitch", &_verSpeedToPitchPID };
+
+			PIDReferencer _verAltitudeToPitchPID { L"Altitude to pitch" };
+			Titler _varAltitudeToPitchPIDTitle { L"Altitude to pitch", &_verAltitudeToPitchPID };
+
+			PIDReferencer _verPitchToElevatorPID { L"Pitch to elevator" };
+			Titler _verPitchToElevatorPIDTitle { L"Pitch to elevator", &_verPitchToElevatorPID };
+
+			// ----------------------------- Longitudinal -----------------------------
+
+			HorizontalSeparator _lonSeparator {};
+			TextView _lonTitle { L"Longitudinal"};
+
+			TextField _lonThrottleLPFFPS {};
+			Titler _lonThrottleLPFFPSTitle { L"Throttle LPFF", &_lonThrottleLPFFPS };
+
+			PIDReferencer _lonSpeedToThrottlePID { L"Speed to throttle" };
+			Titler _lonSpeedToThrottlePIDTitle { L"Speed to throttle", &_lonSpeedToThrottlePID };
 
 			void setupAnyTextField(TextField& textField, const std::wstring_view& text, const std::function<void()>& onEnter);
-			void setupFloatTextField(TextField& textField, float* value, float fallbackValue, float min, float max, RemoteAuxiliaryAutopilotPacketType
-			                         packetType);
+			void setupFloatTextField(TextField& textField, float* value, float fallbackValue, float min, float max, RemoteAuxiliaryAutopilotPacketType  packetType);
 			void setupRadTextField(TextField& textField, float* angleRad, float fallbackAngleDeg, RemoteAuxiliaryAutopilotPacketType packetType);
+			void addRow(RelativeStackLayout& row);
+			void addPID(Titler& titler, PIDReferencer& referencer, RemoteAuxiliaryAutopilotPacketType packetType, PIDCoefficients* settingsCoefficients);
 	};
 }
