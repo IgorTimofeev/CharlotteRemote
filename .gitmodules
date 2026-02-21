@@ -25,3 +25,6 @@
 [submodule "components/ESP-IDF-BuzzerAudio"]
 	path = components/ESP-IDF-BuzzerAudio
 	url = https://github.com/IgorTimofeev/ESP-IDF-BuzzerAudio.git
+[submodule "components/ESP-IDF-CircularQueue"]
+	path = components/ESP-IDF-CircularQueue
+	url = https://github.com/IgorTimofeev/ESP-IDF-CircularQueue.git

@@ -51,11 +51,11 @@ namespace pizda {
 		// Default
 		setupFloatTextField(
 			_targetAngleLPFF,
-			&rc.getSettings().autopilot.targetAngleLPFF,
+			&rc.getSettings().autopilot.targetAngleLPFFPS,
 			0.6f,
 			0.0f,
 			100.0f,
-			RemoteAuxiliaryAutopilotPacketType::setTargetAngleLPFF
+			RemoteAuxiliaryAutopilotPacketType::setTargetAngleLPFFPS
 		);
 
 		_targetAnglesRow += &_targetAngleLPFFTitle;
@@ -63,11 +63,11 @@ namespace pizda {
 		// Stab
 		setupFloatTextField(
 			_stabAngleIncrement,
-			&rc.getSettings().autopilot.stabTargetAngleIncrementFactor,
+			&rc.getSettings().autopilot.stabTargetAngleIncrementFPS,
 			1.0f,
 			0.0f,
 			1000.0f,
-			RemoteAuxiliaryAutopilotPacketType::setStabAngleIncrementRad
+			RemoteAuxiliaryAutopilotPacketType::setStabTargetAngleIncrementFPS
 		);
 
 		_targetAnglesRow += &_stabAngleIncrementTitle;

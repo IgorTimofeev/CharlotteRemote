@@ -353,7 +353,7 @@ namespace pizda {
 
 		if (trendsDeltaTime >= trendsInterval) {
 			// Yaw
-			rc.getAircraftData().raw.yawTrendDeg = -toDegrees(rc.getAircraftData().raw.yawRad - _trendsYawPrevRad) * 2'500'000.f / trendsDeltaTime;
+			rc.getAircraftData().raw.yawTrendDeg = -toDegrees(rc.getAircraftData().raw.yawRad - _trendsYawPrevRad) * 5'000'000.f / trendsDeltaTime;
 			_trendsYawPrevRad = rc.getAircraftData().raw.yawRad;
 
 			// Speed
@@ -700,12 +700,12 @@ namespace pizda {
 				stream.writeFloat(rc.getSettings().autopilot.maxPitchAngleRad);
 				break;
 			}
-			case RemoteAuxiliaryAutopilotPacketType::setTargetAngleLPFF: {
-				stream.writeFloat(rc.getSettings().autopilot.targetAngleLPFF);
+			case RemoteAuxiliaryAutopilotPacketType::setTargetAngleLPFFPS: {
+				stream.writeFloat(rc.getSettings().autopilot.targetAngleLPFFPS);
 				break;
 			}
-			case RemoteAuxiliaryAutopilotPacketType::setStabAngleIncrementRad: {
-				stream.writeFloat(rc.getSettings().autopilot.stabTargetAngleIncrementFactor);
+			case RemoteAuxiliaryAutopilotPacketType::setStabTargetAngleIncrementFPS: {
+				stream.writeFloat(rc.getSettings().autopilot.stabTargetAngleIncrementFPS);
 				break;
 			}
 			case RemoteAuxiliaryAutopilotPacketType::setMaxAileronsFactor: {

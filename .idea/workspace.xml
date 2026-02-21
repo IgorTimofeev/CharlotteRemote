@@ -4,19 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
-    <option name="/Default/Environment/UserInterface/HierarchyView/ViewStyle/@EntryValue" value="SuperTypes" type="string" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="8" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
-    <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
-    <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
-    <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppFormatterOtherPage" type="string" />
-    <option name="/Default/Housekeeping/RefactoringsMru/RenameRefactoring/DoRenameFile/@EntryValue" value="false" type="bool" />
-    <option name="/Default/Housekeeping/RefactoringsMru/RenameRefactoring/DoRenameType/@EntryValue" value="false" type="bool" />
-    <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
   </component>
-  <component name="CMakePresetLoader">{
-  &quot;useNewFormat&quot;: true
-}</component>
+  <component name="CMakePresetLoader"><![CDATA[{
+  "useNewFormat": true
+}]]></component>
   <component name="CMakeProjectFlavorService">
     <option name="flavorId" value="CMakePlainProjectFlavor" />
   </component>
@@ -33,15 +26,15 @@
       <config projectName="Remote" targetName="__idf_wear_levelling" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-LowPassFilter" />
       <config projectName="Remote" targetName="_project_elf_src" />
-      <config projectName="Remote" targetName="__idf_esp_driver_mcpwm" />
       <config projectName="Remote" targetName="__idf_esp_adc" />
+      <config projectName="Remote" targetName="__idf_esp_driver_mcpwm" />
       <config projectName="Remote" targetName="__idf_esp_https_server" />
       <config projectName="Remote" targetName="app-flash" />
       <config projectName="Remote" targetName="__idf_hal" />
-      <config projectName="Remote" targetName="__idf_efuse" />
       <config projectName="Remote" targetName="__idf_mbedtls" />
-      <config projectName="Remote" targetName="__idf_esp_mm" />
+      <config projectName="Remote" targetName="__idf_efuse" />
       <config projectName="Remote" targetName="__idf_esp_driver_cam" />
+      <config projectName="Remote" targetName="__idf_esp_mm" />
       <config projectName="Remote" targetName="__idf_esp_driver_uart" />
       <config projectName="Remote" targetName="__idf_freertos" />
       <config projectName="Remote" targetName="app_check_size" />
@@ -50,10 +43,10 @@
       <config projectName="Remote" targetName="__idf_esp_app_format" />
       <config projectName="Remote" targetName="__idf_esp_eth" />
       <config projectName="Remote" targetName="__idf_esp_driver_sdio" />
-      <config projectName="Remote" targetName="__idf_protocomm" />
       <config projectName="Remote" targetName="__idf_esp_security" />
-      <config projectName="Remote" targetName="efuse_common_table" />
+      <config projectName="Remote" targetName="__idf_protocomm" />
       <config projectName="Remote" targetName="save-defconfig" />
+      <config projectName="Remote" targetName="efuse_common_table" />
       <config projectName="Remote" targetName="__idf_cxx" />
       <config projectName="Remote" targetName="__idf_heap" />
       <config projectName="Remote" targetName="__idf_app_update" />
@@ -61,41 +54,41 @@
       <config projectName="Remote" targetName="everest" />
       <config projectName="Remote" targetName="__idf_cmock" />
       <config projectName="Remote" targetName="__idf_esp_netif" />
-      <config projectName="Remote" targetName="custom_bundle" />
       <config projectName="Remote" targetName="__idf_esp_system" />
+      <config projectName="Remote" targetName="custom_bundle" />
       <config projectName="Remote" targetName="uf2" />
-      <config projectName="Remote" targetName="__idf_esp_http_client" />
       <config projectName="Remote" targetName="encrypted-flash" />
+      <config projectName="Remote" targetName="__idf_esp_http_client" />
       <config projectName="Remote" targetName="__idf_esp_wifi" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-PIDController" />
-      <config projectName="Remote" targetName="merge-bin" />
       <config projectName="Remote" targetName="partition-table" />
+      <config projectName="Remote" targetName="merge-bin" />
       <config projectName="Remote" targetName="__idf_espcoredump" />
-      <config projectName="Remote" targetName="__idf_fatfs" />
       <config projectName="Remote" targetName="__idf_esp_rom" />
-      <config projectName="Remote" targetName="encrypted-partition-table-flash" />
+      <config projectName="Remote" targetName="__idf_fatfs" />
       <config projectName="Remote" targetName="__idf_tcp_transport" />
+      <config projectName="Remote" targetName="encrypted-partition-table-flash" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-BuzzerAudio" />
       <config projectName="Remote" targetName="__idf_esp_driver_gptimer" />
       <config projectName="Remote" targetName="__idf_sdmmc" />
       <config projectName="Remote" targetName="sections.ld.in" />
       <config projectName="Remote" targetName="apidoc" />
       <config projectName="Remote" targetName="__idf_console" />
-      <config projectName="Remote" targetName="__idf_spi_flash" />
       <config projectName="Remote" targetName="__idf_esp_pm" />
+      <config projectName="Remote" targetName="__idf_spi_flash" />
       <config projectName="Remote" targetName="partition_table-flash" />
       <config projectName="Remote" targetName="mbedx509" />
       <config projectName="Remote" targetName="__idf_esp_driver_sdmmc" />
-      <config projectName="Remote" targetName="monitor" />
       <config projectName="Remote" targetName="size-components" />
-      <config projectName="Remote" targetName="__idf_spiffs" />
       <config projectName="Remote" targetName="mbedtls" />
+      <config projectName="Remote" targetName="__idf_spiffs" />
+      <config projectName="Remote" targetName="monitor" />
       <config projectName="Remote" targetName="partition-table-flash" />
       <config projectName="Remote" targetName="show-efuse-table" />
       <config projectName="Remote" targetName="__idf_esp_https_ota" />
       <config projectName="Remote" targetName="__idf_rt" />
-      <config projectName="Remote" targetName="__idf_esp_local_ctrl" />
       <config projectName="Remote" targetName="__idf_esp_driver_i2s" />
+      <config projectName="Remote" targetName="__idf_esp_local_ctrl" />
       <config projectName="Remote" targetName="__idf_YOBA" />
       <config projectName="Remote" targetName="__idf_bootloader_support" />
       <config projectName="Remote" targetName="__idf_pthread" />
@@ -116,6 +109,7 @@
       <config projectName="Remote" targetName="__idf_soc" />
       <config projectName="Remote" targetName="__idf_esp_ringbuf" />
       <config projectName="Remote" targetName="gen_project_binary" />
+      <config projectName="Remote" targetName="__idf_ESP-IDF-CircularQueue" />
       <config projectName="Remote" targetName="app" />
       <config projectName="Remote" targetName="erase_flash" />
       <config projectName="Remote" targetName="__idf_esp_lcd" />
@@ -123,24 +117,24 @@
       <config projectName="Remote" targetName="efuse_test_table" />
       <config projectName="Remote" targetName="__idf_esp_driver_twai" />
       <config projectName="Remote" targetName="partition_table" />
-      <config projectName="Remote" targetName="__idf_esp_driver_rmt" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-SX1262" />
+      <config projectName="Remote" targetName="__idf_esp_driver_rmt" />
       <config projectName="Remote" targetName="__ldgen_output_sections.ld" />
       <config projectName="Remote" targetName="__idf_log" />
       <config projectName="Remote" targetName="__idf_esp_partition" />
       <config projectName="Remote" targetName="__idf_esp_gdbstub" />
       <config projectName="Remote" targetName="__idf_esp_timer" />
       <config projectName="Remote" targetName="__idf_wpa_supplicant" />
-      <config projectName="Remote" targetName="confserver" />
       <config projectName="Remote" targetName="__idf_protobuf-c" />
+      <config projectName="Remote" targetName="confserver" />
       <config projectName="Remote" targetName="__idf_esp_bootloader_format" />
       <config projectName="Remote" targetName="__idf_main" />
-      <config projectName="Remote" targetName="__idf_http_parser" />
       <config projectName="Remote" targetName="__idf_esp_driver_sdspi" />
+      <config projectName="Remote" targetName="__idf_http_parser" />
       <config projectName="Remote" targetName="__idf_lwip" />
       <config projectName="Remote" targetName="__idf_mqtt" />
-      <config projectName="Remote" targetName="encrypted-bootloader-flash" />
       <config projectName="Remote" targetName="__idf_esp_driver_touch_sens" />
+      <config projectName="Remote" targetName="encrypted-bootloader-flash" />
       <config projectName="Remote" targetName="__idf_esp_http_server" />
       <config projectName="Remote" targetName="__idf_esp_common" />
       <config projectName="Remote" targetName="efuse-common-table" />
@@ -153,8 +147,8 @@
       <config projectName="Remote" targetName="__idf_app_trace" />
       <config projectName="Remote" targetName="__idf_json" />
       <config projectName="Remote" targetName="__idf_xtensa" />
-      <config projectName="Remote" targetName="__idf_esp_driver_sdm" />
       <config projectName="Remote" targetName="efuse-custom-table" />
+      <config projectName="Remote" targetName="__idf_esp_driver_sdm" />
       <config projectName="Remote" targetName="__idf_wifi_provisioning" />
       <config projectName="Remote" targetName="bootloader" folderName="ExternalProjectTargets/bootloader" />
       <config projectName="Remote" targetName="__idf_esp_driver_ledc" />
@@ -163,8 +157,8 @@
       <config projectName="Remote" targetName="__idf_esp_phy" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-Battery" />
       <config projectName="Remote" targetName="__idf_unity" />
-      <config projectName="Remote" targetName="__idf_nvs_sec_provider" />
       <config projectName="Remote" targetName="mbedcrypto" />
+      <config projectName="Remote" targetName="__idf_nvs_sec_provider" />
       <config projectName="Remote" targetName="bootloader-flash" />
       <config projectName="Remote" targetName="__idf_esp_hw_support" />
     </generated>
@@ -175,37 +169,29 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="ахуй, удобненько управляется">
+    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="ебучий есп">
+      <change afterPath="$PROJECT_DIR$/components/ESP-IDF-CircularQueue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Remote.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-LowPassFilter" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-LowPassFilter" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/dialogs/scrollViewDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/dialogs/scrollViewDialog.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/dialogs/selectorDialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/dialogs/selectorDialog.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/elements/navigation/addWaypointDialog.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDPageSplitter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDPageSplitter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDPageSplitter.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDPageSplitter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-BuzzerAudio" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-BuzzerAudio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-BuzzerAudio/LICENSE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencies.lock" beforeDir="false" afterPath="$PROJECT_DIR$/dependencies.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/lateralRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/lateralRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/speedRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/speedRotaryControl.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/verticalRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/verticalRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/NAV/database/databasePage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/NAV/database/databasePage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/page.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/page.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/theme.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/theme.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/PIDSettings.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main/settings/autopilotSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/autopilotSettings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/settings.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/packet.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/generic.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/generic.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/remoteData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/remoteData.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,88 +206,57 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;IgorTimofeev&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "IgorTimofeev"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/IgorTimofeev/CharlotteRemote.git&quot;,
-    &quot;accountId&quot;: &quot;b6e59770-aacc-4d0a-9c35-a4c42d46b1c1&quot;
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/IgorTimofeev/CharlotteRemote.git",
+    "accountId": "b6e59770-aacc-4d0a-9c35-a4c42d46b1c1"
   }
-}</component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.cpp" root0="FORCE_HIGHLIGHTING" />
-  </component>
+}]]></component>
   <component name="MacroExpansionManager">
-    <option name="directoryName" value="eaOLegoi" />
-  </component>
-  <component name="OCResolveContextSettings">
-    <option name="configuration" value="0-Debug-__idf_main" />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="directoryName" value="oKbTAvMb" />
   </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
     <option name="majorVersion" value="2025" />
-    <option name="minorVersion" value="1.1" />
+    <option name="minorVersion" value="3.1.1" />
     <option name="productBranch" value="Classic" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 6
-}</component>
-  <component name="ProjectId" id="37IWRZXu8HcXLr7vhO7Nqle9EW2" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="39xtmMRjGk93wz731TNarU6RkiW" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/main/settings&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C++&quot;,
-    &quot;settings.editor.splitter.proportion&quot;: &quot;0.20187794&quot;,
-    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/components/ESP-IDF-CircularQueue",
+    "org.rust.first.attach.projects": "true",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\settings" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\elements" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-BuzzerAudio\src" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-BuzzerAudio" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-SX1262\src" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\elements\dialogs" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-BuzzerAudio\src" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\main\UI\navigation\MFD\PFD" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\YOBA\src\YOBA\UI\keyboard" />
-      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\YOBA\src\YOBA\main" />
+      <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-CircularQueue" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.Remote.elf">
@@ -321,6 +276,11 @@
       </method>
     </configuration>
     <configuration name="__idf_ESP-IDF-BuzzerAudio" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_ESP-IDF-BuzzerAudio" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_ESP-IDF-CircularQueue" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_ESP-IDF-CircularQueue" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -795,6 +755,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="apidoc" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1017,96 +982,89 @@
     </configuration>
     <list>
       <item itemvalue="CMake Application.bootloader" />
+      <item itemvalue="CMake Application._project_elf_src" />
       <item itemvalue="CMake Application.Remote.elf" />
+      <item itemvalue="CMake Application.size" />
+      <item itemvalue="CMake Application.size-components" />
+      <item itemvalue="CMake Application.size-files" />
+      <item itemvalue="CMake Application.uf2" />
+      <item itemvalue="CMake Application.uf2-app" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-Battery" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-BitStream" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-BuzzerAudio" />
-      <item itemvalue="CMake Application.__idf_ESP-IDF-LowPassFilter" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-CircularQueue" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-NVSExtensions" />
-      <item itemvalue="CMake Application.__idf_ESP-IDF-PIDController" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-SX1262" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-Units" />
       <item itemvalue="CMake Application.__idf_YOBA" />
       <item itemvalue="CMake Application.__idf_app_trace" />
       <item itemvalue="CMake Application.__idf_app_update" />
+      <item itemvalue="CMake Application.bootloader-flash" />
       <item itemvalue="CMake Application.__idf_bootloader_support" />
-      <item itemvalue="CMake Application.__idf_cmock" />
-      <item itemvalue="CMake Application.__idf_console" />
       <item itemvalue="CMake Application.__idf_cxx" />
       <item itemvalue="CMake Application.__idf_driver" />
-      <item itemvalue="CMake Application.__idf_efuse" />
+      <item itemvalue="CMake Application.efuse-common-table" />
+      <item itemvalue="CMake Application.efuse-custom-table" />
+      <item itemvalue="CMake Application.efuse_test_table" />
+      <item itemvalue="CMake Application.show-efuse-table" />
       <item itemvalue="CMake Application.__idf_esp-tls" />
       <item itemvalue="CMake Application.__idf_esp_adc" />
-      <item itemvalue="CMake Application.__idf_esp_app_format" />
       <item itemvalue="CMake Application.__idf_esp_bootloader_format" />
       <item itemvalue="CMake Application.__idf_esp_coex" />
       <item itemvalue="CMake Application.__idf_esp_common" />
       <item itemvalue="CMake Application.__idf_esp_driver_cam" />
-      <item itemvalue="CMake Application.__idf_esp_driver_dac" />
       <item itemvalue="CMake Application.__idf_esp_driver_gpio" />
       <item itemvalue="CMake Application.__idf_esp_driver_gptimer" />
       <item itemvalue="CMake Application.__idf_esp_driver_i2c" />
       <item itemvalue="CMake Application.__idf_esp_driver_i2s" />
       <item itemvalue="CMake Application.__idf_esp_driver_ledc" />
-      <item itemvalue="CMake Application.__idf_esp_driver_mcpwm" />
       <item itemvalue="CMake Application.__idf_esp_driver_pcnt" />
-      <item itemvalue="CMake Application.__idf_esp_driver_rmt" />
       <item itemvalue="CMake Application.__idf_esp_driver_sdio" />
-      <item itemvalue="CMake Application.__idf_esp_driver_sdm" />
       <item itemvalue="CMake Application.__idf_esp_driver_sdmmc" />
       <item itemvalue="CMake Application.__idf_esp_driver_sdspi" />
-      <item itemvalue="CMake Application.__idf_esp_driver_spi" />
       <item itemvalue="CMake Application.__idf_esp_driver_touch_sens" />
-      <item itemvalue="CMake Application.__idf_esp_driver_twai" />
-      <item itemvalue="CMake Application.__idf_esp_driver_uart" />
       <item itemvalue="CMake Application.__idf_esp_eth" />
       <item itemvalue="CMake Application.__idf_esp_event" />
       <item itemvalue="CMake Application.__idf_esp_gdbstub" />
       <item itemvalue="CMake Application.__idf_esp_hid" />
-      <item itemvalue="CMake Application.__idf_esp_http_client" />
       <item itemvalue="CMake Application.__idf_esp_http_server" />
-      <item itemvalue="CMake Application.__idf_esp_https_ota" />
-      <item itemvalue="CMake Application.__idf_esp_https_server" />
-      <item itemvalue="CMake Application.__idf_esp_hw_support" />
       <item itemvalue="CMake Application.__idf_esp_lcd" />
       <item itemvalue="CMake Application.__idf_esp_local_ctrl" />
       <item itemvalue="CMake Application.__idf_esp_mm" />
       <item itemvalue="CMake Application.__idf_esp_netif" />
-      <item itemvalue="CMake Application.__idf_esp_partition" />
-      <item itemvalue="CMake Application.__idf_esp_phy" />
       <item itemvalue="CMake Application.__idf_esp_pm" />
       <item itemvalue="CMake Application.__idf_esp_ringbuf" />
       <item itemvalue="CMake Application.__idf_esp_rom" />
-      <item itemvalue="CMake Application.__idf_esp_security" />
       <item itemvalue="CMake Application.__idf_esp_system" />
+      <item itemvalue="CMake Application.memory.ld" />
+      <item itemvalue="CMake Application.sections.ld.in" />
       <item itemvalue="CMake Application.__idf_esp_timer" />
       <item itemvalue="CMake Application.__idf_esp_vfs_console" />
       <item itemvalue="CMake Application.__idf_esp_wifi" />
-      <item itemvalue="CMake Application.__idf_espcoredump" />
+      <item itemvalue="CMake Application.app-flash" />
       <item itemvalue="CMake Application.__idf_fatfs" />
       <item itemvalue="CMake Application.__idf_freertos" />
       <item itemvalue="CMake Application.__idf_hal" />
       <item itemvalue="CMake Application.__idf_heap" />
-      <item itemvalue="CMake Application.__idf_http_parser" />
-      <item itemvalue="CMake Application.__idf_json" />
-      <item itemvalue="CMake Application.__idf_log" />
-      <item itemvalue="CMake Application.__idf_lwip" />
-      <item itemvalue="CMake Application.__idf_main" />
       <item itemvalue="CMake Application.__idf_mbedtls" />
-      <item itemvalue="CMake Application.__idf_mqtt" />
-      <item itemvalue="CMake Application.__idf_newlib" />
+      <item itemvalue="CMake Application.custom_bundle" />
+      <item itemvalue="CMake Application.apidoc" />
+      <item itemvalue="CMake Application.everest" />
+      <item itemvalue="CMake Application.p256m" />
+      <item itemvalue="CMake Application.lib" />
+      <item itemvalue="CMake Application.mbedcrypto" />
+      <item itemvalue="CMake Application.mbedtls" />
+      <item itemvalue="CMake Application.mbedx509" />
       <item itemvalue="CMake Application.__idf_nvs_flash" />
       <item itemvalue="CMake Application.__idf_nvs_sec_provider" />
+      <item itemvalue="CMake Application.partition-table" />
+      <item itemvalue="CMake Application.partition-table-flash" />
+      <item itemvalue="CMake Application.partition_table_bin" />
+      <item itemvalue="CMake Application.app_check_size" />
       <item itemvalue="CMake Application.__idf_perfmon" />
       <item itemvalue="CMake Application.__idf_protobuf-c" />
-      <item itemvalue="CMake Application.__idf_protocomm" />
-      <item itemvalue="CMake Application.__idf_pthread" />
-      <item itemvalue="CMake Application.__idf_rt" />
-      <item itemvalue="CMake Application.__idf_sdmmc" />
       <item itemvalue="CMake Application.__idf_soc" />
-      <item itemvalue="CMake Application.__idf_spi_flash" />
       <item itemvalue="CMake Application.__idf_spiffs" />
-      <item itemvalue="CMake Application.__idf_tcp_transport" />
       <item itemvalue="CMake Application.__idf_unity" />
       <item itemvalue="CMake Application.__idf_vfs" />
       <item itemvalue="CMake Application.__idf_wear_levelling" />
@@ -1114,632 +1072,100 @@
       <item itemvalue="CMake Application.__idf_wpa_supplicant" />
       <item itemvalue="CMake Application.__idf_xtensa" />
       <item itemvalue="CMake Application.__ldgen_output_sections.ld" />
-      <item itemvalue="CMake Application._project_elf_src" />
-      <item itemvalue="CMake Application.apidoc" />
-      <item itemvalue="CMake Application.app-flash" />
       <item itemvalue="CMake Application.app" />
-      <item itemvalue="CMake Application.app_check_size" />
-      <item itemvalue="CMake Application.bootloader-flash" />
       <item itemvalue="CMake Application.confserver" />
-      <item itemvalue="CMake Application.custom_bundle" />
-      <item itemvalue="CMake Application.efuse-common-table" />
-      <item itemvalue="CMake Application.efuse-custom-table" />
-      <item itemvalue="CMake Application.efuse_common_table" />
-      <item itemvalue="CMake Application.efuse_custom_table" />
-      <item itemvalue="CMake Application.efuse_test_table" />
-      <item itemvalue="CMake Application.encrypted-app-flash" />
-      <item itemvalue="CMake Application.encrypted-bootloader-flash" />
       <item itemvalue="CMake Application.encrypted-flash" />
-      <item itemvalue="CMake Application.encrypted-partition-table-flash" />
       <item itemvalue="CMake Application.erase_flash" />
-      <item itemvalue="CMake Application.everest" />
       <item itemvalue="CMake Application.flash" />
       <item itemvalue="CMake Application.gen_project_binary" />
-      <item itemvalue="CMake Application.lib" />
-      <item itemvalue="CMake Application.mbedcrypto" />
-      <item itemvalue="CMake Application.mbedtls" />
-      <item itemvalue="CMake Application.mbedx509" />
-      <item itemvalue="CMake Application.memory.ld" />
       <item itemvalue="CMake Application.menuconfig" />
       <item itemvalue="CMake Application.merge-bin" />
       <item itemvalue="CMake Application.monitor" />
-      <item itemvalue="CMake Application.p256m" />
-      <item itemvalue="CMake Application.partition-table-flash" />
-      <item itemvalue="CMake Application.partition-table" />
-      <item itemvalue="CMake Application.partition_table-flash" />
-      <item itemvalue="CMake Application.partition_table" />
-      <item itemvalue="CMake Application.partition_table_bin" />
       <item itemvalue="CMake Application.save-defconfig" />
-      <item itemvalue="CMake Application.sections.ld.in" />
-      <item itemvalue="CMake Application.show-efuse-table" />
+      <item itemvalue="CMake Application.__idf_cmock" />
+      <item itemvalue="CMake Application.__idf_console" />
+      <item itemvalue="CMake Application.__idf_efuse" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-LowPassFilter" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-PIDController" />
+      <item itemvalue="CMake Application.__idf_esp_app_format" />
+      <item itemvalue="CMake Application.__idf_esp_driver_dac" />
+      <item itemvalue="CMake Application.__idf_esp_driver_mcpwm" />
+      <item itemvalue="CMake Application.__idf_esp_driver_rmt" />
+      <item itemvalue="CMake Application.__idf_esp_driver_sdm" />
+      <item itemvalue="CMake Application.__idf_esp_driver_spi" />
+      <item itemvalue="CMake Application.__idf_esp_driver_twai" />
+      <item itemvalue="CMake Application.__idf_esp_driver_uart" />
+      <item itemvalue="CMake Application.__idf_esp_http_client" />
+      <item itemvalue="CMake Application.__idf_esp_https_ota" />
+      <item itemvalue="CMake Application.__idf_esp_https_server" />
+      <item itemvalue="CMake Application.__idf_esp_hw_support" />
+      <item itemvalue="CMake Application.__idf_esp_partition" />
+      <item itemvalue="CMake Application.__idf_esp_phy" />
+      <item itemvalue="CMake Application.__idf_esp_security" />
+      <item itemvalue="CMake Application.__idf_espcoredump" />
+      <item itemvalue="CMake Application.__idf_http_parser" />
+      <item itemvalue="CMake Application.__idf_json" />
+      <item itemvalue="CMake Application.__idf_log" />
+      <item itemvalue="CMake Application.__idf_lwip" />
+      <item itemvalue="CMake Application.__idf_main" />
+      <item itemvalue="CMake Application.__idf_mqtt" />
+      <item itemvalue="CMake Application.__idf_newlib" />
+      <item itemvalue="CMake Application.__idf_protocomm" />
+      <item itemvalue="CMake Application.__idf_pthread" />
+      <item itemvalue="CMake Application.__idf_rt" />
+      <item itemvalue="CMake Application.__idf_sdmmc" />
+      <item itemvalue="CMake Application.__idf_spi_flash" />
+      <item itemvalue="CMake Application.__idf_tcp_transport" />
+      <item itemvalue="CMake Application.efuse_common_table" />
+      <item itemvalue="CMake Application.efuse_custom_table" />
+      <item itemvalue="CMake Application.encrypted-app-flash" />
+      <item itemvalue="CMake Application.encrypted-bootloader-flash" />
+      <item itemvalue="CMake Application.encrypted-partition-table-flash" />
+      <item itemvalue="CMake Application.partition_table" />
+      <item itemvalue="CMake Application.partition_table-flash" />
       <item itemvalue="CMake Application.show_efuse_table" />
-      <item itemvalue="CMake Application.size-components" />
-      <item itemvalue="CMake Application.size-files" />
-      <item itemvalue="CMake Application.size" />
-      <item itemvalue="CMake Application.uf2-app" />
-      <item itemvalue="CMake Application.uf2" />
     </list>
+  </component>
+  <component name="RustProjectSettings">
+    <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="bca10583-8b3d-4231-a6b8-cf7238e640b5" name="Changes" comment="" />
-      <created>1766591058287</created>
+      <changelist id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="" />
+      <created>1771649709264</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1766591058287</updated>
-      <workItem from="1766591059688" duration="4161000" />
-      <workItem from="1766595302044" duration="592000" />
-      <workItem from="1766604384010" duration="649000" />
-      <workItem from="1766605047784" duration="1912000" />
-      <workItem from="1766607010497" duration="6192000" />
-      <workItem from="1766657472721" duration="12234000" />
-      <workItem from="1766670109063" duration="10433000" />
-      <workItem from="1766684340823" duration="21309000" />
-      <workItem from="1766741661302" duration="1579000" />
-      <workItem from="1766743280851" duration="7772000" />
-      <workItem from="1766751251310" duration="33140000" />
-      <workItem from="1766829250502" duration="18746000" />
-      <workItem from="1766852638366" duration="5223000" />
-      <workItem from="1766859650461" duration="20096000" />
-      <workItem from="1766922065922" duration="30881000" />
-      <workItem from="1766992116282" duration="194000" />
-      <workItem from="1766992357978" duration="7042000" />
-      <workItem from="1767002340993" duration="41000" />
-      <workItem from="1767002391495" duration="11558000" />
-      <workItem from="1767018784637" duration="7619000" />
-      <workItem from="1767032078358" duration="3326000" />
-      <workItem from="1767040018547" duration="4705000" />
-      <workItem from="1767091074417" duration="4639000" />
-      <workItem from="1767096197073" duration="12009000" />
-      <workItem from="1767112538103" duration="386000" />
-      <workItem from="1767122836045" duration="6300000" />
-      <workItem from="1767130514735" duration="172000" />
-      <workItem from="1767182084285" duration="15804000" />
-      <workItem from="1767198110549" duration="5259000" />
-      <workItem from="1767224364791" duration="12352000" />
-      <workItem from="1767267153741" duration="699000" />
-      <workItem from="1767272970669" duration="3916000" />
-      <workItem from="1767277936481" duration="13107000" />
-      <workItem from="1767302071143" duration="2245000" />
-      <workItem from="1767352007392" duration="8494000" />
-      <workItem from="1767371841270" duration="5197000" />
-      <workItem from="1767437157900" duration="27000" />
-      <workItem from="1767483233171" duration="831000" />
-      <workItem from="1767534008299" duration="22007000" />
-      <workItem from="1767610480035" duration="28086000" />
-      <workItem from="1767654273455" duration="3349000" />
-      <workItem from="1767657695420" duration="11300000" />
-      <workItem from="1767703381109" duration="16833000" />
-      <workItem from="1767734472519" duration="4552000" />
-      <workItem from="1767810762764" duration="933000" />
-      <workItem from="1767811723004" duration="2674000" />
-      <workItem from="1767865343262" duration="29741000" />
-      <workItem from="1767900320210" duration="3375000" />
-      <workItem from="1767950385691" duration="4139000" />
-      <workItem from="1767954591533" duration="14456000" />
-      <workItem from="1767992895149" duration="7751000" />
-      <workItem from="1768045893176" duration="10471000" />
-      <workItem from="1768112941658" duration="14340000" />
-      <workItem from="1768599295642" duration="3297000" />
-      <workItem from="1768611175315" duration="1321000" />
-      <workItem from="1768666041891" duration="1869000" />
-      <workItem from="1768674026311" duration="8800000" />
-      <workItem from="1768738271672" duration="4641000" />
-      <workItem from="1768753017383" duration="5587000" />
-      <workItem from="1768762846361" duration="2471000" />
-      <workItem from="1768766493145" duration="9000" />
-      <workItem from="1768766576422" duration="2888000" />
-      <workItem from="1768825156269" duration="863000" />
-      <workItem from="1768827254650" duration="123000" />
-      <workItem from="1768827395557" duration="10750000" />
-      <workItem from="1768910019301" duration="3911000" />
-      <workItem from="1768914594458" duration="2860000" />
-      <workItem from="1768931817437" duration="12605000" />
-      <workItem from="1768999816062" duration="9333000" />
-      <workItem from="1769036344002" duration="2167000" />
-      <workItem from="1769090151807" duration="10508000" />
-      <workItem from="1769106160531" duration="6597000" />
-      <workItem from="1769301948274" duration="885000" />
-      <workItem from="1769341236478" duration="1662000" />
-      <workItem from="1769342970401" duration="445000" />
-      <workItem from="1769343586872" duration="1040000" />
-      <workItem from="1769346346702" duration="4234000" />
-      <workItem from="1769424611425" duration="3000" />
-      <workItem from="1769442612020" duration="31234000" />
-      <workItem from="1769513460154" duration="32891000" />
-      <workItem from="1769597689596" duration="17914000" />
-      <workItem from="1769634752036" duration="16800000" />
-      <workItem from="1769687786324" duration="2844000" />
-      <workItem from="1769696101519" duration="23777000" />
-      <workItem from="1769722020518" duration="6733000" />
-      <workItem from="1769774809342" duration="17100000" />
-      <workItem from="1769799762048" duration="6279000" />
-      <workItem from="1769818378657" duration="2027000" />
-      <workItem from="1769864495722" duration="15447000" />
-      <workItem from="1769952306407" duration="12053000" />
-      <workItem from="1769975722463" duration="2643000" />
-      <workItem from="1770346106639" duration="8841000" />
-      <workItem from="1770391007615" duration="14298000" />
-      <workItem from="1770410919721" duration="2791000" />
-      <workItem from="1770464933222" duration="27592000" />
-      <workItem from="1770590617964" duration="2680000" />
-      <workItem from="1770596607393" duration="10994000" />
-      <workItem from="1770644480266" duration="18513000" />
-      <workItem from="1770671109700" duration="1416000" />
-      <workItem from="1770898946281" duration="2032000" />
-      <workItem from="1771027751991" duration="434000" />
-      <workItem from="1771028224598" duration="5733000" />
-      <workItem from="1771044311079" duration="10130000" />
-      <workItem from="1771132153485" duration="2455000" />
-      <workItem from="1771213814693" duration="5000" />
-      <workItem from="1771213947001" duration="9577000" />
-      <workItem from="1771294895295" duration="11018000" />
-      <workItem from="1771309078088" duration="8177000" />
-      <workItem from="1771391119927" duration="5248000" />
-      <workItem from="1771413103611" duration="1089000" />
-      <workItem from="1771416394729" duration="3577000" />
-      <workItem from="1771478643321" duration="12871000" />
-      <workItem from="1771501825064" duration="8392000" />
-      <workItem from="1771559049244" duration="18035000" />
+      <updated>1771649709264</updated>
+      <workItem from="1771649711266" duration="10259000" />
     </task>
-    <task id="LOCAL-00086" summary="прикостылил визуализацию активной НОЖКИ (ппалущщи по ебалу за horny thoughts)">
+    <task id="LOCAL-00001" summary="ебучий есп">
       <option name="closed" value="true" />
-      <created>1769121211335</created>
-      <option name="number" value="00086" />
-      <option name="presentableId" value="LOCAL-00086" />
+      <created>1771655006974</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1769121211335</updated>
+      <updated>1771655006974</updated>
     </task>
-    <task id="LOCAL-00087" summary="щас все эти dlpf вынесем в отдельный самбмодуль,  заебало копипастить">
+    <task id="LOCAL-00002" summary="ебучий есп">
       <option name="closed" value="true" />
-      <created>1769343332963</created>
-      <option name="number" value="00087" />
-      <option name="presentableId" value="LOCAL-00087" />
+      <created>1771656507000</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1769343332964</updated>
+      <updated>1771656507000</updated>
     </task>
-    <task id="LOCAL-00088" summary="чета заговнилось все, надо забекапить">
-      <option name="closed" value="true" />
-      <created>1769459886551</created>
-      <option name="number" value="00088" />
-      <option name="presentableId" value="LOCAL-00088" />
-      <option name="project" value="LOCAL" />
-      <updated>1769459886552</updated>
-    </task>
-    <task id="LOCAL-00089" summary="а не, ниче, пашет - надо только выкорчевать этот мусор из SX и перенести в транссивер">
-      <option name="closed" value="true" />
-      <created>1769462363956</created>
-      <option name="number" value="00089" />
-      <option name="presentableId" value="LOCAL-00089" />
-      <option name="project" value="LOCAL" />
-      <updated>1769462363956</updated>
-    </task>
-    <task id="LOCAL-00090" summary="ахуй выглядит, надо завтра будет захуярить чета типа signal saturation или я хз">
-      <option name="closed" value="true" />
-      <created>1769474167286</created>
-      <option name="number" value="00090" />
-      <option name="presentableId" value="LOCAL-00090" />
-      <option name="project" value="LOCAL" />
-      <updated>1769474167286</updated>
-    </task>
-    <task id="LOCAL-00091" summary="заебися">
-      <option name="closed" value="true" />
-      <created>1769531273883</created>
-      <option name="number" value="00091" />
-      <option name="presentableId" value="LOCAL-00091" />
-      <option name="project" value="LOCAL" />
-      <updated>1769531273883</updated>
-    </task>
-    <task id="LOCAL-00092" summary="захуярил щипковые жесты для масштабирования графика радиоскана">
-      <option name="closed" value="true" />
-      <created>1769556438509</created>
-      <option name="number" value="00092" />
-      <option name="presentableId" value="LOCAL-00092" />
-      <option name="project" value="LOCAL" />
-      <updated>1769556438509</updated>
-    </task>
-    <task id="LOCAL-00093" summary="почистил трансюка, а то классовых оберток понахуярил, а толку хули">
-      <option name="closed" value="true" />
-      <created>1769606519873</created>
-      <option name="number" value="00093" />
-      <option name="presentableId" value="LOCAL-00093" />
-      <option name="project" value="LOCAL" />
-      <updated>1769606519874</updated>
-    </task>
-    <task id="LOCAL-00094" summary="захуярил поддержку scrollIntoView">
-      <option name="closed" value="true" />
-      <created>1769614291364</created>
-      <option name="number" value="00094" />
-      <option name="presentableId" value="LOCAL-00094" />
-      <option name="project" value="LOCAL" />
-      <updated>1769614291364</updated>
-    </task>
-    <task id="LOCAL-00095" summary="захуярил визуализацию PID-тюнинга, но чета пока говной воняет, надо попизже будет">
-      <option name="closed" value="true" />
-      <created>1769652378463</created>
-      <option name="number" value="00095" />
-      <option name="presentableId" value="LOCAL-00095" />
-      <option name="project" value="LOCAL" />
-      <updated>1769652378464</updated>
-    </task>
-    <task id="LOCAL-00096" summary="захуярил растеризацию сплайна катмулла-рома, чтоб PID-чартик посексуальнее выглядел">
-      <option name="closed" value="true" />
-      <created>1769707834845</created>
-      <option name="number" value="00096" />
-      <option name="presentableId" value="LOCAL-00096" />
-      <option name="project" value="LOCAL" />
-      <updated>1769707834846</updated>
-    </task>
-    <task id="LOCAL-00097" summary="опача забыл">
-      <option name="closed" value="true" />
-      <created>1769708110953</created>
-      <option name="number" value="00097" />
-      <option name="presentableId" value="LOCAL-00097" />
-      <option name="project" value="LOCAL" />
-      <updated>1769708110953</updated>
-    </task>
-    <task id="LOCAL-00098" summary="ПОРА РЕВОРКАТЬ КЛАВУ ОБСКУРОВНУ">
-      <option name="closed" value="true" />
-      <created>1769713346905</created>
-      <option name="number" value="00098" />
-      <option name="presentableId" value="LOCAL-00098" />
-      <option name="project" value="LOCAL" />
-      <updated>1769713346905</updated>
-    </task>
-    <task id="LOCAL-00099" summary="заебунькаль енамчик с ОПЦИЯМИ клавдии федеровны - терь в текстовых полях можно указывать, че ты хочешь, мол, числа, хуисла, со знаком, без плавающей точки и тп">
-      <option name="closed" value="true" />
-      <created>1769719339208</created>
-      <option name="number" value="00099" />
-      <option name="presentableId" value="LOCAL-00099" />
-      <option name="project" value="LOCAL" />
-      <updated>1769719339208</updated>
-    </task>
-    <task id="LOCAL-00100" summary="разгондонил клавулетту на кучу файлов и убрал эту залупу с model-based интерфейсом - типа вы там на своих браузерах и мобилках дрочите скок хотите, а мы мужики базированные, сразу во вьюху всё хуярим и похуй">
-      <option name="closed" value="true" />
-      <created>1769728557322</created>
-      <option name="number" value="00100" />
-      <option name="presentableId" value="LOCAL-00100" />
-      <option name="project" value="LOCAL" />
-      <updated>1769728557322</updated>
-    </task>
-    <task id="LOCAL-00101" summary="WELCOME TO THE ♂ DUNGEON MIT ♂ LICENSE CLUB, BUDDY">
-      <option name="closed" value="true" />
-      <created>1769728717447</created>
-      <option name="number" value="00101" />
-      <option name="presentableId" value="LOCAL-00101" />
-      <option name="project" value="LOCAL" />
-      <updated>1769728717447</updated>
-    </task>
-    <task id="LOCAL-00102" summary="забыл модельку лейаутов клависина подтереть">
-      <option name="closed" value="true" />
-      <created>1769778726102</created>
-      <option name="number" value="00102" />
-      <option name="presentableId" value="LOCAL-00102" />
-      <option name="project" value="LOCAL" />
-      <updated>1769778726102</updated>
-    </task>
-    <task id="LOCAL-00103" summary="побольше сипиков, поменьше хедиков">
-      <option name="closed" value="true" />
-      <created>1769780831146</created>
-      <option name="number" value="00103" />
-      <option name="presentableId" value="LOCAL-00103" />
-      <option name="project" value="LOCAL" />
-      <updated>1769780831146</updated>
-    </task>
-    <task id="LOCAL-00104" summary="захуярил ТИКОВЫЕ ЛЕЙБЛЫ для ползучих сучих товарей">
-      <option name="closed" value="true" />
-      <created>1769787197934</created>
-      <option name="number" value="00104" />
-      <option name="presentableId" value="LOCAL-00104" />
-      <option name="project" value="LOCAL" />
-      <updated>1769787197934</updated>
-    </task>
-    <task id="LOCAL-00105" summary="ууффффффф какие слайдеры, так бы и присунул им между узких тугих тиков">
-      <option name="closed" value="true" />
-      <created>1769789298243</created>
-      <option name="number" value="00105" />
-      <option name="presentableId" value="LOCAL-00105" />
-      <option name="project" value="LOCAL" />
-      <updated>1769789298243</updated>
-    </task>
-    <task id="LOCAL-00106" summary="баля вот это стилёвые слайдеры получились я теку">
-      <option name="closed" value="true" />
-      <created>1769802012472</created>
-      <option name="number" value="00106" />
-      <option name="presentableId" value="LOCAL-00106" />
-      <option name="project" value="LOCAL" />
-      <updated>1769802012472</updated>
-    </task>
-    <task id="LOCAL-00107" summary="захуярил виджетоиды pid-тюнинга, но пока чет недостаточно видеофильски выглядит, надо облизать">
-      <option name="closed" value="true" />
-      <created>1769878421578</created>
-      <option name="number" value="00107" />
-      <option name="presentableId" value="LOCAL-00107" />
-      <option name="project" value="LOCAL" />
-      <updated>1769878421580</updated>
-    </task>
-    <task id="LOCAL-00108" summary="ИЗНИЧТОЖИЛ хиповые коллбеки, а то изначально хотел как дотнете, типа удобно, вся хуйня - а они, бля, на каждый инстанс элемента отжирают кучу и срут фрагментацией - не-не-не-не, хватит и простого поинтера, шлинах">
-      <option name="closed" value="true" />
-      <created>1769880232284</created>
-      <option name="number" value="00108" />
-      <option name="presentableId" value="LOCAL-00108" />
-      <option name="project" value="LOCAL" />
-      <updated>1769880232284</updated>
-    </task>
-    <task id="LOCAL-00109" summary="БИТОЁБИМ ПОМАЛЕНЬКУ)) перехуячил логику трансюка под one-time пакеты - теперь они пиздуют под общим типом, что сейвит аж ЦЕЛЫХ ТРИ БИТА на каждый continuous пакет">
-      <option name="closed" value="true" />
-      <created>1769957539707</created>
-      <option name="number" value="00109" />
-      <option name="presentableId" value="LOCAL-00109" />
-      <option name="project" value="LOCAL" />
-      <updated>1769957539707</updated>
-    </task>
-    <task id="LOCAL-00110" summary="заебенил нормальную калибровку имушки вместо заглушки">
-      <option name="closed" value="true" />
-      <created>1769970196474</created>
-      <option name="number" value="00110" />
-      <option name="presentableId" value="LOCAL-00110" />
-      <option name="project" value="LOCAL" />
-      <updated>1769970196474</updated>
-    </task>
-    <task id="LOCAL-00111" summary="захуярил контроллер сплитвьюхи, чтоб PFD/ND ratio по кайфу таскалось туды-сюды">
-      <option name="closed" value="true" />
-      <created>1770355169247</created>
-      <option name="number" value="00111" />
-      <option name="presentableId" value="LOCAL-00111" />
-      <option name="project" value="LOCAL" />
-      <updated>1770355169247</updated>
-    </task>
-    <task id="LOCAL-00112" summary="сделал все поудобней, чтоб не надо было менюху для сплита открывать постоянно - а то в полете нервы отъебнут">
-      <option name="closed" value="true" />
-      <created>1770399642816</created>
-      <option name="number" value="00112" />
-      <option name="presentableId" value="LOCAL-00112" />
-      <option name="project" value="LOCAL" />
-      <updated>1770399642817</updated>
-    </task>
-    <task id="LOCAL-00113" summary="заебенил шаблоны страниц со скролловью и без, т.к. на том же спектрум скане он там не пришей к пизде рукав">
-      <option name="closed" value="true" />
-      <created>1770413400316</created>
-      <option name="number" value="00113" />
-      <option name="presentableId" value="LOCAL-00113" />
-      <option name="project" value="LOCAL" />
-      <updated>1770413400317</updated>
-    </task>
-    <task id="LOCAL-00114" summary="ну-ка, мб щас уберем std function">
-      <option name="closed" value="true" />
-      <created>1770476792015</created>
-      <option name="number" value="00114" />
-      <option name="presentableId" value="LOCAL-00114" />
-      <option name="project" value="LOCAL" />
-      <updated>1770476792016</updated>
-    </task>
-    <task id="LOCAL-00115" summary="захуярил страничку конфигурации трансюка">
-      <option name="closed" value="true" />
-      <created>1770498865282</created>
-      <option name="number" value="00115" />
-      <option name="presentableId" value="LOCAL-00115" />
-      <option name="project" value="LOCAL" />
-      <updated>1770498865282</updated>
-    </task>
-    <task id="LOCAL-00116" summary="шизоидная дилемма - с одной стороны двухпроходная растеризация через measure/render крайне эффективна, а с другой - иногда могут возникнуть ситуации, когда после первого рендер пасса необходимо чета там захуярить (например, проскроллиться к указанному элементу, когда его коорды гарантированно рассчитались). И вот тут на ум приходит только костыль в виде requestSecondRenderPass, т.к. разделять рендер на arrange/render на постоянной основе мне пиздец не хочется. Ну типа вроде это даже правильно звучит - но это по сути снизит перформанс всей либы ради &quot;правильности&quot;, поэтому хуй знает чота.... пока оставлю так, надо будет еще подумать">
-      <option name="closed" value="true" />
-      <created>1770603573247</created>
-      <option name="number" value="00116" />
-      <option name="presentableId" value="LOCAL-00116" />
-      <option name="project" value="LOCAL" />
-      <updated>1770603573247</updated>
-    </task>
-    <task id="LOCAL-00117" summary="захуярил отображение метрической высоты для пуссибоев, почему-то не любящих ножки">
-      <option name="closed" value="true" />
-      <created>1770607453905</created>
-      <option name="number" value="00117" />
-      <option name="presentableId" value="LOCAL-00117" />
-      <option name="project" value="LOCAL" />
-      <updated>1770607453905</updated>
-    </task>
-    <task id="LOCAL-00118" summary="попробовать что ли на разные ядра эту хуйню распараллелить">
-      <option name="closed" value="true" />
-      <created>1770651229040</created>
-      <option name="number" value="00118" />
-      <option name="presentableId" value="LOCAL-00118" />
-      <option name="project" value="LOCAL" />
-      <updated>1770651229040</updated>
-    </task>
-    <task id="LOCAL-00119" summary="ахуенчик)) теперь трансюк монопольно сосёт все кварцевые соки со 2 ядра">
-      <option name="closed" value="true" />
-      <created>1770656624212</created>
-      <option name="number" value="00119" />
-      <option name="presentableId" value="LOCAL-00119" />
-      <option name="project" value="LOCAL" />
-      <updated>1770656624212</updated>
-    </task>
-    <task id="LOCAL-00120" summary="ахахахахахахах, блядь, для клиона FILE IS TOO COMPLEX)))) они че, в дуб уебались? а че тогда не complex? ногодрыг? НЕ, НУ НОЖКИ - ЭТО СВЯТОЕ, БАЗАРУ НЕТ">
-      <option name="closed" value="true" />
-      <created>1770663390909</created>
-      <option name="number" value="00120" />
-      <option name="presentableId" value="LOCAL-00120" />
-      <option name="project" value="LOCAL" />
-      <updated>1770663390909</updated>
-    </task>
-    <task id="LOCAL-00121" summary="щас твердо и четко напаяю трансюк на баззер - надо чекнуть, будет ли эта харкота громче пищать от 5в питания">
-      <option name="closed" value="true" />
-      <created>1771031763970</created>
-      <option name="number" value="00121" />
-      <option name="presentableId" value="LOCAL-00121" />
-      <option name="project" value="LOCAL" />
-      <updated>1771031763971</updated>
-    </task>
-    <task id="LOCAL-00122" summary="а каналы ledc все заняты... сука, ну че за хуйня начинается, опять что ли gptimer сосать и софтверно шимить">
-      <option name="closed" value="true" />
-      <created>1771033976995</created>
-      <option name="number" value="00122" />
-      <option name="presentableId" value="LOCAL-00122" />
-      <option name="project" value="LOCAL" />
-      <updated>1771033976995</updated>
-    </task>
-    <task id="LOCAL-00123" summary="захуярил визуализацию тренда рысканья">
-      <option name="closed" value="true" />
-      <created>1771077706004</created>
-      <option name="number" value="00123" />
-      <option name="presentableId" value="LOCAL-00123" />
-      <option name="project" value="LOCAL" />
-      <updated>1771077706004</updated>
-    </task>
-    <task id="LOCAL-00124" summary="накалякал семплер попизже, а то оно с FIFO сосало слишком редко">
-      <option name="closed" value="true" />
-      <created>1771143131677</created>
-      <option name="number" value="00124" />
-      <option name="presentableId" value="LOCAL-00124" />
-      <option name="project" value="LOCAL" />
-      <updated>1771143131677</updated>
-    </task>
-    <task id="LOCAL-00125" summary="ну че, потихоньку продвигаемся к параметрам модуляции - вообще это пиздец опасная тема, надо хорошенько всяких условий понасрать с фоллбеками, а то получить окирпичивание в поле было бы не в кайф">
-      <option name="closed" value="true" />
-      <created>1771222455855</created>
-      <option name="number" value="00125" />
-      <option name="presentableId" value="LOCAL-00125" />
-      <option name="project" value="LOCAL" />
-      <updated>1771222455855</updated>
-    </task>
-    <task id="LOCAL-00126" summary="ну че, потихоньку продвигаемся к параметрам модуляции - вообще это пиздец опасная тема, надо хорошенько всяких условий понасрать с фоллбеками, а то получить окирпичивание в поле было бы не в кайф">
-      <option name="closed" value="true" />
-      <created>1771223214574</created>
-      <option name="number" value="00126" />
-      <option name="presentableId" value="LOCAL-00126" />
-      <option name="project" value="LOCAL" />
-      <updated>1771223214574</updated>
-    </task>
-    <task id="LOCAL-00127" summary="нехуй тыкать диапазоны">
-      <option name="closed" value="true" />
-      <created>1771298167279</created>
-      <option name="number" value="00127" />
-      <option name="presentableId" value="LOCAL-00127" />
-      <option name="project" value="LOCAL" />
-      <updated>1771298167279</updated>
-    </task>
-    <task id="LOCAL-00128" summary="малёха объебался - я значения регистров напрямую в енамах сторил, а это пиздец как заёбывает при касте">
-      <option name="closed" value="true" />
-      <created>1771301130890</created>
-      <option name="number" value="00128" />
-      <option name="presentableId" value="LOCAL-00128" />
-      <option name="project" value="LOCAL" />
-      <updated>1771301130890</updated>
-    </task>
-    <task id="LOCAL-00129" summary="тааакс, ну вроде все пашет и даже фоллбечит на говняных настройках - но сам код какой-то некрасивый получился, надо прилизать">
-      <option name="closed" value="true" />
-      <created>1771306303570</created>
-      <option name="number" value="00129" />
-      <option name="presentableId" value="LOCAL-00129" />
-      <option name="project" value="LOCAL" />
-      <updated>1771306303570</updated>
-    </task>
-    <task id="LOCAL-00130" summary="диалоги ебаные">
-      <option name="closed" value="true" />
-      <created>1771395376263</created>
-      <option name="number" value="00130" />
-      <option name="presentableId" value="LOCAL-00130" />
-      <option name="project" value="LOCAL" />
-      <updated>1771395376265</updated>
-    </task>
-    <task id="LOCAL-00131" summary="захуярил режим гиростабилизированного управления - юзер задает целевой угол, а FBW его выдерживает по PIDам. В симе летается охуенно стабильно, но ИРЛ с IMUшкой хуй знает, надо будет потестить">
-      <option name="closed" value="true" />
-      <created>1771498420303</created>
-      <option name="number" value="00131" />
-      <option name="presentableId" value="LOCAL-00131" />
-      <option name="project" value="LOCAL" />
-      <updated>1771498420303</updated>
-    </task>
-    <task id="LOCAL-00132" summary="захуярил режим гиростабилизированного управления - юзер задает целевой угол, а FBW его выдерживает по PIDам. В симе летается охуенно стабильно, но ИРЛ с IMUшкой хуй знает, надо будет потестить">
-      <option name="closed" value="true" />
-      <created>1771498463318</created>
-      <option name="number" value="00132" />
-      <option name="presentableId" value="LOCAL-00132" />
-      <option name="project" value="LOCAL" />
-      <updated>1771498463319</updated>
-    </task>
-    <task id="LOCAL-00133" summary="так, опасная залупа, надо забекапить">
-      <option name="closed" value="true" />
-      <created>1771508189007</created>
-      <option name="number" value="00133" />
-      <option name="presentableId" value="LOCAL-00133" />
-      <option name="project" value="LOCAL" />
-      <updated>1771508189007</updated>
-    </task>
-    <task id="LOCAL-00134" summary="ахуй, удобненько управляется">
-      <option name="closed" value="true" />
-      <created>1771512940122</created>
-      <option name="number" value="00134" />
-      <option name="presentableId" value="LOCAL-00134" />
-      <option name="project" value="LOCAL" />
-      <updated>1771512940122</updated>
-    </task>
-    <option name="localTasksCounter" value="135" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="VCPKGProject">
-    <isAutomaticCheckingOnLaunch value="false" />
-    <isAutomaticFoundErrors value="true" />
-    <isAutomaticReloadCMake value="true" />
-  </component>
   <component name="VcsManagerConfiguration">
-    <option name="CHECK_NEW_TODO" value="false" />
-    <ignored-roots>
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bootloader/subproject/components/micro-ecc/micro-ecc" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32c2/esp32c2-bt-lib" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32c3_family" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32c5/esp32c5-bt-lib" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32c6/esp32c6-bt-lib" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32h2/esp32h2-bt-lib" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/esp_ble_mesh/lib/lib" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/host/nimble/nimble" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/cmock/CMock" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/cmock/CMock/vendor/c_exception" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/cmock/CMock/vendor/unity" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/esp_coex/lib" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/esp_phy/lib" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/esp_wifi/lib" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/heap/tlsf" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/json/cJSON" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/lwip/lwip" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/mbedtls/mbedtls" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/mqtt/esp-mqtt" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/openthread/lib" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/openthread/openthread" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/protobuf-c/protobuf-c" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
-      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
-    </ignored-roots>
-    <MESSAGE value="ИЗНИЧТОЖИЛ хиповые коллбеки, а то изначально хотел как дотнете, типа удобно, вся хуйня - а они, бля, на каждый инстанс элемента отжирают кучу и срут фрагментацией - не-не-не-не, хватит и простого поинтера, шлинах" />
-    <MESSAGE value="БИТОЁБИМ ПОМАЛЕНЬКУ)) перехуячил логику трансюка под one-time пакеты - теперь они пиздуют под общим типом, что сейвит аж ЦЕЛЫХ ТРИ БИТА на каждый continuous пакет" />
-    <MESSAGE value="заебенил нормальную калибровку имушки вместо заглушки" />
-    <MESSAGE value="захуярил контроллер сплитвьюхи, чтоб PFD/ND ratio по кайфу таскалось туды-сюды" />
-    <MESSAGE value="сделал все поудобней, чтоб не надо было менюху для сплита открывать постоянно - а то в полете нервы отъебнут" />
-    <MESSAGE value="заебенил шаблоны страниц со скролловью и без, т.к. на том же спектрум скане он там не пришей к пизде рукав" />
-    <MESSAGE value="ну-ка, мб щас уберем std function" />
-    <MESSAGE value="захуярил страничку конфигурации трансюка" />
-    <MESSAGE value="шизоидная дилемма - с одной стороны двухпроходная растеризация через measure/render крайне эффективна, а с другой - иногда могут возникнуть ситуации, когда после первого рендер пасса необходимо чета там захуярить (например, проскроллиться к указанному элементу, когда его коорды гарантированно рассчитались). И вот тут на ум приходит только костыль в виде requestSecondRenderPass, т.к. разделять рендер на arrange/render на постоянной основе мне пиздец не хочется. Ну типа вроде это даже правильно звучит - но это по сути снизит перформанс всей либы ради &quot;правильности&quot;, поэтому хуй знает чота.... пока оставлю так, надо будет еще подумать" />
-    <MESSAGE value="захуярил отображение метрической высоты для пуссибоев, почему-то не любящих ножки" />
-    <MESSAGE value="попробовать что ли на разные ядра эту хуйню распараллелить" />
-    <MESSAGE value="ахуенчик)) теперь трансюк монопольно сосёт все кварцевые соки со 2 ядра" />
-    <MESSAGE value="ахахахахахахах, блядь, для клиона FILE IS TOO COMPLEX)))) они че, в дуб уебались? а че тогда не complex? ногодрыг? НЕ, НУ НОЖКИ - ЭТО СВЯТОЕ, БАЗАРУ НЕТ" />
-    <MESSAGE value="щас твердо и четко напаяю трансюк на баззер - надо чекнуть, будет ли эта харкота громче пищать от 5в питания" />
-    <MESSAGE value="а каналы ledc все заняты... сука, ну че за хуйня начинается, опять что ли gptimer сосать и софтверно шимить" />
-    <MESSAGE value="захуярил визуализацию тренда рысканья" />
-    <MESSAGE value="накалякал семплер попизже, а то оно с FIFO сосало слишком редко" />
-    <MESSAGE value="ну че, потихоньку продвигаемся к параметрам модуляции - вообще это пиздец опасная тема, надо хорошенько всяких условий понасрать с фоллбеками, а то получить окирпичивание в поле было бы не в кайф" />
-    <MESSAGE value="нехуй тыкать диапазоны" />
-    <MESSAGE value="малёха объебался - я значения регистров напрямую в енамах сторил, а это пиздец как заёбывает при касте" />
-    <MESSAGE value="тааакс, ну вроде все пашет и даже фоллбечит на говняных настройках - но сам код какой-то некрасивый получился, надо прилизать" />
-    <MESSAGE value="диалоги ебаные" />
-    <MESSAGE value="захуярил режим гиростабилизированного управления - юзер задает целевой угол, а FBW его выдерживает по PIDам. В симе летается охуенно стабильно, но ИРЛ с IMUшкой хуй знает, надо будет потестить" />
-    <MESSAGE value="так, опасная залупа, надо забекапить" />
-    <MESSAGE value="ахуй, удобненько управляется" />
-    <option name="LAST_COMMIT_MESSAGE" value="ахуй, удобненько управляется" />
+    <MESSAGE value="ебучий есп" />
+    <option name="LAST_COMMIT_MESSAGE" value="ебучий есп" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

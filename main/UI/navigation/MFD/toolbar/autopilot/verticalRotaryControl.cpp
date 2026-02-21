@@ -35,6 +35,8 @@ namespace pizda {
 			&ALT
 		});
 
+		seven.setValue(RC::getInstance().getSettings().autopilot.altitudeFt);
+
 		switch (RC::getInstance().getRemoteData().autopilot.verticalMode) {
 			case AutopilotVerticalMode::stab:
 				setVariantIndex(1);
@@ -48,8 +50,6 @@ namespace pizda {
 				setVariantIndex(0);
 				break;
 		}
-
-		seven.setValue(RC::getInstance().getSettings().autopilot.altitudeFt);
 	}
 	
 	std::wstring_view VerticalRotaryControl::variantIndexToTitle(const uint8_t index) {
@@ -80,27 +80,34 @@ namespace pizda {
 
 		auto& rc = RC::getInstance();
 
-		AutopilotVerticalMode newMode;
-		
 		switch (getVariantIndex()) {
 			case 0: {
-				newMode = AutopilotVerticalMode::flc;
+				rc.getRemoteData().autopilot.verticalMode =
+					rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::flc
+					? AutopilotVerticalMode::dir
+					: AutopilotVerticalMode::flc;
+
+				rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setAltitude);
+
 				break;
 			}
 			case 1: {
-				newMode = AutopilotVerticalMode::stab;
+				rc.getRemoteData().autopilot.verticalMode =
+					rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::stab
+					? AutopilotVerticalMode::dir
+					: AutopilotVerticalMode::stab;
+
 				break;
 			}
 			default: {
-				newMode = AutopilotVerticalMode::alt;
+				rc.getRemoteData().autopilot.verticalMode =
+					rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::alt
+					? AutopilotVerticalMode::dir
+					: AutopilotVerticalMode::alt;
+
 				break;
 			}
 		}
-		
-		rc.getRemoteData().autopilot.verticalMode =
-			newMode == rc.getRemoteData().autopilot.verticalMode
-			? AutopilotVerticalMode::dir
-			: newMode;
 
 		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setVerticalMode);
 	}
@@ -122,11 +129,11 @@ namespace pizda {
 				break;
 				
 			case AutopilotVerticalMode::alts:
-				setBorderColor(getVariantIndex() == 0 ? &Theme::fg1 : &Theme::yellow);
+				setBorderColor(getVariantIndex() == 0 ? &Theme::green1 : &Theme::yellow);
 				break;
 				
 			case AutopilotVerticalMode::alt:
-				setBorderColor(getVariantIndex() == 2 ? &Theme::fg1 : &Theme::yellow);
+				setBorderColor(getVariantIndex() == 2 ? &Theme::ocean : &Theme::yellow);
 				break;
 		}
 	}

@@ -16,6 +16,7 @@ idf_component_register(
         ESP-IDF-Units
         ESP-IDF-LowPassFilter
         ESP-IDF-PIDController
+        ESP-IDF-CircularQueue
         ESP-IDF-Battery
         ESP-IDF-BuzzerAudio
 )

@@ -69,16 +69,19 @@ namespace pizda {
 		switch (getVariantIndex()) {
 			case 0: {
 				newMode = AutopilotLateralMode::hdg;
+				rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setHeading);
+
 				break;
 			}
 			default: {
 				newMode = AutopilotLateralMode::stab;
+
 				break;
 			}
 		}
 
 		rc.getRemoteData().autopilot.lateralMode =
-			rc.getRemoteData().autopilot.lateralMode == newMode
+			rc.getAircraftData().raw.autopilot.lateralMode == newMode
 			? AutopilotLateralMode::dir
 			: newMode;
 
