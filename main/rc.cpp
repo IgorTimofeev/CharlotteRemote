@@ -127,8 +127,8 @@ namespace pizda {
 
 		_application.setRenderer(_renderer);
 		_application.setBackgroundColor(&Theme::bg1);
-		_application += &_pageLayout;
-		_application += &_openMenuButton;
+		_application += _pageLayout;
+		_application += _openMenuButton;
 
 		setRoute(&Routes::MFD);
 		updateDebugOverlayVisibility();
@@ -391,13 +391,13 @@ namespace pizda {
 				return;
 
 			_debugOverlay = new DebugOverlay();
-			_application += _debugOverlay;
+			_application += *_debugOverlay;
 		}
 		else {
 			if (_debugOverlay == nullptr)
 				return;
 
-			_application -= _debugOverlay;
+			_application -= *_debugOverlay;
 			delete _debugOverlay;
 			_debugOverlay = nullptr;
 		}
@@ -415,16 +415,16 @@ namespace pizda {
 
 		// Removing old page
 		if (_pageLayout.getChildrenCount() > 0) {
-			const auto oldPage = _pageLayout[0];
+			const auto previousPage = &_pageLayout[0];
 
 			_pageLayout.removeChildAt(0);
 
-			delete oldPage;
+			delete previousPage;
 		}
 
 		// Adding new page
 		if (_route)
-			_pageLayout += _route->buildElement();
+			_pageLayout += *_route->buildElement();
 	}
 	
 	RemoteTransceiver& RC::getTransceiver() {

@@ -21,7 +21,7 @@ namespace pizda {
 			// ----------------------------- ADIRS -----------------------------
 
 			TextField _ADIRSMagneticDeclinationTextField {};
-			Titler _ADIRSMagneticDeclinationTitle { L"Magnetic declination (deg)", &_ADIRSMagneticDeclinationTextField };
+			Titler _ADIRSMagneticDeclinationTitle { L"Magnetic declination (deg)", _ADIRSMagneticDeclinationTextField };
 
 			// ----------------------------- Calibration -----------------------------
 

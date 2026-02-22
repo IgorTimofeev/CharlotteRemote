@@ -29,7 +29,7 @@ namespace pizda {
 
 			// FOV
 			Slider _PFDFOVSlider {};
-			Titler _PFDFOVTitle = Titler(L"Field of view", &_PFDFOVSlider);
+			Titler _PFDFOVTitle = Titler(L"Field of view", _PFDFOVSlider);
 
 			// Waypoint labels
 			Switcher _PFDWaypointLabels { L"Waypoint labels" };

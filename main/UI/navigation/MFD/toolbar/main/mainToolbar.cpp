@@ -10,34 +10,34 @@ namespace pizda {
 		
 		leftRow.setOrientation(Orientation::horizontal);
 		leftRow.setHorizontalAlignment(Alignment::start);
-		*this += &leftRow;
+		*this += leftRow;
 
 		// Controls
-		ToolbarSection::setDefaultMargin(&_flightControlsIndicator, 3);
+		ToolbarSection::setDefaultMargin(_flightControlsIndicator, 3);
 		_flightControlsSection.setFocusable(false);
-		leftRow += &_flightControlsSection;
+		leftRow += _flightControlsSection;
 
 		// Throttle
-		leftRow += &_throttleSection;
+		leftRow += _throttleSection;
 		
 		// ----------------------------- Right -----------------------------
 		
 		rightRow.setOrientation(Orientation::horizontal);
 		rightRow.setHorizontalAlignment(Alignment::end);
-		*this += &rightRow;
+		*this += rightRow;
 		
 		// Radio
-		ToolbarSection::setDefaultMargin(&_radio, 8);
+		ToolbarSection::setDefaultMargin(_radio, 8);
 		_radioSection.setFocusable(false);
-		rightRow += &_radioSection;
+		rightRow += _radioSection;
 		
 		// Battery
 		_batteryRows.setGap(3);
-		ToolbarSection::setDefaultMargin(&_batteryRows, 4);
-		_batteryRows += &_batteryIndicatorRC;
-		_batteryRows += &_batteryIndicatorAC;
+		ToolbarSection::setDefaultMargin(_batteryRows, 4);
+		_batteryRows += _batteryIndicatorRC;
+		_batteryRows += _batteryIndicatorAC;
 		_batterySection.setFocusable(false);
-		rightRow += &_batterySection;
+		rightRow += _batterySection;
 	}
 
 	void MainToolbar::onTick() {

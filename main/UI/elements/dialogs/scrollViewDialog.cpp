@@ -6,15 +6,15 @@ namespace pizda {
 	ScrollViewDialog::ScrollViewDialog() {
 		// ScrollView
 		Theme::apply(&scrollView);
-		slideLayout += &scrollView;
+		slideLayout += scrollView;
 
 		// Rows
 		rows.setMargin(Margin(15));
 		rows.setGap(Theme::verticalGap);
-		scrollView += &rows;
+		scrollView += rows;
 
 		// Title
 		Theme::applyPageTitle(&title);
-		rows += &title;
+		rows += title;
 	}
 }

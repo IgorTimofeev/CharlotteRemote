@@ -15,11 +15,11 @@ namespace pizda {
 		title.setText(L"Axis");
 
 		// Axes editors
-		rows += &_leverLeftAxisEditorTitle;
-		rows += &_aileronsAxisEditorTitle;
-		rows += &_elevatorAxisEditorTitle;
-		rows += &_rudderAxisEditorTitle;
-		rows += &_leverRightAxisEditorTitle;
+		rows += _leverLeftAxisEditorTitle;
+		rows += _aileronsAxisEditorTitle;
+		rows += _elevatorAxisEditorTitle;
+		rows += _rudderAxisEditorTitle;
+		rows += _leverRightAxisEditorTitle;
 
 		// Jittering slider
 		Theme::apply(&_jitteringThresholdSlider);
@@ -40,7 +40,7 @@ namespace pizda {
 			settings.axes.scheduleWrite();
 		});
 
-		rows += &_jitteringThresholdSliderTitle;
+		rows += _jitteringThresholdSliderTitle;
 
 		// Low pass slider
 		Theme::apply(&_lowPassFactorSlider);
@@ -55,7 +55,7 @@ namespace pizda {
 			settings.axes.scheduleWrite();
 		});
 
-		rows += &_lowPassFactorSliderTitle;
+		rows += _lowPassFactorSliderTitle;
 	}
 
 	void AxesSettingsPage::onTick() {

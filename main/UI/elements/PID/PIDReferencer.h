@@ -27,12 +27,12 @@ namespace pizda {
 				chart.setStepCount(10);
 				chart.setValueMax(100);
 				chart.setBackgroundColor(&Theme::bg3);
-				rows += &chart;
+				rows += chart;
 
 				// PID
 				PIDRow.setOrientation(Orientation::horizontal);
 				PIDRow.setGap(5);
-				rows += &PIDRow;
+				rows += PIDRow;
 
 				// P
 				Theme::apply(&PTextField);
@@ -43,7 +43,7 @@ namespace pizda {
 					updateChart();
 				});
 
-				PIDRow += &PTitle;
+				PIDRow += PTitle;
 
 				// I
 				Theme::apply(&ITextField);
@@ -54,7 +54,7 @@ namespace pizda {
 					updateChart();
 				});
 
-				PIDRow += &ITitle;
+				PIDRow += ITitle;
 
 				// D
 				Theme::apply(&DTextField);
@@ -65,14 +65,14 @@ namespace pizda {
 					updateChart();
 				});
 
-				PIDRow += &DTitle;
+				PIDRow += DTitle;
 
 				// Confirm button
 				Theme::applyPrimary(&_confirmButton);
 				_confirmButton.setText(L"Confirm");
 
 				_confirmButton.setOnClick([this, onConfirm] {
-					Application::getCurrent()->invokeOnNextTick([this, onConfirm] {
+					Application::getCurrent().invokeOnNextTick([this, onConfirm] {
 						onConfirm(chart.getCoefficients());
 
 						hide();
@@ -80,7 +80,7 @@ namespace pizda {
 					});
 				});
 
-				rows += &_confirmButton;
+				rows += _confirmButton;
 
 				// Initialization
 				updateChart();
@@ -92,13 +92,13 @@ namespace pizda {
 			RelativeStackLayout PIDRow {};
 
 			TextField PTextField {};
-			Titler PTitle { L"P", &PTextField };
+			Titler PTitle { L"P", PTextField };
 
 			TextField ITextField {};
-			Titler ITitle { L"I", &ITextField };
+			Titler ITitle { L"I", ITextField };
 
 			TextField DTextField {};
-			Titler DTitle { L"D", &DTextField };
+			Titler DTitle { L"D", DTextField };
 
 			Button _confirmButton {};
 
@@ -117,7 +117,7 @@ namespace pizda {
 				_textsRow.setOrientation(Orientation::horizontal);
 				_textsRow.setGap(5);
 				setDefaultMargin(&_textsRow, Margin(10));
-				*this += &_textsRow;
+				*this += _textsRow;
 
 				addCoeffText(_textP, &Theme::yellow);
 				addSuffixText(_textP_I, L"P +");
@@ -172,7 +172,7 @@ namespace pizda {
 			void addText(TextView& text, const Color* color) {
 				text.setTextColor(color);
 				text.setVerticalAlignment(Alignment::end);
-				_textsRow += &text;
+				_textsRow += text;
 			}
 
 			void addCoeffText(TextView& text, const Color* color) {

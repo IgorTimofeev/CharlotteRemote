@@ -15,57 +15,57 @@ namespace pizda {
 		Theme::apply(&_RFFrequency);
 		_RFFrequency.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 		_RFFrequency.setText(std::to_wstring(rc.getSettings().transceiver.communication.frequencyHz / 1'000'000));
-		rows += &_RFFrequencyTitle;
+		rows += _RFFrequencyTitle;
 
 		horizontalRows[0].setOrientation(Orientation::horizontal);
 		horizontalRows[0].setGap(8);
-		rows += &horizontalRows[0];
+		rows += horizontalRows[0];
 
 		// Bandwidth
 		_bandwidth.setItems(_bandwidthItems);
 		_bandwidth.setItemCount(_bandwidthItemsLength);
 		_bandwidth.setSelectedIndex(static_cast<uint8_t>(rc.getSettings().transceiver.communication.bandwidth));
 		_bandwidth.setDialogTitle(L"Bandwidth");
-		horizontalRows[0] += &_bandwidthTitle;
+		horizontalRows[0] += _bandwidthTitle;
 
 		// Coding rate
 		_codingRate.setItems(_codingRateItems);
 		_codingRate.setItemCount(_codingRateItemsLength);
 		_codingRate.setSelectedIndex(static_cast<uint8_t>(rc.getSettings().transceiver.communication.codingRate));
 		_codingRate.setDialogTitle(L"Coding rate");
-		horizontalRows[0] += &_codingRateTitle;
+		horizontalRows[0] += _codingRateTitle;
 
 		horizontalRows[1].setOrientation(Orientation::horizontal);
 		horizontalRows[1].setGap(8);
-		rows += &horizontalRows[1];
+		rows += horizontalRows[1];
 
 		// Spreading factor
 		Theme::apply(&_spreadingFactor);
 		_spreadingFactor.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 		_spreadingFactor.setText(std::to_wstring(rc.getSettings().transceiver.communication.spreadingFactor));
-		horizontalRows[1] += &_spreadingFactorTitle;
+		horizontalRows[1] += _spreadingFactorTitle;
 
 		// Sync word
 		Theme::apply(&_syncWord);
 		_syncWord.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 		_syncWord.setText(std::to_wstring(rc.getSettings().transceiver.communication.syncWord));
-		horizontalRows[1] += &_syncWordTitle;
+		horizontalRows[1] += _syncWordTitle;
 
 		horizontalRows[2].setOrientation(Orientation::horizontal);
 		horizontalRows[2].setGap(8);
-		rows += &horizontalRows[2];
+		rows += horizontalRows[2];
 
 		// Preamble length
 		Theme::apply(&_preambleLength);
 		_preambleLength.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 		_preambleLength.setText(std::to_wstring(rc.getSettings().transceiver.communication.preambleLength));
-		horizontalRows[2] += &_preambleLengthTitle;
+		horizontalRows[2] += _preambleLengthTitle;
 
 		// Power
 		Theme::apply(&_power);
 		_power.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 		_power.setText(std::to_wstring(rc.getSettings().transceiver.communication.powerDBm));
-		horizontalRows[2] += &_powerTitle;
+		horizontalRows[2] += _powerTitle;
 
 		// Confirm button
 		Theme::applyPrimary(&_confirmButton);
@@ -85,6 +85,6 @@ namespace pizda {
 			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::XCVR);
 		});
 
-		rows += &_confirmButton;
+		rows += _confirmButton;
 	}
 }

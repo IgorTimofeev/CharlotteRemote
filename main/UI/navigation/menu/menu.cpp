@@ -7,11 +7,11 @@ namespace pizda {
 		_tabsRow.setOrientation(Orientation::horizontal);
 
 		for (auto& tab : tabs)
-			_tabsRow += &tab;
+			_tabsRow += tab;
 
 		// Tabs & content
-		_tabsAndContentRows += &_tabsRow;
-		slideLayout += &_tabsAndContentRows;
+		_tabsAndContentRows += _tabsRow;
+		slideLayout += _tabsAndContentRows;
 
 		setViewRoute(_viewRoute);
 	}
@@ -30,13 +30,13 @@ namespace pizda {
 		}
 
 		if (_view) {
-			_tabsAndContentRows -= _view;
+			_tabsAndContentRows -= *_view;
 			delete _view;
 		}
 
 		_view = dynamic_cast<MenuView*>(_viewRoute->buildElement());
 		_view->setup();
-		_tabsAndContentRows.insertChild(0, _view);
+		_tabsAndContentRows.insertChild(0, *_view);
 
 		auto& rc = RC::getInstance();
 

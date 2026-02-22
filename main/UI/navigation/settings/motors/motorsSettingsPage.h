@@ -45,7 +45,7 @@ namespace pizda {
 							changed();
 				});
 				
-				_minMaxRow += &textField;
+				_minMaxRow += textField;
 			}
 	};
 
@@ -66,6 +66,6 @@ namespace pizda {
 			MotorEditor tailLeft;
 			MotorEditor tailRight;
 			
-			void vaginoz(MotorEditor* motorEditor);
+			void vaginoz(MotorEditor& motorEditor);
 	};
 }

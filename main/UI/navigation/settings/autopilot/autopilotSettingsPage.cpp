@@ -21,7 +21,7 @@ namespace pizda {
 			RemoteAuxiliaryAutopilotPacketType::setMaxRollAngleRad
 		);
 
-		rows += &_latMaxRollTitle;
+		rows += _latMaxRollTitle;
 
 		addRow(_latRow0);
 
@@ -35,7 +35,7 @@ namespace pizda {
 			RemoteAuxiliaryAutopilotPacketType::setStabilizedModeRollAngleIncrementFactorPerSecond
 		);
 
-		_latRow0 += &_latSMTAIFPSTitle;
+		_latRow0 += _latSMTAIFPSTitle;
 
 		// Angle LPFF
 		setupFloatTextField(
@@ -47,7 +47,7 @@ namespace pizda {
 			RemoteAuxiliaryAutopilotPacketType::setRollAngleLPFFactorPerSecond
 		);
 
-		_latRow0 += &_latTALPFFPSTitle;
+		_latRow0 += _latTALPFFPSTitle;
 
 		// Surface factor
 		setupFloatTextField(
@@ -59,7 +59,7 @@ namespace pizda {
 			RemoteAuxiliaryAutopilotPacketType::setMaxAileronsFactor
 		);
 
-		rows += &_latMaxAileronsFactorTitle;
+		rows += _latMaxAileronsFactorTitle;
 
 		// PIDs
 		addPID(
@@ -79,10 +79,10 @@ namespace pizda {
 
 		// ----------------------------- Vertical -----------------------------
 
-		rows += &_verSeparator;
+		rows += _verSeparator;
 
 		Theme::applyPageTitle(&_verTitle);
-		rows += &_verTitle;
+		rows += _verTitle;
 
 		// Angle max
 		setupRadTextField(
@@ -92,7 +92,7 @@ namespace pizda {
 			RemoteAuxiliaryAutopilotPacketType::setMaxPitchAngleRad
 		);
 
-		rows += &_verMaxPitchTitle;
+		rows += _verMaxPitchTitle;
 
 		addRow(_verRow0);
 
@@ -106,7 +106,7 @@ namespace pizda {
 			RemoteAuxiliaryAutopilotPacketType::setStabilizedModePitchAngleIncrementFactorPerSecond
 		);
 
-		_verRow0 += &_verSMTAIFPSTitle;
+		_verRow0 += _verSMTAIFPSTitle;
 
 		// Angle LPFF
 		setupFloatTextField(
@@ -118,7 +118,7 @@ namespace pizda {
 			RemoteAuxiliaryAutopilotPacketType::setPitchAngleLPFFactorPerSecond
 		);
 
-		_verRow0 += &_verTALPFFPSTitle;
+		_verRow0 += _verTALPFFPSTitle;
 
 		// Surface factor
 		setupFloatTextField(
@@ -130,7 +130,7 @@ namespace pizda {
 			RemoteAuxiliaryAutopilotPacketType::setMaxElevatorFactor
 		);
 
-		rows += &_verMaxElevatorFactorTitle;
+		rows += _verMaxElevatorFactorTitle;
 
 		// PIDs
 		addPID(
@@ -156,10 +156,10 @@ namespace pizda {
 
 		// ----------------------------- Longitudinal -----------------------------
 
-		rows += &_lonSeparator;
+		rows += _lonSeparator;
 
 		Theme::applyPageTitle(&_lonTitle);
-		rows += &_lonTitle;
+		rows += _lonTitle;
 
 		// LPFF
 		setupFloatTextField(
@@ -171,7 +171,7 @@ namespace pizda {
 			RemoteAuxiliaryAutopilotPacketType::setThrottleLPFFactorPerSecond
 		);
 
-		rows += &_lonThrottleLPFFPSTitle;
+		rows += _lonThrottleLPFFPSTitle;
 
 		// PIDs
 		addPID(
@@ -227,7 +227,7 @@ namespace pizda {
 	void AutopilotSettingsPage::addRow(RelativeStackLayout& row) {
 		row.setOrientation(Orientation::horizontal);
 		row.setGap(Theme::horizontalGap);
-		rows += &row;
+		rows += row;
 	}
 
 	void AutopilotSettingsPage::addPID(Titler& titler, PIDReferencer& referencer,
@@ -243,6 +243,6 @@ namespace pizda {
 			rc.getTransceiver().enqueueAutopilot(packetType);
 		});
 
-		rows += &titler;
+		rows += titler;
 	}
 }

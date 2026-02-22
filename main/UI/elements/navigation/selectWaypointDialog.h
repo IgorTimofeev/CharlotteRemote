@@ -42,10 +42,10 @@ namespace pizda {
 			);
 
 			TextField _searchTextField {};
-			Titler _searchTextFieldTitle { L"Search", &_searchTextField };
+			Titler _searchTextFieldTitle { L"Search", _searchTextField };
 
 			WaypointButton _waypointButton {};
-			Titler _waypointTitle = { L"Waypoint", &_waypointButton };
+			Titler _waypointTitle = { L"Waypoint", _waypointButton };
 
 			Button _confirmButton {};
 

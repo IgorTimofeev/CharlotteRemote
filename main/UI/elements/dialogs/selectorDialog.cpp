@@ -14,7 +14,7 @@ namespace pizda {
 	void SelectorDialogItem::onClick() {
 		Button::onClick();
 
-		Application::getCurrent()->invokeOnNextTick([this] {
+		Application::getCurrent().invokeOnNextTick([this] {
 			_comboBoxDialog->getOnItemSelected()(_index);
 			_comboBoxDialog->hide();
 
@@ -37,19 +37,19 @@ namespace pizda {
 		this->title.setText(title);
 
 		_itemRows.setGap(Theme::verticalGap);
-		rows += &_itemRows;
+		rows += _itemRows;
 
 		for (uint16_t i = 0; i < _itemCount; ++i) {
 			const auto item = new SelectorDialogItem(this, i);
 			item->setActive(i == _selectedIndex);
 
-			_itemRows += item;
+			_itemRows += *item;
 		}
 	}
 
 	SelectorDialog::~SelectorDialog() {
-		for (const auto child : _itemRows)
-			delete child;
+		for (const auto& child : _itemRows)
+			delete &child;
 	}
 
 	const std::wstring_view* SelectorDialog::getItems() const {
@@ -60,9 +60,9 @@ namespace pizda {
 		return _onItemSelected;
 	}
 
-	void SelectorDialog::onAddedToParent(Layout* parent) {
+	void SelectorDialog::onAddedToParent(Layout& parent) {
 		ScrollViewDialog::onAddedToParent(parent);
 
-		_itemRows[_selectedIndex]->scrollIntoView();
+		_itemRows[_selectedIndex].scrollIntoView();
 	}
 }

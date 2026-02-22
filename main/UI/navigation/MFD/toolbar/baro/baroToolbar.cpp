@@ -5,8 +5,8 @@ namespace pizda {
 	BaroToolbar::BaroToolbar() {
 		auto& rc = RC::getInstance();
 
-		row += &pressure;
-		row += &minimums;
+		row += pressure;
+		row += minimums;
 
 		// Metric units
 		metricUnits.setActive(rc.getSettings().personalization.MFD.PFD.metricUnits);
@@ -20,6 +20,6 @@ namespace pizda {
 			rc.playFeedback();
 		};
 
-		row += &metricUnits;
+		row += metricUnits;
 	}
 }

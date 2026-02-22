@@ -28,14 +28,14 @@ namespace pizda {
 			ThrottleSection _throttleSection {};
 
 			FlightControlsIndicator _flightControlsIndicator {};
-			ToolbarSection _flightControlsSection = { L"FCTL", &_flightControlsIndicator };
+			ToolbarSection _flightControlsSection = { L"FCTL", _flightControlsIndicator };
 
 			BatteryIndicator _batteryIndicatorRC {};
 			BatteryIndicator _batteryIndicatorAC {};
 			StackLayout _batteryRows {};
-			ToolbarSection _batterySection = { L"BAT", &_batteryRows };
+			ToolbarSection _batterySection = { L"BAT", _batteryRows };
 
 			RadioIndicator _radio {};
-			ToolbarSection _radioSection = { L"SIG", &_radio };
+			ToolbarSection _radioSection = { L"SIG", _radio };
 	};
 }

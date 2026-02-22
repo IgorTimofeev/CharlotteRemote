@@ -72,12 +72,12 @@ namespace pizda {
 			}
 		});
 
-		rows += &_searchTextFieldTitle;
+		rows += _searchTextFieldTitle;
 
 		// Waypoint
 		_waypointButton.setToggle(true);
 		_waypointButton.setEnabled(false);
-		rows += &_waypointTitle;
+		rows += _waypointTitle;
 
 		// Confirm button
 		Theme::applyPrimary(&_confirmButton);
@@ -95,7 +95,7 @@ namespace pizda {
 			});
 		});
 
-		rows += &_confirmButton;
+		rows += _confirmButton;
 
 		// Initialization
 		if (selectedItem.has_value()) {

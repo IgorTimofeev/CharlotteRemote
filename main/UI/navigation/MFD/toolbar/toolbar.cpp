@@ -10,7 +10,7 @@ namespace pizda {
 		topPanel.setHeight(topPanelHeight);
 		topPanel.setVerticalAlignment(Alignment::start);
 		topPanel.setFillColor(&Theme::bg2);
-		*this += &topPanel;
+		*this += topPanel;
 	}
 	
 	RowToolbar::RowToolbar() {
@@ -18,6 +18,6 @@ namespace pizda {
 		row.setOrientation(Orientation::horizontal);
 		row.setGap(1);
 		row.setHorizontalAlignment(Alignment::center);
-		*this += &row;
+		*this += row;
 	}
 }

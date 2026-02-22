@@ -268,32 +268,32 @@ namespace pizda {
 
 		// Char
 		// chart.setHeight(170);
-		rows += &chart;
+		rows += chart;
 
 		// -------------------------------- Frequency --------------------------------
 
 		frequencyRow.setOrientation(Orientation::horizontal);
 		frequencyRow.setGap(5);
-		rows += &frequencyRow;
-		rows.setAutoSize(&frequencyRow);
+		rows += frequencyRow;
+		rows.setAutoSize(frequencyRow);
 
 		// From
 		Theme::apply(&frequencyFromTextField);
 		frequencyFromTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 		frequencyFromTextField.setText(std::to_wstring(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.from / 1'000'000));
-		frequencyRow += &frequencyFromTitle;
+		frequencyRow += frequencyFromTitle;
 
 		// To
 		Theme::apply(&frequencyToTextField);
 		frequencyToTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 		frequencyToTextField.setText(std::to_wstring(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.to / 1'000'000));
-		frequencyRow += &frequencyToTitle;
+		frequencyRow += frequencyToTitle;
 
 		// Step
 		Theme::apply(&frequencyStepTextField);
 		frequencyStepTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 		frequencyStepTextField.setText(std::to_wstring(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.step / 1'000));
-		frequencyRow += &frequencyStepTitle;
+		frequencyRow += frequencyStepTitle;
 
 		// Presets button
 		Theme::applySecondary(&frequencyPresetsButton);
@@ -346,8 +346,8 @@ namespace pizda {
 			)->show();
 		});
 
-		frequencyRow.setAutoSize(&frequencyPresetsButton);
-		frequencyRow += &frequencyPresetsButton;
+		frequencyRow.setAutoSize(frequencyPresetsButton);
+		frequencyRow += frequencyPresetsButton;
 
 		// -------------------------------- Begin button --------------------------------
 
@@ -401,8 +401,8 @@ namespace pizda {
 			updateConfirmButtonText();
 		});
 
-		rows += &confirmButton;
-		rows.setAutoSize(&confirmButton);
+		rows += confirmButton;
+		rows.setAutoSize(confirmButton);
 
 		// -------------------------------- Initialization --------------------------------
 

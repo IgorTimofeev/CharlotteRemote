@@ -11,11 +11,11 @@ namespace pizda {
 		setClipToBounds(true);
 
 		_scene.setMargin(Margin(speedWidth, 0, altitudeWidth + verticalSpeedWidth, 0));
-		*this += &_scene;
+		*this += _scene;
 
 		_splitter.setSize(Size(speedWidth, miniHeight));
 		_splitter.setAlignment(Alignment::start, Alignment::end);
-		*this += &_splitter;
+		*this += _splitter;
 	}
 
 	void PFD::onTick() {

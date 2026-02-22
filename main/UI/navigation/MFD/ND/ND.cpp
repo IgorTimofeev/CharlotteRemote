@@ -8,17 +8,17 @@ namespace pizda {
 		setClipToBounds(true);
 
 		// Scene
-		*this += &_scene;
+		*this += _scene;
 
 		// Button rows
 		_buttonRows.setGap(1);
 		_buttonRows.setAlignment(Alignment::start, Alignment::center);
-		*this += &_buttonRows;
+		*this += _buttonRows;
 
 		// View mode
 		updateViewModeButtonText();
 
-		addGovnoButton(&_viewModeButton, [this] {
+		addGovnoButton(_viewModeButton, [this] {
 			auto& settings = RC::getInstance().getSettings().personalization;
 
 			uint8_t nextMode = static_cast<uint8_t>(settings.MFD.ND.mode) + 1;
@@ -37,7 +37,7 @@ namespace pizda {
 		// RST
 		_latLongButton.setText(L"RST");
 
-		addGovnoButton(&_latLongButton, [this] {
+		addGovnoButton(_latLongButton, [this] {
 			_scene.resetCameraLateralOffset();
 			_scene.setFocused(true);
 		});
@@ -45,7 +45,7 @@ namespace pizda {
 		// +
 		_waypointButton.setText(L"WPT");
 
-		addGovnoButton(&_waypointButton, [this] {
+		addGovnoButton(_waypointButton, [this] {
 			AddWaypointDialog::create(_scene.getCameraCoordinates(), [this] {
 				_scene.deleteSceneElements();
 				_scene.createSceneElementsFromNavigationData();
@@ -56,13 +56,13 @@ namespace pizda {
 		// Split
 		updateSplitButtonText();
 
-		addGovnoButton(&_splitButton, [this] {
+		addGovnoButton(_splitButton, [this] {
 			auto& settings = RC::getInstance().getSettings().personalization;
 
 			settings.MFD.split.mode =
 				settings.MFD.split.mode == PersonalizationSettingsMFDSplitMode::split
-				? PersonalizationSettingsMFDSplitMode::ND
-				: PersonalizationSettingsMFDSplitMode::split;
+					? PersonalizationSettingsMFDSplitMode::ND
+					: PersonalizationSettingsMFDSplitMode::split;
 
 			settings.scheduleWrite();
 
@@ -73,19 +73,19 @@ namespace pizda {
 		});
 	}
 
-	void ND::addGovnoButton(Button* button, const std::function<void()>& onClick) {
-		button->setSize(Size(PFD::speedWidth, 20));
-		button->setCornerRadius(0);
+	void ND::addGovnoButton(Button& button, const std::function<void()>& onClick) {
+		button.setSize(Size(PFD::speedWidth, 20));
+		button.setCornerRadius(0);
 
-		button->setDefaultBackgroundColor(&Theme::bg2);
-		button->setDefaultTextColor(&Theme::fg5);
+		button.setDefaultBackgroundColor(&Theme::bg2);
+		button.setDefaultTextColor(&Theme::fg5);
 
-		button->setActiveBackgroundColor(&Theme::fg1);
-		button->setActiveTextColor(&Theme::bg1);
+		button.setActiveBackgroundColor(&Theme::fg1);
+		button.setActiveTextColor(&Theme::bg1);
 
-		button->setFont(&Theme::fontSmall);
+		button.setFont(&Theme::fontSmall);
 
-		button->setOnClick(onClick);
+		button.setOnClick(onClick);
 
 		_buttonRows += button;
 	}

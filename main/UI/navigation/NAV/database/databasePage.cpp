@@ -22,10 +22,10 @@ namespace pizda {
 
 		// Type selector
 		_enrouteTypeItem.setText(L"Enroute");
-		_typeSelector.addItem(&_enrouteTypeItem);
+		_typeSelector.addItem(_enrouteTypeItem);
 
 		_runwayTypeItem.setText(L"Runway");
-		_typeSelector.addItem(&_runwayTypeItem);
+		_typeSelector.addItem(_runwayTypeItem);
 
 		_typeSelector.setSelectedIndex(0);
 
@@ -33,7 +33,7 @@ namespace pizda {
 			updateFromNavigationData();
 		});
 
-		rows += &_typeSelector;
+		rows += _typeSelector;
 
 		// Search and add button
 		_searchAndAddRow.setOrientation(Orientation::horizontal);
@@ -49,7 +49,7 @@ namespace pizda {
 				updateFromNavigationData();
 		});
 
-		_searchAndAddRow += &_searchTextField;
+		_searchAndAddRow += _searchTextField;
 
 		// Add button
 		Theme::applySecondary(&_addButton);
@@ -62,14 +62,14 @@ namespace pizda {
 			});
 		});
 
-		_searchAndAddRow.setAutoSize(&_addButton);
-		_searchAndAddRow += &_addButton;
+		_searchAndAddRow.setAutoSize(_addButton);
+		_searchAndAddRow += _addButton;
 
-		rows += &_searchAndAddRow;
+		rows += _searchAndAddRow;
 
 		// Items
 		_itemsLayout.setGap(5);
-		rows += &_itemsLayout;
+		rows += _itemsLayout;
 
 		updateFromNavigationData();
 	}
@@ -100,7 +100,7 @@ namespace pizda {
 					|| StringUtils::containsIgnoreCase(waypointData.name, text)
 				)
 			) {
-				_itemsLayout += new WaypointItem(i);
+				_itemsLayout += *new WaypointItem(i);
 			}
 		}
 	}

@@ -17,7 +17,7 @@ namespace pizda {
 				_title.setHorizontalAlignment(Alignment::center);
 				_title.setMargin(Margin(Toolbar::contentHorizontalMargin, 0, Toolbar::contentHorizontalMargin, 0));
 				_title.setFont(&Theme::fontSmall);
-				*this += &_title;
+				*this += _title;
 				
 				updateColors();
 			}
@@ -26,7 +26,7 @@ namespace pizda {
 				setTitle(title);
 			}
 			
-			ToolbarSection(std::wstring_view title, Element* element) : ToolbarSection(title) {
+			ToolbarSection(std::wstring_view title, Element& element) : ToolbarSection(title) {
 				*this += element;
 			}
 			
@@ -34,8 +34,8 @@ namespace pizda {
 				_title.setText(title);
 			}
 			
-			static void setDefaultMargin(Element* element, uint8_t topOffset = 0) {
-				element->setMargin(Margin(Toolbar::contentHorizontalMargin, Toolbar::topPanelHeight + topOffset, Toolbar::contentHorizontalMargin, 0));
+			static void setDefaultMargin(Element& element, const uint8_t topOffset = 0) {
+				element.setMargin(Margin(Toolbar::contentHorizontalMargin, Toolbar::topPanelHeight + topOffset, Toolbar::contentHorizontalMargin, 0));
 			}
 			
 		protected:

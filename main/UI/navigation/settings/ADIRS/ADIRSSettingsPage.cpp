@@ -28,26 +28,26 @@ namespace pizda {
 			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::ADIRS);
 		});
 
-		rows += &_ADIRSMagneticDeclinationTitle;
+		rows += _ADIRSMagneticDeclinationTitle;
 
 		// ----------------------------- Calibration -----------------------------
 
 		// Separator
-		rows += &_calSeparator;
+		rows += _calSeparator;
 
 		// Title
 		Theme::applyPageTitle(&_calTitle);
 		_calTitle.setText(L"Calibration");
-		rows += &_calTitle;
+		rows += _calTitle;
 		
 		// Progress bar
 		Theme::apply(&_calProgressBar);
-		rows += &_calProgressBar;
+		rows += _calProgressBar;
 		
 		// Progress text
 		Theme::applyDescription(&_calProgressText);
 		_calProgressText.setHorizontalAlignment(Alignment::center);
-		rows += &_calProgressText;
+		rows += _calProgressText;
 		
 		// Accel & gyro
 		Theme::applyPrimary(&_calAccelAndGyroButton);
@@ -58,7 +58,7 @@ namespace pizda {
 			RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::calibrate);
 		});
 		
-		rows += &_calAccelAndGyroButton;
+		rows += _calAccelAndGyroButton;
 		
 		// Mag
 		Theme::applyPrimary(&_calMagButton);
@@ -69,7 +69,7 @@ namespace pizda {
 			RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::calibrate);
 		});
 
-		rows += &_calMagButton;
+		rows += _calMagButton;
 
 		// Description
 		Theme::applyDescription(&_calDescriptionText);
@@ -82,7 +82,7 @@ namespace pizda {
 The magnetometer should be calibrated each time before first takeoff in new geolocation to take into account the influence of parasitic magnetic fields from nearby metal structures)"
 		);
 
-		rows += &_calDescriptionText;
+		rows += _calDescriptionText;
 	}
 	
 	void ADIRSSettingsPage::onTick() {

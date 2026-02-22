@@ -34,7 +34,7 @@ namespace pizda {
 			});
 		});
 
-		rows += &_activateLegButton;
+		rows += _activateLegButton;
 
 		// Edit
 		Theme::applySecondary(&_editButton);
@@ -60,7 +60,7 @@ namespace pizda {
 			});
 		});
 
-		rows += &_editButton;
+		rows += _editButton;
 
 		// Insert before
 		Theme::applySecondary(&_insertBeforeButton);
@@ -73,7 +73,7 @@ namespace pizda {
 			);
 		});
 
-		rows += &_insertBeforeButton;
+		rows += _insertBeforeButton;
 
 		// Insert after
 		Theme::applySecondary(&_insertAfterButton);
@@ -86,7 +86,7 @@ namespace pizda {
 			);
 		});
 
-		rows += &_insertAfterButton;
+		rows += _insertAfterButton;
 
 		// Remove
 		Theme::applyCritical(&_removeButton);
@@ -106,7 +106,7 @@ namespace pizda {
 			});
 		});
 
-		rows += &_removeButton;
+		rows += _removeButton;
 	}
 
 	void FlightPlanItemDialog::showWaypointSelectionDialogToInsertAt(const std::wstring_view title, size_t insertAt) {

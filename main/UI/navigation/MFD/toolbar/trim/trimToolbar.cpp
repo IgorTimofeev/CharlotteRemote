@@ -8,8 +8,8 @@ namespace pizda {
 		_elevator(TrimControl { L"Elevator", &RC::getInstance().getSettings().controls.elevatorTrim }),
 		_rudder(TrimControl { L"Rudder", &RC::getInstance().getSettings().controls.rudderTrim })
 	{
-		row += &_ailerons;
-		row += &_elevator;
-		row += &_rudder;
+		row += _ailerons;
+		row += _elevator;
+		row += _rudder;
 	}
 }
