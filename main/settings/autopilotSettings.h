@@ -38,6 +38,7 @@ namespace pizda {
 	class AutopilotSettings : public NVSSettings {
 		public:
 			// Lateral
+			AutopilotLateralMode lateralMode = AutopilotLateralMode::hdg;
 			uint16_t headingDeg = 0;
 			float maxRollAngleRad = 0;
 			float stabilizedModeRollAngleIncrementFactorPerSecond = 0;
@@ -45,6 +46,7 @@ namespace pizda {
 			float maxAileronsFactor = 0;
 
 			// Vertical
+			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::flc;
 			uint16_t altitudeFt = 0;
 			float maxPitchAngleRad = 0;
 			float stabilizedModePitchAngleIncrementFactorPerSecond = 0;
@@ -65,6 +67,7 @@ namespace pizda {
 
 			void onRead(const NVSStream& stream) override {
 				// Lateral
+				lateralMode = stream.readEnum<AutopilotLateralMode>(_lateralMode, AutopilotLateralMode::hdg);
 				headingDeg = stream.readUint16(_headingDeg, 0);
 				maxRollAngleRad = stream.readFloat(_maxRollAngleRad, toRadians(30));
 				stabilizedModeRollAngleIncrementFactorPerSecond = stream.readFloat(_stabilizedModeRollAngleIncrementFactorPerSecond, 30.f);
@@ -72,6 +75,7 @@ namespace pizda {
 				maxAileronsFactor = stream.readFloat(_maxAileronsFactor, 1.0f);
 
 				// Vertical
+				verticalMode = stream.readEnum<AutopilotVerticalMode>(_verticalMode, AutopilotVerticalMode::flc);
 				altitudeFt = stream.readUint16(_altitudeFt, 100);
 				maxPitchAngleRad = stream.readFloat(_maxPitchAngleRad, toRadians(20));
 				stabilizedModePitchAngleIncrementFactorPerSecond = stream.readFloat(_stabilizedModePitchAngleIncrementFactorPerSecond, 20.f);
@@ -93,6 +97,7 @@ namespace pizda {
 
 			void onWrite(const NVSStream& stream) override {
 				// Lateral
+				stream.writeEnum<AutopilotLateralMode>(_lateralMode, lateralMode);
 				stream.writeUint16(_headingDeg, headingDeg);
 				stream.writeFloat(_maxRollAngleRad, maxRollAngleRad);
 				stream.writeFloat(_stabilizedModeRollAngleIncrementFactorPerSecond, stabilizedModeRollAngleIncrementFactorPerSecond);
@@ -100,6 +105,7 @@ namespace pizda {
 				stream.writeFloat(_maxAileronsFactor, maxAileronsFactor);
 
 				// Vertical
+				stream.writeEnum<AutopilotVerticalMode>(_verticalMode, verticalMode);
 				stream.writeUint16(_altitudeFt, altitudeFt);
 				stream.writeFloat(_maxPitchAngleRad, maxPitchAngleRad);
 				stream.writeFloat(_stabilizedModePitchAngleIncrementFactorPerSecond, stabilizedModePitchAngleIncrementFactorPerSecond);
@@ -123,6 +129,7 @@ namespace pizda {
 			constexpr static auto _namespace = "ap1";
 
 			// Lateral
+			constexpr static auto _lateralMode = "ltmd";
 			constexpr static auto _headingDeg = "thdg";
 			constexpr static auto _maxRollAngleRad = "mrla";
 			constexpr static auto _stabilizedModeRollAngleIncrementFactorPerSecond = "raif";
@@ -130,6 +137,7 @@ namespace pizda {
 			constexpr static auto _maxAileronsFactor = "aiff";
 
 			// Vertical
+			constexpr static auto _verticalMode = "vtmd";
 			constexpr static auto _altitudeFt = "talt";
 			constexpr static auto _maxPitchAngleRad = "mpia";
 			constexpr static auto _stabilizedModePitchAngleIncrementFactorPerSecond = "paif";

@@ -7,7 +7,7 @@ namespace pizda {
 		setDigitCount(3);
 		setSignVisible(true);
 
-		setActiveColor(&Theme::yellow);
+		setActiveColor(&Theme::green1);
 	}
 
 	void LateralRotaryControlStab::onTick() {
@@ -22,7 +22,9 @@ namespace pizda {
 			&stab
 		});
 
-		switch (RC::getInstance().getRemoteData().autopilot.lateralMode) {
+		seven.setValue(RC::getInstance().getSettings().autopilot.headingDeg);
+
+		switch (RC::getInstance().getSettings().autopilot.lateralMode) {
 			case AutopilotLateralMode::stab:
 				setVariantIndex(1);
 				break;
@@ -31,10 +33,6 @@ namespace pizda {
 				setVariantIndex(0);
 				break;
 		}
-
-		setVariantIndex(RC::getInstance().getRemoteData().autopilot.lateralMode == AutopilotLateralMode::stab ? 1 : 0);
-		
-		seven.setValue(RC::getInstance().getSettings().autopilot.headingDeg);
 	}
 	
 	std::wstring_view LateralRotaryControl::variantIndexToTitle(const uint8_t index) {
@@ -58,32 +56,27 @@ namespace pizda {
 
 		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setHeading);
 	}
+
+	void LateralRotaryControl::onVariantChanged() {
+		auto& rc = RC::getInstance();
+
+		switch (getVariantIndex()) {
+			case 0:
+				rc.getSettings().autopilot.lateralMode = AutopilotLateralMode::hdg;
+				break;
+
+			default:
+				rc.getSettings().autopilot.lateralMode = AutopilotLateralMode::stab;
+				break;
+		}
+
+		rc.getSettings().autopilot.scheduleWrite();
+	}
 	
 	void LateralRotaryControl::onPress() {
 		RotaryControl::onPress();
 
 		auto& rc = RC::getInstance();
-
-		AutopilotLateralMode newMode;
-
-		switch (getVariantIndex()) {
-			case 0: {
-				newMode = AutopilotLateralMode::hdg;
-				rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setHeading);
-
-				break;
-			}
-			default: {
-				newMode = AutopilotLateralMode::stab;
-
-				break;
-			}
-		}
-
-		rc.getRemoteData().autopilot.lateralMode =
-			rc.getAircraftData().raw.autopilot.lateralMode == newMode
-			? AutopilotLateralMode::dir
-			: newMode;
 
 		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setLateralMode);
 	}

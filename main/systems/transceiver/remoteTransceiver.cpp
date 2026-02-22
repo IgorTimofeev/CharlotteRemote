@@ -650,7 +650,13 @@ namespace pizda {
 
 			// Lateral
 			case RemoteAuxiliaryAutopilotPacketType::setLateralMode: {
-				stream.writeUint8(std::to_underlying(rc.getRemoteData().autopilot.lateralMode), RemoteAuxiliaryAutopilotPacket::lateralModeLengthBits);
+				const auto mode =
+					rc.getAircraftData().raw.autopilot.lateralMode == rc.getSettings().autopilot.lateralMode
+					? AutopilotLateralMode::dir
+					: rc.getSettings().autopilot.lateralMode;
+
+				stream.writeUint8(std::to_underlying(mode), RemoteAuxiliaryAutopilotPacket::lateralModeLengthBits);
+
 				break;
 			}
 
@@ -685,7 +691,24 @@ namespace pizda {
 
 			// Vertical
 			case RemoteAuxiliaryAutopilotPacketType::setVerticalMode: {
-				stream.writeUint8(std::to_underlying(rc.getRemoteData().autopilot.verticalMode), RemoteAuxiliaryAutopilotPacket::verticalModeLengthBits);
+				AutopilotVerticalMode mode;
+
+				if (rc.getSettings().autopilot.verticalMode == AutopilotVerticalMode::flc) {
+					mode =
+						rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::flc
+							|| rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::alts
+						? AutopilotVerticalMode::dir
+						: AutopilotVerticalMode::flc;
+				}
+				else {
+					mode =
+						rc.getAircraftData().raw.autopilot.verticalMode == rc.getSettings().autopilot.verticalMode
+						? AutopilotVerticalMode::dir
+						: rc.getSettings().autopilot.verticalMode;
+				}
+
+				stream.writeUint8(std::to_underlying(mode), RemoteAuxiliaryAutopilotPacket::verticalModeLengthBits);
+
 				break;
 			}
 			case RemoteAuxiliaryAutopilotPacketType::setAltitude: {

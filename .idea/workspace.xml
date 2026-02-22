@@ -6,10 +6,12 @@
   <component name="BackendCodeEditorMiscSettings">
     <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="8" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppFormatterOtherPage" type="string" />
   </component>
-  <component name="CMakePresetLoader"><![CDATA[{
-  "useNewFormat": true
-}]]></component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
   <component name="CMakeProjectFlavorService">
     <option name="flavorId" value="CMakePlainProjectFlavor" />
   </component>
@@ -169,16 +171,22 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="перехуярил очередь пакетов на закольцованный буфер (RINGED CITY EPILOGUE OST МУЖИКИ Я НЕ ПЛАЧУ Я НЕ ПЛАЧУ)">
+    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="автопилик по сути завершен, я ДАВОЛИН))))">
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/speedRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/speedRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions/src/NVSStream.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions/src/NVSStream.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/UI/sevenSegment.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFD.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/lateralRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/lateralRotaryControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/lateralRotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/lateralRotaryControl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/verticalRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/verticalRotaryControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/verticalRotaryControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/verticalRotaryControl.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/settings/autopilotSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/autopilotSettings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/packet.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/remoteData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/remoteData.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,18 +201,18 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "IgorTimofeev"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;IgorTimofeev&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/IgorTimofeev/CharlotteRemote.git",
-    "accountId": "b6e59770-aacc-4d0a-9c35-a4c42d46b1c1"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/IgorTimofeev/CharlotteRemote.git&quot;,
+    &quot;accountId&quot;: &quot;b6e59770-aacc-4d0a-9c35-a4c42d46b1c1&quot;
   }
-}]]></component>
+}</component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="oKbTAvMb" />
   </component>
@@ -214,33 +222,34 @@
     <option name="minorVersion" value="3.1.1" />
     <option name="productBranch" value="Classic" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="39xtmMRjGk93wz731TNarU6RkiW" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.RadMigrateCodeStyle": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "RunOnceActivity.west.config.association.type.startup.service": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/components/ESP-IDF-CircularQueue",
-    "org.rust.first.attach.projects": "true",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/components/ESP-IDF-CircularQueue&quot;,
+    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-CircularQueue" />
@@ -742,11 +751,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="apidoc" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -969,89 +973,97 @@
     </configuration>
     <list>
       <item itemvalue="CMake Application.bootloader" />
-      <item itemvalue="CMake Application._project_elf_src" />
       <item itemvalue="CMake Application.Remote.elf" />
-      <item itemvalue="CMake Application.size" />
-      <item itemvalue="CMake Application.size-components" />
-      <item itemvalue="CMake Application.size-files" />
-      <item itemvalue="CMake Application.uf2" />
-      <item itemvalue="CMake Application.uf2-app" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-Battery" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-BitStream" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-BuzzerAudio" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-CircularQueue" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-LowPassFilter" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-NVSExtensions" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-PIDController" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-SX1262" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-Units" />
       <item itemvalue="CMake Application.__idf_YOBA" />
       <item itemvalue="CMake Application.__idf_app_trace" />
       <item itemvalue="CMake Application.__idf_app_update" />
-      <item itemvalue="CMake Application.bootloader-flash" />
       <item itemvalue="CMake Application.__idf_bootloader_support" />
+      <item itemvalue="CMake Application.__idf_cmock" />
+      <item itemvalue="CMake Application.__idf_console" />
       <item itemvalue="CMake Application.__idf_cxx" />
       <item itemvalue="CMake Application.__idf_driver" />
-      <item itemvalue="CMake Application.efuse-common-table" />
-      <item itemvalue="CMake Application.efuse-custom-table" />
-      <item itemvalue="CMake Application.efuse_test_table" />
-      <item itemvalue="CMake Application.show-efuse-table" />
+      <item itemvalue="CMake Application.__idf_efuse" />
       <item itemvalue="CMake Application.__idf_esp-tls" />
       <item itemvalue="CMake Application.__idf_esp_adc" />
+      <item itemvalue="CMake Application.__idf_esp_app_format" />
       <item itemvalue="CMake Application.__idf_esp_bootloader_format" />
       <item itemvalue="CMake Application.__idf_esp_coex" />
       <item itemvalue="CMake Application.__idf_esp_common" />
       <item itemvalue="CMake Application.__idf_esp_driver_cam" />
+      <item itemvalue="CMake Application.__idf_esp_driver_dac" />
       <item itemvalue="CMake Application.__idf_esp_driver_gpio" />
       <item itemvalue="CMake Application.__idf_esp_driver_gptimer" />
       <item itemvalue="CMake Application.__idf_esp_driver_i2c" />
       <item itemvalue="CMake Application.__idf_esp_driver_i2s" />
       <item itemvalue="CMake Application.__idf_esp_driver_ledc" />
+      <item itemvalue="CMake Application.__idf_esp_driver_mcpwm" />
       <item itemvalue="CMake Application.__idf_esp_driver_pcnt" />
+      <item itemvalue="CMake Application.__idf_esp_driver_rmt" />
       <item itemvalue="CMake Application.__idf_esp_driver_sdio" />
+      <item itemvalue="CMake Application.__idf_esp_driver_sdm" />
       <item itemvalue="CMake Application.__idf_esp_driver_sdmmc" />
       <item itemvalue="CMake Application.__idf_esp_driver_sdspi" />
+      <item itemvalue="CMake Application.__idf_esp_driver_spi" />
       <item itemvalue="CMake Application.__idf_esp_driver_touch_sens" />
+      <item itemvalue="CMake Application.__idf_esp_driver_twai" />
+      <item itemvalue="CMake Application.__idf_esp_driver_uart" />
       <item itemvalue="CMake Application.__idf_esp_eth" />
       <item itemvalue="CMake Application.__idf_esp_event" />
       <item itemvalue="CMake Application.__idf_esp_gdbstub" />
       <item itemvalue="CMake Application.__idf_esp_hid" />
+      <item itemvalue="CMake Application.__idf_esp_http_client" />
       <item itemvalue="CMake Application.__idf_esp_http_server" />
+      <item itemvalue="CMake Application.__idf_esp_https_ota" />
+      <item itemvalue="CMake Application.__idf_esp_https_server" />
+      <item itemvalue="CMake Application.__idf_esp_hw_support" />
       <item itemvalue="CMake Application.__idf_esp_lcd" />
       <item itemvalue="CMake Application.__idf_esp_local_ctrl" />
       <item itemvalue="CMake Application.__idf_esp_mm" />
       <item itemvalue="CMake Application.__idf_esp_netif" />
+      <item itemvalue="CMake Application.__idf_esp_partition" />
+      <item itemvalue="CMake Application.__idf_esp_phy" />
       <item itemvalue="CMake Application.__idf_esp_pm" />
       <item itemvalue="CMake Application.__idf_esp_ringbuf" />
       <item itemvalue="CMake Application.__idf_esp_rom" />
+      <item itemvalue="CMake Application.__idf_esp_security" />
       <item itemvalue="CMake Application.__idf_esp_system" />
-      <item itemvalue="CMake Application.memory.ld" />
-      <item itemvalue="CMake Application.sections.ld.in" />
       <item itemvalue="CMake Application.__idf_esp_timer" />
       <item itemvalue="CMake Application.__idf_esp_vfs_console" />
       <item itemvalue="CMake Application.__idf_esp_wifi" />
-      <item itemvalue="CMake Application.app-flash" />
+      <item itemvalue="CMake Application.__idf_espcoredump" />
       <item itemvalue="CMake Application.__idf_fatfs" />
       <item itemvalue="CMake Application.__idf_freertos" />
       <item itemvalue="CMake Application.__idf_hal" />
       <item itemvalue="CMake Application.__idf_heap" />
+      <item itemvalue="CMake Application.__idf_http_parser" />
+      <item itemvalue="CMake Application.__idf_json" />
+      <item itemvalue="CMake Application.__idf_log" />
+      <item itemvalue="CMake Application.__idf_lwip" />
+      <item itemvalue="CMake Application.__idf_main" />
       <item itemvalue="CMake Application.__idf_mbedtls" />
-      <item itemvalue="CMake Application.custom_bundle" />
-      <item itemvalue="CMake Application.apidoc" />
-      <item itemvalue="CMake Application.everest" />
-      <item itemvalue="CMake Application.p256m" />
-      <item itemvalue="CMake Application.lib" />
-      <item itemvalue="CMake Application.mbedcrypto" />
-      <item itemvalue="CMake Application.mbedtls" />
-      <item itemvalue="CMake Application.mbedx509" />
+      <item itemvalue="CMake Application.__idf_mqtt" />
+      <item itemvalue="CMake Application.__idf_newlib" />
       <item itemvalue="CMake Application.__idf_nvs_flash" />
       <item itemvalue="CMake Application.__idf_nvs_sec_provider" />
-      <item itemvalue="CMake Application.partition-table" />
-      <item itemvalue="CMake Application.partition-table-flash" />
-      <item itemvalue="CMake Application.partition_table_bin" />
-      <item itemvalue="CMake Application.app_check_size" />
       <item itemvalue="CMake Application.__idf_perfmon" />
       <item itemvalue="CMake Application.__idf_protobuf-c" />
+      <item itemvalue="CMake Application.__idf_protocomm" />
+      <item itemvalue="CMake Application.__idf_pthread" />
+      <item itemvalue="CMake Application.__idf_rt" />
+      <item itemvalue="CMake Application.__idf_sdmmc" />
       <item itemvalue="CMake Application.__idf_soc" />
+      <item itemvalue="CMake Application.__idf_spi_flash" />
       <item itemvalue="CMake Application.__idf_spiffs" />
+      <item itemvalue="CMake Application.__idf_tcp_transport" />
       <item itemvalue="CMake Application.__idf_unity" />
       <item itemvalue="CMake Application.__idf_vfs" />
       <item itemvalue="CMake Application.__idf_wear_levelling" />
@@ -1059,58 +1071,50 @@
       <item itemvalue="CMake Application.__idf_wpa_supplicant" />
       <item itemvalue="CMake Application.__idf_xtensa" />
       <item itemvalue="CMake Application.__ldgen_output_sections.ld" />
+      <item itemvalue="CMake Application._project_elf_src" />
+      <item itemvalue="CMake Application.apidoc" />
+      <item itemvalue="CMake Application.app-flash" />
       <item itemvalue="CMake Application.app" />
+      <item itemvalue="CMake Application.app_check_size" />
+      <item itemvalue="CMake Application.bootloader-flash" />
       <item itemvalue="CMake Application.confserver" />
+      <item itemvalue="CMake Application.custom_bundle" />
+      <item itemvalue="CMake Application.efuse-common-table" />
+      <item itemvalue="CMake Application.efuse-custom-table" />
+      <item itemvalue="CMake Application.efuse_common_table" />
+      <item itemvalue="CMake Application.efuse_custom_table" />
+      <item itemvalue="CMake Application.efuse_test_table" />
+      <item itemvalue="CMake Application.encrypted-app-flash" />
+      <item itemvalue="CMake Application.encrypted-bootloader-flash" />
       <item itemvalue="CMake Application.encrypted-flash" />
+      <item itemvalue="CMake Application.encrypted-partition-table-flash" />
       <item itemvalue="CMake Application.erase_flash" />
+      <item itemvalue="CMake Application.everest" />
       <item itemvalue="CMake Application.flash" />
       <item itemvalue="CMake Application.gen_project_binary" />
+      <item itemvalue="CMake Application.lib" />
+      <item itemvalue="CMake Application.mbedcrypto" />
+      <item itemvalue="CMake Application.mbedtls" />
+      <item itemvalue="CMake Application.mbedx509" />
+      <item itemvalue="CMake Application.memory.ld" />
       <item itemvalue="CMake Application.menuconfig" />
       <item itemvalue="CMake Application.merge-bin" />
       <item itemvalue="CMake Application.monitor" />
-      <item itemvalue="CMake Application.save-defconfig" />
-      <item itemvalue="CMake Application.__idf_cmock" />
-      <item itemvalue="CMake Application.__idf_console" />
-      <item itemvalue="CMake Application.__idf_efuse" />
-      <item itemvalue="CMake Application.__idf_ESP-IDF-LowPassFilter" />
-      <item itemvalue="CMake Application.__idf_ESP-IDF-PIDController" />
-      <item itemvalue="CMake Application.__idf_esp_app_format" />
-      <item itemvalue="CMake Application.__idf_esp_driver_dac" />
-      <item itemvalue="CMake Application.__idf_esp_driver_mcpwm" />
-      <item itemvalue="CMake Application.__idf_esp_driver_rmt" />
-      <item itemvalue="CMake Application.__idf_esp_driver_sdm" />
-      <item itemvalue="CMake Application.__idf_esp_driver_spi" />
-      <item itemvalue="CMake Application.__idf_esp_driver_twai" />
-      <item itemvalue="CMake Application.__idf_esp_driver_uart" />
-      <item itemvalue="CMake Application.__idf_esp_http_client" />
-      <item itemvalue="CMake Application.__idf_esp_https_ota" />
-      <item itemvalue="CMake Application.__idf_esp_https_server" />
-      <item itemvalue="CMake Application.__idf_esp_hw_support" />
-      <item itemvalue="CMake Application.__idf_esp_partition" />
-      <item itemvalue="CMake Application.__idf_esp_phy" />
-      <item itemvalue="CMake Application.__idf_esp_security" />
-      <item itemvalue="CMake Application.__idf_espcoredump" />
-      <item itemvalue="CMake Application.__idf_http_parser" />
-      <item itemvalue="CMake Application.__idf_json" />
-      <item itemvalue="CMake Application.__idf_log" />
-      <item itemvalue="CMake Application.__idf_lwip" />
-      <item itemvalue="CMake Application.__idf_main" />
-      <item itemvalue="CMake Application.__idf_mqtt" />
-      <item itemvalue="CMake Application.__idf_newlib" />
-      <item itemvalue="CMake Application.__idf_protocomm" />
-      <item itemvalue="CMake Application.__idf_pthread" />
-      <item itemvalue="CMake Application.__idf_rt" />
-      <item itemvalue="CMake Application.__idf_sdmmc" />
-      <item itemvalue="CMake Application.__idf_spi_flash" />
-      <item itemvalue="CMake Application.__idf_tcp_transport" />
-      <item itemvalue="CMake Application.efuse_common_table" />
-      <item itemvalue="CMake Application.efuse_custom_table" />
-      <item itemvalue="CMake Application.encrypted-app-flash" />
-      <item itemvalue="CMake Application.encrypted-bootloader-flash" />
-      <item itemvalue="CMake Application.encrypted-partition-table-flash" />
-      <item itemvalue="CMake Application.partition_table" />
+      <item itemvalue="CMake Application.p256m" />
+      <item itemvalue="CMake Application.partition-table-flash" />
+      <item itemvalue="CMake Application.partition-table" />
       <item itemvalue="CMake Application.partition_table-flash" />
+      <item itemvalue="CMake Application.partition_table" />
+      <item itemvalue="CMake Application.partition_table_bin" />
+      <item itemvalue="CMake Application.save-defconfig" />
+      <item itemvalue="CMake Application.sections.ld.in" />
+      <item itemvalue="CMake Application.show-efuse-table" />
       <item itemvalue="CMake Application.show_efuse_table" />
+      <item itemvalue="CMake Application.size-components" />
+      <item itemvalue="CMake Application.size-files" />
+      <item itemvalue="CMake Application.size" />
+      <item itemvalue="CMake Application.uf2-app" />
+      <item itemvalue="CMake Application.uf2" />
     </list>
   </component>
   <component name="RustProjectSettings">
@@ -1123,7 +1127,11 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1771649709264</updated>
-      <workItem from="1771649711266" duration="19461000" />
+      <workItem from="1771649711266" duration="19608000" />
+      <workItem from="1771679696584" duration="630000" />
+      <workItem from="1771733202961" duration="96000" />
+      <workItem from="1771734622601" duration="10345000" />
+      <workItem from="1771748173118" duration="1848000" />
     </task>
     <task id="LOCAL-00001" summary="ебучий есп">
       <option name="closed" value="true" />
@@ -1149,16 +1157,53 @@
       <option name="project" value="LOCAL" />
       <updated>1771663024690</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="автопилик по сути завершен, я ДАВОЛИН))))">
+      <option name="closed" value="true" />
+      <created>1771673725002</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1771673725002</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bootloader/subproject/components/micro-ecc/micro-ecc" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32c2/esp32c2-bt-lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32c3_family" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32c5/esp32c5-bt-lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32c6/esp32c6-bt-lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/controller/lib_esp32h2/esp32h2-bt-lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/esp_ble_mesh/lib/lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/bt/host/nimble/nimble" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/cmock/CMock" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/cmock/CMock/vendor/c_exception" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/cmock/CMock/vendor/unity" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/esp_coex/lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/esp_phy/lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/esp_wifi/lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/heap/tlsf" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/json/cJSON" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/lwip/lwip" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/mbedtls/mbedtls" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/mqtt/esp-mqtt" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/openthread/lib" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/openthread/openthread" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/protobuf-c/protobuf-c" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/spiffs/spiffs" />
+      <path value="$PROJECT_DIR$/../../../../../../../../Espressif/frameworks/esp-idf-v5.5.1/components/unity/unity" />
+    </ignored-roots>
     <MESSAGE value="ебучий есп" />
     <MESSAGE value="перехуярил очередь пакетов на закольцованный буфер (RINGED CITY EPILOGUE OST МУЖИКИ Я НЕ ПЛАЧУ Я НЕ ПЛАЧУ)" />
-    <option name="LAST_COMMIT_MESSAGE" value="перехуярил очередь пакетов на закольцованный буфер (RINGED CITY EPILOGUE OST МУЖИКИ Я НЕ ПЛАЧУ Я НЕ ПЛАЧУ)" />
+    <MESSAGE value="автопилик по сути завершен, я ДАВОЛИН))))" />
+    <option name="LAST_COMMIT_MESSAGE" value="автопилик по сути завершен, я ДАВОЛИН))))" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

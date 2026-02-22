@@ -19,7 +19,6 @@ namespace pizda {
 		private:
 			// ----------------------------- Lateral -----------------------------
 
-
 			TextField _latMaxRoll {};
 			Titler _latMaxRollTitle { L"Max roll ang", &_latMaxRoll };
 

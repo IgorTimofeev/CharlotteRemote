@@ -28,5 +28,6 @@ namespace pizda {
 			void onTick() override;
 			void onPress() override;
 			void onRotate(bool clockwise, bool big) override;
+			void onVariantChanged() override;
 	};
 }

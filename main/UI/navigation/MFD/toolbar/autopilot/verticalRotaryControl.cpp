@@ -7,7 +7,7 @@ namespace pizda {
 		setDigitCount(3);
 		setSignVisible(true);
 
-		setActiveColor(&Theme::yellow);
+		setActiveColor(&Theme::green1);
 	}
 
 	void VerticalRotaryControlStab::onTick() {
@@ -25,7 +25,17 @@ namespace pizda {
 	void VerticalRotaryControlALT::onTick() {
 		RotaryControlSevenVariant::onTick();
 
-		setValue(Units::convertDistance(RC::getInstance().getAircraftData().raw.autopilot.targetAltitudeM, DistanceUnit::meter, DistanceUnit::foot));
+		auto& rc = RC::getInstance();
+
+		setValue(
+			rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::alt
+			? Units::convertDistance(
+				rc.getAircraftData().computed.coordinates.getAltitude(),
+				DistanceUnit::meter,
+				DistanceUnit::foot
+			)
+			: valueDashes
+		);
 	}
 	
 	VerticalRotaryControl::VerticalRotaryControl() {
@@ -37,7 +47,8 @@ namespace pizda {
 
 		seven.setValue(RC::getInstance().getSettings().autopilot.altitudeFt);
 
-		switch (RC::getInstance().getRemoteData().autopilot.verticalMode) {
+		// Selecting variant
+		switch (RC::getInstance().getSettings().autopilot.verticalMode) {
 			case AutopilotVerticalMode::stab:
 				setVariantIndex(1);
 				break;
@@ -74,40 +85,31 @@ namespace pizda {
 
 		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setAltitude);
 	}
-	
+
+	void VerticalRotaryControl::onVariantChanged() {
+		auto& rc = RC::getInstance();
+
+		switch (getVariantIndex()) {
+			case 0:
+				rc.getSettings().autopilot.verticalMode = AutopilotVerticalMode::flc;
+				break;
+
+			case 1:
+				rc.getSettings().autopilot.verticalMode = AutopilotVerticalMode::stab;
+				break;
+
+			default:
+				rc.getSettings().autopilot.verticalMode = AutopilotVerticalMode::alt;
+				break;
+		}
+
+		rc.getSettings().autopilot.scheduleWrite();
+	}
+
 	void VerticalRotaryControl::onPress() {
 		RotaryControl::onPress();
 
 		auto& rc = RC::getInstance();
-
-		switch (getVariantIndex()) {
-			case 0: {
-				rc.getRemoteData().autopilot.verticalMode =
-					rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::flc
-					? AutopilotVerticalMode::dir
-					: AutopilotVerticalMode::flc;
-
-				rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setAltitude);
-
-				break;
-			}
-			case 1: {
-				rc.getRemoteData().autopilot.verticalMode =
-					rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::stab
-					? AutopilotVerticalMode::dir
-					: AutopilotVerticalMode::stab;
-
-				break;
-			}
-			default: {
-				rc.getRemoteData().autopilot.verticalMode =
-					rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::alt
-					? AutopilotVerticalMode::dir
-					: AutopilotVerticalMode::alt;
-
-				break;
-			}
-		}
 
 		rc.getTransceiver().enqueueAutopilot(RemoteAuxiliaryAutopilotPacketType::setVerticalMode);
 	}

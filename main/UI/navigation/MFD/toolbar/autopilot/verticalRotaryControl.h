@@ -36,6 +36,7 @@ namespace pizda {
 			bool isVariantEditable(uint8_t index) override;
 			void onPress() override;
 			void onRotate(bool clockwise, bool big) override;
+			void onVariantChanged() override;
 			void onTick() override;
 	};
 }
