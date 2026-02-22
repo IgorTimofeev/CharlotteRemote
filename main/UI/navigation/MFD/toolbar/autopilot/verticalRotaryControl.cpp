@@ -7,7 +7,7 @@ namespace pizda {
 		setDigitCount(3);
 		setSignVisible(true);
 
-		setActiveColor(Theme::green1);
+		setActiveColor(Theme::magenta1);
 	}
 
 	void VerticalRotaryControlStab::onTick() {

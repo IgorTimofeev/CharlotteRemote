@@ -8,8 +8,8 @@
 namespace pizda {
 	// -------------------------------- Default --------------------------------
 
-	MenuViewButton::MenuViewButton(const Image* image, std::wstring_view text) : _image(image) {
-		setSize(Size(45, image->getSize().getHeight() + _textOffset + Theme::fontSmall.getHeight()));
+	MenuViewButton::MenuViewButton(const Image& image, const std::wstring_view& text) : _image(&image) {
+		setSize(Size(45, image.getSize().getHeight() + _textOffset + Theme::fontSmall.getHeight()));
 		setText(text);
 
 		setDefaultBackgroundColor(Theme::bg3);
@@ -31,7 +31,7 @@ namespace pizda {
 		);
 
 		// Image
-		renderer.renderImage(bounds.getTopLeft(), _image);
+		renderer.renderImage(bounds.getTopLeft(), *_image);
 
 		// Border
 		if (isActive()) {

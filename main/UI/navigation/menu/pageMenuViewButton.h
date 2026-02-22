@@ -11,7 +11,7 @@ namespace pizda {
 
 	class PageMenuViewButton : public MenuViewButton {
 		public:
-			PageMenuViewButton(const Image* image, std::wstring_view text, const Route* route);
+			PageMenuViewButton(const Image& image, const std::wstring_view& text, const Route* route);
 
 			const Route* getRoute() const;
 

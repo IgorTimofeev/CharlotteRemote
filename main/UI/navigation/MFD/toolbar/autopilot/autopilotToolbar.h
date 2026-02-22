@@ -22,13 +22,13 @@ namespace pizda {
 			void onTick() override;
 		
 		private:
-			ImageToolbarButton flightDirector { L"FD", &resources::images::menuIconMFDAutopilotFlightDirector };
+			ImageToolbarButton flightDirector { L"FD", resources::images::menuIconMFDAutopilotFlightDirector };
 			
 			SpeedRotaryControl speed {};
 			LateralRotaryControl lateral {};
 			VerticalRotaryControl vertical {};
 			
-			ImageToolbarButton autopilot { L"A/P", &resources::images::menuIconMFDAutopilotEngage };
+			ImageToolbarButton autopilot { L"A/P", resources::images::menuIconMFDAutopilotEngage };
 
 	};
 }

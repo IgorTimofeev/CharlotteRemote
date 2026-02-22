@@ -14,7 +14,7 @@ namespace pizda {
 
 	class MFDModeMenuViewButton : public MenuViewButton {
 		public:
-			explicit MFDModeMenuViewButton(const Image* image, std::wstring_view text, PersonalizationSettingsMFDToolbarMode mode);
+			explicit MFDModeMenuViewButton(const Image& image, std::wstring_view text, PersonalizationSettingsMFDToolbarMode mode);
 
 		protected:
 			void onClick() override;
@@ -28,10 +28,10 @@ namespace pizda {
 			explicit MFDMenuView();
 
 			MFDModeMenuViewButton
-				autopilotButton { &resources::images::menuIconMFDAutopilot, L"A/P", PersonalizationSettingsMFDToolbarMode::autopilot },
-				pressureButton { &resources::images::menuIconMFDBaro, L"BARO", PersonalizationSettingsMFDToolbarMode::baro },
-				trimButton { &resources::images::menuIconMFDTrim, L"Trim", PersonalizationSettingsMFDToolbarMode::trim },
-				lightsButton { &resources::images::menuIconMFDLights, L"Lights", PersonalizationSettingsMFDToolbarMode::lights };
+				autopilotButton { resources::images::menuIconMFDAutopilot, L"A/P", PersonalizationSettingsMFDToolbarMode::autopilot },
+				pressureButton { resources::images::menuIconMFDBaro, L"BARO", PersonalizationSettingsMFDToolbarMode::baro },
+				trimButton { resources::images::menuIconMFDTrim, L"Trim", PersonalizationSettingsMFDToolbarMode::trim },
+				lightsButton { resources::images::menuIconMFDLights, L"Lights", PersonalizationSettingsMFDToolbarMode::lights };
 
 			std::array<MFDModeMenuViewButton*, 4> modeButtons {
 				&autopilotButton,
