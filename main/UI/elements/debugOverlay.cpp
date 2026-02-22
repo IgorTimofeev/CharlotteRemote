@@ -25,7 +25,7 @@ namespace pizda {
 			+ rc.getApplication().getRenderDeltaTime()
 			+ rc.getApplication().getFlushDeltaTime();
 
-		const auto renderLine = [&renderer, &y](const std::wstring_view text, const Color* color = &Theme::magenta1, uint8_t scale = 1) {
+		const auto renderLine = [&renderer, &y](const std::wstring_view text, const Color& color = Theme::magenta1, const uint8_t scale = 1) {
 			renderer.renderText(Point(10, y), Theme::fontNormal, color, text, scale);
 
 			y += Theme::fontNormal.getHeight(scale) + 2;
@@ -34,7 +34,7 @@ namespace pizda {
 		// Big fucking FPS counter
 		renderLine(
 			std::to_wstring(totalDeltaTime > 0 ? 1'000'000 / totalDeltaTime : 0),
-			&Theme::yellow,
+			Theme::yellow,
 			3
 		);
 

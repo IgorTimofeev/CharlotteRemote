@@ -11,14 +11,12 @@ namespace pizda {
 		public:
 			HorizontalSeparator() {
 				setHeight(1);
-				setFillColor(&Theme::bg3);
+				setFillColor(Theme::bg3);
 			}
 			
 			void onRender(Renderer& renderer, const Bounds& bounds) override {
-				auto color = getFillColor();
-				
-				if (color)
-					renderer.renderHorizontalLine(bounds.getTopLeft(), bounds.getWidth(), color);
+				if (hasFillColor())
+					renderer.renderHorizontalLine(bounds.getTopLeft(), bounds.getWidth(), getFillColor());
 			}
 	};
 	
@@ -26,14 +24,12 @@ namespace pizda {
 		public:
 			VerticalSeparator() {
 				setWidth(1);
-				setFillColor(&Theme::bg3);
+				setFillColor(Theme::bg3);
 			}
 			
 			void onRender(Renderer& renderer, const Bounds& bounds) override {
-				auto color = getFillColor();
-				
-				if (color)
-					renderer.renderVerticalLine(bounds.getTopLeft(), bounds.getHeight(), color);
+				if (hasFillColor())
+					renderer.renderVerticalLine(bounds.getTopLeft(), bounds.getHeight(), getFillColor());
 			}
 	};
 }

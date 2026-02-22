@@ -15,11 +15,11 @@ namespace pizda {
 		_reverse.setHorizontalAlignment(Alignment::end);
 		_reverse.setCornerRadius(Theme::cornerRadius);
 		
-		_reverse.setDefaultBackgroundColor(&Theme::bg2);
-		_reverse.setDefaultTextColor(&Theme::fg4);
+		_reverse.setDefaultBackgroundColor(Theme::bg2);
+		_reverse.setDefaultTextColor(Theme::fg4);
 		
-		_reverse.setActiveBackgroundColor(&Theme::fg1);
-		_reverse.setActiveTextColor(&Theme::bg1);
+		_reverse.setActiveBackgroundColor(Theme::fg1);
+		_reverse.setActiveTextColor(Theme::bg1);
 		
 		_reverse.setFont(Theme::fontSmall);
 		_reverse.setText(L"<>");

@@ -26,19 +26,19 @@ namespace pizda {
 		renderer.renderFilledRectangle(
 			bounds,
 			Theme::cornerRadius,
-			isActive() ? &Theme::bg4 : &Theme::bg3
+			isActive() ? Theme::bg4 : Theme::bg3
 		);
 
 		// Frame
 		renderer.renderRectangle(
 			bounds,
 			Theme::cornerRadius,
-			isActiveLeg ? &Theme::magenta1 : (isActive() ? &Theme::fg1 : &Theme::bg4)
+			isActiveLeg ? Theme::magenta1 : (isActive() ? Theme::fg1 : Theme::bg4)
 		);
 
 		auto x = bounds.getX() + 15;
 		const auto yCenter = bounds.getYCenter();
-		const auto color = RenderingUtils::getWaypointColor(waypointData);
+		const auto& color = RenderingUtils::getWaypointColor(waypointData);
 
 		// Icon
 		RenderingUtils::renderWaypointIcon(
@@ -57,7 +57,7 @@ namespace pizda {
 				yCenter - Theme::fontNormal.getHeight() / 2
 			),
 			Theme::fontNormal,
-			&Theme::fg1,
+			Theme::fg1,
 			waypointData.name
 		);
 
@@ -75,7 +75,7 @@ namespace pizda {
 				yCenter - Theme::fontNormal.getHeight() / 2
 			),
 			Theme::fontNormal,
-			&Theme::fg4,
+			Theme::fg4,
 			coordsText
 		);
 
@@ -90,9 +90,9 @@ namespace pizda {
 
 			x = bounds.getX() - lineWidth - arrowWidth;
 
-			renderer.renderHorizontalLine(Point(x, yPrev), lineWidth, &Theme::magenta1);
-			renderer.renderVerticalLine(Point(x, yPrev + 1), lineHeight - 1, &Theme::magenta1);
-			renderer.renderHorizontalLine(Point(x, yCenter), lineWidth, &Theme::magenta1);
+			renderer.renderHorizontalLine(Point(x, yPrev), lineWidth, Theme::magenta1);
+			renderer.renderVerticalLine(Point(x, yPrev + 1), lineHeight - 1, Theme::magenta1);
+			renderer.renderHorizontalLine(Point(x, yCenter), lineWidth, Theme::magenta1);
 
 			x += lineWidth;
 
@@ -100,7 +100,7 @@ namespace pizda {
 				Point(x, yCenter - arrowHeightDiv2),
 				Point(x + arrowWidth, yCenter),
 				Point(x, yCenter + arrowHeightDiv2),
-				&Theme::magenta1
+				Theme::magenta1
 			);
 		}
 	}

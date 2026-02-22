@@ -12,13 +12,13 @@ namespace pizda {
 		setSize(Size(size));
 		setCornerRadius(getSize().getWidth() / 2 - 1);
 
-		setDefaultBackgroundColor(&Theme::bg2);
-		setDefaultBorderColor(&Theme::bg3);
-		setDefaultTextColor(&Theme::fg5);
+		setDefaultBackgroundColor(Theme::bg2);
+		setDefaultBorderColor(Theme::bg3);
+		setDefaultTextColor(Theme::fg5);
 
-		setActiveBackgroundColor(&Theme::fg1);
-		setActiveBorderColor(nullptr);
-		setActiveTextColor(&Theme::bg1);
+		setActiveBackgroundColor(Theme::fg1);
+		setActiveBorderColor(Theme::fg1);
+		setActiveTextColor(Theme::bg1);
 		
 		setFont(Theme::fontSmall);
 		

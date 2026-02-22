@@ -77,20 +77,20 @@ namespace pizda {
 		// Background
 		renderer.renderFilledRectangle(
 			bounds,
-			&Theme::bg2
+			Theme::bg2
 		);
 
 		// Axes
 		renderer.renderHorizontalLine(
 			bounds.getBottomLeft(),
 			bounds.getWidth(),
-			&Theme::fg4
+			Theme::fg4
 		);
 
 		renderer.renderVerticalLine(
 			bounds.getTopLeft(),
 			bounds.getHeight() - 1,
-			&Theme::fg4
+			Theme::fg4
 		);
 
 		// History
@@ -127,7 +127,7 @@ namespace pizda {
 				renderer.renderVerticalLine(
 					Point(bounds.getX() + localX, bounds.getY()),
 					bounds.getHeight(),
-					&Theme::fg1
+					Theme::fg1
 				);
 
 				shouldRenderScanline = false;
@@ -159,7 +159,7 @@ namespace pizda {
 					renderer.renderVerticalLine(
 						Point(bounds.getX() + localX, bounds.getY2() - lineHeight + 1),
 						lineHeight,
-						color
+						*color
 					);
 				}
 			}
@@ -185,7 +185,7 @@ namespace pizda {
 					bounds.getY() + pointerPixelPos.getY() - Theme::fontSmall.getHeight() / 2
 				),
 				Theme::fontSmall,
-				&Theme::fg4,
+				Theme::fg4,
 				text
 			);
 
@@ -195,7 +195,7 @@ namespace pizda {
 					bounds.getY() + pointerPixelPos.getY()
 				),
 				bounds.getWidth() - (textHOffset + textWidth + textHOffset),
-				&Theme::fg4
+				Theme::fg4
 			);
 
 			// Vertical
@@ -208,7 +208,7 @@ namespace pizda {
 					bounds.getY() + textVOffset
 				),
 				Theme::fontSmall,
-				&Theme::fg4,
+				Theme::fg4,
 				text
 			);
 
@@ -218,7 +218,7 @@ namespace pizda {
 					bounds.getY() + textVOffset + Theme::fontSmall.getHeight() + textVOffset
 				),
 				bounds.getHeight() - (textVOffset + Theme::fontSmall.getHeight() + textVOffset),
-				&Theme::fg4
+				Theme::fg4
 			);
 
 			// Tip
@@ -236,7 +236,7 @@ namespace pizda {
 						tipY
 					),
 					2,
-					&Theme::fg1
+					Theme::fg1
 				);
 
 				text = std::format(L"{} dBm", historyRSSI);
@@ -247,7 +247,7 @@ namespace pizda {
 						tipY - Theme::fontSmall.getHeight() / 2
 					),
 					Theme::fontSmall,
-					&Theme::fg1,
+					Theme::fg1,
 					text
 				);
 			}
@@ -297,7 +297,7 @@ namespace pizda {
 
 		// Presets button
 		Theme::applySecondary(&frequencyPresetsButton);
-		frequencyPresetsButton.setDefaultBackgroundColor(&Theme::bg2);
+		frequencyPresetsButton.setDefaultBackgroundColor(Theme::bg2);
 		frequencyPresetsButton.setMargin(Margin(0, Theme::fontNormal.getHeight() + frequencyFromTitle.getGap(), 0, 0));
 		frequencyPresetsButton.setWidth(24);
 		frequencyPresetsButton.setText(L"...");

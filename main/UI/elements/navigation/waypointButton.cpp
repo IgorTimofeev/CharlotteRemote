@@ -53,19 +53,19 @@ namespace pizda {
 		renderer.renderFilledRectangle(
 			bounds,
 			cornerRadius,
-			isActive() ? &Theme::bg4 : &Theme::bg3
+			isActive() ? Theme::bg4 : Theme::bg3
 		);
 
 		renderer.renderRectangle(
 			bounds,
 			cornerRadius,
-			isActive() ? &Theme::fg1 : &Theme::bg4
+			isActive() ? Theme::fg1 : Theme::bg4
 		);
 
 		auto x = bounds.getX() + 15;
 		const auto y = bounds.getYCenter();
 
-		const auto color = RenderingUtils::getWaypointColor(waypointData);
+		const auto& color = RenderingUtils::getWaypointColor(waypointData);
 
 		RenderingUtils::renderWaypointIcon(
 			renderer,
@@ -82,7 +82,7 @@ namespace pizda {
 				y - Theme::fontNormal.getHeight() / 2
 			),
 			Theme::fontNormal,
-			&Theme::fg1,
+			Theme::fg1,
 			waypointData.name
 		);
 
@@ -100,7 +100,7 @@ namespace pizda {
 				y - Theme::fontNormal.getHeight() / 2
 			),
 			Theme::fontNormal,
-			&Theme::fg4,
+			Theme::fg4,
 			coordsText
 		);
 	}

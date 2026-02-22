@@ -29,10 +29,10 @@ namespace pizda {
 				frameSize,
 				bounds.getHeight()
 			),
-			isConnected ? &Theme::bg6 : &Theme::bad3
+			isConnected ? Theme::bg6 : Theme::bad3
 		);
 
-		const auto& renderLine = [&renderer, &bounds](const int32_t pos, const Color* color) {
+		const auto& renderLine = [&renderer, &bounds](const int32_t pos, const Color& color) {
 			renderer.renderVerticalLine(
 				Point(
 					pos,
@@ -46,7 +46,7 @@ namespace pizda {
 		// Remote value
 		renderLine(
 			bounds.getX() + std::max(static_cast<uint16_t>(frameSize * _remoteValue / 0xFF), static_cast<uint16_t>(1)) - 1,
-			isConnected ? &Theme::green1 : &Theme::bad1
+			isConnected ? Theme::green1 : Theme::bad1
 		);
 
 		// Aircraft value
@@ -61,11 +61,11 @@ namespace pizda {
 						aircraftValueSize - 1,
 						bounds.getHeight()
 					),
-					&Theme::fg1
+					Theme::fg1
 				);
 			}
 			
-			renderLine(bounds.getX() + aircraftValueSize - 1, &Theme::magenta1);
+			renderLine(bounds.getX() + aircraftValueSize - 1, Theme::magenta1);
 		}
 
 		// Text
@@ -80,7 +80,7 @@ namespace pizda {
 				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1
 			),
 			Theme::fontSmall,
-			isConnected ? &Theme::fg2 : &Theme::bad1,
+			isConnected ? Theme::fg2 : Theme::bad1,
 			text
 		);
 	}

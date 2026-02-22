@@ -45,10 +45,6 @@ namespace pizda {
 	}
 	
 	void MinimumsRotaryControl::updateColor() {
-		setBorderColor(
-			RC::getInstance().getSettings().ADIRS.minimumAltitudeEnabled
-			? &Theme::fg1
-			: nullptr
-		);
+		setBorderColor(RC::getInstance().getSettings().ADIRS.minimumAltitudeEnabled ? Theme::fg1 : Theme::bg1);
 	}
 }

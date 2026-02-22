@@ -51,10 +51,10 @@ namespace pizda {
 		// SVT background
 		{
 			if (horizonLeft.getY() >= bounds.getY2() && horizonRight.getY() >= bounds.getY2()) {
-				renderer.renderFilledRectangle(bounds, &Theme::sky1);
+				renderer.renderFilledRectangle(bounds, Theme::sky1);
 			}
 			else if (horizonLeft.getY() <= bounds.getY() && horizonRight.getY() <= bounds.getY()) {
-				renderer.renderFilledRectangle(bounds, &Theme::ground1);
+				renderer.renderFilledRectangle(bounds, Theme::ground1);
 			}
 			else {
 				renderer.renderFilledQuad(
@@ -62,7 +62,7 @@ namespace pizda {
 					horizonRight - static_cast<Point>(horizonVecPerp * diagonal),
 					horizonRight,
 					horizonLeft,
-					&Theme::sky1
+					Theme::sky1
 				);
 
 				// Ground
@@ -71,7 +71,7 @@ namespace pizda {
 					horizonRight,
 					horizonRight + static_cast<Point>(horizonVecPerp * diagonal),
 					horizonLeft + static_cast<Point>(horizonVecPerp * diagonal),
-					&Theme::ground1
+					Theme::ground1
 				);
 			}
 		}
@@ -159,7 +159,7 @@ namespace pizda {
 			renderer.renderLine(
 				static_cast<Point>(arrowCenter + arrowVec / 2.f),
 				static_cast<Point>(arrowToVec),
-				&Theme::ground2
+				Theme::ground2
 			);
 
 			constexpr uint8_t triangleWidth = 2;
@@ -169,7 +169,7 @@ namespace pizda {
 				static_cast<Point>(arrowToVec),
 				static_cast<Point>(arrowToVec + arrowVecNorm * triangleHeight - arrowVecPerp * triangleWidth),
 				static_cast<Point>(arrowToVec + arrowVecNorm * triangleHeight + arrowVecPerp * triangleWidth),
-				&Theme::ground2
+				Theme::ground2
 			);
 
 			renderer.renderText(
@@ -178,7 +178,7 @@ namespace pizda {
 					windPosition.getY() - Theme::fontSmall.getHeight()
 				),
 				Theme::fontSmall,
-				&Theme::ground2,
+				Theme::ground2,
 				text
 			);
 		}
@@ -202,7 +202,7 @@ namespace pizda {
 				PFD::flightDirectorThickness
 			);
 
-			renderer.renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta1);
+			renderer.renderFilledRectangle(flightDirectorRectBounds, Theme::magenta1);
 
 			// Vertical
 			flightDirectorRectBounds.setX(
@@ -219,7 +219,7 @@ namespace pizda {
 			flightDirectorRectBounds.setWidth(PFD::flightDirectorThickness);
 			flightDirectorRectBounds.setHeight(flightDirectorLength);
 
-			renderer.renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta1);
+			renderer.renderFilledRectangle(flightDirectorRectBounds, Theme::magenta1);
 		}
 
 		// Flight path vector
@@ -234,7 +234,7 @@ namespace pizda {
 				renderer.renderCircle(
 					FPVPosition,
 					PFD::flightPathVectorRadius - i,
-					&Theme::bg1
+					Theme::bg1
 				);
 			}
 
@@ -246,7 +246,7 @@ namespace pizda {
 					PFD::flightPathVectorLineLength,
 					PFD::flightPathVectorLineThickness
 				),
-				&Theme::bg1
+				Theme::bg1
 			);
 
 			// Right line
@@ -257,7 +257,7 @@ namespace pizda {
 					PFD::flightPathVectorLineLength,
 					PFD::flightPathVectorLineThickness
 				),
-				&Theme::bg1
+				Theme::bg1
 			);
 		}
 
@@ -270,15 +270,15 @@ namespace pizda {
 					width,
 					PFD::aircraftSymbolThickness
 				),
-				&Theme::bg1
+				Theme::bg1
 			);
 
 			// Outline
-			// renderer.renderHorizontalLine(Point(position.getX() - 1, position.getY() - 1), width + 2, &Theme::fg1);
-			// renderer.renderHorizontalLine(Point(position.getX() - 1, position.getY() + PFD::aircraftSymbolThickness), width + 2, &Theme::fg1);
+			// renderer.renderHorizontalLine(Point(position.getX() - 1, position.getY() - 1), width + 2, Theme::fg1);
+			// renderer.renderHorizontalLine(Point(position.getX() - 1, position.getY() + PFD::aircraftSymbolThickness), width + 2, Theme::fg1);
 			//
-			// renderer.renderVerticalLine(Point(position.getX() - 1, position.getY()), PFD::aircraftSymbolThickness, &Theme::fg1);
-			// renderer.renderVerticalLine(Point(position.getX() + width, position.getY()), PFD::aircraftSymbolThickness, &Theme::fg1);
+			// renderer.renderVerticalLine(Point(position.getX() - 1, position.getY()), PFD::aircraftSymbolThickness, Theme::fg1);
+			// renderer.renderVerticalLine(Point(position.getX() + width, position.getY()), PFD::aircraftSymbolThickness, Theme::fg1);
 		};
 
 		// Left
@@ -327,7 +327,7 @@ namespace pizda {
 		renderer.renderLine(
 			horizonLeft,
 			horizonRight,
-			PFD::pitchOverlayColorGround
+			*PFD::pitchOverlayColorGround
 		);
 
 		const auto viewport = renderer.pushViewport(bounds);
@@ -357,7 +357,7 @@ namespace pizda {
 			renderer.renderLine(
 				lineLeft,
 				lineRight,
-				color
+				*color
 			);
 
 			if (lineAngleDeg % 10 == 0) {
@@ -372,7 +372,7 @@ namespace pizda {
 						lineRight.getY() + static_cast<int32_t>(horizonVecNorm.getY() * textCenterVecLengthWithOffset - textCenterVec.getY())
 					),
 					*PFD::pitchOverlayFont,
-					color,
+					*color,
 					text
 				);
 			}
@@ -400,10 +400,15 @@ namespace pizda {
 
 				renderer.renderLine(
 					lineFrom,
-					lineFrom + static_cast<Point>(vec.normalize() * (isBig
-																		? PFD::turnCoordinatorOverlayRollIndicatorLineBigLength
-																		: PFD::turnCoordinatorOverlayRollIndicatorLineSmallLength)),
-					PFD::turnCoordinatorOverlayColor
+					lineFrom + static_cast<Point>(
+						vec.normalize()
+						* (
+							isBig
+							? PFD::turnCoordinatorOverlayRollIndicatorLineBigLength
+							: PFD::turnCoordinatorOverlayRollIndicatorLineSmallLength
+						)
+					),
+					*PFD::turnCoordinatorOverlayColor
 				);
 			};
 
@@ -434,7 +439,7 @@ namespace pizda {
 				0, -PFD::turnCoordinatorOverlayRollIndicatorRadius + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight)
 				.rotate(-rc.getAircraftData().computed.rollRad)
 			),
-			PFD::turnCoordinatorOverlayColor
+			*PFD::turnCoordinatorOverlayColor
 		);
 
 		// Lower triangle
@@ -444,7 +449,7 @@ namespace pizda {
 			Point(center.getX(), rollTriangleY),
 			Point(center.getX() - PFD::turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, rollTriangleY + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight),
 			Point(center.getX() + PFD::turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, rollTriangleY + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight),
-			PFD::turnCoordinatorOverlayColor
+			*PFD::turnCoordinatorOverlayColor
 		);
 
 		// Slip/skid indicator
@@ -460,7 +465,7 @@ namespace pizda {
 				PFD::turnCoordinatorOverlaySlipAndSkidIndicatorWidth,
 				PFD::turnCoordinatorOverlaySlipAndSkidIndicatorHeight
 			),
-			PFD::turnCoordinatorOverlayColor
+			*PFD::turnCoordinatorOverlayColor
 		);
 	}
 	
@@ -479,7 +484,7 @@ namespace pizda {
 					yCenter - Theme::fontSmall.getHeight() / 2
 				),
 				Theme::fontSmall,
-				ap ? &Theme::green1 : &Theme::sky2,
+				ap ? Theme::green1 : Theme::sky2,
 				text
 			);
 			
@@ -491,7 +496,7 @@ namespace pizda {
 		};
 		
 		const auto renderSeparator = [&renderer, &x, &bounds] {
-			renderer.renderVerticalLine(Point(x - 1, bounds.getY()), PFD::flightModeAnnunciatorHeight, &Theme::sky2);
+			renderer.renderVerticalLine(Point(x - 1, bounds.getY()), PFD::flightModeAnnunciatorHeight, Theme::sky2);
 		};
 		
 		// Throttle
@@ -596,7 +601,7 @@ namespace pizda {
 					lineY
 				),
 				lineLength,
-				PFD::yawOverlayColor
+				*PFD::yawOverlayColor
 			);
 
 			// Text
@@ -631,7 +636,7 @@ namespace pizda {
 						lineY - PFD::yawOverlayTextOffset - PFD::yawOverlayFont->getHeight()
 					),
 					*PFD::yawOverlayFont,
-					PFD::yawOverlayColor,
+					*PFD::yawOverlayColor,
 					text
 				);
 			}
@@ -676,7 +681,7 @@ namespace pizda {
 					PFD::autopilotIndicatorSize,
 					PFD::autopilotIndicatorRectangleThickness
 				),
-				&Theme::ocean
+				Theme::ocean
 			);
 			
 			// Left rect
@@ -687,7 +692,7 @@ namespace pizda {
 					PFD::autopilotIndicatorTriangleMargin,
 					PFD::autopilotIndicatorTriangleThickness
 				),
-				&Theme::ocean
+				Theme::ocean
 			);
 			
 			// Right rect
@@ -698,7 +703,7 @@ namespace pizda {
 					PFD::autopilotIndicatorTriangleMargin,
 					PFD::autopilotIndicatorTriangleThickness
 				),
-				&Theme::ocean
+				Theme::ocean
 			);
 			
 			// Left triangle
@@ -715,7 +720,7 @@ namespace pizda {
 					x + PFD::autopilotIndicatorTriangleMargin,
 					y + PFD::autopilotIndicatorTriangleThickness - 1
 				),
-				&Theme::ocean
+				Theme::ocean
 			);
 			
 			// Right triangle
@@ -732,7 +737,7 @@ namespace pizda {
 					x + PFD::autopilotIndicatorSize - 1 - PFD::autopilotIndicatorTriangleMargin,
 					y + PFD::autopilotIndicatorTriangleThickness - 1
 				),
-				&Theme::ocean
+				Theme::ocean
 			);
 		}
 
@@ -753,7 +758,7 @@ namespace pizda {
 			renderer.renderHorizontalLine(
 				Point(x, y2),
 				deltaPixels,
-				&Theme::magenta1
+				Theme::magenta1
 			);
 		}
 		
@@ -762,7 +767,7 @@ namespace pizda {
 			Point(centerX, y2 - PFD::yawOverlayTriangleHeight),
 			Point(centerX - PFD::yawOverlayTriangleWidth / 2, y2),
 			Point(centerX + PFD::yawOverlayTriangleWidth / 2, y2),
-			PFD::yawOverlayColor
+			*PFD::yawOverlayColor
 		);
 
 		renderer.popViewport(viewport);

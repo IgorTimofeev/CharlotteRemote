@@ -26,7 +26,7 @@ namespace pizda {
 				// +1 because tip overlaps frame
 				const uint16_t frameSize = bounds.getWidth() - tipSize.getWidth() + 1;
 
-				const auto frameColor = available ? &Theme::bg4 : &Theme::bad3;
+				const auto frameColor = available ? Theme::bg4 : Theme::bad3;
 				
 				// Frame
 				renderer.renderRectangle(
@@ -64,7 +64,7 @@ namespace pizda {
 								fillWidth,
 								bounds.getHeight()
 							),
-							color
+							*color
 						);
 					}
 				}
@@ -81,7 +81,7 @@ namespace pizda {
 						bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1
 					),
 					Theme::fontSmall,
-					available ? &Theme::fg1 : &Theme::bad1,
+					available ? Theme::fg1 : Theme::bad1,
 					text
 				);
 			}

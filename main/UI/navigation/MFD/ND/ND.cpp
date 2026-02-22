@@ -77,11 +77,11 @@ namespace pizda {
 		button.setSize(Size(PFD::speedWidth, 20));
 		button.setCornerRadius(0);
 
-		button.setDefaultBackgroundColor(&Theme::bg2);
-		button.setDefaultTextColor(&Theme::fg5);
+		button.setDefaultBackgroundColor(Theme::bg2);
+		button.setDefaultTextColor(Theme::fg5);
 
-		button.setActiveBackgroundColor(&Theme::fg1);
-		button.setActiveTextColor(&Theme::bg1);
+		button.setActiveBackgroundColor(Theme::fg1);
+		button.setActiveTextColor(Theme::bg1);
 
 		button.setFont(Theme::fontSmall);
 

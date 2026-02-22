@@ -135,7 +135,7 @@ namespace pizda {
 		const auto y = bounds.getY2() - 4;
 		
 		for (uint8_t i = 0; i < variantsLayout.getChildrenCount(); ++i) {
-			renderer.renderPixel(Point(x, y), variantIndex == i ? &Theme::fg1 : &Theme::fg3);
+			renderer.renderPixel(Point(x, y), variantIndex == i ? Theme::fg1 : Theme::fg3);
 			
 			x += dotWidth + dotSpacing;
 		}
@@ -145,14 +145,14 @@ namespace pizda {
 //		const auto y = bounds.getYCenter() + 4;
 //		auto x = bounds.getX() + offset;
 //
-//		renderer.renderPixel(Point(x + 1, y - 1), &Theme::fg1);
-//		renderer.renderPixel(Point(x, y), &Theme::fg1);
-//		renderer.renderPixel(Point(x + 1, y + 1), &Theme::fg1);
+//		renderer.renderPixel(Point(x + 1, y - 1), Theme::fg1);
+//		renderer.renderPixel(Point(x, y), Theme::fg1);
+//		renderer.renderPixel(Point(x + 1, y + 1), Theme::fg1);
 //
 //		x = bounds.getX2() - offset;
-//		renderer.renderPixel(Point(x - 1, y - 1), &Theme::fg1);
-//		renderer.renderPixel(Point(x, y), &Theme::fg1);
-//		renderer.renderPixel(Point(x - 1, y + 1), &Theme::fg1);
+//		renderer.renderPixel(Point(x - 1, y - 1), Theme::fg1);
+//		renderer.renderPixel(Point(x, y), Theme::fg1);
+//		renderer.renderPixel(Point(x - 1, y + 1), Theme::fg1);
 	}
 	
 	void RotaryControl::onVariantChanged() {

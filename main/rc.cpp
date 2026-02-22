@@ -69,7 +69,7 @@ namespace pizda {
 
 		// Rendering splash screen
 		Theme::setup(_renderer);
-		_renderer.clear(&Theme::bg1);
+		_renderer.clear(Theme::bg1);
 		_renderer.renderImage(Point(), &resources::images::splashScreen);
 		_renderer.flush();
 
@@ -126,7 +126,7 @@ namespace pizda {
 		// -------------------------------- UI --------------------------------
 
 		_application.setRenderer(_renderer);
-		_application.setBackgroundColor(&Theme::bg1);
+		_application.setBackgroundColor(Theme::bg1);
 		_application += _pageLayout;
 		_application += _openMenuButton;
 

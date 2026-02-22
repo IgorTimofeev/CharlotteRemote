@@ -9,7 +9,7 @@ namespace pizda {
 		// Top panel
 		topPanel.setHeight(topPanelHeight);
 		topPanel.setVerticalAlignment(Alignment::start);
-		topPanel.setFillColor(&Theme::bg2);
+		topPanel.setFillColor(Theme::bg2);
 		*this += topPanel;
 	}
 	

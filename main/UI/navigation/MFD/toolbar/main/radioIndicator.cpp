@@ -63,7 +63,7 @@ namespace pizda {
 			renderer.renderVerticalLine(
 				position,
 				lineHeight,
-				i <= sexuality ? color : &Theme::fg4
+				i <= sexuality ? *color : Theme::fg4
 			);
 
 			position.setX(position.getX() + 1 + _lineSpacing);
@@ -78,7 +78,7 @@ namespace pizda {
 		renderer.renderText(
 			position,
 			Theme::fontSmall,
-			isConnected ? &Theme::fg4 : &Theme::bad1,
+			isConnected ? Theme::fg4 : Theme::bad1,
 			isConnected ? std::format(L"R {}", RSSI) : L"----"
 		);
 		
@@ -88,7 +88,7 @@ namespace pizda {
 		renderer.renderText(
 			position,
 			Theme::fontSmall,
-			isConnected ? &Theme::fg4 : &Theme::bad1,
+			isConnected ? Theme::fg4 : Theme::bad1,
 			isConnected ? std::format(L"S {}", SNR) : L"----"
 		);
 	}

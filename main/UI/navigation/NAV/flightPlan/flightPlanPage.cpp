@@ -37,7 +37,7 @@ namespace pizda {
 
 	void FlightPlanPage::applyTitleStyle(TextView& text) {
 		Theme::apply(&text);
-		text.setTextColor(&Theme::fg4);
+		text.setTextColor(Theme::fg4);
 	}
 
 	void FlightPlanPage::updateFromNavigationData() {

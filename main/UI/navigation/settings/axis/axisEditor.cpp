@@ -90,8 +90,8 @@ namespace pizda {
 	
 	void AxisEditor::onRender(Renderer& renderer, const Bounds& bounds) {
 		// Track
-		renderer.renderFilledRectangle(bounds, Theme::cornerRadius, &Theme::bg2);
-		renderer.renderRectangle(bounds, Theme::cornerRadius, &Theme::bg3);
+		renderer.renderFilledRectangle(bounds, Theme::cornerRadius, Theme::bg2);
+		renderer.renderRectangle(bounds, Theme::cornerRadius, Theme::bg3);
 		
 		// Fill
 		const auto settingsDelta = _axis->getSettings()->to - _axis->getSettings()->from;
@@ -107,7 +107,7 @@ namespace pizda {
 				bounds.getHeight()
 			),
 			Theme::cornerRadius,
-			&Theme::bg3
+			Theme::bg3
 		);
 		
 		// Curve
@@ -127,7 +127,7 @@ namespace pizda {
 				renderer.renderLine(
 					curvePos0,
 					curvePos1,
-					_selectedPin == SelectedPin::middle ? &Theme::fg1 : &Theme::bg4
+					_selectedPin == SelectedPin::middle ? Theme::fg1 : Theme::bg4
 				);
 			}
 			
@@ -138,7 +138,7 @@ namespace pizda {
 		renderer.renderVerticalLine(
 			Point(fromX + fillWidth / 2, bounds.getY() + 1),
 			bounds.getHeight() - 1,
-			&Theme::accent2
+			Theme::accent2
 		);
 		
 		// Side pins
@@ -159,7 +159,7 @@ namespace pizda {
 			renderer.renderVerticalLine(
 				Point(x, bounds.getY()),
 				bounds.getHeight(),
-				bg
+				*bg
 			);
 			
 			// Flag
@@ -180,12 +180,12 @@ namespace pizda {
 				flagSize
 			);
 			
-			renderer.renderFilledRectangle(flagBounds, bg);
+			renderer.renderFilledRectangle(flagBounds, *bg);
 			
 			renderer.renderText(
 				Point(flagBounds.getX() + textOffsetX, flagBounds.getY() + textOffsetY),
 				Theme::fontSmall,
-				fg,
+				*fg,
 				text
 			);
 		};
@@ -212,7 +212,7 @@ namespace pizda {
 				bounds.getY()
 			),
 			bounds.getHeight(),
-			thumbInWorkingRange ? &Theme::accent1 : &Theme::bad1
+			thumbInWorkingRange ? Theme::accent1 : Theme::bad1
 		);
 		
 		if (thumbInWorkingRange) {
@@ -229,7 +229,7 @@ namespace pizda {
 					bounds.getY2() - bounds.getHeight() * _axis->applySensitivityFilter(_axis->getRawValue()) / Axis::valueMax
 				),
 				2,
-				&Theme::fg1
+				Theme::fg1
 			);
 			
 			renderer.popViewport(oldViewport);

@@ -60,19 +60,19 @@ namespace pizda {
 					// Panel
 					renderer.renderFilledRectangle(
 						Bounds(bounds.getX(), bounds.getY(), bounds.getWidth(), Toolbar::topPanelHeight),
-						&Theme::bg4
+						Theme::bg4
 					);
 
 					// Background
 					renderer.renderFilledRectangle(
 						Bounds(bounds.getX(), bounds.getY() + Toolbar::topPanelHeight, bounds.getWidth(), bounds.getHeight() - Toolbar::topPanelHeight),
-						&Theme::bg3
+						Theme::bg3
 					);
 				}
 				
 				Layout::onRender(renderer, bounds);
 				
-				if (getBorderColor()) {
+				if (hasBorderColor()) {
 					renderer.renderHorizontalLine(
 						Point(
 							bounds.getX(),
@@ -88,7 +88,7 @@ namespace pizda {
 			TextView _title {};
 			
 			void updateColors() {
-				_title.setTextColor(isFocused() ? &Theme::fg1 : &Theme::fg5);
+				_title.setTextColor(isFocused() ? Theme::fg1 : Theme::fg5);
 			}
 	};
 	

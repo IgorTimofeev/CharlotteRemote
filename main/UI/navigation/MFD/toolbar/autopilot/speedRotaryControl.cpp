@@ -45,10 +45,6 @@ namespace pizda {
 	void SpeedRotaryControl::onTick() {
 		RotaryControl::onTick();
 		
-		setBorderColor(
-			RC::getInstance().getAircraftData().raw.autopilot.autothrottle
-			? &Theme::fg1
-			: nullptr
-		);
+		setBorderColor(RC::getInstance().getAircraftData().raw.autopilot.autothrottle ? Theme::fg1 : Theme::bg1);
 	}
 }

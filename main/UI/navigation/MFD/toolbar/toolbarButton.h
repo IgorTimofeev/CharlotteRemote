@@ -47,7 +47,7 @@ namespace pizda {
 			void onIsActiveChanged() override {
 				ActiveElement::onIsActiveChanged();
 				
-				setBorderColor(isActive() ? &Theme::fg1 : nullptr);
+				setBorderColor(isActive() ? Theme::fg1 : Theme::bg1);
 			}
 		
 		private:

@@ -4,7 +4,7 @@
 #include "UI/theme.h"
 
 namespace pizda {
-	PFDRunwayElement::PFDRunwayElement(const uint16_t runwayIndex): RunwayElement(runwayIndex, &Theme::bg1) {
+	PFDRunwayElement::PFDRunwayElement(const uint16_t runwayIndex): RunwayElement(runwayIndex, Theme::bg1) {
 
 	}
 
@@ -34,13 +34,13 @@ namespace pizda {
 		renderer.renderVerticalLine(
 			Point(waypointVertex.getX(), waypointVertex.getY() - lineLength),
 			lineLength - 1,
-			&Theme::fg1
+			Theme::fg1
 		);
 
 		renderer.renderFilledCircle(
 			Point(waypointVertex.getX(), waypointVertex.getY()),
 			2,
-			&Theme::fg1
+			Theme::fg1
 		);
 
 		renderer.renderText(
@@ -49,7 +49,7 @@ namespace pizda {
 				waypointVertex.getY() - lineLength - textOffset - Theme::fontNormal.getHeight()
 			),
 			Theme::fontNormal,
-			&Theme::fg1,
+			Theme::fg1,
 			waypoint.name
 		);
 	}

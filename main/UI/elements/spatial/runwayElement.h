@@ -12,7 +12,7 @@ namespace pizda {
 
 	class RunwayElement : public LinearMesh {
 		public:
-			explicit RunwayElement(uint16_t runwayIndex, const Color* color);
+			explicit RunwayElement(uint16_t runwayIndex, const Color& color);
 
 			uint16_t getRunwayIndex() const;
 

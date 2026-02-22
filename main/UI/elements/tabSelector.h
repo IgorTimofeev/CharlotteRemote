@@ -24,7 +24,7 @@ namespace pizda {
 					renderer.renderFilledRectangle(
 						bounds,
 						Theme::cornerRadius,
-						&Theme::fg1
+						Theme::fg1
 					);
 				}
 
@@ -34,7 +34,7 @@ namespace pizda {
 						bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
 					),
 					Theme::fontNormal,
-					isActive() ? &Theme::bg1 : &Theme::fg4,
+					isActive() ? Theme::bg1 : Theme::fg4,
 					getText()
 				);
 			}
@@ -60,13 +60,13 @@ namespace pizda {
 			RelativeStackLayout itemsLayout {};
 
 			void applyPageStyle() {
-				backgroundRectangle.setFillColor(&Theme::bg2);
-				backgroundRectangle.setBorderColor(&Theme::bg3);
+				backgroundRectangle.setFillColor(Theme::bg2);
+				backgroundRectangle.setBorderColor(Theme::bg3);
 			}
 
 			void applyDialogStyle() {
-				backgroundRectangle.setFillColor(&Theme::bg1);
-				backgroundRectangle.setBorderColor(&Theme::bg3);
+				backgroundRectangle.setFillColor(Theme::bg1);
+				backgroundRectangle.setBorderColor(Theme::bg3);
 			}
 	};
 }
