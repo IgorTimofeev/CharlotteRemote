@@ -42,7 +42,7 @@ namespace pizda {
 		return _distanceNm;
 	}
 
-	void WaypointButton::onRender(Renderer* renderer, const Bounds& bounds) {
+	void WaypointButton::onRender(Renderer& renderer, const Bounds& bounds) {
 		if (_waypointIndex < 0)
 			return;
 
@@ -50,13 +50,13 @@ namespace pizda {
 
 		constexpr static uint8_t cornerRadius = 3;
 
-		renderer->renderFilledRectangle(
+		renderer.renderFilledRectangle(
 			bounds,
 			cornerRadius,
 			isActive() ? &Theme::bg4 : &Theme::bg3
 		);
 
-		renderer->renderRectangle(
+		renderer.renderRectangle(
 			bounds,
 			cornerRadius,
 			isActive() ? &Theme::fg1 : &Theme::bg4
@@ -76,7 +76,7 @@ namespace pizda {
 
 		x += 15;
 
-		renderer->renderString(
+		renderer.renderString(
 			Point(
 				x,
 				y - Theme::fontNormal.getHeight() / 2
@@ -94,7 +94,7 @@ namespace pizda {
 
 		x = bounds.getX2() - 10 - Theme::fontNormal.getWidth(coordsText);
 
-		renderer->renderString(
+		renderer.renderString(
 			Point(
 				x,
 				y - Theme::fontNormal.getHeight() / 2

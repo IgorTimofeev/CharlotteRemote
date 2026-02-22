@@ -10,7 +10,7 @@ namespace pizda {
 		setSize(Size(42, 5));
 	}
 	
-	void ThrottleIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
+	void ThrottleIndicator::onRender(Renderer& renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 		const auto isConnected = rc.getTransceiver().isConnected();
 		
@@ -22,7 +22,7 @@ namespace pizda {
 		const uint16_t frameSize = bounds.getWidth() - textMaxSize - textOffset;
 		
 		// Frame
-		renderer->renderRectangle(
+		renderer.renderRectangle(
 			Bounds(
 				bounds.getX(),
 				bounds.getY(),
@@ -33,7 +33,7 @@ namespace pizda {
 		);
 
 		const auto& renderLine = [&renderer, &bounds](const int32_t pos, const Color* color) {
-			renderer->renderVerticalLine(
+			renderer.renderVerticalLine(
 				Point(
 					pos,
 					bounds.getY() - lineOffset
@@ -54,7 +54,7 @@ namespace pizda {
 			const auto aircraftValueSize = std::max(static_cast<uint16_t>(frameSize * _aircraftValue / 0xFF), static_cast<uint16_t>(1));
 			
 			if (aircraftValueSize > 2) {
-				renderer->renderFilledRectangle(
+				renderer.renderFilledRectangle(
 					Bounds(
 						bounds.getX(),
 						bounds.getY(),
@@ -74,7 +74,7 @@ namespace pizda {
 			? std::format(L"{:03}", static_cast<int32_t>(_aircraftValue * 100 / 0xFF))
 			: L"---";
 
-		renderer->renderString(
+		renderer.renderString(
 			Point(
 				bounds.getX() + frameSize + textOffset,
 				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1

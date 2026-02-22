@@ -13,7 +13,7 @@ namespace pizda {
 		));
 	}
 
-	void RadioIndicator::onRender(Renderer* renderer, const Bounds& bounds) {
+	void RadioIndicator::onRender(Renderer& renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 		const auto isConnected = rc.getTransceiver().isConnected();
 
@@ -60,7 +60,7 @@ namespace pizda {
 		);
 
 		for (uint8_t i = 0; i < _lineCount; i++) {
-			renderer->renderVerticalLine(
+			renderer.renderVerticalLine(
 				position,
 				lineHeight,
 				i <= sexuality ? color : &Theme::fg4
@@ -75,7 +75,7 @@ namespace pizda {
 		position.setX(position.getX() - 1 - _lineSpacing + _textOffset + 1);
 		position.setY(bounds.getYCenter() - Theme::fontSmall.getHeight() + 1);
 		
-		renderer->renderString(
+		renderer.renderString(
 			position,
 			&Theme::fontSmall,
 			isConnected ? &Theme::fg4 : &Theme::bad1,
@@ -85,7 +85,7 @@ namespace pizda {
 		position.setY(position.getY() + Theme::fontSmall.getHeight());
 
 		// SNR
-		renderer->renderString(
+		renderer.renderString(
 			position,
 			&Theme::fontSmall,
 			isConnected ? &Theme::fg4 : &Theme::bad1,

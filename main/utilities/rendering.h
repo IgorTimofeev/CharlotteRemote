@@ -21,10 +21,10 @@ namespace pizda {
 				}
 			}
 
-			static void renderWaypointIcon(Renderer* renderer, const Point& center, const Color* color, const NavigationWaypointData& waypointData) {
+			static void renderWaypointIcon(Renderer& renderer, const Point& center, const Color* color, const NavigationWaypointData& waypointData) {
 				switch (waypointData.type) {
 					case NavigationWaypointType::enroute: {
-						renderer->renderRectangle(
+						renderer.renderRectangle(
 							Bounds(
 								center.getX() - 1,
 								center.getY() - 1,
@@ -34,7 +34,7 @@ namespace pizda {
 							color
 						);
 
-						renderer->renderHorizontalLine(
+						renderer.renderHorizontalLine(
 							Point(
 								center.getX() - 3,
 								center.getY()
@@ -43,7 +43,7 @@ namespace pizda {
 							color
 						);
 
-						renderer->renderHorizontalLine(
+						renderer.renderHorizontalLine(
 							Point(
 								center.getX() + 2,
 								center.getY()
@@ -52,7 +52,7 @@ namespace pizda {
 							color
 						);
 
-						renderer->renderVerticalLine(
+						renderer.renderVerticalLine(
 							Point(
 								center.getX(),
 								center.getY() - 3
@@ -61,7 +61,7 @@ namespace pizda {
 							color
 						);
 
-						renderer->renderVerticalLine(
+						renderer.renderVerticalLine(
 							Point(
 								center.getX(),
 								center.getY() + 2
@@ -72,7 +72,7 @@ namespace pizda {
 						break;
 					}
 					case NavigationWaypointType::runway: {
-						renderer->renderCircle(
+						renderer.renderCircle(
 							center,
 							4,
 							color
@@ -83,8 +83,8 @@ namespace pizda {
 				}
 			}
 
-			static void renderWaypointName(Renderer* renderer, const Point& center, const Color* color, const NavigationWaypointData& waypointData) {
-				renderer->renderString(
+			static void renderWaypointName(Renderer& renderer, const Point& center, const Color* color, const NavigationWaypointData& waypointData) {
+				renderer.renderString(
 					Point(center.getX() + 7, center.getY() - 7),
 					&Theme::fontSmall,
 					color,

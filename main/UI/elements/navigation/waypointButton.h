@@ -23,7 +23,7 @@ namespace pizda {
 			float getDistanceNm() const;
 
 		protected:
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer& renderer, const Bounds& bounds) override;
 
 		private:
 			float _distanceNm;

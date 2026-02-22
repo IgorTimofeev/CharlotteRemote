@@ -20,22 +20,22 @@ namespace pizda {
 		setActiveTextColor(&Theme::fg1);
 	}
 
-	void MenuViewButton::onRender(Renderer* renderer, const Bounds& bounds) {
+	void MenuViewButton::onRender(Renderer& renderer, const Bounds& bounds) {
 		constexpr static uint8_t cornerRadius = 3;
 
 		// Background
-		renderer->renderFilledRectangle(
+		renderer.renderFilledRectangle(
 			Bounds(bounds.getX() - 1, bounds.getY() - 1, bounds.getWidth() + 2, _image->getSize().getHeight() + 2),
 			cornerRadius,
 			isActive() ? getActiveBackgroundColor() : getDefaultBackgroundColor()
 		);
 
 		// Image
-		renderer->renderImage(bounds.getTopLeft(), _image);
+		renderer.renderImage(bounds.getTopLeft(), _image);
 
 		// Border
 		if (isActive()) {
-			renderer->renderRectangle(
+			renderer.renderRectangle(
 				Bounds(bounds.getX() - 1, bounds.getY() - 1, bounds.getWidth() + 2, _image->getSize().getHeight() + 2),
 				cornerRadius,
 				getActiveBorderColor()
@@ -43,7 +43,7 @@ namespace pizda {
 		}
 
 		// Text
-		renderer->renderString(
+		renderer.renderString(
 			Point(
 				bounds.getXCenter() - Theme::fontSmall.getWidth(getText()) / 2,
 				bounds.getY() + _image->getSize().getHeight() + _textOffset

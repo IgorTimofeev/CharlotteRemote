@@ -10,7 +10,7 @@ namespace pizda {
 
 	}
 
-	void WaypointElement::onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) {
+	void WaypointElement::onRender(Renderer& renderer, const Scene& scene, const Vector3F* projectedVertices) {
 		if (projectedVertices[0].getZ() < scene.getNearPlaneDistance())
 			return;
 

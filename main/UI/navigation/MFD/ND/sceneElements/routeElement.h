@@ -17,7 +17,7 @@ namespace pizda {
 
 			const Vector3F* getVertices() override;
 			uint16_t getVertexCount() override;
-			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) override;
+			void onRender(Renderer& renderer, const Scene& scene, const Vector3F* projectedVertices) override;
 
 		private:
 			uint16_t _legIndex;

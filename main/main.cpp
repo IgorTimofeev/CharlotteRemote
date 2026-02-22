@@ -54,9 +54,9 @@ extern "C" void app_main(void) {
 //
 //extern "C" void app_main(void) {
 //	display.setup();
-//	renderer->setTarget(&display);
+//	renderer.setTarget(&display);
 //
-//	renderer->setPaletteColors({
+//	renderer.setPaletteColors({
 //		0x444444,
 //		0x00FF00,
 //		0x0000FF,
@@ -72,16 +72,16 @@ extern "C" void app_main(void) {
 //		govnoTime = esp_timer_get_time();
 //
 //		renderer.clear(&color0);
-////		_renderer->renderFilledRectangle(Bounds(_display.getSize()), &color1);
-//		renderer->renderFilledRectangle(Bounds(10, 10, 30, 10), &color1);
-//		renderer->renderHorizontalLine(Point(10, 20), 130, &color2);
-//		renderer->renderVerticalLine(Point(10, 25), 130, &color3);
+////		_renderer.renderFilledRectangle(Bounds(_display.getSize()), &color1);
+//		renderer.renderFilledRectangle(Bounds(10, 10, 30, 10), &color1);
+//		renderer.renderHorizontalLine(Point(10, 20), 130, &color2);
+//		renderer.renderVerticalLine(Point(10, 25), 130, &color3);
 //
-//		renderer->renderString(Point(0, 0), &font, &color3, std::to_wstring(fps));
-//		renderer->renderString(Point(0, 300), &font, &color3, std::to_wstring(esp_get_free_heap_size() / 1024));
+//		renderer.renderString(Point(0, 0), &font, &color3, std::to_wstring(fps));
+//		renderer.renderString(Point(0, 300), &font, &color3, std::to_wstring(esp_get_free_heap_size() / 1024));
 //
-//		renderer->renderImage(Point(5, 30), &image1);
-//		renderer->renderImage(Point(50, 30), &image2);
+//		renderer.renderImage(Point(5, 30), &image1);
+//		renderer.renderImage(Point(50, 30), &image2);
 //
 //		renderer.flush();
 //

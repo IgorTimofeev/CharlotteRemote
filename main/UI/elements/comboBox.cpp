@@ -56,13 +56,13 @@ namespace pizda {
 		)->show();
 	}
 
-	void ComboBox::onRender(Renderer* renderer, const Bounds& bounds) {
+	void ComboBox::onRender(Renderer& renderer, const Bounds& bounds) {
 		Referencer::onRender(renderer, bounds);
 
 		if (!_items || _itemCount == 0)
 			return;
 
-		renderer->renderString(
+		renderer.renderString(
 			Point(
 				bounds.getX() + 10,
 				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2

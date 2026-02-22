@@ -25,7 +25,7 @@ namespace pizda {
 			void onEventBeforeChildren(Event* event) override;
 			void onFocusChanged() override;
 			void onTick() override;
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer& renderer, const Bounds& bounds) override;
 			
 			virtual std::wstring_view variantIndexToTitle(uint8_t index) = 0;
 			virtual bool isVariantEditable(uint8_t index) = 0;

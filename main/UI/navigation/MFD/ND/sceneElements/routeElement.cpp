@@ -19,7 +19,7 @@ namespace pizda {
 		return 2;
 	}
 
-	void RouteElement::onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) {
+	void RouteElement::onRender(Renderer& renderer, const Scene& scene, const Vector3F* projectedVertices) {
 		const auto nearPlane = scene.getNearPlaneDistance();
 
 		if (
@@ -30,7 +30,7 @@ namespace pizda {
 
 		const auto& nd = RC::getInstance().getNavigationData();
 
-		renderer->renderLine(
+		renderer.renderLine(
 			Point(
 				static_cast<int32_t>(projectedVertices[0].getX()),
 				static_cast<int32_t>(projectedVertices[0].getY())

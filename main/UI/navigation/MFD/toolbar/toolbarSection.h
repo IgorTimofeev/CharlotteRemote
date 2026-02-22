@@ -55,16 +55,16 @@ namespace pizda {
 				updateColors();
 			}
 			
-			void onRender(Renderer* renderer, const Bounds& bounds) override {
+			void onRender(Renderer& renderer, const Bounds& bounds) override {
 				if (isFocused()) {
 					// Panel
-					renderer->renderFilledRectangle(
+					renderer.renderFilledRectangle(
 						Bounds(bounds.getX(), bounds.getY(), bounds.getWidth(), Toolbar::topPanelHeight),
 						&Theme::bg4
 					);
 
 					// Background
-					renderer->renderFilledRectangle(
+					renderer.renderFilledRectangle(
 						Bounds(bounds.getX(), bounds.getY() + Toolbar::topPanelHeight, bounds.getWidth(), bounds.getHeight() - Toolbar::topPanelHeight),
 						&Theme::bg3
 					);
@@ -73,7 +73,7 @@ namespace pizda {
 				Layout::onRender(renderer, bounds);
 				
 				if (getBorderColor()) {
-					renderer->renderHorizontalLine(
+					renderer.renderHorizontalLine(
 						Point(
 							bounds.getX(),
 							bounds.getY2()

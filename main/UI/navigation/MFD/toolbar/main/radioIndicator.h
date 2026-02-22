@@ -9,7 +9,7 @@ namespace pizda {
 		public:
 			RadioIndicator();
 
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer& renderer, const Bounds& bounds) override;
 
 		private:
 			constexpr static uint8_t _lineCount = 5;

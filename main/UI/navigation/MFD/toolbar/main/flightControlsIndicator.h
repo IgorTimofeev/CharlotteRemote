@@ -9,7 +9,7 @@ namespace pizda {
 		public:
 			FlightControlsIndicator();
 
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer& renderer, const Bounds& bounds) override;
 
 		private:
 		

@@ -16,7 +16,7 @@ namespace pizda {
 		protected:
 			void onTick() override;
 			void onEvent(Event* event) override;
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer& renderer, const Bounds& bounds) override;
 
 		private:
 			Vector2F _pointerPos { 0.5f, 0.5f };

@@ -14,11 +14,11 @@ namespace pizda {
 				setFillColor(&Theme::bg3);
 			}
 			
-			void onRender(Renderer* renderer, const Bounds& bounds) override {
+			void onRender(Renderer& renderer, const Bounds& bounds) override {
 				auto color = getFillColor();
 				
 				if (color)
-					renderer->renderHorizontalLine(bounds.getTopLeft(), bounds.getWidth(), color);
+					renderer.renderHorizontalLine(bounds.getTopLeft(), bounds.getWidth(), color);
 			}
 	};
 	
@@ -29,11 +29,11 @@ namespace pizda {
 				setFillColor(&Theme::bg3);
 			}
 			
-			void onRender(Renderer* renderer, const Bounds& bounds) override {
+			void onRender(Renderer& renderer, const Bounds& bounds) override {
 				auto color = getFillColor();
 				
 				if (color)
-					renderer->renderVerticalLine(bounds.getTopLeft(), bounds.getHeight(), color);
+					renderer.renderVerticalLine(bounds.getTopLeft(), bounds.getHeight(), color);
 			}
 	};
 }

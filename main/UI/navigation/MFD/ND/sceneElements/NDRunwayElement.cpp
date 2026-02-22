@@ -9,7 +9,7 @@ namespace pizda {
 
 	}
 
-	void NDRunwayElement::onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) {
+	void NDRunwayElement::onRender(Renderer& renderer, const Scene& scene, const Vector3F* projectedVertices) {
 		const auto& waypointVertex = projectedVertices[4];
 
 		if (waypointVertex.getZ() < scene.getNearPlaneDistance())

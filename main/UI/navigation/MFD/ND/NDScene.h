@@ -32,7 +32,7 @@ namespace pizda {
 		protected:
 			void onTick() override;
 			void onBoundsChanged() override;
-			void onRender(Renderer* renderer, const Bounds& bounds) override;
+			void onRender(Renderer& renderer, const Bounds& bounds) override;
 			void onEvent(Event* event) override;
 
 		private:

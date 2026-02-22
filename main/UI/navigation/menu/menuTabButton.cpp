@@ -17,11 +17,11 @@ namespace pizda {
 		setText(text);
 	}
 
-	void MenuTabButton::onRender(Renderer* renderer, const Bounds& bounds) {
+	void MenuTabButton::onRender(Renderer& renderer, const Bounds& bounds) {
 		Button::onRender(renderer, bounds);
 
 		// if (isChecked())
-		// 	renderer->renderHorizontalLine(bounds.getBottomLeft(), bounds.getWidth(), &Theme::fg1);
+		// 	renderer.renderHorizontalLine(bounds.getBottomLeft(), bounds.getWidth(), &Theme::fg1);
 	}
 
 	void MenuTabButton::onClick() {
