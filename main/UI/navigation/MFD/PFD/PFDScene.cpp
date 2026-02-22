@@ -172,12 +172,12 @@ namespace pizda {
 				&Theme::ground2
 			);
 
-			renderer.renderString(
+			renderer.renderText(
 				Point(
 					arrowCenter.getX() - Theme::fontSmall.getWidth(text) / 2,
 					windPosition.getY() - Theme::fontSmall.getHeight()
 				),
-				&Theme::fontSmall,
+				Theme::fontSmall,
 				&Theme::ground2,
 				text
 			);
@@ -366,12 +366,12 @@ namespace pizda {
 				const auto& textCenterVec = Vector2F(static_cast<float>(PFD::pitchOverlayFont->getWidth(text)) / 2.f, static_cast<float>(PFD::pitchOverlayFont->getHeight()) / 2.f);
 				const auto textCenterVecLengthWithOffset = static_cast<float>(PFD::pitchOverlayTextOffset) + textCenterVec.getLength();
 
-				renderer.renderString(
+				renderer.renderText(
 					Point(
 						lineRight.getX() + static_cast<int32_t>(horizonVecNorm.getX() * textCenterVecLengthWithOffset - textCenterVec.getX()),
 						lineRight.getY() + static_cast<int32_t>(horizonVecNorm.getY() * textCenterVecLengthWithOffset - textCenterVec.getY())
 					),
-					PFD::pitchOverlayFont,
+					*PFD::pitchOverlayFont,
 					color,
 					text
 				);
@@ -473,12 +473,12 @@ namespace pizda {
 		auto x = bounds.getX();
 		
 		const auto renderText = [&renderer, yCenter, &x, sectionWidth](const std::wstring_view text, const bool ap) {
-			renderer.renderString(
+			renderer.renderText(
 				Point(
 					x + sectionWidth / 2 - Theme::fontSmall.getWidth(text) / 2,
 					yCenter - Theme::fontSmall.getHeight() / 2
 				),
-				&Theme::fontSmall,
+				Theme::fontSmall,
 				ap ? &Theme::green1 : &Theme::sky2,
 				text
 			);
@@ -625,12 +625,12 @@ namespace pizda {
 						break;
 				}
 
-				renderer.renderString(
+				renderer.renderText(
 					Point(
 						x - PFD::yawOverlayFont->getWidth(text) / 2,
 						lineY - PFD::yawOverlayTextOffset - PFD::yawOverlayFont->getHeight()
 					),
-					PFD::yawOverlayFont,
+					*PFD::yawOverlayFont,
 					PFD::yawOverlayColor,
 					text
 				);

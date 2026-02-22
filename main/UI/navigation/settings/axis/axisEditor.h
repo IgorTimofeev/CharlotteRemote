@@ -24,7 +24,7 @@ namespace pizda {
 
 		protected:
 			void onRender(Renderer& renderer, const Bounds& bounds) override;
-			void onEvent(Event* event) override;
+			void onEvent(Event& event) override;
 
 		private:
 			Axis* _axis;

@@ -76,12 +76,12 @@ namespace pizda {
 
 		x += 15;
 
-		renderer.renderString(
+		renderer.renderText(
 			Point(
 				x,
 				y - Theme::fontNormal.getHeight() / 2
 			),
-			&Theme::fontNormal,
+			Theme::fontNormal,
 			&Theme::fg1,
 			waypointData.name
 		);
@@ -94,12 +94,12 @@ namespace pizda {
 
 		x = bounds.getX2() - 10 - Theme::fontNormal.getWidth(coordsText);
 
-		renderer.renderString(
+		renderer.renderText(
 			Point(
 				x,
 				y - Theme::fontNormal.getHeight() / 2
 			),
-			&Theme::fontNormal,
+			Theme::fontNormal,
 			&Theme::fg4,
 			coordsText
 		);

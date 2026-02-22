@@ -74,12 +74,12 @@ namespace pizda {
 			? std::format(L"{:03}", static_cast<int32_t>(_aircraftValue * 100 / 0xFF))
 			: L"---";
 
-		renderer.renderString(
+		renderer.renderText(
 			Point(
 				bounds.getX() + frameSize + textOffset,
 				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1
 			),
-			&Theme::fontSmall,
+			Theme::fontSmall,
 			isConnected ? &Theme::fg2 : &Theme::bad1,
 			text
 		);

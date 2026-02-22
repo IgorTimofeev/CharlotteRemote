@@ -20,7 +20,7 @@ namespace pizda {
 		setActiveBorderColor(nullptr);
 		setActiveTextColor(&Theme::bg1);
 		
-		setFont(&Theme::fontSmall);
+		setFont(Theme::fontSmall);
 		
 		setText(L"^");
 		

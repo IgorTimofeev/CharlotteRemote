@@ -22,7 +22,7 @@ namespace pizda {
 			bool isVariantSelectMode() const;
 		
 		protected:
-			void onEventBeforeChildren(Event* event) override;
+			void onEventBeforeChildren(Event& event) override;
 			void onFocusChanged() override;
 			void onTick() override;
 			void onRender(Renderer& renderer, const Bounds& bounds) override;

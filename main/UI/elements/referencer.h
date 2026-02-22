@@ -32,15 +32,15 @@ namespace pizda {
 
 			}
 
-			void onEventBeforeChildren(Event* event) override {
+			void onEventBeforeChildren(Event& event) override {
 				Layout::onEventBeforeChildren(event);
 
-				if (event->getTypeID() == PointerDownEvent::typeID) {
+				if (event.getTypeID() == PointerDownEvent::typeID) {
 					setFocused(true);
 
-					event->setHandled(true);
+					event.setHandled(true);
 				}
-				else if (event->getTypeID() == PointerUpEvent::typeID) {
+				else if (event.getTypeID() == PointerUpEvent::typeID) {
 					setFocused(false);
 
 					onClick();
@@ -48,7 +48,7 @@ namespace pizda {
 					if (_onClick)
 						_onClick();
 
-					event->setHandled(true);
+					event.setHandled(true);
 				}
 			}
 

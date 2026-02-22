@@ -8,14 +8,14 @@ namespace pizda {
 		setFillColor(&Theme::bg1);
 	}
 
-	void DialogSlideLayoutBackground::onEvent(Event* event) {
+	void DialogSlideLayoutBackground::onEvent(Event& event) {
 		if (!ScreenEvent::isScreen(event))
 			return;
 
-		if (event->getTypeID() == PointerDownEvent::typeID) {
+		if (event.getTypeID() == PointerDownEvent::typeID) {
 			setFocused(true);
 		}
-		else if (event->getTypeID() == PointerUpEvent::typeID && isFocused()) {
+		else if (event.getTypeID() == PointerUpEvent::typeID && isFocused()) {
 			RC::getInstance().getApplication().invokeOnNextTick([this] {
 				const auto dialog = dynamic_cast<Dialog*>(getParent());
 				
@@ -24,7 +24,7 @@ namespace pizda {
 			});
 		}
 
-		event->setHandled(true);
+		event.setHandled(true);
 	}
 
 	Dialog::Dialog() {

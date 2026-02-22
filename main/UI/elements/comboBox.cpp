@@ -62,12 +62,12 @@ namespace pizda {
 		if (!_items || _itemCount == 0)
 			return;
 
-		renderer.renderString(
+		renderer.renderText(
 			Point(
 				bounds.getX() + 10,
 				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
 			),
-			&Theme::fontNormal,
+			Theme::fontNormal,
 			&Theme::fg1,
 			_items[_selectedIndex]
 		);

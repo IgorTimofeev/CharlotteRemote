@@ -200,12 +200,12 @@ namespace pizda {
 						const auto textDiagonal = std::sqrt(textWidth * textWidth + Theme::fontSmall.getHeight() * Theme::fontSmall.getHeight());
 						const auto textCenterVec = angleStartVec - angleEndVecNorm * (compassTickMarkTextOffset + textDiagonal / 2);
 
-						renderer.renderString(
+						renderer.renderText(
 							Point(
 								pivot.getX() + static_cast<int32_t>(textCenterVec.getX() - textWidth / 2),
 								pivot.getY() - static_cast<int32_t>(textCenterVec.getY()) - Theme::fontSmall.getHeight() / 2
 							),
-							&Theme::fontSmall,
+							Theme::fontSmall,
 							&Theme::fg1,
 							text
 						);
@@ -232,28 +232,28 @@ namespace pizda {
 		}
 	}
 
-	void NDScene::onEvent(Event* event) {
+	void NDScene::onEvent(Event& event) {
 		Scene::onEvent(event);
 
-		if (event->getTypeID() == PointerDownEvent::typeID) {
-			const auto pointerDownEvent = static_cast<PointerDownEvent*>(event);
+		if (event.getTypeID() == PointerDownEvent::typeID) {
+			const auto& pointerDownEvent = static_cast<PointerDownEvent&>(event);
 
 			setFocused(true);
 			setCaptured(true);
 
-			_pointerDownPosition = pointerDownEvent->getPosition();
+			_pointerDownPosition = pointerDownEvent.getPosition();
 
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PointerDragEvent::typeID) {
-			const auto pointerDragEventEvent = static_cast<PointerDragEvent*>(event);
+		else if (event.getTypeID() == PointerDragEvent::typeID) {
+			const auto& pointerDragEventEvent = static_cast<PointerDragEvent&>(event);
 
 //			ESP_LOGI("ND", "------------- Drag -------------");
 
 			auto& rc = RC::getInstance();
 			const auto yaw = -rc.getAircraftData().computed.yawRad;
-			const auto& deltaPixels = (pointerDragEventEvent->getPosition() - _pointerDownPosition).rotate(yaw);
-			_pointerDownPosition = pointerDragEventEvent->getPosition();
+			const auto& deltaPixels = (pointerDragEventEvent.getPosition() - _pointerDownPosition).rotate(yaw);
+			_pointerDownPosition = pointerDragEventEvent.getPosition();
 
 	//			ESP_LOGI("ND", "deltaPixels: %ld, %ld", deltaPixels.getX(), deltaPixels.getY());
 
@@ -286,23 +286,23 @@ namespace pizda {
 	//
 	//			ESP_LOGI("ND", "cameraOffset: %f, %f, %f", _cameraOffset.getLatitude(), _cameraOffset.getLongitude(), _cameraOffset.getAltitude());
 
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PointerUpEvent::typeID) {
+		else if (event.getTypeID() == PointerUpEvent::typeID) {
 			setCaptured(false);
 
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PinchDownEvent::typeID) {
-			_pinchLength = reinterpret_cast<PinchDownEvent*>(event)->getLength();
+		else if (event.getTypeID() == PinchDownEvent::typeID) {
+			_pinchLength = reinterpret_cast<PinchDownEvent&>(event).getLength();
 
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PinchDragEvent::typeID) {
+		else if (event.getTypeID() == PinchDragEvent::typeID) {
 
 			//			ESP_LOGI("ND", "------------- Pinch -------------");
 
-			//			const auto pinchLength = pinchDragEvent->getLength();
+			//			const auto pinchLength = pinchDragEvent.getLength();
 			//			const auto pinchDelta = pinchLength - _pinchLength;
 			//			_pinchLength = pinchLength;
 			//
@@ -310,7 +310,7 @@ namespace pizda {
 			//
 			//			setAltitudeFromDeltaPixels(-pinchDelta);
 
-			const auto pinchLength = reinterpret_cast<PinchDragEvent*>(event)->getLength();
+			const auto pinchLength = reinterpret_cast<PinchDragEvent&>(event).getLength();
 			const auto pinchFactor = _pinchLength / pinchLength;
 			_pinchLength = pinchLength;
 
@@ -324,21 +324,21 @@ namespace pizda {
 				)
 			));
 
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PinchUpEvent::typeID) {
+		else if (event.getTypeID() == PinchUpEvent::typeID) {
 
 		}
-		else if (event->getTypeID() == EncoderValueChangedEvent::typeID) {
+		else if (event.getTypeID() == EncoderValueChangedEvent::typeID) {
 			if (isFocused()) {
-				const auto rotateEvent = static_cast<EncoderValueChangedEvent*>(event);
-				const auto scaleFactor = std::abs(rotateEvent->getDPS()) > 80 ? 1.5f : 1.25f;
+				const auto& rotateEvent = static_cast<EncoderValueChangedEvent&>(event);
+				const auto scaleFactor = std::abs(rotateEvent.getDPS()) > 80 ? 1.5f : 1.25f;
 
 				setCameraOffset(GeoCoordinates(
 					_cameraOffset.getLatitude(),
 					_cameraOffset.getLongitude(),
 					std::clamp(
-						rotateEvent->getDPS() >= 0
+						rotateEvent.getDPS() >= 0
 							? _cameraOffset.getAltitude() / scaleFactor
 							: _cameraOffset.getAltitude() * scaleFactor,
 						static_cast<float>(cameraAltitudeMinimum),
@@ -346,14 +346,14 @@ namespace pizda {
 					)
 				));
 
-				event->setHandled(true);
+				event.setHandled(true);
 			}
 		}
-		else if (event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
+		else if (event.getTypeID() == PushButtonEncoderDownEvent::typeID) {
 			if (isFocused()) {
 				resetCameraLateralOffset();
 
-				event->setHandled(true);
+				event.setHandled(true);
 			}
 		}
 	}

@@ -43,12 +43,12 @@ namespace pizda {
 		}
 
 		// Text
-		renderer.renderString(
+		renderer.renderText(
 			Point(
 				bounds.getXCenter() - Theme::fontSmall.getWidth(getText()) / 2,
 				bounds.getY() + _image->getSize().getHeight() + _textOffset
 			),
-			&Theme::fontSmall,
+			Theme::fontSmall,
 			isActive() ? getActiveTextColor() : getDefaultTextColor(),
 			getText()
 		);

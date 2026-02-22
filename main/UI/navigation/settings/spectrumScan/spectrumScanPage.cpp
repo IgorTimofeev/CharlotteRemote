@@ -16,37 +16,37 @@ namespace pizda {
 			invalidate();
 	}
 
-	void SpectrumScanningChart::onEvent(Event* event) {
+	void SpectrumScanningChart::onEvent(Event& event) {
 		Control::onEvent(event);
 
-		if (event->getTypeID() == PointerDownEvent::typeID) {
+		if (event.getTypeID() == PointerDownEvent::typeID) {
 			setCaptured(true);
 
-			updatePointerPos(reinterpret_cast<PointerDownEvent*>(event)->getPosition());
+			updatePointerPos(reinterpret_cast<PointerDownEvent&>(event).getPosition());
 			invalidate();
 
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PointerDragEvent::typeID) {
-			updatePointerPos(reinterpret_cast<PointerDragEvent*>(event)->getPosition());
+		else if (event.getTypeID() == PointerDragEvent::typeID) {
+			updatePointerPos(reinterpret_cast<PointerDragEvent&>(event).getPosition());
 			invalidate();
 
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PointerUpEvent::typeID) {
+		else if (event.getTypeID() == PointerUpEvent::typeID) {
 			setCaptured(false);
 
 			invalidate();
 
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PinchDownEvent::typeID) {
-			_pinchLength = reinterpret_cast<PinchDownEvent*>(event)->getLength();
+		else if (event.getTypeID() == PinchDownEvent::typeID) {
+			_pinchLength = reinterpret_cast<PinchDownEvent&>(event).getLength();
 
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PinchDragEvent::typeID) {
-			const auto pinchLength = reinterpret_cast<PinchDragEvent*>(event)->getLength();
+		else if (event.getTypeID() == PinchDragEvent::typeID) {
+			const auto pinchLength = reinterpret_cast<PinchDragEvent&>(event).getLength();
 			const auto pinchDelta = pinchLength - _pinchLength;
 			_pinchLength = pinchLength;
 
@@ -54,7 +54,7 @@ namespace pizda {
 
 			invalidate();
 
-			event->setHandled(true);
+			event.setHandled(true);
 		}
 	}
 
@@ -179,12 +179,12 @@ namespace pizda {
 			auto text = std::format(L"{} dBm", pointerRSSI);
 			auto textWidth = Theme::fontSmall.getWidth(text);
 
-			renderer.renderString(
+			renderer.renderText(
 				Point(
 					bounds.getX() + textHOffset,
 					bounds.getY() + pointerPixelPos.getY() - Theme::fontSmall.getHeight() / 2
 				),
-				&Theme::fontSmall,
+				Theme::fontSmall,
 				&Theme::fg4,
 				text
 			);
@@ -202,12 +202,12 @@ namespace pizda {
 			text = std::format(L"{} MHz", frequency / 1'000'000);
 			textWidth = Theme::fontSmall.getWidth(text);
 
-			renderer.renderString(
+			renderer.renderText(
 				Point(
 					bounds.getX() + pointerPixelPos.getX() - textWidth / 2,
 					bounds.getY() + textVOffset
 				),
-				&Theme::fontSmall,
+				Theme::fontSmall,
 				&Theme::fg4,
 				text
 			);
@@ -241,12 +241,12 @@ namespace pizda {
 
 				text = std::format(L"{} dBm", historyRSSI);
 
-				renderer.renderString(
+				renderer.renderText(
 					Point(
 						bounds.getX() + pointerPixelPos.getX() + 2 + textHOffset,
 						tipY - Theme::fontSmall.getHeight() / 2
 					),
-					&Theme::fontSmall,
+					Theme::fontSmall,
 					&Theme::fg1,
 					text
 				);

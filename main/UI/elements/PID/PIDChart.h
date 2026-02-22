@@ -17,7 +17,7 @@ namespace pizda {
 			float getValueMax() const;
 			void setValueMax(const float value);
 		protected:
-			void onEvent(Event* event) override;
+			void onEvent(Event& event) override;
 			void onRender(Renderer& renderer, const Bounds& bounds) override;
 
 		private:

@@ -59,7 +59,7 @@ namespace pizda {
 
 		// Keyboard
 		KeyboardController::setOnShow([](Keyboard* keyboard) {
-			keyboard->setFont(&Theme::fontNormal);
+			keyboard->setFont(Theme::fontNormal);
 			keyboard->setBackgroundColor(&Theme::bg1);
 
 			keyboard->setKeyHeight(24);
@@ -95,22 +95,22 @@ namespace pizda {
 
 	void Theme::apply(TextView* text) {
 		text->setTextColor(&Theme::fg1);
-		text->setFont(&Theme::fontNormal);
+		text->setFont(Theme::fontNormal);
 	}
 
 	void Theme::applyDescription(TextView* text) {
 		text->setTextColor(&Theme::fg3);
-		text->setFont(&Theme::fontNormal);
+		text->setFont(Theme::fontNormal);
 	}
 
 	void Theme::applyPageTitle(TextView* text) {
 		text->setTextColor(&Theme::fg1);
-		text->setFont(&Theme::fontNormal);
+		text->setFont(Theme::fontNormal);
 		text->setFontScale(2);
 	}
 
 	void Theme::applyTitle(TextView* text) {
-		text->setFont(&Theme::fontNormal);
+		text->setFont(Theme::fontNormal);
 		text->setTextColor(&Theme::fg3);
 	}
 
@@ -124,7 +124,7 @@ namespace pizda {
 		button->setActiveBackgroundColor(&Theme::accent2);
 		button->setActiveTextColor(&Theme::bg1);
 
-		button->setFont(&Theme::fontNormal);
+		button->setFont(Theme::fontNormal);
 	}
 
 	void Theme::applySecondary(Button* button) {
@@ -137,7 +137,7 @@ namespace pizda {
 		button->setActiveBackgroundColor(&Theme::bg5);
 		button->setActiveTextColor(&Theme::fg1);
 
-		button->setFont(&Theme::fontNormal);
+		button->setFont(Theme::fontNormal);
 	}
 
 	void Theme::applyCritical(Button* button) {
@@ -150,7 +150,7 @@ namespace pizda {
 		button->setActiveBackgroundColor(&Theme::bad3);
 		button->setActiveTextColor(&Theme::fg1);
 
-		button->setFont(&Theme::fontNormal);
+		button->setFont(Theme::fontNormal);
 	}
 
 	void Theme::applyPlaceholder(Button* button) {
@@ -163,7 +163,7 @@ namespace pizda {
 		button->setActiveBorderColor(&Theme::fg1);
 		button->setActiveTextColor(&Theme::fg1);
 
-		button->setFont(&Theme::fontNormal);
+		button->setFont(Theme::fontNormal);
 	}
 
 	void Theme::apply(Switch* sw) {
@@ -201,7 +201,7 @@ namespace pizda {
 		slider->setSmallTickLineLength(3);
 		slider->setTickColor(&Theme::fg6);
 
-		slider->setTickLabelFont(&Theme::fontNormal);
+		slider->setTickLabelFont(Theme::fontNormal);
 		slider->setTickLabelOffset(1);
 
 		slider->setTickLabelBuilder(Slider::percentTickLabelBuilder);
@@ -238,6 +238,6 @@ namespace pizda {
 		textField->setPlaceholderColor(&Theme::fg5);
 		textField->setCursorColor(&Theme::accent1);
 		
-		textField->setFont(&Theme::fontNormal);
+		textField->setFont(Theme::fontNormal);
 	}
 }

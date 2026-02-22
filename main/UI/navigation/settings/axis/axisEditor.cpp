@@ -8,11 +8,11 @@ namespace pizda {
 		setHeight(Theme::elementHeight);
 	}
 	
-	void AxisEditor::onEvent(Event* event) {
-		if (event->getTypeID() == PointerDownEvent::typeID) {
+	void AxisEditor::onEvent(Event& event) {
+		if (event.getTypeID() == PointerDownEvent::typeID) {
 			const auto& bounds = getBounds();
 			
-			pointerDownX = reinterpret_cast<PointerDownEvent*>(event)->getPosition().getX();
+			pointerDownX = reinterpret_cast<PointerDownEvent&>(event).getPosition().getX();
 			const int32_t ADCValue = (pointerDownX - bounds.getX()) * Axis::valueMax / bounds.getWidth();
 			
 			const auto range = _axis->getSettings()->to - _axis->getSettings()->from;
@@ -47,11 +47,11 @@ namespace pizda {
 			
 			setCaptured(true);
 
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PointerDragEvent::typeID) {
+		else if (event.getTypeID() == PointerDragEvent::typeID) {
 			const auto settings = _axis->getSettings();
-			const auto pointerX = reinterpret_cast<PointerDragEvent*>(event)->getPosition().getX();
+			const auto pointerX = reinterpret_cast<PointerDragEvent&>(event).getPosition().getX();
 
 			// Updating settings
 			if (_selectedPin == SelectedPin::middle) {
@@ -74,9 +74,9 @@ namespace pizda {
 				}
 			}
 
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PointerUpEvent::typeID) {
+		else if (event.getTypeID() == PointerUpEvent::typeID) {
 			_selectedPin = SelectedPin::none;
 			pointerDownX = -1;
 			
@@ -84,7 +84,7 @@ namespace pizda {
 			
 			RC::getInstance().getSettings().axes.scheduleWrite();
 			
-			event->setHandled(true);
+			event.setHandled(true);
 		}
 	}
 	
@@ -182,9 +182,9 @@ namespace pizda {
 			
 			renderer.renderFilledRectangle(flagBounds, bg);
 			
-			renderer.renderString(
+			renderer.renderText(
 				Point(flagBounds.getX() + textOffsetX, flagBounds.getY() + textOffsetY),
-				&Theme::fontSmall,
+				Theme::fontSmall,
 				fg,
 				text
 			);

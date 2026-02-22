@@ -19,8 +19,8 @@ namespace pizda {
 		return variantSelectMode;
 	}
 	
-	void RotaryControl::onEventBeforeChildren(Event* event) {
-		if (event->getTypeID() == PointerDownEvent::typeID) {
+	void RotaryControl::onEventBeforeChildren(Event& event) {
+		if (event.getTypeID() == PointerDownEvent::typeID) {
 			wasFocusedOnLastDown = isFocused();
 		}
 		
@@ -29,24 +29,24 @@ namespace pizda {
 		if (!isFocused())
 			return;
 		
-		if (event->getTypeID() == PointerDownEvent::typeID) {
+		if (event.getTypeID() == PointerDownEvent::typeID) {
 			if (wasFocusedOnLastDown) {
-				pressPos = reinterpret_cast<PointerDownEvent*>(event)->getPosition();
+				pressPos = reinterpret_cast<PointerDownEvent&>(event).getPosition();
 				
 				setCaptured(true);
 				onAnyDown();
 			}
 			
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
+		else if (event.getTypeID() == PushButtonEncoderDownEvent::typeID) {
 			onAnyDown();
 			
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PointerDragEvent::typeID) {
+		else if (event.getTypeID() == PointerDragEvent::typeID) {
 			if (wasFocusedOnLastDown && pressPos.getX() >= 0) {
-				const auto dragPos = reinterpret_cast<PointerDragEvent*>(event)->getPosition();
+				const auto dragPos = reinterpret_cast<PointerDragEvent&>(event).getPosition();
 				const auto deltaPos = dragPos - pressPos;
 				
 				const uint8_t threshold = variantSelectMode ? 20 : 5;
@@ -65,16 +65,16 @@ namespace pizda {
 				}
 			}
 			
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == EncoderValueChangedEvent::typeID) {
-			const auto dps = static_cast<EncoderValueChangedEvent*>(event)->getDPS();
+		else if (event.getTypeID() == EncoderValueChangedEvent::typeID) {
+			const auto dps = static_cast<EncoderValueChangedEvent&>(event).getDPS();
 			
 			onAnyRotate(dps > 0, std::abs(dps) > 80);
 			
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PointerUpEvent::typeID) {
+		else if (event.getTypeID() == PointerUpEvent::typeID) {
 			if (wasFocusedOnLastDown) {
 				setCaptured(false);
 				
@@ -83,12 +83,12 @@ namespace pizda {
 				onAnyUp();
 			}
 			
-			event->setHandled(true);
+			event.setHandled(true);
 		}
-		else if (event->getTypeID() == PushButtonEncoderUpEvent::typeID) {
+		else if (event.getTypeID() == PushButtonEncoderUpEvent::typeID) {
 			onAnyUp();
 			
-			event->setHandled(true);
+			event.setHandled(true);
 		}
 	}
 	
