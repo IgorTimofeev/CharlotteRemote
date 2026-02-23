@@ -36,7 +36,7 @@ namespace pizda {
 		slideLayout += &slideLayoutBackground;
 
 		// Slide
-		slideLayout.setMaxHeight(Application::getCurrent()->getRenderer().getTarget().getSize().getHeight() * 9 / 10);
+		slideLayout.setMaxHeight(Application::getCurrent()->getRenderer()->getTarget()->getSize().getHeight() * 9 / 10);
 		setAutoSize(&slideLayout);
 		*this += &slideLayout;
 	}

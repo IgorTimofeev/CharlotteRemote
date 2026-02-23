@@ -8,7 +8,7 @@ namespace pizda {
 
 	}
 
-	void PFDRunwayElement::onRender(Renderer& renderer, const Scene& scene, const Vector3F* projectedVertices) {
+	void PFDRunwayElement::onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) {
 		const auto& waypointVertex = projectedVertices[4];
 
 		if (waypointVertex.getZ() < scene.getNearPlaneDistance())
@@ -31,19 +31,19 @@ namespace pizda {
 		constexpr static uint8_t lineLength = 25;
 		constexpr static uint8_t textOffset = 2;
 
-		renderer.renderVerticalLine(
+		renderer->renderVerticalLine(
 			Point(waypointVertex.getX(), waypointVertex.getY() - lineLength),
 			lineLength - 1,
 			&Theme::fg1
 		);
 
-		renderer.renderFilledCircle(
+		renderer->renderFilledCircle(
 			Point(waypointVertex.getX(), waypointVertex.getY()),
 			2,
 			&Theme::fg1
 		);
 
-		renderer.renderString(
+		renderer->renderString(
 			Point(
 				waypointVertex.getX() - Theme::fontNormal.getWidth(waypoint.name) / 2,
 				waypointVertex.getY() - lineLength - textOffset - Theme::fontNormal.getHeight()

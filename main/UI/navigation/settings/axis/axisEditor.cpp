@@ -88,10 +88,10 @@ namespace pizda {
 		}
 	}
 	
-	void AxisEditor::onRender(Renderer& renderer, const Bounds& bounds) {
+	void AxisEditor::onRender(Renderer* renderer, const Bounds& bounds) {
 		// Track
-		renderer.renderFilledRectangle(bounds, Theme::cornerRadius, &Theme::bg2);
-		renderer.renderRectangle(bounds, Theme::cornerRadius, &Theme::bg3);
+		renderer->renderFilledRectangle(bounds, Theme::cornerRadius, &Theme::bg2);
+		renderer->renderRectangle(bounds, Theme::cornerRadius, &Theme::bg3);
 		
 		// Fill
 		const auto settingsDelta = _axis->getSettings()->to - _axis->getSettings()->from;
@@ -99,7 +99,7 @@ namespace pizda {
 		const int32_t toX = bounds.getX() + _axis->getSettings()->to * bounds.getWidth() / Axis::valueMax;
 		const uint16_t fillWidth = toX - fromX + 1;
 		
-		renderer.renderFilledRectangle(
+		renderer->renderFilledRectangle(
 			Bounds(
 				fromX,
 				bounds.getY(),
@@ -124,7 +124,7 @@ namespace pizda {
 			};
 			
 			if (i > 0) {
-				renderer.renderLine(
+				renderer->renderLine(
 					curvePos0,
 					curvePos1,
 					_selectedPin == SelectedPin::middle ? &Theme::fg1 : &Theme::bg4
@@ -135,7 +135,7 @@ namespace pizda {
 		}
 		
 		// Middle line
-		renderer.renderVerticalLine(
+		renderer->renderVerticalLine(
 			Point(fromX + fillWidth / 2, bounds.getY() + 1),
 			bounds.getHeight() - 1,
 			&Theme::accent2
@@ -156,7 +156,7 @@ namespace pizda {
 			}
 			
 			// Line
-			renderer.renderVerticalLine(
+			renderer->renderVerticalLine(
 				Point(x, bounds.getY()),
 				bounds.getHeight(),
 				bg
@@ -180,9 +180,9 @@ namespace pizda {
 				flagSize
 			);
 			
-			renderer.renderFilledRectangle(flagBounds, bg);
+			renderer->renderFilledRectangle(flagBounds, bg);
 			
-			renderer.renderString(
+			renderer->renderString(
 				Point(flagBounds.getX() + textOffsetX, flagBounds.getY() + textOffsetY),
 				&Theme::fontSmall,
 				fg,
@@ -206,7 +206,7 @@ namespace pizda {
 		const auto thumbX = bounds.getX() + _axis->getRawValue() * bounds.getWidth() / Axis::valueMax;
 		const auto thumbInWorkingRange = thumbX >= fromX && thumbX <= toX;
 		
-		renderer.renderVerticalLine(
+		renderer->renderVerticalLine(
 			Point(
 				thumbX,
 				bounds.getY()
@@ -216,14 +216,14 @@ namespace pizda {
 		);
 		
 		if (thumbInWorkingRange) {
-			const auto oldViewport = renderer.pushViewport(Bounds(
+			const auto oldViewport = renderer->pushViewport(Bounds(
 				fromX,
 				bounds.getY(),
 				fillWidth,
 				bounds.getHeight()
 			));
 			
-			renderer.renderFilledCircle(
+			renderer->renderFilledCircle(
 				Point(
 					thumbX,
 					bounds.getY2() - bounds.getHeight() * _axis->applySensitivityFilter(_axis->getRawValue()) / Axis::valueMax
@@ -232,7 +232,7 @@ namespace pizda {
 				&Theme::fg1
 			);
 			
-			renderer.popViewport(oldViewport);
+			renderer->popViewport(oldViewport);
 		}
 		
 		Element::onRender(renderer, bounds);

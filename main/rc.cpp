@@ -65,10 +65,10 @@ namespace pizda {
 		//
 		// So...
 		_display.setup();
-		_renderer.setTarget(_display);
+		_renderer.setTarget(&_display);
 
 		// Rendering splash screen
-		Theme::setup(_renderer);
+		Theme::setup(&_renderer);
 		_renderer.clear(&Theme::bg1);
 		_renderer.renderImage(Point(), &resources::images::splashScreen);
 		_renderer.flush();
@@ -111,12 +111,12 @@ namespace pizda {
 
 		// Touch panel
 		_touchPanel.setup();
-		_application.addHID(_touchPanel);
+		_application.addHID(&_touchPanel);
 
 		// Encoder
 		_encoder.setup();
 		_encoder.setMinimumDelta(4);
-		_application.addHID(_encoder);
+		_application.addHID(&_encoder);
 
 		// Other shit
 		_axes.setup();
@@ -125,7 +125,7 @@ namespace pizda {
 
 		// -------------------------------- UI --------------------------------
 
-		_application.setRenderer(_renderer);
+		_application.setRenderer(&_renderer);
 		_application.setBackgroundColor(&Theme::bg1);
 		_application += &_pageLayout;
 		_application += &_openMenuButton;

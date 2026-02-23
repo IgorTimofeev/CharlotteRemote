@@ -15,7 +15,7 @@ namespace pizda {
 		public:
 			explicit WaypointElement(uint16_t waypointIndex);
 
-			void onRender(Renderer& renderer, const Scene& scene, const Vector3F* projectedVertices) override;
+			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) override;
 			const Vector3F* getVertices() override;
 			uint16_t getVertexCount() override;
 

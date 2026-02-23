@@ -16,7 +16,7 @@ namespace pizda {
 
 		protected:
 			void onClick() override;
-			void onRender(Renderer& renderer, const Bounds& bounds) override;
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
 			uint16_t _legIndex;

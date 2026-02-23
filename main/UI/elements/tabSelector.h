@@ -19,16 +19,16 @@ namespace pizda {
 			}
 
 		protected:
-			void onRender(Renderer& renderer, const Bounds& bounds) override {
+			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				if (isActive()) {
-					renderer.renderFilledRectangle(
+					renderer->renderFilledRectangle(
 						bounds,
 						Theme::cornerRadius,
 						&Theme::fg1
 					);
 				}
 
-				renderer.renderString(
+				renderer->renderString(
 					Point(
 						bounds.getXCenter() - Theme::fontNormal.getWidth(getText()) / 2,
 						bounds.getYCenter() - Theme::fontNormal.getHeight() / 2

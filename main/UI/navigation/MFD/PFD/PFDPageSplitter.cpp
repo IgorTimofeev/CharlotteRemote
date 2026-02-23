@@ -70,12 +70,12 @@ namespace pizda {
 		}
 	}
 
-	void PFDPageSplitter::onRender(Renderer& renderer, const Bounds& bounds) {
-		renderer.renderFilledRectangle(bounds, isActive() ? &Theme::fg1 : &Theme::bg2);
+	void PFDPageSplitter::onRender(Renderer* renderer, const Bounds& bounds) {
+		renderer->renderFilledRectangle(bounds, isActive() ? &Theme::fg1 : &Theme::bg2);
 
 		const auto text = RC::getInstance().getSettings().personalization.MFD.split.mode == PersonalizationSettingsMFDSplitMode::PFD ? L"< >" : L"> <";
 
-		renderer.renderString(
+		renderer->renderString(
 			Point(
 				bounds.getXCenter() - Theme::fontSmall.getWidth(text) / 2,
 				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2

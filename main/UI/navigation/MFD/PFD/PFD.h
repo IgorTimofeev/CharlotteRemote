@@ -159,7 +159,7 @@ namespace pizda {
 			// Wind
 			constexpr static uint8_t windVisibilityGroundSpeed = 10;
 
-			void onRender(Renderer& renderer, const Bounds& bounds) override;
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		protected:
 			void onTick() override;
@@ -168,16 +168,16 @@ namespace pizda {
 			PFDScene _scene {};
 			PFDPageSplitter _splitter {};
 
-			static void renderAutopilotValueIndicator(Renderer& renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left);
-			static void renderCurrentValue(Renderer& renderer, const Bounds& bounds, uint8_t digitCount, float value, bool left);
-			static void renderTrendArrow(Renderer& renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value);
-			static void renderSpeed(Renderer& renderer, const Bounds& bounds);
-			static void renderAltitude(Renderer& renderer, const Bounds& bounds);
-			static void renderVerticalSpeed(Renderer& renderer, const Bounds& bounds);
-			static void renderMiniPanel(Renderer& renderer, const Bounds& bounds, const Color* bg, const Color* fg, std::wstring_view text, int8_t textXOffset);
-			static void renderPressure(Renderer& renderer, const Bounds& bounds);
-			static void renderAutopilotSpeed(Renderer& renderer, const Bounds& bounds);
-			static void renderAutopilotAltitude(Renderer& renderer, const Bounds& bounds);
-			static void renderMiniPanelWithAutopilotValue(Renderer& renderer, const Bounds& bounds, const Color* bg, const Color* fg, uint16_t autopilotValue, bool autopilotValueEnabled, bool left);
+			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left);
+			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, uint8_t digitCount, float value, bool left);
+			static void renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value);
+			static void renderSpeed(Renderer* renderer, const Bounds& bounds);
+			static void renderAltitude(Renderer* renderer, const Bounds& bounds);
+			static void renderVerticalSpeed(Renderer* renderer, const Bounds& bounds);
+			static void renderMiniPanel(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, std::wstring_view text, int8_t textXOffset);
+			static void renderPressure(Renderer* renderer, const Bounds& bounds);
+			static void renderAutopilotSpeed(Renderer* renderer, const Bounds& bounds);
+			static void renderAutopilotAltitude(Renderer* renderer, const Bounds& bounds);
+			static void renderMiniPanelWithAutopilotValue(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, uint16_t autopilotValue, bool autopilotValueEnabled, bool left);
 	};
 }

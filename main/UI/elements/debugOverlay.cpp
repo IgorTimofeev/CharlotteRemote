@@ -13,7 +13,7 @@ namespace pizda {
 		invalidateRender();
 	}
 
-	void DebugOverlay::onRender(Renderer& renderer, const Bounds& bounds) {
+	void DebugOverlay::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 
 		int32_t y = 0;
@@ -26,7 +26,7 @@ namespace pizda {
 			+ rc.getApplication().getFlushDeltaTime();
 
 		const auto renderLine = [&renderer, &y](const std::wstring_view text, const Color* color = &Theme::magenta1, uint8_t scale = 1) {
-			renderer.renderString(Point(10, y), &Theme::fontNormal, color, text, scale);
+			renderer->renderString(Point(10, y), &Theme::fontNormal, color, text, scale);
 
 			y += Theme::fontNormal.getHeight(scale) + 2;
 		};

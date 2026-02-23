@@ -34,23 +34,23 @@ namespace pizda {
 		}
 	}
 
-	void PIDChart::onRender(Renderer& renderer, const Bounds& bounds) {
+	void PIDChart::onRender(Renderer* renderer, const Bounds& bounds) {
 		constexpr static uint8_t textHOffset = 4;
 
 		// Background
-		renderer.renderFilledRectangle(
+		renderer->renderFilledRectangle(
 			bounds,
 			getBackgroundColor()
 		);
 
 		// Axes
-		renderer.renderHorizontalLine(
+		renderer->renderHorizontalLine(
 			bounds.getBottomLeft(),
 			bounds.getWidth(),
 			&Theme::fg4
 		);
 
-		renderer.renderVerticalLine(
+		renderer->renderVerticalLine(
 			bounds.getTopLeft(),
 			bounds.getHeight() - 1,
 			&Theme::fg4
@@ -66,7 +66,7 @@ namespace pizda {
 			// Text
 			const auto text = std::to_wstring(valueTarget);
 
-			renderer.renderString(
+			renderer->renderString(
 				Point(
 					bounds.getX() + textHOffset,
 					y - Theme::fontSmall.getHeight() / 2
@@ -79,7 +79,7 @@ namespace pizda {
 			// Line
 			const auto lineOffset = textHOffset + Theme::fontSmall.getWidth(text) + textHOffset;
 
-			renderer.renderHorizontalLine(
+			renderer->renderHorizontalLine(
 				Point(
 					bounds.getX() + lineOffset,
 					y
@@ -127,7 +127,7 @@ namespace pizda {
 
 		splinePoints[_stepCount + 1] = splinePoints[_stepCount];
 
-		renderer.renderCatmullRomSpline(
+		renderer->renderCatmullRomSpline(
 			splinePoints.data(),
 			_stepCount + 2,
 			&Theme::accent1,
@@ -135,7 +135,7 @@ namespace pizda {
 		);
 
 		for (uint16_t i = 0; i < _stepCount; ++i) {
-			renderer.renderFilledCircle(
+			renderer->renderFilledCircle(
 				splinePoints[i + 2],
 				2,
 				&Theme::fg1

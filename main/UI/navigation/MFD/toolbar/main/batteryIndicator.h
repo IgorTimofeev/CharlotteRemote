@@ -17,7 +17,7 @@ namespace pizda {
 
 			constexpr static uint16_t voltageNotAvailable = std::numeric_limits<uint16_t>::max();
 			
-			void onRender(Renderer& renderer, const Bounds& bounds) override {
+			void onRender(Renderer* renderer, const Bounds& bounds) override {
 				const auto yCenter = bounds.getYCenter();
 				constexpr auto tipSize = Size(4, 5);
 				
@@ -29,13 +29,13 @@ namespace pizda {
 				const auto frameColor = available ? &Theme::bg4 : &Theme::bad3;
 				
 				// Frame
-				renderer.renderRectangle(
+				renderer->renderRectangle(
 					Bounds(bounds.getX(), bounds.getY(), frameSize, bounds.getHeight()),
 					frameColor
 				);
 
 				// Tip
-				renderer.renderRectangle(
+				renderer->renderRectangle(
 					Bounds(Point(bounds.getX() + frameSize - 1, yCenter - tipSize.getHeight() / 2), tipSize),
 					frameColor
 				);
@@ -57,7 +57,7 @@ namespace pizda {
 							color = &Theme::good2;
 						}
 						
-						renderer.renderFilledRectangle(
+						renderer->renderFilledRectangle(
 							Bounds(
 								bounds.getX(),
 								bounds.getY(),
@@ -75,7 +75,7 @@ namespace pizda {
 					? std::format(L"{:.1f}", static_cast<float>(_voltageMV) / 1000.f)
 					: L"---";
 
-				renderer.renderString(
+				renderer->renderString(
 					Point(
 						bounds.getX() + frameSize / 2 - Theme::fontSmall.getWidth(text) / 2,
 						bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1

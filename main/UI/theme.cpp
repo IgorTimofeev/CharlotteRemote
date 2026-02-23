@@ -1,8 +1,8 @@
 #include "theme.h"
 
 namespace pizda {
-	void Theme::setup(Bit8PaletteRenderer& renderer) {
-		renderer.setPaletteColors({
+	void Theme::setup(Bit8PaletteRenderer* renderer) {
+		renderer->setPaletteColors({
 			// Background
 			RGB888Color(0x000000),
 			RGB888Color(0x0C0C0C),

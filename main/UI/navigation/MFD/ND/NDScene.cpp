@@ -69,7 +69,7 @@ namespace pizda {
 		updatePivot();
 	}
 
-	void NDScene::onRender(Renderer& renderer, const Bounds& bounds) {
+	void NDScene::onRender(Renderer* renderer, const Bounds& bounds) {
 		Scene::onRender(renderer, bounds);
 
 		auto& rc = RC::getInstance();
@@ -128,7 +128,7 @@ namespace pizda {
 		// Aircraft indicator
 		if (isCameraShiftedLaterally()) {
 			// Cross
-			renderer.renderHorizontalLine(
+			renderer->renderHorizontalLine(
 				Point(
 					pivot.getX() - compassLateralOffsetCrossSize / 2,
 					pivot.getY()
@@ -137,7 +137,7 @@ namespace pizda {
 				&Theme::fg1
 			);
 
-			renderer.renderVerticalLine(
+			renderer->renderVerticalLine(
 				Point(
 					pivot.getX(),
 					pivot.getY() - compassLateralOffsetCrossSize / 2
@@ -155,7 +155,7 @@ namespace pizda {
 		if (bounds.getHeight() >= 80) {
 			// Arc
 			if (rc.getSettings().personalization.MFD.ND.mode == PersonalizationSettingsMFDNDMode::arc) {
-				renderer.renderArc(
+				renderer->renderArc(
 					pivot,
 					circleRadius,
 					(90 - compassArcViewportHalfDeg) * 255 / 360,
@@ -182,7 +182,7 @@ namespace pizda {
 					const auto angleEndVecNorm = angleEndVec.normalize();
 					const auto angleStartVec = angleEndVec - angleEndVecNorm * (isBig ? compassTickMarkBigLength : compassTickMarkSmallLength);
 
-					renderer.renderLine(
+					renderer->renderLine(
 						Point(
 							pivot.getX() + static_cast<int32_t>(angleStartVec.getX()),
 							pivot.getY() - static_cast<int32_t>(angleStartVec.getY())
@@ -200,7 +200,7 @@ namespace pizda {
 						const auto textDiagonal = std::sqrt(textWidth * textWidth + Theme::fontSmall.getHeight() * Theme::fontSmall.getHeight());
 						const auto textCenterVec = angleStartVec - angleEndVecNorm * (compassTickMarkTextOffset + textDiagonal / 2);
 
-						renderer.renderString(
+						renderer->renderString(
 							Point(
 								pivot.getX() + static_cast<int32_t>(textCenterVec.getX() - textWidth / 2),
 								pivot.getY() - static_cast<int32_t>(textCenterVec.getY()) - Theme::fontSmall.getHeight() / 2
@@ -214,7 +214,7 @@ namespace pizda {
 			}
 
 			// Triangle
-			renderer.renderFilledTriangle(
+			renderer->renderFilledTriangle(
 				Point(
 					pivot.getX(),
 					pivot.getY() - circleRadius

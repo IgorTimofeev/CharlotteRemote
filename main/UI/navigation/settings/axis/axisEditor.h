@@ -23,7 +23,7 @@ namespace pizda {
 			Axis* getAxis() const;
 
 		protected:
-			void onRender(Renderer& renderer, const Bounds& bounds) override;
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
 			void onEvent(Event* event) override;
 
 		private:

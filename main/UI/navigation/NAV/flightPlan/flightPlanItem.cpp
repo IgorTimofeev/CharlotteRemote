@@ -14,7 +14,7 @@ namespace pizda {
 		(new FlightPlanItemDialog(_legIndex))->show();
 	}
 
-	void FlightPlanItem::onRender(Renderer& renderer, const Bounds& bounds) {
+	void FlightPlanItem::onRender(Renderer* renderer, const Bounds& bounds) {
 		if (getWaypointIndex() < 0)
 			return;
 
@@ -23,14 +23,14 @@ namespace pizda {
 		const auto isActiveLeg = rc.getNavigationData().flightPlan.activeLegIndex == _legIndex;
 
 		// Background
-		renderer.renderFilledRectangle(
+		renderer->renderFilledRectangle(
 			bounds,
 			Theme::cornerRadius,
 			isActive() ? &Theme::bg4 : &Theme::bg3
 		);
 
 		// Frame
-		renderer.renderRectangle(
+		renderer->renderRectangle(
 			bounds,
 			Theme::cornerRadius,
 			isActiveLeg ? &Theme::magenta1 : (isActive() ? &Theme::fg1 : &Theme::bg4)
@@ -51,7 +51,7 @@ namespace pizda {
 		x += 15;
 
 		// Name
-		renderer.renderString(
+		renderer->renderString(
 			Point(
 				x,
 				yCenter - Theme::fontNormal.getHeight() / 2
@@ -69,7 +69,7 @@ namespace pizda {
 
 		x = bounds.getX2() - 10 - Theme::fontNormal.getWidth(coordsText);
 
-		renderer.renderString(
+		renderer->renderString(
 			Point(
 				x,
 				yCenter - Theme::fontNormal.getHeight() / 2
@@ -90,13 +90,13 @@ namespace pizda {
 
 			x = bounds.getX() - lineWidth - arrowWidth;
 
-			renderer.renderHorizontalLine(Point(x, yPrev), lineWidth, &Theme::magenta1);
-			renderer.renderVerticalLine(Point(x, yPrev + 1), lineHeight - 1, &Theme::magenta1);
-			renderer.renderHorizontalLine(Point(x, yCenter), lineWidth, &Theme::magenta1);
+			renderer->renderHorizontalLine(Point(x, yPrev), lineWidth, &Theme::magenta1);
+			renderer->renderVerticalLine(Point(x, yPrev + 1), lineHeight - 1, &Theme::magenta1);
+			renderer->renderHorizontalLine(Point(x, yCenter), lineWidth, &Theme::magenta1);
 
 			x += lineWidth;
 
-			renderer.renderFilledTriangle(
+			renderer->renderFilledTriangle(
 				Point(x, yCenter - arrowHeightDiv2),
 				Point(x + arrowWidth, yCenter),
 				Point(x, yCenter + arrowHeightDiv2),

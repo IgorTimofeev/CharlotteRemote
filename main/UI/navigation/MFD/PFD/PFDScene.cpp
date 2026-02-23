@@ -21,7 +21,7 @@ namespace pizda {
 		}
 	}
 
-	void PFDScene::onRender(Renderer& renderer, const Bounds& bounds) {
+	void PFDScene::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 		
 		const auto& center = bounds.getCenter();
@@ -51,13 +51,13 @@ namespace pizda {
 		// SVT background
 		{
 			if (horizonLeft.getY() >= bounds.getY2() && horizonRight.getY() >= bounds.getY2()) {
-				renderer.renderFilledRectangle(bounds, &Theme::sky1);
+				renderer->renderFilledRectangle(bounds, &Theme::sky1);
 			}
 			else if (horizonLeft.getY() <= bounds.getY() && horizonRight.getY() <= bounds.getY()) {
-				renderer.renderFilledRectangle(bounds, &Theme::ground1);
+				renderer->renderFilledRectangle(bounds, &Theme::ground1);
 			}
 			else {
-				renderer.renderFilledQuad(
+				renderer->renderFilledQuad(
 					horizonLeft - static_cast<Point>(horizonVecPerp * diagonal),
 					horizonRight - static_cast<Point>(horizonVecPerp * diagonal),
 					horizonRight,
@@ -66,7 +66,7 @@ namespace pizda {
 				);
 
 				// Ground
-				renderer.renderFilledQuad(
+				renderer->renderFilledQuad(
 					horizonLeft,
 					horizonRight,
 					horizonRight + static_cast<Point>(horizonVecPerp * diagonal),
@@ -156,7 +156,7 @@ namespace pizda {
 
 			const auto arrowToVec = arrowCenter - arrowVec / 2.f;
 
-			renderer.renderLine(
+			renderer->renderLine(
 				static_cast<Point>(arrowCenter + arrowVec / 2.f),
 				static_cast<Point>(arrowToVec),
 				&Theme::ground2
@@ -165,14 +165,14 @@ namespace pizda {
 			constexpr uint8_t triangleWidth = 2;
 			constexpr uint8_t triangleHeight = 3;
 
-			renderer.renderFilledTriangle(
+			renderer->renderFilledTriangle(
 				static_cast<Point>(arrowToVec),
 				static_cast<Point>(arrowToVec + arrowVecNorm * triangleHeight - arrowVecPerp * triangleWidth),
 				static_cast<Point>(arrowToVec + arrowVecNorm * triangleHeight + arrowVecPerp * triangleWidth),
 				&Theme::ground2
 			);
 
-			renderer.renderString(
+			renderer->renderString(
 				Point(
 					arrowCenter.getX() - Theme::fontSmall.getWidth(text) / 2,
 					windPosition.getY() - Theme::fontSmall.getHeight()
@@ -202,7 +202,7 @@ namespace pizda {
 				PFD::flightDirectorThickness
 			);
 
-			renderer.renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta1);
+			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta1);
 
 			// Vertical
 			flightDirectorRectBounds.setX(
@@ -219,7 +219,7 @@ namespace pizda {
 			flightDirectorRectBounds.setWidth(PFD::flightDirectorThickness);
 			flightDirectorRectBounds.setHeight(flightDirectorLength);
 
-			renderer.renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta1);
+			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta1);
 		}
 
 		// Flight path vector
@@ -231,7 +231,7 @@ namespace pizda {
 
 			// Circle
 			for (uint8_t i = 0; i < PFD::flightPathVectorLineThickness; i++) {
-				renderer.renderCircle(
+				renderer->renderCircle(
 					FPVPosition,
 					PFD::flightPathVectorRadius - i,
 					&Theme::bg1
@@ -239,7 +239,7 @@ namespace pizda {
 			}
 
 			// Left line
-			renderer.renderFilledRectangle(
+			renderer->renderFilledRectangle(
 				Bounds(
 					FPVPosition.getX() - PFD::flightPathVectorRadius - PFD::flightPathVectorLineLength,
 					FPVPosition.getY() - PFD::flightPathVectorLineThickness / 2,
@@ -250,7 +250,7 @@ namespace pizda {
 			);
 
 			// Right line
-			renderer.renderFilledRectangle(
+			renderer->renderFilledRectangle(
 				Bounds(
 					FPVPosition.getX() + PFD::flightPathVectorRadius,
 					FPVPosition.getY() - PFD::flightPathVectorLineThickness / 2,
@@ -263,7 +263,7 @@ namespace pizda {
 
 		// Aircraft symbol
 		const auto& renderAircraftSymbolRect = [&renderer](const Point& position, const uint16_t width) {
-			renderer.renderFilledRectangle(
+			renderer->renderFilledRectangle(
 				Bounds(
 					position.getX(),
 					position.getY(),
@@ -274,11 +274,11 @@ namespace pizda {
 			);
 
 			// Outline
-			// renderer.renderHorizontalLine(Point(position.getX() - 1, position.getY() - 1), width + 2, &Theme::fg1);
-			// renderer.renderHorizontalLine(Point(position.getX() - 1, position.getY() + PFD::aircraftSymbolThickness), width + 2, &Theme::fg1);
+			// renderer->renderHorizontalLine(Point(position.getX() - 1, position.getY() - 1), width + 2, &Theme::fg1);
+			// renderer->renderHorizontalLine(Point(position.getX() - 1, position.getY() + PFD::aircraftSymbolThickness), width + 2, &Theme::fg1);
 			//
-			// renderer.renderVerticalLine(Point(position.getX() - 1, position.getY()), PFD::aircraftSymbolThickness, &Theme::fg1);
-			// renderer.renderVerticalLine(Point(position.getX() + width, position.getY()), PFD::aircraftSymbolThickness, &Theme::fg1);
+			// renderer->renderVerticalLine(Point(position.getX() - 1, position.getY()), PFD::aircraftSymbolThickness, &Theme::fg1);
+			// renderer->renderVerticalLine(Point(position.getX() + width, position.getY()), PFD::aircraftSymbolThickness, &Theme::fg1);
 		};
 
 		// Left
@@ -310,7 +310,7 @@ namespace pizda {
 	}
 
 	void PFDScene::renderPitchOverlay(
-		Renderer& renderer,
+		Renderer* renderer,
 		const Bounds& bounds,
 		const float pitchPixelOffsetProjected,
 		const float projectionPlaneDistance,
@@ -324,13 +324,13 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		// Middle line
-		renderer.renderLine(
+		renderer->renderLine(
 			horizonLeft,
 			horizonRight,
 			PFD::pitchOverlayColorGround
 		);
 
-		const auto viewport = renderer.pushViewport(bounds);
+		const auto viewport = renderer->pushViewport(bounds);
 
 		for (int32_t lineAngleDeg = -90; lineAngleDeg <= 90; lineAngleDeg += PFD::pitchOverlayAngleStepDeg) {
 			if (lineAngleDeg == 0)
@@ -354,7 +354,7 @@ namespace pizda {
 			const auto lineLeft = static_cast<Point>(lineCenterPerp - lineVec);
 			const auto lineRight = static_cast<Point>(lineCenterPerp + lineVec);
 
-			renderer.renderLine(
+			renderer->renderLine(
 				lineLeft,
 				lineRight,
 				color
@@ -366,7 +366,7 @@ namespace pizda {
 				const auto& textCenterVec = Vector2F(static_cast<float>(PFD::pitchOverlayFont->getWidth(text)) / 2.f, static_cast<float>(PFD::pitchOverlayFont->getHeight()) / 2.f);
 				const auto textCenterVecLengthWithOffset = static_cast<float>(PFD::pitchOverlayTextOffset) + textCenterVec.getLength();
 
-				renderer.renderString(
+				renderer->renderString(
 					Point(
 						lineRight.getX() + static_cast<int32_t>(horizonVecNorm.getX() * textCenterVecLengthWithOffset - textCenterVec.getX()),
 						lineRight.getY() + static_cast<int32_t>(horizonVecNorm.getY() * textCenterVecLengthWithOffset - textCenterVec.getY())
@@ -378,11 +378,11 @@ namespace pizda {
 			}
 		}
 
-		renderer.popViewport(viewport);
+		renderer->popViewport(viewport);
 	}
 
 	void PFDScene::renderTurnCoordinatorOverlay(
-		Renderer& renderer,
+		Renderer* renderer,
 		const Bounds& bounds
 	) {
 		auto& rc = RC::getInstance();
@@ -398,7 +398,7 @@ namespace pizda {
 				const auto vec = Vector2F(0, PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(toRadians(angle) - rc.getAircraftData().computed.rollRad);
 				const auto lineFrom = center - static_cast<Point>(vec);
 
-				renderer.renderLine(
+				renderer->renderLine(
 					lineFrom,
 					lineFrom + static_cast<Point>(vec.normalize() * (isBig
 																		? PFD::turnCoordinatorOverlayRollIndicatorLineBigLength
@@ -421,7 +421,7 @@ namespace pizda {
 		}
 
 		// Upper triangle
-		renderer.renderFilledTriangle(
+		renderer->renderFilledTriangle(
 			center + static_cast<Point>(Vector2F(
 				-PFD::turnCoordinatorOverlayRollIndicatorTriangleWidth / 2,
 				-PFD::turnCoordinatorOverlayRollIndicatorRadius).rotate(-rc.getAircraftData().computed.rollRad)
@@ -440,7 +440,7 @@ namespace pizda {
 		// Lower triangle
 		const int32_t rollTriangleY = bounds.getY() + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight + PFD::turnCoordinatorOverlayRollIndicatorTriangleOffset;
 
-		renderer.renderFilledTriangle(
+		renderer->renderFilledTriangle(
 			Point(center.getX(), rollTriangleY),
 			Point(center.getX() - PFD::turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, rollTriangleY + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight),
 			Point(center.getX() + PFD::turnCoordinatorOverlayRollIndicatorTriangleWidth / 2, rollTriangleY + PFD::turnCoordinatorOverlayRollIndicatorTriangleHeight),
@@ -448,7 +448,7 @@ namespace pizda {
 		);
 
 		// Slip/skid indicator
-		renderer.renderFilledRectangle(
+		renderer->renderFilledRectangle(
 			Bounds(
 				center.getX()
 					+ static_cast<int32_t>(
@@ -464,7 +464,7 @@ namespace pizda {
 		);
 	}
 	
-	void PFDScene::renderFlightModeAnnunciatorOverlay(Renderer& renderer, const Bounds& bounds) {
+	void PFDScene::renderFlightModeAnnunciatorOverlay(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 
 		constexpr static uint8_t sectionCount = 3;
@@ -472,8 +472,8 @@ namespace pizda {
 		const auto yCenter = bounds.getYCenter();
 		auto x = bounds.getX();
 		
-		const auto renderText = [&renderer, yCenter, &x, sectionWidth](const std::wstring_view text, const bool ap) {
-			renderer.renderString(
+		const auto renderText = [renderer, yCenter, &x, sectionWidth](const std::wstring_view text, const bool ap) {
+			renderer->renderString(
 				Point(
 					x + sectionWidth / 2 - Theme::fontSmall.getWidth(text) / 2,
 					yCenter - Theme::fontSmall.getHeight() / 2
@@ -490,8 +490,8 @@ namespace pizda {
 			renderText(L"---", false);
 		};
 		
-		const auto renderSeparator = [&renderer, &x, &bounds] {
-			renderer.renderVerticalLine(Point(x - 1, bounds.getY()), PFD::flightModeAnnunciatorHeight, &Theme::sky2);
+		const auto renderSeparator = [renderer, &x, &bounds] {
+			renderer->renderVerticalLine(Point(x - 1, bounds.getY()), PFD::flightModeAnnunciatorHeight, &Theme::sky2);
 		};
 		
 		// Throttle
@@ -563,11 +563,11 @@ namespace pizda {
 	}
 	
 	void PFDScene::renderYawOverlay(
-		Renderer& renderer,
+		Renderer* renderer,
 		const Bounds& bounds
 	) {
 		auto& rc = RC::getInstance();
-		const auto viewport = renderer.pushViewport(bounds);
+		const auto viewport = renderer->pushViewport(bounds);
 
 		const auto centerX = bounds.getXCenter();
 		const auto y2 = bounds.getY2();
@@ -590,7 +590,7 @@ namespace pizda {
 			// Line
 			const int32_t lineY = y2 - lineLength + 1;
 
-			renderer.renderVerticalLine(
+			renderer->renderVerticalLine(
 				Point(
 					x,
 					lineY
@@ -625,7 +625,7 @@ namespace pizda {
 						break;
 				}
 
-				renderer.renderString(
+				renderer->renderString(
 					Point(
 						x - PFD::yawOverlayFont->getWidth(text) / 2,
 						lineY - PFD::yawOverlayTextOffset - PFD::yawOverlayFont->getHeight()
@@ -669,7 +669,7 @@ namespace pizda {
 			const auto y = y2 - PFD::autopilotIndicatorThickness + 1;
 			
 			// Lower rect
-			renderer.renderFilledRectangle(
+			renderer->renderFilledRectangle(
 				Bounds(
 					x,
 					y2 - PFD::autopilotIndicatorRectangleThickness + 1,
@@ -680,7 +680,7 @@ namespace pizda {
 			);
 			
 			// Left rect
-			renderer.renderFilledRectangle(
+			renderer->renderFilledRectangle(
 				Bounds(
 					x,
 					y,
@@ -691,7 +691,7 @@ namespace pizda {
 			);
 			
 			// Right rect
-			renderer.renderFilledRectangle(
+			renderer->renderFilledRectangle(
 				Bounds(
 					x + PFD::autopilotIndicatorSize - PFD::autopilotIndicatorTriangleMargin,
 					y,
@@ -702,7 +702,7 @@ namespace pizda {
 			);
 			
 			// Left triangle
-			renderer.renderFilledTriangle(
+			renderer->renderFilledTriangle(
 				Point(
 					x + PFD::autopilotIndicatorTriangleMargin,
 					y
@@ -719,7 +719,7 @@ namespace pizda {
 			);
 			
 			// Right triangle
-			renderer.renderFilledTriangle(
+			renderer->renderFilledTriangle(
 				Point(
 					x + PFD::autopilotIndicatorSize - 1 - PFD::autopilotIndicatorTriangleMargin,
 					y
@@ -750,7 +750,7 @@ namespace pizda {
 				x -= deltaPixels;
 			}
 
-			renderer.renderHorizontalLine(
+			renderer->renderHorizontalLine(
 				Point(x, y2),
 				deltaPixels,
 				&Theme::magenta1
@@ -758,13 +758,13 @@ namespace pizda {
 		}
 		
 		// Small triangle representing current heading
-		renderer.renderFilledTriangle(
+		renderer->renderFilledTriangle(
 			Point(centerX, y2 - PFD::yawOverlayTriangleHeight),
 			Point(centerX - PFD::yawOverlayTriangleWidth / 2, y2),
 			Point(centerX + PFD::yawOverlayTriangleWidth / 2, y2),
 			PFD::yawOverlayColor
 		);
 
-		renderer.popViewport(viewport);
+		renderer->popViewport(viewport);
 	}
 }

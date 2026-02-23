@@ -59,7 +59,7 @@ namespace pizda {
 			constexpr static uint16_t verticalGap = 9;
 			constexpr static uint16_t horizontalGap = 7;
 
-			static void setup(Bit8PaletteRenderer& renderer);
+			static void setup(Bit8PaletteRenderer* renderer);
 			static void applyPrimary(Button* button);
 			static void applySecondary(Button* button);
 			static void applyCritical(Button* button);

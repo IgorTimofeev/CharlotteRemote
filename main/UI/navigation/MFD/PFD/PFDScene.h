@@ -13,11 +13,11 @@ namespace pizda {
 			PFDScene();
 
 		protected:
-			void onRender(Renderer& renderer, const Bounds& bounds) override;
+			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
 			static void renderPitchOverlay(
-				Renderer& renderer,
+				Renderer* renderer,
 				const Bounds& bounds,
 				float pitchPixelOffsetProjected,
 				float projectionPlaneDistance,
@@ -30,8 +30,8 @@ namespace pizda {
 				const Vector2F& horizonCenter
 			);
 
-			static void renderTurnCoordinatorOverlay(Renderer& renderer, const Bounds& bounds);
-			static void renderFlightModeAnnunciatorOverlay(Renderer& renderer, const Bounds& bounds);
-			static void renderYawOverlay(Renderer& renderer, const Bounds& bounds);
+			static void renderTurnCoordinatorOverlay(Renderer* renderer, const Bounds& bounds);
+			static void renderFlightModeAnnunciatorOverlay(Renderer* renderer, const Bounds& bounds);
+			static void renderYawOverlay(Renderer* renderer, const Bounds& bounds);
 	};
 }

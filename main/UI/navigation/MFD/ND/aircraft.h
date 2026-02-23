@@ -20,7 +20,7 @@ namespace pizda {
 				return 1;
 			}
 
-			void onRender(Renderer& renderer, const Scene& scene, const Vector3F* projectedVertices) override {
+			void onRender(Renderer* renderer, const Scene& scene, const Vector3F* projectedVertices) override {
 				if (projectedVertices[0].getZ() < scene.getNearPlaneDistance())
 					return;
 
@@ -38,11 +38,11 @@ namespace pizda {
 				_position = position;
 			}
 
-			static void render(Renderer& renderer, const Point& position) {
+			static void render(Renderer* renderer, const Point& position) {
 				constexpr static uint8_t triangleWidth = 8;
 				constexpr static uint8_t triangleHeight = 6;
 
-				renderer.renderTriangle(
+				renderer->renderTriangle(
 					position,
 					Point(position.getX() - triangleWidth / 2, position.getY() + triangleHeight),
 					Point(position.getX() + triangleWidth / 2, position.getY() + triangleHeight),
