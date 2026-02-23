@@ -13,11 +13,11 @@ namespace pizda {
 				setGap(3);
 
 				Theme::applyDescription(&_text);
-				*this += _text;
+				*this += &_text;
 
 				Theme::apply(&_switch);
-				setAutoSize(_switch);
-				*this += _switch;
+				setAutoSize(&_switch);
+				*this += &_switch;
 			}
 
 			explicit Switcher(std::wstring_view title) : Switcher()  {

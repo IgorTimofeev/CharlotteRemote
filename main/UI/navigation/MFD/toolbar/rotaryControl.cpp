@@ -6,9 +6,9 @@
 namespace pizda {
 	
 	RotaryControl::RotaryControl() {
-		*this += variantsLayout;
+		*this += &variantsLayout;
 		
-		setDefaultMargin(variantsLayout);
+		setDefaultMargin(&variantsLayout);
 	}
 	
 	uint8_t RotaryControl::getVariantIndex() const {
@@ -169,7 +169,7 @@ namespace pizda {
 	
 	void RotaryControl::updateVariantsVisibility() const {
 		for (uint8_t i = 0; i < variantsLayout.getChildrenCount(); ++i) {
-			variantsLayout[i].setVisible(variantIndex == i);
+			variantsLayout[i]->setVisible(variantIndex == i);
 		}
 	}
 	
@@ -185,7 +185,7 @@ namespace pizda {
 	
 	void RotaryControl::setVariants(const std::initializer_list<Element*> elements) {
 		for (const auto element : elements) {
-			variantsLayout += *element;
+			variantsLayout += element;
 		}
 	}
 	

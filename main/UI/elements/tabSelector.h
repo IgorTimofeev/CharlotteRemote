@@ -48,12 +48,12 @@ namespace pizda {
 				applyPageStyle();
 
 				backgroundRectangle.setCornerRadius(Theme::cornerRadius);
-				*this += backgroundRectangle;
+				*this += &backgroundRectangle;
 
 				itemsLayout.setOrientation(Orientation::horizontal);
 				itemsLayout.setGap(1);
-				*this += itemsLayout;
-				setItemsLayout(itemsLayout);
+				*this += &itemsLayout;
+				setItemsLayout(&itemsLayout);
 			}
 
 			Rectangle backgroundRectangle {};

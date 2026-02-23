@@ -14,16 +14,16 @@ namespace pizda {
 				// Description text
 				Theme::applyDescription(&descriptionText);
 				descriptionText.setWrappingEnabled(true);
-				rows += descriptionText;
+				rows += &descriptionText;
 
 				// Progress bar
 				Theme::apply(&progressBar);
-				rows += progressBar;
+				rows += &progressBar;
 
 				// Progress text
 				Theme::apply(&progressText);
 				progressText.setHorizontalAlignment(Alignment::center);
-				rows += progressText;
+				rows += &progressText;
 
 				setProgress(0);
 			}

@@ -23,14 +23,14 @@ namespace pizda {
 			if (!_PFD)
 				_PFD = std::make_unique<PFD>();
 
-			*this += *_PFD.get();
+			*this += _PFD.get();
 		}
 
 		if (rc.getSettings().personalization.MFD.split.mode != PersonalizationSettingsMFDSplitMode::PFD) {
 			if (!_ND)
 				_ND = std::make_unique<ND>();
 
-			*this += *_ND.get();
+			*this += _ND.get();
 		}
 
 		updateSplitRatio();
@@ -40,11 +40,11 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		if (_PFD.get() && _ND.get()) {
-			setRelativeSize(*_PFD.get(), static_cast<float>(rc.getSettings().personalization.MFD.split.ratio) / 100.f);
-			setRelativeSize(*_ND.get(), 1.f - static_cast<float>(rc.getSettings().personalization.MFD.split.ratio) / 100.f);
+			setRelativeSize(_PFD.get(), static_cast<float>(rc.getSettings().personalization.MFD.split.ratio) / 100.f);
+			setRelativeSize(_ND.get(), 1.f - static_cast<float>(rc.getSettings().personalization.MFD.split.ratio) / 100.f);
 		}
 		else if (_PFD.get()) {
-			setRelativeSize(*_PFD.get(), 1);
+			setRelativeSize(_PFD.get(), 1);
 		}
 	}
 
@@ -53,7 +53,7 @@ namespace pizda {
 	MFDPage::MFDPage() {
 		_instance = this;
 
-		*this += _rows;
+		*this += &_rows;
 
 		// Initialization
 		fromSettings();
@@ -97,8 +97,8 @@ namespace pizda {
 				if (!_autopilotToolbar)
 					_autopilotToolbar = std::make_unique<AutopilotToolbar>();
 				
-				_rows.setAutoSize(*_autopilotToolbar.get(), true);
-				_rows += *_autopilotToolbar.get();
+				_rows.setAutoSize(_autopilotToolbar.get(), true);
+				_rows += _autopilotToolbar.get();
 				
 				break;
 			}
@@ -106,8 +106,8 @@ namespace pizda {
 				if (!_baroToolbar)
 					_baroToolbar = std::make_unique<BaroToolbar>();
 				
-				_rows.setAutoSize(*_baroToolbar.get(), true);
-				_rows += *_baroToolbar.get();
+				_rows.setAutoSize(_baroToolbar.get(), true);
+				_rows += _baroToolbar.get();
 				
 				break;
 			}
@@ -115,8 +115,8 @@ namespace pizda {
 				if (!_trimToolbar)
 					_trimToolbar = std::make_unique<TrimToolbar>();
 				
-				_rows.setAutoSize(*_trimToolbar.get(), true);
-				_rows += *_trimToolbar.get();
+				_rows.setAutoSize(_trimToolbar.get(), true);
+				_rows += _trimToolbar.get();
 				
 				break;
 			}
@@ -124,8 +124,8 @@ namespace pizda {
 				if (!_lightsToolbar)
 					_lightsToolbar = std::make_unique<LightsToolbar>();
 				
-				_rows.setAutoSize(*_lightsToolbar.get(), true);
-				_rows += *_lightsToolbar.get();
+				_rows.setAutoSize(_lightsToolbar.get(), true);
+				_rows += _lightsToolbar.get();
 				
 				break;
 			}
@@ -134,11 +134,11 @@ namespace pizda {
 		}
 
 		_MFDLayout.createShit();
-		_rows += _MFDLayout;
+		_rows += &_MFDLayout;
 		
 		// Main
-		_rows.setAutoSize(_mainToolbar, true);
-		_rows += _mainToolbar;
+		_rows.setAutoSize(&_mainToolbar, true);
+		_rows += &_mainToolbar;
 		
 		invalidate();
 	}

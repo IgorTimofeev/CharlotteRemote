@@ -29,23 +29,23 @@ namespace pizda {
 
 	Dialog::Dialog() {
 		// Dithered
-		*this += ditheredBackground;
+		*this += &ditheredBackground;
 
 		// Background
 		slideLayoutBackground.setFillColor(&Theme::bg2);
-		slideLayout += slideLayoutBackground;
+		slideLayout += &slideLayoutBackground;
 
 		// Slide
-		slideLayout.setMaxHeight(Application::getCurrent().getRenderer().getTarget().getSize().getHeight() * 9 / 10);
-		setAutoSize(slideLayout);
-		*this += slideLayout;
+		slideLayout.setMaxHeight(Application::getCurrent()->getRenderer().getTarget().getSize().getHeight() * 9 / 10);
+		setAutoSize(&slideLayout);
+		*this += &slideLayout;
 	}
 
 	void Dialog::show() {
-		Application::getCurrent() += *this;
+		*Application::getCurrent() += this;
 	}
 
 	void Dialog::hide() {
-		*getParent() -= *this;
+		*getParent() -= this;
 	}
 }

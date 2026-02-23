@@ -22,7 +22,7 @@ namespace pizda {
 			rc.updateDebugOverlayVisibility();
 		});
 
-		rows += _generalDebugOverlay;
+		rows += &_generalDebugOverlay;
 
 		// Audio feedback
 		_generalAudioFeedback.getSwitch().setActive(settings.personalization.audioFeedback);
@@ -32,7 +32,7 @@ namespace pizda {
 			settings.personalization.scheduleWrite();
 		});
 		
-		rows += _generalAudioFeedback;
+		rows += &_generalAudioFeedback;
 		
 		// LPF
 		_generalDataInterpolation.getSwitch().setActive(settings.personalization.LPF);
@@ -42,16 +42,16 @@ namespace pizda {
 			settings.personalization.scheduleWrite();
 		});
 		
-		rows += _generalDataInterpolation;
+		rows += &_generalDataInterpolation;
 		
 		// Separator
-		rows += _generalSeparator;
+		rows += &_generalSeparator;
 		
 		// -------------------------------- PFD --------------------------------
 
 		Theme::applyPageTitle(&_PFDTitle);
 		_PFDTitle.setText(L"PFD");
-		rows += _PFDTitle;
+		rows += &_PFDTitle;
 				
 		// FOV
 		Theme::apply(&_PFDFOVSlider);
@@ -68,7 +68,7 @@ namespace pizda {
 			settings.personalization.scheduleWrite();
 		});
 
-		rows += _PFDFOVTitle;
+		rows += &_PFDFOVTitle;
 
 		// Waypoint labels
 		_PFDWaypointLabels.getSwitch().setActive(settings.personalization.MFD.PFD.waypointLabels);
@@ -78,16 +78,16 @@ namespace pizda {
 			settings.personalization.scheduleWrite();
 		});
 
-		rows += _PFDWaypointLabels;
+		rows += &_PFDWaypointLabels;
 
 		// Separator
-		rows += _PFDSeparator;
+		rows += &_PFDSeparator;
 
 		// -------------------------------- ND --------------------------------
 
 		Theme::applyPageTitle(&_NDTitle);
 		_NDTitle.setText(L"ND");
-		rows += _NDTitle;
+		rows += &_NDTitle;
 
 		// Earth grid
 		_NDEarthGrid.getSwitch().setActive(settings.personalization.MFD.ND.earth);
@@ -97,6 +97,6 @@ namespace pizda {
 			settings.personalization.scheduleWrite();
 		});
 		
-		rows += _NDEarthGrid;
+		rows += &_NDEarthGrid;
 	}
 }

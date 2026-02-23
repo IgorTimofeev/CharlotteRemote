@@ -7,7 +7,7 @@
 
 namespace pizda {
 	MotorEditor::MotorEditor(const std::wstring_view title, MotorSettings* settings) : Titler(title), _settings(settings) {
-		*this += _mainLayout;
+		*this += &_mainLayout;
 		
 		// Reverse
 		_reverse.setWidth(20);
@@ -31,13 +31,13 @@ namespace pizda {
 			changed();
 		});
 		
-		_mainLayout += _reverse;
+		_mainLayout += &_reverse;
 		
 		// Row
 		_minMaxRow.setOrientation(Orientation::horizontal);
 		_minMaxRow.setGap(8);
 		_minMaxRow.setMargin(Margin(0, 0, _reverse.getSize().getWidth() - Theme::cornerRadius - 1, 0));
-		_mainLayout += _minMaxRow;
+		_mainLayout += &_minMaxRow;
 		
 		// Min
 		addTextField(_min, _settings->min);
@@ -70,22 +70,22 @@ namespace pizda {
 		title.setText(L"Motors");
 		
 		// Content
-		vaginoz(throttle);
-		vaginoz(noseWheel);
+		vaginoz(&throttle);
+		vaginoz(&noseWheel);
 
-		vaginoz(flapLeft);
-		vaginoz(aileronLeft);
+		vaginoz(&flapLeft);
+		vaginoz(&aileronLeft);
 		
-		vaginoz(flapRight);
-		vaginoz(aileronRight);
+		vaginoz(&flapRight);
+		vaginoz(&aileronRight);
 
-		vaginoz(tailLeft);
-		vaginoz(tailRight);
+		vaginoz(&tailLeft);
+		vaginoz(&tailRight);
 	}
 	
-	void MotorsSettingsPage::vaginoz(MotorEditor& motorEditor) {
-		motorEditor.changed = [motorEditor]() {
-			motorEditor.toSettings();
+	void MotorsSettingsPage::vaginoz(MotorEditor* motorEditor) {
+		motorEditor->changed = [motorEditor]() {
+			motorEditor->toSettings();
 			RC::getInstance().getSettings().motors.scheduleWrite();
 			
 			RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::motors);

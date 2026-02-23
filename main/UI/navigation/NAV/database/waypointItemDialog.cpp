@@ -32,6 +32,6 @@ namespace pizda {
 			});
 		});
 
-		rows += _removeButton;
+		rows += &_removeButton;
 	}
 }

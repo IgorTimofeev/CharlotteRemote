@@ -41,7 +41,7 @@ namespace pizda {
 			const std::function<void(uint8_t)>& getOnItemSelected();
 
 		protected:
-			void onAddedToParent(Layout& parent) override;
+			void onAddedToParent(Layout* parent) override;
 
 		private:
 			const std::wstring_view* _items;

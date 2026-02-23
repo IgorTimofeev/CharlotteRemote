@@ -25,7 +25,7 @@ namespace pizda {
 				_imageView.setMargin(Margin(Toolbar::contentHorizontalMargin, 2, Toolbar::contentHorizontalMargin, 0));
 				_imageView.setAlignment(Alignment::center);
 				_imageView.setImage(image);
-				*this += _imageView;
+				*this += &_imageView;
 			}
 
 			std::function<void()> onPressed = nullptr;

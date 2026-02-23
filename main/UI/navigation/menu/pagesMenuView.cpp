@@ -35,7 +35,7 @@ namespace pizda {
 				button->setActive(true);
 			}
 			
-			*this += *button;
+			*this += button;
 		}
 	}
 }

@@ -9,12 +9,12 @@ namespace pizda {
 		setFocusable(false);
 
 		row.setGap(7);
-		setDefaultMargin(row, 6);
+		setDefaultMargin(&row, 6);
 
-		row += throttleIndicator1;
-		row += throttleIndicator2;
+		row += &throttleIndicator1;
+		row += &throttleIndicator2;
 
-		*this += row;
+		*this += &row;
 	}
 
 	void ThrottleSection::onTick() {

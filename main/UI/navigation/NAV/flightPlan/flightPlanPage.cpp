@@ -12,15 +12,15 @@ namespace pizda {
 		title.setText(L"Flight plan");
 
 		_itemsLayout.setGap(5);
-		rows += _itemsLayout;
+		rows += &_itemsLayout;
 
 		// Legs
 		_legsLayout.setGap(5);
-		_itemsLayout += _legsLayout;
+		_itemsLayout += &_legsLayout;
 
 		// Add leg
 		_addLegButton.setText(L"Add leg");
-		_itemsLayout += _addLegButton;
+		_itemsLayout += &_addLegButton;
 
 		updateFromNavigationData();
 	}
@@ -47,6 +47,6 @@ namespace pizda {
 		_legsLayout.removeAndDeleteChildren();
 	
 		for (uint16_t i = 0; i < nd.flightPlan.legs.size(); i++)
-			_legsLayout += *new FlightPlanItem(i);
+			_legsLayout += new FlightPlanItem(i);
 	}
 }

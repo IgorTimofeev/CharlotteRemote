@@ -31,7 +31,7 @@ namespace pizda {
 
 	MFDMenuView::MFDMenuView() {
 		for (const auto modeButton : modeButtons) {
-			*this += *modeButton;
+			*this += modeButton;
 		}
 	}
 

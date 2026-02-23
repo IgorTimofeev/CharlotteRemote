@@ -23,6 +23,6 @@ namespace pizda {
 
 			void updateViewModeButtonText();
 			void updateSplitButtonText();
-			void addGovnoButton(Button& button, const std::function<void()>& onClick);
+			void addGovnoButton(Button* button, const std::function<void()>& onClick);
 	};
 }

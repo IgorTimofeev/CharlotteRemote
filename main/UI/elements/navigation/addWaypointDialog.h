@@ -22,10 +22,10 @@ namespace pizda {
 				setGap(Theme::verticalGap);
 
 				Theme::apply(&latitude);
-				*this += latitude;
+				*this += &latitude;
 
 				Theme::apply(&longitude);
-				*this += longitude;
+				*this += &longitude;
 			}
 
 			TextField latitude {};
@@ -60,12 +60,12 @@ namespace pizda {
 			TabSelector _typeSelector {};
 
 			TextField _nameTextField {};
-			Titler _nameTitle { L"Name", _nameTextField };
+			Titler _nameTitle = { L"Name", &_nameTextField };
 
 			RelativeStackLayout _latitudeAndLongitudeRow { Orientation::horizontal, 10 };
 
 			LatLonRow _latLon {};
-			Titler _latLonTitle { L"Latitude & longitude", _latLon };
+			Titler _latLonTitle = { L"Latitude & longitude", &_latLon };
 
 			Button _confirmButton {};
 
@@ -77,23 +77,23 @@ namespace pizda {
 
 				// Type
 				_enrouteTypeItem.setText(L"Enroute");
-				_typeSelector.addItem(_enrouteTypeItem);
+				_typeSelector.addItem(&_enrouteTypeItem);
 
 				_runwayTypeItem.setText(L"Runway");
-				_typeSelector.addItem(_runwayTypeItem);
+				_typeSelector.addItem(&_runwayTypeItem);
 
 				_typeSelector.applyDialogStyle();
 				_typeSelector.setSelectedIndex(0);
 
-				rows += _typeSelector;
+				rows += &_typeSelector;
 
 				// Name
 				Theme::apply(&_nameTextField);
-				rows += _nameTitle;
+				rows += &_nameTitle;
 
 				// Latitude & longitude
 				_latLon.fromRadians(coordinates.getLatitude(), coordinates.getLongitude());
-				rows += _latLonTitle;
+				rows += &_latLonTitle;
 
 				// Confirm
 				Theme::applyPrimary(&_confirmButton);
@@ -122,7 +122,7 @@ namespace pizda {
 					});
 				});
 
-				rows += _confirmButton;
+				rows += &_confirmButton;
 			}
 	};
 }

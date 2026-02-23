@@ -19,7 +19,7 @@ namespace pizda {
 			rc.playFeedback();
 		};
 		
-		row += navigation;
+		row += &navigation;
 		
 		// Strobe
 		strobe.onPressed = [this] {
@@ -33,7 +33,7 @@ namespace pizda {
 			rc.playFeedback();
 		};
 		
-		row += strobe;
+		row += &strobe;
 		
 		// Landing
 		landing.onPressed = [this] {
@@ -47,7 +47,7 @@ namespace pizda {
 			rc.playFeedback();
 		};
 		
-		row += landing;
+		row += &landing;
 		
 		// Landing
 		cabin.onPressed = [this] {
@@ -61,7 +61,7 @@ namespace pizda {
 			rc.playFeedback();
 		};
 		
-		row += cabin;
+		row += &cabin;
 	}
 	
 	void LightsToolbar::onTick() {

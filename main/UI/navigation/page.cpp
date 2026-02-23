@@ -19,7 +19,7 @@ namespace pizda {
 		setDefaultContentMargin(&rows);
 
 		// Title
-		rows += title;
+		rows += &title;
 	}
 
 	// ----------------------------- Ready to use -----------------------------
@@ -27,20 +27,20 @@ namespace pizda {
 	ScrollViewPage::ScrollViewPage() {
 		// Scroll view
 		Theme::apply(&scrollView);
-		*this += scrollView;
+		*this += &scrollView;
 
 		// Rows
-		scrollView += rows;
+		scrollView += &rows;
 	}
 
 	RelativeRowsPage::RelativeRowsPage() {
 		// Rows
 		rows.setGap(Theme::verticalGap);
 		setDefaultContentMargin(&rows);
-		*this += rows;
+		*this += &rows;
 
 		// Title
-		rows += title;
-		rows.setAutoSize(title);
+		rows += &title;
+		rows.setAutoSize(&title);
 	}
 }

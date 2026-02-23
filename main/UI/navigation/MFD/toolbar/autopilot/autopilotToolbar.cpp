@@ -18,11 +18,11 @@ namespace pizda {
 			rc.playFeedback();
 		};
 
-		row += flightDirector;
+		row += &flightDirector;
 		
-		row += speed;
-		row += lateral;
-		row += vertical;
+		row += &speed;
+		row += &lateral;
+		row += &vertical;
 
 		// Autopilot
 		autopilot.onPressed = [&rc] {
@@ -37,7 +37,7 @@ namespace pizda {
 			);
 		};
 
-		row += autopilot;
+		row += &autopilot;
 	}
 	
 	void AutopilotToolbar::onTick() {
