@@ -7,7 +7,7 @@ namespace pizda {
 		setDigitCount(3);
 		setSignVisible(true);
 
-		setActiveColor(Theme::green1);
+		setActiveColor(&Theme::green1);
 	}
 
 	void VerticalRotaryControlStab::onTick() {
@@ -19,7 +19,7 @@ namespace pizda {
 	VerticalRotaryControlALT::VerticalRotaryControlALT() {
 		setDigitCount(4);
 
-		setActiveColor(Theme::ocean);
+		setActiveColor(&Theme::ocean);
 	}
 
 	void VerticalRotaryControlALT::onTick() {
@@ -119,23 +119,23 @@ namespace pizda {
 		
 		switch (RC::getInstance().getAircraftData().raw.autopilot.verticalMode) {
 			case AutopilotVerticalMode::dir:
-				setBorderColor(Theme::bg1);
+				setBorderColor(nullptr);
 				break;
 
 			case AutopilotVerticalMode::stab:
-				setBorderColor(getVariantIndex() == 1 ? Theme::fg1 : Theme::yellow);
+				setBorderColor(getVariantIndex() == 1 ? &Theme::fg1 : &Theme::yellow);
 				break;
 				
 			case AutopilotVerticalMode::flc:
-				setBorderColor(getVariantIndex() == 0 ? Theme::fg1 : Theme::yellow);
+				setBorderColor(getVariantIndex() == 0 ? &Theme::fg1 : &Theme::yellow);
 				break;
 				
 			case AutopilotVerticalMode::alts:
-				setBorderColor(getVariantIndex() == 0 ? Theme::green1 : Theme::yellow);
+				setBorderColor(getVariantIndex() == 0 ? &Theme::green1 : &Theme::yellow);
 				break;
 				
 			case AutopilotVerticalMode::alt:
-				setBorderColor(getVariantIndex() == 2 ? Theme::ocean : Theme::yellow);
+				setBorderColor(getVariantIndex() == 2 ? &Theme::ocean : &Theme::yellow);
 				break;
 		}
 	}

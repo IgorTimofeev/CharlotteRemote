@@ -5,7 +5,7 @@
 
 namespace pizda {
 	DialogSlideLayoutBackground::DialogSlideLayoutBackground() {
-		setFillColor(Theme::bg1);
+		setFillColor(&Theme::bg1);
 	}
 
 	void DialogSlideLayoutBackground::onEvent(Event& event) {
@@ -32,7 +32,7 @@ namespace pizda {
 		*this += ditheredBackground;
 
 		// Background
-		slideLayoutBackground.setFillColor(Theme::bg2);
+		slideLayoutBackground.setFillColor(&Theme::bg2);
 		slideLayout += slideLayoutBackground;
 
 		// Slide

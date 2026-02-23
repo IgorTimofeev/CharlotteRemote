@@ -12,12 +12,12 @@ namespace pizda {
 		setSize(Size(45, image->getSize().getHeight() + _textOffset + Theme::fontSmall.getHeight()));
 		setText(text);
 
-		setDefaultBackgroundColor(Theme::bg3);
-		setDefaultTextColor(Theme::fg4);
+		setDefaultBackgroundColor(&Theme::bg3);
+		setDefaultTextColor(&Theme::fg4);
 
-		setActiveBackgroundColor(Theme::bg3);
-		setActiveBorderColor(Theme::fg1);
-		setActiveTextColor(Theme::fg1);
+		setActiveBackgroundColor(&Theme::bg3);
+		setActiveBorderColor(&Theme::fg1);
+		setActiveTextColor(&Theme::fg1);
 	}
 
 	void MenuViewButton::onRender(Renderer& renderer, const Bounds& bounds) {

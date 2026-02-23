@@ -23,7 +23,7 @@ namespace pizda {
 
 		// Jittering slider
 		Theme::apply(&_jitteringThresholdSlider);
-		_jitteringThresholdSlider.setFillColor(Theme::bad1);
+		_jitteringThresholdSlider.setFillColor(&Theme::bad1);
 
 		_jitteringThresholdSlider.setMinimumValue(0);
 		_jitteringThresholdSlider.setMaximumValue(jitteringThresholdMaxValue);
@@ -44,7 +44,7 @@ namespace pizda {
 
 		// Low pass slider
 		Theme::apply(&_lowPassFactorSlider);
-		_lowPassFactorSlider.setFillColor(Theme::good2);
+		_lowPassFactorSlider.setFillColor(&Theme::good2);
 
 		_lowPassFactorSlider.setValue(static_cast<float>(RC::getInstance().getSettings().axes.lowPassFactor) / 0xFFFF);
 

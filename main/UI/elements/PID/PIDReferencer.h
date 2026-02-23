@@ -26,7 +26,7 @@ namespace pizda {
 				chart.setDeltaTime(1.f / 30.f);
 				chart.setStepCount(10);
 				chart.setValueMax(100);
-				chart.setBackgroundColor(Theme::bg3);
+				chart.setBackgroundColor(&Theme::bg3);
 				rows += chart;
 
 				// PID
@@ -119,11 +119,11 @@ namespace pizda {
 				setDefaultMargin(&_textsRow, Margin(10));
 				*this += _textsRow;
 
-				addCoeffText(_textP, Theme::yellow);
+				addCoeffText(_textP, &Theme::yellow);
 				addSuffixText(_textP_I, L"P +");
-				addCoeffText(_textI, Theme::magenta1);
+				addCoeffText(_textI, &Theme::magenta1);
 				addSuffixText(_textI_D, L"I +");
-				addCoeffText(_textD, Theme::ocean);
+				addCoeffText(_textD, &Theme::ocean);
 				addSuffixText(_textD_, L"D");
 
 				setOnClick([this, dialogTitle] {
@@ -169,13 +169,13 @@ namespace pizda {
 
 			std::function<void(const PIDCoefficients&)> _onCoefficientsChanged = nullptr;
 
-			void addText(TextView& text, const Color& color) {
+			void addText(TextView& text, const Color* color) {
 				text.setTextColor(color);
 				text.setVerticalAlignment(Alignment::end);
 				_textsRow += text;
 			}
 
-			void addCoeffText(TextView& text, const Color& color) {
+			void addCoeffText(TextView& text, const Color* color) {
 				text.setFont(Theme::fontSmall);
 				text.setFontScale(2);
 
@@ -187,7 +187,7 @@ namespace pizda {
 				text.setFont(Theme::fontNormal);
 				text.setText(suffix);
 
-				addText(text, Theme::fg4);
+				addText(text, &Theme::fg4);
 			}
 	};
 }

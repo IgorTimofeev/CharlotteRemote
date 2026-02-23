@@ -9,7 +9,7 @@
 
 namespace pizda {
 	PIDChart::PIDChart() {
-		setBackgroundColor(Theme::bg2);
+		setBackgroundColor(&Theme::bg2);
 	}
 
 	void PIDChart::onEvent(Event& event) {
@@ -47,13 +47,13 @@ namespace pizda {
 		renderer.renderHorizontalLine(
 			bounds.getBottomLeft(),
 			bounds.getWidth(),
-			Theme::fg4
+			&Theme::fg4
 		);
 
 		renderer.renderVerticalLine(
 			bounds.getTopLeft(),
 			bounds.getHeight() - 1,
-			Theme::fg4
+			&Theme::fg4
 		);
 
 		// ----------------------------- Value -----------------------------
@@ -72,7 +72,7 @@ namespace pizda {
 					y - Theme::fontSmall.getHeight() / 2
 				),
 				Theme::fontSmall,
-				Theme::fg4,
+				&Theme::fg4,
 				text
 			);
 
@@ -85,7 +85,7 @@ namespace pizda {
 					y
 				),
 				bounds.getWidth() - lineOffset,
-				Theme::fg4
+				&Theme::fg4
 			);
 		}
 
@@ -130,7 +130,7 @@ namespace pizda {
 		renderer.renderCatmullRomSpline(
 			splinePoints.data(),
 			_stepCount + 2,
-			Theme::accent1,
+			&Theme::accent1,
 			10
 		);
 
@@ -138,7 +138,7 @@ namespace pizda {
 			renderer.renderFilledCircle(
 				splinePoints[i + 2],
 				2,
-				Theme::fg1
+				&Theme::fg1
 			);
 		}
 	}

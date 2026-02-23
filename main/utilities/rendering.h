@@ -10,18 +10,18 @@ namespace pizda {
 
 	class RenderingUtils {
 		public:
-			static const Color& getWaypointColor(const NavigationWaypointData& waypointData) {
+			static const Color* getWaypointColor(const NavigationWaypointData& waypointData) {
 				switch (waypointData.type) {
 					case NavigationWaypointType::enroute: {
-						return Theme::magenta1;
+						return &Theme::magenta1;
 					}
 					default: {
-						return Theme::ocean;
+						return &Theme::ocean;
 					}
 				}
 			}
 
-			static void renderWaypointIcon(Renderer& renderer, const Point& center, const Color& color, const NavigationWaypointData& waypointData) {
+			static void renderWaypointIcon(Renderer& renderer, const Point& center, const Color* color, const NavigationWaypointData& waypointData) {
 				switch (waypointData.type) {
 					case NavigationWaypointType::enroute: {
 						renderer.renderRectangle(
@@ -83,7 +83,7 @@ namespace pizda {
 				}
 			}
 
-			static void renderWaypointName(Renderer& renderer, const Point& center, const Color& color, const NavigationWaypointData& waypointData) {
+			static void renderWaypointName(Renderer& renderer, const Point& center, const Color* color, const NavigationWaypointData& waypointData) {
 				renderer.renderText(
 					Point(center.getX() + 7, center.getY() - 7),
 					Theme::fontSmall,

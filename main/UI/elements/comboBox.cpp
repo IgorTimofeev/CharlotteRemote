@@ -68,7 +68,7 @@ namespace pizda {
 				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
 			),
 			Theme::fontNormal,
-			Theme::fg1,
+			&Theme::fg1,
 			_items[_selectedIndex]
 		);
 	}

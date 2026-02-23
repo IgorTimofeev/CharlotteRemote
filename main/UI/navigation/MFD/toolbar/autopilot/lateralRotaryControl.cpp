@@ -7,7 +7,7 @@ namespace pizda {
 		setDigitCount(3);
 		setSignVisible(true);
 
-		setActiveColor(Theme::green1);
+		setActiveColor(&Theme::green1);
 	}
 
 	void LateralRotaryControlStab::onTick() {
@@ -86,15 +86,15 @@ namespace pizda {
 		
 		switch (RC::getInstance().getAircraftData().raw.autopilot.lateralMode) {
 			case AutopilotLateralMode::dir:
-				setBorderColor(Theme::bg1);
+				setBorderColor(nullptr);
 				break;
 
 			case AutopilotLateralMode::stab:
-				setBorderColor(getVariantIndex() == 1 ? Theme::fg1 : Theme::yellow);
+				setBorderColor(getVariantIndex() == 1 ? &Theme::fg1 : &Theme::yellow);
 				break;
 
 			case AutopilotLateralMode::hdg:
-				setBorderColor(getVariantIndex() == 0 ? Theme::fg1 : Theme::yellow);
+				setBorderColor(getVariantIndex() == 0 ? &Theme::fg1 : &Theme::yellow);
 				break;
 		}
 	}

@@ -67,7 +67,7 @@ namespace pizda {
 				setSegmentThickness(1);
 				setSegmentLength(4);
 
-				setInactiveColor(Theme::bg5);
+				setInactiveColor(&Theme::bg5);
 			}
 	};
 }

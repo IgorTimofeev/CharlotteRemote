@@ -22,8 +22,8 @@ namespace pizda {
 				seven.setSegmentThickness(1);
 				seven.setSegmentLength(4);
 				
-				seven.setInactiveColor(Theme::bg5);
-				seven.setActiveColor(Theme::fg1);
+				seven.setInactiveColor(&Theme::bg5);
+				seven.setActiveColor(&Theme::fg1);
 			}
 
 			SevenSegment seven {};

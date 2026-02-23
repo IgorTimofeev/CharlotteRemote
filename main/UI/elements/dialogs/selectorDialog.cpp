@@ -7,7 +7,7 @@ namespace pizda {
 		Theme::applySecondary(this);
 
 		setToggle(true);
-		setActiveBorderColor(Theme::accent1);
+		setActiveBorderColor(&Theme::accent1);
 		setText(_comboBoxDialog->getItems()[index]);
 	}
 

@@ -58,8 +58,8 @@ namespace pizda {
 			}
 
 			void onRender(Renderer& renderer, const Bounds& bounds) override {
-				renderer.renderFilledRectangle(bounds, Theme::cornerRadius, isFocused() ? Theme::bg4 : Theme::bg3);
-				renderer.renderRectangle(bounds, Theme::cornerRadius, isFocused() ? Theme::bg5 : Theme::bg4);
+				renderer.renderFilledRectangle(bounds, Theme::cornerRadius, isFocused() ? &Theme::bg4 : &Theme::bg3);
+				renderer.renderRectangle(bounds, Theme::cornerRadius, isFocused() ? &Theme::bg5 : &Theme::bg4);
 
 				const Point arrowPos {
 					bounds.getX2() - arrowOffset,
@@ -72,7 +72,7 @@ namespace pizda {
 						arrowPos.getX() - arrowWidth,
 						arrowPos.getY() - arrowHeightDiv2
 					},
-					Theme::fg5
+					&Theme::fg5
 				);
 
 				renderer.renderLine(
@@ -81,7 +81,7 @@ namespace pizda {
 						arrowPos.getX() - arrowWidth,
 						arrowPos.getY() + arrowHeightDiv2
 					},
-					Theme::fg5
+					&Theme::fg5
 				);
 
 				Layout::onRender(renderer, bounds);

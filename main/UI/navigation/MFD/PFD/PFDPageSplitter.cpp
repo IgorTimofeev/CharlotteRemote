@@ -71,7 +71,7 @@ namespace pizda {
 	}
 
 	void PFDPageSplitter::onRender(Renderer& renderer, const Bounds& bounds) {
-		renderer.renderFilledRectangle(bounds, isActive() ? Theme::fg1 : Theme::bg2);
+		renderer.renderFilledRectangle(bounds, isActive() ? &Theme::fg1 : &Theme::bg2);
 
 		const auto text = RC::getInstance().getSettings().personalization.MFD.split.mode == PersonalizationSettingsMFDSplitMode::PFD ? L"< >" : L"> <";
 
@@ -81,7 +81,7 @@ namespace pizda {
 				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2
 			),
 			Theme::fontSmall,
-			isActive() ? Theme::bg1 : Theme::ocean,
+			isActive() ? &Theme::bg1 : &Theme::ocean,
 			text
 		);
 	}

@@ -5,7 +5,7 @@
 #include "rc.h"
 
 namespace pizda {
-	NDRunwayElement::NDRunwayElement(const uint16_t runwayIndex) : RunwayElement(runwayIndex, Theme::fg1) {
+	NDRunwayElement::NDRunwayElement(const uint16_t runwayIndex) : RunwayElement(runwayIndex, &Theme::fg1) {
 
 	}
 
@@ -24,7 +24,7 @@ namespace pizda {
 			static_cast<int32_t>(waypointVertex.getY())
 		);
 
-		const auto& waypointColor = RenderingUtils::getWaypointColor(waypointData);
+		const auto waypointColor = RenderingUtils::getWaypointColor(waypointData);
 
 		// Close enough, rendering runway mesh
 		if (waypointVertex.getZ() <= 16'000)

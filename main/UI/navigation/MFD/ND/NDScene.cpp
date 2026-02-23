@@ -134,7 +134,7 @@ namespace pizda {
 					pivot.getY()
 				),
 				compassLateralOffsetCrossSize,
-				Theme::fg1
+				&Theme::fg1
 			);
 
 			renderer.renderVerticalLine(
@@ -143,7 +143,7 @@ namespace pizda {
 					pivot.getY() - compassLateralOffsetCrossSize / 2
 				),
 				compassLateralOffsetCrossSize,
-				Theme::fg1
+				&Theme::fg1
 			);
 		}
 		else {
@@ -160,7 +160,7 @@ namespace pizda {
 					circleRadius,
 					(90 - compassArcViewportHalfDeg) * 255 / 360,
 					(90 + compassArcViewportHalfDeg) * 255 / 360,
-					Theme::fg1
+					&Theme::fg1
 				);
 			}
 			// Map
@@ -191,7 +191,7 @@ namespace pizda {
 							pivot.getX() + static_cast<int32_t>(angleEndVec.getX()),
 							pivot.getY() - static_cast<int32_t>(angleEndVec.getY())
 						),
-						Theme::fg1
+						&Theme::fg1
 					);
 
 					if (isBig) {
@@ -206,7 +206,7 @@ namespace pizda {
 								pivot.getY() - static_cast<int32_t>(textCenterVec.getY()) - Theme::fontSmall.getHeight() / 2
 							),
 							Theme::fontSmall,
-							Theme::fg1,
+							&Theme::fg1,
 							text
 						);
 					}
@@ -227,7 +227,7 @@ namespace pizda {
 					pivot.getX() + compassArcTriangleWidth / 2,
 					pivot.getY() - circleRadius + compassArcTriangleHeight
 				),
-				Theme::fg1
+				&Theme::fg1
 			);
 		}
 	}
@@ -416,24 +416,24 @@ namespace pizda {
 		// addElement(new Line(
 		// 	Vector3F(0, 0, 0),
 		// 	Vector3F(GeographicCoordinates::equatorialRadiusMeters, 0, 0),
-		// 	Theme::red
+		// 	&Theme::red
 		// ));
 		//
 		// addElement(new Line(
 		// 	Vector3F(0, 0, 0),
 		// 	Vector3F(0, GeographicCoordinates::equatorialRadiusMeters, 0),
-		// 	Theme::green1
+		// 	&Theme::green1
 		// ));
 		//
 		// addElement(new Line(
 		// 	Vector3F(0, 0, 0),
 		// 	Vector3F(0, 0, GeographicCoordinates::equatorialRadiusMeters),
-		// 	Theme::sky1
+		// 	&Theme::sky1
 		// ));
 
 		// Sphere
 		if (rc.getSettings().personalization.MFD.ND.earth)
-			addElement(new LinearSphere(Vector3F(), GeoCoordinates::equatorialRadiusMeters, 16, 16, Theme::bg2));
+			addElement(new LinearSphere(Vector3F(), GeoCoordinates::equatorialRadiusMeters, 16, 16, &Theme::bg2));
 
 		// Flight plan
 		if (rc.getNavigationData().flightPlan.legs.size() > 1) {

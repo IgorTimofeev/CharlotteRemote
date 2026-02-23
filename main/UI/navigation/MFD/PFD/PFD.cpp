@@ -88,7 +88,7 @@ namespace pizda {
 
 	void PFD::renderCurrentValue(Renderer& renderer, const Bounds& bounds, const uint8_t digitCount, float value, const bool left) {
 		const auto isConnected = RC::getInstance().getTransceiver().isConnected();
-		const auto bg = isConnected ? Theme::bg2 : Theme::bad3;
+		const auto bg = isConnected ? &Theme::bg2 : &Theme::bad3;
 		const auto x2 = bounds.getX2();
 		const auto yCenter = bounds.getYCenter();
 		
@@ -153,7 +153,7 @@ namespace pizda {
 						digitY
 					),
 					*currentValueFont,
-					Theme::fg1,
+					&Theme::fg1,
 					text
 				);
 			};
@@ -192,7 +192,7 @@ namespace pizda {
 					textY
 				),
 				Theme::fontSmall,
-				Theme::bad1,
+				&Theme::bad1,
 				text
 			);
 		}
@@ -224,7 +224,7 @@ namespace pizda {
 				autopilotIndicatorRectangleThickness,
 				autopilotIndicatorSize
 			),
-			Theme::ocean
+			&Theme::ocean
 		);
 		
 		// Upper rect
@@ -235,7 +235,7 @@ namespace pizda {
 				autopilotIndicatorThickness - autopilotIndicatorRectangleThickness,
 				autopilotIndicatorTriangleMargin
 			),
-			Theme::ocean
+			&Theme::ocean
 		);
 		
 		// Lower rect
@@ -246,7 +246,7 @@ namespace pizda {
 				autopilotIndicatorThickness - autopilotIndicatorRectangleThickness,
 				autopilotIndicatorTriangleMargin
 			),
-			Theme::ocean
+			&Theme::ocean
 		);
 		
 		// Upper triangle
@@ -263,7 +263,7 @@ namespace pizda {
 				left ? x + autopilotIndicatorTriangleThickness - 1 : x + autopilotIndicatorRectangleThickness - 1,
 				y + autopilotIndicatorSize / 2
 			),
-			Theme::ocean
+			&Theme::ocean
 		);
 		
 		// Lower triangle
@@ -280,7 +280,7 @@ namespace pizda {
 				left ? x : x + autopilotIndicatorRectangleThickness - 1,
 				y + autopilotIndicatorSize - autopilotIndicatorTriangleMargin - 1
 			),
-			Theme::ocean
+			&Theme::ocean
 		);
 	}
 
@@ -299,7 +299,7 @@ namespace pizda {
 		renderer.renderVerticalLine(
 			Point(x, yMin),
 			yMax - yMin,
-			Theme::magenta1
+			&Theme::magenta1
 		);
 
 		renderer.renderFilledTriangle(
@@ -315,7 +315,7 @@ namespace pizda {
 				x + arrowSize,
 				yArrow
 			),
-			Theme::magenta1
+			&Theme::magenta1
 		);
 	}
 
@@ -326,12 +326,12 @@ namespace pizda {
 
 		const auto centerY = bounds.getYCenter();
 
-		renderer.renderFilledRectangle(bounds, Theme::bg1);
+		renderer.renderFilledRectangle(bounds, &Theme::bg1);
 
 		// Bars
 		const auto barX = bounds.getX2() + 1 - speedBarSize;
 
-		const auto renderBar = [&](const int32_t x, const uint16_t width, const uint16_t fromSpeed, const uint16_t toSpeed, const Color& color) {
+		const auto renderBar = [&](const int32_t x, const uint16_t width, const uint16_t fromSpeed, const uint16_t toSpeed, const Color* color) {
 			const int32_t fromY = centerY - static_cast<int32_t>((static_cast<float>(fromSpeed) - rc.getAircraftData().computed.airspeedKt) * static_cast<float>(speedStepPixels) / static_cast<float>(speedStepUnits));
 			const int32_t height = (toSpeed - fromSpeed) * speedStepPixels / speedStepUnits;
 
@@ -351,7 +351,7 @@ namespace pizda {
 			speedBarSize,
 			0,
 			speedFlapsMin,
-			Theme::red
+			&Theme::red
 		);
 
 		renderBar(
@@ -359,7 +359,7 @@ namespace pizda {
 			speedBarSize,
 			speedFlapsMin,
 			speedFlapsMax,
-			Theme::fg1
+			&Theme::fg1
 		);
 
 		renderBar(
@@ -367,7 +367,7 @@ namespace pizda {
 			speedBarSize,
 			speedSmoothMin,
 			speedSmoothMax,
-			Theme::green2
+			&Theme::green2
 		);
 
 		renderBar(
@@ -375,7 +375,7 @@ namespace pizda {
 			speedBarSize,
 			speedTurbulentMin,
 			speedTurbulentMax,
-			Theme::yellow
+			&Theme::yellow
 		);
 
 		renderBar(
@@ -383,7 +383,7 @@ namespace pizda {
 			speedBarSize,
 			speedStructuralMin,
 			speedStructuralMax,
-			Theme::red
+			&Theme::red
 		);
 
 		// Lines
@@ -410,7 +410,7 @@ namespace pizda {
 						y
 					),
 					lineSizeBig,
-					*lineColor
+					lineColor
 				);
 
 				// Text
@@ -422,7 +422,7 @@ namespace pizda {
 						y - currentValueFont->getHeight() / 2
 					),
 					*currentValueFont,
-					*lineColor,
+					lineColor,
 					text
 				);
 			}
@@ -431,7 +431,7 @@ namespace pizda {
 				renderer.renderHorizontalLine(
 					Point(bounds.getX2() + 1 - speedBarSize - lineSizeSmall, y),
 					lineSizeSmall,
-					*lineColor
+					lineColor
 				);
 			}
 
@@ -462,7 +462,7 @@ namespace pizda {
 			renderer.renderFilledRectangle(
 				bugBounds,
 				1,
-				Theme::bg2
+				&Theme::bg2
 			);
 
 			// Triangle
@@ -470,14 +470,14 @@ namespace pizda {
 				Point(bugBounds.getX(), bugBounds.getY()),
 				Point(bugBounds.getX(), bugBounds.getY2()),
 				Point(bugBounds.getX() - speedBugTriangleWidth, bugBounds.getYCenter()),
-				Theme::bg2
+				&Theme::bg2
 			);
 
 			// Text
 			renderer.renderText(
 				Point(bugBounds.getX() + speedBugTextOffset, bugBounds.getY() + speedBugTextOffset),
 				Theme::fontSmall,
-				Theme::green1,
+				&Theme::green1,
 				bug.getName()
 			);
 		}
@@ -518,7 +518,7 @@ namespace pizda {
 		auto x = bounds.getX();
 		const auto x2 = bounds.getX2();
 
-		renderer.renderFilledRectangle(bounds, Theme::bg1);
+		renderer.renderFilledRectangle(bounds, &Theme::bg1);
 
 		const float altitude = rc.getAircraftData().computed.altitudeFt;
 		const float snapped = altitude / static_cast<float>(altitudeStepUnits);
@@ -540,14 +540,14 @@ namespace pizda {
 				renderer.renderHorizontalLine(
 					Point(x, y),
 					lineSizeBig,
-					*lineColor
+					lineColor
 				);
 
 				// Text
 				renderer.renderText(
 					Point(x + lineSizeBig + lineTextOffset, y - currentValueFont->getHeight() / 2),
 					*currentValueFont,
-					*lineColor,
+					lineColor,
 					std::to_wstring(lineValue)
 				);
 			}
@@ -555,7 +555,7 @@ namespace pizda {
 				renderer.renderHorizontalLine(
 					Point(x, y),
 					lineSizeSmall,
-					*lineColor
+					lineColor
 				);
 			}
 
@@ -568,7 +568,7 @@ namespace pizda {
 //			renderer.renderHorizontalLine(
 //				Point(x, y),
 //				bounds.getWidth(),
-//				Theme::yellow
+//				&Theme::yellow
 //			);
 //
 			constexpr int8_t groundSpacing = 5;
@@ -579,7 +579,7 @@ namespace pizda {
 				renderer.renderLine(
 					groundPoint1,
 					groundPoint2,
-					Theme::yellow
+					&Theme::yellow
 				);
 
 				// 1
@@ -632,7 +632,7 @@ namespace pizda {
 			renderer.renderHorizontalLine(
 				linePosition,
 				bounds.getWidth() + altitudeMinimumHorizontalOffset - altitudeMinimumTriangleWidth,
-				*color
+				color
 			);
 
 			// Triangle
@@ -640,7 +640,7 @@ namespace pizda {
 				linePosition,
 				Point(linePosition.getX() - altitudeMinimumTriangleWidth, linePosition.getY() - altitudeMinimumTriangleHeight),
 				Point(linePosition.getX() - altitudeMinimumTriangleWidth, linePosition.getY() + altitudeMinimumTriangleHeight),
-				*color
+				color
 			);
 		}
 
@@ -677,17 +677,17 @@ namespace pizda {
 			renderer.renderLine(
 				Point(bounds.getX(), y - arrowHeight / 2),
 				Point(bounds.getX() + arrowWidth, y),
-				Theme::ocean
+				&Theme::ocean
 			);
 			
 			renderer.renderLine(
 				Point(bounds.getX(), y + arrowHeight / 2),
 				Point(bounds.getX() + arrowWidth, y),
-				Theme::ocean
+				&Theme::ocean
 			);
 			
 			for (x = bounds.getX() + arrowWidth; x < x2 - dashLength + 1; x += dashLength * 2) {
-				renderer.renderHorizontalLine(Point(x, y), dashLength, Theme::ocean);
+				renderer.renderHorizontalLine(Point(x, y), dashLength, &Theme::ocean);
 			}
 		}
 		
@@ -730,7 +730,7 @@ namespace pizda {
 
 			renderer.renderFilledRectangle(
 				panelBounds,
-				Theme::bg2
+				&Theme::bg2
 			);
 
 			renderer.renderText(
@@ -739,7 +739,7 @@ namespace pizda {
 					panelBounds.getY() + verticalTextOffset
 				),
 				Theme::fontSmall,
-				Theme::ocean,
+				&Theme::ocean,
 				text
 			);
 		}
@@ -751,10 +751,10 @@ namespace pizda {
 		const auto centerY = bounds.getYCenter();
 
 		// Background
-		renderer.renderFilledRectangle(bounds, Theme::bg2);
+		renderer.renderFilledRectangle(bounds, &Theme::bg2);
 
 		// Lines
-		auto lineColor = Theme::fg4;
+		auto lineColor = &Theme::fg4;
 
 		int32_t y = centerY;
 		int32_t lineValue = 0;
@@ -805,11 +805,11 @@ namespace pizda {
 		renderer.renderLine(
 			Point(bounds.getX(), centerY - static_cast<int32_t>(rc.getAircraftData().computed.verticalSpeedFtPM * static_cast<float>(verticalSpeedStepPixels) / static_cast<float>(verticalSpeedStepUnits))),
 			Point(bounds.getX2(), centerY - static_cast<int32_t>(rc.getAircraftData().computed.verticalSpeedFtPM * static_cast<float>(verticalSpeedStepPixelsRight) / static_cast<float>(verticalSpeedStepUnits))),
-			Theme::green1
+			&Theme::green1
 		);
 	}
 
-	void PFD::renderMiniPanel(Renderer& renderer, const Bounds& bounds, const Color& bg, const Color& fg, const std::wstring_view text, const int8_t textXOffset) {
+	void PFD::renderMiniPanel(Renderer& renderer, const Bounds& bounds, const Color* bg, const Color* fg, const std::wstring_view text, const int8_t textXOffset) {
 		// Background
 		renderer.renderFilledRectangle(bounds, bg);
 
@@ -825,7 +825,7 @@ namespace pizda {
 		);
 	}
 
-	void PFD::renderMiniPanelWithAutopilotValue(Renderer& renderer, const Bounds& bounds, const Color& bg, const Color& fg, const uint16_t autopilotValue, const bool autopilotValueEnabled, const bool left) {
+	void PFD::renderMiniPanelWithAutopilotValue(Renderer& renderer, const Bounds& bounds, const Color* bg, const Color* fg, const uint16_t autopilotValue, const bool autopilotValueEnabled, const bool left) {
 		renderMiniPanel(
 			renderer,
 			bounds,
@@ -839,8 +839,8 @@ namespace pizda {
 	void PFD::renderAutopilotSpeed(Renderer& renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 
-		const auto bg = Theme::bg2;
-		const auto fg = Theme::ocean;
+		const auto bg = &Theme::bg2;
+		const auto fg = &Theme::ocean;
 
 		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getSettings().autopilot.speedKt, rc.getSettings().autopilot.speedKt > 0, true);
 	}
@@ -848,8 +848,8 @@ namespace pizda {
 	void PFD::renderAutopilotAltitude(Renderer& renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 
-		const auto bg = Theme::bg2;
-		const auto fg = Theme::ocean;
+		const auto bg = &Theme::bg2;
+		const auto fg = &Theme::ocean;
 
 		renderMiniPanelWithAutopilotValue(renderer, bounds, bg, fg, rc.getSettings().autopilot.altitudeFt, rc.getSettings().autopilot.altitudeFt > 0, false);
 	}
@@ -857,15 +857,15 @@ namespace pizda {
 	void PFD::renderPressure(Renderer& renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 
-		auto bg = Theme::bg2;
-		auto fg = Theme::yellow;
+		auto bg = &Theme::bg2;
+		auto fg = &Theme::yellow;
 
 		std::wstring text;
 
 		if (rc.getSettings().ADIRS.referencePressureSTD) {
 			text = L"STD";
-			bg = Theme::yellow;
-			fg = Theme::bg1;
+			bg = &Theme::yellow;
+			fg = &Theme::bg1;
 		}
 		else {
 			text = std::to_wstring(static_cast<uint32_t>(

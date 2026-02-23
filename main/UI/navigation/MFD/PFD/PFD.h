@@ -174,11 +174,10 @@ namespace pizda {
 			static void renderSpeed(Renderer& renderer, const Bounds& bounds);
 			static void renderAltitude(Renderer& renderer, const Bounds& bounds);
 			static void renderVerticalSpeed(Renderer& renderer, const Bounds& bounds);
-			static void renderMiniPanel(Renderer& renderer, const Bounds& bounds, const Color& bg, const Color& fg, std::wstring_view text, int8_t textXOffset);
+			static void renderMiniPanel(Renderer& renderer, const Bounds& bounds, const Color* bg, const Color* fg, std::wstring_view text, int8_t textXOffset);
 			static void renderPressure(Renderer& renderer, const Bounds& bounds);
 			static void renderAutopilotSpeed(Renderer& renderer, const Bounds& bounds);
 			static void renderAutopilotAltitude(Renderer& renderer, const Bounds& bounds);
-			static void renderMiniPanelWithAutopilotValue(Renderer& renderer, const Bounds& bounds, const Color& bg, const Color& fg, uint16_t autopilotValue, bool
-			                                              autopilotValueEnabled, bool left);
+			static void renderMiniPanelWithAutopilotValue(Renderer& renderer, const Bounds& bounds, const Color* bg, const Color* fg, uint16_t autopilotValue, bool autopilotValueEnabled, bool left);
 	};
 }

@@ -46,7 +46,7 @@ namespace pizda {
 					position,
 					Point(position.getX() - triangleWidth / 2, position.getY() + triangleHeight),
 					Point(position.getX() + triangleWidth / 2, position.getY() + triangleHeight),
-					Theme::yellow
+					&Theme::yellow
 				);
 			}
 

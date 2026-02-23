@@ -51,6 +51,10 @@ namespace pizda {
 	}
 	
 	void ReferencePressureRotaryControl::updateColor() {
-		setBorderColor(RC::getInstance().getSettings().ADIRS.referencePressureSTD ? Theme::fg1 : Theme::bg1);
+		setBorderColor(
+			RC::getInstance().getSettings().ADIRS.referencePressureSTD
+			? &Theme::fg1
+			: nullptr
+		);
 	}
 }
