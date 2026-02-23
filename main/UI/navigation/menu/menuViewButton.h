@@ -15,7 +15,7 @@ namespace pizda {
 
 	class MenuViewButton : public Button {
 		public:
-			MenuViewButton(const Image& image, const std::wstring_view& text);
+			MenuViewButton(const Image* image, std::wstring_view text);
 
 		protected:
 			void onRender(Renderer& renderer, const Bounds& bounds) override;

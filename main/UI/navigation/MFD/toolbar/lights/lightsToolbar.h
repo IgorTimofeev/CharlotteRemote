@@ -21,10 +21,10 @@ namespace pizda {
 			void onTick() override;
 			
 		private:
-			ImageToolbarButton navigation { L"Nav", resources::images::menuIconMFDLightsNavigation };
-			ImageToolbarButton strobe { L"Strobe", resources::images::menuIconMFDLightsStrobe };
-			ImageToolbarButton landing { L"Landing", resources::images::menuIconMFDLightsLanding };
-			ImageToolbarButton cabin { L"Cabin", resources::images::menuIconMFDLightsCabin };
+			ImageToolbarButton navigation { L"Nav", &resources::images::menuIconMFDLightsNavigation };
+			ImageToolbarButton strobe { L"Strobe", &resources::images::menuIconMFDLightsStrobe };
+			ImageToolbarButton landing { L"Landing", &resources::images::menuIconMFDLightsLanding };
+			ImageToolbarButton cabin { L"Cabin", &resources::images::menuIconMFDLightsCabin };
 			
 			void copyAircraftToRemote();
 	};

@@ -656,15 +656,12 @@ namespace pizda {
 			false
 		);
 		
-		// ALT hold
+		// ALT bar
 		if (rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::alt) {
-			constexpr static uint8_t horizontalOffset = 5;
 			constexpr static uint8_t dashLength = 2;
-			constexpr static uint8_t arrowWidth = 3;
+			constexpr static uint8_t arrowWidth = 4;
 			constexpr static uint8_t arrowHeight = 4;
-
-			x = bounds.getX() - horizontalOffset;
-
+			
 			y =
 				centerY
 				- static_cast<int32_t>(
@@ -678,20 +675,18 @@ namespace pizda {
 			
 			// Left arrow
 			renderer.renderLine(
-				Point(x, y - arrowHeight / 2),
-				Point(x + arrowWidth, y),
+				Point(bounds.getX(), y - arrowHeight / 2),
+				Point(bounds.getX() + arrowWidth, y),
 				Theme::ocean
 			);
 			
 			renderer.renderLine(
-				Point(x, y + arrowHeight / 2),
-				Point(x + arrowWidth, y),
+				Point(bounds.getX(), y + arrowHeight / 2),
+				Point(bounds.getX() + arrowWidth, y),
 				Theme::ocean
 			);
-
-			x += arrowWidth;
-
-			for (; x < x2 - dashLength + 1; x += dashLength * 2) {
+			
+			for (x = bounds.getX() + arrowWidth; x < x2 - dashLength + 1; x += dashLength * 2) {
 				renderer.renderHorizontalLine(Point(x, y), dashLength, Theme::ocean);
 			}
 		}

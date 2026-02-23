@@ -21,7 +21,7 @@ namespace pizda {
 	
 	class ImageToolbarButton : public ToolbarSection, public ActiveElement {
 		public:
-			ImageToolbarButton(const std::wstring_view title, const Image& image) : ToolbarSection(title) {
+			ImageToolbarButton(const std::wstring_view title, const Image* image) : ToolbarSection(title) {
 				_imageView.setMargin(Margin(Toolbar::contentHorizontalMargin, 2, Toolbar::contentHorizontalMargin, 0));
 				_imageView.setAlignment(Alignment::center);
 				_imageView.setImage(image);
