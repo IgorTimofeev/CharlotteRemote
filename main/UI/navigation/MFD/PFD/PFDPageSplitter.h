@@ -8,7 +8,7 @@ namespace pizda {
 
 	class PFDPageSplitter : public Control, public ActiveElement {
 		protected:
-			void onEvent(Event& event) override;
+			void onEvent(Event* event) override;
 			void onRender(Renderer& renderer, const Bounds& bounds) override;
 
 		private:

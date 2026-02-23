@@ -3,19 +3,19 @@
 #include "UI/navigation/MFD/MFDPage.h"
 
 namespace pizda {
-	void PFDPageSplitter::onEvent(Event& event) {
-		if (event.getTypeID() == PointerDownEvent::typeID) {
-			_pointerY = reinterpret_cast<PointerDownEvent&>(event).getPosition().getY();
+	void PFDPageSplitter::onEvent(Event* event) {
+		if (event->getTypeID() == PointerDownEvent::typeID) {
+			_pointerY = reinterpret_cast<PointerDownEvent*>(event)->getPosition().getY();
 
 			setCaptured(true);
 			setActive(true);
 
-			event.setHandled(true);
+			event->setHandled(true);
 		}
-		else if (event.getTypeID() == PointerDragEvent::typeID) {
+		else if (event->getTypeID() == PointerDragEvent::typeID) {
 			auto& rc = RC::getInstance();
 
-			const auto pointerY = reinterpret_cast<PointerDragEvent&>(event).getPosition().getY();
+			const auto pointerY = reinterpret_cast<PointerDragEvent*>(event)->getPosition().getY();
 
 			if (!_draggedDohuya && std::abs(pointerY - _pointerY) >= 10) {
 				_draggedDohuya = true;
@@ -41,10 +41,10 @@ namespace pizda {
 				invalidate();
 			}
 
-			event.setHandled(true);
+			event->setHandled(true);
 
 		}
-		else if (event.getTypeID() == PointerUpEvent::typeID) {
+		else if (event->getTypeID() == PointerUpEvent::typeID) {
 			auto& rc = RC::getInstance();
 
 			if (!_draggedDohuya) {
@@ -66,7 +66,7 @@ namespace pizda {
 			setCaptured(false);
 			setActive(false);
 
-			event.setHandled(true);
+			event->setHandled(true);
 		}
 	}
 
@@ -75,12 +75,12 @@ namespace pizda {
 
 		const auto text = RC::getInstance().getSettings().personalization.MFD.split.mode == PersonalizationSettingsMFDSplitMode::PFD ? L"< >" : L"> <";
 
-		renderer.renderText(
+		renderer.renderString(
 			Point(
 				bounds.getXCenter() - Theme::fontSmall.getWidth(text) / 2,
 				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2
 			),
-			Theme::fontSmall,
+			&Theme::fontSmall,
 			isActive() ? &Theme::bg1 : &Theme::ocean,
 			text
 		);

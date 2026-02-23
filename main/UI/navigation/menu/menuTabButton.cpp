@@ -13,7 +13,7 @@ namespace pizda {
 		setActiveBackgroundColor(&Theme::bg2);
 		setActiveTextColor(&Theme::fg1);
 
-		setFont(Theme::fontSmall);
+		setFont(&Theme::fontSmall);
 		setText(text);
 	}
 

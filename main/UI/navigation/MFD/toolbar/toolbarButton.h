@@ -31,13 +31,13 @@ namespace pizda {
 			std::function<void()> onPressed = nullptr;
 
 		protected:
-			void onEventBeforeChildren(Event& event) override {
-				if (event.getTypeID() == PointerDownEvent::typeID || event.getTypeID() == PushButtonEncoderDownEvent::typeID) {
+			void onEventBeforeChildren(Event* event) override {
+				if (event->getTypeID() == PointerDownEvent::typeID || event->getTypeID() == PushButtonEncoderDownEvent::typeID) {
 					if (isFocused()) {
 						if (onPressed)
 							onPressed();
 						
-						event.setHandled(true);
+						event->setHandled(true);
 					}
 				}
 				

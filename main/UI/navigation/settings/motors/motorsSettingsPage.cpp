@@ -21,7 +21,7 @@ namespace pizda {
 		_reverse.setActiveBackgroundColor(&Theme::fg1);
 		_reverse.setActiveTextColor(&Theme::bg1);
 		
-		_reverse.setFont(Theme::fontSmall);
+		_reverse.setFont(&Theme::fontSmall);
 		_reverse.setText(L"<>");
 		_reverse.setToggle(true);
 		

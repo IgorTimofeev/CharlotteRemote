@@ -84,9 +84,9 @@ namespace pizda {
 			}
 
 			static void renderWaypointName(Renderer& renderer, const Point& center, const Color* color, const NavigationWaypointData& waypointData) {
-				renderer.renderText(
+				renderer.renderString(
 					Point(center.getX() + 7, center.getY() - 7),
-					Theme::fontSmall,
+					&Theme::fontSmall,
 					color,
 					waypointData.name
 				);

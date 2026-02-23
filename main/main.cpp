@@ -77,8 +77,8 @@ extern "C" void app_main(void) {
 //		renderer.renderHorizontalLine(Point(10, 20), 130, &color2);
 //		renderer.renderVerticalLine(Point(10, 25), 130, &color3);
 //
-//		renderer.renderText(Point(0, 0), &font, &color3, std::to_wstring(fps));
-//		renderer.renderText(Point(0, 300), &font, &color3, std::to_wstring(esp_get_free_heap_size() / 1024));
+//		renderer.renderString(Point(0, 0), &font, &color3, std::to_wstring(fps));
+//		renderer.renderString(Point(0, 300), &font, &color3, std::to_wstring(esp_get_free_heap_size() / 1024));
 //
 //		renderer.renderImage(Point(5, 30), &image1);
 //		renderer.renderImage(Point(50, 30), &image2);

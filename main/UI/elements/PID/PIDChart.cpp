@@ -12,25 +12,25 @@ namespace pizda {
 		setBackgroundColor(&Theme::bg2);
 	}
 
-	void PIDChart::onEvent(Event& event) {
+	void PIDChart::onEvent(Event* event) {
 		Control::onEvent(event);
 
-		if (event.getTypeID() == PointerDownEvent::typeID) {
-			updateValueFactorFromPointerEvent(reinterpret_cast<PointerDownEvent&>(event).getPosition().getY());
+		if (event->getTypeID() == PointerDownEvent::typeID) {
+			updateValueFactorFromPointerEvent(reinterpret_cast<PointerDownEvent*>(event)->getPosition().getY());
 
 			setCaptured(true);
 
-			event.setHandled(true);
+			event->setHandled(true);
 		}
-		else if (event.getTypeID() == PointerDragEvent::typeID) {
-			updateValueFactorFromPointerEvent(reinterpret_cast<PointerDragEvent&>(event).getPosition().getY());
+		else if (event->getTypeID() == PointerDragEvent::typeID) {
+			updateValueFactorFromPointerEvent(reinterpret_cast<PointerDragEvent*>(event)->getPosition().getY());
 
-			event.setHandled(true);
+			event->setHandled(true);
 		}
-		else if (event.getTypeID() == PointerUpEvent::typeID) {
+		else if (event->getTypeID() == PointerUpEvent::typeID) {
 			setCaptured(false);
 
-			event.setHandled(true);
+			event->setHandled(true);
 		}
 	}
 
@@ -66,12 +66,12 @@ namespace pizda {
 			// Text
 			const auto text = std::to_wstring(valueTarget);
 
-			renderer.renderText(
+			renderer.renderString(
 				Point(
 					bounds.getX() + textHOffset,
 					y - Theme::fontSmall.getHeight() / 2
 				),
-				Theme::fontSmall,
+				&Theme::fontSmall,
 				&Theme::fg4,
 				text
 			);

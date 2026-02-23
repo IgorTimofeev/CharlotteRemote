@@ -43,12 +43,12 @@ namespace pizda {
 			&Theme::fg1
 		);
 
-		renderer.renderText(
+		renderer.renderString(
 			Point(
 				waypointVertex.getX() - Theme::fontNormal.getWidth(waypoint.name) / 2,
 				waypointVertex.getY() - lineLength - textOffset - Theme::fontNormal.getHeight()
 			),
-			Theme::fontNormal,
+			&Theme::fontNormal,
 			&Theme::fg1,
 			waypoint.name
 		);

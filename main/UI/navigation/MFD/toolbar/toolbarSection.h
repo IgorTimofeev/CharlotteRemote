@@ -16,7 +16,7 @@ namespace pizda {
 			ToolbarSection() {
 				_title.setHorizontalAlignment(Alignment::center);
 				_title.setMargin(Margin(Toolbar::contentHorizontalMargin, 0, Toolbar::contentHorizontalMargin, 0));
-				_title.setFont(Theme::fontSmall);
+				_title.setFont(&Theme::fontSmall);
 				*this += _title;
 				
 				updateColors();
@@ -39,13 +39,13 @@ namespace pizda {
 			}
 			
 		protected:
-			void onEventBeforeChildren(Event& event) override {
+			void onEventBeforeChildren(Event* event) override {
 				Layout::onEventBeforeChildren(event);
 				
-				if (event.getTypeID() == PointerDownEvent::typeID && !isFocused()) {
+				if (event->getTypeID() == PointerDownEvent::typeID && !isFocused()) {
 					setFocused(true);
 					
-					event.setHandled(true);
+					event->setHandled(true);
 				}
 			}
 			

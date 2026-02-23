@@ -15,7 +15,7 @@ namespace pizda {
 	class SpectrumScanningChart : public Control {
 		protected:
 			void onTick() override;
-			void onEvent(Event& event) override;
+			void onEvent(Event* event) override;
 			void onRender(Renderer& renderer, const Bounds& bounds) override;
 
 		private:

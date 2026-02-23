@@ -28,12 +28,12 @@ namespace pizda {
 					);
 				}
 
-				renderer.renderText(
+				renderer.renderString(
 					Point(
 						bounds.getXCenter() - Theme::fontNormal.getWidth(getText()) / 2,
 						bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
 					),
-					Theme::fontNormal,
+					&Theme::fontNormal,
 					isActive() ? &Theme::bg1 : &Theme::fg4,
 					getText()
 				);

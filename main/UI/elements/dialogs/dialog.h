@@ -11,7 +11,7 @@ namespace pizda {
 			DialogSlideLayoutBackground();
 
 		protected:
-			void onEvent(Event& event) override;
+			void onEvent(Event* event) override;
 	};
 
 	class Dialog : public RelativeStackLayout {

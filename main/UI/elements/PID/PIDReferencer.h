@@ -176,7 +176,7 @@ namespace pizda {
 			}
 
 			void addCoeffText(TextView& text, const Color* color) {
-				text.setFont(Theme::fontSmall);
+				text.setFont(&Theme::fontSmall);
 				text.setFontScale(2);
 
 				addText(text, color);
@@ -184,7 +184,7 @@ namespace pizda {
 
 			void addSuffixText(TextView& text, const std::wstring_view suffix) {
 				text.setMargin(Margin(0, 0, 0, 1));
-				text.setFont(Theme::fontNormal);
+				text.setFont(&Theme::fontNormal);
 				text.setText(suffix);
 
 				addText(text, &Theme::fg4);

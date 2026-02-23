@@ -152,7 +152,7 @@ namespace pizda {
 						textX,
 						digitY
 					),
-					*currentValueFont,
+					currentValueFont,
 					&Theme::fg1,
 					text
 				);
@@ -184,14 +184,14 @@ namespace pizda {
 		else {
 			const auto text = L"---";
 			
-			renderer.renderText(
+			renderer.renderString(
 				Point(
 					left
 						? x2 - speedBarSize - currentValueTextOffset - Theme::fontSmall.getWidth(text)
 						: bounds.getX() + speedBarSize + currentValueTextOffset,
 					textY
 				),
-				Theme::fontSmall,
+				&Theme::fontSmall,
 				&Theme::bad1,
 				text
 			);
@@ -416,12 +416,12 @@ namespace pizda {
 				// Text
 				const auto& text = std::to_wstring(lineValue);
 
-				renderer.renderText(
+				renderer.renderString(
 					Point(
 						bounds.getX2() + 1 - speedBarSize - lineSizeBig - lineTextOffset - currentValueFont->getWidth(text),
 						y - currentValueFont->getHeight() / 2
 					),
-					*currentValueFont,
+					currentValueFont,
 					lineColor,
 					text
 				);
@@ -474,9 +474,9 @@ namespace pizda {
 			);
 
 			// Text
-			renderer.renderText(
+			renderer.renderString(
 				Point(bugBounds.getX() + speedBugTextOffset, bugBounds.getY() + speedBugTextOffset),
-				Theme::fontSmall,
+				&Theme::fontSmall,
 				&Theme::green1,
 				bug.getName()
 			);
@@ -544,9 +544,9 @@ namespace pizda {
 				);
 
 				// Text
-				renderer.renderText(
+				renderer.renderString(
 					Point(x + lineSizeBig + lineTextOffset, y - currentValueFont->getHeight() / 2),
-					*currentValueFont,
+					currentValueFont,
 					lineColor,
 					std::to_wstring(lineValue)
 				);
@@ -733,12 +733,12 @@ namespace pizda {
 				&Theme::bg2
 			);
 
-			renderer.renderText(
+			renderer.renderString(
 				Point(
 					panelBounds.getX() + horizontalTextOffset,
 					panelBounds.getY() + verticalTextOffset
 				),
-				Theme::fontSmall,
+				&Theme::fontSmall,
 				&Theme::ocean,
 				text
 			);
@@ -772,12 +772,12 @@ namespace pizda {
 						lineColor
 					);
 
-					renderer.renderText(
+					renderer.renderString(
 						Point(
 							bounds.getX() + verticalSpeedLineSizeBig + verticalSpeedLineTextOffset,
 							y - verticalSpeedFont->getHeight() / 2
 						),
-						*verticalSpeedFont,
+						verticalSpeedFont,
 						lineColor,
 						std::to_wstring(lineValue / 1000)
 					);
@@ -814,12 +814,12 @@ namespace pizda {
 		renderer.renderFilledRectangle(bounds, bg);
 
 		// Text
-		renderer.renderText(
+		renderer.renderString(
 			Point(
 				bounds.getX() + textXOffset + (bounds.getWidth() - textXOffset) / 2 - miniFont->getWidth(text) / 2,
 				bounds.getY() + miniHeight / 2 - miniFont->getHeight() / 2
 			),
-			*miniFont,
+			miniFont,
 			fg,
 			text
 		);

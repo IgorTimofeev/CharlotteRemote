@@ -83,7 +83,7 @@ namespace pizda {
 		button.setActiveBackgroundColor(&Theme::fg1);
 		button.setActiveTextColor(&Theme::bg1);
 
-		button.setFont(Theme::fontSmall);
+		button.setFont(&Theme::fontSmall);
 
 		button.setOnClick(onClick);
 

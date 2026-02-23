@@ -75,12 +75,12 @@ namespace pizda {
 					? std::format(L"{:.1f}", static_cast<float>(_voltageMV) / 1000.f)
 					: L"---";
 
-				renderer.renderText(
+				renderer.renderString(
 					Point(
 						bounds.getX() + frameSize / 2 - Theme::fontSmall.getWidth(text) / 2,
 						bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1
 					),
-					Theme::fontSmall,
+					&Theme::fontSmall,
 					available ? &Theme::fg1 : &Theme::bad1,
 					text
 				);
