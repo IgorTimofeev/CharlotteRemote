@@ -611,37 +611,44 @@ namespace pizda {
 			rc.getAircraftData().computed.altitudeTrendFt
 		);
 
-		// Minimums
-		if (rc.getSettings().ADIRS.minimumAltitudeEnabled) {
-			const int32_t delta = altitude - static_cast<float>(rc.getSettings().ADIRS.minimumAltitudeFt);
+		// ALT hold
+		if (rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::alt) {
+			constexpr static uint8_t horizontalOffset = 5;
+			constexpr static uint8_t dashLength = 2;
+			constexpr static uint8_t arrowWidth = 3;
+			constexpr static uint8_t arrowHeight = 4;
 
-			y = centerY + static_cast<int32_t>(delta * static_cast<float>(altitudeStepPixels) / static_cast<float>(altitudeStepUnits));
+			x = bounds.getX() - horizontalOffset;
 
-			const auto& linePosition = Point(bounds.getX() - altitudeMinimumHorizontalOffset + altitudeMinimumTriangleWidth, y);
+			y =
+				centerY
+				- static_cast<int32_t>(
+					(
+						Units::convertDistance(rc.getAircraftData().raw.autopilot.targetAltitudeM, DistanceUnit::meter, DistanceUnit::foot)
+						- altitude
+					)
+					* static_cast<float>(altitudeStepPixels)
+					/ static_cast<float>(altitudeStepUnits)
+				);
 
-			const Color* color;
-
-			if (std::abs(delta) <= altitudeMinimumSafeUnitDelta) {
-				color = &Theme::fg1;
-			}
-			else {
-				color = &Theme::yellow;
-			}
-
-			// Line
-			renderer->renderHorizontalLine(
-				linePosition,
-				bounds.getWidth() + altitudeMinimumHorizontalOffset - altitudeMinimumTriangleWidth,
-				color
+			// Left arrow
+			renderer->renderLine(
+				Point(x, y - arrowHeight / 2),
+				Point(x + arrowWidth, y),
+				&Theme::ocean
 			);
 
-			// Triangle
-			renderer->renderFilledTriangle(
-				linePosition,
-				Point(linePosition.getX() - altitudeMinimumTriangleWidth, linePosition.getY() - altitudeMinimumTriangleHeight),
-				Point(linePosition.getX() - altitudeMinimumTriangleWidth, linePosition.getY() + altitudeMinimumTriangleHeight),
-				color
+			renderer->renderLine(
+				Point(x, y + arrowHeight / 2),
+				Point(x + arrowWidth, y),
+				&Theme::ocean
 			);
+
+			x += arrowWidth;
+
+			for (; x < x2 - dashLength + 1; x += dashLength * 2) {
+				renderer->renderHorizontalLine(Point(x, y), dashLength, &Theme::ocean);
+			}
 		}
 
 		// Autopilot
