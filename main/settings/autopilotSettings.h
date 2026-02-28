@@ -41,21 +41,22 @@ namespace pizda {
 			AutopilotLateralMode lateralMode = AutopilotLateralMode::hdg;
 			uint16_t headingDeg = 0;
 			float maxRollAngleRad = 0;
-			float stabilizedModeRollAngleIncrementFactorPerSecond = 0;
+			float stabilizedModeRollAngleIncrementRadPerSecond = 0;
 			float rollAngleLPFFactorPerSecond = 0;
-			float maxAileronsFactor = 0;
+			uint8_t maxAileronsPercent = 0;
 
 			// Vertical
 			AutopilotVerticalMode verticalMode = AutopilotVerticalMode::flc;
 			uint16_t altitudeFt = 0;
 			float maxPitchAngleRad = 0;
-			float stabilizedModePitchAngleIncrementFactorPerSecond = 0;
+			float stabilizedModePitchAngleIncrementRadPerSecond = 0;
 			float pitchAngleLPFFactorPerSecond = 0;
-			float maxElevatorFactor = 0;
+			uint8_t maxElevatorPercent = 0;
 
 			// Longitudinal
 			uint16_t speedKt = 0;
-			float throttleLPFFactorPerSecond = 0;
+			uint8_t minThrottlePercent = 0;
+			uint8_t maxThrottlePercent = 0;
 
 			// PIDs
 			AutopilotSettingsPIDs PIDs {};
@@ -70,21 +71,22 @@ namespace pizda {
 				lateralMode = stream.readEnum<AutopilotLateralMode>(_lateralMode, AutopilotLateralMode::hdg);
 				headingDeg = stream.readUint16(_headingDeg, 0);
 				maxRollAngleRad = stream.readFloat(_maxRollAngleRad, toRadians(30));
-				stabilizedModeRollAngleIncrementFactorPerSecond = stream.readFloat(_stabilizedModeRollAngleIncrementFactorPerSecond, 30.f);
+				stabilizedModeRollAngleIncrementRadPerSecond = stream.readFloat(_stabilizedModeRollAngleIncrementRadPerSecond, toRadians(5));
 				rollAngleLPFFactorPerSecond = stream.readFloat(_rollAngleLPFFactorPerSecond, 0.5f);
-				maxAileronsFactor = stream.readFloat(_maxAileronsFactor, 1.0f);
+				maxAileronsPercent = stream.readUint8(_maxAileronsPercent, 100);
 
 				// Vertical
 				verticalMode = stream.readEnum<AutopilotVerticalMode>(_verticalMode, AutopilotVerticalMode::flc);
 				altitudeFt = stream.readUint16(_altitudeFt, 100);
 				maxPitchAngleRad = stream.readFloat(_maxPitchAngleRad, toRadians(20));
-				stabilizedModePitchAngleIncrementFactorPerSecond = stream.readFloat(_stabilizedModePitchAngleIncrementFactorPerSecond, 20.f);
+				stabilizedModePitchAngleIncrementRadPerSecond = stream.readFloat(_stabilizedModePitchAngleIncrementRadPerSecond, toRadians(5));
 				pitchAngleLPFFactorPerSecond = stream.readFloat(_pitchAngleLPFFactorPerSecond, 0.5f);
-				maxElevatorFactor = stream.readFloat(_maxElevatorFactor, 1.0f);
+				maxElevatorPercent = stream.readUint8(_maxElevatorPercent, 100);
 
 				// Longitudinal
 				speedKt = stream.readUint16(_speedKt, 90);
-				throttleLPFFactorPerSecond = stream.readFloat(_throttleLPFFactorPerSecond, 0.5f);
+				minThrottlePercent = stream.readUint8(_minThrottlePercent, 0);
+				maxThrottlePercent = stream.readUint8(_maxThrottlePercent, 100);
 
 				// PIDs
 				AutopilotSettingsPIDs::read(stream, _yawToRollP, _yawToRollI, _yawToRollD, PIDs.yawToRoll);
@@ -100,21 +102,22 @@ namespace pizda {
 				stream.writeEnum<AutopilotLateralMode>(_lateralMode, lateralMode);
 				stream.writeUint16(_headingDeg, headingDeg);
 				stream.writeFloat(_maxRollAngleRad, maxRollAngleRad);
-				stream.writeFloat(_stabilizedModeRollAngleIncrementFactorPerSecond, stabilizedModeRollAngleIncrementFactorPerSecond);
+				stream.writeFloat(_stabilizedModeRollAngleIncrementRadPerSecond, stabilizedModeRollAngleIncrementRadPerSecond);
 				stream.writeFloat(_rollAngleLPFFactorPerSecond, rollAngleLPFFactorPerSecond);
-				stream.writeFloat(_maxAileronsFactor, maxAileronsFactor);
+				stream.writeUint8(_maxAileronsPercent, maxAileronsPercent);
 
 				// Vertical
 				stream.writeEnum<AutopilotVerticalMode>(_verticalMode, verticalMode);
 				stream.writeUint16(_altitudeFt, altitudeFt);
 				stream.writeFloat(_maxPitchAngleRad, maxPitchAngleRad);
-				stream.writeFloat(_stabilizedModePitchAngleIncrementFactorPerSecond, stabilizedModePitchAngleIncrementFactorPerSecond);
+				stream.writeFloat(_stabilizedModePitchAngleIncrementRadPerSecond, stabilizedModePitchAngleIncrementRadPerSecond);
 				stream.writeFloat(_pitchAngleLPFFactorPerSecond, pitchAngleLPFFactorPerSecond);
-				stream.writeFloat(_maxElevatorFactor, maxElevatorFactor);
+				stream.writeUint8(_maxElevatorPercent, maxElevatorPercent);
 
 				// Longitudinal
 				stream.writeUint16(_speedKt, speedKt);
-				stream.writeFloat(_throttleLPFFactorPerSecond, throttleLPFFactorPerSecond);
+				stream.writeUint8(_minThrottlePercent, minThrottlePercent);
+				stream.writeUint8(_maxThrottlePercent, maxThrottlePercent);
 
 				// PIDs
 				AutopilotSettingsPIDs::write(stream, _yawToRollP, _yawToRollI, _yawToRollD, PIDs.yawToRoll);
@@ -132,21 +135,22 @@ namespace pizda {
 			constexpr static auto _lateralMode = "ltmd";
 			constexpr static auto _headingDeg = "thdg";
 			constexpr static auto _maxRollAngleRad = "mrla";
-			constexpr static auto _stabilizedModeRollAngleIncrementFactorPerSecond = "raif";
+			constexpr static auto _stabilizedModeRollAngleIncrementRadPerSecond = "rair";
 			constexpr static auto _rollAngleLPFFactorPerSecond = "ralf";
-			constexpr static auto _maxAileronsFactor = "aiff";
+			constexpr static auto _maxAileronsPercent = "aipe";
 
 			// Vertical
 			constexpr static auto _verticalMode = "vtmd";
 			constexpr static auto _altitudeFt = "talt";
 			constexpr static auto _maxPitchAngleRad = "mpia";
-			constexpr static auto _stabilizedModePitchAngleIncrementFactorPerSecond = "paif";
+			constexpr static auto _stabilizedModePitchAngleIncrementRadPerSecond = "pair";
 			constexpr static auto _pitchAngleLPFFactorPerSecond = "palf";
-			constexpr static auto _maxElevatorFactor = "elff";
+			constexpr static auto _maxElevatorPercent = "elpe";
 
 			// Longitudinal
 			constexpr static auto _speedKt = "tspd";
-			constexpr static auto _throttleLPFFactorPerSecond = "tlpf";
+			constexpr static auto _minThrottlePercent = "tmip";
+			constexpr static auto _maxThrottlePercent = "tmap";
 
 			// PIDs
 			constexpr static auto _yawToRollP = "pyrp";

@@ -631,16 +631,16 @@ namespace pizda {
 					/ static_cast<float>(altitudeStepUnits)
 				);
 
-			// Left arrow
+			// Arrow
 			renderer->renderLine(
 				Point(x, y - arrowHeight / 2),
-				Point(x + arrowWidth, y),
+				Point(x + arrowWidth - 1, y),
 				&Theme::ocean
 			);
 
 			renderer->renderLine(
 				Point(x, y + arrowHeight / 2),
-				Point(x + arrowWidth, y),
+				Point(x + arrowWidth - 1, y),
 				&Theme::ocean
 			);
 
@@ -662,41 +662,6 @@ namespace pizda {
 			rc.getSettings().autopilot.altitudeFt,
 			false
 		);
-		
-		// ALT bar
-		if (rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::alt) {
-			constexpr static uint8_t dashLength = 2;
-			constexpr static uint8_t arrowWidth = 4;
-			constexpr static uint8_t arrowHeight = 4;
-			
-			y =
-				centerY
-				- static_cast<int32_t>(
-					(
-						Units::convertDistance(rc.getAircraftData().raw.autopilot.targetAltitudeM, DistanceUnit::meter, DistanceUnit::foot)
-						- altitude
-					)
-					* static_cast<float>(altitudeStepPixels)
-					/ static_cast<float>(altitudeStepUnits)
-				);
-			
-			// Left arrow
-			renderer->renderLine(
-				Point(bounds.getX(), y - arrowHeight / 2),
-				Point(bounds.getX() + arrowWidth, y),
-				&Theme::ocean
-			);
-			
-			renderer->renderLine(
-				Point(bounds.getX(), y + arrowHeight / 2),
-				Point(bounds.getX() + arrowWidth, y),
-				&Theme::ocean
-			);
-			
-			for (x = bounds.getX() + arrowWidth; x < x2 - dashLength + 1; x += dashLength * 2) {
-				renderer->renderHorizontalLine(Point(x, y), dashLength, &Theme::ocean);
-			}
-		}
 		
 		// Current value
 		renderCurrentValue(

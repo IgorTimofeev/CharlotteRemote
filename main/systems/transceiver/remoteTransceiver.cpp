@@ -668,8 +668,8 @@ namespace pizda {
 				stream.writeFloat(rc.getSettings().autopilot.maxRollAngleRad);
 				break;
 			}
-			case RemoteAuxiliaryAutopilotPacketType::setStabilizedModeRollAngleIncrementFactorPerSecond: {
-				stream.writeFloat(rc.getSettings().autopilot.stabilizedModeRollAngleIncrementFactorPerSecond);
+			case RemoteAuxiliaryAutopilotPacketType::setStabilizedModeRollAngleIncrementRadPerSecond: {
+				stream.writeFloat(rc.getSettings().autopilot.stabilizedModeRollAngleIncrementRadPerSecond);
 				break;
 			}
 			case RemoteAuxiliaryAutopilotPacketType::setRollAngleLPFFactorPerSecond: {
@@ -684,8 +684,8 @@ namespace pizda {
 				writePID(rc.getSettings().autopilot.PIDs.rollToAilerons);
 				break;
 			}
-			case RemoteAuxiliaryAutopilotPacketType::setMaxAileronsFactor: {
-				stream.writeFloat(rc.getSettings().autopilot.maxAileronsFactor);
+			case RemoteAuxiliaryAutopilotPacketType::setMaxAileronsPercent: {
+				stream.writeUint8(rc.getSettings().autopilot.maxAileronsPercent, RemoteAuxiliaryAutopilotPacket::percentLengthBits);
 				break;
 			}
 
@@ -726,8 +726,8 @@ namespace pizda {
 				stream.writeFloat(rc.getSettings().autopilot.maxPitchAngleRad);
 				break;
 			}
-			case RemoteAuxiliaryAutopilotPacketType::setStabilizedModePitchAngleIncrementFactorPerSecond: {
-				stream.writeFloat(rc.getSettings().autopilot.stabilizedModePitchAngleIncrementFactorPerSecond);
+			case RemoteAuxiliaryAutopilotPacketType::setStabilizedModePitchAngleIncrementRadPerSecond: {
+				stream.writeFloat(rc.getSettings().autopilot.stabilizedModePitchAngleIncrementRadPerSecond);
 				break;
 			}
 			case RemoteAuxiliaryAutopilotPacketType::setPitchAngleLPFFactorPerSecond: {
@@ -746,8 +746,8 @@ namespace pizda {
 				writePID(rc.getSettings().autopilot.PIDs.pitchToElevator);
 				break;
 			}
-			case RemoteAuxiliaryAutopilotPacketType::setMaxElevatorFactor: {
-				stream.writeFloat(rc.getSettings().autopilot.maxElevatorFactor);
+			case RemoteAuxiliaryAutopilotPacketType::setMaxElevatorPercent: {
+				stream.writeUint8(rc.getSettings().autopilot.maxElevatorPercent, RemoteAuxiliaryAutopilotPacket::percentLengthBits);
 				break;
 			}
 
@@ -775,8 +775,12 @@ namespace pizda {
 				writePID(rc.getSettings().autopilot.PIDs.speedToThrottle);
 				break;
 			}
-			case RemoteAuxiliaryAutopilotPacketType::setThrottleLPFFactorPerSecond: {
-				stream.writeFloat(rc.getSettings().autopilot.throttleLPFFactorPerSecond);
+			case RemoteAuxiliaryAutopilotPacketType::setMinThrottlePercent: {
+				stream.writeUint8(rc.getSettings().autopilot.minThrottlePercent, RemoteAuxiliaryAutopilotPacket::percentLengthBits);
+				break;
+			}
+			case RemoteAuxiliaryAutopilotPacketType::setMaxThrottlePercent: {
+				stream.writeUint8(rc.getSettings().autopilot.maxThrottlePercent, RemoteAuxiliaryAutopilotPacket::percentLengthBits);
 				break;
 			}
 		}

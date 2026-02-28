@@ -26,16 +26,14 @@ namespace pizda {
 		addRow(_latRow0);
 
 		// Angle increment
-		setupFloatTextField(
-			_latSMTAIFPS,
-			&rc.getSettings().autopilot.stabilizedModeRollAngleIncrementFactorPerSecond,
-			1.0f,
-			0.0f,
-			1000.0f,
-			RemoteAuxiliaryAutopilotPacketType::setStabilizedModeRollAngleIncrementFactorPerSecond
+		setupRadTextField(
+			_latSMTAIRPS,
+			&rc.getSettings().autopilot.stabilizedModeRollAngleIncrementRadPerSecond,
+			5,
+			RemoteAuxiliaryAutopilotPacketType::setStabilizedModeRollAngleIncrementRadPerSecond
 		);
 
-		_latRow0 += &_latSMTAIFPSTitle;
+		_latRow0 += &_latSMTAIFRSTitle;
 
 		// Angle LPFF
 		setupFloatTextField(
@@ -50,13 +48,11 @@ namespace pizda {
 		_latRow0 += &_latTALPFFPSTitle;
 
 		// Surface factor
-		setupFloatTextField(
+		setupUint8PercentTextField(
 			_latMaxAileronsFactor,
-			&rc.getSettings().autopilot.maxAileronsFactor,
-			1.0f,
-			0.0f,
-			1.0f,
-			RemoteAuxiliaryAutopilotPacketType::setMaxAileronsFactor
+			&rc.getSettings().autopilot.maxAileronsPercent,
+			100,
+			RemoteAuxiliaryAutopilotPacketType::setMaxAileronsPercent
 		);
 
 		rows += &_latMaxAileronsFactorTitle;
@@ -97,16 +93,14 @@ namespace pizda {
 		addRow(_verRow0);
 
 		// Angle increment
-		setupFloatTextField(
-			_verSMTAIFPS,
-			&rc.getSettings().autopilot.stabilizedModePitchAngleIncrementFactorPerSecond,
-			1.0f,
-			0.0f,
-			1000.0f,
-			RemoteAuxiliaryAutopilotPacketType::setStabilizedModePitchAngleIncrementFactorPerSecond
+		setupRadTextField(
+			_verSMTARFPS,
+			&rc.getSettings().autopilot.stabilizedModePitchAngleIncrementRadPerSecond,
+			5,
+			RemoteAuxiliaryAutopilotPacketType::setStabilizedModePitchAngleIncrementRadPerSecond
 		);
 
-		_verRow0 += &_verSMTAIFPSTitle;
+		_verRow0 += &_verSMTAIRPSTitle;
 
 		// Angle LPFF
 		setupFloatTextField(
@@ -121,13 +115,11 @@ namespace pizda {
 		_verRow0 += &_verTALPFFPSTitle;
 
 		// Surface factor
-		setupFloatTextField(
+		setupUint8PercentTextField(
 			_verMaxElevatorFactor,
-			&rc.getSettings().autopilot.maxElevatorFactor,
-			1.0f,
-			0.0f,
-			1.0f,
-			RemoteAuxiliaryAutopilotPacketType::setMaxElevatorFactor
+			&rc.getSettings().autopilot.maxElevatorPercent,
+			100,
+			RemoteAuxiliaryAutopilotPacketType::setMaxElevatorPercent
 		);
 
 		rows += &_verMaxElevatorFactorTitle;
@@ -161,17 +153,27 @@ namespace pizda {
 		Theme::applyPageTitle(&_lonTitle);
 		rows += &_lonTitle;
 
-		// LPFF
-		setupFloatTextField(
-			_lonThrottleLPFFPS,
-			&rc.getSettings().autopilot.throttleLPFFactorPerSecond,
-			0.6f,
-			0.0f,
-			1000.0f,
-			RemoteAuxiliaryAutopilotPacketType::setThrottleLPFFactorPerSecond
+		addRow(_lonRow0);
+
+		// Min
+		setupUint8PercentTextField(
+			_lonThrottleMin,
+			&rc.getSettings().autopilot.minThrottlePercent,
+			100,
+			RemoteAuxiliaryAutopilotPacketType::setMinThrottlePercent
 		);
 
-		rows += &_lonThrottleLPFFPSTitle;
+		_lonRow0 += &_lonThrottleMinTitle;
+
+		// Max
+		setupUint8PercentTextField(
+			_lonThrottleMax,
+			&rc.getSettings().autopilot.maxThrottlePercent,
+			100,
+			RemoteAuxiliaryAutopilotPacketType::setMaxThrottlePercent
+		);
+
+		_lonRow0 += &_lonThrottleMaxTitle;
 
 		// PIDs
 		addPID(
@@ -222,6 +224,21 @@ namespace pizda {
 		);
 
 		textField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
+	}
+
+	void AutopilotSettingsPage::setupUint8PercentTextField(TextField& textField, uint8_t* percent, float fallbackPercent, RemoteAuxiliaryAutopilotPacketType packetType) {
+		setupAnyTextField(
+			textField,
+			std::to_wstring(*percent),
+			[&textField, fallbackPercent, percent, packetType] {
+				*percent = static_cast<uint8_t>(std::clamp<int32_t>(StringUtils::tryParseInt32Or(textField.getText(), fallbackPercent), 0, 100));
+				RC::getInstance().getSettings().autopilot.scheduleWrite();
+
+				RC::getInstance().getTransceiver().enqueueAutopilot(packetType);
+			}
+		);
+
+		textField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
 	}
 
 	void AutopilotSettingsPage::addRow(RelativeStackLayout& row) {
