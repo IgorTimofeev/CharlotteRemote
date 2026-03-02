@@ -125,32 +125,6 @@ namespace pizda {
 			tickAngleToDeg = 360 - compassTickMarkUnitsDeg;
 		}
 
-		// Aircraft indicator
-		if (isCameraShiftedLaterally()) {
-			// Cross
-			renderer->renderHorizontalLine(
-				Point(
-					pivot.getX() - compassLateralOffsetCrossSize / 2,
-					pivot.getY()
-				),
-				compassLateralOffsetCrossSize,
-				&Theme::fg1
-			);
-
-			renderer->renderVerticalLine(
-				Point(
-					pivot.getX(),
-					pivot.getY() - compassLateralOffsetCrossSize / 2
-				),
-				compassLateralOffsetCrossSize,
-				&Theme::fg1
-			);
-		}
-		else {
-			// Triangle
-			AircraftElement::render(renderer, pivot);
-		}
-
 		// Enough space for rose
 		if (bounds.getHeight() >= 80) {
 			// Arc
@@ -171,39 +145,38 @@ namespace pizda {
 			// Tick marks
 			{
 				float stepUnitsPerYawDegIntPart;
-				const float stepUnitsPerYawDegFractPart = std::modff(rc.getAircraftData().computed.headingDeg / compassTickMarkUnitsDeg, &stepUnitsPerYawDegIntPart);
+				const float stepUnitsPerYawDegFractUnits = std::modff(rc.getAircraftData().computed.headingDeg / compassTickMarkUnitsDeg, &stepUnitsPerYawDegIntPart);
+				const float stepUnitsPerYawDegFractPixels = stepUnitsPerYawDegFractUnits * compassTickMarkUnitsDeg;
 				const int32_t yawSnappedInt = static_cast<int32_t>(stepUnitsPerYawDegIntPart) * compassTickMarkUnitsDeg;
 
 				for (int16_t angleDeg = tickAngleFromDeg; angleDeg <= tickAngleToDeg; angleDeg += compassTickMarkUnitsDeg) {
 					const uint16_t shownAngleDeg = normalizeAngleDeg360(yawSnappedInt + angleDeg);
 					const auto isBig = shownAngleDeg % compassTickMarkUnitsBigDeg == 0;
 
-					const auto angleEndVec = Vector2F(0, tickMarksRadius).rotate(-toRadians(angleDeg - stepUnitsPerYawDegFractPart * compassTickMarkUnitsDeg));
-					const auto angleEndVecNorm = angleEndVec.normalize();
+					const auto angleEndVecNorm = Vector2F(0, -1).rotate(toRadians(
+						static_cast<float>(angleDeg)
+						- stepUnitsPerYawDegFractPixels
+					));
+
+					const auto angleEndVec = angleEndVecNorm * tickMarksRadius;
 					const auto angleStartVec = angleEndVec - angleEndVecNorm * (isBig ? compassTickMarkBigLength : compassTickMarkSmallLength);
 
 					renderer->renderLine(
-						Point(
-							pivot.getX() + static_cast<int32_t>(angleStartVec.getX()),
-							pivot.getY() - static_cast<int32_t>(angleStartVec.getY())
-						),
-						Point(
-							pivot.getX() + static_cast<int32_t>(angleEndVec.getX()),
-							pivot.getY() - static_cast<int32_t>(angleEndVec.getY())
-						),
+						pivot + angleStartVec,
+						pivot + angleEndVec,
 						&Theme::fg1
 					);
 
 					if (isBig) {
 						const auto text = std::to_wstring(shownAngleDeg / 10);
 						const auto textWidth = Theme::fontSmall.getWidth(text);
-						const auto textDiagonal = std::sqrt(textWidth * textWidth + Theme::fontSmall.getHeight() * Theme::fontSmall.getHeight());
+						const auto textDiagonal = std::sqrtf(textWidth * textWidth + Theme::fontSmall.getHeight() * Theme::fontSmall.getHeight());
 						const auto textCenterVec = angleStartVec - angleEndVecNorm * (compassTickMarkTextOffset + textDiagonal / 2);
 
 						renderer->renderString(
 							Point(
-								pivot.getX() + static_cast<int32_t>(textCenterVec.getX() - textWidth / 2),
-								pivot.getY() - static_cast<int32_t>(textCenterVec.getY()) - Theme::fontSmall.getHeight() / 2
+								static_cast<float>(pivot.getX()) + textCenterVec.getX() - static_cast<float>(textWidth) / 2.f,
+								static_cast<float>(pivot.getY()) + textCenterVec.getY() - static_cast<float>(Theme::fontSmall.getHeight()) / 2.f
 							),
 							&Theme::fontSmall,
 							&Theme::fg1,
@@ -213,7 +186,100 @@ namespace pizda {
 				}
 			}
 
-			// Triangle
+			// Autopilot selected value
+			if (rc.getSettings().autopilot.lateralMode == AutopilotLateralMode::hdg) {
+				const auto apValueVecNorm = Vector2F(0, -1).rotate(toRadians(
+					rc.getSettings().autopilot.headingDeg
+					- rc.getAircraftData().computed.headingDeg
+				));
+
+				// Indicator
+				if (
+					rc.getSettings().personalization.MFD.ND.mode != PersonalizationSettingsMFDNDMode::arc
+					|| std::abs(normalizeAngleDeg180(rc.getAircraftData().computed.headingDeg - rc.getSettings().autopilot.headingDeg)) <= compassArcViewportHalfDeg
+				) {
+					constexpr static uint8_t compassAPValueIndicatorWidth = 6;
+					constexpr static uint8_t compassAPValueIndicatorHeight = 5;
+					constexpr static uint8_t compassAPValueTrianglePartWidth = 2;
+					constexpr static uint8_t compassAPValueTriangleHeight = 3;
+
+					const auto apValueVecNormCWPerp = apValueVecNorm.clockwisePerpendicular();
+					const auto apValueVec = apValueVecNorm * tickMarksRadius;
+
+					const auto apValueIndicatorTopLeftVec = apValueVec - apValueVecNormCWPerp * compassAPValueIndicatorWidth;
+					const auto apValueIndicatorTopRightVec = apValueVec + apValueVecNormCWPerp * compassAPValueIndicatorWidth;
+					const auto apValueIndicatorBottomLeftVec = apValueIndicatorTopLeftVec - apValueVecNorm * compassAPValueIndicatorHeight;
+					const auto apValueIndicatorBottomRightVec = apValueIndicatorTopRightVec - apValueVecNorm * compassAPValueIndicatorHeight;
+					const auto apValueIndicatorTriangleLeftVec = apValueIndicatorTopLeftVec + apValueVecNormCWPerp * compassAPValueTrianglePartWidth;
+					const auto apValueIndicatorTriangleRightVec = apValueIndicatorTopRightVec - apValueVecNormCWPerp * compassAPValueTrianglePartWidth;
+					const auto apValueIndicatorTriangleMiddleVec = apValueVec - apValueVecNorm * compassAPValueTriangleHeight;
+
+					// Bottom
+					renderer->renderLine(
+						pivot + apValueIndicatorBottomLeftVec,
+						pivot + apValueIndicatorBottomRightVec,
+						&Theme::magenta1
+					);
+
+					// Vertical left
+					renderer->renderLine(
+						pivot + apValueIndicatorBottomLeftVec,
+						pivot + apValueIndicatorTopLeftVec,
+						&Theme::magenta1
+					);
+
+					// Vertical right
+					renderer->renderLine(
+						pivot + apValueIndicatorBottomRightVec,
+						pivot + apValueIndicatorTopRightVec,
+						&Theme::magenta1
+					);
+
+					// Triangle part left
+					renderer->renderLine(
+						pivot + apValueIndicatorTopLeftVec,
+						pivot + apValueIndicatorTriangleLeftVec,
+						&Theme::magenta1
+					);
+
+					// Triangle part right
+					renderer->renderLine(
+						pivot + apValueIndicatorTopRightVec,
+						pivot + apValueIndicatorTriangleRightVec,
+						&Theme::magenta1
+					);
+
+					// Triangle middle left
+					renderer->renderLine(
+						pivot + apValueIndicatorTriangleLeftVec,
+						pivot + apValueIndicatorTriangleMiddleVec,
+						&Theme::magenta1
+					);
+
+					// Triangle middle left
+					renderer->renderLine(
+						pivot + apValueIndicatorTriangleRightVec,
+						pivot + apValueIndicatorTriangleMiddleVec,
+						&Theme::magenta1
+					);
+				}
+
+				// Dashed line
+				constexpr static uint8_t compassAPValueIndicatorDashLength = 6;
+				const auto apValueDashIncVec = apValueVecNorm * compassAPValueIndicatorDashLength;
+
+				Vector2F apValueDashVec = pivot;
+
+				for (uint16_t i = 0; i < circleRadius - compassAPValueIndicatorDashLength * 2; i += compassAPValueIndicatorDashLength * 2) {
+					const auto to = apValueDashVec + apValueDashIncVec;
+
+					renderer->renderLine(apValueDashVec, to, &Theme::magenta1);
+
+					apValueDashVec = to + apValueDashIncVec;
+				}
+			}
+
+			// Heading triangle
 			renderer->renderFilledTriangle(
 				Point(
 					pivot.getX(),
@@ -229,6 +295,47 @@ namespace pizda {
 				),
 				&Theme::fg1
 			);
+
+			// // Heading text
+			// {
+			// 	const auto text = std::to_wstring(static_cast<int32_t>(rc.getAircraftData().computed.headingDeg));
+			//
+			// 	renderer->renderString(
+			// 		Point(
+			// 			static_cast<int32_t>(static_cast<float>(pivot.getX()) - static_cast<float>(Theme::fontNormal.getWidth(text)) / 2.f),
+			// 			pivot.getY() - circleRadius - 1 - Theme::fontNormal.getHeight()
+			// 		),
+			// 		&Theme::fontNormal,
+			// 		&Theme::fg1,
+			// 		text
+			// 	);
+			// }
+
+			// Aircraft indicator
+			if (isCameraShiftedLaterally()) {
+				// Cross
+				renderer->renderHorizontalLine(
+					Point(
+						pivot.getX() - compassLateralOffsetCrossSize / 2,
+						pivot.getY()
+					),
+					compassLateralOffsetCrossSize,
+					&Theme::fg1
+				);
+
+				renderer->renderVerticalLine(
+					Point(
+						pivot.getX(),
+						pivot.getY() - compassLateralOffsetCrossSize / 2
+					),
+					compassLateralOffsetCrossSize,
+					&Theme::fg1
+				);
+			}
+			else {
+				// Triangle
+				AircraftElement::render(renderer, pivot);
+			}
 		}
 	}
 

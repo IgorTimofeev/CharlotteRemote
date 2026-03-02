@@ -30,7 +30,7 @@ namespace pizda {
 		setValue(
 			rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::alt
 			? Units::convertDistance(
-				rc.getAircraftData().computed.coordinates.getAltitude(),
+				rc.getAircraftData().raw.autopilot.targetAltitudeM,
 				DistanceUnit::meter,
 				DistanceUnit::foot
 			)

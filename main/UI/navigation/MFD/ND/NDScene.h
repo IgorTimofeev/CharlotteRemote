@@ -43,7 +43,7 @@ namespace pizda {
 
 			constexpr static uint8_t compassTickMarkSmallLength = 2;
 			constexpr static uint8_t compassTickMarkBigLength = 4;
-			constexpr static uint8_t compassTickMarkTextOffset = 3;
+			constexpr static uint8_t compassTickMarkTextOffset = 4;
 
 			constexpr static uint8_t compassCircleMarginTopPct = 8;
 			constexpr static uint8_t compassCircleMarginBottomPct = 14;
