@@ -172,21 +172,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="доделал наконец визуализацию заданного курса на ND прямо на РОЗОЧКЕ компаса">
+    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="добавил конфигурацию макс тока на каскаде, чтоб ебашило на все сука 140 ма, ато БлДЯЬ ЗАПЛОЧЕНО ЗА ПОЛНОЕ - БУДЕМ ЮЗАТЬ ПОЛНОЕ">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262/src/SX1262.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/navigationSettings.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/navigationSettings.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/settings/transceiverSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/transceiverSettings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/packet.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/types/generic.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/generic.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1145,7 +1134,7 @@
       <workItem from="1772263813915" duration="5809000" />
       <workItem from="1772283595942" duration="87000" />
       <workItem from="1772433566245" duration="15907000" />
-      <workItem from="1774609302461" duration="2704000" />
+      <workItem from="1774609302461" duration="3845000" />
     </task>
     <task id="LOCAL-00001" summary="ебучий есп">
       <option name="closed" value="true" />
@@ -1195,7 +1184,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772451224239</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="добавил конфигурацию макс тока на каскаде, чтоб ебашило на все сука 140 ма, ато БлДЯЬ ЗАПЛОЧЕНО ЗА ПОЛНОЕ - БУДЕМ ЮЗАТЬ ПОЛНОЕ">
+      <option name="closed" value="true" />
+      <created>1774612151044</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1774612151044</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1235,7 +1232,8 @@
     <MESSAGE value="автопилик по сути завершен, я ДАВОЛИН))))" />
     <MESSAGE value="перехуярил значения гиростабилизированного режима на более эксплесивные, т.к. кожаному мешку куда проще вписывать условные 5 град/сек девиации, нежели какие-то ебаные факторы от макс угла крена" />
     <MESSAGE value="доделал наконец визуализацию заданного курса на ND прямо на РОЗОЧКЕ компаса" />
-    <option name="LAST_COMMIT_MESSAGE" value="доделал наконец визуализацию заданного курса на ND прямо на РОЗОЧКЕ компаса" />
+    <MESSAGE value="добавил конфигурацию макс тока на каскаде, чтоб ебашило на все сука 140 ма, ато БлДЯЬ ЗАПЛОЧЕНО ЗА ПОЛНОЕ - БУДЕМ ЮЗАТЬ ПОЛНОЕ" />
+    <option name="LAST_COMMIT_MESSAGE" value="добавил конфигурацию макс тока на каскаде, чтоб ебашило на все сука 140 ма, ато БлДЯЬ ЗАПЛОЧЕНО ЗА ПОЛНОЕ - БУДЕМ ЮЗАТЬ ПОЛНОЕ" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

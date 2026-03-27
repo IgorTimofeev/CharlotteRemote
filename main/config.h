@@ -66,7 +66,7 @@ namespace pizda {
 						8,
 
 						60,
-						22,
+						22
 					};
 			};
 	

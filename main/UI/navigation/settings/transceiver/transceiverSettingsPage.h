@@ -17,7 +17,7 @@ namespace pizda {
 
 		private:
 			TextField _RFFrequency {};
-			Titler _RFFrequencyTitle { L"Freq [120; 960] (MHz)", &_RFFrequency };
+			Titler _RFFrequencyTitle { L"RF [120; 960] (MHz)", &_RFFrequency };
 
 			RelativeStackLayout _horizontalRows[4] {};
 
