@@ -63,8 +63,10 @@ namespace pizda {
 						7,
 						SX1262::LoRaCodingRate::cr4_5,
 						0x34,
+						8,
+
+						60,
 						22,
-						8
 					};
 			};
 	

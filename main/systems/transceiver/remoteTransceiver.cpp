@@ -832,7 +832,9 @@ namespace pizda {
 		stream.writeUint8(settings.spreadingFactor, RemoteAuxiliaryXCVRPacket::spreadingFactorLengthBits);
 		stream.writeUint8(std::to_underlying(settings.codingRate), RemoteAuxiliaryXCVRPacket::codingRateLengthBits);
 		stream.writeUint8(settings.syncWord, RemoteAuxiliaryXCVRPacket::syncWordLengthBits);
-		stream.writeInt8(settings.powerDBm, RemoteAuxiliaryXCVRPacket::powerDBmLengthBits);
 		stream.writeUint16(settings.preambleLength, RemoteAuxiliaryXCVRPacket::preambleLengthLengthBits);
+
+		stream.writeInt8(settings.currentLimitMA, RemoteAuxiliaryXCVRPacket::currentLimitMALengthBits);
+		stream.writeInt8(settings.powerDBm, RemoteAuxiliaryXCVRPacket::powerDBmLengthBits);
 	}
 }

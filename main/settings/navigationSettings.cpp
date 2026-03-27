@@ -1,5 +1,7 @@
 #include "navigationSettings.h"
 
+#include <span>
+
 #include "rc.h"
 
 namespace pizda {
@@ -14,7 +16,7 @@ namespace pizda {
 
 		// Waypoints
 		{
-			const uint16_t waypointsLength = stream.readObjectLength<NavigationSettingsWaypoint>(_waypointsList);
+			const uint16_t waypointsLength = stream.readObjectSize<NavigationSettingsWaypoint>(_waypointsList);
 
 			if (waypointsLength == 0) {
 				nd.addTemplateData();
@@ -22,7 +24,7 @@ namespace pizda {
 			}
 
 			const auto waypoints = std::make_unique<NavigationSettingsWaypoint[]>(waypointsLength);
-			stream.readObject(_waypointsList, waypoints.get(), waypointsLength);
+			stream.readObject<NavigationSettingsWaypoint>(_waypointsList, { waypoints.get(), waypointsLength });
 
 			nd.waypoints.reserve(waypointsLength);
 
@@ -39,11 +41,11 @@ namespace pizda {
 
 		// Enroute
 		{
-			const uint16_t enrouteWaypointsLength = stream.readObjectLength<NavigationSettingsEnrouteWaypoint>(_enrouteWaypointsList);
+			const uint16_t enrouteWaypointsLength = stream.readObjectSize<NavigationSettingsEnrouteWaypoint>(_enrouteWaypointsList);
 
 			if (enrouteWaypointsLength > 0) {
 				const auto enrouteWaypoints = std::make_unique<NavigationSettingsEnrouteWaypoint[]>(enrouteWaypointsLength);
-				stream.readObject(_enrouteWaypointsList, enrouteWaypoints.get(), enrouteWaypointsLength);
+				stream.readObject<NavigationSettingsEnrouteWaypoint>(_enrouteWaypointsList, { enrouteWaypoints.get(), enrouteWaypointsLength });
 
 				nd.enrouteWaypoints.reserve(enrouteWaypointsLength);
 
@@ -59,11 +61,11 @@ namespace pizda {
 
 		// Runways
 		{
-			const uint16_t runwaysLength = stream.readObjectLength<NavigationSettingsRunway>(_runwaysList);
+			const uint16_t runwaysLength = stream.readObjectSize<NavigationSettingsRunway>(_runwaysList);
 
 			if (runwaysLength > 0) {
 				const auto runways = std::make_unique<NavigationSettingsRunway[]>(runwaysLength);
-				stream.readObject(_runwaysList, runways.get(), runwaysLength);
+				stream.readObject(_runwaysList, std::span { runways.get(), runwaysLength });
 
 				nd.runways.reserve(runwaysLength);
 
@@ -84,13 +86,13 @@ namespace pizda {
 		{
 			// Legs
 			{
-				const uint16_t legsLength = stream.readObjectLength<NavigationSettingsFlightPlanLeg>(_flightPlanLegsList);
+				const uint16_t legsLength = stream.readObjectSize<NavigationSettingsFlightPlanLeg>(_flightPlanLegsList);
 
 				if (legsLength > 0) {
 					nd.flightPlan.legs.reserve(legsLength);
 
 					const auto legs = std::make_unique<NavigationSettingsFlightPlanLeg[]>(legsLength);
-					stream.readObject(_flightPlanLegsList, legs.get(), legsLength);
+					stream.readObject<NavigationSettingsFlightPlanLeg>(_flightPlanLegsList, { legs.get(), legsLength });
 
 					for (uint16_t i = 0; i < legsLength; i++) {
 						const auto& leg = legs[i];
@@ -124,7 +126,7 @@ namespace pizda {
 				);
 			}
 
-			stream.writeObject(_waypointsList, waypoints.get(), nd.waypoints.size());
+			stream.writeObject<NavigationSettingsWaypoint>(_waypointsList, { waypoints.get(), nd.waypoints.size() });
 		}
 
 		// Enroute
@@ -139,7 +141,7 @@ namespace pizda {
 				);
 			}
 
-			stream.writeObject(_enrouteWaypointsList, enrouteWaypoints.get(), nd.enrouteWaypoints.size());
+			stream.writeObject<NavigationSettingsEnrouteWaypoint>(_enrouteWaypointsList, { enrouteWaypoints.get(), nd.enrouteWaypoints.size() });
 		}
 
 		// Runways
@@ -157,7 +159,7 @@ namespace pizda {
 				);
 			}
 
-			stream.writeObject(_runwaysList, runways.get(), nd.runways.size());
+			stream.writeObject<NavigationSettingsRunway>(_runwaysList, { runways.get(), nd.runways.size() });
 		}
 
 		// Flight plan
@@ -174,7 +176,7 @@ namespace pizda {
 					);
 				}
 
-				stream.writeObject(_flightPlanLegsList, legs.get(), nd.flightPlan.legs.size());
+				stream.writeObject<NavigationSettingsFlightPlanLeg>(_flightPlanLegsList, { legs.get(), nd.flightPlan.legs.size() });
 			}
 
 			// Active leg index

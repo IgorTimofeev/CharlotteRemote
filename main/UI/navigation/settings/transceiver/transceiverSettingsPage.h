@@ -19,7 +19,7 @@ namespace pizda {
 			TextField _RFFrequency {};
 			Titler _RFFrequencyTitle { L"Freq [120; 960] (MHz)", &_RFFrequency };
 
-			RelativeStackLayout horizontalRows[3] {};
+			RelativeStackLayout _horizontalRows[4] {};
 
 			constexpr static uint8_t _bandwidthItemsLength = 10;
 			std::wstring_view _bandwidthItems[_bandwidthItemsLength] {
@@ -58,9 +58,14 @@ namespace pizda {
 			TextField _preambleLength {};
 			Titler _preambleLengthTitle { L"PL [0; 65535] s", &_preambleLength };
 
+			TextField _currentLimit {};
+			Titler _currentLimitTitle { L"OCP [0; 140] (mA)", &_currentLimit };
+
 			TextField _power {};
 			Titler _powerTitle { L"PWR [-17; 22] (dBm)", &_power };
 
 			Button _confirmButton {};
+
+			void setupRow(RelativeStackLayout& row);
 	};
 }

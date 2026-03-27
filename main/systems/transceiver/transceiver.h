@@ -4,6 +4,7 @@
 #include <utility>
 #include <cmath>
 #include <array>
+#include <span>
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
@@ -77,8 +78,11 @@ namespace pizda {
 					config::transceiver::communicationSettings.spreadingFactor,
 					config::transceiver::communicationSettings.codingRate,
 					config::transceiver::communicationSettings.syncWord,
+					config::transceiver::communicationSettings.preambleLength,
+
+					config::transceiver::communicationSettings.currentLimitMA,
 					config::transceiver::communicationSettings.powerDBm,
-					config::transceiver::communicationSettings.preambleLength
+					false
 				);
 
 				if (error != SX1262::error::none) {
@@ -161,7 +165,7 @@ namespace pizda {
 
 				// Checksum
 				const auto payloadLength = stream.getBytesProcessed();
-				const auto checksum = getCRC8(stream.getBuffer(), payloadLength);
+				const auto checksum = getCRC8({ stream.getBuffer(), payloadLength });
 				stream.finishByte();
 				stream.writeUint8(checksum, Packet::checksumLengthBytes * 8);
 
@@ -175,7 +179,7 @@ namespace pizda {
 				//			ESP_LOGI(_logTag, "write buffer[%d]: %d", i, _buffer[i]);
 				//		}
 
-				const auto error = _SX.transmit(_buffer, totalLength, timeoutUs);
+				const auto error = _SX.transmit({ _buffer, totalLength }, timeoutUs);
 
 				if (error != SX1262::error::none) {
 					logSXError("transmit error", error);
@@ -230,13 +234,13 @@ namespace pizda {
 			uint8_t _buffer[_bufferLength] {};
 
 			static void logSXError(const char* key, const SX1262::error error) {
-				if (error == SX1262::error::timeout)
-					return;
+				// if (error == SX1262::error::timeout)
+				// 	return;
 
 				constexpr static uint8_t errorBufferLength = 255;
 				char errorBuffer[errorBufferLength];
 
-				SX1262::errorToString(error, errorBuffer, errorBufferLength);
+				SX1262::errorToString(error, { errorBuffer, errorBufferLength });
 
 				ESP_LOGE(_logTag, "%s: %s", key, errorBuffer);
 			}
@@ -287,6 +291,11 @@ namespace pizda {
 					return false;
 
 				if (!checkSetCommunicationSettingsSXError(
+					_SX.setCurrentLimit(settings.currentLimitMA)
+				))
+					return false;
+
+				if (!checkSetCommunicationSettingsSXError(
 					_SX.setOutputPower(settings.powerDBm)
 				))
 					return false;
@@ -294,11 +303,11 @@ namespace pizda {
 				return true;
 			}
 
-			static uint8_t getCRC8(const uint8_t* buffer, const size_t length) {
+			static uint8_t getCRC8(const std::span<uint8_t> data) {
 				uint8_t crc = 0xff;
 
-				for (size_t i = 0; i < length; i++) {
-					crc ^= buffer[i];
+				for (size_t i = 0; i < data.size(); i++) {
+					crc ^= data.data()[i];
 
 					for (size_t j = 0; j < 8; j++) {
 						if ((crc & 0x80) != 0)
@@ -328,7 +337,7 @@ namespace pizda {
 					return false;
 				}
 
-				const auto checksum = getCRC8(stream.getBuffer(), expectedPayloadLengthBytes);
+				const auto checksum = getCRC8({ stream.getBuffer(), expectedPayloadLengthBytes });
 				const auto expectedChecksum = *(stream.getBuffer() + expectedPayloadLengthBytes);
 
 				// Checksum
