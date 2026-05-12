@@ -22,195 +22,242 @@ namespace pizda {
 			
 			MotorSettings tailLeft {};
 			MotorSettings tailRight {};
-		
+
+			MotorSettings cameraPitch {};
+			MotorSettings cameraYaw {};
+
 		protected:
 			const char* getNamespace() override {
 				return _namespace;
 			}
-			
+
 			void onRead(const NVSStream& stream) override {
 				readMotor(
 					stream,
 					throttle,
-					
+
 					_throttleMin,
 					_throttleMax,
 					_throttleReverse
 				);
-				
+
 				readMotor(
 					stream,
 					noseWheel,
-					
+
 					_noseWheelMin,
 					_noseWheelMax,
 					_noseWheelReverse
 				);
-				
+
 				readMotor(
 					stream,
 					flapLeft,
-					
+
 					_flapLeftMin,
 					_flapLeftMax,
 					_flapLeftReverse
 				);
-				
+
 				readMotor(
 					stream,
 					aileronLeft,
-					
+
 					_aileronLeftMin,
 					_aileronLeftMax,
 					_aileronLeftReverse
 				);
-				
+
 				readMotor(
 					stream,
 					flapRight,
-					
+
 					_flapRightMin,
 					_flapRightMax,
 					_flapRightReverse
 				);
-				
+
 				readMotor(
 					stream,
 					aileronRight,
-					
+
 					_aileronRightMin,
 					_aileronRightMax,
 					_aileronRightReverse
 				);
-				
+
 				readMotor(
 					stream,
 					tailLeft,
-					
+
 					_tailLeftMin,
 					_tailLeftMax,
 					_tailLeftReverse
 				);
-				
+
 				readMotor(
 					stream,
 					tailRight,
-					
+
 					_tailRightMin,
 					_tailRightMax,
 					_tailRightReverse
 				);
+
+				readMotor(
+					stream,
+					cameraPitch,
+
+					_cameraPitchMin,
+					_cameraPitchMax,
+					_cameraPitchReverse
+				);
+
+				readMotor(
+					stream,
+					cameraYaw,
+
+					_cameraYawMin,
+					_cameraYawMax,
+					_cameraYawReverse
+				);
 			}
-			
+
 			void onWrite(const NVSStream& stream) override {
 				writeMotor(
 					stream,
 					throttle,
-					
+
 					_throttleMin,
 					_throttleMax,
 					_throttleReverse
 				);
-				
+
 				writeMotor(
 					stream,
 					noseWheel,
-					
+
 					_noseWheelMin,
 					_noseWheelMax,
 					_noseWheelReverse
 				);
-				
+
 				writeMotor(
 					stream,
 					flapLeft,
-					
+
 					_flapLeftMin,
 					_flapLeftMax,
 					_flapLeftReverse
 				);
-				
+
 				writeMotor(
 					stream,
 					aileronLeft,
-					
+
 					_aileronLeftMin,
 					_aileronLeftMax,
 					_aileronLeftReverse
 				);
-				
+
 				writeMotor(
 					stream,
 					flapRight,
-					
+
 					_flapRightMin,
 					_flapRightMax,
 					_flapRightReverse
 				);
-				
+
 				writeMotor(
 					stream,
 					aileronRight,
-					
+
 					_aileronRightMin,
 					_aileronRightMax,
 					_aileronRightReverse
 				);
-				
+
 				writeMotor(
 					stream,
 					tailLeft,
-					
+
 					_tailLeftMin,
 					_tailLeftMax,
 					_tailLeftReverse
 				);
-				
+
 				writeMotor(
 					stream,
 					tailRight,
-					
+
 					_tailRightMin,
 					_tailRightMax,
 					_tailRightReverse
 				);
+
+				writeMotor(
+					stream,
+					cameraPitch,
+
+					_cameraPitchMin,
+					_cameraPitchMax,
+					_cameraPitchReverse
+				);
+
+				writeMotor(
+					stream,
+					cameraYaw,
+
+					_cameraYawMin,
+					_cameraYawMax,
+					_cameraYawReverse
+				);
 			}
-		
+
 		private:
-			constexpr static const char* _namespace = "mt2";
-			
-			constexpr static const char* _throttleMin = "thm";
-			constexpr static const char* _throttleMax = "thx";
-			constexpr static const char* _throttleReverse = "thr";
-			
-			constexpr static const char* _noseWheelMin = "nwm";
-			constexpr static const char* _noseWheelMax = "nwx";
-			constexpr static const char* _noseWheelReverse = "nwr";
-			
-			constexpr static const char* _flapLeftMin = "flm";
-			constexpr static const char* _flapLeftMax = "flx";
-			constexpr static const char* _flapLeftReverse = "flr";
-			
-			constexpr static const char* _aileronLeftMin = "alm";
-			constexpr static const char* _aileronLeftMax = "alx";
-			constexpr static const char* _aileronLeftReverse = "alr";
-			
-			constexpr static const char* _flapRightMin = "frm";
-			constexpr static const char* _flapRightMax = "frx";
-			constexpr static const char* _flapRightReverse = "frr";
-			
-			constexpr static const char* _aileronRightMin = "arm";
-			constexpr static const char* _aileronRightMax = "arx";
-			constexpr static const char* _aileronRightReverse = "arr";
-			
-			constexpr static const char* _tailLeftMin = "tlm";
-			constexpr static const char* _tailLeftMax = "tlx";
-			constexpr static const char* _tailLeftReverse = "tlr";
-			
-			constexpr static const char* _tailRightMin = "trm";
-			constexpr static const char* _tailRightMax = "trx";
-			constexpr static const char* _tailRightReverse = "trr";
-			
+			constexpr static auto _namespace = "mt2";
+
+			constexpr static auto _throttleMin = "thm";
+			constexpr static auto _throttleMax = "thx";
+			constexpr static auto _throttleReverse = "thr";
+
+			constexpr static auto _noseWheelMin = "nwm";
+			constexpr static auto _noseWheelMax = "nwx";
+			constexpr static auto _noseWheelReverse = "nwr";
+
+			constexpr static auto _flapLeftMin = "flm";
+			constexpr static auto _flapLeftMax = "flx";
+			constexpr static auto _flapLeftReverse = "flr";
+
+			constexpr static auto _aileronLeftMin = "alm";
+			constexpr static auto _aileronLeftMax = "alx";
+			constexpr static auto _aileronLeftReverse = "alr";
+
+			constexpr static auto _flapRightMin = "frm";
+			constexpr static auto _flapRightMax = "frx";
+			constexpr static auto _flapRightReverse = "frr";
+
+			constexpr static auto _aileronRightMin = "arm";
+			constexpr static auto _aileronRightMax = "arx";
+			constexpr static auto _aileronRightReverse = "arr";
+
+			constexpr static auto _tailLeftMin = "tlm";
+			constexpr static auto _tailLeftMax = "tlx";
+			constexpr static auto _tailLeftReverse = "tlr";
+
+			constexpr static auto _tailRightMin = "trm";
+			constexpr static auto _tailRightMax = "trx";
+			constexpr static auto _tailRightReverse = "trr";
+
+			constexpr static auto _cameraPitchMin = "cpm";
+			constexpr static auto _cameraPitchMax = "cpx";
+			constexpr static auto _cameraPitchReverse = "cpr";
+
+			constexpr static auto _cameraYawMin = "cym";
+			constexpr static auto _cameraYawMax = "cyx";
+			constexpr static auto _cameraYawReverse = "cyr";
+
 			static void readMotor(
 				const NVSStream& stream,
 				MotorSettings& motor,

@@ -21,6 +21,12 @@ namespace pizda {
 			bool autopilot = false;
 	};
 
+	class RemoteDataCamera {
+		public:
+			float pitchFactorM1P1 = 0.0f;
+			float yawFactorM1P1 = 0.0f;
+	};
+
 	enum class RemoteDataRadioSpectrumScanningState {
 		stopped,
 		startRequested,
@@ -51,6 +57,7 @@ namespace pizda {
 	
 	class RemoteData {
 		public:
+			RemoteDataCamera camera {};
 			RemoteDataLights lights {};
 			RemoteDataAutopilot autopilot {};
 			AircraftCalibrationSystem calibrationSystem = AircraftCalibrationSystem::accelAndGyro;

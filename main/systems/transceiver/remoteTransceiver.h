@@ -52,6 +52,7 @@ namespace pizda {
 			RemoteAuxiliaryAutopilotPacketType _enqueuedAutopilotPacketType = RemoteAuxiliaryAutopilotPacketType::setAutopilotEngaged;
 
 			bool receiveAircraftTelemetryPrimaryPacket(BitStream& stream, uint8_t payloadLength);
+			static float readAircraftTelemetrySecondaryPacketCameraValue(BitStream& stream, uint8_t valueLengthBits);
 			bool receiveAircraftTelemetrySecondaryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftAuxiliaryCalibrationPacket(BitStream& stream, uint8_t payloadLength);
@@ -63,6 +64,7 @@ namespace pizda {
 			void transmitRemoteAuxiliaryLightsPacket(BitStream& stream);
 			void transmitRemoteAuxiliaryBaroPacket(BitStream& stream);
 			void transmitRemoteAuxiliaryAutopilotPacket(BitStream& stream);
+			void transmitRemoteAuxiliaryCameraPacket(BitStream& stream);
 			void transmitRemoteAuxiliaryMotorsPacket(BitStream& stream);
 			void transmitRemoteAuxiliaryCalibratePacket(BitStream& stream);
 			void transmitRemoteAuxiliaryADIRSPacket(BitStream& stream);

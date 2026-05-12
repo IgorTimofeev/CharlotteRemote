@@ -64,7 +64,10 @@ namespace pizda {
 		aileronRight(L"Right aileron", &RC::getInstance().getSettings().motors.aileronRight),
 		
 		tailLeft(L"Left tail", &RC::getInstance().getSettings().motors.tailLeft),
-		tailRight(L"Right tail", &RC::getInstance().getSettings().motors.tailRight)
+		tailRight(L"Right tail", &RC::getInstance().getSettings().motors.tailRight),
+
+		cameraPitch(L"Camera pitch", &RC::getInstance().getSettings().motors.cameraPitch),
+		cameraYaw(L"Camera yaw", &RC::getInstance().getSettings().motors.cameraYaw)
 	{
 		// Page title
 		title.setText(L"Motors");
@@ -81,6 +84,9 @@ namespace pizda {
 
 		vaginoz(&tailLeft);
 		vaginoz(&tailRight);
+
+		vaginoz(&cameraYaw);
+		vaginoz(&cameraPitch);
 	}
 	
 	void MotorsSettingsPage::vaginoz(MotorEditor* motorEditor) {

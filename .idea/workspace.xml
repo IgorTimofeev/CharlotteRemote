@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="8" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="10" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppFormatterOtherPage" type="string" />
+    <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -22,25 +23,28 @@
   <component name="CMakeRunConfigurationManager">
     <generated>
       <config projectName="Remote" targetName="menuconfig" />
-      <config projectName="Remote" targetName="__idf_newlib" />
       <config projectName="Remote" targetName="Remote.elf" />
       <config projectName="Remote" targetName="show_efuse_table" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-NVSExtensions" />
       <config projectName="Remote" targetName="__idf_wear_levelling" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-LowPassFilter" />
       <config projectName="Remote" targetName="_project_elf_src" />
+      <config projectName="Remote" targetName="__idf_esp_hal_i2c" />
       <config projectName="Remote" targetName="__idf_esp_adc" />
       <config projectName="Remote" targetName="__idf_esp_driver_mcpwm" />
       <config projectName="Remote" targetName="__idf_esp_https_server" />
+      <config projectName="Remote" targetName="__idf_esp_libc" />
       <config projectName="Remote" targetName="app-flash" />
       <config projectName="Remote" targetName="__idf_hal" />
-      <config projectName="Remote" targetName="__idf_mbedtls" />
       <config projectName="Remote" targetName="__idf_efuse" />
-      <config projectName="Remote" targetName="__idf_esp_driver_cam" />
+      <config projectName="Remote" targetName="__idf_mbedtls" />
       <config projectName="Remote" targetName="__idf_esp_mm" />
+      <config projectName="Remote" targetName="__idf_esp_driver_cam" />
       <config projectName="Remote" targetName="__idf_esp_driver_uart" />
       <config projectName="Remote" targetName="__idf_freertos" />
       <config projectName="Remote" targetName="app_check_size" />
+      <config projectName="Remote" targetName="__idf_esp_driver_dma" />
+      <config projectName="Remote" targetName="__idf_esp_hal_clock" />
       <config projectName="Remote" targetName="partition_table_bin" />
       <config projectName="Remote" targetName="__idf_esp_coex" />
       <config projectName="Remote" targetName="__idf_esp_app_format" />
@@ -52,115 +56,132 @@
       <config projectName="Remote" targetName="efuse_common_table" />
       <config projectName="Remote" targetName="__idf_cxx" />
       <config projectName="Remote" targetName="__idf_heap" />
+      <config projectName="Remote" targetName="__idf_esp_driver_sd_intf" />
+      <config projectName="Remote" targetName="builtin" />
       <config projectName="Remote" targetName="__idf_app_update" />
       <config projectName="Remote" targetName="__idf_esp_driver_spi" />
+      <config projectName="Remote" targetName="__idf_esp_hal_lcd" />
       <config projectName="Remote" targetName="everest" />
       <config projectName="Remote" targetName="__idf_cmock" />
       <config projectName="Remote" targetName="__idf_esp_netif" />
-      <config projectName="Remote" targetName="__idf_esp_system" />
       <config projectName="Remote" targetName="custom_bundle" />
+      <config projectName="Remote" targetName="__idf_esp_system" />
       <config projectName="Remote" targetName="uf2" />
-      <config projectName="Remote" targetName="encrypted-flash" />
       <config projectName="Remote" targetName="__idf_esp_http_client" />
+      <config projectName="Remote" targetName="encrypted-flash" />
+      <config projectName="Remote" targetName="tfpsacrypto" />
+      <config projectName="Remote" targetName="sections_ld_in_preprocess" />
       <config projectName="Remote" targetName="__idf_esp_wifi" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-PIDController" />
       <config projectName="Remote" targetName="partition-table" />
       <config projectName="Remote" targetName="merge-bin" />
-      <config projectName="Remote" targetName="__idf_espcoredump" />
-      <config projectName="Remote" targetName="__idf_esp_rom" />
       <config projectName="Remote" targetName="__idf_fatfs" />
-      <config projectName="Remote" targetName="__idf_tcp_transport" />
+      <config projectName="Remote" targetName="__idf_esp_rom" />
       <config projectName="Remote" targetName="encrypted-partition-table-flash" />
+      <config projectName="Remote" targetName="__idf_tcp_transport" />
+      <config projectName="Remote" targetName="__idf_esp_hal_gpio" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-BuzzerAudio" />
       <config projectName="Remote" targetName="__idf_esp_driver_gptimer" />
       <config projectName="Remote" targetName="__idf_sdmmc" />
-      <config projectName="Remote" targetName="sections.ld.in" />
-      <config projectName="Remote" targetName="apidoc" />
+      <config projectName="Remote" targetName="memory_ld_in_preprocess" />
       <config projectName="Remote" targetName="__idf_console" />
       <config projectName="Remote" targetName="__idf_esp_pm" />
       <config projectName="Remote" targetName="__idf_spi_flash" />
       <config projectName="Remote" targetName="partition_table-flash" />
+      <config projectName="Remote" targetName="tfpsacrypto-apidoc" />
       <config projectName="Remote" targetName="mbedx509" />
       <config projectName="Remote" targetName="__idf_esp_driver_sdmmc" />
-      <config projectName="Remote" targetName="size-components" />
       <config projectName="Remote" targetName="mbedtls" />
       <config projectName="Remote" targetName="__idf_spiffs" />
       <config projectName="Remote" targetName="monitor" />
+      <config projectName="Remote" targetName="size-components" />
       <config projectName="Remote" targetName="partition-table-flash" />
       <config projectName="Remote" targetName="show-efuse-table" />
       <config projectName="Remote" targetName="__idf_esp_https_ota" />
       <config projectName="Remote" targetName="__idf_rt" />
-      <config projectName="Remote" targetName="__idf_esp_driver_i2s" />
       <config projectName="Remote" targetName="__idf_esp_local_ctrl" />
+      <config projectName="Remote" targetName="__idf_esp_driver_i2s" />
+      <config projectName="Remote" targetName="config-report" />
       <config projectName="Remote" targetName="__idf_YOBA" />
+      <config projectName="Remote" targetName="__idf_esp_hal_mspi" />
+      <config projectName="Remote" targetName="__idf_esp_hal_rmt" />
+      <config projectName="Remote" targetName="mbedtls-apidoc" />
       <config projectName="Remote" targetName="__idf_bootloader_support" />
       <config projectName="Remote" targetName="__idf_pthread" />
+      <config projectName="Remote" targetName="__idf_esp_hal_twai" />
+      <config projectName="Remote" targetName="__idf_esp_hal_wdt" />
       <config projectName="Remote" targetName="__idf_perfmon" />
       <config projectName="Remote" targetName="__idf_esp_driver_gpio" />
       <config projectName="Remote" targetName="lib" />
+      <config projectName="Remote" targetName="__idf_esp_hal_i2s" />
       <config projectName="Remote" targetName="__idf_esp_driver_i2c" />
       <config projectName="Remote" targetName="p256m" />
       <config projectName="Remote" targetName="__idf_nvs_flash" />
       <config projectName="Remote" targetName="flash" />
-      <config projectName="Remote" targetName="size-files" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-Units" />
+      <config projectName="Remote" targetName="size-files" />
       <config projectName="Remote" targetName="__idf_esp_driver_pcnt" />
       <config projectName="Remote" targetName="__idf_esp_event" />
-      <config projectName="Remote" targetName="memory.ld" />
       <config projectName="Remote" targetName="__idf_esp-tls" />
       <config projectName="Remote" targetName="__idf_esp_hid" />
       <config projectName="Remote" targetName="__idf_soc" />
       <config projectName="Remote" targetName="__idf_esp_ringbuf" />
-      <config projectName="Remote" targetName="gen_project_binary" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-CircularQueue" />
+      <config projectName="Remote" targetName="gen_project_binary" />
       <config projectName="Remote" targetName="app" />
-      <config projectName="Remote" targetName="erase_flash" />
       <config projectName="Remote" targetName="__idf_esp_lcd" />
-      <config projectName="Remote" targetName="uf2-app" />
       <config projectName="Remote" targetName="efuse_test_table" />
       <config projectName="Remote" targetName="__idf_esp_driver_twai" />
+      <config projectName="Remote" targetName="uf2-app" />
       <config projectName="Remote" targetName="partition_table" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-SX1262" />
       <config projectName="Remote" targetName="__idf_esp_driver_rmt" />
       <config projectName="Remote" targetName="__ldgen_output_sections.ld" />
+      <config projectName="Remote" targetName="__idf_esp_hal_timg" />
       <config projectName="Remote" targetName="__idf_log" />
       <config projectName="Remote" targetName="__idf_esp_partition" />
       <config projectName="Remote" targetName="__idf_esp_gdbstub" />
       <config projectName="Remote" targetName="__idf_esp_timer" />
       <config projectName="Remote" targetName="__idf_wpa_supplicant" />
+      <config projectName="Remote" targetName="__idf_esp_psram" />
       <config projectName="Remote" targetName="__idf_protobuf-c" />
       <config projectName="Remote" targetName="confserver" />
+      <config projectName="Remote" targetName="__idf_esp_hal_security" />
       <config projectName="Remote" targetName="__idf_esp_bootloader_format" />
       <config projectName="Remote" targetName="__idf_main" />
       <config projectName="Remote" targetName="__idf_esp_driver_sdspi" />
       <config projectName="Remote" targetName="__idf_http_parser" />
       <config projectName="Remote" targetName="__idf_lwip" />
-      <config projectName="Remote" targetName="__idf_mqtt" />
-      <config projectName="Remote" targetName="__idf_esp_driver_touch_sens" />
+      <config projectName="Remote" targetName="__idf_esp_hal_gpspi" />
+      <config projectName="Remote" targetName="erase-flash" />
       <config projectName="Remote" targetName="encrypted-bootloader-flash" />
+      <config projectName="Remote" targetName="__idf_esp_driver_touch_sens" />
+      <config projectName="Remote" targetName="__idf_esp_hal_touch_sens" />
       <config projectName="Remote" targetName="__idf_esp_http_server" />
       <config projectName="Remote" targetName="__idf_esp_common" />
       <config projectName="Remote" targetName="efuse-common-table" />
       <config projectName="Remote" targetName="__idf_esp_driver_dac" />
+      <config projectName="Remote" targetName="__idf_esp_hal_ledc" />
       <config projectName="Remote" targetName="encrypted-app-flash" />
       <config projectName="Remote" targetName="size" />
       <config projectName="Remote" targetName="__idf_vfs" />
       <config projectName="Remote" targetName="__idf_driver" />
       <config projectName="Remote" targetName="efuse_custom_table" />
-      <config projectName="Remote" targetName="__idf_app_trace" />
-      <config projectName="Remote" targetName="__idf_json" />
+      <config projectName="Remote" targetName="__idf_esp_stdio" />
       <config projectName="Remote" targetName="__idf_xtensa" />
       <config projectName="Remote" targetName="efuse-custom-table" />
       <config projectName="Remote" targetName="__idf_esp_driver_sdm" />
-      <config projectName="Remote" targetName="__idf_wifi_provisioning" />
       <config projectName="Remote" targetName="bootloader" folderName="ExternalProjectTargets/bootloader" />
       <config projectName="Remote" targetName="__idf_esp_driver_ledc" />
-      <config projectName="Remote" targetName="__idf_esp_vfs_console" />
+      <config projectName="Remote" targetName="__idf_esp_hal_mcpwm" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-BitStream" />
+      <config projectName="Remote" targetName="__idf_esp_hal_ana_conv" />
+      <config projectName="Remote" targetName="__idf_esp_hal_uart" />
       <config projectName="Remote" targetName="__idf_esp_phy" />
       <config projectName="Remote" targetName="__idf_ESP-IDF-Battery" />
+      <config projectName="Remote" targetName="gen_Remote_binary" />
+      <config projectName="Remote" targetName="__idf_esp_hal_pcnt" />
       <config projectName="Remote" targetName="__idf_unity" />
-      <config projectName="Remote" targetName="mbedcrypto" />
       <config projectName="Remote" targetName="__idf_nvs_sec_provider" />
       <config projectName="Remote" targetName="bootloader-flash" />
       <config projectName="Remote" targetName="__idf_esp_hw_support" />
@@ -172,10 +193,32 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="добавил конфигурацию макс тока на каскаде, чтоб ебашило на все сука 140 ма, ато БлДЯЬ ЗАПЛОЧЕНО ЗА ПОЛНОЕ - БУДЕМ ЮЗАТЬ ПОЛНОЕ">
+    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="СУКА НЕ ВЛЕЗАЕТ В СТРОКУ">
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/transceiver/transceiverSettingsPage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Battery" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Battery" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-BitStream" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-BitStream" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-BuzzerAudio" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-BuzzerAudio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-BuzzerAudio/src/buzzer.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-BuzzerAudio/src/buzzer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-CircularQueue" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-CircularQueue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-LowPassFilter" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-LowPassFilter" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-PIDController" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-PIDController" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-SX1262" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-SX1262" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Units" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Units" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencies.lock" beforeDir="false" afterPath="$PROJECT_DIR$/dependencies.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/settings/motorsSettings.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/settings/motorsSettings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/packet.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/packet.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/aircraftData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/aircraftData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/types/remoteData.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/types/remoteData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdkconfig" beforeDir="false" afterPath="$PROJECT_DIR$/sdkconfig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,33 +262,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.RadMigrateCodeStyle": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "RunOnceActivity.west.config.association.type.startup.service": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/components/ESP-IDF-CircularQueue",
-    "nodejs_package_manager_path": "npm",
-    "org.rust.first.attach.projects": "true",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/Remote/components/ESP-IDF-CircularQueue&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CPPToolchains&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Igor\Documents\Code\MCU\ESP32\Charlotte\Remote\components\ESP-IDF-CircularQueue" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.Remote.elf">
+  <component name="RunManager" selected="CMake Application.bootloader">
     <configuration name="Remote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="Remote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Remote" RUN_TARGET_NAME="Remote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -297,11 +340,6 @@
       </method>
     </configuration>
     <configuration name="__idf_YOBA" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_YOBA" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="__idf_app_trace" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_app_trace" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -381,6 +419,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="__idf_esp_driver_dma" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_driver_dma" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="__idf_esp_driver_gpio" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_driver_gpio" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -417,6 +460,11 @@
       </method>
     </configuration>
     <configuration name="__idf_esp_driver_rmt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_driver_rmt" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_driver_sd_intf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_driver_sd_intf" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -476,6 +524,96 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="__idf_esp_hal_ana_conv" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_ana_conv" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_clock" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_clock" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_gpio" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_gpio" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_gpspi" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_gpspi" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_i2c" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_i2c" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_i2s" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_i2s" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_lcd" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_lcd" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_ledc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_ledc" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_mcpwm" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_mcpwm" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_mspi" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_mspi" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_pcnt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_pcnt" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_rmt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_rmt" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_security" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_security" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_timg" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_timg" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_touch_sens" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_touch_sens" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_twai" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_twai" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_uart" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_uart" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="__idf_esp_hal_wdt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hal_wdt" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="__idf_esp_hid" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_hid" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -511,6 +649,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="__idf_esp_libc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_libc" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="__idf_esp_local_ctrl" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_local_ctrl" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -541,6 +684,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="__idf_esp_psram" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_psram" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="__idf_esp_ringbuf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_ringbuf" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -556,6 +704,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="__idf_esp_stdio" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_stdio" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="__idf_esp_system" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_system" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -566,17 +719,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="__idf_esp_vfs_console" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_vfs_console" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="__idf_esp_wifi" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_esp_wifi" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="__idf_espcoredump" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_espcoredump" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -606,11 +749,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="__idf_json" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_json" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="__idf_log" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_log" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -627,16 +765,6 @@
       </method>
     </configuration>
     <configuration name="__idf_mbedtls" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_mbedtls" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="__idf_mqtt" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_mqtt" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="__idf_newlib" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_newlib" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -716,11 +844,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="__idf_wifi_provisioning" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_wifi_provisioning" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="__idf_wpa_supplicant" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="__idf_wpa_supplicant" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -746,11 +869,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="apidoc" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="app-flash" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="app-flash" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -772,6 +890,16 @@
       </method>
     </configuration>
     <configuration name="bootloader" type="CMakeRunConfiguration" factoryName="Application" folderName="ExternalProjectTargets/bootloader" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="bootloader" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="builtin" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="builtin" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="config-report" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="config-report" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -831,7 +959,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="erase_flash" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="erase_flash" CONFIG_NAME="Debug">
+    <configuration name="erase-flash" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="erase-flash" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -846,6 +974,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="gen_Remote_binary" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="gen_Remote_binary" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="gen_project_binary" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="gen_project_binary" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -856,7 +989,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="mbedcrypto" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="mbedcrypto" CONFIG_NAME="Debug">
+    <configuration name="mbedtls-apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="mbedtls-apidoc" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -871,7 +1004,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="memory.ld" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="memory.ld" CONFIG_NAME="Debug">
+    <configuration name="memory_ld_in_preprocess" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="memory_ld_in_preprocess" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -926,7 +1059,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="sections.ld.in" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="sections.ld.in" CONFIG_NAME="Debug">
+    <configuration name="sections_ld_in_preprocess" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="sections_ld_in_preprocess" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -956,6 +1089,16 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="tfpsacrypto-apidoc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="tfpsacrypto-apidoc" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="tfpsacrypto" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="tfpsacrypto" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="uf2-app" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Remote" TARGET_NAME="uf2-app" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -968,148 +1111,168 @@
     </configuration>
     <list>
       <item itemvalue="CMake Application.bootloader" />
-      <item itemvalue="CMake Application.Remote.elf" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-Battery" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-BitStream" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-BuzzerAudio" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-CircularQueue" />
-      <item itemvalue="CMake Application.__idf_ESP-IDF-LowPassFilter" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-NVSExtensions" />
-      <item itemvalue="CMake Application.__idf_ESP-IDF-PIDController" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-SX1262" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-Units" />
       <item itemvalue="CMake Application.__idf_YOBA" />
-      <item itemvalue="CMake Application.__idf_app_trace" />
       <item itemvalue="CMake Application.__idf_app_update" />
+      <item itemvalue="CMake Application.bootloader-flash" />
+      <item itemvalue="CMake Application.encrypted-bootloader-flash" />
       <item itemvalue="CMake Application.__idf_bootloader_support" />
-      <item itemvalue="CMake Application.__idf_cmock" />
-      <item itemvalue="CMake Application.__idf_console" />
       <item itemvalue="CMake Application.__idf_cxx" />
-      <item itemvalue="CMake Application.__idf_driver" />
       <item itemvalue="CMake Application.__idf_efuse" />
-      <item itemvalue="CMake Application.__idf_esp-tls" />
+      <item itemvalue="CMake Application.efuse-common-table" />
+      <item itemvalue="CMake Application.efuse-custom-table" />
+      <item itemvalue="CMake Application.efuse_test_table" />
+      <item itemvalue="CMake Application.show-efuse-table" />
       <item itemvalue="CMake Application.__idf_esp_adc" />
       <item itemvalue="CMake Application.__idf_esp_app_format" />
       <item itemvalue="CMake Application.__idf_esp_bootloader_format" />
       <item itemvalue="CMake Application.__idf_esp_coex" />
       <item itemvalue="CMake Application.__idf_esp_common" />
-      <item itemvalue="CMake Application.__idf_esp_driver_cam" />
       <item itemvalue="CMake Application.__idf_esp_driver_dac" />
+      <item itemvalue="CMake Application.__idf_esp_driver_dma" />
       <item itemvalue="CMake Application.__idf_esp_driver_gpio" />
-      <item itemvalue="CMake Application.__idf_esp_driver_gptimer" />
-      <item itemvalue="CMake Application.__idf_esp_driver_i2c" />
-      <item itemvalue="CMake Application.__idf_esp_driver_i2s" />
       <item itemvalue="CMake Application.__idf_esp_driver_ledc" />
       <item itemvalue="CMake Application.__idf_esp_driver_mcpwm" />
-      <item itemvalue="CMake Application.__idf_esp_driver_pcnt" />
       <item itemvalue="CMake Application.__idf_esp_driver_rmt" />
+      <item itemvalue="CMake Application.__idf_esp_driver_sd_intf" />
       <item itemvalue="CMake Application.__idf_esp_driver_sdio" />
       <item itemvalue="CMake Application.__idf_esp_driver_sdm" />
       <item itemvalue="CMake Application.__idf_esp_driver_sdmmc" />
       <item itemvalue="CMake Application.__idf_esp_driver_sdspi" />
-      <item itemvalue="CMake Application.__idf_esp_driver_spi" />
-      <item itemvalue="CMake Application.__idf_esp_driver_touch_sens" />
-      <item itemvalue="CMake Application.__idf_esp_driver_twai" />
-      <item itemvalue="CMake Application.__idf_esp_driver_uart" />
       <item itemvalue="CMake Application.__idf_esp_eth" />
-      <item itemvalue="CMake Application.__idf_esp_event" />
       <item itemvalue="CMake Application.__idf_esp_gdbstub" />
+      <item itemvalue="CMake Application.__idf_esp_hal_clock" />
+      <item itemvalue="CMake Application.__idf_esp_hal_gpspi" />
+      <item itemvalue="CMake Application.__idf_esp_hal_i2c" />
+      <item itemvalue="CMake Application.__idf_esp_hal_i2s" />
+      <item itemvalue="CMake Application.__idf_esp_hal_lcd" />
+      <item itemvalue="CMake Application.__idf_esp_hal_ledc" />
+      <item itemvalue="CMake Application.__idf_esp_hal_mcpwm" />
+      <item itemvalue="CMake Application.__idf_esp_hal_mspi" />
+      <item itemvalue="CMake Application.__idf_esp_hal_pcnt" />
+      <item itemvalue="CMake Application.__idf_esp_hal_security" />
+      <item itemvalue="CMake Application.__idf_esp_hal_touch_sens" />
+      <item itemvalue="CMake Application.__idf_esp_hal_twai" />
+      <item itemvalue="CMake Application.__idf_esp_hal_wdt" />
       <item itemvalue="CMake Application.__idf_esp_hid" />
       <item itemvalue="CMake Application.__idf_esp_http_client" />
       <item itemvalue="CMake Application.__idf_esp_http_server" />
-      <item itemvalue="CMake Application.__idf_esp_https_ota" />
       <item itemvalue="CMake Application.__idf_esp_https_server" />
       <item itemvalue="CMake Application.__idf_esp_hw_support" />
-      <item itemvalue="CMake Application.__idf_esp_lcd" />
       <item itemvalue="CMake Application.__idf_esp_local_ctrl" />
       <item itemvalue="CMake Application.__idf_esp_mm" />
-      <item itemvalue="CMake Application.__idf_esp_netif" />
-      <item itemvalue="CMake Application.__idf_esp_partition" />
       <item itemvalue="CMake Application.__idf_esp_phy" />
       <item itemvalue="CMake Application.__idf_esp_pm" />
-      <item itemvalue="CMake Application.__idf_esp_ringbuf" />
-      <item itemvalue="CMake Application.__idf_esp_rom" />
       <item itemvalue="CMake Application.__idf_esp_security" />
-      <item itemvalue="CMake Application.__idf_esp_system" />
+      <item itemvalue="CMake Application.__idf_esp_stdio" />
       <item itemvalue="CMake Application.__idf_esp_timer" />
-      <item itemvalue="CMake Application.__idf_esp_vfs_console" />
       <item itemvalue="CMake Application.__idf_esp_wifi" />
-      <item itemvalue="CMake Application.__idf_espcoredump" />
       <item itemvalue="CMake Application.__idf_fatfs" />
       <item itemvalue="CMake Application.__idf_freertos" />
       <item itemvalue="CMake Application.__idf_hal" />
-      <item itemvalue="CMake Application.__idf_heap" />
       <item itemvalue="CMake Application.__idf_http_parser" />
-      <item itemvalue="CMake Application.__idf_json" />
       <item itemvalue="CMake Application.__idf_log" />
-      <item itemvalue="CMake Application.__idf_lwip" />
-      <item itemvalue="CMake Application.__idf_main" />
       <item itemvalue="CMake Application.__idf_mbedtls" />
-      <item itemvalue="CMake Application.__idf_mqtt" />
-      <item itemvalue="CMake Application.__idf_newlib" />
+      <item itemvalue="CMake Application.custom_bundle" />
+      <item itemvalue="CMake Application.mbedtls-apidoc" />
+      <item itemvalue="CMake Application.lib" />
+      <item itemvalue="CMake Application.mbedtls" />
+      <item itemvalue="CMake Application.mbedx509" />
+      <item itemvalue="CMake Application.tfpsacrypto-apidoc" />
+      <item itemvalue="CMake Application.tfpsacrypto" />
+      <item itemvalue="CMake Application.builtin" />
+      <item itemvalue="CMake Application.everest" />
+      <item itemvalue="CMake Application.p256m" />
       <item itemvalue="CMake Application.__idf_nvs_flash" />
-      <item itemvalue="CMake Application.__idf_nvs_sec_provider" />
+      <item itemvalue="CMake Application.encrypted-partition-table-flash" />
+      <item itemvalue="CMake Application.partition-table" />
+      <item itemvalue="CMake Application.partition-table-flash" />
+      <item itemvalue="CMake Application.partition_table" />
+      <item itemvalue="CMake Application.partition_table-flash" />
+      <item itemvalue="CMake Application.partition_table_bin" />
       <item itemvalue="CMake Application.__idf_perfmon" />
       <item itemvalue="CMake Application.__idf_protobuf-c" />
       <item itemvalue="CMake Application.__idf_protocomm" />
       <item itemvalue="CMake Application.__idf_pthread" />
-      <item itemvalue="CMake Application.__idf_rt" />
       <item itemvalue="CMake Application.__idf_sdmmc" />
-      <item itemvalue="CMake Application.__idf_soc" />
       <item itemvalue="CMake Application.__idf_spi_flash" />
       <item itemvalue="CMake Application.__idf_spiffs" />
-      <item itemvalue="CMake Application.__idf_tcp_transport" />
-      <item itemvalue="CMake Application.__idf_unity" />
       <item itemvalue="CMake Application.__idf_vfs" />
       <item itemvalue="CMake Application.__idf_wear_levelling" />
-      <item itemvalue="CMake Application.__idf_wifi_provisioning" />
+      <item itemvalue="CMake Application.__idf_cmock" />
+      <item itemvalue="CMake Application.__idf_console" />
+      <item itemvalue="CMake Application.__idf_driver" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-LowPassFilter" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-PIDController" />
+      <item itemvalue="CMake Application.__idf_esp-tls" />
+      <item itemvalue="CMake Application.__idf_esp_driver_cam" />
+      <item itemvalue="CMake Application.__idf_esp_driver_gptimer" />
+      <item itemvalue="CMake Application.__idf_esp_driver_i2c" />
+      <item itemvalue="CMake Application.__idf_esp_driver_i2s" />
+      <item itemvalue="CMake Application.__idf_esp_driver_pcnt" />
+      <item itemvalue="CMake Application.__idf_esp_driver_spi" />
+      <item itemvalue="CMake Application.__idf_esp_driver_touch_sens" />
+      <item itemvalue="CMake Application.__idf_esp_driver_twai" />
+      <item itemvalue="CMake Application.__idf_esp_driver_uart" />
+      <item itemvalue="CMake Application.__idf_esp_event" />
+      <item itemvalue="CMake Application.__idf_esp_hal_ana_conv" />
+      <item itemvalue="CMake Application.__idf_esp_hal_gpio" />
+      <item itemvalue="CMake Application.__idf_esp_hal_rmt" />
+      <item itemvalue="CMake Application.__idf_esp_hal_timg" />
+      <item itemvalue="CMake Application.__idf_esp_hal_uart" />
+      <item itemvalue="CMake Application.__idf_esp_https_ota" />
+      <item itemvalue="CMake Application.__idf_esp_lcd" />
+      <item itemvalue="CMake Application.__idf_esp_libc" />
+      <item itemvalue="CMake Application.__idf_esp_netif" />
+      <item itemvalue="CMake Application.__idf_esp_partition" />
+      <item itemvalue="CMake Application.__idf_esp_psram" />
+      <item itemvalue="CMake Application.__idf_esp_ringbuf" />
+      <item itemvalue="CMake Application.__idf_esp_rom" />
+      <item itemvalue="CMake Application.__idf_esp_system" />
+      <item itemvalue="CMake Application.__idf_heap" />
+      <item itemvalue="CMake Application.__idf_lwip" />
+      <item itemvalue="CMake Application.__idf_main" />
+      <item itemvalue="CMake Application.__idf_nvs_sec_provider" />
+      <item itemvalue="CMake Application.__idf_rt" />
+      <item itemvalue="CMake Application.__idf_soc" />
+      <item itemvalue="CMake Application.__idf_tcp_transport" />
+      <item itemvalue="CMake Application.__idf_unity" />
       <item itemvalue="CMake Application.__idf_wpa_supplicant" />
       <item itemvalue="CMake Application.__idf_xtensa" />
       <item itemvalue="CMake Application.__ldgen_output_sections.ld" />
       <item itemvalue="CMake Application._project_elf_src" />
-      <item itemvalue="CMake Application.apidoc" />
-      <item itemvalue="CMake Application.app-flash" />
       <item itemvalue="CMake Application.app" />
+      <item itemvalue="CMake Application.app-flash" />
       <item itemvalue="CMake Application.app_check_size" />
-      <item itemvalue="CMake Application.bootloader-flash" />
+      <item itemvalue="CMake Application.config-report" />
       <item itemvalue="CMake Application.confserver" />
-      <item itemvalue="CMake Application.custom_bundle" />
-      <item itemvalue="CMake Application.efuse-common-table" />
-      <item itemvalue="CMake Application.efuse-custom-table" />
-      <item itemvalue="CMake Application.efuse_common_table" />
-      <item itemvalue="CMake Application.efuse_custom_table" />
-      <item itemvalue="CMake Application.efuse_test_table" />
       <item itemvalue="CMake Application.encrypted-app-flash" />
-      <item itemvalue="CMake Application.encrypted-bootloader-flash" />
       <item itemvalue="CMake Application.encrypted-flash" />
-      <item itemvalue="CMake Application.encrypted-partition-table-flash" />
-      <item itemvalue="CMake Application.erase_flash" />
-      <item itemvalue="CMake Application.everest" />
+      <item itemvalue="CMake Application.erase-flash" />
       <item itemvalue="CMake Application.flash" />
       <item itemvalue="CMake Application.gen_project_binary" />
-      <item itemvalue="CMake Application.lib" />
-      <item itemvalue="CMake Application.mbedcrypto" />
-      <item itemvalue="CMake Application.mbedtls" />
-      <item itemvalue="CMake Application.mbedx509" />
-      <item itemvalue="CMake Application.memory.ld" />
+      <item itemvalue="CMake Application.gen_Remote_binary" />
       <item itemvalue="CMake Application.menuconfig" />
       <item itemvalue="CMake Application.merge-bin" />
       <item itemvalue="CMake Application.monitor" />
-      <item itemvalue="CMake Application.p256m" />
-      <item itemvalue="CMake Application.partition-table-flash" />
-      <item itemvalue="CMake Application.partition-table" />
-      <item itemvalue="CMake Application.partition_table-flash" />
-      <item itemvalue="CMake Application.partition_table" />
-      <item itemvalue="CMake Application.partition_table_bin" />
+      <item itemvalue="CMake Application.Remote.elf" />
       <item itemvalue="CMake Application.save-defconfig" />
-      <item itemvalue="CMake Application.sections.ld.in" />
-      <item itemvalue="CMake Application.show-efuse-table" />
-      <item itemvalue="CMake Application.show_efuse_table" />
+      <item itemvalue="CMake Application.size" />
       <item itemvalue="CMake Application.size-components" />
       <item itemvalue="CMake Application.size-files" />
-      <item itemvalue="CMake Application.size" />
-      <item itemvalue="CMake Application.uf2-app" />
       <item itemvalue="CMake Application.uf2" />
+      <item itemvalue="CMake Application.uf2-app" />
+      <item itemvalue="CMake Application.efuse_common_table" />
+      <item itemvalue="CMake Application.efuse_custom_table" />
+      <item itemvalue="CMake Application.memory_ld_in_preprocess" />
+      <item itemvalue="CMake Application.sections_ld_in_preprocess" />
+      <item itemvalue="CMake Application.show_efuse_table" />
     </list>
   </component>
   <component name="RustProjectSettings">
@@ -1134,7 +1297,9 @@
       <workItem from="1772263813915" duration="5809000" />
       <workItem from="1772283595942" duration="87000" />
       <workItem from="1772433566245" duration="15907000" />
-      <workItem from="1774609302461" duration="3845000" />
+      <workItem from="1774609302461" duration="3923000" />
+      <workItem from="1778610315900" duration="739000" />
+      <workItem from="1778611165521" duration="11315000" />
     </task>
     <task id="LOCAL-00001" summary="ебучий есп">
       <option name="closed" value="true" />
@@ -1192,11 +1357,24 @@
       <option name="project" value="LOCAL" />
       <updated>1774612151044</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="СУКА НЕ ВЛЕЗАЕТ В СТРОКУ">
+      <option name="closed" value="true" />
+      <created>1774613460569</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1774613460569</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VCPKGProject">
+    <isAutomaticCheckingOnLaunch value="false" />
+    <isAutomaticFoundErrors value="true" />
+    <isAutomaticReloadCMake value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>
@@ -1233,7 +1411,8 @@
     <MESSAGE value="перехуярил значения гиростабилизированного режима на более эксплесивные, т.к. кожаному мешку куда проще вписывать условные 5 град/сек девиации, нежели какие-то ебаные факторы от макс угла крена" />
     <MESSAGE value="доделал наконец визуализацию заданного курса на ND прямо на РОЗОЧКЕ компаса" />
     <MESSAGE value="добавил конфигурацию макс тока на каскаде, чтоб ебашило на все сука 140 ма, ато БлДЯЬ ЗАПЛОЧЕНО ЗА ПОЛНОЕ - БУДЕМ ЮЗАТЬ ПОЛНОЕ" />
-    <option name="LAST_COMMIT_MESSAGE" value="добавил конфигурацию макс тока на каскаде, чтоб ебашило на все сука 140 ма, ато БлДЯЬ ЗАПЛОЧЕНО ЗА ПОЛНОЕ - БУДЕМ ЮЗАТЬ ПОЛНОЕ" />
+    <MESSAGE value="СУКА НЕ ВЛЕЗАЕТ В СТРОКУ" />
+    <option name="LAST_COMMIT_MESSAGE" value="СУКА НЕ ВЛЕЗАЕТ В СТРОКУ" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

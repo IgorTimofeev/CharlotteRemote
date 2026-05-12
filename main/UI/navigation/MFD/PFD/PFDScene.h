@@ -13,9 +13,13 @@ namespace pizda {
 			PFDScene();
 
 		protected:
+			void onEvent(Event* event) override;
+
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
+			Point _prevDragPosition { -1, -1 };
+
 			static void renderPitchOverlay(
 				Renderer* renderer,
 				const Bounds& bounds,

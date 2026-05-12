@@ -65,7 +65,10 @@ namespace pizda {
 
 			MotorEditor tailLeft;
 			MotorEditor tailRight;
-			
+
+			MotorEditor cameraPitch;
+			MotorEditor cameraYaw;
+
 			void vaginoz(MotorEditor* motorEditor);
 	};
 }

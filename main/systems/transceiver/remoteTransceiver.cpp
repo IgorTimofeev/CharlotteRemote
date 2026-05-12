@@ -371,13 +371,27 @@ namespace pizda {
 
 		return true;
 	}
-	
+
+	float RemoteTransceiver::readAircraftTelemetrySecondaryPacketCameraValue(BitStream& stream, const uint8_t valueLengthBits) {
+		return
+			// Raw -> [0.0; 1.0]
+			static_cast<float>(stream.readUint8(valueLengthBits)) / static_cast<float>((1 << valueLengthBits) - 1)
+			// [0.0; 1.0] -> [-1.0; 1.0]
+			* 2.f - 1.f;
+	}
+
 	bool RemoteTransceiver::receiveAircraftTelemetrySecondaryPacket(BitStream& stream, const uint8_t payloadLength) {
 		if (!validatePayloadChecksumAndLength(
 			stream,
+				// Throttle
 			AircraftTelemetrySecondaryPacket::throttleLengthBits
+				// Camera
+				+ AircraftTelemetrySecondaryPacket::cameraPitchLengthBits
+				+ AircraftTelemetrySecondaryPacket::cameraYawLengthBits
+				// Coords
 				+ AircraftTelemetrySecondaryPacket::latLengthBits
 				+ AircraftTelemetrySecondaryPacket::lonLengthBits
+				// Battery
 				+ AircraftTelemetrySecondaryPacket::batteryLengthBits
 				// Lights
 				+ 4
@@ -400,7 +414,15 @@ namespace pizda {
 			stream.readUint8(AircraftTelemetrySecondaryPacket::throttleLengthBits)
 			* 0xFF
 			/ ((1 << AircraftTelemetrySecondaryPacket::throttleLengthBits) - 1);
-		
+
+		// -------------------------------- Camera --------------------------------
+
+		rc.getAircraftData().raw.camera.pitchFactorM1P1 =
+			readAircraftTelemetrySecondaryPacketCameraValue(stream, AircraftTelemetrySecondaryPacket::cameraPitchLengthBits);
+
+		rc.getAircraftData().raw.camera.yawFactorM1P1 =
+			readAircraftTelemetrySecondaryPacketCameraValue(stream, AircraftTelemetrySecondaryPacket::cameraYawLengthBits);
+
 		// -------------------------------- Latitude & longitude --------------------------------
 		
 		// Latitude
@@ -565,6 +587,10 @@ namespace pizda {
 
 			case RemoteAuxiliaryPacketType::autopilot:
 				transmitRemoteAuxiliaryAutopilotPacket(stream);
+				break;
+
+			case RemoteAuxiliaryPacketType::camera:
+				transmitRemoteAuxiliaryCameraPacket(stream);
 				break;
 
 			case RemoteAuxiliaryPacketType::motors:
@@ -785,6 +811,28 @@ namespace pizda {
 			}
 		}
 	}
+
+	void RemoteTransceiver::transmitRemoteAuxiliaryCameraPacket(BitStream& stream) {
+		auto& rc = RC::getInstance();
+
+		// Pitch
+		stream.writeUint16(
+			static_cast<uint16_t>(
+				(rc.getRemoteData().camera.pitchFactorM1P1 + 1.f) / 2.f
+				* ((1 << RemoteAuxiliaryCameraPacket::pitchLengthBits) - 1)
+			),
+			RemoteAuxiliaryCameraPacket::pitchLengthBits
+		);
+
+		// Yaw
+		stream.writeUint16(
+			static_cast<uint16_t>(
+				(rc.getRemoteData().camera.yawFactorM1P1 + 1.f) / 2.f
+				* ((1 << RemoteAuxiliaryCameraPacket::yawLengthBits) - 1)
+			),
+			RemoteAuxiliaryCameraPacket::yawLengthBits
+		);
+	}
 	
 	void RemoteTransceiver::transmitRemoteAuxiliaryMotorsPacket(BitStream& stream) {
 		const auto& motors = RC::getInstance().getSettings().motors;
@@ -806,6 +854,9 @@ namespace pizda {
 		
 		write(motors.tailLeft);
 		write(motors.tailRight);
+
+		write(motors.cameraPitch);
+		write(motors.cameraYaw);
 	}
 	
 	void RemoteTransceiver::transmitRemoteAuxiliaryCalibratePacket(BitStream& stream) {

@@ -35,6 +35,7 @@ namespace pizda {
 		lights,
 		baro,
 		autopilot,
+		camera,
 		motors,
 		calibrate,
 		ADIRS,
@@ -46,6 +47,12 @@ namespace pizda {
 	class RemoteAuxiliaryPacket {
 		public:
 			constexpr static uint8_t typeLengthBits = 4;
+	};
+
+	class RemoteAuxiliaryCameraPacket {
+		public:
+			constexpr static uint8_t pitchLengthBits = 12;
+			constexpr static uint8_t yawLengthBits = pitchLengthBits;
 	};
 
 	class RemoteAuxiliaryMotorConfigurationPacket {
@@ -215,8 +222,13 @@ namespace pizda {
 	class AircraftTelemetrySecondaryPacket {
 		public:
 			constexpr static uint8_t throttleLengthBits = 7;
+
+			constexpr static uint8_t cameraPitchLengthBits = 7;
+			constexpr static uint8_t cameraYawLengthBits = cameraPitchLengthBits;
+
 			constexpr static uint8_t latLengthBits = 25;
 			constexpr static uint8_t lonLengthBits = 26;
+
 			constexpr static uint8_t batteryLengthBits = 9;
 
 			constexpr static uint8_t autopilotLateralModeLengthBits = RemoteAuxiliaryAutopilotPacket::lateralModeLengthBits;

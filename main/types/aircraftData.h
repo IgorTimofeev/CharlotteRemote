@@ -58,9 +58,17 @@ namespace pizda {
 			bool _calibrating = false;
 			int64_t _validUntil = 0;
 	};
+
+	class AircraftDataRawCamera {
+		public:
+			float pitchFactorM1P1 = 0;
+			float yawFactorM1P1 = 0;
+	};
 	
 	class AircraftDataRaw {
 		public:
+			AircraftDataRawCamera camera {};
+
 			// Kronshtadt airfield in Saint-Petersburg for UI testing
 			// ПРИВЕТУЛИ ФЕДИНОЙ ДАМЕ СЕРДЦА
 			// Upd 26.12.26: а он подарит ей колечко с солнцем! Никто об этом не узнает, никто
@@ -73,7 +81,7 @@ namespace pizda {
 			float groundSpeedKt = 0;
 			float windSpeed = 0;
 			uint8_t throttle_0_255 = 0;
-			
+
 			float airspeedMPS = 0;
 			float airspeedTrendMPS = 0;
 			
@@ -105,10 +113,17 @@ namespace pizda {
 			float pitchRad = 0;
 			float rollRad = 0;
 	};
-	
+
+	class AircraftDataComputedCamera {
+		public:
+			float pitchFactorM1P1 = 0;
+			float yawFactorM1P1 = 0;
+	};
+
 	class AircraftDataComputed {
 		public:
 			GeoCoordinates coordinates {};
+			AircraftDataComputedCamera camera {};
 
 			float airspeedKt = 0;
 			float airspeedTrendKt = 0;

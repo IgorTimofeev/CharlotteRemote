@@ -21,6 +21,43 @@ namespace pizda {
 		}
 	}
 
+	void PFDScene::onEvent(Event* event) {
+		Scene::onEvent(event);
+
+		if (event->getTypeID() == PointerDownEvent::typeID) {
+			_prevDragPosition = reinterpret_cast<PointerDownEvent*>(event)->getPosition();
+		}
+		else if (event->getTypeID() == PointerDragEvent::typeID && _prevDragPosition.getX() >= 0) {
+			auto& rc = RC::getInstance();
+			const auto& bounds = getBounds();
+
+			const auto& position = reinterpret_cast<PointerDragEvent*>(event)->getPosition();
+			const auto delta = position - _prevDragPosition;
+			_prevDragPosition = position;
+
+			constexpr static float incrementMaxFactor = 0.5f;
+
+			const Vector2F increment {
+				static_cast<float>(delta.getX()) / static_cast<float>(bounds.getWidth()) * incrementMaxFactor,
+				static_cast<float>(delta.getY()) / static_cast<float>(bounds.getHeight()) * incrementMaxFactor
+			};
+
+			rc.getRemoteData().camera.pitchFactorM1P1 = std::clamp(
+				rc.getRemoteData().camera.pitchFactorM1P1 - increment.getY(),
+				-1.f,
+				1.f
+			);
+
+			rc.getRemoteData().camera.yawFactorM1P1 = std::clamp(
+				rc.getRemoteData().camera.yawFactorM1P1 + increment.getX(),
+				-1.f,
+				1.f
+			);
+
+			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::camera);
+		}
+	}
+
 	void PFDScene::onRender(Renderer* renderer, const Bounds& bounds) {
 		auto& rc = RC::getInstance();
 		
@@ -193,7 +230,8 @@ namespace pizda {
 				center.getX() - flightDirectorLength / 2,
 				center.getY()
 					- static_cast<int32_t>(std::clamp(
-						std::tanf(rc.getAircraftData().computed.autopilot.pitchRad - rc.getAircraftData().computed.pitchRad) * projectionPlaneDistance,
+						std::tanf(rc.getAircraftData().computed.autopilot.pitchRad - rc.getAircraftData().computed.pitchRad)
+							* projectionPlaneDistance,
 						-flightDirectorLengthHalfF,
 						flightDirectorLengthHalfF
 					))
@@ -208,7 +246,9 @@ namespace pizda {
 			flightDirectorRectBounds.setX(
 				center.getX()
 					+ static_cast<int32_t>(std::clamp(
-						(rc.getAircraftData().computed.autopilot.rollRad - rc.getAircraftData().computed.rollRad) / toRadians(30) * flightDirectorLengthHalfF,
+						(rc.getAircraftData().computed.autopilot.rollRad - rc.getAircraftData().computed.rollRad)
+							/ toRadians(30)
+							* flightDirectorLengthHalfF,
 						-flightDirectorLengthHalfF,
 						flightDirectorLengthHalfF
 					))
@@ -259,6 +299,35 @@ namespace pizda {
 				),
 				&Theme::bg1
 			);
+		}
+
+		// Camera
+		{
+			const auto& cameraPosition = Point(
+				std::clamp(
+					static_cast<int32_t>(
+						center.getX()
+						+ std::tanf(rc.getAircraftData().computed.camera.yawFactorM1P1 * std::numbers::pi_v<float> / 2.f)
+						* projectionPlaneDistance
+					),
+					bounds.getX(),
+					bounds.getX2()
+				),
+				std::clamp(
+					static_cast<int32_t>(
+						center.getY()
+						- std::tanf(rc.getAircraftData().computed.camera.pitchFactorM1P1 * std::numbers::pi_v<float> / 2.f)
+						* projectionPlaneDistance
+					),
+					bounds.getY(),
+					bounds.getY2()
+				)
+			);
+
+			constexpr static uint8_t lineLength = 7;
+
+			renderer->renderVerticalLine(Point(cameraPosition.getX(), cameraPosition.getY() - lineLength / 2), lineLength, &Theme::bg1);
+			renderer->renderHorizontalLine(Point(cameraPosition.getX() - lineLength / 2, cameraPosition.getY()), lineLength, &Theme::bg1);
 		}
 
 		// Aircraft symbol
