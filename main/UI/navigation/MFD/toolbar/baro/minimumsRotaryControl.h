@@ -8,7 +8,7 @@
 namespace pizda {
 	using namespace YOBA;
 	
-	class MinimumsRotaryControl : public SevenRotaryControl<4, 0, 15000, false, 1, 10> {
+	class MinimumsRotaryControl : public SevenRotaryControl {
 		public:
 			MinimumsRotaryControl();
 		

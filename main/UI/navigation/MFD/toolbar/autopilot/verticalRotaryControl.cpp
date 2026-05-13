@@ -38,7 +38,7 @@ namespace pizda {
 		);
 	}
 	
-	VerticalRotaryControl::VerticalRotaryControl() {
+	VerticalRotaryControl::VerticalRotaryControl() : SevenRotaryControl(4, 0, 35000, false, 10, 100) {
 		setVariants({
 			&seven,
 			&stab,

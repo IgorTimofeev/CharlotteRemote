@@ -3,7 +3,7 @@
 #include "rc.h"
 
 namespace pizda {
-	ReferencePressureRotaryControl::ReferencePressureRotaryControl() {
+	ReferencePressureRotaryControl::ReferencePressureRotaryControl() : SevenRotaryControl(5, 9000, 11000, false, 1, 10) {
 		setVariants({
 			&seven
 		});

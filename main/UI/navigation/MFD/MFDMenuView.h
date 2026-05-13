@@ -32,7 +32,7 @@ namespace pizda {
 				pressureButton { &resources::images::menuIconMFDBaro, L"BARO", PersonalizationSettingsMFDToolbarMode::baro },
 				trimButton { &resources::images::menuIconMFDTrim, L"Trim", PersonalizationSettingsMFDToolbarMode::trim },
 				lightsButton { &resources::images::menuIconMFDLights, L"Lights", PersonalizationSettingsMFDToolbarMode::lights },
-				cameraButton { &resources::images::menuIconMFDLights, L"Lights", PersonalizationSettingsMFDToolbarMode::camera };
+				cameraButton { &resources::images::menuIconMFDCameraImage, L"Camera", PersonalizationSettingsMFDToolbarMode::camera };
 
 			std::array<MFDModeMenuViewButton*, 5> modeButtons {
 				&autopilotButton,

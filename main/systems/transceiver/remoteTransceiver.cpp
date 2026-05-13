@@ -818,7 +818,8 @@ namespace pizda {
 		// Pitch
 		stream.writeUint16(
 			static_cast<uint16_t>(
-				(rc.getRemoteData().camera.pitchFactorM1P1 + 1.f) / 2.f
+				static_cast<float>(rc.getRemoteData().camera.pitchAngleDeg - config::camera::pitchAngleMinDeg)
+				/ static_cast<float>(config::camera::pitchAngleMaxDeg - config::camera::pitchAngleMinDeg)
 				* ((1 << RemoteAuxiliaryCameraPacket::pitchLengthBits) - 1)
 			),
 			RemoteAuxiliaryCameraPacket::pitchLengthBits
@@ -827,7 +828,8 @@ namespace pizda {
 		// Yaw
 		stream.writeUint16(
 			static_cast<uint16_t>(
-				(rc.getRemoteData().camera.yawFactorM1P1 + 1.f) / 2.f
+				static_cast<float>(rc.getRemoteData().camera.yawAngleDeg - config::camera::yawAngleMinDeg)
+				/ static_cast<float>(config::camera::yawAngleMaxDeg - config::camera::yawAngleMinDeg)
 				* ((1 << RemoteAuxiliaryCameraPacket::yawLengthBits) - 1)
 			),
 			RemoteAuxiliaryCameraPacket::yawLengthBits

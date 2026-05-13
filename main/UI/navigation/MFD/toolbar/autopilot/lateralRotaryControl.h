@@ -16,7 +16,7 @@ namespace pizda {
 			void onTick() override;
 	};
 
-	class LateralRotaryControl : public SevenRotaryControl<3, 1, 360, true, 1, 10> {
+	class LateralRotaryControl : public SevenRotaryControl {
 		public:
 			LateralRotaryControl();
 			

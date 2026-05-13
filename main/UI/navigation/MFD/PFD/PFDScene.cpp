@@ -29,29 +29,25 @@ namespace pizda {
 		}
 		else if (event->getTypeID() == PointerDragEvent::typeID && _prevDragPosition.getX() >= 0) {
 			auto& rc = RC::getInstance();
-			const auto& bounds = getBounds();
 
 			const auto& position = reinterpret_cast<PointerDragEvent*>(event)->getPosition();
 			const auto delta = position - _prevDragPosition;
 			_prevDragPosition = position;
 
-			constexpr static float incrementMaxFactor = 0.5f;
+			constexpr static uint16_t milliDegPerPixel = 500;
+			const int32_t incrementX = delta.getX() * milliDegPerPixel / 1000;
+			const int32_t incrementY = delta.getY() * milliDegPerPixel / 1000;
 
-			const Vector2F increment {
-				static_cast<float>(delta.getX()) / static_cast<float>(bounds.getWidth()) * incrementMaxFactor,
-				static_cast<float>(delta.getY()) / static_cast<float>(bounds.getHeight()) * incrementMaxFactor
-			};
-
-			rc.getRemoteData().camera.pitchFactorM1P1 = std::clamp(
-				rc.getRemoteData().camera.pitchFactorM1P1 - increment.getY(),
-				-1.f,
-				1.f
+			rc.getRemoteData().camera.pitchAngleDeg = std::clamp<int8_t>(
+				rc.getRemoteData().camera.pitchAngleDeg - incrementY,
+				config::camera::pitchAngleMinDeg,
+				config::camera::pitchAngleMaxDeg
 			);
 
-			rc.getRemoteData().camera.yawFactorM1P1 = std::clamp(
-				rc.getRemoteData().camera.yawFactorM1P1 + increment.getX(),
-				-1.f,
-				1.f
+			rc.getRemoteData().camera.yawAngleDeg = std::clamp<int8_t>(
+				rc.getRemoteData().camera.yawAngleDeg + incrementX,
+				config::camera::yawAngleMinDeg,
+				config::camera::yawAngleMaxDeg
 			);
 
 			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::camera);
@@ -307,7 +303,13 @@ namespace pizda {
 				std::clamp(
 					static_cast<int32_t>(
 						center.getX()
-						+ std::tanf(rc.getAircraftData().computed.camera.yawFactorM1P1 * std::numbers::pi_v<float> / 2.f)
+						+ std::tanf(
+							toRadians(
+								static_cast<float>(config::camera::yawAngleMinDeg)
+								+ static_cast<float>(config::camera::yawAngleMaxDeg - config::camera::yawAngleMinDeg)
+								* ((rc.getAircraftData().computed.camera.yawFactorM1P1 + 1.f) / 2.f)
+							)
+						)
 						* projectionPlaneDistance
 					),
 					bounds.getX(),
@@ -316,7 +318,13 @@ namespace pizda {
 				std::clamp(
 					static_cast<int32_t>(
 						center.getY()
-						- std::tanf(rc.getAircraftData().computed.camera.pitchFactorM1P1 * std::numbers::pi_v<float> / 2.f)
+						- std::tanf(
+							toRadians(
+								static_cast<float>(config::camera::pitchAngleMinDeg)
+								+ static_cast<float>(config::camera::pitchAngleMaxDeg - config::camera::pitchAngleMinDeg)
+								* ((rc.getAircraftData().computed.camera.pitchFactorM1P1 + 1.f) / 2.f)
+							)
+						)
 						* projectionPlaneDistance
 					),
 					bounds.getY(),

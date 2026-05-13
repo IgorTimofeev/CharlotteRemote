@@ -16,7 +16,7 @@ namespace pizda {
 		setValue(static_cast<int32_t>(std::round(toDegrees(RC::getInstance().getAircraftData().computed.autopilot.rollRad))));
 	}
 
-	LateralRotaryControl::LateralRotaryControl() {
+	LateralRotaryControl::LateralRotaryControl() : SevenRotaryControl(3, 1, 360, true, 1, 10) {
 		setVariants({
 			&seven,
 			&stab

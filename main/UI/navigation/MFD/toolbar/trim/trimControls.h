@@ -8,7 +8,7 @@
 namespace pizda {
 	using namespace YOBA;
 	
-	class TrimControl : public SevenRotaryControl<4, -100, 100, false, 1, 10> {
+	class TrimControl : public SevenRotaryControl {
 		public:
 			TrimControl(std::wstring_view title, int8_t* settingsValue);
 			

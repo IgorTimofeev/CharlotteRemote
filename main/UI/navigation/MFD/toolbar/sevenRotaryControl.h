@@ -10,10 +10,23 @@
 namespace pizda {
 	using namespace YOBA;
 	
-	template<uint8_t digitCount, int32_t minimum, int32_t maximum, bool cycling, uint16_t smallChange, uint16_t bigChange>
 	class SevenRotaryControl : public RotaryControl {
 		public:
-			SevenRotaryControl() {
+			SevenRotaryControl(
+				const uint8_t digitCount,
+				const int32_t minimum,
+				const int32_t maximum,
+				const bool cycling,
+				const uint16_t smallChange,
+				const uint16_t bigChange
+			) :
+				digitCount(digitCount),
+				minimum(minimum),
+				maximum(maximum),
+				cycling(cycling),
+				smallChange(smallChange),
+				bigChange(bigChange)
+			{
 				seven.setAlignment(Alignment::center);
 				
 				seven.setDigitCount(digitCount);
@@ -27,7 +40,14 @@ namespace pizda {
 			}
 
 			SevenSegment seven {};
-			
+
+			const uint8_t digitCount;
+			const int32_t minimum;
+			const int32_t maximum;
+			const bool cycling;
+			const uint16_t smallChange;
+			const uint16_t bigChange;
+
 		protected:
 			void onRotate(const bool clockwise, const bool big) override {
 				if (getVariantIndex() == 0) {

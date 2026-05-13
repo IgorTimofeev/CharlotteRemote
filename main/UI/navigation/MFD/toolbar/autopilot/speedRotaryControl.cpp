@@ -3,7 +3,7 @@
 #include "rc.h"
 
 namespace pizda {
-	SpeedRotaryControl::SpeedRotaryControl() {
+	SpeedRotaryControl::SpeedRotaryControl() : SevenRotaryControl(3, 0, 350, false, 1, 10) {
 		setVariants({
 			&seven
 		});

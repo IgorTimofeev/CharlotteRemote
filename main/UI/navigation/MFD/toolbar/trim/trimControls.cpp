@@ -3,7 +3,7 @@
 #include "rc.h"
 
 namespace pizda {
-	TrimControl::TrimControl(const std::wstring_view title, int8_t* settingsValue) : _title(title), _settingsValue(settingsValue) {
+	TrimControl::TrimControl(const std::wstring_view title, int8_t* settingsValue) : SevenRotaryControl(4, -100, 100, false, 1, 10),  _title(title), _settingsValue(settingsValue) {
 		setVariants({
 			&seven
 		});

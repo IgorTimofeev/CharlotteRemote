@@ -2,8 +2,10 @@
 
 #include <ranges>
 #include <locale>
-#include <codecvt>
+// #include <codecvt>
 #include <cstdlib>
+#include <string>
+#include <cwchar>
 
 namespace pizda {
 	class StringUtils {
@@ -18,16 +20,56 @@ namespace pizda {
 				).empty();
 			}
 
-			static std::wstring toWString(const std::string& source) {
-				std::wstring_convert<std::codecvt_utf8<wchar_t>> converterX;
+			// static std::wstring toWString(const std::string& source) {
+			// 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converterX;
+			//
+			// 	return converterX.from_bytes(source.data(), source.data() + source.size());
+			// }
+			//
+			// static std::string toString(const std::wstring_view& source) {
+			// 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converterX;
+			//
+			// 	return converterX.to_bytes(source.data(), source.data() + source.size());
+			// }
 
-				return converterX.from_bytes(source.data(), source.data() + source.size());
+			static std::wstring toWString(const std::string& str) {
+				if (str.empty())
+					return L"";
+
+				std::mbstate_t state {};
+				const char* src = str.data();
+
+				// Вычисляем необходимый размер буфера (включая null-терминатор)
+				const size_t length = std::mbrtowc(nullptr, src, 0, &state);
+
+				if (length == static_cast<size_t>(-1))
+					return L"";
+
+				std::wstring result(length, L'\0');
+				src = str.data();
+				std::mbrtowc(result.data(), src, str.size(), &state);
+
+				return result;
 			}
 
-			static std::string toString(const std::wstring_view& source) {
-				std::wstring_convert<std::codecvt_utf8<wchar_t>> converterX;
+			static std::string toString(const std::wstring& wstr) {
+				if (wstr.empty())
+					return "";
 
-				return converterX.to_bytes(source.data(), source.data() + source.size());
+				std::mbstate_t state {};
+				const wchar_t* src = wstr.data();
+
+				// Вычисляем необходимый размер буфера
+				const size_t length = std::wcsrtombs(nullptr, &src, 0, &state);
+
+				if (length == static_cast<size_t>(-1))
+					return "";
+
+				std::string result(length, '\0');
+				src = wstr.data();
+				std::wcsrtombs(result.data(), &src, result.size(), &state);
+
+				return result;
 			}
 
 			static std::wstring toWString(const float value) {

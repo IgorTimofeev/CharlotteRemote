@@ -4,9 +4,11 @@
 #include <YOBA/UI.h>
 #include "UI/theme.h"
 #include "config.h"
+#include "resources/images.h"
 
 #include "UI/navigation/MFD/toolbar/toolbar.h"
 #include "UI/navigation/MFD/toolbar/camera/cameraControls.h"
+#include "UI/navigation/MFD/toolbar/toolbarButton.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -14,9 +16,13 @@ namespace pizda {
 	class CameraToolbar : public RowToolbar {
 		public:
 			CameraToolbar();
-			
+
+		protected:
+			void onTick() override;
+
 		private:
-			CameraControl<config::camera::pitchAngleMinDeg, config::camera::pitchAngleMaxDeg> _pitch;
-			CameraControl<config::camera::yawAngleMinDeg, config::camera::yawAngleMaxDeg> _yaw;
+			CameraControl _pitch;
+			CameraControl _yaw;
+			ImageToolbarButton _reset { L"Reset", &resources::images::menuIconMFDCameraResetImage };
 	};
 }

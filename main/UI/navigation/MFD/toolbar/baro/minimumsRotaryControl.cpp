@@ -3,7 +3,7 @@
 #include "rc.h"
 
 namespace pizda {
-	MinimumsRotaryControl::MinimumsRotaryControl() {
+	MinimumsRotaryControl::MinimumsRotaryControl() : SevenRotaryControl(4, 0, 15000, false, 1, 10) {
 		setVariants({
 			&seven
 		});

@@ -8,7 +8,7 @@
 namespace pizda {
 	using namespace YOBA;
 	
-	class SpeedRotaryControl : public SevenRotaryControl<3, 0, 350, false, 1, 10> {
+	class SpeedRotaryControl : public SevenRotaryControl {
 		public:
 			SpeedRotaryControl();
 		

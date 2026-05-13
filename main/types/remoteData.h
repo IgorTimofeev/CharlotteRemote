@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <array>
 #include <limits>
+#include <sys/stat.h>
 
 #include "types/generic.h"
 
@@ -25,13 +26,6 @@ namespace pizda {
 		public:
 			int8_t pitchAngleDeg = 0;
 			int8_t yawAngleDeg = 0;
-
-			float pitchFactorM1P1 = 0.0f;
-			float yawFactorM1P1 = 0.0f;
-
-			void updateFactors() {
-				pitchFactorM1P1
-			}
 	};
 
 	enum class RemoteDataRadioSpectrumScanningState {
