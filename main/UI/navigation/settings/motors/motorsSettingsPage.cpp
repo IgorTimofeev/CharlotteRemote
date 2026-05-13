@@ -6,7 +6,9 @@
 #include "UI/theme.h"
 
 namespace pizda {
-	MotorEditor::MotorEditor(const std::wstring_view title, MotorSettings* settings) : Titler(title), _settings(settings) {
+	MotorEditor::MotorEditor(const std::wstring_view title, const MotorType type) : Titler(title), _type(type) {
+		const auto settings = RC::getInstance().getSettings().motors.getByType(type);
+
 		*this += &_mainLayout;
 		
 		// Reverse
@@ -25,9 +27,9 @@ namespace pizda {
 		_reverse.setText(L"<>");
 		_reverse.setToggle(true);
 		
-		_reverse.setActive(_settings->reverse);
+		_reverse.setActive(settings->reverse);
 		
-		_reverse.setOnClick([this]() {
+		_reverse.setOnClick([this] {
 			changed();
 		});
 		
@@ -40,63 +42,62 @@ namespace pizda {
 		_mainLayout += &_minMaxRow;
 		
 		// Min
-		addTextField(_min, _settings->min);
+		addTextField(_min, settings->min);
 		
 		// Max
-		addTextField(_max, _settings->max);
+		addTextField(_max, settings->max);
 	}
-	
-	void MotorEditor::toSettings() const {
-		_settings->min = static_cast<uint16_t>(StringUtils::tryParseInt32Or(_min.getText(), 1'000));
-		_settings->max = static_cast<uint16_t>(StringUtils::tryParseInt32Or(_max.getText(), 2'000));
-		_settings->reverse = _reverse.isActive();
-		_settings->sanitize();
-	}
-	
-	MotorsSettingsPage::MotorsSettingsPage() :
-		throttle(L"Throttle", &RC::getInstance().getSettings().motors.throttle),
-		noseWheel(L"Nose wheel", &RC::getInstance().getSettings().motors.noseWheel),
-		
-		flapLeft(L"Left flap", &RC::getInstance().getSettings().motors.flapLeft),
-		aileronLeft(L"Left aileron", &RC::getInstance().getSettings().motors.aileronLeft),
-		
-		flapRight(L"Right flap", &RC::getInstance().getSettings().motors.flapRight),
-		aileronRight(L"Right aileron", &RC::getInstance().getSettings().motors.aileronRight),
-		
-		tailLeft(L"Left tail", &RC::getInstance().getSettings().motors.tailLeft),
-		tailRight(L"Right tail", &RC::getInstance().getSettings().motors.tailRight),
 
-		cameraPitch(L"Camera pitch", &RC::getInstance().getSettings().motors.cameraPitch),
-		cameraYaw(L"Camera yaw", &RC::getInstance().getSettings().motors.cameraYaw)
-	{
+	void MotorEditor::changed() const {
+		auto& rc = RC::getInstance();
+
+		rc.getRemoteData().motorSettings.type = _type;
+		rc.getRemoteData().motorSettings.settings.min = static_cast<uint16_t>(StringUtils::tryParseInt32Or(_min.getText(), 1'000));
+		rc.getRemoteData().motorSettings.settings.max = static_cast<uint16_t>(StringUtils::tryParseInt32Or(_max.getText(), 2'000));
+		rc.getRemoteData().motorSettings.settings.reverse = _reverse.isActive();
+		rc.getRemoteData().motorSettings.settings.sanitize();
+
+		*rc.getSettings().motors.getByType(_type) = rc.getRemoteData().motorSettings.settings;
+		rc.getSettings().motors.scheduleWrite();
+
+		rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::motors);
+	}
+
+	MotorsSettingsPage::MotorsSettingsPage() {
 		// Page title
-		title.setText(L"Motors");
+		title.setText(L"Nose");
 		
-		// Content
 		vaginoz(&throttle);
 		vaginoz(&noseWheel);
+		rows += &_mainSeparator;
 
+		penisula(&_leftWingTitle);
 		vaginoz(&flapLeft);
 		vaginoz(&aileronLeft);
-		
+		rows += &_leftWingSeparator;
+
+		penisula(&_rightWingTitle);
 		vaginoz(&flapRight);
 		vaginoz(&aileronRight);
+		rows += &_rightWingSeparator;
 
+		penisula(&_tailTitle);
 		vaginoz(&tailLeft);
 		vaginoz(&tailRight);
+		rows += &_tailSeparator;
 
+		penisula(&_cameraTitle);
 		vaginoz(&cameraYaw);
 		vaginoz(&cameraPitch);
 	}
-	
+
+	void MotorsSettingsPage::penisula(TextView* text) {
+		Theme::applyPageTitle(text);
+
+		rows += text;
+	}
+
 	void MotorsSettingsPage::vaginoz(MotorEditor* motorEditor) {
-		motorEditor->changed = [motorEditor]() {
-			motorEditor->toSettings();
-			RC::getInstance().getSettings().motors.scheduleWrite();
-			
-			RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::motors);
-		};
-		
 		rows += motorEditor;
 	}
 }

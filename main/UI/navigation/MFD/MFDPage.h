@@ -11,6 +11,7 @@
 #include "toolbar/baro/baroToolbar.h"
 #include "toolbar/trim/trimToolbar.h"
 #include "toolbar/lights/lightsToolbar.h"
+#include "toolbar/camera/cameraToolbar.h"
 
 namespace pizda {
 	using namespace YOBA;
@@ -47,5 +48,6 @@ namespace pizda {
 			std::unique_ptr<BaroToolbar> _baroToolbar {};
 			std::unique_ptr<TrimToolbar> _trimToolbar {};
 			std::unique_ptr<LightsToolbar> _lightsToolbar {};
+			std::unique_ptr<CameraToolbar> _cameraToolbar {};
 	};
 }

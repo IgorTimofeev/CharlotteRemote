@@ -157,7 +157,16 @@ namespace pizda {
 					constexpr static gpio_num_t gpio = GPIO_NUM_4;
 					constexpr static ledc_channel_t channel = LEDC_CHANNEL_0;
 			};
-	
+
+			class camera {
+				public:
+					constexpr static int8_t pitchAngleMinDeg = -90;
+					constexpr static int8_t pitchAngleMaxDeg = 10;
+
+					constexpr static int8_t yawAngleMinDeg = -90;
+					constexpr static int8_t yawAngleMaxDeg = 90;
+			};
+
 			class application {
 				public:
 					// 30 FPS are barely achievable on SPI displays, BUT

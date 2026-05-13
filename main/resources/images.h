@@ -9,6 +9,8 @@
 #include "resources/images/menuIconMFDBaroImage.h"
 #include "resources/images/menuIconMFDTrimImage.h"
 #include "resources/images/menuIconMFDMetricUnitsImage.h"
+#include "resources/images/menuIconMFDCameraImage.h"
+#include "resources/images/menuIconMFDCameraResetImage.h"
 
 #include "resources/images/menuIconMFDLightsImage.h"
 #include "resources/images/menuIconMFDLightsNavigationImage.h"
@@ -40,6 +42,8 @@ namespace pizda::resources {
 			constexpr static MenuIconMFDTrimImage menuIconMFDTrim {};
 			constexpr static MenuIconMFDLightsImage menuIconMFDLights {};
 			constexpr static MenuIconMFDMetricUnitsImage menuIconMfdMetricUnits {};
+			constexpr static MenuIconMFDCameraImage menuIconMFDCameraImage {};
+			constexpr static MenuIconMFDCameraResetImage menuIconMFDCameraResetImage {};
 
 			constexpr static MenuIconMFDLightsNavigationImage menuIconMFDLightsNavigation {};
 			constexpr static MenuIconMFDLightsStrobeImage menuIconMFDLightsStrobe {};

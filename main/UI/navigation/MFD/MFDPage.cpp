@@ -90,6 +90,9 @@ namespace pizda {
 		
 		if (_lightsToolbar.get() && rc.getSettings().personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::lights)
 			_lightsToolbar.reset();
+
+		if (_cameraToolbar.get() && rc.getSettings().personalization.MFD.toolbar.mode != PersonalizationSettingsMFDToolbarMode::camera)
+			_cameraToolbar.reset();
 		
 		// Creating
 		switch (rc.getSettings().personalization.MFD.toolbar.mode) {
@@ -127,6 +130,15 @@ namespace pizda {
 				_rows.setAutoSize(_lightsToolbar.get(), true);
 				_rows += _lightsToolbar.get();
 				
+				break;
+			}
+			case PersonalizationSettingsMFDToolbarMode::camera: {
+				if (!_cameraToolbar)
+					_cameraToolbar = std::make_unique<CameraToolbar>();
+
+				_rows.setAutoSize(_cameraToolbar.get(), true);
+				_rows += _cameraToolbar.get();
+
 				break;
 			}
 			default:

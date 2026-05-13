@@ -23,8 +23,15 @@ namespace pizda {
 
 	class RemoteDataCamera {
 		public:
+			int8_t pitchAngleDeg = 0;
+			int8_t yawAngleDeg = 0;
+
 			float pitchFactorM1P1 = 0.0f;
 			float yawFactorM1P1 = 0.0f;
+
+			void updateFactors() {
+				pitchFactorM1P1
+			}
 	};
 
 	enum class RemoteDataRadioSpectrumScanningState {
@@ -54,6 +61,12 @@ namespace pizda {
 			TransceiverCommunicationSettings communicationSettings {};
 			RemoteDataTransceiverSpectrumScanning spectrumScanning {};
 	};
+
+	class RemoteDataMotorSettings {
+		public:
+			MotorType type = MotorType::throttle;
+			MotorSettings settings {};
+	};
 	
 	class RemoteData {
 		public:
@@ -62,5 +75,6 @@ namespace pizda {
 			RemoteDataAutopilot autopilot {};
 			AircraftCalibrationSystem calibrationSystem = AircraftCalibrationSystem::accelAndGyro;
 			RemoteDataTransceiver transceiver {};
+			RemoteDataMotorSettings motorSettings {};
 	};
 }

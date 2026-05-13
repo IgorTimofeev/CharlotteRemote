@@ -835,28 +835,12 @@ namespace pizda {
 	}
 	
 	void RemoteTransceiver::transmitRemoteAuxiliaryMotorsPacket(BitStream& stream) {
-		const auto& motors = RC::getInstance().getSettings().motors;
-	
-		const auto write = [&stream](const MotorSettings& motor) {
-			stream.writeUint16(motor.min, RemoteAuxiliaryMotorConfigurationPacket::minLengthBits);
-			stream.writeUint16(motor.max, RemoteAuxiliaryMotorConfigurationPacket::maxLengthBits);
-			stream.writeBool(motor.reverse);
-		};
-		
-		write(motors.throttle);
-		write(motors.noseWheel);
-		
-		write(motors.flapLeft);
-		write(motors.aileronLeft);
-		
-		write(motors.flapRight);
-		write(motors.aileronRight);
-		
-		write(motors.tailLeft);
-		write(motors.tailRight);
+		const auto& motor = RC::getInstance().getRemoteData().motorSettings;
 
-		write(motors.cameraPitch);
-		write(motors.cameraYaw);
+		stream.writeUint8(static_cast<uint8_t>(motor.type), RemoteAuxiliaryMotorConfigurationPacket::typeLengthBits);
+		stream.writeUint16(motor.settings.min, RemoteAuxiliaryMotorConfigurationPacket::minLengthBits);
+		stream.writeUint16(motor.settings.max, RemoteAuxiliaryMotorConfigurationPacket::maxLengthBits);
+		stream.writeBool(motor.settings.reverse);
 	}
 	
 	void RemoteTransceiver::transmitRemoteAuxiliaryCalibratePacket(BitStream& stream) {

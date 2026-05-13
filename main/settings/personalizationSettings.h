@@ -33,7 +33,8 @@ namespace pizda {
 		autopilot,
 		baro,
 		trim,
-		lights
+		lights,
+		camera
 	};
 
 	class PersonalizationSettingsMFDToolbar {
