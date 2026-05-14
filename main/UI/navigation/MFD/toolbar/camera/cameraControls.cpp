@@ -7,7 +7,7 @@ namespace pizda {
 		const int8_t minimum,
 		const int8_t maximum,
 		const std::wstring_view title,
-		int8_t* settingsValue
+		int16_t* settingsValue
 	):
 		SevenRotaryControl(
 			3,

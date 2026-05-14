@@ -22,12 +22,6 @@ namespace pizda {
 			bool autopilot = false;
 	};
 
-	class RemoteDataCamera {
-		public:
-			int8_t pitchAngleDeg = 0;
-			int8_t yawAngleDeg = 0;
-	};
-
 	enum class RemoteDataRadioSpectrumScanningState {
 		stopped,
 		startRequested,
@@ -64,7 +58,6 @@ namespace pizda {
 	
 	class RemoteData {
 		public:
-			RemoteDataCamera camera {};
 			RemoteDataLights lights {};
 			RemoteDataAutopilot autopilot {};
 			AircraftCalibrationSystem calibrationSystem = AircraftCalibrationSystem::accelAndGyro;

@@ -38,17 +38,11 @@ namespace pizda {
 			const int32_t incrementX = delta.getX() * milliDegPerPixel / 1000;
 			const int32_t incrementY = delta.getY() * milliDegPerPixel / 1000;
 
-			rc.getRemoteData().camera.pitchAngleDeg = std::clamp<int8_t>(
-				rc.getRemoteData().camera.pitchAngleDeg - incrementY,
-				config::camera::pitchAngleMinDeg,
-				config::camera::pitchAngleMaxDeg
-			);
+			rc.getSettings().controls.cameraPitchDeg = rc.getSettings().controls.cameraPitchDeg - incrementY;
+			rc.getSettings().controls.cameraYawDeg = rc.getSettings().controls.cameraYawDeg + incrementX;
+			config::camera::clamp(rc.getSettings().controls.cameraPitchDeg, rc.getSettings().controls.cameraYawDeg);
 
-			rc.getRemoteData().camera.yawAngleDeg = std::clamp<int8_t>(
-				rc.getRemoteData().camera.yawAngleDeg + incrementX,
-				config::camera::yawAngleMinDeg,
-				config::camera::yawAngleMaxDeg
-			);
+			rc.getSettings().controls.scheduleWrite();
 
 			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::camera);
 		}
@@ -300,33 +294,21 @@ namespace pizda {
 		// Camera
 		{
 			const auto& cameraPosition = Point(
-				std::clamp(
-					static_cast<int32_t>(
-						center.getX()
-						+ std::tanf(
-							toRadians(
-								static_cast<float>(config::camera::yawAngleMinDeg)
-								+ static_cast<float>(config::camera::yawAngleMaxDeg - config::camera::yawAngleMinDeg)
-								* ((rc.getAircraftData().computed.camera.yawFactorM1P1 + 1.f) / 2.f)
-							)
-						)
-						* projectionPlaneDistance
-					),
+				std::clamp<int32_t>(
+					center.getX()
+						+ static_cast<int32_t>(
+							std::tanf(toRadians(rc.getSettings().controls.cameraYawDeg))
+							* projectionPlaneDistance
+						),
 					bounds.getX(),
 					bounds.getX2()
 				),
 				std::clamp(
-					static_cast<int32_t>(
-						center.getY()
-						- std::tanf(
-							toRadians(
-								static_cast<float>(config::camera::pitchAngleMinDeg)
-								+ static_cast<float>(config::camera::pitchAngleMaxDeg - config::camera::pitchAngleMinDeg)
-								* ((rc.getAircraftData().computed.camera.pitchFactorM1P1 + 1.f) / 2.f)
-							)
-						)
-						* projectionPlaneDistance
-					),
+					center.getY()
+						- static_cast<int32_t>(
+							std::tanf(toRadians(rc.getSettings().controls.cameraPitchDeg))
+							* projectionPlaneDistance
+						),
 					bounds.getY(),
 					bounds.getY2()
 				)

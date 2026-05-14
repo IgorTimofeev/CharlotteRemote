@@ -257,19 +257,6 @@ namespace pizda {
 			_aircraftData.raw.autopilot.pitchRad,
 			LPFFactor
 		);
-
-		// Camera
-		_aircraftData.computed.camera.pitchFactorM1P1 = applyLPF(
-			_aircraftData.computed.camera.pitchFactorM1P1,
-			_aircraftData.raw.camera.pitchFactorM1P1,
-			LPFFactor
-		);
-
-		_aircraftData.computed.camera.yawFactorM1P1 = applyLPF(
-			_aircraftData.computed.camera.yawFactorM1P1,
-			_aircraftData.raw.camera.yawFactorM1P1,
-			LPFFactor
-		);
 		
 		// Normal
 		LPFFactor = LowPassFilter::getDeltaTimeUsFactor(3.0f, deltaTimeUs);

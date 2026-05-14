@@ -160,11 +160,57 @@ namespace pizda {
 
 			class camera {
 				public:
-					constexpr static int8_t pitchAngleMinDeg = -90;
-					constexpr static int8_t pitchAngleMaxDeg = 10;
+					constexpr static int16_t servoAngularRangeDeg = 180;
+					constexpr static int16_t servoMaxDeg = servoAngularRangeDeg / 2;
+					constexpr static int16_t servoMinDeg = -servoMaxDeg;
 
-					constexpr static int8_t yawAngleMinDeg = -90;
-					constexpr static int8_t yawAngleMaxDeg = 90;
+					constexpr static int16_t pitchMinDeg = servoMinDeg;
+					constexpr static int16_t pitchMaxDeg = 10;
+
+					constexpr static int16_t yawMinDeg = servoMinDeg;
+					constexpr static int16_t yawMaxDeg = servoMaxDeg;
+
+					constexpr static int16_t pitchCorrectionYawThresholdMinDeg = 40;
+					constexpr static int16_t pitchCorrectionYawThresholdMaxDeg = std::min<int16_t>(yawMaxDeg, 90);
+					constexpr static int16_t pitchCorrectionByMaxDeg = 30;
+
+					static void clamp(int16_t& pitch, int16_t& yaw) {
+						pitch = std::clamp<int16_t>(
+							std::clamp<int16_t>(
+								pitch,
+								pitchMinDeg,
+								pitchMaxDeg
+							),
+							servoMinDeg,
+							servoMaxDeg
+						);
+
+						yaw = std::clamp<int16_t>(
+							std::clamp<int16_t>(
+								yaw,
+								yawMinDeg,
+								yawMaxDeg
+							),
+							servoMinDeg,
+							servoMaxDeg
+						);
+					}
+
+					static void correctPitchPitchForYaw(int16_t& pitch, int16_t yaw) {
+						// Yaw abs
+						if (yaw < 0)
+							yaw = -yaw;
+
+						// Nothing to do
+						if (yaw <= pitchCorrectionYawThresholdMinDeg)
+							return;
+
+						// Changing pitch by difference between yaw and min/max threshold
+						pitch +=
+							static_cast<int16_t>(pitchCorrectionByMaxDeg)
+							* (yaw - pitchCorrectionYawThresholdMinDeg)
+							/ (pitchCorrectionYawThresholdMaxDeg - pitchCorrectionYawThresholdMinDeg);
+					}
 			};
 
 			class application {

@@ -14,7 +14,7 @@ namespace pizda {
 				const int8_t minimum,
 				const int8_t maximum,
 				const std::wstring_view title,
-				int8_t* settingsValue
+				int16_t* settingsValue
 			);
 
 		protected:
@@ -26,6 +26,6 @@ namespace pizda {
 
 		private:
 			std::wstring _title;
-			int8_t* _settingsValue;
+			int16_t* _settingsValue;
 	};
 }

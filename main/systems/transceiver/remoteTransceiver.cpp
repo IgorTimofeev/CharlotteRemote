@@ -384,10 +384,7 @@ namespace pizda {
 		if (!validatePayloadChecksumAndLength(
 			stream,
 				// Throttle
-			AircraftTelemetrySecondaryPacket::throttleLengthBits
-				// Camera
-				+ AircraftTelemetrySecondaryPacket::cameraPitchLengthBits
-				+ AircraftTelemetrySecondaryPacket::cameraYawLengthBits
+				AircraftTelemetrySecondaryPacket::throttleLengthBits
 				// Coords
 				+ AircraftTelemetrySecondaryPacket::latLengthBits
 				+ AircraftTelemetrySecondaryPacket::lonLengthBits
@@ -414,14 +411,6 @@ namespace pizda {
 			stream.readUint8(AircraftTelemetrySecondaryPacket::throttleLengthBits)
 			* 0xFF
 			/ ((1 << AircraftTelemetrySecondaryPacket::throttleLengthBits) - 1);
-
-		// -------------------------------- Camera --------------------------------
-
-		rc.getAircraftData().raw.camera.pitchFactorM1P1 =
-			readAircraftTelemetrySecondaryPacketCameraValue(stream, AircraftTelemetrySecondaryPacket::cameraPitchLengthBits);
-
-		rc.getAircraftData().raw.camera.yawFactorM1P1 =
-			readAircraftTelemetrySecondaryPacketCameraValue(stream, AircraftTelemetrySecondaryPacket::cameraYawLengthBits);
 
 		// -------------------------------- Latitude & longitude --------------------------------
 		
@@ -815,25 +804,8 @@ namespace pizda {
 	void RemoteTransceiver::transmitRemoteAuxiliaryCameraPacket(BitStream& stream) {
 		auto& rc = RC::getInstance();
 
-		// Pitch
-		stream.writeUint16(
-			static_cast<uint16_t>(
-				static_cast<float>(rc.getRemoteData().camera.pitchAngleDeg - config::camera::pitchAngleMinDeg)
-				/ static_cast<float>(config::camera::pitchAngleMaxDeg - config::camera::pitchAngleMinDeg)
-				* ((1 << RemoteAuxiliaryCameraPacket::pitchLengthBits) - 1)
-			),
-			RemoteAuxiliaryCameraPacket::pitchLengthBits
-		);
-
-		// Yaw
-		stream.writeUint16(
-			static_cast<uint16_t>(
-				static_cast<float>(rc.getRemoteData().camera.yawAngleDeg - config::camera::yawAngleMinDeg)
-				/ static_cast<float>(config::camera::yawAngleMaxDeg - config::camera::yawAngleMinDeg)
-				* ((1 << RemoteAuxiliaryCameraPacket::yawLengthBits) - 1)
-			),
-			RemoteAuxiliaryCameraPacket::yawLengthBits
-		);
+		stream.writeInt16(rc.getSettings().controls.cameraPitchDeg, RemoteAuxiliaryCameraPacket::pitchLengthBits);
+		stream.writeInt16(rc.getSettings().controls.cameraYawDeg, RemoteAuxiliaryCameraPacket::yawLengthBits);
 	}
 	
 	void RemoteTransceiver::transmitRemoteAuxiliaryMotorsPacket(BitStream& stream) {

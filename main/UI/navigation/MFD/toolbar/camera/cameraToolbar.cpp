@@ -4,8 +4,8 @@
 
 namespace pizda {
 	CameraToolbar::CameraToolbar() :
-		_pitch({ config::camera::pitchAngleMinDeg, config::camera::pitchAngleMaxDeg, L"Pitch", &RC::getInstance().getRemoteData().camera.pitchAngleDeg }),
-		_yaw({ config::camera::yawAngleMinDeg, config::camera::yawAngleMaxDeg, L"Yaw", &RC::getInstance().getRemoteData().camera.yawAngleDeg })
+		_pitch({ config::camera::pitchMinDeg, config::camera::pitchMaxDeg, L"Pitch", &RC::getInstance().getSettings().controls.cameraPitchDeg }),
+		_yaw({ config::camera::yawMinDeg, config::camera::yawMaxDeg, L"Yaw", &RC::getInstance().getSettings().controls.cameraYawDeg })
 	{
 		row += &_pitch;
 		row += &_yaw;
@@ -14,8 +14,9 @@ namespace pizda {
 		_reset.onPressed = [] {
 			auto& rc = RC::getInstance();
 
-			rc.getRemoteData().camera.pitchAngleDeg = 0;
-			rc.getRemoteData().camera.yawAngleDeg = 0;
+			rc.getSettings().controls.cameraPitchDeg = 0;
+			rc.getSettings().controls.cameraYawDeg = 0;
+			rc.getSettings().controls.scheduleWrite();
 
 			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::camera);
 
@@ -28,12 +29,12 @@ namespace pizda {
 	void CameraToolbar::onTick() {
 		RowToolbar::onTick();
 
-		const auto& rd = RC::getInstance().getRemoteData();
+		auto& rc = RC::getInstance();
 
 		if (!_pitch.seven.isPointerOver())
-			_pitch.seven.setValue(rd.camera.pitchAngleDeg);
+			_pitch.seven.setValue(rc.getSettings().controls.cameraPitchDeg);
 
 		if (!_yaw.seven.isPointerOver())
-			_yaw.seven.setValue(rd.camera.yawAngleDeg);
+			_yaw.seven.setValue(rc.getSettings().controls.cameraYawDeg);
 	}
 }
