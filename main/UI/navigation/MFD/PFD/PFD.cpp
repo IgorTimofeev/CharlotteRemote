@@ -40,6 +40,41 @@ namespace pizda {
 		invalidate();
 	}
 
+	void PFD::renderMetricUnits(Renderer* renderer, const Bounds& bounds, const bool left, const int32_t yCenter, const std::wstring_view text) {
+		constexpr static uint8_t verticalPanelOffset = 5;
+		constexpr static uint8_t horizontalTextOffset = 2;
+		constexpr static uint8_t verticalTextOffset = 1;
+
+		const auto panelSize = Size(
+			Theme::fontSmall.getWidth(text) + horizontalTextOffset * 2,
+			Theme::fontSmall.getHeight() + verticalTextOffset * 2
+		);
+
+		const auto panelBounds = Bounds(
+			left
+				? bounds.getX()
+				: bounds.getX2() - panelSize.getWidth() + 1,
+			yCenter - currentValueHeight / 2 - verticalPanelOffset - panelSize.getHeight(),
+			panelSize.getWidth(),
+			panelSize.getHeight()
+		);
+
+		renderer->renderFilledRectangle(
+			panelBounds,
+			&Theme::bg2
+		);
+
+		renderer->renderString(
+			Point(
+				panelBounds.getX() + horizontalTextOffset,
+				panelBounds.getY() + verticalTextOffset
+			),
+			&Theme::fontSmall,
+			&Theme::ocean,
+			text
+		);
+	}
+
 	void PFD::onRender(Renderer* renderer, const Bounds& bounds) {
 		Layout::onRender(renderer, bounds);
 
@@ -287,7 +322,7 @@ namespace pizda {
 	void PFD::renderTrendArrow(Renderer* renderer, const int32_t x, const int32_t y, const uint8_t unitStep, const uint16_t stepPixels, const float value) {
 		const auto length = static_cast<int32_t>(static_cast<float>(stepPixels) * value / static_cast<float>(unitStep));
 
-		if (std::abs(length) < unitStep)
+		if (std::abs(length) < stepPixels)
 			return;
 
 		constexpr uint8_t arrowSize = 3;
@@ -508,6 +543,27 @@ namespace pizda {
 			true
 		);
 
+		// Metric
+		if (rc.getSettings().personalization.MFD.PFD.metricUnits) {
+			constexpr static uint8_t textLength = 5;
+			wchar_t text[textLength];
+
+			std::swprintf(
+				text,
+				textLength,
+				L"%d",
+				static_cast<int32_t>(Units::convertSpeed(rc.getAircraftData().computed.airspeedKt, SpeedUnit::knot, SpeedUnit::meterPerSecond))
+			);
+
+			renderMetricUnits(
+				renderer,
+				bounds,
+				true,
+				centerY,
+				text
+			);
+		}
+
 		renderer->popViewport(oldViewport);
 	}
 
@@ -677,41 +733,23 @@ namespace pizda {
 			false
 		);
 
-		// Metric units
+		// Metric
 		if (rc.getSettings().personalization.MFD.PFD.metricUnits) {
-			constexpr static uint8_t textLength = 6;
+			constexpr static uint8_t textLength = 5;
 			wchar_t text[textLength];
-			std::swprintf(text, textLength, L"%dm", static_cast<int32_t>(Units::convertDistance(altitude, DistanceUnit::foot, DistanceUnit::meter)));
 
-			constexpr static uint8_t verticalPanelOffset = 5;
-
-			constexpr static uint8_t horizontalTextOffset = 2;
-			constexpr static uint8_t verticalTextOffset = 1;
-
-			const auto panelSize = Size(
-				Theme::fontSmall.getWidth(text) + horizontalTextOffset * 2,
-				Theme::fontSmall.getHeight() + verticalTextOffset * 2
+			std::swprintf(
+				text,
+				textLength,
+				L"%d",
+				static_cast<int32_t>(Units::convertDistance(altitude, DistanceUnit::foot, DistanceUnit::meter))
 			);
 
-			const auto panelBounds = Bounds(
-				bounds.getX2() - panelSize.getWidth() + 1,
-				centerY - currentValueHeight / 2 - verticalPanelOffset - panelSize.getHeight(),
-				panelSize.getWidth(),
-				panelSize.getHeight()
-			);
-
-			renderer->renderFilledRectangle(
-				panelBounds,
-				&Theme::bg2
-			);
-
-			renderer->renderString(
-				Point(
-					panelBounds.getX() + horizontalTextOffset,
-					panelBounds.getY() + verticalTextOffset
-				),
-				&Theme::fontSmall,
-				&Theme::ocean,
+			renderMetricUnits(
+				renderer,
+				bounds,
+				false,
+				centerY,
 				text
 			);
 		}
@@ -775,8 +813,8 @@ namespace pizda {
 
 		// Current value
 		renderer->renderLine(
-			Point(bounds.getX(), centerY - static_cast<int32_t>(rc.getAircraftData().computed.verticalSpeedFtPM * static_cast<float>(verticalSpeedStepPixels) / static_cast<float>(verticalSpeedStepUnits))),
-			Point(bounds.getX2(), centerY - static_cast<int32_t>(rc.getAircraftData().computed.verticalSpeedFtPM * static_cast<float>(verticalSpeedStepPixelsRight) / static_cast<float>(verticalSpeedStepUnits))),
+			Point(bounds.getX(), centerY - static_cast<int32_t>(rc.getAircraftData().computed.verticalSpeedFPM * static_cast<float>(verticalSpeedStepPixels) / static_cast<float>(verticalSpeedStepUnits))),
+			Point(bounds.getX2(), centerY - static_cast<int32_t>(rc.getAircraftData().computed.verticalSpeedFPM * static_cast<float>(verticalSpeedStepPixelsRight) / static_cast<float>(verticalSpeedStepUnits))),
 			&Theme::green1
 		);
 	}

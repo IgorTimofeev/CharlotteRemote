@@ -28,8 +28,8 @@ namespace pizda {
 			// Speed
 			constexpr static uint8_t speedWidth = 24;
 			constexpr static uint8_t speedStepPixels = 8;
-			constexpr static uint8_t speedStepUnits = 1;
-			constexpr static uint8_t speedStepUnitsBig = 5;
+			constexpr static uint16_t speedStepUnits = 1;
+			constexpr static uint16_t speedStepUnitsBig = 5;
 			
 			constexpr static uint8_t speedMaximumDigits = 3;
 			
@@ -58,8 +58,8 @@ namespace pizda {
 
 			// Altitude
 			constexpr static uint8_t altitudeWidth = 26;
-			constexpr static uint8_t altitudeStepUnits = 10;
-			constexpr static uint8_t altitudeStepUnitsBig = 50;
+			constexpr static uint16_t altitudeStepUnits = 50;
+			constexpr static uint16_t altitudeStepUnitsBig = 250;
 			constexpr static uint8_t altitudeStepPixels = 8;
 			
 			constexpr static uint8_t altitudeMaximumDigits = 4;
@@ -168,6 +168,7 @@ namespace pizda {
 			PFDScene _scene {};
 			PFDPageSplitter _splitter {};
 
+			static void renderMetricUnits(Renderer* renderer, const Bounds& bounds, bool left, int32_t yCenter, std::wstring_view text);
 			static void renderAutopilotValueIndicator(Renderer* renderer, const Bounds& bounds, int32_t centerY, uint8_t unitStep, uint16_t stepPixels, float currentValue, uint16_t autopilotValue, bool left);
 			static void renderCurrentValue(Renderer* renderer, const Bounds& bounds, uint8_t digitCount, float value, bool left);
 			static void renderTrendArrow(Renderer* renderer, int32_t x, int32_t y, uint8_t unitStep, uint16_t stepPixels, float value);

@@ -36,15 +36,15 @@ namespace pizda {
 				spectrumScanning.frequency.to = stream.readUint32(_spectrumScanningFrequencyTo, 440'000'000);
 				spectrumScanning.frequency.step = stream.readUint32(_spectrumScanningFrequencyStep, 10'000);
 
-				communication.frequencyHz = stream.readUint32(_communicationRFFrequencyHz, config::transceiver::communicationSettings.frequencyHz);
-				communication.bandwidth = static_cast<SX1262::LoRaBandwidth>(stream.readUint8(_communicationBandwidth, static_cast<uint8_t>(config::transceiver::communicationSettings.bandwidth)));
-				communication.spreadingFactor = stream.readUint8(_communicationSpreadingFactor, config::transceiver::communicationSettings.spreadingFactor);
-				communication.codingRate = static_cast<SX1262::LoRaCodingRate>(stream.readUint8(_communicationCodingRate, static_cast<uint8_t>(config::transceiver::communicationSettings.codingRate)));
-				communication.syncWord = stream.readUint8(_communicationSyncWord, config::transceiver::communicationSettings.syncWord);
-				communication.preambleLength = stream.readUint16(_communicationPreambleLength, config::transceiver::communicationSettings.preambleLength);
+				communication.frequencyHz = stream.readUint32(_communicationRFFrequencyHz, config::XCVR::communicationSettings.frequencyHz);
+				communication.bandwidth = static_cast<SX1262::LoRaBandwidth>(stream.readUint8(_communicationBandwidth, static_cast<uint8_t>(config::XCVR::communicationSettings.bandwidth)));
+				communication.spreadingFactor = stream.readUint8(_communicationSpreadingFactor, config::XCVR::communicationSettings.spreadingFactor);
+				communication.codingRate = static_cast<SX1262::LoRaCodingRate>(stream.readUint8(_communicationCodingRate, static_cast<uint8_t>(config::XCVR::communicationSettings.codingRate)));
+				communication.syncWord = stream.readUint8(_communicationSyncWord, config::XCVR::communicationSettings.syncWord);
+				communication.preambleLength = stream.readUint16(_communicationPreambleLength, config::XCVR::communicationSettings.preambleLength);
 
-				communication.currentLimitMA = stream.readInt8(_communicationCurrentLimitMA, config::transceiver::communicationSettings.currentLimitMA);
-				communication.powerDBm = stream.readInt8(_communicationPowerDBm, config::transceiver::communicationSettings.powerDBm);
+				communication.currentLimitMA = stream.readInt8(_communicationCurrentLimitMA, config::XCVR::communicationSettings.currentLimitMA);
+				communication.powerDBm = stream.readInt8(_communicationPowerDBm, config::XCVR::communicationSettings.powerDBm);
 			}
 
 			void onWrite(const NVSStream& stream) override {

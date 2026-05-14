@@ -116,7 +116,7 @@ namespace pizda {
 			float altitudeFt = 0;
 			float altitudeTrendFt = 0;
 			
-			float verticalSpeedFtPM = 0;
+			float verticalSpeedFPM = 0;
 
 			float rollRad = 0;
 			float pitchRad = 0;

@@ -46,7 +46,7 @@ namespace pizda {
 					constexpr static uint32_t frequency = 60'000'000;
 			};
 	
-			class transceiver {
+			class XCVR {
 				public:
 					constexpr static gpio_num_t SS = GPIO_NUM_14;
 					constexpr static gpio_num_t busy = GPIO_NUM_12;

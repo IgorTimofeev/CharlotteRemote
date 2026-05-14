@@ -9,7 +9,8 @@ namespace pizda {
 	enum class ConnectionState : uint8_t {
 		initial,
 		connected,
-		disconnected
+		disconnected,
+		reconnected
 	};
 
 	enum class AircraftCalibrationSystem : uint8_t {

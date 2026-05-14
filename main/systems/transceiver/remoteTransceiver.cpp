@@ -72,7 +72,7 @@ namespace pizda {
 						ESP_LOGI(_logTag, "communication settings change timed out with PPS = %d, falling back to default", getRXPPS());
 
 						// Falling back to default communication settings
-						setCommunicationSettings(config::transceiver::communicationSettings);
+						setCommunicationSettings(config::XCVR::communicationSettings);
 					}
 
 					_communicationSettingsACKTime = 0;
@@ -110,16 +110,28 @@ namespace pizda {
 	void RemoteTransceiver::onConnectionStateChanged() {
 		auto& rc = RC::getInstance();
 
-		if (isConnected()) {
-			rc.getAudioPlayer().play(&resources::sounds::transceiverConnect);
-		}
-		else {
-			RC::getInstance().getAircraftData().raw.calibration.checkValidTime();
-			
-			rc.getAudioPlayer().play(&resources::sounds::transceiverDisconnect);
+		switch (getConnectionState()) {
+			case ConnectionState::initial:
+				break;
+
+			case ConnectionState::connected:
+				// WHOOP WHOOP TERRAIN AHEAD
+				rc.getAudioPlayer().play(&resources::sounds::transceiverConnect);
+				break;
+
+			case ConnectionState::disconnected:
+				RC::getInstance().getAircraftData().raw.calibration.checkValidTime();
+
+				rc.getAudioPlayer().play(&resources::sounds::transceiverDisconnect);
+
+				break;
+
+			case ConnectionState::reconnected:
+				rc.getAudioPlayer().play(&resources::sounds::transceiverConnect);
+
+				break;
 		}
 	}
-
 
 	bool RemoteTransceiver::stopSpectrumScanning() {
 		RC::getInstance().getRemoteData().transceiver.spectrumScanning.state = RemoteDataRadioSpectrumScanningState::stopped;
@@ -133,7 +145,7 @@ namespace pizda {
 		}
 
 		// Setting normal RX/TX frequency
-		error = _SX.setRFFrequency(config::transceiver::communicationSettings.frequencyHz);
+		error = _SX.setRFFrequency(config::XCVR::communicationSettings.frequencyHz);
 
 		if (error != SX1262::error::none) {
 			logSXError("stopSpectrumScanning() error", error);

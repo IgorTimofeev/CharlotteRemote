@@ -46,7 +46,7 @@ namespace pizda {
 		{
 			// Slave selects
 			gpio_config_t g = {};
-			g.pin_bit_mask = (1ULL << config::screen::SS) | (1ULL << config::transceiver::SS);
+			g.pin_bit_mask = (1ULL << config::screen::SS) | (1ULL << config::XCVR::SS);
 			g.mode = GPIO_MODE_OUTPUT;
 			g.pull_up_en = GPIO_PULLUP_DISABLE;
 			g.pull_down_en = GPIO_PULLDOWN_DISABLE;
@@ -54,7 +54,7 @@ namespace pizda {
 			gpio_config(&g);
 
 			gpio_set_level(config::screen::SS, true);
-			gpio_set_level(config::transceiver::SS, true);
+			gpio_set_level(config::XCVR::SS, true);
 		}
 
 		// After applying power or a hard reset, the LCD panel will be turned off, its internal pixel
@@ -314,8 +314,8 @@ namespace pizda {
 		);
 		
 		// Vertical speed
-		_aircraftData.computed.verticalSpeedFtPM = applyLPF(
-			_aircraftData.computed.verticalSpeedFtPM,
+		_aircraftData.computed.verticalSpeedFPM = applyLPF(
+			_aircraftData.computed.verticalSpeedFPM,
 			Units::convertDistance(_aircraftData.raw.verticalSpeedMPM, DistanceUnit::meter, DistanceUnit::foot),
 			LPFFactor
 		);
