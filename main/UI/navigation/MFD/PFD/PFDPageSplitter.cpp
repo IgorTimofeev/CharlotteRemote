@@ -26,7 +26,7 @@ namespace pizda {
 
 				// this > PFD > MFD layout
 				const auto layout = dynamic_cast<MFDLayout*>(getParent()->getParent());
-				const auto& bounds = layout->getBounds();
+				const auto& bounds = layout->getRenderBounds();
 
 				rc.getSettings().personalization.MFD.split.ratio = static_cast<uint8_t>(std::clamp<int32_t>(
 					(_pointerY - bounds.getY()) * 100 / bounds.getHeight(),
@@ -73,9 +73,9 @@ namespace pizda {
 	void PFDPageSplitter::onRender(Renderer* renderer, const Bounds& bounds) {
 		renderer->renderFilledRectangle(bounds, isActive() ? &Theme::fg1 : &Theme::bg2);
 
-		const auto text = RC::getInstance().getSettings().personalization.MFD.split.mode == PersonalizationSettingsMFDSplitMode::PFD ? L"< >" : L"> <";
+		const auto text = RC::getInstance().getSettings().personalization.MFD.split.mode == PersonalizationSettingsMFDSplitMode::PFD ? "< >" : "> <";
 
-		renderer->renderString(
+		renderer->renderText(
 			Point(
 				bounds.getXCenter() - Theme::fontSmall.getWidth(text) / 2,
 				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2

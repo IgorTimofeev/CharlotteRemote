@@ -13,8 +13,8 @@ namespace pizda {
 		seven.setValue(RC::getInstance().getSettings().autopilot.speedKt);
 	}
 	
-	std::wstring_view SpeedRotaryControl::variantIndexToTitle(uint8_t index) {
-		return L"IAS";
+	std::string_view SpeedRotaryControl::variantIndexToTitle(uint8_t index) {
+		return "IAS";
 	}
 	
 	bool SpeedRotaryControl::isVariantEditable(const uint8_t index) {

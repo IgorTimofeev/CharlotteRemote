@@ -170,7 +170,7 @@ namespace pizda {
 			constexpr uint8_t textOffset = 4;
 			constexpr uint8_t arrowSize = 16;
 
-			const auto text = std::to_wstring(static_cast<uint16_t>(rc.getAircraftData().raw.windSpeed));
+			const auto text = std::to_string(static_cast<uint16_t>(rc.getAircraftData().raw.windSpeed));
 
 			const auto arrowVec = Vector2F(0, arrowSize).rotate(rc.getAircraftData().computed.windDirectionRad + std::numbers::pi_v<float> + rc.getAircraftData().computed.yawRad);
 			const auto arrowVecNorm = arrowVec.normalize();
@@ -199,7 +199,7 @@ namespace pizda {
 				&Theme::ground2
 			);
 
-			renderer->renderString(
+			renderer->renderText(
 				Point(
 					arrowCenter.getX() - Theme::fontSmall.getWidth(text) / 2,
 					windPosition.getY() - Theme::fontSmall.getHeight()
@@ -420,12 +420,12 @@ namespace pizda {
 			);
 
 			if (lineAngleDeg % 10 == 0) {
-				const auto text = std::to_wstring(abs(lineAngleDeg));
+				const auto text = std::to_string(abs(lineAngleDeg));
 
 				const auto& textCenterVec = Vector2F(static_cast<float>(PFD::pitchOverlayFont->getWidth(text)) / 2.f, static_cast<float>(PFD::pitchOverlayFont->getHeight()) / 2.f);
 				const auto textCenterVecLengthWithOffset = static_cast<float>(PFD::pitchOverlayTextOffset) + textCenterVec.getLength();
 
-				renderer->renderString(
+				renderer->renderText(
 					Point(
 						lineRight.getX() + static_cast<int32_t>(horizonVecNorm.getX() * textCenterVecLengthWithOffset - textCenterVec.getX()),
 						lineRight.getY() + static_cast<int32_t>(horizonVecNorm.getY() * textCenterVecLengthWithOffset - textCenterVec.getY())
@@ -531,8 +531,8 @@ namespace pizda {
 		const auto yCenter = bounds.getYCenter();
 		auto x = bounds.getX();
 		
-		const auto renderText = [renderer, yCenter, &x, sectionWidth](const std::wstring_view text, const bool ap) {
-			renderer->renderString(
+		const auto renderText = [renderer, yCenter, &x, sectionWidth](const std::string_view text, const bool ap) {
+			renderer->renderText(
 				Point(
 					x + sectionWidth / 2 - Theme::fontSmall.getWidth(text) / 2,
 					yCenter - Theme::fontSmall.getHeight() / 2
@@ -546,7 +546,7 @@ namespace pizda {
 		};
 		
 		const auto renderMissingText = [&renderText] {
-			renderText(L"---", false);
+			renderText("---", false);
 		};
 		
 		const auto renderSeparator = [renderer, &x, &bounds] {
@@ -556,10 +556,10 @@ namespace pizda {
 		// Throttle
 		if (rc.getTransceiver().isConnected()) {
 			if (rc.getAircraftData().raw.autopilot.autothrottle) {
-				renderText(L"A/T", true);
+				renderText("A/T", true);
 			}
 			else {
-				renderText(L"DIR", false);
+				renderText("DIR", false);
 			}
 		}
 		else {
@@ -572,15 +572,15 @@ namespace pizda {
 		if (rc.getTransceiver().isConnected()) {
 			switch (rc.getAircraftData().raw.autopilot.lateralMode) {
 				case AutopilotLateralMode::dir: {
-					renderText(L"LDIR", false);
+					renderText("LDIR", false);
 					break;
 				}
 				case AutopilotLateralMode::stab: {
-					renderText(L"LSTB", true);
+					renderText("LSTB", true);
 					break;
 				}
 				case AutopilotLateralMode::hdg: {
-					renderText(L"HDG", true);
+					renderText("HDG", true);
 					break;
 				}
 			}
@@ -595,23 +595,23 @@ namespace pizda {
 		if (rc.getTransceiver().isConnected()) {
 			switch (rc.getAircraftData().raw.autopilot.verticalMode) {
 				case AutopilotVerticalMode::dir: {
-					renderText(L"VDIR", false);
+					renderText("VDIR", false);
 					break;
 				}
 				case AutopilotVerticalMode::stab: {
-					renderText(L"VSTB", true);
+					renderText("VSTB", true);
 					break;
 				}
 				case AutopilotVerticalMode::alt: {
-					renderText(L"ALT", true);
+					renderText("ALT", true);
 					break;
 				}
 				case AutopilotVerticalMode::alts: {
-					renderText(L"ALTS", true);
+					renderText("ALTS", true);
 					break;
 				}
 				case AutopilotVerticalMode::flc: {
-					renderText(L"FLC", true);
+					renderText("FLC", true);
 					break;
 				}
 			}
@@ -660,31 +660,31 @@ namespace pizda {
 
 			// Text
 			if (isBig) {
-				std::wstring text;
+				std::string text;
 
 				switch (angle) {
 					case 0:
-						text = L'N';
+						text = 'N';
 						break;
 
 					case 90:
-						text = L'E';
+						text = 'E';
 						break;
 
 					case 180:
-						text = L'S';
+						text = 'S';
 						break;
 
 					case 270:
-						text = L'W';
+						text = 'W';
 						break;
 
 					default:
-						text = std::to_wstring(angle);
+						text = std::to_string(angle);
 						break;
 				}
 
-				renderer->renderString(
+				renderer->renderText(
 					Point(
 						x - PFD::yawOverlayFont->getWidth(text) / 2,
 						lineY - PFD::yawOverlayTextOffset - PFD::yawOverlayFont->getHeight()

@@ -4,8 +4,8 @@
 
 namespace pizda {
 	CameraToolbar::CameraToolbar() :
-		_pitch({ config::camera::pitchMinDeg, config::camera::pitchMaxDeg, L"Pitch", &RC::getInstance().getSettings().controls.cameraPitchDeg }),
-		_yaw({ config::camera::yawMinDeg, config::camera::yawMaxDeg, L"Yaw", &RC::getInstance().getSettings().controls.cameraYawDeg })
+		_pitch({ config::camera::pitchMinDeg, config::camera::pitchMaxDeg, "Pitch", &RC::getInstance().getSettings().controls.cameraPitchDeg }),
+		_yaw({ config::camera::yawMinDeg, config::camera::yawMaxDeg, "Yaw", &RC::getInstance().getSettings().controls.cameraYawDeg })
 	{
 		row += &_pitch;
 		row += &_yaw;

@@ -11,7 +11,7 @@ namespace pizda {
 	LegPlaceholderButton::LegPlaceholderButton() {
 		Theme::applyPlaceholder(this);
 		setHeight(WaypointButton::height);
-		setText(L"Add route");
+		setText("Add route");
 	}
 
 	void LegPlaceholderButton::onClick() {

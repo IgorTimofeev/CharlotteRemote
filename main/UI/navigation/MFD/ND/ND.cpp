@@ -35,7 +35,7 @@ namespace pizda {
 		});
 
 		// RST
-		_latLongButton.setText(L"RST");
+		_latLongButton.setText("RST");
 
 		addGovnoButton(&_latLongButton, [this] {
 			_scene.resetCameraLateralOffset();
@@ -43,7 +43,7 @@ namespace pizda {
 		});
 
 		// +
-		_waypointButton.setText(L"WPT");
+		_waypointButton.setText("WPT");
 
 		addGovnoButton(&_waypointButton, [this] {
 			AddWaypointDialog::create(_scene.getCameraCoordinates(), [this] {
@@ -91,14 +91,14 @@ namespace pizda {
 	}
 
 	void ND::updateViewModeButtonText() {
-		std::wstring text;
+		std::string text;
 
 		switch (RC::getInstance().getSettings().personalization.MFD.ND.mode) {
 			case PersonalizationSettingsMFDNDMode::arc:
-				text = L"ARC";
+				text = "ARC";
 				break;
 			case PersonalizationSettingsMFDNDMode::map:
-				text = L"MAP";
+				text = "MAP";
 				break;
 		}
 
@@ -106,7 +106,7 @@ namespace pizda {
 	}
 
 	void ND::updateSplitButtonText() {
-		_splitButton.setText(RC::getInstance().getSettings().personalization.MFD.split.mode == PersonalizationSettingsMFDSplitMode::ND ? L"> <" : L"< >");
+		_splitButton.setText(RC::getInstance().getSettings().personalization.MFD.split.mode == PersonalizationSettingsMFDSplitMode::ND ? "> <" : "< >");
 	}
 
 }

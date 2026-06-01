@@ -14,8 +14,8 @@ namespace pizda {
 		public:
 			ComboBox();
 
-			std::wstring_view* getItems() const;
-			void setItems(std::wstring_view* const items);
+			std::string_view* getItems() const;
+			void setItems(std::string_view* const items);
 
 			uint8_t getItemCount() const;
 			void setItemCount(const uint8_t itemCount);
@@ -23,8 +23,8 @@ namespace pizda {
 			uint8_t getSelectedIndex() const;
 			void setSelectedIndex(const uint8_t value);
 
-			const std::wstring& getDialogTitle();
-			void setDialogTitle(const std::wstring_view& title);
+			const std::string& getDialogTitle();
+			void setDialogTitle(const std::string_view& title);
 
 		protected:
 			void onClick() override;
@@ -32,9 +32,9 @@ namespace pizda {
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 
 		private:
-			std::wstring_view* _items = nullptr;
+			std::string_view* _items = nullptr;
 			uint8_t _itemCount = 0;
 			uint8_t _selectedIndex = 0;
-			std::wstring _dialogTitle;
+			std::string _dialogTitle;
 	};
 }

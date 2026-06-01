@@ -168,12 +168,12 @@ namespace pizda {
 					);
 
 					if (isBig) {
-						const auto text = std::to_wstring(shownAngleDeg / 10);
+						const auto text = std::to_string(shownAngleDeg / 10);
 						const auto textWidth = Theme::fontSmall.getWidth(text);
 						const auto textDiagonal = std::sqrtf(textWidth * textWidth + Theme::fontSmall.getHeight() * Theme::fontSmall.getHeight());
 						const auto textCenterVec = angleStartVec - angleEndVecNorm * (compassTickMarkTextOffset + textDiagonal / 2);
 
-						renderer->renderString(
+						renderer->renderText(
 							Point(
 								static_cast<float>(pivot.getX()) + textCenterVec.getX() - static_cast<float>(textWidth) / 2.f,
 								static_cast<float>(pivot.getY()) + textCenterVec.getY() - static_cast<float>(Theme::fontSmall.getHeight()) / 2.f
@@ -298,9 +298,9 @@ namespace pizda {
 
 			// // Heading text
 			// {
-			// 	const auto text = std::to_wstring(static_cast<int32_t>(rc.getAircraftData().computed.headingDeg));
+			// 	const auto text = std::to_string(static_cast<int32_t>(rc.getAircraftData().computed.headingDeg));
 			//
-			// 	renderer->renderString(
+			// 	renderer->renderText(
 			// 		Point(
 			// 			static_cast<int32_t>(static_cast<float>(pivot.getX()) - static_cast<float>(Theme::fontNormal.getWidth(text)) / 2.f),
 			// 			pivot.getY() - circleRadius - 1 - Theme::fontNormal.getHeight()
@@ -483,7 +483,7 @@ namespace pizda {
 		// And then we can calculate how many equatorial radians of the earth is in 1 pixel of the screen
 		// viewport rad - width px
 		// x rad - 1 px
-		return viewportRad / static_cast<float>(getBounds().getWidth());
+		return viewportRad / static_cast<float>(getRenderBounds().getWidth());
 	}
 
 	const GeoCoordinates& NDScene::getCameraOffset() const {
@@ -566,7 +566,7 @@ namespace pizda {
 	}
 
 	void NDScene::updatePivot() {
-		const auto& bounds = getBounds();
+		const auto& bounds = getRenderBounds();
 		auto& rc = RC::getInstance();
 
 		setPivotOffset(

@@ -48,8 +48,8 @@ namespace pizda {
 		// ----------------------------- Battery -----------------------------
 
 		// Remote
-		_batteryIndicatorRC.setVoltage(rc.getBattery().getVoltage());
-		_batteryIndicatorRC.setCharge(rc.getBattery().getCharge());
+		_batteryIndicatorRC.setVoltage(rc.getBattery().getVoltageMV());
+		_batteryIndicatorRC.setCharge(rc.getBattery().getCharge16());
 
 		// Aircraft
 		_batteryIndicatorAC.setVoltage(
@@ -60,12 +60,12 @@ namespace pizda {
 
 		_batteryIndicatorAC.setCharge(
 			rc.getTransceiver().isConnected()
-			? static_cast<uint8_t>(
+			? static_cast<uint16_t>(
 				rc.getAircraftData().raw.batteryVoltageMV < config::battery::aircraft::voltageMin
 				? 0
 				: (
 					(rc.getAircraftData().raw.batteryVoltageMV - config::battery::aircraft::voltageMin)
-					* 0xFF
+					* 0xFFFF
 					/ (config::battery::aircraft::voltageMax - config::battery::aircraft::voltageMin)
 				)
 			)

@@ -22,15 +22,15 @@ namespace pizda {
 				updateColors();
 			}
 			
-			ToolbarSection(std::wstring_view title) : ToolbarSection() {
+			ToolbarSection(std::string_view title) : ToolbarSection() {
 				setTitle(title);
 			}
 			
-			ToolbarSection(std::wstring_view title, Element* element) : ToolbarSection(title) {
+			ToolbarSection(std::string_view title, Element* element) : ToolbarSection(title) {
 				*this += element;
 			}
 			
-			void setTitle(std::wstring_view title) {
+			void setTitle(std::string_view title) {
 				_title.setText(title);
 			}
 			

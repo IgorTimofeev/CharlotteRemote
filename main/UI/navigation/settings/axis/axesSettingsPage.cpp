@@ -12,7 +12,7 @@ namespace pizda {
 		_leverRightAxisEditor(AxisEditor(&RC::getInstance().getAxes().getLeverRight()))
 	{
 		// Page title
-		title.setText(L"Axis");
+		title.setText("Axis");
 
 		// Axes editors
 		rows += &_leverLeftAxisEditorTitle;

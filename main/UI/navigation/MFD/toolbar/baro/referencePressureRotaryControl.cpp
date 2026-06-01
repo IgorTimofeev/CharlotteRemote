@@ -16,8 +16,8 @@ namespace pizda {
 		updateColor();
 	}
 	
-	std::wstring_view ReferencePressureRotaryControl::variantIndexToTitle(uint8_t index) {
-		return L"Baro";
+	std::string_view ReferencePressureRotaryControl::variantIndexToTitle(uint8_t index) {
+		return "Baro";
 	}
 	
 	bool ReferencePressureRotaryControl::isVariantEditable(const uint8_t index) {

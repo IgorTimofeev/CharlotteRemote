@@ -71,10 +71,10 @@ namespace pizda {
 		// Text
 		const auto text =
 			isConnected
-			? std::format(L"{:03}", static_cast<int32_t>(_aircraftValue * 100 / 0xFF))
-			: L"---";
+			? std::format("{:03}", static_cast<int32_t>(_aircraftValue * 100 / 0xFF))
+			: "---";
 
-		renderer->renderString(
+		renderer->renderText(
 			Point(
 				bounds.getX() + frameSize + textOffset,
 				bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1

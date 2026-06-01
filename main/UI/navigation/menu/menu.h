@@ -30,9 +30,9 @@ namespace pizda {
 			MenuView* _view = nullptr;
 
 			MenuTabButton tabs[3] {
-				{ L"MFD", &MenuRoutes::MFD },
-				{ L"NAV", &MenuRoutes::nav },
-				{ L"CONF", &MenuRoutes::settings },
+				{ "MFD", &MenuRoutes::MFD },
+				{ "NAV", &MenuRoutes::nav },
+				{ "CONF", &MenuRoutes::settings },
 			};
 	};
 }

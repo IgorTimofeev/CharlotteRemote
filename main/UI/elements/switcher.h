@@ -20,11 +20,11 @@ namespace pizda {
 				*this += &_switch;
 			}
 
-			explicit Switcher(std::wstring_view title) : Switcher()  {
+			explicit Switcher(std::string_view title) : Switcher()  {
 				_text.setText(title);
 			}
 
-			Switcher(std::wstring_view title, bool value) : Switcher(title) {
+			Switcher(std::string_view title, bool value) : Switcher(title) {
 				_switch.setActive(value);
 			}
 

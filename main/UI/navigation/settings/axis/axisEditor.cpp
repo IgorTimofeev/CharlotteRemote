@@ -10,7 +10,7 @@ namespace pizda {
 	
 	void AxisEditor::onEvent(Event* event) {
 		if (event->getTypeID() == PointerDownEvent::typeID) {
-			const auto& bounds = getBounds();
+			const auto& bounds = getRenderBounds();
 			
 			pointerDownX = reinterpret_cast<PointerDownEvent*>(event)->getPosition().getX();
 			const int32_t ADCValue = (pointerDownX - bounds.getX()) * Axis::valueMax / bounds.getWidth();
@@ -61,7 +61,7 @@ namespace pizda {
 				settings->sensitivity = static_cast<uint8_t>(std::clamp<int16_t>(static_cast<int16_t>(settings->sensitivity) + deltaX * 0xFF / 100, 0x00, 0xFF));
 			}
 			else {
-				const auto& bounds = getBounds();
+				const auto& bounds = getRenderBounds();
 				
 				const auto posClamped = std::clamp<int32_t>(pointerX - bounds.getX(), 0, bounds.getWidth());
 				const uint16_t ADCValue = posClamped * Axis::valueMax / bounds.getWidth();
@@ -163,7 +163,7 @@ namespace pizda {
 			);
 			
 			// Flag
-			const auto text = std::to_wstring(settingsValue * 100 / Axis::valueMax);
+			const auto text = std::to_string(settingsValue * 100 / Axis::valueMax);
 			constexpr uint8_t textOffsetX = 4;
 			constexpr uint8_t textOffsetY = 1;
 			
@@ -182,7 +182,7 @@ namespace pizda {
 			
 			renderer->renderFilledRectangle(flagBounds, bg);
 			
-			renderer->renderString(
+			renderer->renderText(
 				Point(flagBounds.getX() + textOffsetX, flagBounds.getY() + textOffsetY),
 				&Theme::fontSmall,
 				fg,

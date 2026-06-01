@@ -13,7 +13,7 @@ namespace pizda {
 			SpeedRotaryControl();
 		
 		protected:
-			std::wstring_view variantIndexToTitle(uint8_t index) override;
+			std::string_view variantIndexToTitle(uint8_t index) override;
 			bool isVariantEditable(uint8_t index) override;
 			void onRotate(bool clockwise, bool big) override;
 			void onPress() override;

@@ -1,6 +1,7 @@
 #include "PFD.h"
 
 #include <numbers>
+#include <inttypes.h>
 
 #include <units.h>
 
@@ -40,7 +41,7 @@ namespace pizda {
 		invalidate();
 	}
 
-	void PFD::renderMetricUnits(Renderer* renderer, const Bounds& bounds, const bool left, const int32_t yCenter, const std::wstring_view text) {
+	void PFD::renderMetricUnits(Renderer* renderer, const Bounds& bounds, const bool left, const int32_t yCenter, const std::string_view text) {
 		constexpr static uint8_t verticalPanelOffset = 5;
 		constexpr static uint8_t horizontalTextOffset = 2;
 		constexpr static uint8_t verticalTextOffset = 1;
@@ -64,7 +65,7 @@ namespace pizda {
 			&Theme::bg2
 		);
 
-		renderer->renderString(
+		renderer->renderText(
 			Point(
 				panelBounds.getX() + horizontalTextOffset,
 				panelBounds.getY() + verticalTextOffset
@@ -165,7 +166,7 @@ namespace pizda {
 			
 			value = std::abs(value);
 			
-			const uint8_t maxDigitWidth = currentValueFont->getWidth(L'4');
+			const uint8_t maxDigitWidth = currentValueFont->getWidth('4');
 			
 			int32_t textX =
 				left
@@ -180,7 +181,7 @@ namespace pizda {
 			};
 			
 			const auto renderDigit = [&](const int32_t digitY, const uint8_t digit) {
-				const wchar_t text = L'0' + digit;
+				const char text = '0' + digit;
 				
 				renderer->renderChar(
 					Point(
@@ -217,9 +218,9 @@ namespace pizda {
 			renderer->popViewport(oldViewport);
 		}
 		else {
-			const auto text = L"---";
+			const auto text = "---";
 			
-			renderer->renderString(
+			renderer->renderText(
 				Point(
 					left
 						? x2 - speedBarSize - currentValueTextOffset - Theme::fontSmall.getWidth(text)
@@ -449,9 +450,9 @@ namespace pizda {
 				);
 
 				// Text
-				const auto& text = std::to_wstring(lineValue);
+				const auto& text = std::to_string(lineValue);
 
-				renderer->renderString(
+				renderer->renderText(
 					Point(
 						bounds.getX2() + 1 - speedBarSize - lineSizeBig - lineTextOffset - currentValueFont->getWidth(text),
 						y - currentValueFont->getHeight() / 2
@@ -509,7 +510,7 @@ namespace pizda {
 			);
 
 			// Text
-			renderer->renderString(
+			renderer->renderText(
 				Point(bugBounds.getX() + speedBugTextOffset, bugBounds.getY() + speedBugTextOffset),
 				&Theme::fontSmall,
 				&Theme::green1,
@@ -546,12 +547,12 @@ namespace pizda {
 		// Metric
 		if (rc.getSettings().personalization.MFD.PFD.metricUnits) {
 			constexpr static uint8_t textLength = 5;
-			wchar_t text[textLength];
+			char text[textLength];
 
-			std::swprintf(
+			std::snprintf(
 				text,
 				textLength,
-				L"%d",
+				"%" PRId32,
 				static_cast<int32_t>(Units::convertSpeed(rc.getAircraftData().computed.airspeedKt, SpeedUnit::knot, SpeedUnit::meterPerSecond))
 			);
 
@@ -600,11 +601,11 @@ namespace pizda {
 				);
 
 				// Text
-				renderer->renderString(
+				renderer->renderText(
 					Point(x + lineSizeBig + lineTextOffset, y - currentValueFont->getHeight() / 2),
 					currentValueFont,
 					lineColor,
-					std::to_wstring(lineValue)
+					std::to_string(lineValue)
 				);
 			}
 			else {
@@ -736,12 +737,12 @@ namespace pizda {
 		// Metric
 		if (rc.getSettings().personalization.MFD.PFD.metricUnits) {
 			constexpr static uint8_t textLength = 5;
-			wchar_t text[textLength];
+			char text[textLength];
 
-			std::swprintf(
+			std::snprintf(
 				text,
 				textLength,
-				L"%d",
+				"%" PRId32,
 				static_cast<int32_t>(Units::convertDistance(altitude, DistanceUnit::foot, DistanceUnit::meter))
 			);
 
@@ -782,14 +783,14 @@ namespace pizda {
 						lineColor
 					);
 
-					renderer->renderString(
+					renderer->renderText(
 						Point(
 							bounds.getX() + verticalSpeedLineSizeBig + verticalSpeedLineTextOffset,
 							y - verticalSpeedFont->getHeight() / 2
 						),
 						verticalSpeedFont,
 						lineColor,
-						std::to_wstring(lineValue / 1000)
+						std::to_string(lineValue / 1000)
 					);
 				}
 				else {
@@ -819,12 +820,12 @@ namespace pizda {
 		);
 	}
 
-	void PFD::renderMiniPanel(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, const std::wstring_view text, const int8_t textXOffset) {
+	void PFD::renderMiniPanel(Renderer* renderer, const Bounds& bounds, const Color* bg, const Color* fg, const std::string_view text, const int8_t textXOffset) {
 		// Background
 		renderer->renderFilledRectangle(bounds, bg);
 
 		// Text
-		renderer->renderString(
+		renderer->renderText(
 			Point(
 				bounds.getX() + textXOffset + (bounds.getWidth() - textXOffset) / 2 - miniFont->getWidth(text) / 2,
 				bounds.getY() + miniHeight / 2 - miniFont->getHeight() / 2
@@ -841,7 +842,7 @@ namespace pizda {
 			bounds,
 			bg,
 			fg,
-			autopilotValueEnabled ? std::to_wstring(autopilotValue) : L"----",
+			autopilotValueEnabled ? std::to_string(autopilotValue) : "----",
 			static_cast<int8_t>(left ? -autopilotIndicatorTriangleThickness : autopilotIndicatorTriangleThickness)
 		);
 	}
@@ -870,15 +871,15 @@ namespace pizda {
 		auto bg = &Theme::bg2;
 		auto fg = &Theme::yellow;
 
-		std::wstring text;
+		std::string text;
 
 		if (rc.getSettings().ADIRS.referencePressureSTD) {
-			text = L"STD";
+			text = "STD";
 			bg = &Theme::yellow;
 			fg = &Theme::bg1;
 		}
 		else {
-			text = std::to_wstring(static_cast<uint32_t>(
+			text = std::to_string(static_cast<uint32_t>(
 				Units::convertPressure(
 					rc.getSettings().ADIRS.referencePressurePa,
 					PressureUnit::pascal,

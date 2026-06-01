@@ -8,11 +8,11 @@ namespace pizda {
 		setHeight(Theme::elementHeight);
 	}
 
-	std::wstring_view* ComboBox::getItems() const {
+	std::string_view* ComboBox::getItems() const {
 		return _items;
 	}
 
-	void ComboBox::setItems(std::wstring_view* const items) {
+	void ComboBox::setItems(std::string_view* const items) {
 		_items = items;
 	}
 
@@ -32,11 +32,11 @@ namespace pizda {
 		_itemCount = itemCount;
 	}
 
-	const std::wstring& ComboBox::getDialogTitle() {
+	const std::string& ComboBox::getDialogTitle() {
 		return _dialogTitle;
 	}
 
-	void ComboBox::setDialogTitle(const std::wstring_view& title) {
+	void ComboBox::setDialogTitle(const std::string_view& title) {
 		_dialogTitle = title;
 	}
 
@@ -62,7 +62,7 @@ namespace pizda {
 		if (!_items || _itemCount == 0)
 			return;
 
-		renderer->renderString(
+		renderer->renderText(
 			Point(
 				bounds.getX() + 10,
 				bounds.getYCenter() - Theme::fontNormal.getHeight() / 2

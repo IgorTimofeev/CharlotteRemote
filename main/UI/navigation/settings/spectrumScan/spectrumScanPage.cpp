@@ -176,10 +176,10 @@ namespace pizda {
 
 			// Horizontal
 			const auto pointerRSSI = _RSSIMin + (bounds.getHeight() - pointerPixelPos.getY()) * (_RSSIMax - _RSSIMin) / bounds.getHeight();
-			auto text = std::format(L"{} dBm", pointerRSSI);
+			auto text = std::format("{} dBm", pointerRSSI);
 			auto textWidth = Theme::fontSmall.getWidth(text);
 
-			renderer->renderString(
+			renderer->renderText(
 				Point(
 					bounds.getX() + textHOffset,
 					bounds.getY() + pointerPixelPos.getY() - Theme::fontSmall.getHeight() / 2
@@ -199,10 +199,10 @@ namespace pizda {
 			);
 
 			// Vertical
-			text = std::format(L"{} MHz", frequency / 1'000'000);
+			text = std::format("{} MHz", frequency / 1'000'000);
 			textWidth = Theme::fontSmall.getWidth(text);
 
-			renderer->renderString(
+			renderer->renderText(
 				Point(
 					bounds.getX() + pointerPixelPos.getX() - textWidth / 2,
 					bounds.getY() + textVOffset
@@ -239,9 +239,9 @@ namespace pizda {
 					&Theme::fg1
 				);
 
-				text = std::format(L"{} dBm", historyRSSI);
+				text = std::format("{} dBm", historyRSSI);
 
-				renderer->renderString(
+				renderer->renderText(
 					Point(
 						bounds.getX() + pointerPixelPos.getX() + 2 + textHOffset,
 						tipY - Theme::fontSmall.getHeight() / 2
@@ -255,7 +255,7 @@ namespace pizda {
 	}
 
 	void SpectrumScanningChart::updatePointerPos(const Point& pointerEventPos) {
-		const auto& bounds = getBounds();
+		const auto& bounds = getRenderBounds();
 		const auto pointerPixelPos = pointerEventPos - bounds.getTopLeft();
 
 		_pointerPos.setX(std::clamp<float>(static_cast<float>(pointerPixelPos.getX()) / bounds.getWidth(), 0, 1));
@@ -264,7 +264,7 @@ namespace pizda {
 
 	SpectrumScanPage::SpectrumScanPage() {
 		// Page title
-		title.setText(L"Spectrum scanning");
+		title.setText("Spectrum scanning");
 
 		// Char
 		// chart.setHeight(170);
@@ -280,19 +280,19 @@ namespace pizda {
 		// From
 		Theme::apply(&frequencyFromTextField);
 		frequencyFromTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
-		frequencyFromTextField.setText(std::to_wstring(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.from / 1'000'000));
+		frequencyFromTextField.setText(std::to_string(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.from / 1'000'000));
 		frequencyRow += &frequencyFromTitle;
 
 		// To
 		Theme::apply(&frequencyToTextField);
 		frequencyToTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
-		frequencyToTextField.setText(std::to_wstring(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.to / 1'000'000));
+		frequencyToTextField.setText(std::to_string(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.to / 1'000'000));
 		frequencyRow += &frequencyToTitle;
 
 		// Step
 		Theme::apply(&frequencyStepTextField);
 		frequencyStepTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
-		frequencyStepTextField.setText(std::to_wstring(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.step / 1'000));
+		frequencyStepTextField.setText(std::to_string(RC::getInstance().getSettings().transceiver.spectrumScanning.frequency.step / 1'000));
 		frequencyRow += &frequencyStepTitle;
 
 		// Presets button
@@ -300,15 +300,15 @@ namespace pizda {
 		frequencyPresetsButton.setDefaultBackgroundColor(&Theme::bg2);
 		frequencyPresetsButton.setMargin(Margin(0, Theme::fontNormal.getHeight() + frequencyFromTitle.getGap(), 0, 0));
 		frequencyPresetsButton.setWidth(24);
-		frequencyPresetsButton.setText(L"...");
+		frequencyPresetsButton.setText("...");
 
 		frequencyPresetsButton.setOnClick([this] {
-			constexpr static std::array<std::wstring_view, 5> itemsNames {
-				L"430 - 440 MHz",
-				L"470 - 510 MHz",
-				L"779 - 787 MHz",
-				L"863 - 870 MHz",
-				L"902 - 928 MHz"
+			constexpr static std::array<std::string_view, 5> itemsNames {
+				"430 - 440 MHz",
+				"470 - 510 MHz",
+				"779 - 787 MHz",
+				"863 - 870 MHz",
+				"902 - 928 MHz"
 			};
 
 			constexpr static std::array<std::tuple<uint16_t, uint16_t>, itemsNames.size()> itemsFromTo {
@@ -334,13 +334,13 @@ namespace pizda {
 
 			(
 				new SelectorDialog(
-					L"Presets",
+					"Presets",
 					itemsNames.data(),
 					itemsNames.size(),
 					presetIndex,
 					[this](const uint8_t index) {
-						frequencyFromTextField.setText(std::to_wstring(std::get<0>(itemsFromTo[index])));
-						frequencyToTextField.setText(std::to_wstring(std::get<1>(itemsFromTo[index])));
+						frequencyFromTextField.setText(std::to_string(std::get<0>(itemsFromTo[index])));
+						frequencyToTextField.setText(std::to_string(std::get<1>(itemsFromTo[index])));
 					}
 				)
 			)->show();
@@ -352,7 +352,7 @@ namespace pizda {
 		// -------------------------------- Begin button --------------------------------
 
 		Theme::applyPrimary(&confirmButton);
-		confirmButton.setText(L"Begin");
+		confirmButton.setText("Begin");
 
 		confirmButton.setOnClick([this] {
 			auto& rc = RC::getInstance();
@@ -416,6 +416,6 @@ namespace pizda {
 	}
 
 	void SpectrumScanPage::updateConfirmButtonText() {
-		confirmButton.setText(RC::getInstance().getRemoteData().transceiver.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::stopped ? L"Begin" : L"Stop");
+		confirmButton.setText(RC::getInstance().getRemoteData().transceiver.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::stopped ? "Begin" : "Stop");
 	}
 }

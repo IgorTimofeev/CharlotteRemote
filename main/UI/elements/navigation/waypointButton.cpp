@@ -76,7 +76,7 @@ namespace pizda {
 
 		x += 15;
 
-		renderer->renderString(
+		renderer->renderText(
 			Point(
 				x,
 				y - Theme::fontNormal.getHeight() / 2
@@ -88,13 +88,13 @@ namespace pizda {
 
 		// Distance
 		const auto coordsText = std::format(
-			L"{} nm",
+			"{} nm",
 			YOBA::round(_distanceNm, 1)
 		);
 
 		x = bounds.getX2() - 10 - Theme::fontNormal.getWidth(coordsText);
 
-		renderer->renderString(
+		renderer->renderText(
 			Point(
 				x,
 				y - Theme::fontNormal.getHeight() / 2

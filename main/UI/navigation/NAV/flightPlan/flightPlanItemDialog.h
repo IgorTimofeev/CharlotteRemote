@@ -13,7 +13,7 @@ namespace pizda {
 			explicit FlightPlanItemDialog(uint16_t legIndex);
 
 			static void showWaypointSelectionDialogToInsertAt(
-				std::wstring_view title,
+				std::string_view title,
 				size_t insertAt
 			);
 
@@ -24,6 +24,6 @@ namespace pizda {
 			Button _insertAfterButton {};
 			Button _removeButton {};
 
-			void insertOnButtonClick(const std::wstring& title, uint16_t insertAt);
+			void insertOnButtonClick(const std::string& title, uint16_t insertAt);
 	};
 }

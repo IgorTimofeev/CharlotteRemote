@@ -7,14 +7,14 @@
 
 namespace pizda {
 	void SelectWaypointDialog::select(
-		const std::wstring_view titleText,
+		const std::string_view titleText,
 		const std::function<void(const WaypointDialogSelectedItem& selectedItem)>& onConfirm
 	) {
 		(new SelectWaypointDialog(titleText, std::nullopt, onConfirm))->show();
 	}
 
 	void SelectWaypointDialog::edit(
-		const std::wstring_view titleText,
+		const std::string_view titleText,
 		const WaypointDialogSelectedItem& selectedItem,
 		const std::function<void(const WaypointDialogSelectedItem& selectedItem)>& onConfirm
 	) {
@@ -29,7 +29,7 @@ namespace pizda {
 	}
 
 	SelectWaypointDialog::SelectWaypointDialog(
-		const std::wstring_view titleText,
+		const std::string_view titleText,
 		const std::optional<WaypointDialogSelectedItem>& selectedItem,
 		const std::function<void(const WaypointDialogSelectedItem& selectedItem)>& onConfirm
 	) {
@@ -40,7 +40,7 @@ namespace pizda {
 		// Name
 		Theme::apply(&_searchTextField);
 
-		_searchTextField.setPlaceholder(L"Search");
+		_searchTextField.setPlaceholder("Search");
 
 		_searchTextField.setOnTextChanged([this, &rc] {
 			if (!_searchTextField.isFocused())
@@ -81,10 +81,10 @@ namespace pizda {
 
 		// Confirm button
 		Theme::applyPrimary(&_confirmButton);
-		_confirmButton.setText(L"Confirm");
+		_confirmButton.setText("Confirm");
 
 		_confirmButton.setOnClick([&rc, this, onConfirm] {
-			rc.getApplication().invokeOnNextTick([this, onConfirm] {
+			rc.getApplication().invokeLater([this, onConfirm] {
 				if (_waypointButton.getWaypointIndex() < 0)
 					return;
 
@@ -125,14 +125,14 @@ namespace pizda {
 
 		// Runway
 		if (waypointData.type == NavigationWaypointType::runway) {
-			_waypointTitle.title.setText(L"Runway");
+			_waypointTitle.title.setText("Runway");
 
 			// const auto runwayIndex = nd.getRunwayIndex(waypointIndex);
 			// const auto& runway = nd.runways[runwayIndex];
 		}
 		// Waypoint
 		else {
-			_waypointTitle.title.setText(L"Waypoint");
+			_waypointTitle.title.setText("Waypoint");
 		}
 	}
 }

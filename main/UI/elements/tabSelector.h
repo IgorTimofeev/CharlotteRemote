@@ -14,7 +14,7 @@ namespace pizda {
 
 			}
 
-			explicit TabSelectorItem(std::wstring_view text) : TabSelectorItem() {
+			explicit TabSelectorItem(std::string_view text) : TabSelectorItem() {
 				setText(text);
 			}
 
@@ -28,7 +28,7 @@ namespace pizda {
 					);
 				}
 
-				renderer->renderString(
+				renderer->renderText(
 					Point(
 						bounds.getXCenter() - Theme::fontNormal.getWidth(getText()) / 2,
 						bounds.getYCenter() - Theme::fontNormal.getHeight() / 2
@@ -56,7 +56,7 @@ namespace pizda {
 				setItemsLayout(&itemsLayout);
 			}
 
-			Rectangle backgroundRectangle {};
+			RectangleShape backgroundRectangle {};
 			RelativeStackLayout itemsLayout {};
 
 			void applyPageStyle() {

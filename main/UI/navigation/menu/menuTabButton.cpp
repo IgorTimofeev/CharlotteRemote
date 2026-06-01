@@ -4,7 +4,7 @@
 #include "menu.h"
 
 namespace pizda {
-	MenuTabButton::MenuTabButton(std::wstring_view text, const Route* route) : _route(route) {
+	MenuTabButton::MenuTabButton(std::string_view text, const Route* route) : _route(route) {
 		setHeight(16);
 
 		setDefaultBackgroundColor(&Theme::bg1);

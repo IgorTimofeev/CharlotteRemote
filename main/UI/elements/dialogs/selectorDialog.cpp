@@ -14,7 +14,7 @@ namespace pizda {
 	void SelectorDialogItem::onClick() {
 		Button::onClick();
 
-		Application::getCurrent()->invokeOnNextTick([this] {
+		Application::getCurrent()->invokeLater([this] {
 			_comboBoxDialog->getOnItemSelected()(_index);
 			_comboBoxDialog->hide();
 
@@ -23,8 +23,8 @@ namespace pizda {
 	}
 
 	SelectorDialog::SelectorDialog(
-		const std::wstring_view& title,
-		const std::wstring_view* items,
+		const std::string_view& title,
+		const std::string_view* items,
 		const uint8_t itemCount,
 		const uint8_t selectedIndex,
 		const std::function<void(uint8_t)>& onItemSelected
@@ -52,7 +52,7 @@ namespace pizda {
 			delete child;
 	}
 
-	const std::wstring_view* SelectorDialog::getItems() const {
+	const std::string_view* SelectorDialog::getItems() const {
 		return _items;
 	}
 

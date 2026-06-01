@@ -75,21 +75,21 @@ namespace pizda {
 		position.setX(position.getX() - 1 - _lineSpacing + _textOffset + 1);
 		position.setY(bounds.getYCenter() - Theme::fontSmall.getHeight() + 1);
 		
-		renderer->renderString(
+		renderer->renderText(
 			position,
 			&Theme::fontSmall,
 			isConnected ? &Theme::fg4 : &Theme::bad1,
-			isConnected ? std::format(L"R {}", RSSI) : L"----"
+			isConnected ? std::format("R {}", RSSI) : "----"
 		);
 		
 		position.setY(position.getY() + Theme::fontSmall.getHeight());
 
 		// SNR
-		renderer->renderString(
+		renderer->renderText(
 			position,
 			&Theme::fontSmall,
 			isConnected ? &Theme::fg4 : &Theme::bad1,
-			isConnected ? std::format(L"S {}", SNR) : L"----"
+			isConnected ? std::format("S {}", SNR) : "----"
 		);
 	}
 }

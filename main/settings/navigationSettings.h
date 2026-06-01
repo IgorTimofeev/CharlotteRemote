@@ -19,7 +19,7 @@ namespace pizda {
 
 			explicit NavigationSettingsWaypoint(
 				const NavigationWaypointType type,
-				std::wstring_view name,
+				std::string_view name,
 				const GeoCoordinates& geographicCoordinates
 			) :
 				type(type),
@@ -29,7 +29,7 @@ namespace pizda {
 			}
 
 			NavigationWaypointType type;
-			wchar_t name[16] {};
+			char name[16] {};
 			GeoCoordinates geographicCoordinates;
 	};
 

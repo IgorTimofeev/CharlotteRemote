@@ -64,9 +64,9 @@ namespace pizda {
 			const auto y = bounds.getY2() - static_cast<int32_t>(_valueFactor * bounds.getHeight());
 
 			// Text
-			const auto text = std::to_wstring(valueTarget);
+			const auto text = std::to_string(valueTarget);
 
-			renderer->renderString(
+			renderer->renderText(
 				Point(
 					bounds.getX() + textHOffset,
 					y - Theme::fontSmall.getHeight() / 2
@@ -144,7 +144,7 @@ namespace pizda {
 	}
 
 	void PIDChart::updateValueFactorFromPointerEvent(const int32_t pointerY) {
-		const auto bounds = getBounds();
+		const auto bounds = getRenderBounds();
 		_valueFactor = 1.f - std::clamp<float>(pointerY - bounds.getY(), 0, bounds.getHeight()) / bounds.getHeight();
 
 		invalidate();

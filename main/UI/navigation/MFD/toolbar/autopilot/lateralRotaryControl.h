@@ -23,7 +23,7 @@ namespace pizda {
 			LateralRotaryControlStab stab {};
 		
 		protected:
-			std::wstring_view variantIndexToTitle(uint8_t index) override;
+			std::string_view variantIndexToTitle(uint8_t index) override;
 			bool isVariantEditable(uint8_t index) override;
 			void onTick() override;
 			void onPress() override;

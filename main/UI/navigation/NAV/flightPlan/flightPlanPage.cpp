@@ -9,7 +9,7 @@ namespace pizda {
 	FlightPlanPage::FlightPlanPage() {
 		_instance = this;
 
-		title.setText(L"Flight plan");
+		title.setText("Flight plan");
 
 		_itemsLayout.setGap(5);
 		rows += &_itemsLayout;
@@ -19,7 +19,7 @@ namespace pizda {
 		_itemsLayout += &_legsLayout;
 
 		// Add leg
-		_addLegButton.setText(L"Add leg");
+		_addLegButton.setText("Add leg");
 		_itemsLayout += &_addLegButton;
 
 		updateFromNavigationData();

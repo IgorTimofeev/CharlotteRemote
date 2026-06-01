@@ -22,7 +22,7 @@ namespace pizda {
 		
 		setFont(&Theme::fontSmall);
 		
-		setText(L"^");
+		setText("^");
 		
 		setAlignment(Alignment::center, Alignment::end);
 		setMargin(Margin(0, 0, 0, -(size / 2 + 3)));

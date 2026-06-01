@@ -6,7 +6,7 @@ namespace pizda {
 	CameraControl::CameraControl(
 		const int8_t minimum,
 		const int8_t maximum,
-		const std::wstring_view title,
+		const std::string_view title,
 		int16_t* settingsValue
 	):
 		SevenRotaryControl(
@@ -30,7 +30,7 @@ namespace pizda {
 		seven.setValue(*_settingsValue);
 	}
 
-	std::wstring_view CameraControl::variantIndexToTitle(uint8_t index) {
+	std::string_view CameraControl::variantIndexToTitle(uint8_t index) {
 		return _title;
 	}
 

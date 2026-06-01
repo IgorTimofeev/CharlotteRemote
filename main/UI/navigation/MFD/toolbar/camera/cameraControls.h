@@ -13,19 +13,19 @@ namespace pizda {
 			CameraControl(
 				const int8_t minimum,
 				const int8_t maximum,
-				const std::wstring_view title,
+				const std::string_view title,
 				int16_t* settingsValue
 			);
 
 		protected:
-			std::wstring_view variantIndexToTitle(uint8_t index) override;
+			std::string_view variantIndexToTitle(uint8_t index) override;
 
 			bool isVariantEditable(uint8_t index) override;
 
 			void onRotate(const bool clockwise, const bool big) override;
 
 		private:
-			std::wstring _title;
+			std::string _title;
 			int16_t* _settingsValue;
 	};
 }

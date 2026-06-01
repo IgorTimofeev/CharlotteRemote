@@ -16,7 +16,7 @@ namespace pizda {
 			setFocused(true);
 		}
 		else if (event->getTypeID() == PointerUpEvent::typeID && isFocused()) {
-			RC::getInstance().getApplication().invokeOnNextTick([this] {
+			RC::getInstance().getApplication().invokeLater([this] {
 				const auto dialog = dynamic_cast<Dialog*>(getParent());
 				
 				dialog->hide();

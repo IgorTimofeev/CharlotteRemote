@@ -42,15 +42,15 @@ namespace pizda {
 				
 				// Fill
 				if (available) {
-					const auto fillWidth = static_cast<uint16_t>(static_cast<uint32_t>(frameSize) * _charge / 0xFF);
+					const auto fillWidth = static_cast<uint16_t>(static_cast<uint32_t>(frameSize) * _charge / 0xFFFF);
 					
 					if (fillWidth > 0) {
 						const Color* color;
 						
-						if (_charge < 0xFF * 1 / 10) {
+						if (_charge < 0xFFFF * 1 / 10) {
 							color = &Theme::bad1;
 						}
-						else if (_charge < 0xFF * 2 / 10) {
+						else if (_charge < 0xFFFF * 2 / 10) {
 							color = &Theme::yellow;
 						}
 						else {
@@ -72,10 +72,10 @@ namespace pizda {
 				// Text
 				const auto text =
 					available
-					? std::format(L"{:.1f}", static_cast<float>(_voltageMV) / 1000.f)
-					: L"---";
+					? std::format("{:.1f}", static_cast<float>(_voltageMV) / 1000.f)
+					: "---";
 
-				renderer->renderString(
+				renderer->renderText(
 					Point(
 						bounds.getX() + frameSize / 2 - Theme::fontSmall.getWidth(text) / 2,
 						bounds.getYCenter() - Theme::fontSmall.getHeight() / 2 + 1
@@ -96,11 +96,11 @@ namespace pizda {
 				invalidate();
 			}
 
-			uint8_t getCharge() const {
+			uint16_t getCharge() const {
 				return _charge;
 			}
 
-			void setCharge(const uint8_t charge) {
+			void setCharge(const uint16_t charge) {
 				_charge = charge;
 
 				invalidate();
@@ -108,6 +108,6 @@ namespace pizda {
 
 		private:
 			uint16_t _voltageMV = 0xFF;
-			uint8_t _charge = 0;
+			uint16_t _charge = 0;
 	};
 }

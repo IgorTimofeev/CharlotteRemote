@@ -19,12 +19,12 @@ namespace pizda {
 
 			NavigationWaypointData(
 				NavigationWaypointType type,
-				std::wstring_view name,
+				std::string_view name,
 				const GeoCoordinates& coordinates
 			);
 
 			NavigationWaypointType type;
-			std::wstring name {};
+			std::string name {};
 			GeoCoordinates geographicCoordinates {};
 			Vector3F cartesianCoordinates;
 	};
@@ -69,8 +69,8 @@ namespace pizda {
 				return (headingDeg % 10 >= 5 ? headingDeg + 10 : headingDeg) / 10;
 			}
 
-			std::wstring getFormattedName() const {
-				return std::format(L"{:02}", getShortHeading());
+			std::string getFormattedName() const {
+				return std::format("{:02}", getShortHeading());
 			}
 
 		private:
@@ -98,10 +98,10 @@ namespace pizda {
 			std::vector<NavigationRunwayData> runways {};
 			NavigationDataFlightPlan flightPlan {};
 
-			void addEnrouteWaypoint(NavigationWaypointType type, std::wstring_view name, const GeoCoordinates& coordinates);
+			void addEnrouteWaypoint(NavigationWaypointType type, std::string_view name, const GeoCoordinates& coordinates);
 
 			void addRunway(
-				std::wstring_view name,
+				std::string_view name,
 				const GeoCoordinates& coordinates,
 				uint16_t headingDeg,
 				uint16_t lengthM,

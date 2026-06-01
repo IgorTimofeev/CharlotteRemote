@@ -11,7 +11,7 @@ namespace pizda {
 
 		// ----------------------------- Lateral -----------------------------
 
-		title.setText(L"Lateral");
+		title.setText("Lateral");
 
 		// Angle max
 		setupRadTextField(
@@ -184,11 +184,11 @@ namespace pizda {
 		);
 	}
 
-	void AutopilotSettingsPage::setupAnyTextField(TextField& textField, const std::wstring_view& text, const std::function<void()>& onEnter) {
+	void AutopilotSettingsPage::setupAnyTextField(TextField& textField, const std::string_view& text, const std::function<void()>& onEnter) {
 		Theme::apply(&textField);
 		textField.setText(text);
 
-		textField.setOnInput([onEnter](const Key key, std::optional<std::wstring_view>) {
+		textField.setOnInput([onEnter](const Key key, std::optional<std::string_view>) {
 			if (key != Key::enter)
 				return;
 
@@ -199,7 +199,7 @@ namespace pizda {
 	void AutopilotSettingsPage::setupFloatTextField(TextField& textField, float* value, float fallbackValue, float min, float max, RemoteAuxiliaryAutopilotPacketType packetType) {
 		setupAnyTextField(
 			textField,
-			StringUtils::toWString(*value),
+			StringUtils::toString(*value),
 			[&textField, fallbackValue, value, min, max, packetType] {
 				*value = std::clamp(StringUtils::tryParseFloatOr(textField.getText(), fallbackValue), min, max);
 				RC::getInstance().getSettings().autopilot.scheduleWrite();
@@ -214,7 +214,7 @@ namespace pizda {
 	void AutopilotSettingsPage::setupRadTextField(TextField& textField, float* angleRad, float fallbackAngleDeg, RemoteAuxiliaryAutopilotPacketType packetType) {
 		setupAnyTextField(
 			textField,
-			StringUtils::toWString(YOBA::round(toDegrees(*angleRad), 2)),
+			StringUtils::toString(YOBA::round(toDegrees(*angleRad), 2)),
 			[&textField, fallbackAngleDeg, angleRad, packetType] {
 				*angleRad = toRadians(StringUtils::tryParseFloatOr(textField.getText(), fallbackAngleDeg));
 				RC::getInstance().getSettings().autopilot.scheduleWrite();
@@ -229,7 +229,7 @@ namespace pizda {
 	void AutopilotSettingsPage::setupUint8PercentTextField(TextField& textField, uint8_t* percent, float fallbackPercent, RemoteAuxiliaryAutopilotPacketType packetType) {
 		setupAnyTextField(
 			textField,
-			std::to_wstring(*percent),
+			std::to_string(*percent),
 			[&textField, fallbackPercent, percent, packetType] {
 				*percent = static_cast<uint8_t>(std::clamp<int32_t>(StringUtils::tryParseInt32Or(textField.getText(), fallbackPercent), 0, 100));
 				RC::getInstance().getSettings().autopilot.scheduleWrite();

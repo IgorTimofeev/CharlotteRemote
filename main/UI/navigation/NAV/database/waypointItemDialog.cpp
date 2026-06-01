@@ -16,10 +16,10 @@ namespace pizda {
 
 		// Remove button
 		Theme::applyCritical(&_removeButton);
-		_removeButton.setText(L"Delete");
+		_removeButton.setText("Delete");
 
 		_removeButton.setOnClick([&rc, waypointIndex, this] {
-			rc.getApplication().invokeOnNextTick([&rc, waypointIndex, this] {
+			rc.getApplication().invokeLater([&rc, waypointIndex, this] {
 				hide();
 				delete this;
 

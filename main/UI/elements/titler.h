@@ -15,11 +15,11 @@ namespace pizda {
 				*this += &title;
 			}
 
-			explicit Titler(std::wstring_view title) : Titler()  {
+			explicit Titler(std::string_view title) : Titler()  {
 				this->title.setText(title);
 			}
 
-			Titler(std::wstring_view title, Element* element) : Titler(title) {
+			Titler(std::string_view title, Element* element) : Titler(title) {
 				*this += element;
 			}
 

@@ -10,7 +10,7 @@ namespace pizda {
 
 		// ----------------------------- General -----------------------------
 
-		title.setText(L"General");
+		title.setText("General");
 
 		// Debug overlay
 		_generalDebugOverlay.getSwitch().setActive(settings.personalization.debugOverlay);
@@ -50,7 +50,7 @@ namespace pizda {
 		// -------------------------------- PFD --------------------------------
 
 		Theme::applyPageTitle(&_PFDTitle);
-		_PFDTitle.setText(L"PFD");
+		_PFDTitle.setText("PFD");
 		rows += &_PFDTitle;
 				
 		// FOV
@@ -86,7 +86,7 @@ namespace pizda {
 		// -------------------------------- ND --------------------------------
 
 		Theme::applyPageTitle(&_NDTitle);
-		_NDTitle.setText(L"ND");
+		_NDTitle.setText("ND");
 		rows += &_NDTitle;
 
 		// Earth grid

@@ -10,14 +10,14 @@ namespace pizda {
 	ADIRSSettingsPage::ADIRSSettingsPage() {
 		// ----------------------------- ADIRS -----------------------------
 
-		title.setText(L"ADIRS");
+		title.setText("ADIRS");
 
 		// Magnetic declination
 		Theme::apply(&_ADIRSMagneticDeclinationTextField);
 		_ADIRSMagneticDeclinationTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowSigned);
-		_ADIRSMagneticDeclinationTextField.setText(std::to_wstring(RC::getInstance().getSettings().ADIRS.magneticDeclinationDeg));
+		_ADIRSMagneticDeclinationTextField.setText(std::to_string(RC::getInstance().getSettings().ADIRS.magneticDeclinationDeg));
 
-		_ADIRSMagneticDeclinationTextField.setOnInput([this](const Key key, std::optional<std::wstring_view>) {
+		_ADIRSMagneticDeclinationTextField.setOnInput([this](const Key key, std::optional<std::string_view>) {
 			if (key != Key::enter)
 				return;
 
@@ -37,7 +37,7 @@ namespace pizda {
 
 		// Title
 		Theme::applyPageTitle(&_calTitle);
-		_calTitle.setText(L"Calibration");
+		_calTitle.setText("Calibration");
 		rows += &_calTitle;
 		
 		// Progress bar
@@ -51,7 +51,7 @@ namespace pizda {
 		
 		// Accel & gyro
 		Theme::applyPrimary(&_calAccelAndGyroButton);
-		_calAccelAndGyroButton.setText(L"Accel & gyro");
+		_calAccelAndGyroButton.setText("Accel & gyro");
 		
 		_calAccelAndGyroButton.setOnClick([] {
 			RC::getInstance().getRemoteData().calibrationSystem = AircraftCalibrationSystem::accelAndGyro;
@@ -62,7 +62,7 @@ namespace pizda {
 		
 		// Mag
 		Theme::applyPrimary(&_calMagButton);
-		_calMagButton.setText(L"Mag");
+		_calMagButton.setText("Mag");
 		
 		_calMagButton.setOnClick([] {
 			RC::getInstance().getRemoteData().calibrationSystem = AircraftCalibrationSystem::mag;
@@ -77,7 +77,7 @@ namespace pizda {
 		_calDescriptionText.setWrappingEnabled(true);
 
 		_calDescriptionText.setText(
-			LR"(It is advisable to calibrate the accelerometer and gyroscope only after changing MCU location in the fuselage
+			R"(It is advisable to calibrate the accelerometer and gyroscope only after changing MCU location in the fuselage
 
 The magnetometer should be calibrated each time before first takeoff in new geolocation to take into account the influence of parasitic magnetic fields from nearby metal structures)"
 		);
@@ -96,10 +96,10 @@ The magnetometer should be calibrated each time before first takeoff in new geol
 			_calProgressBar.setValue(static_cast<float>(rc.getAircraftData().raw.calibration.progress) / 0xFF);
 			
 			_calProgressText.setText(std::format(
-				L"Calibrating {}: {}%",
+				"Calibrating {}: {}%",
 				rc.getAircraftData().raw.calibration.system == AircraftCalibrationSystem::accelAndGyro
-					 ? L"accel & gyro"
-					 : L"mag",
+					 ? "accel & gyro"
+					 : "mag",
 				rc.getAircraftData().raw.calibration.progress * 100 / 0xFF
 			));
 		}

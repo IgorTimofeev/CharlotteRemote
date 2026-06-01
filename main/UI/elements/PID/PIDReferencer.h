@@ -18,7 +18,7 @@ namespace pizda {
 
 	class PIDReferencerDialog : public ScrollViewDialog {
 		public:
-			PIDReferencerDialog(const std::wstring_view titleText, const PIDCoefficients& coefficients, const std::function<void(const PIDCoefficients&)>& onConfirm) {
+			PIDReferencerDialog(const std::string_view titleText, const PIDCoefficients& coefficients, const std::function<void(const PIDCoefficients&)>& onConfirm) {
 				title.setText(titleText);
 
 				// Chart
@@ -37,9 +37,9 @@ namespace pizda {
 				// P
 				Theme::apply(&PTextField);
 				PTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
-				PTextField.setText(StringUtils::toWString(coefficients.p));
+				PTextField.setText(StringUtils::toString(coefficients.p));
 
-				PTextField.setOnInput([this](Key, std::optional<std::wstring_view>) {
+				PTextField.setOnInput([this](Key, std::optional<std::string_view>) {
 					updateChart();
 				});
 
@@ -48,9 +48,9 @@ namespace pizda {
 				// I
 				Theme::apply(&ITextField);
 				ITextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
-				ITextField.setText(StringUtils::toWString(coefficients.i));
+				ITextField.setText(StringUtils::toString(coefficients.i));
 
-				ITextField.setOnInput([this](Key, std::optional<std::wstring_view>) {
+				ITextField.setOnInput([this](Key, std::optional<std::string_view>) {
 					updateChart();
 				});
 
@@ -59,9 +59,9 @@ namespace pizda {
 				// D
 				Theme::apply(&DTextField);
 				DTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
-				DTextField.setText(StringUtils::toWString(coefficients.d));
+				DTextField.setText(StringUtils::toString(coefficients.d));
 
-				DTextField.setOnInput([this](Key, std::optional<std::wstring_view>) {
+				DTextField.setOnInput([this](Key, std::optional<std::string_view>) {
 					updateChart();
 				});
 
@@ -69,10 +69,10 @@ namespace pizda {
 
 				// Confirm button
 				Theme::applyPrimary(&_confirmButton);
-				_confirmButton.setText(L"Confirm");
+				_confirmButton.setText("Confirm");
 
 				_confirmButton.setOnClick([this, onConfirm] {
-					Application::getCurrent()->invokeOnNextTick([this, onConfirm] {
+					Application::getCurrent()->invokeLater([this, onConfirm] {
 						onConfirm(chart.getCoefficients());
 
 						hide();
@@ -92,13 +92,13 @@ namespace pizda {
 			RelativeStackLayout PIDRow {};
 
 			TextField PTextField {};
-			Titler PTitle { L"P", &PTextField };
+			Titler PTitle { "P", &PTextField };
 
 			TextField ITextField {};
-			Titler ITitle { L"I", &ITextField };
+			Titler ITitle { "I", &ITextField };
 
 			TextField DTextField {};
-			Titler DTitle { L"D", &DTextField };
+			Titler DTitle { "D", &DTextField };
 
 			Button _confirmButton {};
 
@@ -113,18 +113,18 @@ namespace pizda {
 
 	class PIDReferencer : public Referencer {
 		public:
-			PIDReferencer(const std::wstring_view& dialogTitle) {
+			PIDReferencer(const std::string_view& dialogTitle) {
 				_textsRow.setOrientation(Orientation::horizontal);
 				_textsRow.setGap(5);
 				setDefaultMargin(&_textsRow, Margin(10));
 				*this += &_textsRow;
 
 				addCoeffText(_textP, &Theme::yellow);
-				addSuffixText(_textP_I, L"P +");
+				addSuffixText(_textP_I, "P +");
 				addCoeffText(_textI, &Theme::magenta1);
-				addSuffixText(_textI_D, L"I +");
+				addSuffixText(_textI_D, "I +");
 				addCoeffText(_textD, &Theme::ocean);
-				addSuffixText(_textD_, L"D");
+				addSuffixText(_textD_, "D");
 
 				setOnClick([this, dialogTitle] {
 					(
@@ -142,9 +142,9 @@ namespace pizda {
 			void setCoefficients(const PIDCoefficients& coefficients) {
 				_coefficients = coefficients;
 
-				_textP.setText(StringUtils::toWString(_coefficients.p));
-				_textI.setText(StringUtils::toWString(_coefficients.i));
-				_textD.setText(StringUtils::toWString(_coefficients.d));
+				_textP.setText(StringUtils::toString(_coefficients.p));
+				_textI.setText(StringUtils::toString(_coefficients.i));
+				_textD.setText(StringUtils::toString(_coefficients.d));
 
 				if (_onCoefficientsChanged)
 					_onCoefficientsChanged(_coefficients);
@@ -182,7 +182,7 @@ namespace pizda {
 				addText(text, color);
 			}
 
-			void addSuffixText(TextView& text, const std::wstring_view suffix) {
+			void addSuffixText(TextView& text, const std::string_view suffix) {
 				text.setMargin(Margin(0, 0, 0, 1));
 				text.setFont(&Theme::fontNormal);
 				text.setText(suffix);

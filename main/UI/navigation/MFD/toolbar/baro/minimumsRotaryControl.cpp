@@ -14,8 +14,8 @@ namespace pizda {
 		updateColor();
 	}
 	
-	std::wstring_view MinimumsRotaryControl::variantIndexToTitle(uint8_t index) {
-		return L"Minimums";
+	std::string_view MinimumsRotaryControl::variantIndexToTitle(uint8_t index) {
+		return "Minimums";
 	}
 	
 	bool MinimumsRotaryControl::isVariantEditable(const uint8_t index) {

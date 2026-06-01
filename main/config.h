@@ -141,8 +141,8 @@ namespace pizda {
 							constexpr static uint32_t voltageMin = 2 * 3'000;
 							constexpr static uint32_t voltageMax = 2 * 4'200;
 
-							constexpr static uint32_t voltageDividerR1 = 1000'000;
-							constexpr static uint32_t voltageDividerR2 = 330'000;
+							constexpr static uint32_t dividerResistanceR1 = 1000'000;
+							constexpr static uint32_t dividerResistanceR2 = 330'000;
 					};
 
 					class aircraft {

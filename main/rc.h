@@ -10,7 +10,7 @@
 #include <YOBA/hardware/encoder.h>
 
 #include <units.h>
-#include <battery.h>
+#include <ADCVoltmeter.h>
 #include <lowPassFilter.h>
 #include <audioPlayer.h>
 
@@ -47,7 +47,7 @@ namespace pizda {
 			PushButtonEncoder& getEncoder();
 			Axes& getAxes();
 
-			Battery getBattery() const;
+			ADCVoltmeter getBattery() const;
 			RemoteTransceiver& getTransceiver();
 			
 			void updateDebugOverlayVisibility();
@@ -118,15 +118,16 @@ namespace pizda {
 			Axes _axes {};
 
 			// Battery
-			Battery _battery {
+			ADCVoltmeter _battery {
 				config::battery::remote::unit,
 				getAssignedADCOneshotUnit(config::battery::remote::unit),
 				config::battery::remote::channel,
 
 				config::battery::remote::voltageMin,
 				config::battery::remote::voltageMax,
-				config::battery::remote::voltageDividerR1,
-				config::battery::remote::voltageDividerR2
+
+				config::battery::remote::dividerResistanceR1,
+				config::battery::remote::dividerResistanceR2
 			};
 
 			// Audio

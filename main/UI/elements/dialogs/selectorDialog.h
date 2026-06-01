@@ -28,8 +28,8 @@ namespace pizda {
 	class SelectorDialog : public ScrollViewDialog {
 		public:
 			SelectorDialog(
-				const std::wstring_view& title,
-				const std::wstring_view* items,
+				const std::string_view& title,
+				const std::string_view* items,
 				uint8_t itemCount,
 				uint8_t selectedIndex,
 				const std::function<void(uint8_t)>& onItemSelected
@@ -37,14 +37,14 @@ namespace pizda {
 
 			~SelectorDialog() override;
 
-			const std::wstring_view* getItems() const;
+			const std::string_view* getItems() const;
 			const std::function<void(uint8_t)>& getOnItemSelected();
 
 		protected:
 			void onAddedToParent(Layout* parent) override;
 
 		private:
-			const std::wstring_view* _items;
+			const std::string_view* _items;
 			uint8_t _itemCount;
 			uint8_t _selectedIndex;
 			std::function<void(uint8_t)> _onItemSelected;

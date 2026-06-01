@@ -17,7 +17,7 @@ namespace pizda {
 	
 	class MotorEditor : public Titler {
 		public:
-			MotorEditor(std::wstring_view title, MotorType type);
+			MotorEditor(std::string_view title, MotorType type);
 			
 			void toSettings() const;
 
@@ -38,9 +38,9 @@ namespace pizda {
 			void addTextField(TextField& textField, T value) {
 				Theme::apply(&textField);
 				textField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
-				textField.setText(std::to_wstring(value));
+				textField.setText(std::to_string(value));
 
-				textField.setOnInput([this](const Key key, std::optional<std::wstring_view> text) {
+				textField.setOnInput([this](const Key key, std::optional<std::string_view> text) {
 					if (key == Key::enter)
 						changed();
 				});
@@ -54,28 +54,28 @@ namespace pizda {
 			MotorsSettingsPage();
 			
 		private:
-			MotorEditor throttle { L"Throttle", MotorType::throttle };
-			MotorEditor noseWheel { L"Wheel steering", MotorType::noseWheel };
+			MotorEditor throttle { "Throttle", MotorType::throttle };
+			MotorEditor noseWheel { "Wheel steering", MotorType::noseWheel };
 			HorizontalSeparator _mainSeparator {};
 
-			TextView _leftWingTitle { L"Left wing" };
-			MotorEditor flapLeft { L"Flap", MotorType::flapLeft };
-			MotorEditor aileronLeft { L"Aileron", MotorType::aileronLeft };
+			TextView _leftWingTitle { "Left wing" };
+			MotorEditor flapLeft { "Flap", MotorType::flapLeft };
+			MotorEditor aileronLeft { "Aileron", MotorType::aileronLeft };
 			HorizontalSeparator _leftWingSeparator {};
 
-			TextView _rightWingTitle { L"Right wing" };
-			MotorEditor flapRight { L"Flap", MotorType::flapRight };
-			MotorEditor aileronRight { L"Aileron", MotorType::aileronRight };
+			TextView _rightWingTitle { "Right wing" };
+			MotorEditor flapRight { "Flap", MotorType::flapRight };
+			MotorEditor aileronRight { "Aileron", MotorType::aileronRight };
 			HorizontalSeparator _rightWingSeparator {};
 
-			TextView _tailTitle { L"Tail" };
-			MotorEditor tailLeft { L"Left", MotorType::tailLeft };
-			MotorEditor tailRight { L"Right", MotorType::tailRight };
+			TextView _tailTitle { "Tail" };
+			MotorEditor tailLeft { "Left", MotorType::tailLeft };
+			MotorEditor tailRight { "Right", MotorType::tailRight };
 			HorizontalSeparator _tailSeparator {};
 
-			TextView _cameraTitle { L"Camera" };
-			MotorEditor cameraPitch { L"Pitch", MotorType::cameraPitch };
-			MotorEditor cameraYaw { L"Yaw", MotorType::cameraYaw };
+			TextView _cameraTitle { "Camera" };
+			MotorEditor cameraPitch { "Pitch", MotorType::cameraPitch };
+			MotorEditor cameraYaw { "Yaw", MotorType::cameraYaw };
 
 			void penisula(TextView* text);
 			void vaginoz(MotorEditor* motorEditor);

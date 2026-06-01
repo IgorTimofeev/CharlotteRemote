@@ -17,52 +17,52 @@ namespace pizda {
 
 		private:
 			TextField _RFFrequency {};
-			Titler _RFFrequencyTitle { L"RF [120; 960] (MHz)", &_RFFrequency };
+			Titler _RFFrequencyTitle { "RF [120; 960] (MHz)", &_RFFrequency };
 
 			RelativeStackLayout _horizontalRows[4] {};
 
 			constexpr static uint8_t _bandwidthItemsLength = 10;
-			std::wstring_view _bandwidthItems[_bandwidthItemsLength] {
-				L"7.81",
-				L"10.42",
-				L"15.63",
-				L"20.83",
-				L"31.25",
-				L"41.67",
-				L"62.5",
-				L"125.0",
-				L"250.0",
-				L"500.0"
+			std::string_view _bandwidthItems[_bandwidthItemsLength] {
+				"7.81",
+				"10.42",
+				"15.63",
+				"20.83",
+				"31.25",
+				"41.67",
+				"62.5",
+				"125.0",
+				"250.0",
+				"500.0"
 			};
 
 			ComboBox _bandwidth {};
-			Titler _bandwidthTitle { L"BW (kHz)", &_bandwidth };
+			Titler _bandwidthTitle { "BW (kHz)", &_bandwidth };
 
 			constexpr static uint8_t _codingRateItemsLength = 4;
-			std::wstring_view _codingRateItems[_codingRateItemsLength] {
-				L"4/5",
-				L"4/6",
-				L"4/7",
-				L"4/8"
+			std::string_view _codingRateItems[_codingRateItemsLength] {
+				"4/5",
+				"4/6",
+				"4/7",
+				"4/8"
 			};
 
 			ComboBox _codingRate {};
-			Titler _codingRateTitle { L"CR", &_codingRate };
+			Titler _codingRateTitle { "CR", &_codingRate };
 
 			TextField _spreadingFactor {};
-			Titler _spreadingFactorTitle { L"SF [5; 12]", &_spreadingFactor };
+			Titler _spreadingFactorTitle { "SF [5; 12]", &_spreadingFactor };
 
 			TextField _syncWord {};
-			Titler _syncWordTitle { L"SW [0; 255]", &_syncWord };
+			Titler _syncWordTitle { "SW [0; 255]", &_syncWord };
 
 			TextField _preambleLength {};
-			Titler _preambleLengthTitle { L"PL [0; 65535] s", &_preambleLength };
+			Titler _preambleLengthTitle { "PL [0; 65535] s", &_preambleLength };
 
 			TextField _currentLimit {};
-			Titler _currentLimitTitle { L"OCP [0; 140] (mA)", &_currentLimit };
+			Titler _currentLimitTitle { "OCP [0; 140] (mA)", &_currentLimit };
 
 			TextField _power {};
-			Titler _powerTitle { L"PWR [-17; 22] (dBm)", &_power };
+			Titler _powerTitle { "PWR [-17; 22] (dBm)", &_power };
 
 			Button _confirmButton {};
 

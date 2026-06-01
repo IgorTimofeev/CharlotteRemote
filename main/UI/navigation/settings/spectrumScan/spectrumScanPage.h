@@ -41,13 +41,13 @@ namespace pizda {
 			RelativeStackLayout frequencyRow {};
 
 			TextField frequencyFromTextField {};
-			Titler frequencyFromTitle { L"From (MHz)", &frequencyFromTextField };
+			Titler frequencyFromTitle { "From (MHz)", &frequencyFromTextField };
 
 			TextField frequencyToTextField {};
-			Titler frequencyToTitle { L"To (MHz)", &frequencyToTextField };
+			Titler frequencyToTitle { "To (MHz)", &frequencyToTextField };
 
 			TextField frequencyStepTextField {};
-			Titler frequencyStepTitle { L"Step (KHz)", &frequencyStepTextField };
+			Titler frequencyStepTitle { "Step (KHz)", &frequencyStepTextField };
 
 			Button frequencyPresetsButton {};
 

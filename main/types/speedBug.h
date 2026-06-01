@@ -6,11 +6,11 @@
 namespace pizda {
 	class SpeedBug {
 		public:
-			constexpr SpeedBug(std::wstring_view name, const uint16_t value) : _name(name), _value(value) {
+			constexpr SpeedBug(std::string_view name, const uint16_t value) : _name(name), _value(value) {
 
 			}
 
-			std::wstring_view getName() const {
+			std::string_view getName() const {
 				return _name;
 			}
 			
@@ -19,7 +19,7 @@ namespace pizda {
 			}
 
 		private:
-			const std::wstring_view _name;
+			const std::string_view _name;
 			const uint16_t _value;
 	};
 }

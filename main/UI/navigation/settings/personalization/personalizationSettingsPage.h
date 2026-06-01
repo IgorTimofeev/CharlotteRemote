@@ -18,9 +18,9 @@ namespace pizda {
 		private:
 			// -------------------------------- General --------------------------------
 			
-			Switcher _generalAudioFeedback { L"Audio feedback" };
-			Switcher _generalDebugOverlay { L"Debug overlay" };
-			Switcher _generalDataInterpolation { L"Data interpolation" };
+			Switcher _generalAudioFeedback { "Audio feedback" };
+			Switcher _generalDebugOverlay { "Debug overlay" };
+			Switcher _generalDataInterpolation { "Data interpolation" };
 			HorizontalSeparator _generalSeparator {};
 
 			// -------------------------------- PFD --------------------------------
@@ -29,10 +29,10 @@ namespace pizda {
 
 			// FOV
 			Slider _PFDFOVSlider {};
-			Titler _PFDFOVTitle = Titler(L"Field of view", &_PFDFOVSlider);
+			Titler _PFDFOVTitle = Titler("Field of view", &_PFDFOVSlider);
 
 			// Waypoint labels
-			Switcher _PFDWaypointLabels { L"Waypoint labels" };
+			Switcher _PFDWaypointLabels { "Waypoint labels" };
 
 			HorizontalSeparator _PFDSeparator {};
 
@@ -41,6 +41,6 @@ namespace pizda {
 			TextView _NDTitle {};
 
 			// Earth grid
-			Switcher _NDEarthGrid { L"Earth grid" };
+			Switcher _NDEarthGrid { "Earth grid" };
 	};
 }

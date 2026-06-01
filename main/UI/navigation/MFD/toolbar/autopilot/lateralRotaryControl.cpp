@@ -35,10 +35,10 @@ namespace pizda {
 		}
 	}
 	
-	std::wstring_view LateralRotaryControl::variantIndexToTitle(const uint8_t index) {
+	std::string_view LateralRotaryControl::variantIndexToTitle(const uint8_t index) {
 		switch (index) {
-			case 0: return L"HDG";
-			default: return L"LSTB";
+			case 0: return "HDG";
+			default: return "LSTB";
 		}
 	}
 	

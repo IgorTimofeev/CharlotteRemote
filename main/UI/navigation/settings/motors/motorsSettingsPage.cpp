@@ -6,7 +6,7 @@
 #include "UI/theme.h"
 
 namespace pizda {
-	MotorEditor::MotorEditor(const std::wstring_view title, const MotorType type) : Titler(title), _type(type) {
+	MotorEditor::MotorEditor(const std::string_view title, const MotorType type) : Titler(title), _type(type) {
 		const auto settings = RC::getInstance().getSettings().motors.getByType(type);
 
 		*this += &_mainLayout;
@@ -24,7 +24,7 @@ namespace pizda {
 		_reverse.setActiveTextColor(&Theme::bg1);
 		
 		_reverse.setFont(&Theme::fontSmall);
-		_reverse.setText(L"<>");
+		_reverse.setText("<>");
 		_reverse.setToggle(true);
 		
 		_reverse.setActive(settings->reverse);
@@ -65,7 +65,7 @@ namespace pizda {
 
 	MotorsSettingsPage::MotorsSettingsPage() {
 		// Page title
-		title.setText(L"Nose");
+		title.setText("Nose");
 		
 		vaginoz(&throttle);
 		vaginoz(&noseWheel);

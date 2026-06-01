@@ -24,28 +24,28 @@ namespace pizda {
 	class SelectWaypointDialog : public ScrollViewDialog {
 		public:
 			static void select(
-				std::wstring_view titleText,
+				std::string_view titleText,
 				const std::function<void(const WaypointDialogSelectedItem& selectedItem)>& onConfirm
 			);
 
 			static void edit(
-				std::wstring_view titleText,
+				std::string_view titleText,
 				const WaypointDialogSelectedItem& selectedItem,
 				const std::function<void(const WaypointDialogSelectedItem& selectedItem)>& onConfirm
 			);
 
 		private:
 			SelectWaypointDialog(
-				std::wstring_view titleText,
+				std::string_view titleText,
 				const std::optional<WaypointDialogSelectedItem>& selectedItem,
 				const std::function<void(const WaypointDialogSelectedItem& selectedItem)>& onConfirm
 			);
 
 			TextField _searchTextField {};
-			Titler _searchTextFieldTitle { L"Search", &_searchTextField };
+			Titler _searchTextFieldTitle { "Search", &_searchTextField };
 
 			WaypointButton _waypointButton {};
-			Titler _waypointTitle = { L"Waypoint", &_waypointButton };
+			Titler _waypointTitle = { "Waypoint", &_waypointButton };
 
 			Button _confirmButton {};
 

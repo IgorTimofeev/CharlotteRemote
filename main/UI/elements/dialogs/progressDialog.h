@@ -34,7 +34,7 @@ namespace pizda {
 
 			void setProgress(float value) {
 				progressBar.setValue(value);
-				progressText.setText(std::format(L"{}%", value * 100 / 0xFFFF));
+				progressText.setText(std::format("{}%", value * 100 / 0xFFFF));
 			}
 	};
 }

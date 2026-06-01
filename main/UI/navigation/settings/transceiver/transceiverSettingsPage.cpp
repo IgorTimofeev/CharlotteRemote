@@ -9,7 +9,7 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		// Page title
-		title.setText(L"Transceiver");
+		title.setText("Transceiver");
 
 		// ----------------------------- Row 0 -----------------------------
 
@@ -18,14 +18,14 @@ namespace pizda {
 		// RF frequency
 		Theme::apply(&_RFFrequency);
 		_RFFrequency.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
-		_RFFrequency.setText(std::to_wstring(rc.getSettings().transceiver.communication.frequencyHz / 1'000'000));
+		_RFFrequency.setText(std::to_string(rc.getSettings().transceiver.communication.frequencyHz / 1'000'000));
 		_horizontalRows[0] += &_RFFrequencyTitle;
 
 		// Bandwidth
 		_bandwidth.setItems(_bandwidthItems);
 		_bandwidth.setItemCount(_bandwidthItemsLength);
 		_bandwidth.setSelectedIndex(static_cast<uint8_t>(rc.getSettings().transceiver.communication.bandwidth));
-		_bandwidth.setDialogTitle(L"Bandwidth");
+		_bandwidth.setDialogTitle("Bandwidth");
 		_horizontalRows[0] += &_bandwidthTitle;
 
 		// ----------------------------- Row 1 -----------------------------
@@ -36,13 +36,13 @@ namespace pizda {
 		_codingRate.setItems(_codingRateItems);
 		_codingRate.setItemCount(_codingRateItemsLength);
 		_codingRate.setSelectedIndex(static_cast<uint8_t>(rc.getSettings().transceiver.communication.codingRate));
-		_codingRate.setDialogTitle(L"Coding rate");
+		_codingRate.setDialogTitle("Coding rate");
 		_horizontalRows[1] += &_codingRateTitle;
 
 		// Spreading factor
 		Theme::apply(&_spreadingFactor);
 		_spreadingFactor.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
-		_spreadingFactor.setText(std::to_wstring(rc.getSettings().transceiver.communication.spreadingFactor));
+		_spreadingFactor.setText(std::to_string(rc.getSettings().transceiver.communication.spreadingFactor));
 		_horizontalRows[1] += &_spreadingFactorTitle;
 
 		// ----------------------------- Row 2 -----------------------------
@@ -52,13 +52,13 @@ namespace pizda {
 		// Sync word
 		Theme::apply(&_syncWord);
 		_syncWord.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
-		_syncWord.setText(std::to_wstring(rc.getSettings().transceiver.communication.syncWord));
+		_syncWord.setText(std::to_string(rc.getSettings().transceiver.communication.syncWord));
 		_horizontalRows[2] += &_syncWordTitle;
 
 		// Preamble length
 		Theme::apply(&_preambleLength);
 		_preambleLength.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
-		_preambleLength.setText(std::to_wstring(rc.getSettings().transceiver.communication.preambleLength));
+		_preambleLength.setText(std::to_string(rc.getSettings().transceiver.communication.preambleLength));
 		_horizontalRows[2] += &_preambleLengthTitle;
 
 		// ----------------------------- Row 3 -----------------------------
@@ -68,19 +68,19 @@ namespace pizda {
 		// Current limit
 		Theme::apply(&_currentLimit);
 		_currentLimit.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
-		_currentLimit.setText(std::to_wstring(rc.getSettings().transceiver.communication.currentLimitMA));
+		_currentLimit.setText(std::to_string(rc.getSettings().transceiver.communication.currentLimitMA));
 		_horizontalRows[3] += &_currentLimitTitle;
 
 		// Power
 		Theme::apply(&_power);
 		_power.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric);
-		_power.setText(std::to_wstring(rc.getSettings().transceiver.communication.powerDBm));
+		_power.setText(std::to_string(rc.getSettings().transceiver.communication.powerDBm));
 		_horizontalRows[3] += &_powerTitle;
 
 		// ----------------------------- LE RAZJEBAT' BUTTON -----------------------------
 
 		Theme::applyPrimary(&_confirmButton);
-		_confirmButton.setText(L"Confirm");
+		_confirmButton.setText("Confirm");
 
 		_confirmButton.setOnClick([this, &rc] {
 			auto& settings = rc.getRemoteData().transceiver.communicationSettings;

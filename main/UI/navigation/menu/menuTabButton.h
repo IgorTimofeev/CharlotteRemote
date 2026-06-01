@@ -16,7 +16,7 @@ namespace pizda {
 
 	class MenuTabButton : public Button {
 		public:
-			MenuTabButton(std::wstring_view text, const Route* route);
+			MenuTabButton(std::string_view text, const Route* route);
 
 			const Route* getRoute() const;
 

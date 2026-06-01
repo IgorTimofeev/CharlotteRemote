@@ -32,8 +32,8 @@ namespace pizda {
 			TextField longitude {};
 
 			void fromRadians(const float lat, const float lon) {
-				latitude.setText(StringUtils::toWString(toDegrees(lat)));
-				longitude.setText(StringUtils::toWString(toDegrees(lon)));
+				latitude.setText(StringUtils::toString(toDegrees(lat)));
+				longitude.setText(StringUtils::toString(toDegrees(lon)));
 			}
 
 			void toRadians(float& lat, float& lon) const {
@@ -60,12 +60,12 @@ namespace pizda {
 			TabSelector _typeSelector {};
 
 			TextField _nameTextField {};
-			Titler _nameTitle = { L"Name", &_nameTextField };
+			Titler _nameTitle = { "Name", &_nameTextField };
 
 			RelativeStackLayout _latitudeAndLongitudeRow { Orientation::horizontal, 10 };
 
 			LatLonRow _latLon {};
-			Titler _latLonTitle = { L"Latitude & longitude", &_latLon };
+			Titler _latLonTitle = { "Latitude & longitude", &_latLon };
 
 			Button _confirmButton {};
 
@@ -73,13 +73,13 @@ namespace pizda {
 				auto& rc = RC::getInstance();
 				auto& nd = rc.getNavigationData();
 
-				title.setText(L"Create waypoint");
+				title.setText("Create waypoint");
 
 				// Type
-				_enrouteTypeItem.setText(L"Enroute");
+				_enrouteTypeItem.setText("Enroute");
 				_typeSelector.addItem(&_enrouteTypeItem);
 
-				_runwayTypeItem.setText(L"Runway");
+				_runwayTypeItem.setText("Runway");
 				_typeSelector.addItem(&_runwayTypeItem);
 
 				_typeSelector.applyDialogStyle();
@@ -97,7 +97,7 @@ namespace pizda {
 
 				// Confirm
 				Theme::applyPrimary(&_confirmButton);
-				_confirmButton.setText(L"Confirm");
+				_confirmButton.setText("Confirm");
 
 				_confirmButton.setOnClick([this, &nd, &rc] {
 					if (_nameTextField.getText().size() == 0) {
@@ -105,7 +105,7 @@ namespace pizda {
 						return;
 					}
 
-					rc.getApplication().invokeOnNextTick([this, &nd] {
+					rc.getApplication().invokeLater([this, &nd] {
 						float latitudeRad, longitudeRad;
 						_latLon.toRadians(latitudeRad, longitudeRad);
 

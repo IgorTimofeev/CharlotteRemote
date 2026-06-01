@@ -27,7 +27,7 @@ namespace pizda {
 			void onTick() override;
 			void onRender(Renderer* renderer, const Bounds& bounds) override;
 			
-			virtual std::wstring_view variantIndexToTitle(uint8_t index) = 0;
+			virtual std::string_view variantIndexToTitle(uint8_t index) = 0;
 			virtual bool isVariantEditable(uint8_t index) = 0;
 			virtual void onVariantChanged();
 			virtual void onRotate(bool clockwise, bool big);

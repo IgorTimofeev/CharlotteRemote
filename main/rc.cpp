@@ -381,7 +381,7 @@ namespace pizda {
 		return _axes;
 	}
 
-	Battery RC::getBattery() const {
+	ADCVoltmeter RC::getBattery() const {
 		return _battery;
 	}
 

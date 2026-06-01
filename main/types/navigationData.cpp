@@ -6,7 +6,7 @@
 namespace pizda {
 	NavigationWaypointData::NavigationWaypointData(
 		const NavigationWaypointType type,
-		const std::wstring_view name,
+		const std::string_view name,
 		const GeoCoordinates& coordinates
 	) :
 		type(type),
@@ -78,7 +78,7 @@ namespace pizda {
 	}
 
 	void NavigationData::addRunway(
-		const std::wstring_view name,
+		const std::string_view name,
 		const GeoCoordinates& coordinates,
 		const uint16_t headingDeg,
 		const uint16_t lengthM,
@@ -100,7 +100,7 @@ namespace pizda {
 
 	void NavigationData::addEnrouteWaypoint(
 		const NavigationWaypointType type,
-		const std::wstring_view name,
+		const std::string_view name,
 		const GeoCoordinates& coordinates
 	) {
 		waypoints.push_back(NavigationWaypointData(
@@ -124,7 +124,7 @@ namespace pizda {
 	void NavigationData::addTemplateData() {
 		// Pulkovo 10 left
 		addRunway(
-			L"ULLI",
+			"ULLI",
 			GeoCoordinates(toRadians(59.805114621892f), toRadians(30.276415586255f), 0),
 			// 10 L
 			106,
@@ -134,7 +134,7 @@ namespace pizda {
 
 		// Kronshtadt
 		addRunway(
-			L"ULLY",
+			"ULLY",
 			GeoCoordinates(toRadians(60.014568277272f), toRadians(29.702727704862f), 0),
 			95,
 			500,
@@ -143,7 +143,7 @@ namespace pizda {
 
 		// Gostilitsy
 		addRunway(
-			L"ULSG",
+			"ULSG",
 			GeoCoordinates(toRadians(59.725833f), toRadians(29.640278f), 0),
 			154,
 			711,
@@ -153,37 +153,37 @@ namespace pizda {
 		// Enroute waypoints
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
-			L"OMEGA",
+			"OMEGA",
 			GeoCoordinates(toRadians(59.983333f), toRadians(30.133333f), 0)
 		);
 
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
-			L"ABREL",
+			"ABRE",
 			GeoCoordinates(toRadians(59.913056f), toRadians(31.335f), 0)
 		);
 
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
-			L"SAPKI",
+			"SAPKI",
 			GeoCoordinates(toRadians(59.604722f), toRadians(31.180833f), 0)
 		);
 
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
-			L"LI754",
+			"LI754",
 			GeoCoordinates(toRadians(59.516944f), toRadians(31.0225f), 0)
 		);
 
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
-			L"OBARI",
+			"OBARI",
 			GeoCoordinates(toRadians(59.599722f), toRadians(30.679167f), 0)
 		);
 
 		addEnrouteWaypoint(
 			NavigationWaypointType::enroute,
-			L"BIPRI",
+			"BIPRI",
 			GeoCoordinates(toRadians(59.747778f), toRadians(30.565556f), 0)
 		);
 

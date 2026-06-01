@@ -63,11 +63,11 @@ namespace pizda {
 		}
 	}
 	
-	std::wstring_view VerticalRotaryControl::variantIndexToTitle(const uint8_t index) {
+	std::string_view VerticalRotaryControl::variantIndexToTitle(const uint8_t index) {
 		switch (index) {
-			case 0: return L"FLC";
-			case 1: return L"VSTB";
-			default: return L"ALT";
+			case 0: return "FLC";
+			case 1: return "VSTB";
+			default: return "ALT";
 		}
 	}
 	

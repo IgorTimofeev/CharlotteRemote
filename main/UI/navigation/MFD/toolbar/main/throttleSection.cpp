@@ -5,7 +5,7 @@
 #include "resources/sounds.h"
 
 namespace pizda {
-	ThrottleSection::ThrottleSection() : ToolbarSection(L"THR") {
+	ThrottleSection::ThrottleSection() : ToolbarSection("THR") {
 		setFocusable(false);
 
 		row.setGap(7);

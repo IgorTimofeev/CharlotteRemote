@@ -18,13 +18,13 @@ namespace pizda {
 	DatabasePage::DatabasePage() {
 		_instance = this;
 
-		title.setText(L"Nav database");
+		title.setText("Nav database");
 
 		// Type selector
-		_enrouteTypeItem.setText(L"Enroute");
+		_enrouteTypeItem.setText("Enroute");
 		_typeSelector.addItem(&_enrouteTypeItem);
 
-		_runwayTypeItem.setText(L"Runway");
+		_runwayTypeItem.setText("Runway");
 		_typeSelector.addItem(&_runwayTypeItem);
 
 		_typeSelector.setSelectedIndex(0);
@@ -42,7 +42,7 @@ namespace pizda {
 		// Search text field
 		Theme::apply(&_searchTextField);
 
-		_searchTextField.setPlaceholder(L"Search");
+		_searchTextField.setPlaceholder("Search");
 
 		_searchTextField.setOnTextChanged([this] {
 			if (_searchTextField.isFocused())
@@ -54,7 +54,7 @@ namespace pizda {
 		// Add button
 		Theme::applySecondary(&_addButton);
 		_addButton.setWidth(Theme::elementHeight);
-		_addButton.setText(L"+");
+		_addButton.setText("+");
 
 		_addButton.setOnClick([this] {
 			AddWaypointDialog::create({}, [this] {
