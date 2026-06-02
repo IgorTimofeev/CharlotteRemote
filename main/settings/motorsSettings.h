@@ -41,7 +41,7 @@ namespace pizda {
 					case MotorType::tailRight: return &tailRight;
 
 					case MotorType::cameraPitch: return &cameraPitch;
-					case MotorType::cameraYaw: return &cameraPitch;
+					case MotorType::cameraYaw: return &cameraYaw;
 
 					default: return nullptr;
 				}

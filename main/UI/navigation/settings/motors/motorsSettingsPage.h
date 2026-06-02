@@ -54,28 +54,29 @@ namespace pizda {
 			MotorsSettingsPage();
 			
 		private:
-			MotorEditor throttle { "Throttle", MotorType::throttle };
-			MotorEditor noseWheel { "Wheel steering", MotorType::noseWheel };
+			MotorEditor _throttle { "Throttle", MotorType::throttle };
+			// MotorEditor _reverse { "Reverse", MotorType::reverse };
+			MotorEditor _noseWheel { "Wheel", MotorType::noseWheel };
 			HorizontalSeparator _mainSeparator {};
 
 			TextView _leftWingTitle { "Left wing" };
-			MotorEditor flapLeft { "Flap", MotorType::flapLeft };
-			MotorEditor aileronLeft { "Aileron", MotorType::aileronLeft };
+			MotorEditor _flapLeft { "Flap", MotorType::flapLeft };
+			MotorEditor _aileronLeft { "Aileron", MotorType::aileronLeft };
 			HorizontalSeparator _leftWingSeparator {};
 
 			TextView _rightWingTitle { "Right wing" };
-			MotorEditor flapRight { "Flap", MotorType::flapRight };
-			MotorEditor aileronRight { "Aileron", MotorType::aileronRight };
+			MotorEditor _flapRight { "Flap", MotorType::flapRight };
+			MotorEditor _aileronRight { "Aileron", MotorType::aileronRight };
 			HorizontalSeparator _rightWingSeparator {};
 
 			TextView _tailTitle { "Tail" };
-			MotorEditor tailLeft { "Left", MotorType::tailLeft };
-			MotorEditor tailRight { "Right", MotorType::tailRight };
+			MotorEditor _tailLeft { "Left", MotorType::tailLeft };
+			MotorEditor _tailRight { "Right", MotorType::tailRight };
 			HorizontalSeparator _tailSeparator {};
 
 			TextView _cameraTitle { "Camera" };
-			MotorEditor cameraPitch { "Pitch", MotorType::cameraPitch };
-			MotorEditor cameraYaw { "Yaw", MotorType::cameraYaw };
+			MotorEditor _cameraPitch { "Pitch", MotorType::cameraPitch };
+			MotorEditor _cameraYaw { "Yaw", MotorType::cameraYaw };
 
 			void penisula(TextView* text);
 			void vaginoz(MotorEditor* motorEditor);

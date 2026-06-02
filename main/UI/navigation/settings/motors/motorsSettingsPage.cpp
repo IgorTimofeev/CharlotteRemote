@@ -65,30 +65,31 @@ namespace pizda {
 
 	MotorsSettingsPage::MotorsSettingsPage() {
 		// Page title
-		title.setText("Nose");
+		title.setText("Primary");
 		
-		vaginoz(&throttle);
-		vaginoz(&noseWheel);
+		vaginoz(&_throttle);
+		// vaginoz(&_reverse);
+		vaginoz(&_noseWheel);
 		rows += &_mainSeparator;
 
 		penisula(&_leftWingTitle);
-		vaginoz(&flapLeft);
-		vaginoz(&aileronLeft);
+		vaginoz(&_flapLeft);
+		vaginoz(&_aileronLeft);
 		rows += &_leftWingSeparator;
 
 		penisula(&_rightWingTitle);
-		vaginoz(&flapRight);
-		vaginoz(&aileronRight);
+		vaginoz(&_flapRight);
+		vaginoz(&_aileronRight);
 		rows += &_rightWingSeparator;
 
 		penisula(&_tailTitle);
-		vaginoz(&tailLeft);
-		vaginoz(&tailRight);
+		vaginoz(&_tailLeft);
+		vaginoz(&_tailRight);
 		rows += &_tailSeparator;
 
 		penisula(&_cameraTitle);
-		vaginoz(&cameraYaw);
-		vaginoz(&cameraPitch);
+		vaginoz(&_cameraPitch);
+		vaginoz(&_cameraYaw);
 	}
 
 	void MotorsSettingsPage::penisula(TextView* text) {
