@@ -25,6 +25,3 @@
 [submodule "components/ESP-IDF-ADCVoltmeter"]
 	path = components/ESP-IDF-ADCVoltmeter
 	url = https://github.com/IgorTimofeev/ESP-IDF-ADCVoltmeter.git
-[submodule "components/YOBA"]
-	path = components/YOBA
-	url = https://github.com/IgorTimofeev/YOBA.git
