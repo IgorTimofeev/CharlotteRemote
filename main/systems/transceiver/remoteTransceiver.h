@@ -27,8 +27,6 @@ namespace pizda {
 			int8_t getRSSI() const;
 			int8_t getSNR() const;
 
-			void enqueueAutopilot(const RemoteSystemAutopilotPacketType type);
-
 		protected:
 			[[noreturn]] void onStart() override;
 			void onTransmit(BitStream& stream, RemotePacketType packetType) override;
@@ -49,7 +47,6 @@ namespace pizda {
 			int8_t _SNR = 0;
 
 			int64_t _communicationSettingsACKTime = 0;
-			RemoteSystemAutopilotPacketType _enqueuedAutopilotPacketType = RemoteSystemAutopilotPacketType::setAutopilotEngaged;
 
 			bool receiveAircraftSTierTelemetryPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftATierTelemetryPacket(BitStream& stream, uint8_t payloadLength);
@@ -59,17 +56,7 @@ namespace pizda {
 			bool receiveAircraftSystemCalibrationPacket(BitStream& stream, uint8_t payloadLength);
 			bool receiveAircraftSystemCommunicationSettingsACKPacket(BitStream& stream, uint8_t payloadLength);
 
-			void transmitRemoteControlsPacket(BitStream& stream);
 			void transmitRemoteSystemPacket(BitStream& stream);
-			void transmitRemoteSystemTrimPacket(BitStream& stream);
-			void transmitRemoteSystemLightsPacket(BitStream& stream);
-			void transmitRemoteSystemBaroPacket(BitStream& stream);
-			void transmitRemoteSystemAutopilotPacket(BitStream& stream);
-			void transmitRemoteSystemCameraPacket(BitStream& stream);
-			void transmitRemoteSystemMotorsPacket(BitStream& stream);
-			void transmitRemoteSystemCalibratePacket(BitStream& stream);
-			void transmitRemoteSystemADIRSPacket(BitStream& stream);
-			void transmitRemoteSystemXCVRPacket(BitStream& stream);
 
 			uint16_t _spectrumScanningHistoryIndex = 0;
 			int64_t _spectrumScanningSampleRSSISum = 0;

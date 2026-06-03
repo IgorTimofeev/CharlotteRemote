@@ -14,7 +14,7 @@ namespace pizda {
 			constexpr static uint8_t arrowWidth = 5;
 			constexpr static uint8_t arrowHeightDiv2 = 5;
 
-			void setDefaultMargin(Element* element, const Margin& margin) const {
+			static void setDefaultMargin(Element* element, const Margin& margin) {
 				element->setMargin(Margin {
 					margin.getLeft(),
 					margin.getTop(),

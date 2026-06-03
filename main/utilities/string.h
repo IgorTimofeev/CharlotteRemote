@@ -18,8 +18,9 @@ namespace pizda {
 				).empty();
 			}
 
-			static std::string toString(const float value) {
-				auto result = std::to_string(value);
+			// Just for demo
+			static std::wstring toWString(const float value) {
+				auto result = std::to_wstring(value);
 
 				// I love C++
 

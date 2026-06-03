@@ -96,7 +96,7 @@ namespace pizda {
 
 			settings.sanitize();
 
-			rc.getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::XCVR);
+			rc.getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::communicationSettings);
 		});
 
 		rows += &_confirmButton;

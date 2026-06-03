@@ -37,7 +37,7 @@ namespace pizda {
 				// P
 				Theme::apply(&PTextField);
 				PTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
-				PTextField.setText(StringUtils::toString(coefficients.p));
+				PTextField.setText(std::to_string(coefficients.p));
 
 				PTextField.setOnInput([this](Key, std::optional<std::string_view>) {
 					updateChart();
@@ -48,7 +48,7 @@ namespace pizda {
 				// I
 				Theme::apply(&ITextField);
 				ITextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
-				ITextField.setText(StringUtils::toString(coefficients.i));
+				ITextField.setText(std::to_string(coefficients.i));
 
 				ITextField.setOnInput([this](Key, std::optional<std::string_view>) {
 					updateChart();
@@ -59,7 +59,7 @@ namespace pizda {
 				// D
 				Theme::apply(&DTextField);
 				DTextField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
-				DTextField.setText(StringUtils::toString(coefficients.d));
+				DTextField.setText(std::to_string(coefficients.d));
 
 				DTextField.setOnInput([this](Key, std::optional<std::string_view>) {
 					updateChart();
@@ -116,7 +116,7 @@ namespace pizda {
 			PIDReferencer(const std::string_view& dialogTitle) {
 				_textsRow.setOrientation(Orientation::horizontal);
 				_textsRow.setGap(5);
-				setDefaultMargin(&_textsRow, Margin(10));
+				setDefaultMargin(&_textsRow, Margin(12, 9, 12, 7));
 				*this += &_textsRow;
 
 				addCoeffText(_textP, &Theme::yellow);
@@ -142,9 +142,9 @@ namespace pizda {
 			void setCoefficients(const PIDCoefficients& coefficients) {
 				_coefficients = coefficients;
 
-				_textP.setText(StringUtils::toString(_coefficients.p));
-				_textI.setText(StringUtils::toString(_coefficients.i));
-				_textD.setText(StringUtils::toString(_coefficients.d));
+				_textP.setText(std::to_string(_coefficients.p));
+				_textI.setText(std::to_string(_coefficients.i));
+				_textD.setText(std::to_string(_coefficients.d));
 
 				if (_onCoefficientsChanged)
 					_onCoefficientsChanged(_coefficients);

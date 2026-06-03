@@ -32,8 +32,8 @@ namespace pizda {
 			TextField longitude {};
 
 			void fromRadians(const float lat, const float lon) {
-				latitude.setText(StringUtils::toString(toDegrees(lat)));
-				longitude.setText(StringUtils::toString(toDegrees(lon)));
+				latitude.setText(std::to_string(toDegrees(lat)));
+				longitude.setText(std::to_string(toDegrees(lon)));
 			}
 
 			void toRadians(float& lat, float& lon) const {

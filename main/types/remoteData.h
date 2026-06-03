@@ -63,5 +63,6 @@ namespace pizda {
 			AircraftCalibrationSystem calibrationSystem = AircraftCalibrationSystem::accelAndGyro;
 			RemoteDataTransceiver transceiver {};
 			RemoteDataMotorSettings motorSettings {};
+			GeoCoordinates homeCoordinates {};
 	};
 }
