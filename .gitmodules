@@ -25,3 +25,6 @@
 [submodule "components/ESP-IDF-NVSExtensions"]
 	path = components/ESP-IDF-NVSExtensions
 	url = https://github.com/IgorTimofeev/ESP-IDF-NVSExtensions.git
+[submodule "components/YOBA"]
+	path = components/YOBA
+	url = https://github.com/IgorTimofeev/YOBA.git
