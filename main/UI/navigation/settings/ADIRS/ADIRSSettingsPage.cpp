@@ -25,7 +25,7 @@ namespace pizda {
 			rc.getSettings().ADIRS.magneticDeclinationDeg = StringUtils::tryParseInt32Or(_ADIRSMagneticDeclinationTextField.getText(), 0);
 			rc.getSettings().ADIRS.scheduleWrite();
 
-			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::ADIRS);
+			rc.getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::ADIRS);
 		});
 
 		rows += &_ADIRSMagneticDeclinationTitle;
@@ -55,7 +55,7 @@ namespace pizda {
 		
 		_calAccelAndGyroButton.setOnClick([] {
 			RC::getInstance().getRemoteData().calibrationSystem = AircraftCalibrationSystem::accelAndGyro;
-			RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::calibrate);
+			RC::getInstance().getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::calibrate);
 		});
 		
 		rows += &_calAccelAndGyroButton;
@@ -66,7 +66,7 @@ namespace pizda {
 		
 		_calMagButton.setOnClick([] {
 			RC::getInstance().getRemoteData().calibrationSystem = AircraftCalibrationSystem::mag;
-			RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::calibrate);
+			RC::getInstance().getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::calibrate);
 		});
 
 		rows += &_calMagButton;

@@ -44,7 +44,7 @@ namespace pizda {
 
 			rc.getSettings().controls.scheduleWrite();
 
-			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::camera);
+			rc.getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::camera);
 		}
 	}
 

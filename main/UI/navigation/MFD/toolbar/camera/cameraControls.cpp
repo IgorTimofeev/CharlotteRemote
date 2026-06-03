@@ -43,6 +43,6 @@ namespace pizda {
 
 		*_settingsValue = seven.getValue();
 
-		RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::camera);
+		RC::getInstance().getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::camera);
 	}
 }

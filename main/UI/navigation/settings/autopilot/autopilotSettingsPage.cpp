@@ -18,7 +18,7 @@ namespace pizda {
 			_latMaxRoll,
 			&rc.getSettings().autopilot.maxRollAngleRad,
 			30.f,
-			RemoteAuxiliaryAutopilotPacketType::setMaxRollAngleRad
+			RemoteSystemAutopilotPacketType::setMaxRollAngleRad
 		);
 
 		rows += &_latMaxRollTitle;
@@ -30,7 +30,7 @@ namespace pizda {
 			_latSMTAIRPS,
 			&rc.getSettings().autopilot.stabilizedModeRollAngleIncrementRadPerSecond,
 			5,
-			RemoteAuxiliaryAutopilotPacketType::setStabilizedModeRollAngleIncrementRadPerSecond
+			RemoteSystemAutopilotPacketType::setStabilizedModeRollAngleIncrementRadPerSecond
 		);
 
 		_latRow0 += &_latSMTAIFRSTitle;
@@ -42,7 +42,7 @@ namespace pizda {
 			0.6f,
 			0.0f,
 			1000.0f,
-			RemoteAuxiliaryAutopilotPacketType::setRollAngleLPFFactorPerSecond
+			RemoteSystemAutopilotPacketType::setRollAngleLPFFactorPerSecond
 		);
 
 		_latRow0 += &_latTALPFFPSTitle;
@@ -52,7 +52,7 @@ namespace pizda {
 			_latMaxAileronsFactor,
 			&rc.getSettings().autopilot.maxAileronsPercent,
 			100,
-			RemoteAuxiliaryAutopilotPacketType::setMaxAileronsPercent
+			RemoteSystemAutopilotPacketType::setMaxAileronsPercent
 		);
 
 		rows += &_latMaxAileronsFactorTitle;
@@ -61,14 +61,14 @@ namespace pizda {
 		addPID(
 			_latYawToRollPIDTitle,
 			_latYawToRollPID,
-			RemoteAuxiliaryAutopilotPacketType::setYawToRollPID,
+			RemoteSystemAutopilotPacketType::setYawToRollPID,
 			&rc.getSettings().autopilot.PIDs.yawToRoll
 		);
 
 		addPID(
 			_latRollToAileronsPIDTitle,
 			_latRollToAileronsPID,
-			RemoteAuxiliaryAutopilotPacketType::setRollToAileronsPID,
+			RemoteSystemAutopilotPacketType::setRollToAileronsPID,
 			&rc.getSettings().autopilot.PIDs.rollToAilerons
 		);
 
@@ -85,7 +85,7 @@ namespace pizda {
 			_verMaxPitch,
 			&rc.getSettings().autopilot.maxPitchAngleRad,
 			15.f,
-			RemoteAuxiliaryAutopilotPacketType::setMaxPitchAngleRad
+			RemoteSystemAutopilotPacketType::setMaxPitchAngleRad
 		);
 
 		rows += &_verMaxPitchTitle;
@@ -97,7 +97,7 @@ namespace pizda {
 			_verSMTARFPS,
 			&rc.getSettings().autopilot.stabilizedModePitchAngleIncrementRadPerSecond,
 			5,
-			RemoteAuxiliaryAutopilotPacketType::setStabilizedModePitchAngleIncrementRadPerSecond
+			RemoteSystemAutopilotPacketType::setStabilizedModePitchAngleIncrementRadPerSecond
 		);
 
 		_verRow0 += &_verSMTAIRPSTitle;
@@ -109,7 +109,7 @@ namespace pizda {
 			0.6f,
 			0.0f,
 			1000.0f,
-			RemoteAuxiliaryAutopilotPacketType::setPitchAngleLPFFactorPerSecond
+			RemoteSystemAutopilotPacketType::setPitchAngleLPFFactorPerSecond
 		);
 
 		_verRow0 += &_verTALPFFPSTitle;
@@ -119,7 +119,7 @@ namespace pizda {
 			_verMaxElevatorFactor,
 			&rc.getSettings().autopilot.maxElevatorPercent,
 			100,
-			RemoteAuxiliaryAutopilotPacketType::setMaxElevatorPercent
+			RemoteSystemAutopilotPacketType::setMaxElevatorPercent
 		);
 
 		rows += &_verMaxElevatorFactorTitle;
@@ -128,21 +128,21 @@ namespace pizda {
 		addPID(
 			_varAltitudeToPitchPIDTitle,
 			_verAltitudeToPitchPID,
-			RemoteAuxiliaryAutopilotPacketType::setAltitudeToPitchPID,
+			RemoteSystemAutopilotPacketType::setAltitudeToPitchPID,
 			&rc.getSettings().autopilot.PIDs.altitudeToPitch
 		);
 
 		addPID(
 			_verSpeedToPitchPIDTitle,
 			_verSpeedToPitchPID,
-			RemoteAuxiliaryAutopilotPacketType::setSpeedToPitchPID,
+			RemoteSystemAutopilotPacketType::setSpeedToPitchPID,
 			&rc.getSettings().autopilot.PIDs.speedToPitch
 		);
 
 		addPID(
 			_verPitchToElevatorPIDTitle,
 			_verPitchToElevatorPID,
-			RemoteAuxiliaryAutopilotPacketType::setPitchToElevatorPID,
+			RemoteSystemAutopilotPacketType::setPitchToElevatorPID,
 			&rc.getSettings().autopilot.PIDs.pitchToElevator
 		);
 
@@ -160,7 +160,7 @@ namespace pizda {
 			_lonThrottleMin,
 			&rc.getSettings().autopilot.minThrottlePercent,
 			100,
-			RemoteAuxiliaryAutopilotPacketType::setMinThrottlePercent
+			RemoteSystemAutopilotPacketType::setMinThrottlePercent
 		);
 
 		_lonRow0 += &_lonThrottleMinTitle;
@@ -170,7 +170,7 @@ namespace pizda {
 			_lonThrottleMax,
 			&rc.getSettings().autopilot.maxThrottlePercent,
 			100,
-			RemoteAuxiliaryAutopilotPacketType::setMaxThrottlePercent
+			RemoteSystemAutopilotPacketType::setMaxThrottlePercent
 		);
 
 		_lonRow0 += &_lonThrottleMaxTitle;
@@ -179,7 +179,7 @@ namespace pizda {
 		addPID(
 			_lonSpeedToThrottlePIDTitle,
 			_lonSpeedToThrottlePID,
-			RemoteAuxiliaryAutopilotPacketType::setSpeedToThrottlePID,
+			RemoteSystemAutopilotPacketType::setSpeedToThrottlePID,
 			&rc.getSettings().autopilot.PIDs.speedToThrottle
 		);
 	}
@@ -196,7 +196,7 @@ namespace pizda {
 		});
 	}
 
-	void AutopilotSettingsPage::setupFloatTextField(TextField& textField, float* value, float fallbackValue, float min, float max, RemoteAuxiliaryAutopilotPacketType packetType) {
+	void AutopilotSettingsPage::setupFloatTextField(TextField& textField, float* value, float fallbackValue, float min, float max, RemoteSystemAutopilotPacketType packetType) {
 		setupAnyTextField(
 			textField,
 			StringUtils::toString(*value),
@@ -211,7 +211,7 @@ namespace pizda {
 		textField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
 	}
 
-	void AutopilotSettingsPage::setupRadTextField(TextField& textField, float* angleRad, float fallbackAngleDeg, RemoteAuxiliaryAutopilotPacketType packetType) {
+	void AutopilotSettingsPage::setupRadTextField(TextField& textField, float* angleRad, float fallbackAngleDeg, RemoteSystemAutopilotPacketType packetType) {
 		setupAnyTextField(
 			textField,
 			StringUtils::toString(YOBA::round(toDegrees(*angleRad), 2)),
@@ -226,7 +226,7 @@ namespace pizda {
 		textField.setKeyboardLayoutOptions(KeyboardLayoutOptions::numeric | KeyboardLayoutOptions::allowDecimal);
 	}
 
-	void AutopilotSettingsPage::setupUint8PercentTextField(TextField& textField, uint8_t* percent, float fallbackPercent, RemoteAuxiliaryAutopilotPacketType packetType) {
+	void AutopilotSettingsPage::setupUint8PercentTextField(TextField& textField, uint8_t* percent, float fallbackPercent, RemoteSystemAutopilotPacketType packetType) {
 		setupAnyTextField(
 			textField,
 			std::to_string(*percent),
@@ -248,7 +248,7 @@ namespace pizda {
 	}
 
 	void AutopilotSettingsPage::addPID(Titler& titler, PIDReferencer& referencer,
-		RemoteAuxiliaryAutopilotPacketType packetType, PIDCoefficients* settingsCoefficients) {
+		RemoteSystemAutopilotPacketType packetType, PIDCoefficients* settingsCoefficients) {
 		referencer.setCoefficients(*settingsCoefficients);
 
 		referencer.setOnCoefficientsChanged([settingsCoefficients, packetType](const PIDCoefficients& newCoefficients) {

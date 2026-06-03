@@ -18,7 +18,7 @@ namespace pizda {
 			rc.getSettings().controls.cameraYawDeg = 0;
 			rc.getSettings().controls.scheduleWrite();
 
-			rc.getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::camera);
+			rc.getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::camera);
 
 			rc.playFeedback();
 		};

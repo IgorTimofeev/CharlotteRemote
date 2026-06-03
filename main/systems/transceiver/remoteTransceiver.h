@@ -11,8 +11,8 @@ namespace pizda {
 		RemotePacketType,
 		RemotePacket::typeLengthBits,
 
-		2,
-		RemoteAuxiliaryPacketType,
+		3,
+		RemoteSystemPacketType,
 
 		AircraftPacketType,
 		AircraftPacket::typeLengthBits,
@@ -27,7 +27,7 @@ namespace pizda {
 			int8_t getRSSI() const;
 			int8_t getSNR() const;
 
-			void enqueueAutopilot(const RemoteAuxiliaryAutopilotPacketType type);
+			void enqueueAutopilot(const RemoteSystemAutopilotPacketType type);
 
 		protected:
 			[[noreturn]] void onStart() override;
@@ -49,26 +49,27 @@ namespace pizda {
 			int8_t _SNR = 0;
 
 			int64_t _communicationSettingsACKTime = 0;
-			RemoteAuxiliaryAutopilotPacketType _enqueuedAutopilotPacketType = RemoteAuxiliaryAutopilotPacketType::setAutopilotEngaged;
+			RemoteSystemAutopilotPacketType _enqueuedAutopilotPacketType = RemoteSystemAutopilotPacketType::setAutopilotEngaged;
 
-			bool receiveAircraftTelemetryPrimaryPacket(BitStream& stream, uint8_t payloadLength);
-			static float readAircraftTelemetrySecondaryPacketCameraValue(BitStream& stream, uint8_t valueLengthBits);
-			bool receiveAircraftTelemetrySecondaryPacket(BitStream& stream, uint8_t payloadLength);
-			bool receiveAircraftAuxiliaryPacket(BitStream& stream, uint8_t payloadLength);
-			bool receiveAircraftAuxiliaryCalibrationPacket(BitStream& stream, uint8_t payloadLength);
-			bool receiveAircraftAuxiliaryXCVRACKPacket(BitStream& stream, uint8_t payloadLength);
+			bool receiveAircraftSTierTelemetryPacket(BitStream& stream, uint8_t payloadLength);
+			bool receiveAircraftATierTelemetryPacket(BitStream& stream, uint8_t payloadLength);
+			bool receiveAircraftBTierTelemetryPacket(BitStream& stream, uint8_t payloadLength);
+
+			bool receiveAircraftSystemPacket(BitStream& stream, uint8_t payloadLength);
+			bool receiveAircraftSystemCalibrationPacket(BitStream& stream, uint8_t payloadLength);
+			bool receiveAircraftSystemCommunicationSettingsACKPacket(BitStream& stream, uint8_t payloadLength);
 
 			void transmitRemoteControlsPacket(BitStream& stream);
-			void transmitRemoteAuxiliaryPacket(BitStream& stream);
-			void transmitRemoteAuxiliaryTrimPacket(BitStream& stream);
-			void transmitRemoteAuxiliaryLightsPacket(BitStream& stream);
-			void transmitRemoteAuxiliaryBaroPacket(BitStream& stream);
-			void transmitRemoteAuxiliaryAutopilotPacket(BitStream& stream);
-			void transmitRemoteAuxiliaryCameraPacket(BitStream& stream);
-			void transmitRemoteAuxiliaryMotorsPacket(BitStream& stream);
-			void transmitRemoteAuxiliaryCalibratePacket(BitStream& stream);
-			void transmitRemoteAuxiliaryADIRSPacket(BitStream& stream);
-			void transmitRemoteAuxiliaryXCVRPacket(BitStream& stream);
+			void transmitRemoteSystemPacket(BitStream& stream);
+			void transmitRemoteSystemTrimPacket(BitStream& stream);
+			void transmitRemoteSystemLightsPacket(BitStream& stream);
+			void transmitRemoteSystemBaroPacket(BitStream& stream);
+			void transmitRemoteSystemAutopilotPacket(BitStream& stream);
+			void transmitRemoteSystemCameraPacket(BitStream& stream);
+			void transmitRemoteSystemMotorsPacket(BitStream& stream);
+			void transmitRemoteSystemCalibratePacket(BitStream& stream);
+			void transmitRemoteSystemADIRSPacket(BitStream& stream);
+			void transmitRemoteSystemXCVRPacket(BitStream& stream);
 
 			uint16_t _spectrumScanningHistoryIndex = 0;
 			int64_t _spectrumScanningSampleRSSISum = 0;

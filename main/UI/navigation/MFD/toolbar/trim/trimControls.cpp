@@ -28,6 +28,6 @@ namespace pizda {
 		*_settingsValue = seven.getValue();
 		RC::getInstance().getSettings().controls.scheduleWrite();
 		
-		RC::getInstance().getTransceiver().enqueueAuxiliary(RemoteAuxiliaryPacketType::trim);
+		RC::getInstance().getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::trim);
 	}
 }

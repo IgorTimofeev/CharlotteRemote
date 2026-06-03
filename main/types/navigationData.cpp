@@ -122,15 +122,24 @@ namespace pizda {
 	}
 
 	void NavigationData::addTemplateData() {
-		// Pulkovo 10 left
+		// Зима-лето ЗА НЕ ИМЕНИЕМ ЛУЧШЕГО РАНВЕЯ
 		addRunway(
-			"ULLI",
-			GeoCoordinates(toRadians(59.805114621892f), toRadians(30.276415586255f), 0),
-			// 10 L
-			106,
-			3780,
-			60
+			"ZIMA-LETO",
+			GeoCoordinates(toRadians(59.812414f), toRadians(30.555595f), 0),
+			135,
+			111,
+			4
 		);
+
+		// // Pulkovo 10 left
+		// addRunway(
+		// 	"ULLI",
+		// 	GeoCoordinates(toRadians(59.805114621892f), toRadians(30.276415586255f), 0),
+		// 	// 10 L
+		// 	106,
+		// 	3780,
+		// 	60
+		// );
 
 		// Kronshtadt
 		addRunway(
@@ -141,14 +150,14 @@ namespace pizda {
 			30
 		);
 
-		// Gostilitsy
-		addRunway(
-			"ULSG",
-			GeoCoordinates(toRadians(59.725833f), toRadians(29.640278f), 0),
-			154,
-			711,
-			20
-		);
+		// // Gostilitsy
+		// addRunway(
+		// 	"ULSG",
+		// 	GeoCoordinates(toRadians(59.725833f), toRadians(29.640278f), 0),
+		// 	154,
+		// 	711,
+		// 	20
+		// );
 
 		// Enroute waypoints
 		addEnrouteWaypoint(
@@ -190,7 +199,7 @@ namespace pizda {
 		// Flight plan
 		flightPlan.legs.push_back(NavigationDataFlightPlanLeg(1));
 
-		for (uint8_t i = 3; i < waypoints.size(); i++) {
+		for (uint8_t i = 2; i < waypoints.size(); i++) {
 			flightPlan.legs.push_back(NavigationDataFlightPlanLeg(i));
 		}
 

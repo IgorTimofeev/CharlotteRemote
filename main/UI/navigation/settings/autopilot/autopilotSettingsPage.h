@@ -84,10 +84,10 @@ namespace pizda {
 			Titler _lonSpeedToThrottlePIDTitle { "Speed to throttle", &_lonSpeedToThrottlePID };
 
 			void setupAnyTextField(TextField& textField, const std::string_view& text, const std::function<void()>& onEnter);
-			void setupFloatTextField(TextField& textField, float* value, float fallbackValue, float min, float max, RemoteAuxiliaryAutopilotPacketType  packetType);
-			void setupRadTextField(TextField& textField, float* angleRad, float fallbackAngleDeg, RemoteAuxiliaryAutopilotPacketType packetType);
-			void setupUint8PercentTextField(TextField& textField, uint8_t* percent, float fallbackPercent, RemoteAuxiliaryAutopilotPacketType packetType);
+			void setupFloatTextField(TextField& textField, float* value, float fallbackValue, float min, float max, RemoteSystemAutopilotPacketType  packetType);
+			void setupRadTextField(TextField& textField, float* angleRad, float fallbackAngleDeg, RemoteSystemAutopilotPacketType packetType);
+			void setupUint8PercentTextField(TextField& textField, uint8_t* percent, float fallbackPercent, RemoteSystemAutopilotPacketType packetType);
 			void addRow(RelativeStackLayout& row);
-			void addPID(Titler& titler, PIDReferencer& referencer, RemoteAuxiliaryAutopilotPacketType packetType, PIDCoefficients* settingsCoefficients);
+			void addPID(Titler& titler, PIDReferencer& referencer, RemoteSystemAutopilotPacketType packetType, PIDCoefficients* settingsCoefficients);
 	};
 }
