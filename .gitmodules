@@ -22,6 +22,3 @@
 [submodule "components/ESP-IDF-ADCVoltmeter"]
 	path = components/ESP-IDF-ADCVoltmeter
 	url = https://github.com/IgorTimofeev/ESP-IDF-ADCVoltmeter.git
-[submodule "components/ESP-IDF-NVSExtensions"]
-	path = components/ESP-IDF-NVSExtensions
-	url = https://github.com/IgorTimofeev/ESP-IDF-NVSExtensions.git
