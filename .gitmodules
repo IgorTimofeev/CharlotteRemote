@@ -1,6 +1,3 @@
-[submodule "components/YOBA"]
-	path = components/YOBA
-	url = https://github.com/IgorTimofeev/YOBA.git
 [submodule "components/ESP-IDF-SX1262"]
 	path = components/ESP-IDF-SX1262
 	url = https://github.com/IgorTimofeev/ESP-IDF-SX1262.git
@@ -28,3 +25,6 @@
 [submodule "components/ESP-IDF-ADCVoltmeter"]
 	path = components/ESP-IDF-ADCVoltmeter
 	url = https://github.com/IgorTimofeev/ESP-IDF-ADCVoltmeter.git
+[submodule "components/YOBA"]
+	path = components/YOBA
+	url = https://github.com/IgorTimofeev/YOBA.git
