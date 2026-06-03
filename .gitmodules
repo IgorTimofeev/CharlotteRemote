@@ -1,9 +1,6 @@
 [submodule "components/ESP-IDF-SX1262"]
 	path = components/ESP-IDF-SX1262
 	url = https://github.com/IgorTimofeev/ESP-IDF-SX1262.git
-[submodule "components/ESP-IDF-NVSExtensions"]
-	path = components/ESP-IDF-NVSExtensions
-	url = https://github.com/IgorTimofeev/ESP-IDF-NVSExtensions.git
 [submodule "components/ESP-IDF-Units"]
 	path = components/ESP-IDF-Units
 	url = https://github.com/IgorTimofeev/ESP-IDF-Units.git
@@ -25,3 +22,6 @@
 [submodule "components/ESP-IDF-ADCVoltmeter"]
 	path = components/ESP-IDF-ADCVoltmeter
 	url = https://github.com/IgorTimofeev/ESP-IDF-ADCVoltmeter.git
+[submodule "components/ESP-IDF-NVSExtensions"]
+	path = components/ESP-IDF-NVSExtensions
+	url = https://github.com/IgorTimofeev/ESP-IDF-NVSExtensions.git
