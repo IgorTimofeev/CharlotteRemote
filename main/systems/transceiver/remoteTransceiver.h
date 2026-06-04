@@ -28,17 +28,21 @@ namespace pizda {
 			int8_t getSNR() const;
 
 		protected:
-			[[noreturn]] void onStart() override;
+			void onTick() override;
 			void onTransmit(BitStream& stream, RemotePacketType packetType) override;
 			bool onReceive(BitStream& stream, AircraftPacketType packetType, uint8_t payloadLength) override;
 			void onConnectionStateChanged() override;
 
 		private:
+			// ----------------------------- Trends -----------------------------
+
 			constexpr static uint32_t trendsInterval = 500'000;
 			int64_t _trendsTime = 0;
 			float _trendsYawPrevRad = 0;
 			float _trendsAirspeedPrevMPS = 0;
 			float _trendsAltitudePrevM = 0;
+
+			// ----------------------------- RSSI / SNR -----------------------------
 
 			constexpr static uint8_t _RSSIFrequencyHz = 1;
 			constexpr static uint32_t _RSSIAndSNRUpdateIntervalUs = 1'000'000 / _RSSIFrequencyHz;
@@ -46,23 +50,28 @@ namespace pizda {
 			int8_t _RSSI = 0;
 			int8_t _SNR = 0;
 
+			// ----------------------------- Communication settings -----------------------------
+
 			int64_t _communicationSettingsACKTime = 0;
+			constexpr static uint8_t _communicationSettingsACKMinValidPPS = 5;
+			constexpr static uint32_t _communicationSettingsACKDelayUs = 2'500'000;
 
-			bool receiveAircraftSTierTelemetryPacket(BitStream& stream, uint8_t payloadLength);
-			bool receiveAircraftATierTelemetryPacket(BitStream& stream, uint8_t payloadLength);
-			bool receiveAircraftBTierTelemetryPacket(BitStream& stream, uint8_t payloadLength);
+			void scheduleCommunicationSettingsSyncCheck();
+			void performCommunicationSettingsSyncCheck();
+			void updateRSSIAndSNR();
 
-			bool receiveAircraftSystemPacket(BitStream& stream, uint8_t payloadLength);
-			bool receiveAircraftSystemCalibrationPacket(BitStream& stream, uint8_t payloadLength);
-			bool receiveAircraftSystemCommunicationSettingsACKPacket(BitStream& stream, uint8_t payloadLength);
-
-			void transmitRemoteSystemPacket(BitStream& stream);
+			// ----------------------------- Spectrum scanning -----------------------------
 
 			uint16_t _spectrumScanningHistoryIndex = 0;
 			int64_t _spectrumScanningSampleRSSISum = 0;
 			uint32_t _spectrumScanningSampleCount = 0;
 
 			bool stopSpectrumScanning();
-			void onSpectrumScanning();
+			void spectrumScanningTick();
+
+			// ----------------------------- Other stuff -----------------------------
+
+			static void writePID(BitStream& stream, const PIDCoefficients& coefficients);
+			void transmitRemoteSystemPacket(BitStream& stream) const;
 	};
 }

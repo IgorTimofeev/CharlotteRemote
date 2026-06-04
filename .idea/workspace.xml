@@ -193,9 +193,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="скукожил обработку пакетов и захуярил сброс IMU для хоумпоинта">
-      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="перехуярил таски на таймеры, а то хипа не резиновая">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions/src/NVSStream.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions/src/NVSStream.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1328,6 +1332,7 @@
       <workItem from="1780488629161" duration="1004000" />
       <workItem from="1780507214631" duration="829000" />
       <workItem from="1780509120192" duration="11199000" />
+      <workItem from="1780577144224" duration="6580000" />
     </task>
     <task id="LOCAL-00001" summary="ебучий есп">
       <option name="closed" value="true" />
@@ -1473,7 +1478,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780521022440</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="перехуярил таски на таймеры, а то хипа не резиновая">
+      <option name="closed" value="true" />
+      <created>1780577271044</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1780577271044</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1531,7 +1544,8 @@
     <MESSAGE value="опять фиксики..." />
     <MESSAGE value="я щас эту систему пакетов захуярю на хуй" />
     <MESSAGE value="скукожил обработку пакетов и захуярил сброс IMU для хоумпоинта" />
-    <option name="LAST_COMMIT_MESSAGE" value="скукожил обработку пакетов и захуярил сброс IMU для хоумпоинта" />
+    <MESSAGE value="перехуярил таски на таймеры, а то хипа не резиновая" />
+    <option name="LAST_COMMIT_MESSAGE" value="перехуярил таски на таймеры, а то хипа не резиновая" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -56,6 +56,8 @@ namespace pizda {
 		uint8_t CPUCoreID
 	>
 	class Transceiver {
+		// ----------------------------- Main -----------------------------
+
 		public:
 			Transceiver(const std::array<PacketSequenceItem<TLocalPacketType>, TLocalPacketSequenceLength>& packetSequence) : _packetSequence(packetSequence) {
 				_packetQueueMutex = xSemaphoreCreateMutex();
@@ -87,7 +89,12 @@ namespace pizda {
 
 				xTaskCreatePinnedToCore(
 					[](void* arg) {
-						static_cast<Transceiver*>(arg)->onStart();
+						auto transceiver = static_cast<Transceiver*>(arg);
+
+						while (true) {
+							transceiver->onTick();
+							transceiver->onPPSTick();
+						}
 					},
 					"XCVR",
 					8 * 1024,
@@ -103,7 +110,7 @@ namespace pizda {
 			bool receive(const uint32_t timeoutUs) {
 				uint8_t receivedLength = 0;
 
-				const auto error = _SX.receive(_buffer, receivedLength, timeoutUs);
+				const auto error = _SX.receive(_SXBuffer, receivedLength, timeoutUs);
 
 				if (error == SX1262::error::none) {
 					//		ESP_LOGI(_logTag, "read length: %d", length);
@@ -116,7 +123,7 @@ namespace pizda {
 					if (receivedLength >= 1) {
 						const uint8_t payloadLength = receivedLength - Packet::checksumLengthBytes;
 
-						BitStream stream { _buffer };
+						BitStream stream { _SXBuffer };
 
 						// Type
 						const auto packetType = static_cast<TRemotePacketType>(stream.readUint8(remotePacketTypeLengthBits));
@@ -162,7 +169,7 @@ namespace pizda {
 			}
 
 			bool transmit(const uint32_t timeoutUs) {
-				BitStream stream { _buffer };
+				BitStream stream { _SXBuffer };
 
 				const auto packetType = getTransmitPacketType();
 
@@ -182,13 +189,13 @@ namespace pizda {
 
 				// Transmitting
 
-				//		ESP_LOGI(_logTag, "write length: %d", length);
+				// ESP_LOGI(_logTag, "write length: %d", length);
 				//
-				//		for (int i = 0; i < length; ++i) {
-				//			ESP_LOGI(_logTag, "write buffer[%d]: %d", i, _buffer[i]);
-				//		}
+				// for (int i = 0; i < length; ++i) {
+				// 	ESP_LOGI(_logTag, "write buffer[%d]: %d", i, _buffer[i]);
+				// }
 
-				const auto error = _SX.transmit({ _buffer, totalLength }, timeoutUs);
+				const auto error = _SX.transmit({ _SXBuffer, totalLength }, timeoutUs);
 
 				if (error != SX1262::error::none) {
 					logSXError("transmit error", error);
@@ -198,10 +205,6 @@ namespace pizda {
 				_TXPPSTemp++;
 
 				return true;
-			}
-
-			ConnectionState getConnectionState() const {
-				return _connectionState;
 			}
 
 			bool isConnected() const {
@@ -221,13 +224,12 @@ namespace pizda {
 				xSemaphoreGive(_packetQueueMutex);
 			}
 
-			uint16_t getRXPPS() const {
-				return _RXPPS;
-			}
+		protected:
+			virtual void onTick() = 0;
+			virtual bool onReceive(BitStream& stream, TRemotePacketType packetType, uint8_t payloadLength) = 0;
+			virtual void onTransmit(BitStream& stream, TLocalPacketType packetType) {}
 
-			uint16_t getTXPPS() const {
-				return _TXPPS;
-			}
+		// ----------------------------- SX -----------------------------
 
 		protected:
 			constexpr static auto _logTag = "XCVR";
@@ -239,12 +241,12 @@ namespace pizda {
 				config::XCVR::RST
 			};
 
-			constexpr static uint16_t _bufferLength = 255;
-			uint8_t _buffer[_bufferLength] {};
+			constexpr static uint16_t _SXBufferLength = 255;
+			uint8_t _SXBuffer[_SXBufferLength] {};
 
 			static void logSXError(const char* key, const SX1262::error error) {
-				// if (error == SX1262::error::timeout)
-				// 	return;
+				if (error == SX1262::error::timeout)
+					return;
 
 				constexpr static uint8_t errorBufferLength = 255;
 				char errorBuffer[errorBufferLength];
@@ -254,7 +256,32 @@ namespace pizda {
 				ESP_LOGE(_logTag, "%s: %s", key, errorBuffer);
 			}
 
-			static bool checkSetCommunicationSettingsSXError(const SX1262::error error) {
+
+		// ----------------------------- Connection state -----------------------------
+
+		public:
+			ConnectionState getConnectionState() const {
+				return _connectionState;
+			}
+
+		protected:
+			virtual void onConnectionStateChanged() = 0;
+
+		private:
+			constexpr static uint32_t _connectionLostIntervalUs = 5'000'000;
+			int64_t _connectionLostTimeUs = 0;
+			ConnectionState _connectionState = ConnectionState::initial;
+
+			void setConnectionState(const ConnectionState state) {
+				_connectionState = state;
+
+				onConnectionStateChanged();
+			}
+
+		// ----------------------------- Communication settings -----------------------------
+
+		protected:
+			static bool checkSXErrorOnSetCommunicationSettings(const SX1262::error error) {
 				if (error != SX1262::error::none) {
 					logSXError("failed to set communication settings", error);
 					return false;
@@ -264,22 +291,22 @@ namespace pizda {
 			}
 
 			bool setCommunicationSettings(const TransceiverCommunicationSettings& settings) {
-				if (!checkSetCommunicationSettingsSXError(
+				if (!checkSXErrorOnSetCommunicationSettings(
 					_SX.setStandby()
 				))
 					return false;
 
-				if (!checkSetCommunicationSettingsSXError(
+				if (!checkSXErrorOnSetCommunicationSettings(
 					_SX.setLoRaSyncWord(settings.syncWord)
 				))
 					return false;
 
-				if (!checkSetCommunicationSettingsSXError(
+				if (!checkSXErrorOnSetCommunicationSettings(
 					_SX.setLoRaPreambleLength(settings.preambleLength)
 				))
 					return false;
 
-				if (!checkSetCommunicationSettingsSXError(
+				if (!checkSXErrorOnSetCommunicationSettings(
 					_SX.setLoRaModulationParams(
 						settings.spreadingFactor,
 						settings.bandwidth,
@@ -289,22 +316,22 @@ namespace pizda {
 				))
 					return false;
 
-				if (!checkSetCommunicationSettingsSXError(
+				if (!checkSXErrorOnSetCommunicationSettings(
 					_SX.setLoRaCADParams()
 				))
 					return false;
 
-				if (!checkSetCommunicationSettingsSXError(
+				if (!checkSXErrorOnSetCommunicationSettings(
 					_SX.setRFFrequency(settings.frequencyHz)
 				))
 					return false;
 
-				if (!checkSetCommunicationSettingsSXError(
+				if (!checkSXErrorOnSetCommunicationSettings(
 					_SX.setCurrentLimit(settings.currentLimitMA)
 				))
 					return false;
 
-				if (!checkSetCommunicationSettingsSXError(
+				if (!checkSXErrorOnSetCommunicationSettings(
 					_SX.setOutputPower(settings.powerDBm)
 				))
 					return false;
@@ -312,6 +339,89 @@ namespace pizda {
 				return true;
 			}
 
+		// ----------------------------- PPS -----------------------------
+
+		public:
+			uint16_t getRXPPS() const {
+				return _RXPPS;
+			}
+
+			uint16_t getTXPPS() const {
+				return _TXPPS;
+			}
+
+		private:
+			int64_t _PPSTime = 0;
+			uint16_t _RXPPSTemp = 0;
+			uint16_t _TXPPSTemp = 0;
+			uint16_t _RXPPS = 0;
+			uint16_t _TXPPS = 0;
+
+		protected:
+			void onPPSTick() {
+				if (esp_timer_get_time() < _PPSTime)
+					return;
+
+				_RXPPS = _RXPPSTemp;
+				_TXPPS = _TXPPSTemp;
+
+				_RXPPSTemp = 0;
+				_TXPPSTemp = 0;
+
+				_PPSTime = esp_timer_get_time() + 1'000'000;
+			}
+
+		// ----------------------------- Packet queue -----------------------------
+
+		protected:
+			TLocalSystemPacketType getEnqueuedSystemPacketType() const {
+				return _packetQueueSystemType;
+			}
+
+		private:
+			std::array<PacketSequenceItem<TLocalPacketType>, TLocalPacketSequenceLength> _packetSequence;
+
+			uint8_t _packetSequenceIndex = 0;
+
+			CircularQueue<TLocalSystemPacketType, 255> _packetQueue {};
+			SemaphoreHandle_t _packetQueueMutex;
+			TLocalSystemPacketType _packetQueueSystemType {};
+
+			TLocalPacketType getTransmitPacketType() {
+				const auto& item = _packetSequence[_packetSequenceIndex];
+
+				const auto nextSequenceItem = [this] {
+					_packetSequenceIndex++;
+
+					if (_packetSequenceIndex >= _packetSequence.size())
+						_packetSequenceIndex = 0;
+				};
+
+				// Enqueued
+				if (item.useEnqueued() && !_packetQueue.empty()) {
+					xSemaphoreTake(_packetQueueMutex, portMAX_DELAY);
+
+					_packetQueueSystemType = _packetQueue.front();
+					_packetQueue.pop();
+
+					xSemaphoreGive(_packetQueueMutex);
+
+					nextSequenceItem();
+
+					return TLocalPacketType::system;
+				}
+
+				// Normal
+				const auto packetType = item.getType();
+
+				nextSequenceItem();
+
+				return packetType;
+			}
+
+		// ----------------------------- Validation -----------------------------
+
+		protected:
 			static uint8_t getCRC8(const std::span<uint8_t> data) {
 				uint8_t crc = 0xff;
 
@@ -327,10 +437,6 @@ namespace pizda {
 				}
 
 				return crc;
-			}
-
-			TLocalSystemPacketType getEnqueuedSystemPacketType() const {
-				return _packetQueueSystemType;
 			}
 
 			static bool validatePayloadChecksumAndLength(BitStream& stream, size_t expectedDataLengthBits, uint8_t payloadLengthBytes) {
@@ -359,19 +465,9 @@ namespace pizda {
 				return true;
 			}
 
-			void PPSTick() {
-				if (esp_timer_get_time() < _PPSTime)
-					return;
+		// ----------------------------- Reading / writing -----------------------------
 
-				_RXPPS = _RXPPSTemp;
-				_TXPPS = _TXPPSTemp;
-
-				_RXPPSTemp = 0;
-				_TXPPSTemp = 0;
-
-				_PPSTime = esp_timer_get_time() + 1'000'000;
-			}
-
+		protected:
 			template<typename T>
 			static float sanitizeValue(T value, T min, T max) {
 				if (value < min) {
@@ -456,80 +552,6 @@ namespace pizda {
 				const auto lonValue = static_cast<uint32_t>(static_cast<float>((1 << lengthBits) - 1) * lonFactor);
 
 				stream.writeUint32(lonValue, lengthBits);
-			}
-
-			virtual void onStart() = 0;
-			virtual bool onReceive(BitStream& stream, TRemotePacketType packetType, uint8_t payloadLength) = 0;
-
-			virtual void onTransmit(BitStream& stream, TLocalPacketType packetType) {}
-			virtual void onConnectionStateChanged() = 0;
-
-		private:
-			constexpr static uint8_t _desiredTickFrequencyHz = 30;
-			constexpr static uint32_t _desiredTickDurationUs = 1'000'000 / _desiredTickFrequencyHz;
-			constexpr static uint32_t _safetyMarginDurationUs = 2'000;
-
-			constexpr static uint32_t _desiredTXDurationUs = (_desiredTickDurationUs - _safetyMarginDurationUs) / 2;
-			constexpr static uint32_t _desiredRXDurationUs = _desiredTickDurationUs - _desiredTXDurationUs - _safetyMarginDurationUs;
-
-			int64_t _PPSTime = 0;
-			uint16_t _RXPPSTemp = 0;
-			uint16_t _TXPPSTemp = 0;
-			uint16_t _RXPPS = 0;
-			uint16_t _TXPPS = 0;
-
-			// ----------------------------- Packet queue -----------------------------
-
-			std::array<PacketSequenceItem<TLocalPacketType>, TLocalPacketSequenceLength> _packetSequence;
-
-			uint8_t _packetSequenceIndex = 0;
-
-			CircularQueue<TLocalSystemPacketType, 255> _packetQueue {};
-			SemaphoreHandle_t _packetQueueMutex;
-			TLocalSystemPacketType _packetQueueSystemType {};
-
-			TLocalPacketType getTransmitPacketType() {
-				const auto& item = _packetSequence[_packetSequenceIndex];
-
-				const auto nextSequenceItem = [this] {
-					_packetSequenceIndex++;
-
-					if (_packetSequenceIndex >= _packetSequence.size())
-						_packetSequenceIndex = 0;
-				};
-
-				// Enqueued
-				if (item.useEnqueued() && !_packetQueue.empty()) {
-					xSemaphoreTake(_packetQueueMutex, portMAX_DELAY);
-
-					_packetQueueSystemType = _packetQueue.front();
-					_packetQueue.pop();
-
-					xSemaphoreGive(_packetQueueMutex);
-
-					nextSequenceItem();
-
-					return TLocalPacketType::system;
-				}
-
-				// Normal
-				const auto packetType = item.getType();
-
-				nextSequenceItem();
-
-				return packetType;
-			}
-
-			// ----------------------------- Connection state -----------------------------
-
-			constexpr static uint32_t _connectionLostIntervalUs = 5'000'000;
-			int64_t _connectionLostTimeUs = 0;
-			ConnectionState _connectionState = ConnectionState::initial;
-
-			void setConnectionState(const ConnectionState state) {
-				_connectionState = state;
-
-				onConnectionStateChanged();
 			}
 	};
 }

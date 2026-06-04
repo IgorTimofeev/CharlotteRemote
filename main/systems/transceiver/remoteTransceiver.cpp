@@ -11,7 +11,7 @@
 #include "resources/sounds.h"
 
 namespace pizda {
-	// -------------------------------- Generic --------------------------------
+	// -------------------------------- Main --------------------------------
 
 	RemoteTransceiver::RemoteTransceiver() : Transceiver(
 		{
@@ -40,37 +40,19 @@ namespace pizda {
 		return _SNR;
 	}
 
-	void RemoteTransceiver::onStart() {
+	void RemoteTransceiver::onTick() {
 		auto& rc = RC::getInstance();
 
-		while (true) {
-			if (rc.getRemoteData().transceiver.spectrumScanning.state == RemoteDataRadioSpectrumScanningState::stopped) {
-				// Should schedule communication settings sync check
+		// Anything related directly to XCVR module should be processed in single loop, BECAUSE WE NEED FULL AUTHORITY
+		switch (rc.getRemoteData().transceiver.spectrumScanning.state) {
+			case RemoteDataRadioSpectrumScanningState::stopped: {
+				// Communication settings ACK packet received
 				if (_communicationSettingsACKTime < 0) {
-					ESP_LOGI(_logTag, "communication settings ACK handled");
-
-					setCommunicationSettings(rc.getRemoteData().transceiver.communicationSettings);
-
-					_communicationSettingsACKTime = esp_timer_get_time() + 2'000'000;
+					scheduleCommunicationSettingsSyncCheck();
 				}
-				// Should perform communication settings sync check
+				// Communication settings sync check time reached
 				else if (_communicationSettingsACKTime > 0 && esp_timer_get_time() >= _communicationSettingsACKTime) {
-					// Received and decoded enough packets to consider the connection is stable
-					if (getRXPPS() > 5) {
-						ESP_LOGI(_logTag, "communication settings synchronized");
-
-						rc.getSettings().transceiver.communication = rc.getRemoteData().transceiver.communicationSettings;
-						rc.getSettings().transceiver.scheduleWrite();
-					}
-					// Or not enough...
-					else {
-						ESP_LOGI(_logTag, "communication settings change timed out with PPS = %d, falling back to default", getRXPPS());
-
-						// Falling back to default communication settings
-						setCommunicationSettings(config::XCVR::communicationSettings);
-					}
-
-					_communicationSettingsACKTime = 0;
+					performCommunicationSettingsSyncCheck();
 				}
 
 				// Transmitting
@@ -80,28 +62,63 @@ namespace pizda {
 
 				// Receiving
 				if (receive(100'000)) {
-					// Updating RSSI and SNR
-					if (esp_timer_get_time() > _RSSIAndSNRUpdateTimeUs) {
-						float valueF;
-
-						if (_SX.getRSSI(valueF) == SX1262::error::none)
-							_RSSI = static_cast<int8_t>(valueF);
-
-						if (_SX.getSNR(valueF) == SX1262::error::none)
-							_SNR = static_cast<int8_t>(valueF);
-
-						_RSSIAndSNRUpdateTimeUs = esp_timer_get_time() + _RSSIAndSNRUpdateIntervalUs;
-					}
+					updateRSSIAndSNR();
 				}
-			}
-			else {
-				onSpectrumScanning();
-			}
 
-			PPSTick();
+				break;
+			}
+			default: {
+				spectrumScanningTick();
+
+				break;
+			}
 		}
 	}
-	
+
+	void RemoteTransceiver::scheduleCommunicationSettingsSyncCheck() {
+		ESP_LOGI(_logTag, "communication settings ACK received");
+
+		setCommunicationSettings(RC::getInstance().getRemoteData().transceiver.communicationSettings);
+
+		_communicationSettingsACKTime = esp_timer_get_time() + _communicationSettingsACKDelayUs;
+	}
+
+	void RemoteTransceiver::performCommunicationSettingsSyncCheck() {
+		auto& rc = RC::getInstance();
+
+		// Received and decoded enough packets to consider the connection is stable
+		if (getRXPPS() >= _communicationSettingsACKMinValidPPS) {
+			ESP_LOGI(_logTag, "communication settings synchronized");
+
+			rc.getSettings().transceiver.communication = rc.getRemoteData().transceiver.communicationSettings;
+			rc.getSettings().transceiver.scheduleWrite();
+		}
+		// Or not enough...
+		else {
+			ESP_LOGI(_logTag, "communication settings change timed out with PPS = %d, falling back to default", getRXPPS());
+
+			// Falling back to default communication settings
+			setCommunicationSettings(config::XCVR::communicationSettings);
+		}
+
+		_communicationSettingsACKTime = 0;
+	}
+
+	void RemoteTransceiver::updateRSSIAndSNR() {
+		if (esp_timer_get_time() < _RSSIAndSNRUpdateTimeUs)
+			return;
+
+		float valueF;
+
+		if (_SX.getRSSI(valueF) == SX1262::error::none)
+			_RSSI = static_cast<int8_t>(valueF);
+
+		if (_SX.getSNR(valueF) == SX1262::error::none)
+			_SNR = static_cast<int8_t>(valueF);
+
+		_RSSIAndSNRUpdateTimeUs = esp_timer_get_time() + _RSSIAndSNRUpdateIntervalUs;
+	}
+
 	void RemoteTransceiver::onConnectionStateChanged() {
 		auto& rc = RC::getInstance();
 
@@ -150,7 +167,7 @@ namespace pizda {
 		return true;
 	}
 
-	void RemoteTransceiver::onSpectrumScanning() {
+	void RemoteTransceiver::spectrumScanningTick() {
 		auto& rc = RC::getInstance();
 		auto& st = rc.getSettings().transceiver.spectrumScanning;
 		auto& rd = rc.getRemoteData().transceiver.spectrumScanning;
@@ -208,10 +225,10 @@ namespace pizda {
 
 		// Applying RSSI inst multisampling
 		float RSSIF;
-		constexpr static uint8_t samplesLength = 32;
-		int8_t samples[samplesLength];
+		constexpr static uint8_t RSSISamplesLength = 16;
+		int8_t RSSISamples[RSSISamplesLength];
 
-		for (uint8_t i = 0; i < samplesLength; i++) {
+		for (uint8_t i = 0; i < RSSISamplesLength; i++) {
 			error = _SX.getRSSIInst(RSSIF);
 
 			if (error != SX1262::error::none) {
@@ -221,14 +238,14 @@ namespace pizda {
 				return;
 			}
 
-			samples[i] = static_cast<int8_t>(RSSIF);
+			RSSISamples[i] = static_cast<int8_t>(RSSIF);
 
 			// vTaskDelay(pdMS_TO_TICKS(10));
 		}
 
 		// RSSI median value
-		std::ranges::sort(samples, std::greater<int8_t>());
-		const auto RSSI = samples[samplesLength / 2];
+		std::ranges::sort(RSSISamples, std::greater<int8_t>());
+		const auto RSSI = RSSISamples[RSSISamplesLength / 2];
 
 		// Adding history record
 		const auto newHistoryIndex = std::min<uint64_t>(
@@ -521,18 +538,12 @@ namespace pizda {
 		}
 	}
 
-	void RemoteTransceiver::transmitRemoteSystemPacket(BitStream& stream) {
+	void RemoteTransceiver::transmitRemoteSystemPacket(BitStream& stream) const {
 		auto& rc = RC::getInstance();
 
 		// Type
 		stream.writeUint8(std::to_underlying(getEnqueuedSystemPacketType()), RemoteSystemPacket::typeLengthBits);
-
-		const auto writePID = [&stream](const PIDCoefficients& coefficients) {
-			stream.writeFloat(coefficients.p);
-			stream.writeFloat(coefficients.i);
-			stream.writeFloat(coefficients.d);
-		};
-
+		
 		switch (getEnqueuedSystemPacketType()) {
 			case RemoteSystemPacketType::trim: {
 				const auto write = [&stream](const int8_t settingsValue) {
@@ -658,11 +669,11 @@ namespace pizda {
 				break;
 			}
 			case RemoteSystemPacketType::autopilotYawToRollPID: {
-				writePID(rc.getSettings().autopilot.PIDs.yawToRoll);
+				writePID(stream, rc.getSettings().autopilot.PIDs.yawToRoll);
 				break;
 			}
 			case RemoteSystemPacketType::autopilotRollToAileronsPID: {
-				writePID(rc.getSettings().autopilot.PIDs.rollToAilerons);
+				writePID(stream, rc.getSettings().autopilot.PIDs.rollToAilerons);
 				break;
 			}
 			case RemoteSystemPacketType::autopilotMaxAileronsPercent: {
@@ -716,15 +727,15 @@ namespace pizda {
 				break;
 			}
 			case RemoteSystemPacketType::autopilotSpeedToPitchPID: {
-				writePID(rc.getSettings().autopilot.PIDs.speedToPitch);
+				writePID(stream, rc.getSettings().autopilot.PIDs.speedToPitch);
 				break;
 			}
 			case RemoteSystemPacketType::autopilotAltitudeToPitchPID: {
-				writePID(rc.getSettings().autopilot.PIDs.altitudeToPitch);
+				writePID(stream, rc.getSettings().autopilot.PIDs.altitudeToPitch);
 				break;
 			}
 			case RemoteSystemPacketType::autopilotPitchToElevatorPID: {
-				writePID(rc.getSettings().autopilot.PIDs.pitchToElevator);
+				writePID(stream, rc.getSettings().autopilot.PIDs.pitchToElevator);
 				break;
 			}
 			case RemoteSystemPacketType::autopilotMaxElevatorPercent: {
@@ -753,7 +764,7 @@ namespace pizda {
 				break;
 			}
 			case RemoteSystemPacketType::autopilotSpeedToThrottlePID: {
-				writePID(rc.getSettings().autopilot.PIDs.speedToThrottle);
+				writePID(stream, rc.getSettings().autopilot.PIDs.speedToThrottle);
 				break;
 			}
 			case RemoteSystemPacketType::autopilotMinThrottlePercent: {
@@ -769,5 +780,11 @@ namespace pizda {
 				ESP_LOGE(_logTag, "failed to transmit packet: unsupported type %d", getEnqueuedSystemPacketType());
 				break;
 		}
+	}
+
+	void RemoteTransceiver::writePID(BitStream& stream, const PIDCoefficients& coefficients) {
+		stream.writeFloat(coefficients.p);
+		stream.writeFloat(coefficients.i);
+		stream.writeFloat(coefficients.d);
 	}
 }
