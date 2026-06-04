@@ -14,7 +14,7 @@ idf_component_register(
         ESP-IDF-NVSExtensions
         ESP-IDF-BitStream
         ESP-IDF-Units
-        ESP-IDF-LowPassFilter
+        ESP-IDF-EMAFilter
         ESP-IDF-PIDController
         ESP-IDF-CircularQueue
         ESP-IDF-ADCVoltmeter

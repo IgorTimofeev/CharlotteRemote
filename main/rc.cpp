@@ -156,14 +156,14 @@ namespace pizda {
 	float RC::applyLPF(const float oldValue, const float newValue, const float factor) const {
 		return
 			_settings.personalization.LPF
-			? LowPassFilter::apply(oldValue, newValue, factor)
+			? EMAFilter::apply(oldValue, newValue, factor)
 			: newValue;
 	}
 	
 	float RC::applyLPFToAngle(const float oldValue, const float newValue, const float factor) const {
 		return
 			_settings.personalization.LPF
-			? LowPassFilter::applyToAngle(oldValue, newValue, factor)
+			? EMAFilter::applyToAngle(oldValue, newValue, factor)
 			: newValue;
 	}
 	
@@ -179,7 +179,7 @@ namespace pizda {
 		// factorPerTick = factorPerSecond * deltaTime / 1'000'000
 
 		// Fast
-		float LPFFactor = LowPassFilter::getDeltaTimeUsFactor(5.0f, deltaTimeUs);
+		float LPFFactor = EMAFilter::getDeltaTimeUsFactor(5.0f, deltaTimeUs);
 		
 		// Pitch
 		_aircraftData.computed.pitchRad = applyLPFToAngle(
@@ -259,7 +259,7 @@ namespace pizda {
 		);
 		
 		// Normal
-		LPFFactor = LowPassFilter::getDeltaTimeUsFactor(3.0f, deltaTimeUs);
+		LPFFactor = EMAFilter::getDeltaTimeUsFactor(3.0f, deltaTimeUs);
 		
 		// Air speed
 		_aircraftData.computed.airspeedKt = applyLPF(
@@ -297,7 +297,7 @@ namespace pizda {
 		);
 
 		// Slower
-		LPFFactor = LowPassFilter::getDeltaTimeUsFactor(1.0f, deltaTimeUs);
+		LPFFactor = EMAFilter::getDeltaTimeUsFactor(1.0f, deltaTimeUs);
 
 		// Airspeed trend
 		_aircraftData.computed.airspeedTrendKt = applyLPF(
@@ -321,7 +321,7 @@ namespace pizda {
 		);
 		
 		// Smooth as fuck
-		LPFFactor = LowPassFilter::getDeltaTimeUsFactor(0.5f, deltaTimeUs);
+		LPFFactor = EMAFilter::getDeltaTimeUsFactor(0.5f, deltaTimeUs);
 	}
 
 	void RC::batteryTick() {

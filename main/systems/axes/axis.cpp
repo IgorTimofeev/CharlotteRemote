@@ -5,7 +5,7 @@
 
 #include <esp_timer.h>
 
-#include <lowPassFilter.h>
+#include <EMAFilter.h>
 
 #include "rc.h"
 
@@ -50,7 +50,7 @@ namespace pizda {
 				return;
 
 			// Applying low pass filter for buttery smooth landings
-			_rawValue = LowPassFilter::apply(_rawValue, readValue, axesSettings.axes.lowPassFactor);
+			_rawValue = EMAFilter::apply(_rawValue, readValue, axesSettings.axes.lowPassFactor);
 		}
 
 		_filteredValue = applySensitivityFilter(_rawValue);

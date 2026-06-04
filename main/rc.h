@@ -11,7 +11,7 @@
 
 #include <units.h>
 #include <ADCVoltmeter.h>
-#include <lowPassFilter.h>
+#include <EMAFilter.h>
 #include <audioPlayer.h>
 
 #include "config.h"

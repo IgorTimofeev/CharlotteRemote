@@ -69,6 +69,7 @@
       <config projectName="CharlottePlanERemote" targetName="lib" />
       <config projectName="CharlottePlanERemote" targetName="__idf_esp_https_server" />
       <config projectName="CharlottePlanERemote" targetName="__idf_esp-tls" />
+      <config projectName="CharlottePlanERemote" targetName="__idf_ESP-IDF-EMAFilter" />
       <config projectName="CharlottePlanERemote" targetName="flash" />
       <config projectName="CharlottePlanERemote" targetName="__idf_esp_system" />
       <config projectName="CharlottePlanERemote" targetName="__idf_esp_driver_i2s" />
@@ -146,7 +147,6 @@
       <config projectName="CharlottePlanERemote" targetName="__idf_hal" />
       <config projectName="CharlottePlanERemote" targetName="gen_project_binary" />
       <config projectName="CharlottePlanERemote" targetName="__idf_unity" />
-      <config projectName="CharlottePlanERemote" targetName="__idf_ESP-IDF-LowPassFilter" />
       <config projectName="CharlottePlanERemote" targetName="__idf_wear_levelling" />
       <config projectName="CharlottePlanERemote" targetName="__idf_esp_driver_uart" />
       <config projectName="CharlottePlanERemote" targetName="__idf_esp_event" />
@@ -193,33 +193,18 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="перехуярил дженерик трансивер, чтоб почитабельней было">
+    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="пиздец нвску уебало этими таймерами пидорскими">
+      <change afterPath="$PROJECT_DIR$/components/ESP-IDF-EMAFilter" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-NVSExtensions" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-Units" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-Units" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/MFDMenuView.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/ND.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/ND/ND.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDPageSplitter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDPageSplitter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/PFD/PFDScene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/autopilotToolbar.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/lateralRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/lateralRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/speedRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/speedRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/verticalRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/autopilot/verticalRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/baroToolbar.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/minimumsRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/minimumsRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/baro/referencePressureRotaryControl.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/camera/cameraToolbar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/camera/cameraToolbar.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimControls.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/MFD/toolbar/trim/trimControls.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/ADIRS/ADIRSSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/ADIRS/ADIRSSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/autopilot/autopilotSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axesSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axesSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/axis/axisEditor.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/motors/motorsSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/personalization/personalizationSettingsPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/navigation/settings/spectrumScan/spectrumScanPage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-EMAFilter/src/EMAFilter.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ESP-IDF-EMAFilter/src/EMAFilter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ESP-IDF-LowPassFilter" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencies.lock" beforeDir="false" afterPath="$PROJECT_DIR$/dependencies.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/axes/axis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/axes/axis.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,7 +216,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/components/ESP-IDF-EMAFilter" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -321,6 +306,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.__idf_ESP-IDF-ADCVoltmeter">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CharlottePlanERemote.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CharlottePlanERemote" TARGET_NAME="CharlottePlanERemote.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="CharlottePlanERemote" RUN_TARGET_NAME="CharlottePlanERemote.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -346,7 +336,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="__idf_ESP-IDF-LowPassFilter" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CharlottePlanERemote" TARGET_NAME="__idf_ESP-IDF-LowPassFilter" CONFIG_NAME="Debug">
+    <configuration name="__idf_ESP-IDF-EMAFilter" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CharlottePlanERemote" TARGET_NAME="__idf_ESP-IDF-EMAFilter" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -896,11 +886,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="app-flash" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CharlottePlanERemote" TARGET_NAME="app-flash" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1138,10 +1123,10 @@
     </configuration>
     <list>
       <item itemvalue="CMake Application.__idf_ESP-IDF-ADCVoltmeter" />
+      <item itemvalue="CMake Application.__idf_ESP-IDF-EMAFilter" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-BitStream" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-BuzzerAudio" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-CircularQueue" />
-      <item itemvalue="CMake Application.__idf_ESP-IDF-LowPassFilter" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-NVSExtensions" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-PIDController" />
       <item itemvalue="CMake Application.__idf_ESP-IDF-SX1262" />
@@ -1352,7 +1337,8 @@
       <workItem from="1780488629161" duration="1004000" />
       <workItem from="1780507214631" duration="829000" />
       <workItem from="1780509120192" duration="11199000" />
-      <workItem from="1780577144224" duration="11845000" />
+      <workItem from="1780577144224" duration="13157000" />
+      <workItem from="1780606602770" duration="173000" />
     </task>
     <task id="LOCAL-00001" summary="ебучий есп">
       <option name="closed" value="true" />
@@ -1522,7 +1508,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780586867808</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="пиздец нвску уебало этими таймерами пидорскими">
+      <option name="closed" value="true" />
+      <created>1780603154659</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1780603154659</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1583,7 +1577,8 @@
     <MESSAGE value="перехуярил таски на таймеры, а то хипа не резиновая" />
     <MESSAGE value="опача, стринги обычными чарами" />
     <MESSAGE value="перехуярил дженерик трансивер, чтоб почитабельней было" />
-    <option name="LAST_COMMIT_MESSAGE" value="перехуярил дженерик трансивер, чтоб почитабельней было" />
+    <MESSAGE value="пиздец нвску уебало этими таймерами пидорскими" />
+    <option name="LAST_COMMIT_MESSAGE" value="пиздец нвску уебало этими таймерами пидорскими" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
