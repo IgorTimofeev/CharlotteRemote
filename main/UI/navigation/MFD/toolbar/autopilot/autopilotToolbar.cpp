@@ -11,7 +11,7 @@ namespace pizda {
 
 		flightDirector.onPressed = [this, &rc] {
 			rc.getSettings().personalization.MFD.PFD.flightDirector = !rc.getSettings().personalization.MFD.PFD.flightDirector;
-			rc.getSettings().personalization.scheduleWrite();
+			rc.getSettings().personalization.writeLater();
 			
 			flightDirector.setActive(rc.getSettings().personalization.MFD.PFD.flightDirector);
 			

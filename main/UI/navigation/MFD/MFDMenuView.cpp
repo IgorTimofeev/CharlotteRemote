@@ -26,7 +26,7 @@ namespace pizda {
 
 		MFDPage::getInstance()->fromSettings();
 
-		settings.personalization.scheduleWrite();
+		settings.personalization.writeLater();
 	}
 
 	MFDMenuView::MFDMenuView() {

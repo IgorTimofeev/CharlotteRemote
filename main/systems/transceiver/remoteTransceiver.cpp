@@ -46,15 +46,6 @@ namespace pizda {
 		// Anything related directly to XCVR module should be processed in single loop, BECAUSE WE NEED FULL AUTHORITY
 		switch (rc.getRemoteData().transceiver.spectrumScanning.state) {
 			case RemoteDataRadioSpectrumScanningState::stopped: {
-				// Communication settings ACK packet received
-				if (_communicationSettingsACKTime < 0) {
-					scheduleCommunicationSettingsSyncCheck();
-				}
-				// Communication settings sync check time reached
-				else if (_communicationSettingsACKTime > 0 && esp_timer_get_time() >= _communicationSettingsACKTime) {
-					performCommunicationSettingsSyncCheck();
-				}
-
 				// Transmitting
 				if (transmit(100'000)) {
 
@@ -75,35 +66,6 @@ namespace pizda {
 		}
 	}
 
-	void RemoteTransceiver::scheduleCommunicationSettingsSyncCheck() {
-		ESP_LOGI(_logTag, "communication settings ACK received");
-
-		setCommunicationSettings(RC::getInstance().getRemoteData().transceiver.communicationSettings);
-
-		_communicationSettingsACKTime = esp_timer_get_time() + _communicationSettingsACKDelayUs;
-	}
-
-	void RemoteTransceiver::performCommunicationSettingsSyncCheck() {
-		auto& rc = RC::getInstance();
-
-		// Received and decoded enough packets to consider the connection is stable
-		if (getRXPPS() >= _communicationSettingsACKMinValidPPS) {
-			ESP_LOGI(_logTag, "communication settings synchronized");
-
-			rc.getSettings().transceiver.communication = rc.getRemoteData().transceiver.communicationSettings;
-			rc.getSettings().transceiver.scheduleWrite();
-		}
-		// Or not enough...
-		else {
-			ESP_LOGI(_logTag, "communication settings change timed out with PPS = %d, falling back to default", getRXPPS());
-
-			// Falling back to default communication settings
-			setCommunicationSettings(config::XCVR::communicationSettings);
-		}
-
-		_communicationSettingsACKTime = 0;
-	}
-
 	void RemoteTransceiver::updateRSSIAndSNR() {
 		if (esp_timer_get_time() < _RSSIAndSNRUpdateTimeUs)
 			return;
@@ -117,6 +79,16 @@ namespace pizda {
 			_SNR = static_cast<int8_t>(valueF);
 
 		_RSSIAndSNRUpdateTimeUs = esp_timer_get_time() + _RSSIAndSNRUpdateIntervalUs;
+	}
+
+	void RemoteTransceiver::onCommunicationSettingsSyncCheckScheduled() {
+		setCommunicationSettings(RC::getInstance().getRemoteData().transceiver.communicationSettings);
+	}
+
+	void RemoteTransceiver::onCommunicationSettingsSyncCheckCompleted() {
+		auto& rc = RC::getInstance();
+		rc.getSettings().transceiver.communication = rc.getRemoteData().transceiver.communicationSettings;
+		rc.getSettings().transceiver.writeLater();
 	}
 
 	void RemoteTransceiver::onConnectionStateChanged() {
@@ -489,7 +461,7 @@ namespace pizda {
 						))
 							return false;
 
-						_communicationSettingsACKTime = -1;
+						requestCommunicationSettingsSyncCheck();
 
 						return true;
 					}

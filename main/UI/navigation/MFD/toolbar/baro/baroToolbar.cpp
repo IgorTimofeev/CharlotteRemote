@@ -13,7 +13,7 @@ namespace pizda {
 
 		metricUnits.onPressed = [this, &rc] {
 			rc.getSettings().personalization.MFD.PFD.metricUnits = !rc.getSettings().personalization.MFD.PFD.metricUnits;
-			rc.getSettings().personalization.scheduleWrite();
+			rc.getSettings().personalization.writeLater();
 
 			metricUnits.setActive(rc.getSettings().personalization.MFD.PFD.metricUnits);
 

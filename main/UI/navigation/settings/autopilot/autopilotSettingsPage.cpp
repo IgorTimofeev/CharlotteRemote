@@ -204,7 +204,7 @@ namespace pizda {
 				auto& rc = RC::getInstance();
 
 				*value = std::clamp(StringUtils::tryParseFloatOr(textField.getText(), fallbackValue), min, max);
-				rc.getSettings().autopilot.scheduleWrite();
+				rc.getSettings().autopilot.writeLater();
 
 				rc.getTransceiver().enqueueSystemPacket(packetType);
 			}
@@ -221,7 +221,7 @@ namespace pizda {
 				auto& rc = RC::getInstance();
 
 				*angleRad = toRadians(StringUtils::tryParseFloatOr(textField.getText(), fallbackAngleDeg));
-				rc.getSettings().autopilot.scheduleWrite();
+				rc.getSettings().autopilot.writeLater();
 
 				rc.getTransceiver().enqueueSystemPacket(packetType);
 			}
@@ -238,7 +238,7 @@ namespace pizda {
 				auto& rc = RC::getInstance();
 
 				*percent = static_cast<uint8_t>(std::clamp<int32_t>(StringUtils::tryParseInt32Or(textField.getText(), fallbackPercent), 0, 100));
-				rc.getSettings().autopilot.scheduleWrite();
+				rc.getSettings().autopilot.writeLater();
 
 				rc.getTransceiver().enqueueSystemPacket(packetType);
 			}
@@ -261,7 +261,7 @@ namespace pizda {
 			auto& rc = RC::getInstance();
 
 			*settingsCoefficients = newCoefficients;
-			rc.getSettings().autopilot.scheduleWrite();
+			rc.getSettings().autopilot.writeLater();
 
 			rc.getTransceiver().enqueueSystemPacket(packetType);
 		});

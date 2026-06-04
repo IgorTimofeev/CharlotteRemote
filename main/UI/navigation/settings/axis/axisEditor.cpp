@@ -82,7 +82,7 @@ namespace pizda {
 			
 			setCaptured(false);
 			
-			RC::getInstance().getSettings().axes.scheduleWrite();
+			RC::getInstance().getSettings().axes.writeLater();
 			
 			event->setHandled(true);
 		}

@@ -58,7 +58,7 @@ namespace pizda {
 		rc.getRemoteData().motorSettings.settings.sanitize();
 
 		*rc.getSettings().motors.getByType(_type) = rc.getRemoteData().motorSettings.settings;
-		rc.getSettings().motors.scheduleWrite();
+		rc.getSettings().motors.writeLater();
 
 		rc.getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::motors);
 	}

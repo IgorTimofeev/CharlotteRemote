@@ -17,7 +17,7 @@ namespace pizda {
 
 		_generalDebugOverlay.getSwitch().setOnIsActiveChanged([this, &rc, &settings] {
 			settings.personalization.debugOverlay = _generalDebugOverlay.getSwitch().isActive();
-			settings.personalization.scheduleWrite();
+			settings.personalization.writeLater();
 
 			rc.updateDebugOverlayVisibility();
 		});
@@ -29,7 +29,7 @@ namespace pizda {
 		
 		_generalAudioFeedback.getSwitch().setOnIsActiveChanged([this, &settings] {
 			settings.personalization.audioFeedback = _generalAudioFeedback.getSwitch().isActive();
-			settings.personalization.scheduleWrite();
+			settings.personalization.writeLater();
 		});
 		
 		rows += &_generalAudioFeedback;
@@ -39,7 +39,7 @@ namespace pizda {
 		
 		_generalDataInterpolation.getSwitch().setOnIsActiveChanged([this, &settings] {
 			settings.personalization.LPF = _generalDataInterpolation.getSwitch().isActive();
-			settings.personalization.scheduleWrite();
+			settings.personalization.writeLater();
 		});
 		
 		rows += &_generalDataInterpolation;
@@ -65,7 +65,7 @@ namespace pizda {
 
 		_PFDFOVSlider.setOnValueChanged([this, &settings] {
 			settings.personalization.MFD.PFD.FOV = _PFDFOVSlider.getValue();
-			settings.personalization.scheduleWrite();
+			settings.personalization.writeLater();
 		});
 
 		rows += &_PFDFOVTitle;
@@ -75,7 +75,7 @@ namespace pizda {
 
 		_PFDWaypointLabels.getSwitch().setOnIsActiveChanged([this, &settings] {
 			settings.personalization.MFD.PFD.waypointLabels = _PFDWaypointLabels.getSwitch().isActive();
-			settings.personalization.scheduleWrite();
+			settings.personalization.writeLater();
 		});
 
 		rows += &_PFDWaypointLabels;
@@ -94,7 +94,7 @@ namespace pizda {
 		
 		_NDEarthGrid.getSwitch().setOnIsActiveChanged([this, &settings] {
 			settings.personalization.MFD.ND.earth = _NDEarthGrid.getSwitch().isActive();
-			settings.personalization.scheduleWrite();
+			settings.personalization.writeLater();
 		});
 		
 		rows += &_NDEarthGrid;

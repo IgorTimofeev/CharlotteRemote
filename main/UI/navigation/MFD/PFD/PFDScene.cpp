@@ -42,7 +42,7 @@ namespace pizda {
 			rc.getSettings().controls.cameraYawDeg = rc.getSettings().controls.cameraYawDeg + incrementX;
 			config::camera::clamp(rc.getSettings().controls.cameraPitchDeg, rc.getSettings().controls.cameraYawDeg);
 
-			rc.getSettings().controls.scheduleWrite();
+			rc.getSettings().controls.writeLater();
 
 			rc.getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::camera);
 		}

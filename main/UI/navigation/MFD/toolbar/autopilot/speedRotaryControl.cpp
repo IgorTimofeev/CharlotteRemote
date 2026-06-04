@@ -27,7 +27,7 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 
 		rc.getSettings().autopilot.speedKt = static_cast<uint16_t>(seven.getValue());
-		rc.getSettings().autopilot.scheduleWrite();
+		rc.getSettings().autopilot.writeLater();
 
 		rc.getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::autopilotSpeed);
 	}

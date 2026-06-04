@@ -389,7 +389,7 @@ namespace pizda {
 					)
 					* 1'000;
 
-				rc.getSettings().transceiver.scheduleWrite();
+				rc.getSettings().transceiver.writeLater();
 
 				rc.getRemoteData().transceiver.spectrumScanning.frequency = rc.getSettings().transceiver.spectrumScanning.frequency.from;
 				rc.getRemoteData().transceiver.spectrumScanning.state = RemoteDataRadioSpectrumScanningState::startRequested;

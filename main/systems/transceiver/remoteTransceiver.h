@@ -50,15 +50,13 @@ namespace pizda {
 			int8_t _RSSI = 0;
 			int8_t _SNR = 0;
 
+			void updateRSSIAndSNR();
+
 			// ----------------------------- Communication settings -----------------------------
 
-			int64_t _communicationSettingsACKTime = 0;
-			constexpr static uint8_t _communicationSettingsACKMinValidPPS = 5;
-			constexpr static uint32_t _communicationSettingsACKDelayUs = 2'500'000;
+			void onCommunicationSettingsSyncCheckScheduled() override;
 
-			void scheduleCommunicationSettingsSyncCheck();
-			void performCommunicationSettingsSyncCheck();
-			void updateRSSIAndSNR();
+			void onCommunicationSettingsSyncCheckCompleted() override;
 
 			// ----------------------------- Spectrum scanning -----------------------------
 

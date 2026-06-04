@@ -34,7 +34,7 @@ namespace pizda {
 					80
 				));
 
-				rc.getSettings().personalization.scheduleWrite();
+				rc.getSettings().personalization.writeLater();
 
 				layout->updateSplitRatio();
 
@@ -58,7 +58,7 @@ namespace pizda {
 				parent->createShit();
 			}
 
-			rc.getSettings().personalization.scheduleWrite();
+			rc.getSettings().personalization.writeLater();
 
 			_pointerY = -1;
 			_draggedDohuya = false;

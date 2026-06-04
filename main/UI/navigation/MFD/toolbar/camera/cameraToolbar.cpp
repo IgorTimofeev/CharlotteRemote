@@ -16,7 +16,7 @@ namespace pizda {
 
 			rc.getSettings().controls.cameraPitchDeg = 0;
 			rc.getSettings().controls.cameraYawDeg = 0;
-			rc.getSettings().controls.scheduleWrite();
+			rc.getSettings().controls.writeLater();
 
 			rc.getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::camera);
 

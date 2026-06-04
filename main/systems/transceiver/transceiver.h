@@ -89,12 +89,7 @@ namespace pizda {
 
 				xTaskCreatePinnedToCore(
 					[](void* arg) {
-						auto transceiver = static_cast<Transceiver*>(arg);
-
-						while (true) {
-							transceiver->onTick();
-							transceiver->onPPSTick();
-						}
+						static_cast<Transceiver*>(arg)->onStart();
 					},
 					"XCVR",
 					8 * 1024,
@@ -105,6 +100,33 @@ namespace pizda {
 				);
 
 				return true;
+			}
+
+			[[noreturn]] void onStart() {
+				while (true) {
+					// Communication settings sync requested
+					if (_communicationSettingsACKTime < 0) {
+						scheduleCommunicationSettingsSyncCheck();
+					}
+					// Communication settings sync check time reached
+					else if (_communicationSettingsACKTime > 0 && esp_timer_get_time() >= _communicationSettingsACKTime) {
+						performCommunicationSettingsSyncCheck();
+					}
+
+					// Receive / transmit operations will be performed here
+					onTick();
+
+					// Computing PPS
+					if (esp_timer_get_time() >= _PPSTime) {
+						_RXPPS = _RXPPSTemp;
+						_TXPPS = _TXPPSTemp;
+
+						_RXPPSTemp = 0;
+						_TXPPSTemp = 0;
+
+						_PPSTime = esp_timer_get_time() + 1'000'000;
+					}
+				}
 			}
 
 			bool receive(const uint32_t timeoutUs) {
@@ -281,6 +303,9 @@ namespace pizda {
 		// ----------------------------- Communication settings -----------------------------
 
 		protected:
+			virtual void onCommunicationSettingsSyncCheckScheduled() = 0;
+			virtual void onCommunicationSettingsSyncCheckCompleted() = 0;
+
 			static bool checkSXErrorOnSetCommunicationSettings(const SX1262::error error) {
 				if (error != SX1262::error::none) {
 					logSXError("failed to set communication settings", error);
@@ -339,6 +364,41 @@ namespace pizda {
 				return true;
 			}
 
+			void requestCommunicationSettingsSyncCheck() {
+				_communicationSettingsACKTime = -1;
+			}
+
+		private:
+			constexpr static uint8_t _communicationSettingsACKMinValidPPS = 5;
+			constexpr static uint32_t _communicationSettingsACKDelayUs = 2'000'000;
+			int64_t _communicationSettingsACKTime = 0;
+
+			void scheduleCommunicationSettingsSyncCheck() {
+				onCommunicationSettingsSyncCheckScheduled();
+
+				_communicationSettingsACKTime = esp_timer_get_time() + _communicationSettingsACKDelayUs;
+			}
+
+			void performCommunicationSettingsSyncCheck() {
+				// Received and decoded enough packets to consider the connection is stable
+				if (getRXPPS() >= _communicationSettingsACKMinValidPPS) {
+					ESP_LOGI(_logTag, "communication settings synchronized");
+
+					onCommunicationSettingsSyncCheckCompleted();
+
+					_communicationSettingsACKTime = esp_timer_get_time() + _communicationSettingsACKDelayUs;
+				}
+				// Or not enough...
+				else {
+					ESP_LOGI(_logTag, "communication settings change timed out with PPS = %d, falling back to default", getRXPPS());
+
+					// Falling back to default communication settings
+					setCommunicationSettings(config::XCVR::communicationSettings);
+				}
+
+				_communicationSettingsACKTime = 0;
+			}
+
 		// ----------------------------- PPS -----------------------------
 
 		public:
@@ -357,19 +417,6 @@ namespace pizda {
 			uint16_t _RXPPS = 0;
 			uint16_t _TXPPS = 0;
 
-		protected:
-			void onPPSTick() {
-				if (esp_timer_get_time() < _PPSTime)
-					return;
-
-				_RXPPS = _RXPPSTemp;
-				_TXPPS = _TXPPSTemp;
-
-				_RXPPSTemp = 0;
-				_TXPPSTemp = 0;
-
-				_PPSTime = esp_timer_get_time() + 1'000'000;
-			}
 
 		// ----------------------------- Packet queue -----------------------------
 

@@ -72,7 +72,7 @@ namespace pizda {
 				? PersonalizationSettingsMFDSplitMode::ND
 				: PersonalizationSettingsMFDSplitMode::split;
 
-			settings.scheduleWrite();
+			settings.writeLater();
 
 			updateSplitButtonText();
 			MFDPage::getInstance()->fromSettings();
@@ -92,7 +92,7 @@ namespace pizda {
 				nextMode = 0;
 
 			settings.MFD.ND.mode = static_cast<PersonalizationSettingsMFDNDMode>(nextMode);
-			settings.scheduleWrite();
+			settings.writeLater();
 
 			updateViewModeButtonText();
 

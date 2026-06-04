@@ -26,7 +26,7 @@ namespace pizda {
 		SevenRotaryControl::onRotate(clockwise, big);
 		
 		*_settingsValue = seven.getValue();
-		RC::getInstance().getSettings().controls.scheduleWrite();
+		RC::getInstance().getSettings().controls.writeLater();
 		
 		RC::getInstance().getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::trim);
 	}

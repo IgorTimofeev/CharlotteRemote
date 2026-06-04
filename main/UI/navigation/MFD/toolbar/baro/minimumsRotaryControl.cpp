@@ -26,14 +26,14 @@ namespace pizda {
 		SevenRotaryControl::onRotate(clockwise, big);
 		
 		RC::getInstance().getSettings().ADIRS.minimumAltitudeFt = static_cast<uint16_t>(seven.getValue());
-		RC::getInstance().getSettings().ADIRS.scheduleWrite();
+		RC::getInstance().getSettings().ADIRS.writeLater();
 	}
 	
 	void MinimumsRotaryControl::onPress() {
 		RotaryControl::onPress();
 		
 		RC::getInstance().getSettings().ADIRS.minimumAltitudeEnabled = !RC::getInstance().getSettings().ADIRS.minimumAltitudeEnabled;
-		RC::getInstance().getSettings().ADIRS.scheduleWrite();
+		RC::getInstance().getSettings().ADIRS.writeLater();
 		
 		updateColor();
 	}

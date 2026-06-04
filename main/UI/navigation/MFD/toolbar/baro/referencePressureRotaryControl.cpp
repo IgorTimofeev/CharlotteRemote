@@ -28,7 +28,7 @@ namespace pizda {
 		SevenRotaryControl::onRotate(clockwise, big);
 		
 		RC::getInstance().getSettings().ADIRS.referencePressurePa = static_cast<uint16_t>(seven.getValue()) * 10;
-		RC::getInstance().getSettings().ADIRS.scheduleWrite();
+		RC::getInstance().getSettings().ADIRS.writeLater();
 		
 		RC::getInstance().getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::referencePressure);
 	}
@@ -37,7 +37,7 @@ namespace pizda {
 		RotaryControl::onPress();
 		
 		RC::getInstance().getSettings().ADIRS.referencePressureSTD = !RC::getInstance().getSettings().ADIRS.referencePressureSTD;
-		RC::getInstance().getSettings().ADIRS.scheduleWrite();
+		RC::getInstance().getSettings().ADIRS.writeLater();
 		
 		updateColor();
 		

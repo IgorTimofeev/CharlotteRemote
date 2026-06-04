@@ -23,7 +23,7 @@ namespace pizda {
 
 			auto& rc = RC::getInstance();
 			rc.getSettings().ADIRS.magneticDeclinationDeg = StringUtils::tryParseInt32Or(_ADIRSMagneticDeclinationTextField.getText(), 0);
-			rc.getSettings().ADIRS.scheduleWrite();
+			rc.getSettings().ADIRS.writeLater();
 
 			rc.getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::magneticDeclination);
 		});
