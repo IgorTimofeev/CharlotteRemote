@@ -71,14 +71,21 @@ namespace pizda {
 		_itemsLayout.setGap(5);
 		rows += &_itemsLayout;
 
+		// Initialization
 		updateFromNavigationData();
+
+		scrollView.setVerticalPosition(_scrollPosition);
 	}
 
 	DatabasePage::~DatabasePage() {
+		_scrollPosition = scrollView.getVerticalPosition();
+
 		_itemsLayout.removeAndDeleteChildren();
 
 		_instance = nullptr;
 	}
+
+	int32_t DatabasePage::_scrollPosition = 0;
 
 	DatabasePage* DatabasePage::getInstance() {
 		return _instance;

@@ -14,11 +14,14 @@ namespace pizda {
 	class AxesSettingsPage : public ScrollViewPage {
 		public:
 			AxesSettingsPage();
+			~AxesSettingsPage() override;
 
 		protected:
 			void onTick() override;
 
 		private:
+			static int32_t _scrollPosition;
+
 			AxisEditor _leverLeftAxisEditor;
 			Titler _leverLeftAxisEditorTitle = Titler("Throttle", &_leverLeftAxisEditor);
 

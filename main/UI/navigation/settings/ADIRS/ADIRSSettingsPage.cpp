@@ -83,7 +83,16 @@ The magnetometer should be calibrated each time before first takeoff in new geol
 		);
 
 		rows += &_calDescriptionText;
+
+		// Initialization
+		scrollView.setVerticalPosition(_scrollPosition);
 	}
+
+	ADIRSSettingsPage::~ADIRSSettingsPage() {
+		_scrollPosition = scrollView.getVerticalPosition();
+	}
+
+	int32_t ADIRSSettingsPage::_scrollPosition = 0;
 	
 	void ADIRSSettingsPage::onTick() {
 		Layout::onTick();

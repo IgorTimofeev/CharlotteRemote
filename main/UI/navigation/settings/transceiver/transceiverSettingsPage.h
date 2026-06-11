@@ -14,8 +14,11 @@ namespace pizda {
 	class TransceiverSettingsPage : public ScrollViewPage {
 		public:
 			TransceiverSettingsPage();
+			~TransceiverSettingsPage() override;
 
 		private:
+			static int32_t _scrollPosition;
+
 			TextField _RFFrequency {};
 			Titler _RFFrequencyTitle { "RF [120; 960] (MHz)", &_RFFrequency };
 

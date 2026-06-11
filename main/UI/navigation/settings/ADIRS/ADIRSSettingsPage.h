@@ -13,11 +13,14 @@ namespace pizda {
 	class ADIRSSettingsPage : public ScrollViewPage {
 		public:
 			ADIRSSettingsPage();
+			~ADIRSSettingsPage() override;
 
 		protected:
 			void onTick() override;
 		
 		private:
+			static int32_t _scrollPosition;
+
 			// ----------------------------- ADIRS -----------------------------
 
 			TextField _ADIRSMagneticDeclinationTextField {};

@@ -22,6 +22,8 @@ namespace pizda {
 			void updateFromNavigationData();
 
 		private:
+			static int32_t _scrollPosition;
+
 			static DatabasePage* _instance;
 
 			TabSelectorItem _runwayTypeItem {};

@@ -98,5 +98,13 @@ namespace pizda {
 		});
 		
 		rows += &_NDEarthGrid;
+		// Initialization
+		scrollView.setVerticalPosition(_scrollPosition);
 	}
+
+	PersonalizationSettingsPage::~PersonalizationSettingsPage() {
+		_scrollPosition = scrollView.getVerticalPosition();
+	}
+
+	int32_t PersonalizationSettingsPage::_scrollPosition = 0;
 }

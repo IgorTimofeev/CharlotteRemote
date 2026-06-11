@@ -21,6 +21,7 @@ namespace pizda {
 
 		private:
 			static FlightPlanPage* _instance;
+			static int32_t _scrollPosition;
 
 			StackLayout _itemsLayout {};
 

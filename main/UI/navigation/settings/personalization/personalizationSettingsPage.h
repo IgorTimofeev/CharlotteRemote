@@ -14,8 +14,11 @@ namespace pizda {
 	class PersonalizationSettingsPage : public ScrollViewPage {
 		public:
 			PersonalizationSettingsPage();
+			~PersonalizationSettingsPage() override;
 
 		private:
+			static int32_t _scrollPosition;
+
 			// -------------------------------- General --------------------------------
 			
 			Switcher _generalAudioFeedback { "Audio feedback" };

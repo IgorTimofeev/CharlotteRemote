@@ -182,7 +182,16 @@ namespace pizda {
 			RemoteSystemPacketType::autopilotSpeedToThrottlePID,
 			&rc.getSettings().autopilot.PIDs.speedToThrottle
 		);
+
+		// Initialization
+		scrollView.setVerticalPosition(_scrollPosition);
 	}
+
+	AutopilotSettingsPage::~AutopilotSettingsPage() {
+		_scrollPosition = scrollView.getVerticalPosition();
+	}
+
+	int32_t AutopilotSettingsPage::_scrollPosition = 0;
 
 	void AutopilotSettingsPage::setupAnyTextField(TextField& textField, const std::string_view& text, const std::function<void()>& onEnter) {
 		Theme::apply(&textField);

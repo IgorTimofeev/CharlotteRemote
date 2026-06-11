@@ -52,7 +52,7 @@ namespace pizda {
 
 	class RemoteDataMotorSettings {
 		public:
-			MotorType type = MotorType::throttle;
+			MotorType type = MotorType::throttleLeft;
 			MotorSettings settings {};
 	};
 	

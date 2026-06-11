@@ -56,7 +56,16 @@ namespace pizda {
 		});
 
 		rows += &_lowPassFactorSliderTitle;
+
+		// Initialization
+		scrollView.setVerticalPosition(_scrollPosition);
 	}
+
+	AxesSettingsPage::~AxesSettingsPage() {
+		_scrollPosition = scrollView.getVerticalPosition();
+	}
+
+	int32_t AxesSettingsPage::_scrollPosition = 0;
 
 	void AxesSettingsPage::onTick() {
 		Layout::onTick();

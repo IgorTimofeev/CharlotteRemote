@@ -100,7 +100,16 @@ namespace pizda {
 		});
 
 		rows += &_confirmButton;
+
+		// Initialization
+		scrollView.setVerticalPosition(_scrollPosition);
 	}
+
+	TransceiverSettingsPage::~TransceiverSettingsPage() {
+		_scrollPosition = scrollView.getVerticalPosition();
+	}
+
+	int32_t TransceiverSettingsPage::_scrollPosition = 0;
 
 	void TransceiverSettingsPage::setupRow(RelativeStackLayout& row) {
 		row.setOrientation(Orientation::horizontal);

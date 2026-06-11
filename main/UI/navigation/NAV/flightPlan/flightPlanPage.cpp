@@ -22,14 +22,20 @@ namespace pizda {
 		_addLegButton.setText("Add leg");
 		_itemsLayout += &_addLegButton;
 
+		// Initialization
 		updateFromNavigationData();
+
+		scrollView.setVerticalPosition(_scrollPosition);
 	}
 
 	FlightPlanPage::~FlightPlanPage() {
+		_scrollPosition = scrollView.getVerticalPosition();
 		_instance = nullptr;
 
 		_legsLayout.removeAndDeleteChildren();
 	}
+
+	int32_t FlightPlanPage::_scrollPosition = 0;
 
 	FlightPlanPage* FlightPlanPage::getInstance() {
 		return _instance;

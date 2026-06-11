@@ -64,33 +64,40 @@ namespace pizda {
 	}
 
 	MotorsSettingsPage::MotorsSettingsPage() {
-		// Page title
-		title.setText("Primary");
-		
-		vaginoz(&_throttle);
-		// vaginoz(&_reverse);
-		vaginoz(&_noseWheel);
-		rows += &_mainSeparator;
+		title.setText("Throttle");
+		vaginoz(&_throttleLeft);
+		vaginoz(&_throttleRight);
+		rows += &_throttleSeparator;
 
-		penisula(&_leftWingTitle);
-		vaginoz(&_flapLeft);
+		penisula(&_aileronsTitle);
 		vaginoz(&_aileronLeft);
-		rows += &_leftWingSeparator;
-
-		penisula(&_rightWingTitle);
-		vaginoz(&_flapRight);
 		vaginoz(&_aileronRight);
-		rows += &_rightWingSeparator;
+		rows += &_aileronsSeparator;
+
+		penisula(&_flapsTitle);
+		vaginoz(&_flapLeft);
+		vaginoz(&_flapRight);
+		rows += &_flapsSeparator;
 
 		penisula(&_tailTitle);
 		vaginoz(&_tailLeft);
 		vaginoz(&_tailRight);
 		rows += &_tailSeparator;
 
-		penisula(&_cameraTitle);
+		penisula(&_noseTitle);
 		vaginoz(&_cameraPitch);
 		vaginoz(&_cameraYaw);
+		vaginoz(&_noseWheel);
+
+		// Initialization
+		scrollView.setVerticalPosition(_scrollPosition);
 	}
+
+	MotorsSettingsPage::~MotorsSettingsPage() {
+		_scrollPosition = scrollView.getVerticalPosition();
+	}
+
+	int32_t MotorsSettingsPage::_scrollPosition = 0;
 
 	void MotorsSettingsPage::penisula(TextView* text) {
 		Theme::applyPageTitle(text);
