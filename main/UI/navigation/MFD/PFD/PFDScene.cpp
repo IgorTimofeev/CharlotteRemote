@@ -38,12 +38,14 @@ namespace pizda {
 			const int32_t incrementX = delta.getX() * milliDegPerPixel / 1000;
 			const int32_t incrementY = delta.getY() * milliDegPerPixel / 1000;
 
+			// Saving position
 			rc.getSettings().controls.cameraPitchDeg = rc.getSettings().controls.cameraPitchDeg - incrementY;
 			rc.getSettings().controls.cameraYawDeg = rc.getSettings().controls.cameraYawDeg + incrementX;
 			config::camera::clamp(rc.getSettings().controls.cameraPitchDeg, rc.getSettings().controls.cameraYawDeg);
 
 			rc.getSettings().controls.writeLater();
 
+			// Sending packet
 			rc.getTransceiver().enqueueSystemPacket(RemoteSystemPacketType::camera);
 		}
 	}
@@ -252,47 +254,47 @@ namespace pizda {
 			renderer->renderFilledRectangle(flightDirectorRectBounds, &Theme::magenta1);
 		}
 
-		// Flight path vector
-		if (false && rc.getAircraftData().computed.airspeedKt > PFD::speedFlapsMin) {
-			const auto& FPVPosition = Point(
-				static_cast<int32_t>(horizonCenter.getX() + std::tanf(rc.getAircraftData().computed.flightPathVectorYawRad) * projectionPlaneDistance),
-				static_cast<int32_t>(horizonCenter.getY() - std::tanf(rc.getAircraftData().computed.flightPathVectorPitchRad) * projectionPlaneDistance)
-			);
-
-			// Circle
-			for (uint8_t i = 0; i < PFD::flightPathVectorLineThickness; i++) {
-				renderer->renderCircle(
-					FPVPosition,
-					PFD::flightPathVectorRadius - i,
-					&Theme::bg1
-				);
-			}
-
-			// Left line
-			renderer->renderFilledRectangle(
-				Bounds(
-					FPVPosition.getX() - PFD::flightPathVectorRadius - PFD::flightPathVectorLineLength,
-					FPVPosition.getY() - PFD::flightPathVectorLineThickness / 2,
-					PFD::flightPathVectorLineLength,
-					PFD::flightPathVectorLineThickness
-				),
-				&Theme::bg1
-			);
-
-			// Right line
-			renderer->renderFilledRectangle(
-				Bounds(
-					FPVPosition.getX() + PFD::flightPathVectorRadius,
-					FPVPosition.getY() - PFD::flightPathVectorLineThickness / 2,
-					PFD::flightPathVectorLineLength,
-					PFD::flightPathVectorLineThickness
-				),
-				&Theme::bg1
-			);
-		}
+		// // Flight path vector
+		// if (false && rc.getAircraftData().computed.airspeedKt > PFD::speedFlapsMin) {
+			// const auto& FPVPosition = Point(
+			// 	static_cast<int32_t>(horizonCenter.getX() + std::tanf(rc.getAircraftData().computed.flightPathVectorYawRad) * projectionPlaneDistance),
+			// 	static_cast<int32_t>(horizonCenter.getY() - std::tanf(rc.getAircraftData().computed.flightPathVectorPitchRad) * projectionPlaneDistance)
+			// );
+			//
+			// // Circle
+			// for (uint8_t i = 0; i < PFD::flightPathVectorLineThickness; i++) {
+			// 	renderer->renderCircle(
+			// 		FPVPosition,
+			// 		PFD::flightPathVectorRadius - i,
+			// 		&Theme::bg1
+			// 	);
+			// }
+			//
+			// // Left line
+			// renderer->renderFilledRectangle(
+			// 	Bounds(
+			// 		FPVPosition.getX() - PFD::flightPathVectorRadius - PFD::flightPathVectorLineLength,
+			// 		FPVPosition.getY() - PFD::flightPathVectorLineThickness / 2,
+			// 		PFD::flightPathVectorLineLength,
+			// 		PFD::flightPathVectorLineThickness
+			// 	),
+			// 	&Theme::bg1
+			// );
+			//
+			// // Right line
+			// renderer->renderFilledRectangle(
+			// 	Bounds(
+			// 		FPVPosition.getX() + PFD::flightPathVectorRadius,
+			// 		FPVPosition.getY() - PFD::flightPathVectorLineThickness / 2,
+			// 		PFD::flightPathVectorLineLength,
+			// 		PFD::flightPathVectorLineThickness
+			// 	),
+			// 	&Theme::bg1
+			// );
+		// }
 
 		// Camera
-		{
+		if (rc.getSettings().controls.cameraPitchDeg != 0 || rc.getSettings().controls.cameraYawDeg) {
 			const auto& cameraPosition = Point(
 				std::clamp<int32_t>(
 					center.getX()

@@ -7,6 +7,7 @@
 #include <cstring>
 
 #include <NVSSettings.h>
+#include <EMAFilter.h>
 
 namespace pizda {
 	using namespace YOBA;
@@ -25,8 +26,8 @@ namespace pizda {
 			AxisSettingsData joystickHorizontal  {};
 			AxisSettingsData joystickVertical {};
 			AxisSettingsData ring {};
-			uint16_t lowPassFactor = 0;
-			uint8_t jitteringCutoffValue = 0;
+			uint16_t EMAFilterFactor = 0;
+			uint8_t jitteringThreshold = 0;
 
 		protected:
 			const char* getNamespace() override {
@@ -54,8 +55,8 @@ namespace pizda {
 				ring.to = stream.readUint16(_ringTo, 3768);
 				ring.sensitivity = stream.readUint8(_ringSensitivity, 0x00);
 
-				lowPassFactor = stream.readUint16(_lowPassFactor, 0xFFFF * 75 / 100);
-				jitteringCutoffValue = stream.readUint8(_jitteringCutoffValue, 30);
+				EMAFilterFactor = stream.readUint16(_EMAFilterFactor, EMAFilter::maxUint16Factor * 75 / 100);
+				jitteringThreshold = stream.readUint8(_jitteringThreshold, 30);
 			}
 
 			void onWrite(const NVSStream& stream) override {
@@ -79,8 +80,8 @@ namespace pizda {
 				stream.writeUint16(_ringTo, ring.to);
 				stream.writeUint8(_ringSensitivity, ring.sensitivity);
 
-				stream.writeUint16(_lowPassFactor, lowPassFactor);
-				stream.writeUint8(_jitteringCutoffValue, jitteringCutoffValue);
+				stream.writeUint16(_EMAFilterFactor, EMAFilterFactor);
+				stream.writeUint8(_jitteringThreshold, jitteringThreshold);
 			}
 
 		private:
@@ -106,7 +107,7 @@ namespace pizda {
 			constexpr static auto _ringTo = "rgt";
 			constexpr static auto _ringSensitivity = "rgs";
 
-			constexpr static auto _lowPassFactor = "lpf";
-			constexpr static auto _jitteringCutoffValue = "jc";
+			constexpr static auto _EMAFilterFactor = "eff";
+			constexpr static auto _jitteringThreshold = "jtt";
 	};
 }

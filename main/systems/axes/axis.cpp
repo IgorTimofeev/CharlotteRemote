@@ -46,11 +46,11 @@ namespace pizda {
 		}
 		else {
 			// Skipping insignificant ADC oscillations
-			if (std::abs(readValue - _rawValue) < axesSettings.axes.jitteringCutoffValue)
+			if (std::abs(readValue - _rawValue) < axesSettings.axes.jitteringThreshold)
 				return;
 
 			// Applying low pass filter for buttery smooth landings
-			_rawValue = EMAFilter::apply(_rawValue, readValue, axesSettings.axes.lowPassFactor);
+			_rawValue = EMAFilter::apply(_rawValue, readValue, axesSettings.axes.EMAFilterFactor);
 		}
 
 		_filteredValue = applySensitivityFilter(_rawValue);

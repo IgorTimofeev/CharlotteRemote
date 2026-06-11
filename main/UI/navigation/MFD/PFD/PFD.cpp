@@ -668,6 +668,38 @@ namespace pizda {
 			rc.getAircraftData().computed.altitudeTrendFt
 		);
 
+		// Minimums
+		if (rc.getSettings().ADIRS.minimumAltitudeEnabled) {
+			constexpr static uint8_t horizontalOffset = 5;
+			constexpr static uint8_t arrowWidth = 3;
+			constexpr static uint8_t arrowHeight = 4;
+
+			x = bounds.getX() - horizontalOffset;
+
+			y =
+				centerY
+				- static_cast<int32_t>(
+					(rc.getSettings().ADIRS.minimumAltitudeFt- altitude)
+					* static_cast<float>(altitudeStepPixels)
+					/ static_cast<float>(altitudeStepUnits)
+				);
+
+			// Arrow
+			renderer->renderTriangle(
+				Point(x, y - arrowHeight / 2),
+				Point(x + arrowWidth - 1, y),
+				Point(x, y + arrowHeight / 2),
+				&Theme::yellow
+			);
+
+			// Line
+			renderer->renderHorizontalLine(
+				Point(x, y),
+				bounds.getWidth() + horizontalOffset,
+				&Theme::yellow
+			);
+		}
+
 		// ALT hold
 		if (rc.getAircraftData().raw.autopilot.verticalMode == AutopilotVerticalMode::alt) {
 			constexpr static uint8_t horizontalOffset = 5;

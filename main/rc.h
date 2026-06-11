@@ -95,7 +95,7 @@ namespace pizda {
 				config::screen::frequency
 			};
 
-			Bit8PaletteRenderer _renderer { 32 };
+			RGB565PixelBufferRenderer _renderer {};
 
 			FT6336UTouchPanel _touchPanel {
 				config::I2C::SDA,

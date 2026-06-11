@@ -1,5 +1,7 @@
 #include "axesSettingsPage.h"
 
+#include <EMAFilter.h>
+
 #include "rc.h"
 #include "UI/theme.h"
 
@@ -12,7 +14,7 @@ namespace pizda {
 		_leverRightAxisEditor(AxisEditor(&RC::getInstance().getAxes().getLeverRight()))
 	{
 		// Page title
-		title.setText("Axis");
+		title.setText("Axes");
 
 		// Axes editors
 		rows += &_leverLeftAxisEditorTitle;
@@ -27,7 +29,7 @@ namespace pizda {
 
 		_jitteringThresholdSlider.setMinimumValue(0);
 		_jitteringThresholdSlider.setMaximumValue(jitteringThresholdMaxValue);
-		_jitteringThresholdSlider.setValue(RC::getInstance().getSettings().axes.jitteringCutoffValue);
+		_jitteringThresholdSlider.setValue(RC::getInstance().getSettings().axes.jitteringThreshold);
 
 		_jitteringThresholdSlider.setTickCount(10);
 		_jitteringThresholdSlider.setBigTickStep(5);
@@ -36,26 +38,28 @@ namespace pizda {
 		_jitteringThresholdSlider.setOnValueChanged([this] {
 			auto& settings = RC::getInstance().getSettings();
 
-			settings.axes.jitteringCutoffValue = _jitteringThresholdSlider.getValue();
+			settings.axes.jitteringThreshold = _jitteringThresholdSlider.getValue();
 			settings.axes.writeLater();
 		});
 
 		rows += &_jitteringThresholdSliderTitle;
 
 		// Low pass slider
-		Theme::apply(&_lowPassFactorSlider);
-		_lowPassFactorSlider.setFillColor(&Theme::good2);
+		Theme::apply(&_EMAFilterFactorSlider);
+		_EMAFilterFactorSlider.setFillColor(&Theme::good2);
+		_EMAFilterFactorSlider.setValue(
+			static_cast<float>(RC::getInstance().getSettings().axes.EMAFilterFactor)
+			/ static_cast<float>(EMAFilter::maxUint16Factor)
+		);
 
-		_lowPassFactorSlider.setValue(static_cast<float>(RC::getInstance().getSettings().axes.lowPassFactor) / 0xFFFF);
-
-		_lowPassFactorSlider.setOnValueChanged([this] {
+		_EMAFilterFactorSlider.setOnValueChanged([this] {
 			auto& settings = RC::getInstance().getSettings();
 
-			settings.axes.lowPassFactor = _lowPassFactorSlider.getValueFactor() * 0xFFFF;
+			settings.axes.EMAFilterFactor = static_cast<uint16_t>(_EMAFilterFactorSlider.getValue() * static_cast<float>(EMAFilter::maxUint16Factor));
 			settings.axes.writeLater();
 		});
 
-		rows += &_lowPassFactorSliderTitle;
+		rows += &_EMAFilterFactorSliderTitle;
 
 		// Initialization
 		scrollView.setVerticalPosition(_scrollPosition);
