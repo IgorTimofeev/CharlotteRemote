@@ -26,7 +26,7 @@ namespace pizda {
 		// Multicore
 		{
 			_SPIMutex = xSemaphoreCreateMutex();
-			system::SPI::setMutex(_SPIMutex);
+			// system::SPI::setMutex(_SPIMutex);
 		}
 
 		// SPI
@@ -149,7 +149,7 @@ namespace pizda {
 			_application.tick();
 			_application.render();
 
-			vTaskDelay(pdMS_TO_TICKS(1'000 / 30));
+			vTaskDelay(pdMS_TO_TICKS(1'000 / 60));
 		}
 	}
 

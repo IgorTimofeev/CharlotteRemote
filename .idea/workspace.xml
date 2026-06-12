@@ -193,42 +193,18 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="заменил палитровый ренедрер на 565 - раз уж я отказался от OTA, то хипы по идее должно хватать за глаза">
+    <list default="true" id="3c43c2b2-1bb6-4c4b-b9c7-13761b7a7fd1" name="Changes" comment="так, ну проблема по ходу явно где-то в смене типа рендерера - забекаплю-ка это тоже, и будем потихоньку чекать">
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/theme.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/theme.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/UI/theme.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/UI/theme.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/hardware/displays/SPIDisplay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/hardware/displays/SPIDisplay.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/RGB565PixelBufferRenderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/RGB565PixelBufferRenderer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/bit8PaletteRenderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/bit8PaletteRenderer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/pixelBufferRenderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/components/YOBA/src/YOBA/main/rendering/pixelBufferRenderer.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/rc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/rc.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/rc.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconADIRSImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconADIRSImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconAutopilotSettingsImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconAutopilotSettingsImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconAxesImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconAxesImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconDevImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconDevImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconFlightPlanImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconFlightPlanImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotEngageImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotEngageImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotFlightDirectorImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotFlightDirectorImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotGyroImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotGyroImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDAutopilotImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDBaroImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDBaroImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDCameraImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDCameraImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDCameraResetImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDCameraResetImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsCabinImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsCabinImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsLandingImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsLandingImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsNavigationImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsNavigationImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsStrobeImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDLightsStrobeImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDMetricUnitsImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDMetricUnitsImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDNDImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDNDImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDPFDImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDPFDImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMFDTrimImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMFDTrimImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconMotorsImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconMotorsImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconPersonalizationImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconPersonalizationImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconPowerImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconPowerImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconSpectrumScanImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconSpectrumScanImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconTransceiverImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconTransceiverImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconWaypointsImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconWaypointsImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/menuIconWiFiImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/menuIconWiFiImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/resources/images/splashScreenImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/resources/images/splashScreenImage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/remoteTransceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/systems/transceiver/transceiver.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -318,7 +294,7 @@
     "last_opened_file_path": "C:/Users/Igor/Documents/Code/MCU/ESP32/Charlotte/PlanE/Remote/Firmware",
     "nodejs_package_manager_path": "npm",
     "org.rust.first.attach.projects": "true",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C++",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -1570,7 +1546,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781199654191</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="так, ну проблема по ходу явно где-то в смене типа рендерера - забекаплю-ка это тоже, и будем потихоньку чекать">
+      <option name="closed" value="true" />
+      <created>1781291468080</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1781291468080</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1646,7 +1630,8 @@
     <MESSAGE value="опача" />
     <MESSAGE value="ВОТЕТА ПА-НАУЧНАМУ Я ПАНИМАЮЮЮ ДААА" />
     <MESSAGE value="заменил палитровый ренедрер на 565 - раз уж я отказался от OTA, то хипы по идее должно хватать за глаза" />
-    <option name="LAST_COMMIT_MESSAGE" value="заменил палитровый ренедрер на 565 - раз уж я отказался от OTA, то хипы по идее должно хватать за глаза" />
+    <MESSAGE value="так, ну проблема по ходу явно где-то в смене типа рендерера - забекаплю-ка это тоже, и будем потихоньку чекать" />
+    <option name="LAST_COMMIT_MESSAGE" value="так, ну проблема по ходу явно где-то в смене типа рендерера - забекаплю-ка это тоже, и будем потихоньку чекать" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -24,12 +24,9 @@ namespace pizda {
 	}
 
 	bool RemoteTransceiver::setup() {
-		if (!Transceiver::setup())
-			return false;
+		// _SX.setSPIMutex(RC::getInstance().getSPIMutex());
 
-		_SX.setSPIMutex(RC::getInstance().getSPIMutex());
-
-		return true;
+		return Transceiver::setup();
 	}
 
 	int8_t RemoteTransceiver::getRSSI() const {

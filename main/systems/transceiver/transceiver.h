@@ -51,7 +51,9 @@ namespace pizda {
 		typename TLocalSystemPacketType,
 
 		typename TRemotePacketType,
-		uint8_t remotePacketTypeLengthBits
+		uint8_t remotePacketTypeLengthBits,
+
+		uint8_t CPUCoreID
 	>
 	class Transceiver {
 		// ----------------------------- Main -----------------------------
@@ -92,9 +94,9 @@ namespace pizda {
 					"XCVR",
 					8 * 1024,
 					this,
-					configMAX_PRIORITIES - 1,
+					20,
 					nullptr,
-					1
+					CPUCoreID
 				);
 
 				return true;
