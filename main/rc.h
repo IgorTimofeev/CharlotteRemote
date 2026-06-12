@@ -59,7 +59,7 @@ namespace pizda {
 			AircraftData& getAircraftData();
 			NavigationData& getNavigationData();
 
-			SemaphoreHandle_t getSPIMutex() const;
+			// SemaphoreHandle_t getSPIMutex() const;
 
 			void playFeedback(const Sound* sound);
 			void playFeedback();
@@ -76,9 +76,9 @@ namespace pizda {
 			
 			RC() = default;
 
-			// -------------------------------- Multicore --------------------------------
-
-			SemaphoreHandle_t _SPIMutex = nullptr;
+			// // -------------------------------- Multicore --------------------------------
+			//
+			// SemaphoreHandle_t _SPIMutex = nullptr;
 
 			// -------------------------------- Hardware --------------------------------
 
@@ -95,7 +95,7 @@ namespace pizda {
 				config::screen::frequency
 			};
 
-			Bit8PaletteRenderer _renderer { 33 };
+			RGB565PixelBufferRenderer _renderer {};
 
 			FT6336UTouchPanel _touchPanel {
 				config::I2C::SDA,

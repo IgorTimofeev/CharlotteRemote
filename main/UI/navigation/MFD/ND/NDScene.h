@@ -25,7 +25,7 @@ namespace pizda {
 			GeoCoordinates getCameraCoordinates() const;
 			void setCameraOffset(const GeoCoordinates& value);
 			void resetCameraLateralOffset();
-			bool isCameraShiftedLaterally() const;
+			bool isCameraShifted() const;
 			void deleteSceneElements();
 			void createSceneElementsFromNavigationData();
 

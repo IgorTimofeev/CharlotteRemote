@@ -34,7 +34,7 @@ namespace pizda {
 		auto& rc = RC::getInstance();
 		
 		// Aircraft
-		_aircraftElement->setVisible(isCameraShiftedLaterally());
+		_aircraftElement->setVisible(isCameraShifted());
 
 		if (_aircraftElement->isVisible()) {
 			_aircraftElement->setPosition(
@@ -310,32 +310,32 @@ namespace pizda {
 			// 		text
 			// 	);
 			// }
+		}
 
-			// Aircraft indicator
-			if (isCameraShiftedLaterally()) {
-				// Cross
-				renderer->renderHorizontalLine(
-					Point(
-						pivot.getX() - compassLateralOffsetCrossSize / 2,
-						pivot.getY()
-					),
-					compassLateralOffsetCrossSize,
-					&Theme::fg1
-				);
+		// Aircraft indicator
+		if (isCameraShifted()) {
+			// Cross
+			renderer->renderHorizontalLine(
+				Point(
+					pivot.getX() - compassLateralOffsetCrossSize / 2,
+					pivot.getY()
+				),
+				compassLateralOffsetCrossSize,
+				&Theme::fg1
+			);
 
-				renderer->renderVerticalLine(
-					Point(
-						pivot.getX(),
-						pivot.getY() - compassLateralOffsetCrossSize / 2
-					),
-					compassLateralOffsetCrossSize,
-					&Theme::fg1
-				);
-			}
-			else {
-				// Triangle
-				AircraftElement::render(renderer, pivot);
-			}
+			renderer->renderVerticalLine(
+				Point(
+					pivot.getX(),
+					pivot.getY() - compassLateralOffsetCrossSize / 2
+				),
+				compassLateralOffsetCrossSize,
+				&Theme::fg1
+			);
+		}
+		else {
+			// Triangle
+			AircraftElement::render(renderer, pivot);
 		}
 	}
 
@@ -504,7 +504,7 @@ namespace pizda {
 		setCameraOffset(GeoCoordinates(0, 0, _cameraOffset.getAltitude()));
 	}
 
-	bool NDScene::isCameraShiftedLaterally() const {
+	bool NDScene::isCameraShifted() const {
 		return _cameraOffset.getLatitude() != 0 || _cameraOffset.getLongitude() != 0;
 	}
 

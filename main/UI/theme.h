@@ -11,45 +11,54 @@ namespace pizda {
 
 	class Theme {
 		public:
-			constexpr static Bit8PaletteColor bg1 { 0 };
-			constexpr static Bit8PaletteColor bg2 { 1 };
-			constexpr static Bit8PaletteColor bg3 { 2 };
-			constexpr static Bit8PaletteColor bg4 { 3 };
-			constexpr static Bit8PaletteColor bg5 { 4 };
-			constexpr static Bit8PaletteColor bg6 { 5 };
-			constexpr static Bit8PaletteColor bg7 { 6 };
+			// -------------------------------- Colors --------------------------------
 
-			constexpr static Bit8PaletteColor fg1 { 7 };
-			constexpr static Bit8PaletteColor fg2 { 8 };
-			constexpr static Bit8PaletteColor fg3 { 9 };
-			constexpr static Bit8PaletteColor fg4 { 10 };
-			constexpr static Bit8PaletteColor fg5 { 11 };
-			constexpr static Bit8PaletteColor fg6 { 12 };
-			constexpr static Bit8PaletteColor fg7 { 13 };
-
-			constexpr static Bit8PaletteColor accent1 { 14 };
-			constexpr static Bit8PaletteColor accent2 { 15 };
-
-			constexpr static Bit8PaletteColor good1 { 16 };
-			constexpr static Bit8PaletteColor good2 { 17 };
-
-			constexpr static Bit8PaletteColor bad1 { 18 };
-			constexpr static Bit8PaletteColor bad2 { 19 };
-			constexpr static Bit8PaletteColor bad3 { 20 };
-
-			constexpr static Bit8PaletteColor red { 21 };
-			constexpr static Bit8PaletteColor green1 { 22 };
-			constexpr static Bit8PaletteColor green2 { 23 };
-			constexpr static Bit8PaletteColor blue { 24 };
-			constexpr static Bit8PaletteColor magenta1 { 25 };
-			constexpr static Bit8PaletteColor magenta2 { 26 };
-			constexpr static Bit8PaletteColor ocean { 27 };
-
-			constexpr static Bit8PaletteColor yellow { 28 };
-			constexpr static Bit8PaletteColor ground1 { 29 };
-			constexpr static Bit8PaletteColor ground2 { 30 };
-			constexpr static Bit8PaletteColor sky1 { 31 };
-			constexpr static Bit8PaletteColor sky2 { 32 };
+			// Background
+			constexpr static RGB565Color bg1 = RGB888Color(0x000000).toRGB565();
+			constexpr static RGB565Color bg2 = RGB888Color(0x0C0C0C).toRGB565();
+			constexpr static RGB565Color bg3 = RGB888Color(0x1C1C1C).toRGB565();
+			constexpr static RGB565Color bg4 = RGB888Color(0x2C2C2C).toRGB565();
+			constexpr static RGB565Color bg5 = RGB888Color(0x3C3C3C).toRGB565();
+			constexpr static RGB565Color bg6 = RGB888Color(0x4C4C4C).toRGB565();
+			constexpr static RGB565Color bg7 = RGB888Color(0x5C5C5C).toRGB565();
+			// Foreground
+			constexpr static RGB565Color fg1 = RGB888Color(0xF0F0F0).toRGB565();
+			constexpr static RGB565Color fg2 = RGB888Color(0xCCCCCC).toRGB565();
+			constexpr static RGB565Color fg3 = RGB888Color(0x999999).toRGB565();
+			constexpr static RGB565Color fg4 = RGB888Color(0x888888).toRGB565();
+			constexpr static RGB565Color fg5 = RGB888Color(0x777777).toRGB565();
+			constexpr static RGB565Color fg6 = RGB888Color(0x666666).toRGB565();
+			constexpr static RGB565Color fg7 = RGB888Color(0x555555).toRGB565();
+			// Accent
+			constexpr static RGB565Color accent1 = RGB888Color(0xffd200).toRGB565();
+			constexpr static RGB565Color accent2 = RGB888Color(0x997e53).toRGB565();
+			// Good
+			constexpr static RGB565Color good1 = RGB888Color(0x1db153).toRGB565();
+			constexpr static RGB565Color good2 = RGB888Color(0x28DA69).toRGB565();
+			// Bad
+			constexpr static RGB565Color bad1 = RGB888Color(0xf24949).toRGB565();
+			constexpr static RGB565Color bad2 = RGB888Color(0x962828).toRGB565();
+			constexpr static RGB565Color bad3 = RGB888Color(0x4b1313).toRGB565();
+			// Red
+			constexpr static RGB565Color red = RGB888Color(0xff0000).toRGB565();
+			// Green
+			constexpr static RGB565Color green1 = RGB888Color(0x00FF00).toRGB565();
+			constexpr static RGB565Color green2 = RGB888Color(0x007F00).toRGB565();
+			// Blue
+			constexpr static RGB565Color blue = RGB888Color(0x0000FF).toRGB565();
+			// Magenta
+			constexpr static RGB565Color magenta1 = RGB888Color(0xFF00FF).toRGB565();
+			constexpr static RGB565Color magenta2 = RGB888Color(0xAA00AA).toRGB565();
+			// Ocean
+			constexpr static RGB565Color ocean = RGB888Color(0x00FFFF).toRGB565();
+			// Yellow
+			constexpr static RGB565Color yellow = RGB888Color(0xffd200).toRGB565();
+			// Ground
+			constexpr static RGB565Color ground1 = RGB888Color(0x97b838).toRGB565();
+			constexpr static RGB565Color ground2 = RGB888Color(0xdef2a2).toRGB565();
+			// Sky
+			constexpr static RGB565Color sky1 = RGB888Color(0x317fcb).toRGB565();
+			constexpr static RGB565Color sky2 = RGB888Color(0xaed1f2).toRGB565();
 
 			// -------------------------------- Fonts --------------------------------
 
@@ -63,7 +72,7 @@ namespace pizda {
 			constexpr static uint16_t verticalGap = 9;
 			constexpr static uint16_t horizontalGap = 7;
 
-			static void setup(Bit8PaletteRenderer* renderer);
+			static void setup();
 			static void applyPrimary(Button* button);
 			static void applySecondary(Button* button);
 			static void applyCritical(Button* button);

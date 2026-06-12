@@ -23,11 +23,11 @@ namespace pizda {
 
 		// First, let's render a splash screen while we wait for the peripherals to finish warming up
 
-		// Multicore
-		{
-			_SPIMutex = xSemaphoreCreateMutex();
-			// system::SPI::setMutex(_SPIMutex);
-		}
+		// // Multicore
+		// {
+		// 	_SPIMutex = xSemaphoreCreateMutex();
+		// 	system::SPI::setMutex(_SPIMutex);
+		// }
 
 		// SPI
 		{
@@ -68,7 +68,7 @@ namespace pizda {
 		_renderer.setTarget(&_display);
 
 		// Rendering splash screen
-		Theme::setup(&_renderer);
+		Theme::setup();
 		_renderer.clear(&Theme::bg1);
 		_renderer.renderImage(Point(), &resources::images::splashScreen);
 		_renderer.flush();
@@ -351,9 +351,9 @@ namespace pizda {
 		return _navigationData;
 	}
 	
-	SemaphoreHandle_t RC::getSPIMutex() const {
-		return _SPIMutex;
-	}
+	// SemaphoreHandle_t RC::getSPIMutex() const {
+	// 	return _SPIMutex;
+	// }
 
 	void RC::playFeedback(const Sound* sound) {
 		if (_settings.personalization.audioFeedback) {
