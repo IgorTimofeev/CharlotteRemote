@@ -15,9 +15,7 @@ namespace pizda {
 		RemoteSystemPacketType,
 
 		AircraftPacketType,
-		AircraftPacket::typeLengthBits,
-
-		1
+		AircraftPacket::typeLengthBits
 	> {
 		public:
 			RemoteTransceiver();

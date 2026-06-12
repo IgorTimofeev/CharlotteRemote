@@ -51,9 +51,7 @@ namespace pizda {
 		typename TLocalSystemPacketType,
 
 		typename TRemotePacketType,
-		uint8_t remotePacketTypeLengthBits,
-
-		uint8_t CPUCoreID
+		uint8_t remotePacketTypeLengthBits
 	>
 	class Transceiver {
 		// ----------------------------- Main -----------------------------
@@ -96,7 +94,7 @@ namespace pizda {
 					this,
 					configMAX_PRIORITIES - 1,
 					nullptr,
-					CPUCoreID
+					1
 				);
 
 				return true;
@@ -267,8 +265,8 @@ namespace pizda {
 			uint8_t _SXBuffer[_SXBufferLength] {};
 
 			static void logSXError(const char* key, const SX1262::error error) {
-				if (error == SX1262::error::timeout)
-					return;
+				// if (error == SX1262::error::timeout)
+				// 	return;
 
 				constexpr static uint8_t errorBufferLength = 255;
 				char errorBuffer[errorBufferLength];

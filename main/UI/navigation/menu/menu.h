@@ -16,7 +16,7 @@ namespace pizda {
 
 	class Menu : public Dialog {
 		public:
-			explicit Menu();
+			Menu();
 			~Menu() override;
 
 			void setViewRoute(const Route* route);

@@ -2,6 +2,7 @@
 
 #include <cstdint>
 
+#include <driver/gpio.h>
 #include <driver/ledc.h>
 #include <driver/spi_master.h>
 #include <esp_adc/adc_oneshot.h>
@@ -211,13 +212,6 @@ namespace pizda {
 							* (yaw - pitchCorrectionYawThresholdMinDeg)
 							/ (pitchCorrectionYawThresholdMaxDeg - pitchCorrectionYawThresholdMinDeg);
 					}
-			};
-
-			class application {
-				public:
-					// 30 FPS are barely achievable on SPI displays, BUT
-					constexpr static uint8_t interfaceTickRateHz = 60;
-					constexpr static uint8_t peripheralTickRateHz = 20;
 			};
 	};
 }

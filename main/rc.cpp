@@ -149,7 +149,7 @@ namespace pizda {
 			_application.tick();
 			_application.render();
 
-			vTaskDelay(pdMS_TO_TICKS(1'000 / config::application::interfaceTickRateHz));
+			vTaskDelay(pdMS_TO_TICKS(1'000 / 30));
 		}
 	}
 
